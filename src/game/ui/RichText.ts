@@ -1,6 +1,6 @@
 import Phaser from "phaser";
 import { parseMarkup } from "./markup";
-import { FONT, markupColor } from "./theme";
+import { FONT, markupStyle } from "./theme";
 
 /** Multi-colour, word-wrapped text built from `{key|text}` markup. */
 export class RichText extends Phaser.GameObjects.Container {
@@ -20,8 +20,11 @@ export class RichText extends Phaser.GameObjects.Container {
     scene.add.existing(this);
   }
 
-  private style(color: string): Phaser.Types.GameObjects.Text.TextStyle {
-    return { fontFamily: FONT, fontSize: `${this.fontSize}px`, color };
+  private style(color: string, background?: string): Phaser.Types.GameObjects.Text.TextStyle {
+    return {
+      fontFamily: FONT, fontSize: `${this.fontSize}px`, color,
+      ...(background && { backgroundColor: background, padding: { x: 3, y: 0 } }),
+    };
   }
 
   private textWidth(s: string): number {
@@ -39,7 +42,20 @@ export class RichText extends Phaser.GameObjects.Container {
         cy += this.lineHeight;
       }
       for (const seg of parseMarkup(line)) {
-        const color = seg.key ? markupColor(seg.key) : this.baseColor;
+        const { color, background } = seg.key ? markupStyle(seg.key) : { color: this.baseColor, background: undefined };
+        if (background) {
+          // Chips never wrap internally; leave a small gap around them.
+          const chip = this.scene.add.text(0, cy, seg.text, this.style(color, background));
+          if (cx > 0 && cx + chip.width > this.wrapWidth) {
+            cx = 0;
+            cy += this.lineHeight;
+            chip.y = cy;
+          }
+          chip.x = cx;
+          this.add(chip);
+          cx += chip.width + 1;
+          continue;
+        }
         // Split into words (keeping spaces) so long segments wrap.
         for (const word of seg.text.split(/(?<= )/)) {
           const w = this.textWidth(word);

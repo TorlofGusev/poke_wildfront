@@ -57,6 +57,29 @@ export const MARKUP_COLORS: Record<string, string> = {
   title: "#f5d76e",
 };
 
+/** Team chip backgrounds for `ally:<type>` / `foe:<type>` markup. */
+export const TEAM_BACKGROUNDS = { ally: "#0f3a1c", foe: "#4a1016" } as const;
+
+/** Mixes a #rrggbb colour towards white so type colours stay readable on dark chips. */
+function lighten(hex: string, amount: number): string {
+  const n = parseInt(hex.slice(1), 16);
+  const mix = (c: number) => Math.round(c + (255 - c) * amount);
+  return toHex((mix(n >> 16) << 16) | (mix((n >> 8) & 0xff) << 8) | mix(n & 0xff));
+}
+
+export interface MarkupStyle {
+  readonly color: string;
+  readonly background?: string;
+}
+
+export function markupStyle(key: string): MarkupStyle {
+  const [team, type] = key.split(":");
+  if ((team === "ally" || team === "foe") && type) {
+    return { color: type === "unknown" ? "#d0d4dc" : lighten(markupColor(type), 0.35), background: TEAM_BACKGROUNDS[team] };
+  }
+  return { color: markupColor(key) };
+}
+
 export function markupColor(key: string): string {
   if (MARKUP_COLORS[key]) return MARKUP_COLORS[key]!;
   const typeColor = TYPE_COLORS[key];

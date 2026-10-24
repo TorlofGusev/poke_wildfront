@@ -1,6 +1,7 @@
 /**
  * Tiny inline colour markup for UI text: `{key|text}` colours `text` by `key`
  * (a Pokémon type, or a semantic key such as dmg, heal, status, player, enemy).
+ * `ally:<type>` / `foe:<type>` draw a team chip: type-coloured text on a green / red background.
  * Kept free of Phaser so it can be unit tested.
  */
 export interface Segment {
@@ -8,7 +9,7 @@ export interface Segment {
   readonly key?: string;
 }
 
-const TOKEN = /\{([a-z-]+)\|([^{}]*)\}/g;
+const TOKEN = /\{([a-z:-]+)\|([^{}]*)\}/g;
 
 export function parseMarkup(s: string): Segment[] {
   const out: Segment[] = [];

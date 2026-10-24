@@ -15,13 +15,15 @@ export interface LogContext {
   moveName(moveId: string): string;
   statusName(statusId: string): string;
   ballName(ballId: string): string;
+  /** Primary type of the unit, or null while it is hidden. */
+  typeOf(unitId: string): string | null;
 }
 
 /** Turns one battle event into a log line; returns null for events not worth logging. */
 export function formatEvent(e: BattleEvent, ctx: LogContext): LogEntry | null {
   const side = (id: string): LogTone => (ctx.isPlayer(id) ? "player" : "enemy");
   // Unit names are coloured by side; everything else by meaning.
-  const name = (id: string) => tag(side(id), ctx.name(id));
+  const name = (id: string) => tag(`${ctx.isPlayer(id) ? "ally" : "foe"}:${ctx.typeOf(id) ?? "unknown"}`, ctx.name(id));
   switch (e.type) {
     case "roundStarted":
       return { text: `— Round ${e.round} —`, tone: "info" };

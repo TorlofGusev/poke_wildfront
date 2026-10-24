@@ -10,6 +10,7 @@ const ctx: LogContext = {
   moveName: () => "Ember",
   statusName: () => "Poison",
   ballName: () => "Poké Ball",
+  typeOf: (id) => (id === "p" ? "fire" : "grass"),
 };
 
 describe("combat log", () => {
@@ -25,7 +26,7 @@ describe("combat log", () => {
   it("colours names by side and damage by meaning", () => {
     const e = formatEvent({ type: "damaged", unitId: "e", amount: 22, hp: 68, source: "move" }, ctx)!;
     expect(parseMarkup(e.text).slice(0, 3)).toEqual([
-      { text: "Foe Oddish", key: "enemy" }, { text: " takes " }, { text: "22 damage", key: "dmg" },
+      { text: "Foe Oddish", key: "foe:grass" }, { text: " takes " }, { text: "22 damage", key: "dmg" },
     ]);
   });
 

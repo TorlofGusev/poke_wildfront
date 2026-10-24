@@ -391,7 +391,7 @@ export class BattleScene extends Phaser.Scene {
     }
     const s = CONTENT.species[unit.speciesId]!;
     const lines = [
-      `${tag(unit.side, s.name)} ${tag("dim", unit.side === "enemy" ? "(foe)" : "(yours)")}  ${s.types.map((t) => tag(t, t)).join("/")}`,
+      `${tag(`${unit.side === "player" ? "ally" : "foe"}:${s.types[0]}`, s.name)} ${tag("dim", unit.side === "enemy" ? "(foe)" : "(yours)")}  ${s.types.map((t) => tag(t, t)).join("/")}`,
       `HP ${tag(unit.hp / unit.maxHp > 0.5 ? "heal" : "dmg", `${unit.hp}/${unit.maxHp}`)}  Atk ${s.stats.attack}  Def ${s.stats.defense}  Spe ${s.stats.speed}`,
       unit.statuses.length ? `Status: ${unit.statuses.map((x) => `${tag("status", CONTENT.statuses[x.id]?.name ?? x.id)} (${x.turnsLeft})`).join(", ")}` : "",
       ...s.moves.map((m) => {
@@ -601,6 +601,10 @@ export class BattleScene extends Phaser.Scene {
         return u.side === "enemy" ? `Foe ${this.displayName(u)}` : this.displayName(u);
       },
       isPlayer: (id: string) => unitById(state, id).side === "player",
+      typeOf: (id: string) => {
+        const u = unitById(state, id);
+        return u.side === "enemy" && this.isHidden(u.id) ? null : CONTENT.species[u.speciesId]!.types[0]!;
+      },
       moveName: (id: string) => CONTENT.moves[id]!.name,
       statusName: (id: string) => CONTENT.statuses[id]?.name ?? id,
       ballName: (id: string) => CONTENT.balls[id]?.name ?? id,
