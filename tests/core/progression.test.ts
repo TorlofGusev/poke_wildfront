@@ -1,7 +1,7 @@
 import { describe, expect, it } from "vitest";
 import { CONTENT, PROGRESSION } from "../../src/content";
 import { applyAction, createBattle } from "../../src/core/battle";
-import { buy, equipItem, newMember, resolveBattle, usePotion, type GameState } from "../../src/core/party";
+import { allocatePoint, buy, equipItem, newMember, resolveBattle, usePotion, type GameState } from "../../src/core/party";
 import {
   chooseRole,
   chooseTalent,
@@ -18,12 +18,21 @@ import { content, pm, prog } from "./fixtures";
 const starter = (species: string, level = 5) => newMember(CONTENT, PROGRESSION, species, 1, level);
 
 describe("levels and stats", () => {
-  it("needs level × xpPerLevel XP per level and grows stats", () => {
+  it("needs level × xpPerLevel XP per level; stats grow only through spent points", () => {
     expect(xpToNext(PROGRESSION, 5)).toBe(5 * PROGRESSION.rules.xpPerLevel);
-    const lv5 = memberStats(CONTENT, PROGRESSION, starter("charmander", 5));
-    const lv10 = memberStats(CONTENT, PROGRESSION, starter("charmander", 10));
-    expect(lv10.stats.attack).toBeGreaterThan(lv5.stats.attack);
-    expect(lv10.maxHp).toBeGreaterThan(lv5.maxHp);
+    const fresh = starter("charmander", 5);
+    expect(fresh.unspentPoints).toBe(4);
+    expect(memberStats(CONTENT, PROGRESSION, fresh).stats).toEqual(CONTENT.species.charmander!.stats);
+    const up = gainXp(CONTENT, PROGRESSION, fresh, xpToNext(PROGRESSION, 5)).member;
+    expect(up.unspentPoints).toBe(5);
+    expect(memberStats(CONTENT, PROGRESSION, up).stats).toEqual(CONTENT.species.charmander!.stats);
+  });
+
+  it("type profiles give small stats: Fire is a striker, Rock a fortress", () => {
+    expect(CONTENT.species.charmander!.stats).toEqual({ hp: 4, attack: 7, defense: 3, speed: 6 });
+    // Geodude: Rock/Ground average, +1 Defense nudge.
+    expect(CONTENT.species.geodude!.stats).toEqual({ hp: 6, attack: 6, defense: 8, speed: 1 });
+    for (const sp of Object.values(CONTENT.species)) for (const v of Object.values(sp.stats)) expect(v).toBeLessThan(10);
   });
 
   it("levels up, possibly several times, and keeps leftover XP", () => {
@@ -51,11 +60,12 @@ describe("levels and stats", () => {
     expect(member).toMatchObject({ knockouts: 2, role: "striker", talents: ["brutal"] });
   });
 
-  it("raises current HP by the max HP gained, but never revives", () => {
-    const hurt = { ...starter("squirtle", 5), hp: 10 };
-    const up = gainXp(CONTENT, PROGRESSION, hurt, xpToNext(PROGRESSION, 5)).member;
-    expect(up.hp).toBeGreaterThan(10);
-    const fainted = gainXp(CONTENT, PROGRESSION, { ...hurt, hp: 0 }, xpToNext(PROGRESSION, 5)).member;
+  it("evolution adds free points and raises current HP by the max HP gained, but never revives", () => {
+    const hurt = { ...starter("charmander", 15), hp: 10 };
+    const up = gainXp(CONTENT, PROGRESSION, hurt, xpToNext(PROGRESSION, 15)).member;
+    expect(up.unspentPoints).toBe(hurt.unspentPoints + 1 + PROGRESSION.rules.evolutionPoints);
+    expect(up.hp).toBeGreaterThanOrEqual(10);
+    const fainted = gainXp(CONTENT, PROGRESSION, { ...hurt, hp: 0 }, xpToNext(PROGRESSION, 15)).member;
     expect(fainted.hp).toBe(0);
   });
 });
@@ -135,6 +145,18 @@ describe("money, shop and items", () => {
     g = equipItem(prog, g, "a", null);
     expect(g.inventory.items.claw).toBe(1);
     expect(() => equipItem(prog, g, "a", "potion")).toThrow(/cannot be held/);
+  });
+
+  it("spends level-up points, and a vitamin makes one count double", () => {
+    const withVit = { ...prog, items: { ...prog.items, protein: { id: "protein", name: "Protein", description: "", kind: "vitamin" as const, price: 1, stat: "attack" as const } } };
+    let g: GameState = { ...game(), roster: { ...game().roster, party: [pm("a", "fast", 0, 10, { unspentPoints: 2 })] }, inventory: { balls: {}, items: { protein: 1 } } };
+    g = allocatePoint(withVit, g, "a", "speed");
+    g = allocatePoint(withVit, g, "a", "attack", "protein");
+    expect(g.roster.party[0]!.statPoints).toMatchObject({ speed: 1, attack: 2 });
+    expect(g.roster.party[0]!.unspentPoints).toBe(0);
+    expect(g.inventory.items.protein).toBe(0);
+    expect(() => allocatePoint(withVit, g, "a", "hp")).toThrow(/no stat points/);
+    expect(() => allocatePoint(withVit, { ...g, roster: { ...g.roster, party: [{ ...g.roster.party[0]!, unspentPoints: 1 }] } }, "a", "hp", "protein")).toThrow(/does not boost/);
   });
 
   it("held items change battle stats", () => {

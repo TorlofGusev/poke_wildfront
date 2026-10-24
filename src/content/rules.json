@@ -1,10 +1,10 @@
 {
-  "hpMultiplier": 2,
-  "damageDivisor": 2,
-  "impactDamage": 8,
-  "movementBySpeed": [
-    { "minSpeed": 85, "move": 5 },
-    { "minSpeed": 50, "move": 4 },
-    { "minSpeed": 0, "move": 3 }
-  ]
+ "hpBase": 30,
+ "hpPerPoint": 6,
+ "statOffset": 10,
+ "damageDivisor": 4,
+ "moveBase": 3,
+ "speedPerMove": 3,
+ "moveMax": 6,
+ "impactDamage": 8
 }

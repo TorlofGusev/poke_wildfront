@@ -2,8 +2,10 @@
  "roleLevel": 5,
  "maxLevel": 30,
  "xpPerLevel": 30,
- "statGrowth": 0.05,
  "xpPerEnemyLevel": 6,
  "moneyPerEnemyLevel": 12,
- "maxActiveMoves": 3
+ "maxActiveMoves": 3,
+ "pointsPerLevel": 1,
+ "evolutionPoints": 2,
+ "vitaminBonus": 1
 }

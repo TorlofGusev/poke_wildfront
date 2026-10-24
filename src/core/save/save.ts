@@ -1,8 +1,8 @@
 import type { BattleContent } from "../battle/content";
-import type { WorldState } from "../expedition/world";
 import { KNOCKOUTS_TO_DEATH, MAX_PARTY_SIZE, type GameState, type PartyMember } from "../party/roster";
 
-export const SAVE_VERSION = 4;
+/** Bump when GameState changes. During the prototype, older saves are discarded rather than migrated. */
+export const SAVE_VERSION = 1;
 
 export interface SaveFile {
   readonly version: number;
@@ -16,51 +16,10 @@ export function toSaveFile(game: GameState, now: Date): SaveFile {
 
 type RawSave = { version: number } & Record<string, unknown>;
 
-export interface MigrationContext {
-  /** A fresh overworld state for saves made before the overworld existed. */
-  readonly freshWorld: () => WorldState;
-  /** The map's start tile, used where an old save only named a fixed camp site. */
-  readonly startPos: { readonly x: number; readonly y: number };
-  /** Gives a pre-progression Pokémon (v3) its level, moves and progression fields. */
-  readonly upgradeMember: (m: { uid: string; speciesId: string; hp: number; knockouts: number }) => PartyMember;
-}
-
-/** One function per version step: MIGRATIONS[n] turns a version-n save into version n+1. */
-const MIGRATIONS: Record<number, (save: RawSave, ctx: MigrationContext) => RawSave> = {
-  // v1 (Phase 3) had no overworld: start the expedition fresh, keep party, storage, knockouts and bag.
-  1: (save, ctx) => ({ ...save, version: 2, game: { ...(save.game as object), world: ctx.freshWorld() } }),
-  // v2 camped only at fixed sites (lastCamp was a site id); v3 camps anywhere (lastCamp is a tile).
-  2: (save, ctx) => {
-    const game = save.game as { world: Record<string, unknown> };
-    return { ...save, version: 3, game: { ...game, world: { ...game.world, lastCamp: ctx.startPos } } };
-  },
-  // v4 adds levels, roles, talents, moves, held items, money and wild group levels.
-  3: (save, ctx) => {
-    type V3Member = Parameters<MigrationContext["upgradeMember"]>[0];
-    const game = save.game as {
-      roster: Record<"party" | "storage" | "fallen", V3Member[]>;
-      inventory: Record<string, unknown>;
-      world: { encounters: { species: string[] }[] } & Record<string, unknown>;
-    };
-    const up = (list: V3Member[]) => list.map(ctx.upgradeMember);
-    return {
-      ...save,
-      version: 4,
-      game: {
-        ...game,
-        roster: { party: up(game.roster.party), storage: up(game.roster.storage), fallen: up(game.roster.fallen) },
-        inventory: { ...game.inventory, items: {} },
-        money: 300,
-        world: { ...game.world, encounters: game.world.encounters.map((e) => ({ ...e, levels: e.species.map(() => 4) })) },
-      },
-    };
-  },
-};
-
 export class SaveError extends Error {}
 
 /** Parses, migrates and validates a save. Throws SaveError with a readable message. */
-export function loadSaveFile(content: BattleContent, json: string, ctx: MigrationContext): SaveFile {
+export function loadSaveFile(content: BattleContent, json: string): SaveFile {
   let data: RawSave;
   try {
     data = JSON.parse(json);
@@ -68,12 +27,7 @@ export function loadSaveFile(content: BattleContent, json: string, ctx: Migratio
     throw new SaveError("save data is not valid JSON");
   }
   if (typeof data?.version !== "number") throw new SaveError("save data has no version");
-  if (data.version > SAVE_VERSION) throw new SaveError(`save is from a newer game version (${data.version})`);
-  while (data.version < SAVE_VERSION) {
-    const step = MIGRATIONS[data.version];
-    if (!step) throw new SaveError(`no migration from save version ${data.version}`);
-    data = step(data, ctx);
-  }
+  if (data.version !== SAVE_VERSION) throw new SaveError(`save is from another prototype version (${data.version})`);
   const save = data as unknown as SaveFile;
   validateGame(content, save.game);
   return save;
@@ -100,6 +54,7 @@ function validateGame(content: BattleContent, game: GameState): void {
     if (!Number.isInteger(m.level) || m.level < 1) fail(`bad level for ${m.uid}`);
     if (!Array.isArray(m.knownMoves) || !Array.isArray(m.activeMoves) || !Array.isArray(m.talents)) fail(`missing moves or talents for ${m.uid}`);
     if (m.activeMoves.some((mv) => !m.knownMoves.includes(mv))) fail(`${m.uid} has an active move it does not know`);
+    if (!m.statPoints || !Number.isInteger(m.unspentPoints) || m.unspentPoints < 0) fail(`bad stat points for ${m.uid}`);
   };
   party.forEach((m) => check(m, "party"));
   storage.forEach((m) => check(m, "storage"));

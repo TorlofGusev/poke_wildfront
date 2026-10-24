@@ -1,0 +1,122 @@
+{
+ "normal": {
+  "profile": {
+   "hp": 5,
+   "attack": 5,
+   "defense": 5,
+   "speed": 5
+  }
+ },
+ "fire": {
+  "profile": {
+   "hp": 4,
+   "attack": 7,
+   "defense": 3,
+   "speed": 6
+  }
+ },
+ "water": {
+  "profile": {
+   "hp": 6,
+   "attack": 5,
+   "defense": 5,
+   "speed": 4
+  }
+ },
+ "grass": {
+  "profile": {
+   "hp": 6,
+   "attack": 4,
+   "defense": 5,
+   "speed": 5
+  }
+ },
+ "electric": {
+  "profile": {
+   "hp": 3,
+   "attack": 6,
+   "defense": 3,
+   "speed": 8
+  }
+ },
+ "ice": {
+  "profile": {
+   "hp": 5,
+   "attack": 5,
+   "defense": 4,
+   "speed": 6
+  }
+ },
+ "fighting": {
+  "profile": {
+   "hp": 6,
+   "attack": 7,
+   "defense": 4,
+   "speed": 3
+  }
+ },
+ "poison": {
+  "profile": {
+   "hp": 5,
+   "attack": 4,
+   "defense": 5,
+   "speed": 6
+  }
+ },
+ "ground": {
+  "profile": {
+   "hp": 6,
+   "attack": 6,
+   "defense": 6,
+   "speed": 2
+  }
+ },
+ "flying": {
+  "profile": {
+   "hp": 4,
+   "attack": 5,
+   "defense": 3,
+   "speed": 8
+  }
+ },
+ "psychic": {
+  "profile": {
+   "hp": 4,
+   "attack": 7,
+   "defense": 3,
+   "speed": 6
+  }
+ },
+ "bug": {
+  "profile": {
+   "hp": 4,
+   "attack": 5,
+   "defense": 4,
+   "speed": 7
+  }
+ },
+ "rock": {
+  "profile": {
+   "hp": 6,
+   "attack": 6,
+   "defense": 8,
+   "speed": 0
+  }
+ },
+ "ghost": {
+  "profile": {
+   "hp": 4,
+   "attack": 6,
+   "defense": 3,
+   "speed": 7
+  }
+ },
+ "dragon": {
+  "profile": {
+   "hp": 6,
+   "attack": 7,
+   "defense": 5,
+   "speed": 2
+  }
+ }
+}

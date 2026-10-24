@@ -16,6 +16,7 @@ import {
   moveUnavailableReason,
   reachableFor,
   unitAt,
+  maxHpOf,
   unitById,
   validTargets,
   type BattleAction,
@@ -481,7 +482,7 @@ export class BattleScene extends Phaser.Scene {
     const enemy = this.scenario.enemies.find((e) => e.id === id);
     const member = this.party.find((m) => m.id === id);
     const speciesId = enemy?.speciesId ?? member!.speciesId;
-    const maxHp = Math.round(CONTENT.species[speciesId]!.stats.hp * CONTENT.rules.hpMultiplier);
+    const maxHp = maxHpOf(CONTENT, speciesId);
     return {
       id, speciesId, side: enemy ? "enemy" : "player", maxHp, hp: member?.hp ?? maxHp,
       pos: enemy?.pos ?? { x: 0, y: 0 }, statuses: [], cooldowns: {}, usedUltimates: [], captured: false, level: 1, stats: CONTENT.species[speciesId]!.stats, moves: CONTENT.species[speciesId]!.moves, mods: NO_MODIFIERS,

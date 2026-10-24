@@ -66,15 +66,22 @@ export interface StatusDef {
   readonly movePenalty?: number;
 }
 
+/**
+ * Combat formulas (see docs/design/identity-and-stats-proposal.md):
+ * - Max HP = hpBase + hpPerPoint × HP
+ * - Damage = max(1, round(power × (statOffset + Atk) / (statOffset + Def) × multipliers / damageDivisor))
+ * - Movement = min(moveMax, moveBase + ⌊Speed / speedPerMove⌋)
+ */
 export interface BattleRules {
-  /** Battle max HP = species base HP × this. */
-  readonly hpMultiplier: number;
-  /** Damage = max(1, round(power * attack / defense * typeMultiplier / damageDivisor)). */
+  readonly hpBase: number;
+  readonly hpPerPoint: number;
+  readonly statOffset: number;
   readonly damageDivisor: number;
+  readonly moveBase: number;
+  readonly speedPerMove: number;
+  readonly moveMax: number;
   /** Damage taken when pushed into an obstacle or another unit. */
   readonly impactDamage: number;
-  /** Speed thresholds → movement points, highest first. */
-  readonly movementBySpeed: readonly { readonly minSpeed: number; readonly move: number }[];
 }
 
 export interface BallDef {

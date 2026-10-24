@@ -116,5 +116,37 @@
   "mods": {
    "damageDealt": 1.1
   }
+ },
+ "hp-up": {
+  "id": "hp-up",
+  "name": "HP Up",
+  "description": "Use with a level-up point: +2 HP instead of +1.",
+  "kind": "vitamin",
+  "price": 1500,
+  "stat": "hp"
+ },
+ "protein": {
+  "id": "protein",
+  "name": "Protein",
+  "description": "Use with a level-up point: +2 Attack instead of +1.",
+  "kind": "vitamin",
+  "price": 1500,
+  "stat": "attack"
+ },
+ "iron": {
+  "id": "iron",
+  "name": "Iron",
+  "description": "Use with a level-up point: +2 Defense instead of +1.",
+  "kind": "vitamin",
+  "price": 1500,
+  "stat": "defense"
+ },
+ "carbos": {
+  "id": "carbos",
+  "name": "Carbos",
+  "description": "Use with a level-up point: +2 Speed instead of +1.",
+  "kind": "vitamin",
+  "price": 1500,
+  "stat": "speed"
  }
 }

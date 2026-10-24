@@ -161,7 +161,7 @@ export class OverworldScene extends Phaser.Scene {
         const s = CONTENT.species[m.speciesId]!;
         const hpKey = m.hp === 0 ? "ko" : m.hp / memberMaxHp(CONTENT, PROGRESSION, m) > 0.5 ? "heal" : "dmg";
         const pips = "●".repeat(m.knockouts) + "○".repeat(KNOCKOUTS_TO_DEATH - m.knockouts);
-        const star = pendingChoice(PROGRESSION, m) ? tag("num", "★") : " ";
+        const star = pendingChoice(PROGRESSION, m) || m.unspentPoints > 0 ? tag("num", "★") : " ";
         return `${star}${tag(s.types[0]!, s.name.slice(0, 10).padEnd(11))}${tag("dim", `L${m.level}`.padEnd(4))}${tag(hpKey, m.hp === 0 ? "KO'd" : `${m.hp}`.padStart(3))} ${tag(m.knockouts ? "ko" : "dim", pips)}`;
       }),
       "",
@@ -174,7 +174,7 @@ export class OverworldScene extends Phaser.Scene {
     const campButton = new Button(this, 0, y, 116, 28, "⛺ Camp", () => this.makeCamp());
     campButton.setEnabled(!this.moving);
     this.buttons.add(campButton);
-    const pending = roster.party.some((m) => pendingChoice(PROGRESSION, m));
+    const pending = roster.party.some((m) => pendingChoice(PROGRESSION, m) || m.unspentPoints > 0);
     this.buttons.add(new Button(this, 124, y, 116, 28, pending ? "★ Party" : "☰ Party", () => this.scene.start("Party")).setHighlighted(pending));
     y += 30;
     const note = this.add.text(0, y, "Camping restores HP and fatigue. Wild groups move.", { fontFamily: FONT, fontSize: px(10), color: COLORS.dim, wordWrap: { width: 240 } });

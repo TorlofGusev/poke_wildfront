@@ -1,4 +1,6 @@
+import { hpFromStat } from "../battle/battle";
 import type { BaseStats, BattleContent, SpeciesDef } from "../battle/content";
+import { STAT_NAMES, type StatName } from "../battle/species";
 import { combineModifiers, type UnitModifiers } from "../battle/modifiers";
 import type { UnitSetup } from "../battle/battle";
 import type { ProgressionContent } from "./content";
@@ -15,7 +17,13 @@ export interface Progress {
   /** Active moves besides the basic attack. */
   readonly activeMoves: readonly string[];
   readonly hp: number;
+  /** Stat points the player has spent (added to the species' level-1 stats). */
+  readonly statPoints: BaseStats;
+  /** Points earned but not yet spent. */
+  readonly unspentPoints: number;
 }
+
+export const NO_POINTS: BaseStats = { hp: 0, attack: 0, defense: 0, speed: 0 };
 
 export const basicMoveOf = (content: BattleContent, species: SpeciesDef): string => {
   const basic = species.moves.find((m) => content.moves[m]?.kind === "basic");
@@ -37,27 +45,21 @@ export function defaultActiveMoves(content: BattleContent, prog: ProgressionCont
 
 export const xpToNext = (prog: ProgressionContent, level: number): number => level * prog.rules.xpPerLevel;
 
-/** Effective battle stats: base × level growth × stat talents; Speed talents are flat. */
+/** Effective battle stats: species level-1 stats + spent points + talent points. */
 export function memberStats(content: BattleContent, prog: ProgressionContent, m: Progress): { stats: BaseStats; maxHp: number } {
   const base = content.species[m.speciesId]!.stats;
-  const growth = 1 + prog.rules.statGrowth * (m.level - 1);
-  const pct = { hp: 0, attack: 0, defense: 0, speed: 0 };
-  for (const t of m.talents) {
-    const s = prog.talents[t]?.stats;
-    if (!s) continue;
-    pct.hp += s.hp ?? 0;
-    pct.attack += s.attack ?? 0;
-    pct.defense += s.defense ?? 0;
-    pct.speed += s.speed ?? 0;
+  const out = {} as Record<StatName, number>;
+  for (const s of STAT_NAMES) {
+    const fromTalents = m.talents.reduce((sum, t) => sum + (prog.talents[t]?.stats?.[s] ?? 0), 0);
+    out[s] = base[s] + m.statPoints[s] + fromTalents;
   }
-  const stats: BaseStats = {
-    hp: Math.round(base.hp * growth * (1 + pct.hp)),
-    attack: Math.round(base.attack * growth * (1 + pct.attack)),
-    defense: Math.round(base.defense * growth * (1 + pct.defense)),
-    // Speed decides movement thresholds and turn order, so it grows slowly and talents add flat points.
-    speed: Math.round(base.speed * (1 + (growth - 1) / 3) + pct.speed),
-  };
-  return { stats, maxHp: Math.round(stats.hp * content.rules.hpMultiplier) };
+  return { stats: out, maxHp: hpFromStat(content, out.hp) };
+}
+
+/** Spends unspent points on a stat. */
+export function spendPoints<T extends Progress>(m: T, stat: StatName, amount: number, cost = amount): T {
+  if (cost > m.unspentPoints) throw new Error("no stat points left");
+  return { ...m, unspentPoints: m.unspentPoints - cost, statPoints: { ...m.statPoints, [stat]: m.statPoints[stat] + amount } };
 }
 
 export function memberModifiers(prog: ProgressionContent, m: Progress): UnitModifiers {
@@ -79,9 +81,16 @@ export function toUnitSetup(content: BattleContent, prog: ProgressionContent, m:
 /** A wild Pokémon of a given level, with its default loadout. */
 export function wildSetup(content: BattleContent, prog: ProgressionContent, speciesId: string, level: number): Omit<UnitSetup, "id" | "side" | "pos"> {
   const known = movesKnownAt(content.species[speciesId]!, level);
+  // Wild Pokémon spend their level points along their playstyle: best stat, second best, HP, repeat.
+  const base = content.species[speciesId]!.stats;
+  const ranked = [...STAT_NAMES].filter((s) => s !== "hp").sort((a, b) => base[b] - base[a]);
+  const cycle: StatName[] = [ranked[0]!, ranked[1]!, "hp"];
+  const points = { ...NO_POINTS };
+  for (let i = 0; i < (level - 1) * prog.rules.pointsPerLevel; i++) points[cycle[i % cycle.length]!] += 1;
   const m: Progress = {
     speciesId, level, xp: 0, role: null, talents: [], heldItem: null, knownMoves: known,
     activeMoves: defaultActiveMoves(content, prog, speciesId, known), hp: Number.MAX_SAFE_INTEGER,
+    statPoints: points, unspentPoints: 0,
   };
   return toUnitSetup(content, prog, m);
 }
@@ -93,19 +102,19 @@ export type ProgressEvent =
 
 /**
  * Adds XP, applying level-ups, new moves and evolution. Knockouts, role and talents are kept.
- * HP rises by the max HP gained, so a level-up never leaves a Pokémon relatively weaker.
+ * HP rises by any max HP gained (evolution), so a level-up never leaves a Pokémon relatively weaker.
  */
 export function gainXp<T extends Progress>(content: BattleContent, prog: ProgressionContent, m: T, xp: number): { member: T; events: ProgressEvent[] } {
   const events: ProgressEvent[] = [];
   let cur: T = { ...m, xp: m.xp + xp };
   while (cur.level < prog.rules.maxLevel && cur.xp >= xpToNext(prog, cur.level)) {
     const before = memberStats(content, prog, cur).maxHp;
-    cur = { ...cur, xp: cur.xp - xpToNext(prog, cur.level), level: cur.level + 1 };
+    cur = { ...cur, xp: cur.xp - xpToNext(prog, cur.level), level: cur.level + 1, unspentPoints: cur.unspentPoints + prog.rules.pointsPerLevel };
     events.push({ type: "levelUp", level: cur.level });
     const evo = content.species[cur.speciesId]!.evolution;
     if (evo && cur.level >= evo.level && content.species[evo.into]) {
       events.push({ type: "evolved", from: cur.speciesId, into: evo.into });
-      cur = { ...cur, speciesId: evo.into };
+      cur = { ...cur, speciesId: evo.into, unspentPoints: cur.unspentPoints + prog.rules.evolutionPoints };
     }
     for (const move of movesKnownAt(content.species[cur.speciesId]!, cur.level)) {
       if (cur.knownMoves.includes(move)) continue;

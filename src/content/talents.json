@@ -2,37 +2,37 @@
  "vigor": {
   "id": "vigor",
   "name": "Vigor",
-  "description": "+10% HP.",
+  "description": "+1 HP point.",
   "stackable": true,
   "stats": {
-   "hp": 0.1
+   "hp": 1
   }
  },
  "power": {
   "id": "power",
   "name": "Power",
-  "description": "+8% Attack.",
+  "description": "+1 Attack point.",
   "stackable": true,
   "stats": {
-   "attack": 0.08
+   "attack": 1
   }
  },
  "guard": {
   "id": "guard",
   "name": "Guard",
-  "description": "+8% Defense.",
+  "description": "+1 Defense point.",
   "stackable": true,
   "stats": {
-   "defense": 0.08
+   "defense": 1
   }
  },
  "agility": {
   "id": "agility",
   "name": "Agility",
-  "description": "+4 Speed.",
+  "description": "+1 Speed point.",
   "stackable": true,
   "stats": {
-   "speed": 4
+   "speed": 1
   }
  },
  "sturdy-shell": {

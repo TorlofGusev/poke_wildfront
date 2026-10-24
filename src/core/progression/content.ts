@@ -15,7 +15,7 @@ export interface TalentDef {
   readonly description: string;
   /** Plain stat talents can be taken repeatedly and belong to every role. */
   readonly stackable?: boolean;
-  /** Percent stat increases (0.1 = +10%); speed is flat. */
+  /** Flat stat points added. */
   readonly stats?: Partial<BaseStats>;
   readonly mods?: Partial<UnitModifiers>;
 }
@@ -24,12 +24,14 @@ export interface ItemDef {
   readonly id: string;
   readonly name: string;
   readonly description: string;
-  readonly kind: "held" | "potion";
+  readonly kind: "held" | "potion" | "vitamin";
   readonly price: number;
   /** Held items: battle modifiers. */
   readonly mods?: Partial<UnitModifiers>;
   /** Potions: HP restored. */
   readonly heal?: number;
+  /** Vitamins: the stat whose level-up point they double. */
+  readonly stat?: keyof BaseStats;
 }
 
 export interface ProgressionRules {
@@ -38,8 +40,12 @@ export interface ProgressionRules {
   readonly maxLevel: number;
   /** XP needed to go from level L to L+1 = L × xpPerLevel. */
   readonly xpPerLevel: number;
-  /** Fraction of base stats gained per level above 1. */
-  readonly statGrowth: number;
+  /** Free stat points gained per level. */
+  readonly pointsPerLevel: number;
+  /** Free stat points gained on evolving. */
+  readonly evolutionPoints: number;
+  /** Extra points when a vitamin is used with a stat point. */
+  readonly vitaminBonus: number;
   /** XP each deployed Pokémon earns per defeated enemy level. */
   readonly xpPerEnemyLevel: number;
   /** Pokédollars per defeated enemy level. */

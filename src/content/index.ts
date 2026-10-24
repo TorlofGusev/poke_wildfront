@@ -1,4 +1,4 @@
-import type { BattleContent, BattleScenario } from "../core/battle";
+import { speciesStats, type BaseStats, type BattleContent, type BattleScenario, type SpeciesDef, type TypeProfile } from "../core/battle";
 import type { BiomeDef, FatigueRules, WorldContent, WorldDef } from "../core/expedition";
 import type { ItemDef, ProgressionContent, RoleDef, TalentDef } from "../core/progression";
 import items from "./items.json";
@@ -13,9 +13,20 @@ import fatigue from "./fatigue.json";
 import moves from "./moves.json";
 import route2 from "./worlds/route-2.json";
 import rules from "./rules.json";
-import species from "./species.json";
+import speciesData from "./species.json";
+import types from "./types.json";
 import statuses from "./statuses.json";
 import viridianForestAmbush from "./scenarios/viridian-forest-ambush.json";
+
+export const TYPES: Readonly<Record<string, TypeProfile>> = types;
+
+/** Species with level-1 stats derived from their types' playstyles plus a small nudge. */
+const species: Record<string, SpeciesDef> = Object.fromEntries(
+  Object.entries(speciesData).map(([id, s]) => [
+    id,
+    { ...s, stats: speciesStats(TYPES, s.types, (s as { statNudge?: Partial<BaseStats> }).statNudge) } as SpeciesDef,
+  ]),
+);
 
 export const CONTENT: BattleContent = {
   species,

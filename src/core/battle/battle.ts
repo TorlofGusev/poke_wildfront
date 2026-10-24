@@ -20,7 +20,7 @@ export interface UnitSetup {
   readonly level?: number;
   /** Effective stats; defaults to the species' base stats. */
   readonly stats?: BaseStats;
-  /** Battle max HP; defaults to the species' base HP × hpMultiplier. */
+  /** Battle max HP; defaults to the species' stats (see BattleRules). */
   readonly maxHp?: number;
   /** Usable moves; defaults to the species' move list. */
   readonly moves?: readonly string[];
@@ -72,8 +72,8 @@ export const activeUnit = (state: BattleState): BattleUnit | null =>
   state.turn ? unitById(state, state.turn.unitId) : null;
 
 export function movementPoints(content: BattleContent, unit: BattleUnit): number {
-  const speed = unit.stats.speed;
-  const base = content.rules.movementBySpeed.find((t) => speed >= t.minSpeed)?.move ?? 0;
+  const r = content.rules;
+  const base = Math.min(r.moveMax, r.moveBase + Math.floor(unit.stats.speed / r.speedPerMove));
   const penalty = unit.statuses.reduce((s, st) => s + (content.statuses[st.id]?.movePenalty ?? 0), 0);
   return Math.max(0, base - penalty + unit.mods.moveBonus);
 }
@@ -186,8 +186,11 @@ export function validTargets(
 
 // ---------------------------------------------------------------- setup
 
-export const maxHpOf = (content: BattleContent, speciesId: string): number =>
-  Math.round(content.species[speciesId]!.stats.hp * content.rules.hpMultiplier);
+export const hpFromStat = (content: BattleContent, hp: number): number =>
+  content.rules.hpBase + content.rules.hpPerPoint * hp;
+
+/** Max HP of a species with its level-1 stats. */
+export const maxHpOf = (content: BattleContent, speciesId: string): number => hpFromStat(content, content.species[speciesId]!.stats.hp);
 
 
 export function createBattle(
@@ -327,7 +330,8 @@ function doUseMove(
         (t.hp === t.maxHp ? m.fullHpTargetDamage : 1) *
         (user.hp * 2 < user.maxHp ? m.lowHpDamage : 1);
       const mult = eff * m.damageDealt * (m.typeDamage[move.type] ?? 1) * situational * t.mods.damageTaken;
-      const raw = (move.power * user.stats.attack) / t.stats.defense * mult / content.rules.damageDivisor;
+      const off = content.rules.statOffset;
+      const raw = (move.power * (off + user.stats.attack)) / (off + t.stats.defense) * mult / content.rules.damageDivisor;
       dealDamage(state, t, Math.max(1, Math.round(raw)), "move", events, eff);
     }
     for (const effect of move.effects ?? []) {

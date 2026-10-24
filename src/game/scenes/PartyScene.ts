@@ -1,6 +1,7 @@
 import Phaser from "phaser";
 import { CONTENT, PROGRESSION } from "../../content";
 import {
+  allocatePoint,
   equipItem,
   findMember,
   KNOCKOUTS_TO_DEATH,
@@ -22,6 +23,7 @@ import {
   talentOptions,
   xpToNext,
 } from "../../core/progression";
+import { STAT_NAMES, type StatName } from "../../core/battle";
 import { session } from "../session";
 import { portraitKey } from "../sprites";
 import { Button } from "../ui/Button";
@@ -47,7 +49,7 @@ export class PartyScene extends Phaser.Scene {
   init(data: { camped?: boolean }): void {
     this.camped = data?.camped ?? false;
     this.message = this.camped ? tag("good", "You made camp: HP and fatigue restored, wild Pokémon have moved. Defeat brings you back here.") : "";
-    this.selected = session.game.roster.party.find((m) => pendingChoice(PROGRESSION, m))?.uid ?? session.game.roster.party[0]?.uid ?? null;
+    this.selected = session.game.roster.party.find((m) => pendingChoice(PROGRESSION, m) || m.unspentPoints > 0)?.uid ?? session.game.roster.party[0]?.uid ?? null;
   }
 
   create(): void {
@@ -95,7 +97,7 @@ export class PartyScene extends Phaser.Scene {
   private card(x: number, y: number, m: PartyMember): Phaser.GameObjects.Container {
     const s = CONTENT.species[m.speciesId]!;
     const sel = m.uid === this.selected;
-    const pending = pendingChoice(PROGRESSION, m);
+    const pending = pendingChoice(PROGRESSION, m) ?? (m.unspentPoints > 0 ? "points" : null);
     const bg = this.add.rectangle(0, 0, 304, 36, sel ? 0x2a3245 : 0x1c2130).setOrigin(0)
       .setStrokeStyle(sel ? 2 : 1, sel ? 0xf5d76e : m.knockouts === 2 ? 0xd0021b : 0x3a4560);
     bg.setInteractive({ useHandCursor: true }).on("pointerdown", () => {
@@ -128,6 +130,25 @@ export class PartyScene extends Phaser.Scene {
     let y = 48;
     if (this.textures.exists(portraitKey(m.speciesId))) add(this.add.image(DETAIL_X + DETAIL_W - 32, 72, portraitKey(m.speciesId)).setDisplaySize(64, 64));
     y += add(new RichText(this, DETAIL_X, y, DETAIL_W - 76, 13)).setMarkup(header.join("\n")) + 6;
+
+    // Stat points: +1 per level, +2 with the matching vitamin.
+    if (m.unspentPoints > 0) {
+      y += add(new RichText(this, DETAIL_X, y, DETAIL_W, 13)).setMarkup(tag("num", `★ ${m.unspentPoints} stat point${m.unspentPoints > 1 ? "s" : ""} to spend:`)) + 4;
+      const labels: Record<StatName, string> = { hp: "HP", attack: "Atk", defense: "Def", speed: "Spe" };
+      const w = Math.floor((DETAIL_W - 18) / 4);
+      STAT_NAMES.forEach((stat, i) => {
+        add(new Button(this, DETAIL_X + i * (w + 6), y, w, 24, `+1 ${labels[stat]}`, () =>
+          this.act(() => session.update(allocatePoint(PROGRESSION, session.game, m.uid, stat)))));
+        const vit = Object.values(PROGRESSION.items).find((it) => it.kind === "vitamin" && it.stat === stat);
+        const owned = vit ? session.game.inventory.items[vit.id] ?? 0 : 0;
+        if (vit && owned > 0) {
+          add(new Button(this, DETAIL_X + i * (w + 6), y + 27, w, 22, `+2 (${vit.name} ×${owned})`, () =>
+            this.act(() => session.update(allocatePoint(PROGRESSION, session.game, m.uid, stat, vit.id)), `${vit.name} used: +2 ${labels[stat]}.`)));
+        }
+      });
+      const anyVit = STAT_NAMES.some((stat) => Object.values(PROGRESSION.items).some((it) => it.kind === "vitamin" && it.stat === stat && (session.game.inventory.items[it.id] ?? 0) > 0));
+      y += anyVit ? 56 : 30;
+    }
 
     const pending = pendingChoice(PROGRESSION, m);
     if (pending === "role") {

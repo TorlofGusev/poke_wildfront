@@ -42,15 +42,17 @@ class Session {
     try {
       const raw = localStorage.getItem(SAVE_KEY);
       if (!raw) return false;
-      this.game = loadSaveFile(CONTENT, raw, {
-        freshWorld,
-        startPos: WORLD.start,
-        upgradeMember: (m) => ({ ...newMember(CONTENT, PROGRESSION, m.speciesId, 0, STARTING_LEVEL), uid: m.uid, hp: m.hp, knockouts: m.knockouts }),
-      }).game;
+      this.game = loadSaveFile(CONTENT, raw).game;
       this.loadError = null;
       return true;
     } catch (e) {
-      this.loadError = e instanceof SaveError ? e.message : "save could not be read";
+      // Prototype policy: incompatible or broken saves are discarded, the player starts fresh.
+      this.loadError = `${e instanceof SaveError ? e.message : "save could not be read"}; it was discarded`;
+      try {
+        localStorage.removeItem(SAVE_KEY);
+      } catch {
+        // ignore
+      }
       return false;
     }
   }
