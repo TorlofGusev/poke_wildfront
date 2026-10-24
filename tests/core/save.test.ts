@@ -11,9 +11,12 @@ const game: GameState = {
   },
   inventory: { balls: { "poke-ball": 4 } },
   nextUid: 4,
+  world: { pos: { x: 3, y: 13 }, fatigue: 42, lastCamp: "viridian", encounters: [{ id: "wild1", pos: { x: 5, y: 5 }, biome: "route", species: ["fast"] }], collected: ["grove-balls"], rngState: 77, nextEncounterId: 2 },
 };
 
-const roundTrip = (g: GameState) => loadSaveFile(content, JSON.stringify(toSaveFile(g, new Date("2026-10-24T12:00:00Z"))));
+const ctx = { freshWorld: () => game.world };
+
+const roundTrip = (g: GameState) => loadSaveFile(content, JSON.stringify(toSaveFile(g, new Date("2026-10-24T12:00:00Z"))), ctx);
 
 describe("save/load", () => {
   it("round-trips knockouts, fallen Pokémon, storage and inventory", () => {
@@ -22,10 +25,20 @@ describe("save/load", () => {
     expect(save.game).toEqual(game);
   });
 
+  it("migrates a version 1 save (Phase 3) and keeps party, knockouts and bag", () => {
+    const { world: _world, ...v1game } = game;
+    const v1 = { version: 1, savedAt: "2026-10-24T10:00:00Z", game: v1game };
+    const save = loadSaveFile(content, JSON.stringify(v1), { freshWorld: () => ({ ...game.world, fatigue: 0 }) });
+    expect(save.version).toBe(SAVE_VERSION);
+    expect(save.game.roster).toEqual(game.roster);
+    expect(save.game.inventory).toEqual(game.inventory);
+    expect(save.game.world.fatigue).toBe(0);
+  });
+
   it("rejects corrupt or invalid saves with readable errors", () => {
-    expect(() => loadSaveFile(content, "{")).toThrow(/not valid JSON/);
-    expect(() => loadSaveFile(content, "{}")).toThrow(/no version/);
-    expect(() => loadSaveFile(content, JSON.stringify({ version: 99 }))).toThrow(/newer game version/);
+    expect(() => loadSaveFile(content, "{", ctx)).toThrow(/not valid JSON/);
+    expect(() => loadSaveFile(content, "{}", ctx)).toThrow(/no version/);
+    expect(() => loadSaveFile(content, JSON.stringify({ version: 99 }), ctx)).toThrow(/newer game version/);
     const bad = (patch: Partial<GameState["roster"]>) => roundTrip({ ...game, roster: { ...game.roster, ...patch } });
     const seven = Array.from({ length: 7 }, (_, i) => ({ uid: `x${i}`, speciesId: "fast", hp: 1, knockouts: 0 }));
     expect(() => bad({ party: seven })).toThrow(/max 6/);

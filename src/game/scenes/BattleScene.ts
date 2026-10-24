@@ -3,6 +3,9 @@ import { CONTENT, SCENARIOS, type ScenarioDef } from "../../content";
 import { captureChance, captureTargets, captureUnavailableReason } from "../../core/capture";
 import { KNOCKOUTS_TO_DEATH, resolveBattle, type BattleSummary } from "../../core/party";
 import { session } from "../session";
+import { WORLD, WORLD_CONTENT } from "../../content";
+import { fatigueLevel, removeEncounter, returnToLastCamp } from "../../core/expedition";
+import { nextRandom } from "../../core/rng";
 import { planTurn } from "../../core/ai";
 import {
   activeUnit,
@@ -54,6 +57,8 @@ export class BattleScene extends Phaser.Scene {
   private party: DeployCandidate[] = [];
   private selectedBall: string | null = null;
   private summary: BattleSummary | null = null;
+  private encounterId: string | null = null;
+  private rewardText = "";
   private grid!: Grid;
   private phase: Phase = "deploy";
   private placements: Placement[] = [];
@@ -79,8 +84,10 @@ export class BattleScene extends Phaser.Scene {
     super("Battle");
   }
 
-  init(data: { scenarioId: string }): void {
-    this.scenario = SCENARIOS[data.scenarioId]!;
+  init(data: { scenarioId?: string; scenario?: ScenarioDef; encounterId?: string }): void {
+    this.scenario = data.scenario ?? SCENARIOS[data.scenarioId!]!;
+    this.encounterId = data.encounterId ?? null;
+    this.rewardText = "";
     this.grid = Grid.fromAscii(this.scenario.mapRows);
     this.phase = "deploy";
     this.placements = [];
@@ -262,6 +269,9 @@ export class BattleScene extends Phaser.Scene {
     if (this.phase === "deploy") {
       this.header.setText("Deployment");
       text(`Choose up to 3 Pokémon and place them in the blue zone. Inspect enemies by hovering/tapping.`, COLORS.dim, 12);
+      const level = fatigueLevel(WORLD_CONTENT.fatigue, session.game.world.fatigue);
+      if (level.movePenalty || level.damageMultiplier !== 1)
+        text(`Fatigue: ${level.name}. Your Pokémon get −${level.movePenalty} movement${level.damageMultiplier !== 1 ? ` and deal ${Math.round((1 - level.damageMultiplier) * 100)}% less damage` : ""}.`, COLORS.bad, 12);
       for (const m of this.party) {
         const placed = this.placements.some((p) => p.unitId === m.id);
         const name = CONTENT.species[m.speciesId]!.name;
@@ -276,7 +286,7 @@ export class BattleScene extends Phaser.Scene {
       const errors = deploymentErrors(this.scenario, this.party, this.placements);
       y += 4;
       button(`▶ Lock deployment & start (${this.placements.length}/3)`, errors.length === 0, false, () => this.startBattle());
-      button("← Back to camp", true, false, () => this.scene.start("Camp"));
+      button("← Avoid this battle", true, false, () => this.scene.start("Overworld"));
       return;
     }
 
@@ -293,7 +303,8 @@ export class BattleScene extends Phaser.Scene {
         for (const uid of sum.fallen) text(`${name(uid)} has fallen for good.`, COLORS.bad);
         if (!sum.captured.length && !sum.knockedOut.length) text("No losses.", COLORS.dim);
       }
-      button("⛺ Back to camp", true, false, () => this.scene.start("Camp"));
+      if (this.rewardText) text(this.rewardText, COLORS.good);
+      button("➜ Continue", true, false, () => this.scene.start("Overworld"));
       return;
     }
 
@@ -516,6 +527,7 @@ export class BattleScene extends Phaser.Scene {
       captureAllowed: this.scenario.captureAllowed ?? false,
       balls: session.game.inventory.balls,
       seed: Date.now() >>> 0,
+      playerModifiers: fatigueLevel(WORLD_CONTENT.fatigue, session.game.world.fatigue),
     });
     this.state = state;
     this.phase = "battle";
@@ -561,7 +573,19 @@ export class BattleScene extends Phaser.Scene {
       this.phase = "over";
       // Knockouts, deaths, captures and used balls become permanent here, and are autosaved.
       const result = resolveBattle(CONTENT, session.game, this.state, { countsKnockouts: this.scenario.countsKnockouts ?? true });
-      session.update(result.game);
+      let game = result.game;
+      if (this.state.outcome === "victory" && this.encounterId) {
+        game = { ...game, world: removeEncounter(game.world, this.encounterId) };
+        // Small chance of finding a Poké Ball after a won wild battle.
+        const roll = nextRandom(game.world.rngState);
+        game = { ...game, world: { ...game.world, rngState: roll.state } };
+        if (roll.value < 0.3) {
+          game = { ...game, inventory: { ...game.inventory, balls: { ...game.inventory.balls, "poke-ball": (game.inventory.balls["poke-ball"] ?? 0) + 1 } } };
+          this.rewardText = "Found a Poké Ball after the battle!";
+        }
+      }
+      if (this.state.outcome === "defeat") game = { ...game, world: returnToLastCamp(WORLD_CONTENT, WORLD, game.world) };
+      session.update(game);
       this.summary = result.summary;
     }
     this.refreshAll();

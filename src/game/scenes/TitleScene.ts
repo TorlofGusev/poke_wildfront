@@ -23,7 +23,7 @@ export class TitleScene extends Phaser.Scene {
     const hasSave = session.hasSave() && session.load();
     let y = height / 2 - 10;
     if (hasSave) {
-      new Button(this, width / 2 - 140, y, 280, 32, "▶ Continue", () => this.scene.start("Camp"));
+      new Button(this, width / 2 - 140, y, 280, 32, "▶ Continue", () => this.scene.start("Overworld"));
       y += 42;
     }
     const newButton = new Button(this, width / 2 - 140, y, 280, 32, "✦ New game", () => {
@@ -33,7 +33,7 @@ export class TitleScene extends Phaser.Scene {
         return;
       }
       session.start();
-      this.scene.start("Camp");
+      this.scene.start("Overworld");
     });
     y += 42;
     if (session.loadError) {

@@ -10,13 +10,15 @@ No public build yet; hosting will be chosen later. Run it locally (see below).
 
 ## Current state
 
-Phase 3 prototype:
+Phase 4 prototype (Route 2 & Viridian Forest):
 
-- **Camp**: party (max 6) and unlimited storage, rest to restore HP, pick a battle. Autosaves to browser storage.
-- **Battle** (*Viridian Forest Ambush*): mandatory deployment (3 of your party), initiative order, Wartales-style turns (split movement + one action), cooldown specials, once-per-battle ultimates, push/pull, poison/slow, tall-grass concealment, hidden enemies, simple enemy AI, combat log.
-- **Capture**: Poké/Great/Ultra Balls, usable as the turn's action on wild Pokémon below 50% HP (range 1–3); the chance is shown before throwing and the ball is always used up. A full party sends captures to storage.
-- **Permadeath**: every Pokémon that faints gets a knockout (●○○). At 3/3 it is gone for good. Resting never clears knockouts.
-- **Retreat** at any time; knockouts already suffered still count. Defeat sends the team back to camp to rest.
+- **Overworld**: click to travel across route, forest, mountain and cave. Wild groups are visible red markers (the number is the group size); walking into one starts a battle, or you can go around. Item pickups give Poké Balls.
+- **Fatigue**: only travel tires the team (route 1, forest/cave 2, mountain 3 per tile). Tired (50+) gives −1 movement in battle; Exhausted (80+) also −20% damage. The path preview shows the cost before you move.
+- **Camp sites** (tents): making camp restores HP and fatigue, wild groups move, and you can manage party and storage.
+- **Battles**: mandatory deployment (3 of your party), initiative order, Wartales-style turns, cooldown specials, once-per-battle ultimates, push/pull, statuses, tall grass, hidden enemies, enemy AI, colour-coded combat log and move rules.
+- **Capture**: Poké/Great/Ultra Balls on wild Pokémon below 50% HP; the chance is shown and the ball is always used. A full party sends captures to storage.
+- **Permadeath**: each faint adds a knockout (●○○); at 3/3 the Pokémon is gone for good. Defeat carries the team back to the last camp.
+- Autosave in browser storage (save format v2, migrates Phase 3 saves).
 
 Placeholder art only. Design notes: [docs/design](docs/design).
 

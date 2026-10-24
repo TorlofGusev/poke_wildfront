@@ -1,4 +1,5 @@
-import { CONTENT } from "../content";
+import { CONTENT, WORLD, WORLD_CONTENT } from "../content";
+import { newWorld } from "../core/expedition";
 import type { DeployCandidate } from "../core/battle";
 import { newMember, type GameState } from "../core/party";
 import { loadSaveFile, SaveError, toSaveFile } from "../core/save";
@@ -7,11 +8,14 @@ const SAVE_KEY = "pokemon-wildfront.save";
 
 const STARTERS = ["bulbasaur", "charmander", "squirtle", "pikachu", "geodude", "pidgey"];
 
+const freshWorld = () => newWorld(WORLD_CONTENT, WORLD, Date.now() >>> 0);
+
 export function newGame(): GameState {
   return {
     roster: { party: STARTERS.map((s, i) => newMember(CONTENT, s, i + 1)), storage: [], fallen: [] },
     inventory: { balls: { "poke-ball": 5, "great-ball": 2, "ultra-ball": 1 } },
     nextUid: STARTERS.length + 1,
+    world: freshWorld(),
   };
 }
 
@@ -33,7 +37,7 @@ class Session {
     try {
       const raw = localStorage.getItem(SAVE_KEY);
       if (!raw) return false;
-      this.game = loadSaveFile(CONTENT, raw).game;
+      this.game = loadSaveFile(CONTENT, raw, { freshWorld }).game;
       this.loadError = null;
       return true;
     } catch (e) {

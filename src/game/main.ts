@@ -1,6 +1,7 @@
 import Phaser from "phaser";
 import { BattleScene } from "./scenes/BattleScene";
 import { CampScene } from "./scenes/CampScene";
+import { OverworldScene } from "./scenes/OverworldScene";
 import { TitleScene } from "./scenes/TitleScene";
 
 new Phaser.Game({
@@ -14,5 +15,5 @@ new Phaser.Game({
     width: 960,
     height: 540,
   },
-  scene: [TitleScene, CampScene, BattleScene],
+  scene: [TitleScene, OverworldScene, CampScene, BattleScene],
 });

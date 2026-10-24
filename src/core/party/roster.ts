@@ -1,6 +1,7 @@
 import { maxHpOf } from "../battle/battle";
 import type { BattleContent } from "../battle/content";
 import type { BattleState } from "../battle/state";
+import type { WorldState } from "../expedition/world";
 
 export const MAX_PARTY_SIZE = 6;
 export const KNOCKOUTS_TO_DEATH = 3;
@@ -31,6 +32,7 @@ export interface GameState {
   readonly inventory: Inventory;
   /** Counter for unique Pokémon ids. */
   readonly nextUid: number;
+  readonly world: WorldState;
 }
 
 export function newMember(content: BattleContent, speciesId: string, uidNumber: number, hp?: number): PartyMember {

@@ -1,12 +1,12 @@
 import Phaser from "phaser";
-import { CONTENT, SCENARIOS } from "../../content";
+import { CONTENT } from "../../content";
 import { maxHpOf } from "../../core/battle";
-import { KNOCKOUTS_TO_DEATH, MAX_PARTY_SIZE, moveBetweenPartyAndStorage, restAll, type PartyMember } from "../../core/party";
+import { KNOCKOUTS_TO_DEATH, MAX_PARTY_SIZE, moveBetweenPartyAndStorage, type PartyMember } from "../../core/party";
 import { session } from "../session";
 import { Button } from "../ui/Button";
 import { COLORS, FONT, TYPE_COLORS } from "../ui/theme";
 
-/** Prototype hub: manage party/storage, rest, and pick a battle. */
+/** Camp site: party/storage management after resting. */
 export class CampScene extends Phaser.Scene {
   private root!: Phaser.GameObjects.Container;
   private message = "";
@@ -45,18 +45,9 @@ export class CampScene extends Phaser.Scene {
     Object.entries(inventory.balls).forEach(([id, n], i) => label(656, 96 + i * 18, `${CONTENT.balls[id]?.name ?? id} ×${n}`, COLORS.dim, 12));
 
     let y = 170;
-    add(new Button(this, 656, y, 288, 28, "⛺ Rest (restore all HP)", () => {
-      session.update({ ...session.game, roster: restAll(CONTENT, session.game.roster) });
-      this.message = "Your team rests. HP restored. Knockout counters do not heal.";
-      this.render();
-    }));
-    y += 36;
-    for (const sc of Object.values(SCENARIOS)) {
-      const ready = roster.party.some((m) => m.hp > 0);
-      add(new Button(this, 656, y, 288, 28, `⚔ ${sc.name}`, () => this.scene.start("Battle", { scenarioId: sc.id })).setEnabled(ready));
-      y += 36;
-    }
-    add(new Button(this, 656, y, 288, 28, "⌂ Title", () => this.scene.start("Title")));
+    label(656, y, "You made camp: HP and fatigue are restored and wild Pokémon have moved.", COLORS.good, 12).setWordWrapWidth(288);
+    y += 50;
+    add(new Button(this, 656, y, 288, 28, "➜ Break camp", () => this.scene.start("Overworld")));
     y += 44;
     if (this.message) add(this.add.text(656, y, this.message, { fontFamily: FONT, fontSize: "12px", color: COLORS.good, wordWrap: { width: 288 } }));
 
