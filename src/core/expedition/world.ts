@@ -2,7 +2,10 @@ import type { BattleScenario, UnitSetup } from "../battle";
 import { Grid } from "../grid/Grid";
 import { reachableTiles } from "../grid/movement";
 import type { TerrainDef } from "../grid/terrain";
-import { key, samePoint, type Point } from "../grid/types";
+import { key, manhattan, samePoint, type Point } from "../grid/types";
+
+/** Wild groups never (re)spawn within this many tiles of the party. */
+const SPAWN_CLEARANCE = 2;
 import { randomInt } from "../rng";
 import { generateEncounter, type EncounterTable } from "./encounters";
 import { addTravelFatigue, type FatigueRules } from "./fatigue";
@@ -29,7 +32,6 @@ export interface WorldDef {
   readonly name: string;
   readonly rows: readonly string[];
   readonly start: Point;
-  readonly camps: readonly { readonly id: string; readonly name: string; readonly pos: Point }[];
   readonly spawnZones: readonly { readonly biome: string; readonly points: readonly Point[]; readonly count: number }[];
   readonly pickups: readonly { readonly id: string; readonly pos: Point; readonly balls: Readonly<Record<string, number>> }[];
 }
@@ -44,7 +46,8 @@ export interface EncounterGroup {
 export interface WorldState {
   readonly pos: Point;
   readonly fatigue: number;
-  readonly lastCamp: string;
+  /** Where the party last made camp; defeat carries it back here. */
+  readonly lastCamp: Point;
   readonly encounters: readonly EncounterGroup[];
   readonly collected: readonly string[];
   readonly rngState: number;
@@ -69,7 +72,7 @@ export const biomeAt = (content: WorldContent, def: WorldDef, p: Point): BiomeDe
 
 export function newWorld(content: WorldContent, def: WorldDef, seed: number): WorldState {
   const base: WorldState = {
-    pos: def.start, fatigue: 0, lastCamp: def.camps[0]!.id, encounters: [], collected: [], rngState: seed >>> 0, nextEncounterId: 1,
+    pos: def.start, fatigue: 0, lastCamp: def.start, encounters: [], collected: [], rngState: seed >>> 0, nextEncounterId: 1,
   };
   return respawnEncounters(content, def, base);
 }
@@ -82,7 +85,8 @@ export function respawnEncounters(content: WorldContent, def: WorldDef, world: W
   for (const zone of def.spawnZones) {
     const table = content.biomes[zone.biome]?.encounters;
     if (!table) throw new Error(`biome ${zone.biome} has no encounter table`);
-    const free = zone.points.filter((p) => !samePoint(p, world.pos));
+    // Never spawn right on top of the party (e.g. after camping next to a spawn point).
+    const free = zone.points.filter((p) => manhattan(p, world.pos) > SPAWN_CLEARANCE);
     for (let i = 0; i < zone.count && free.length > 0; i++) {
       const idx = randomInt(rng, 0, free.length - 1);
       rng = idx.state;
@@ -133,21 +137,17 @@ export function travel(content: WorldContent, def: WorldDef, world: WorldState, 
   return { world: { ...world, pos: to, fatigue, collected }, path, pickedUp, encounter };
 }
 
-export function campAt(def: WorldDef, pos: Point) {
-  return def.camps.find((c) => samePoint(c.pos, pos)) ?? null;
-}
-
-/** Making camp: fatigue to 0, remember the camp, respawn wild groups. HP is restored by the roster layer. */
+/**
+ * Making camp, possible anywhere: fatigue to 0, remember the spot, wild groups move.
+ * HP is restored by the roster layer. When to camp is the player's call.
+ */
 export function makeCamp(content: WorldContent, def: WorldDef, world: WorldState): WorldState {
-  const camp = campAt(def, world.pos);
-  if (!camp) throw new Error("not at a camp site");
-  return respawnEncounters(content, def, { ...world, fatigue: 0, lastCamp: camp.id });
+  return respawnEncounters(content, def, { ...world, fatigue: 0, lastCamp: world.pos });
 }
 
 /** After a defeat the party is carried back to the last camp and rests there. */
 export function returnToLastCamp(content: WorldContent, def: WorldDef, world: WorldState): WorldState {
-  const camp = def.camps.find((c) => c.id === world.lastCamp) ?? def.camps[0]!;
-  return makeCamp(content, def, { ...world, pos: camp.pos });
+  return makeCamp(content, def, { ...world, pos: world.lastCamp });
 }
 
 export function removeEncounter(world: WorldState, id: string): WorldState {

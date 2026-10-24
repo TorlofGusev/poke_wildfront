@@ -37,7 +37,7 @@ class Session {
     try {
       const raw = localStorage.getItem(SAVE_KEY);
       if (!raw) return false;
-      this.game = loadSaveFile(CONTENT, raw, { freshWorld }).game;
+      this.game = loadSaveFile(CONTENT, raw, { freshWorld, startPos: WORLD.start }).game;
       this.loadError = null;
       return true;
     } catch (e) {

@@ -3,7 +3,6 @@ import { CONTENT, WORLD, WORLD_CONTENT } from "../../content";
 import { maxHpOf } from "../../core/battle";
 import {
   biomeAt,
-  campAt,
   fatigueLevel,
   makeCamp,
   travel,
@@ -50,7 +49,7 @@ export class OverworldScene extends Phaser.Scene {
 
   create(): void {
     this.add.text(MAP_X, 16, WORLD.name, { fontFamily: FONT, fontSize: "20px", color: "#f5d76e" });
-    this.add.text(MAP_X, 40, "Click a tile to travel. Red markers are wild Pokémon; tents are camp sites.", {
+    this.add.text(MAP_X, 40, "Click a tile to travel. Red markers are wild Pokémon (number = group size). The tent is your last camp.", {
       fontFamily: FONT, fontSize: "11px", color: COLORS.dim,
     });
     this.drawMap();
@@ -104,15 +103,14 @@ export class OverworldScene extends Phaser.Scene {
     g.lineStyle(1, 0x000000, 0.15);
     for (let x = 0; x <= grid.width; x++) g.lineBetween(MAP_X + x * T, MAP_Y, MAP_X + x * T, MAP_Y + grid.height * T);
     for (let y = 0; y <= grid.height; y++) g.lineBetween(MAP_X, MAP_Y + y * T, MAP_X + grid.width * T, MAP_Y + y * T);
-    for (const c of WORLD.camps) {
-      const { x, y } = this.center(c.pos);
-      this.add.triangle(x, y, 0, 18, 9, 0, 18, 18, 0xe8d8b0).setStrokeStyle(1, 0x5a4a30);
-    }
   }
 
   private render(): void {
     const world = this.world;
     this.markers.removeAll(true);
+    // The last camp is where a defeated party wakes up.
+    const camp = this.center(world.lastCamp);
+    this.markers.add(this.add.triangle(camp.x, camp.y, 0, 16, 8, 0, 16, 16, 0xe8d8b0, 0.85).setStrokeStyle(1, 0x5a4a30));
     for (const p of WORLD.pickups) {
       if (world.collected.includes(p.id)) continue;
       const { x, y } = this.center(p.pos);
@@ -131,19 +129,19 @@ export class OverworldScene extends Phaser.Scene {
   private renderHud(): void {
     const { world, roster, inventory } = session.game;
     const level = fatigueLevel(WORLD_CONTENT.fatigue, world.fatigue);
-    const levelKey = level.name === "Rested" ? "good" : level.name === "Tired" ? "num" : "bad";
+    const over = level.movePenalty > 0 || level.damageMultiplier !== 1;
+    const levelKey = over ? "bad" : world.fatigue >= WORLD_CONTENT.fatigue.max * 0.75 ? "num" : "good";
     const effect = level.movePenalty || level.damageMultiplier !== 1
       ? [level.movePenalty ? `−${level.movePenalty} movement` : "", level.damageMultiplier !== 1 ? `−${Math.round((1 - level.damageMultiplier) * 100)}% damage` : ""].filter(Boolean).join(", ")
-      : "no battle penalty";
+      : `no penalty until ${WORLD_CONTENT.fatigue.max}`;
     const bar = "█".repeat(Math.round(world.fatigue / 10)) + "░".repeat(10 - Math.round(world.fatigue / 10));
     const here = biomeAt(WORLD_CONTENT, WORLD, world.pos);
-    const camp = campAt(WORLD, world.pos);
     const lines = [
       `${tag("title", "Fatigue")} ${tag(levelKey, `${world.fatigue}/${WORLD_CONTENT.fatigue.max} ${level.name}`)}`,
       tag(levelKey, bar),
       tag("dim", `In battle: ${effect}`),
       "",
-      `Here: ${tag("num", camp ? camp.name : here.name)}${camp ? ` ${tag("good", "(camp site)")}` : ""}`,
+      `Here: ${tag("num", here.name)}`,
       "",
       tag("title", "Party"),
       ...roster.party.map((m) => {
@@ -158,10 +156,13 @@ export class OverworldScene extends Phaser.Scene {
     const h = this.hud.setMarkup(lines.join("\n"));
     this.buttons.removeAll(true);
     let y = 16 + h + 10;
-    const campButton = new Button(this, 0, y, 240, 28, camp ? "⛺ Make camp (rest)" : "⛺ Camp only at camp sites", () => this.makeCamp());
-    campButton.setEnabled(Boolean(camp) && !this.moving);
+    const campButton = new Button(this, 0, y, 240, 28, "⛺ Make camp here", () => this.makeCamp());
+    campButton.setEnabled(!this.moving);
     this.buttons.add(campButton);
-    y += 36;
+    y += 30;
+    const note = this.add.text(0, y, "Restores HP and fatigue. Wild groups move.", { fontFamily: FONT, fontSize: "10px", color: COLORS.dim });
+    this.buttons.add(note);
+    y += 20;
     this.buttons.add(new Button(this, 0, y, 240, 28, "⌂ Title", () => this.scene.start("Title")));
     y += 40;
     if (this.message) {

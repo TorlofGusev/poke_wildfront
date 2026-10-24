@@ -11,10 +11,10 @@ const game: GameState = {
   },
   inventory: { balls: { "poke-ball": 4 } },
   nextUid: 4,
-  world: { pos: { x: 3, y: 13 }, fatigue: 42, lastCamp: "viridian", encounters: [{ id: "wild1", pos: { x: 5, y: 5 }, biome: "route", species: ["fast"] }], collected: ["grove-balls"], rngState: 77, nextEncounterId: 2 },
+  world: { pos: { x: 3, y: 13 }, fatigue: 42, lastCamp: { x: 3, y: 13 }, encounters: [{ id: "wild1", pos: { x: 5, y: 5 }, biome: "route", species: ["fast"] }], collected: ["grove-balls"], rngState: 77, nextEncounterId: 2 },
 };
 
-const ctx = { freshWorld: () => game.world };
+const ctx = { freshWorld: () => game.world, startPos: { x: 3, y: 13 } };
 
 const roundTrip = (g: GameState) => loadSaveFile(content, JSON.stringify(toSaveFile(g, new Date("2026-10-24T12:00:00Z"))), ctx);
 
@@ -28,11 +28,18 @@ describe("save/load", () => {
   it("migrates a version 1 save (Phase 3) and keeps party, knockouts and bag", () => {
     const { world: _world, ...v1game } = game;
     const v1 = { version: 1, savedAt: "2026-10-24T10:00:00Z", game: v1game };
-    const save = loadSaveFile(content, JSON.stringify(v1), { freshWorld: () => ({ ...game.world, fatigue: 0 }) });
+    const save = loadSaveFile(content, JSON.stringify(v1), { freshWorld: () => ({ ...game.world, fatigue: 0 }), startPos: { x: 3, y: 13 } });
     expect(save.version).toBe(SAVE_VERSION);
     expect(save.game.roster).toEqual(game.roster);
     expect(save.game.inventory).toEqual(game.inventory);
     expect(save.game.world.fatigue).toBe(0);
+  });
+
+  it("migrates a version 2 save: fixed camp site becomes a camp tile", () => {
+    const v2 = { version: 2, savedAt: "2026-10-24T11:00:00Z", game: { ...game, world: { ...game.world, lastCamp: "forest-clearing" } } };
+    const save = loadSaveFile(content, JSON.stringify(v2), ctx);
+    expect(save.game.world.lastCamp).toEqual({ x: 3, y: 13 });
+    expect(save.game.world.fatigue).toBe(42);
   });
 
   it("rejects corrupt or invalid saves with readable errors", () => {

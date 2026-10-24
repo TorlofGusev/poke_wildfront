@@ -23,32 +23,6 @@
   "x": 3,
   "y": 13
  },
- "camps": [
-  {
-   "id": "viridian",
-   "name": "Viridian outskirts",
-   "pos": {
-    "x": 3,
-    "y": 13
-   }
-  },
-  {
-   "id": "forest-clearing",
-   "name": "Forest clearing",
-   "pos": {
-    "x": 9,
-    "y": 7
-   }
-  },
-  {
-   "id": "mountain-ledge",
-   "name": "Mountain ledge",
-   "pos": {
-    "x": 17,
-    "y": 7
-   }
-  }
- ],
  "spawnZones": [
   {
    "biome": "route",

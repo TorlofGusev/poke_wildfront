@@ -21,10 +21,10 @@ import { key } from "../../src/core/grid";
 const rules = WORLD_CONTENT.fatigue;
 
 describe("fatigue", () => {
-  it("maps fatigue to clearly defined levels", () => {
-    expect(fatigueLevel(rules, 0).name).toBe("Rested");
-    expect(fatigueLevel(rules, 49).name).toBe("Rested");
-    expect(fatigueLevel(rules, 50)).toMatchObject({ name: "Tired", movePenalty: 1, damageMultiplier: 1 });
+  it("only penalises once the limit is reached", () => {
+    // No penalty at all until the limit is reached.
+    expect(fatigueLevel(rules, 0)).toMatchObject({ movePenalty: 0, damageMultiplier: 1 });
+    expect(fatigueLevel(rules, 99)).toMatchObject({ movePenalty: 0, damageMultiplier: 1 });
     expect(fatigueLevel(rules, 100)).toMatchObject({ name: "Exhausted", movePenalty: 1, damageMultiplier: 0.8 });
   });
 
@@ -74,11 +74,9 @@ describe("world", () => {
     const grid = worldGrid(WORLD_CONTENT, WORLD);
     const passable = (p: { x: number; y: number }) => grid.isPassable(p);
     expect(passable(WORLD.start)).toBe(true);
-    for (const c of WORLD.camps) expect(passable(c.pos), c.id).toBe(true);
     for (const p of WORLD.pickups) expect(passable(p.pos), p.id).toBe(true);
     for (const z of WORLD.spawnZones) for (const p of z.points) expect(biomeAt(WORLD_CONTENT, WORLD, p).id, key(p)).toBe(z.biome);
-    for (const c of WORLD.camps.filter((c) => key(c.pos) !== key(WORLD.start)))
-      expect(travelPath(WORLD_CONTENT, WORLD, { ...world, encounters: [] }, c.pos), c.id).not.toBeNull();
+    for (const p of WORLD.pickups) expect(travelPath(WORLD_CONTENT, WORLD, { ...world, encounters: [] }, p.pos), p.id).not.toBeNull();
   });
 
   it("spawns groups in their zones with valid species", () => {
@@ -118,16 +116,16 @@ describe("world", () => {
     expect(back.pickedUp).toEqual([]);
   });
 
-  it("camping resets fatigue, respawns groups and remembers the camp", () => {
+  it("camping works anywhere: resets fatigue, respawns groups away from the party, remembers the spot", () => {
     const clear = { ...world, encounters: [] };
-    const tired = travel(WORLD_CONTENT, WORLD, clear, { x: 9, y: 7 }).world;
+    const tired = travel(WORLD_CONTENT, WORLD, clear, { x: 12, y: 7 }).world;
     expect(tired.fatigue).toBeGreaterThan(0);
     const camped = makeCamp(WORLD_CONTENT, WORLD, tired);
-    expect(camped).toMatchObject({ fatigue: 0, lastCamp: "forest-clearing" });
+    expect(camped).toMatchObject({ fatigue: 0, lastCamp: { x: 12, y: 7 } });
     expect(camped.encounters.length).toBeGreaterThan(0);
-    expect(() => makeCamp(WORLD_CONTENT, WORLD, { ...tired, pos: { x: 6, y: 13 } })).toThrow(/camp site/);
+    for (const g of camped.encounters) expect(Math.abs(g.pos.x - 12) + Math.abs(g.pos.y - 7)).toBeGreaterThan(2);
     const back = returnToLastCamp(WORLD_CONTENT, WORLD, { ...camped, pos: { x: 6, y: 13 }, fatigue: 70 });
-    expect(back).toMatchObject({ pos: { x: 9, y: 7 }, fatigue: 0 });
+    expect(back).toMatchObject({ pos: { x: 12, y: 7 }, fatigue: 0 });
   });
 
   it("builds a valid wild battle for every spawned group", () => {

@@ -45,7 +45,7 @@ export class CampScene extends Phaser.Scene {
     Object.entries(inventory.balls).forEach(([id, n], i) => label(656, 96 + i * 18, `${CONTENT.balls[id]?.name ?? id} ×${n}`, COLORS.dim, 12));
 
     let y = 170;
-    label(656, y, "You made camp: HP and fatigue are restored and wild Pokémon have moved.", COLORS.good, 12).setWordWrapWidth(288);
+    label(656, y, "You made camp: HP and fatigue are restored and wild Pokémon have moved. If you are defeated, you wake up here.", COLORS.good, 12).setWordWrapWidth(288);
     y += 50;
     add(new Button(this, 656, y, 288, 28, "➜ Break camp", () => this.scene.start("Overworld")));
     y += 44;

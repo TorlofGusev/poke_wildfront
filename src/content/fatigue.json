@@ -2,20 +2,14 @@
  "max": 100,
  "levels": [
   {
-   "minFatigue": 80,
+   "minFatigue": 100,
    "name": "Exhausted",
    "movePenalty": 1,
    "damageMultiplier": 0.8
   },
   {
-   "minFatigue": 50,
-   "name": "Tired",
-   "movePenalty": 1,
-   "damageMultiplier": 1
-  },
-  {
    "minFatigue": 0,
-   "name": "Rested",
+   "name": "Fine",
    "movePenalty": 0,
    "damageMultiplier": 1
   }

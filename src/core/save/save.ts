@@ -2,7 +2,7 @@ import type { BattleContent } from "../battle/content";
 import type { WorldState } from "../expedition/world";
 import { KNOCKOUTS_TO_DEATH, MAX_PARTY_SIZE, type GameState, type PartyMember } from "../party/roster";
 
-export const SAVE_VERSION = 2;
+export const SAVE_VERSION = 3;
 
 export interface SaveFile {
   readonly version: number;
@@ -19,12 +19,19 @@ type RawSave = { version: number } & Record<string, unknown>;
 export interface MigrationContext {
   /** A fresh overworld state for saves made before the overworld existed. */
   readonly freshWorld: () => WorldState;
+  /** The map's start tile, used where an old save only named a fixed camp site. */
+  readonly startPos: { readonly x: number; readonly y: number };
 }
 
 /** One function per version step: MIGRATIONS[n] turns a version-n save into version n+1. */
 const MIGRATIONS: Record<number, (save: RawSave, ctx: MigrationContext) => RawSave> = {
   // v1 (Phase 3) had no overworld: start the expedition fresh, keep party, storage, knockouts and bag.
   1: (save, ctx) => ({ ...save, version: 2, game: { ...(save.game as object), world: ctx.freshWorld() } }),
+  // v2 camped only at fixed sites (lastCamp was a site id); v3 camps anywhere (lastCamp is a tile).
+  2: (save, ctx) => {
+    const game = save.game as { world: Record<string, unknown> };
+    return { ...save, version: 3, game: { ...game, world: { ...game.world, lastCamp: ctx.startPos } } };
+  },
 };
 
 export class SaveError extends Error {}
