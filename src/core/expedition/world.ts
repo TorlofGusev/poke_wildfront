@@ -26,6 +26,8 @@ export interface BiomeDef {
   readonly encounters?: EncounterTable;
   /** Food found after winning a wild battle here (item id → amount). */
   readonly forage?: Readonly<Record<string, number>>;
+  /** Items that may turn up after a won wild battle here, each rolled separately. */
+  readonly loot?: readonly { readonly item: string; readonly chance: number }[];
   readonly arena?: ArenaDef;
 }
 
@@ -34,10 +36,33 @@ export interface WorldDef {
   readonly name: string;
   readonly rows: readonly string[];
   readonly start: Point;
-  readonly spawnZones: readonly { readonly biome: string; readonly points: readonly Point[]; readonly count: number }[];
-  /** Where the route continues to the next area (shown on the map). */
-  readonly exit?: { readonly name: string; readonly pos: Point };
-  readonly pickups: readonly { readonly id: string; readonly pos: Point; readonly balls: Readonly<Record<string, number>> }[];
+  readonly spawnZones: readonly {
+    readonly biome: string;
+    readonly points: readonly Point[];
+    readonly count: number;
+    /** Overrides the biome's levels, so later maps reuse biomes with stronger Pokémon. */
+    readonly levels?: { readonly min: number; readonly max: number };
+  }[];
+  /** Map-specific names for biomes, e.g. which town this is. */
+  readonly areaNames?: Readonly<Record<string, string>>;
+  /** Edge tiles leading to other maps. Without `to` the way is not open yet. */
+  readonly exits?: readonly WorldExit[];
+  readonly pickups: readonly WorldPickup[];
+}
+
+export interface WorldExit {
+  readonly name: string;
+  readonly pos: Point;
+  readonly to?: string;
+  /** Where the party appears on the target map. */
+  readonly arrive?: Point;
+}
+
+export interface WorldPickup {
+  readonly id: string;
+  readonly pos: Point;
+  readonly balls?: Readonly<Record<string, number>>;
+  readonly items?: Readonly<Record<string, number>>;
 }
 
 export interface EncounterGroup {
@@ -50,6 +75,8 @@ export interface EncounterGroup {
 }
 
 export interface WorldState {
+  /** Which map the party is on. */
+  readonly mapId: string;
   readonly pos: Point;
   readonly fatigue: number;
   /** Where the party last made camp; defeat carries it back here. */
@@ -86,9 +113,25 @@ export function worldGrid(content: WorldContent, def: WorldDef): Grid {
 export const biomeAt = (content: WorldContent, def: WorldDef, p: Point): BiomeDef =>
   content.biomes[worldGrid(content, def).terrainAt(p).id]!;
 
+/** Display name of the area at `p`: the map's own name for that biome, if it has one. */
+export const areaName = (content: WorldContent, def: WorldDef, p: Point): string => {
+  const biome = biomeAt(content, def, p);
+  return def.areaNames?.[biome.id] ?? biome.name;
+};
+
+export const exitAt = (def: WorldDef, p: Point): WorldExit | undefined => def.exits?.find((e) => samePoint(e.pos, p));
+
+/**
+ * Walking through an open exit: the party arrives on the target map. Fatigue, the meal and
+ * collected pickups carry over; the target map's wild groups are rolled fresh.
+ */
+export function changeMap(content: WorldContent, from: WorldState, target: WorldDef, arrive: Point): WorldState {
+  return respawnEncounters(content, target, { ...from, mapId: target.id, pos: arrive, lastCamp: arrive, encounters: [] });
+}
+
 export function newWorld(content: WorldContent, def: WorldDef, seed: number): WorldState {
   const base: WorldState = {
-    pos: def.start, fatigue: 0, lastCamp: def.start, encounters: [], collected: [], rngState: seed >>> 0, nextEncounterId: 1, meal: null,
+    mapId: def.id, pos: def.start, fatigue: 0, lastCamp: def.start, encounters: [], collected: [], rngState: seed >>> 0, nextEncounterId: 1, meal: null,
   };
   return respawnEncounters(content, def, base);
 }
@@ -107,7 +150,7 @@ export function respawnEncounters(content: WorldContent, def: WorldDef, world: W
       const idx = randomInt(rng, 0, free.length - 1);
       rng = idx.state;
       const pos = free.splice(idx.value, 1)[0]!;
-      const rolled = generateEncounter(table, rng);
+      const rolled = generateEncounter(zone.levels ? { ...table, levels: zone.levels } : table, rng);
       rng = rolled.rngState;
       groups.push({ id: `wild${nextId++}`, pos, biome: zone.biome, species: rolled.species, levels: rolled.levels });
     }
@@ -119,7 +162,7 @@ export interface TravelResult {
   readonly world: WorldState;
   /** Tiles walked, in order. */
   readonly path: readonly Point[];
-  readonly pickedUp: readonly WorldDef["pickups"][number][];
+  readonly pickedUp: readonly WorldPickup[];
   /** Set when the walk ended on a wild group. */
   readonly encounter: EncounterGroup | null;
 }
@@ -140,7 +183,7 @@ export function travel(content: WorldContent, def: WorldDef, world: WorldState, 
   const grid = worldGrid(content, def);
   let fatigue = world.fatigue;
   const collected = [...world.collected];
-  const pickedUp: WorldDef["pickups"][number][] = [];
+  const pickedUp: WorldPickup[] = [];
   for (const step of path) {
     fatigue = addTravelFatigue(content.fatigue, fatigue, grid.terrainAt(step).moveCost!);
     const pickup = def.pickups.find((p) => samePoint(p.pos, step) && !collected.includes(p.id));

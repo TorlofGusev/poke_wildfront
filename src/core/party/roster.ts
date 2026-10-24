@@ -17,7 +17,7 @@ export const KNOCKOUTS_TO_DEATH = 3;
 
 export interface PartyMember extends Progress {
   readonly uid: string;
-  /** Persistent combat knockouts, 0–3. Never reset by healing, resting or evolution. */
+  /** Persistent combat knockouts, 0–3. Only remedies or Pokémon Center treatment remove them. */
   readonly knockouts: number;
 }
 

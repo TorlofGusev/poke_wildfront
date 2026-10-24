@@ -2,7 +2,7 @@ import type { BattleContent } from "../battle/content";
 import { KNOCKOUTS_TO_DEATH, MAX_PARTY_SIZE, type GameState, type PartyMember } from "../party/roster";
 
 /** Bump when GameState changes. During the prototype, older saves are discarded rather than migrated. */
-export const SAVE_VERSION = 1;
+export const SAVE_VERSION = 2;
 
 export interface SaveFile {
   readonly version: number;
@@ -61,7 +61,7 @@ function validateGame(content: BattleContent, game: GameState): void {
   fallen.forEach((m) => check(m, "fallen"));
   if (typeof game.money !== "number" || game.money < 0) fail("bad money");
   const w = game.world;
-  if (!w || typeof w.fatigue !== "number" || w.fatigue < 0 || !w.pos || !Array.isArray(w.encounters)) fail("missing or invalid world state");
+  if (!w || typeof w.mapId !== "string" || typeof w.fatigue !== "number" || w.fatigue < 0 || !w.pos || !Array.isArray(w.encounters)) fail("missing or invalid world state");
   for (const [id, n] of Object.entries(game.inventory.balls ?? {})) {
     if (!content.balls[id]) fail(`unknown ball ${id}`);
     if (!Number.isInteger(n) || n < 0) fail(`bad ball count for ${id}`);

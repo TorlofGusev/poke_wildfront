@@ -67,6 +67,18 @@ export function usePotion(content: BattleContent, prog: ProgressionContent, game
   return { ...next, inventory: { ...next.inventory, items: { ...next.inventory.items, [itemId]: count(next.inventory.items, itemId) - 1 } } };
 }
 
+/** Uses a remedy outside battle: removes knockout marks (the steps towards a permanent loss). */
+export function useRemedy(prog: ProgressionContent, game: GameState, uid: string, itemId: string): GameState {
+  const item = prog.items[itemId];
+  if (item?.kind !== "remedy" || !item.clearsKnockouts) throw new Error(`${itemId} is not a remedy`);
+  if (count(game.inventory.items, itemId) < 1) throw new Error(`no ${item.name} in the bag`);
+  const member = findMember(game, uid);
+  if (!member) throw new Error(`${uid} is not in party or storage`);
+  if (member.knockouts <= 0) throw new Error("no knockout marks to remove");
+  const next = updateMember(game, uid, (m) => ({ ...m, knockouts: Math.max(0, m.knockouts - item.clearsKnockouts!) }));
+  return { ...next, inventory: { ...next.inventory, items: { ...next.inventory.items, [itemId]: count(next.inventory.items, itemId) - 1 } } };
+}
+
 /** Applies a change to one member (role, talent, moves) by uid. */
 export const withMember = updateMember;
 

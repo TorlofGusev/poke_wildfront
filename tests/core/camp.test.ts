@@ -1,7 +1,7 @@
 import { describe, expect, it } from "vitest";
 import { CAMP, CONTENT, MEALS, PROGRESSION, WORLD, WORLD_CONTENT } from "../../src/content";
 import { newWorld } from "../../src/core/expedition";
-import { canCook, centerHeal, newMember, rest, type GameState } from "../../src/core/party";
+import { canCook, centerHeal, centerTreatment, centerTreatmentCost, newMember, rest, useRemedy, type GameState } from "../../src/core/party";
 import { memberStats } from "../../src/core/progression";
 
 function game(items: Record<string, number>): GameState {
@@ -51,5 +51,20 @@ describe("Pokémon Center", () => {
     expect(r.roster.party[0]!.hp).toBe(memberStats(CONTENT, PROGRESSION, r.roster.party[0]!).maxHp);
     expect(r.world.fatigue).toBe(80);
     expect(r.money).toBe(0);
+  });
+});
+
+describe("knockout marks", () => {
+  it("a Revival Herb removes one mark; Center treatment removes all for a fee", () => {
+    const g = game({ "revival-herb": 1 });
+    const marked = { ...g, money: 1000, roster: { ...g.roster, party: [{ ...g.roster.party[0]!, knockouts: 2 }] } };
+    const herb = useRemedy(PROGRESSION, marked, marked.roster.party[0]!.uid, "revival-herb");
+    expect(herb.roster.party[0]!.knockouts).toBe(1);
+    expect(herb.inventory.items["revival-herb"]).toBe(0);
+    expect(centerTreatmentCost(marked, CAMP.treatmentPerMark)).toBe(2 * CAMP.treatmentPerMark);
+    const treated = centerTreatment(marked, CAMP.treatmentPerMark);
+    expect(treated.roster.party[0]!.knockouts).toBe(0);
+    expect(treated.money).toBe(1000 - 2 * CAMP.treatmentPerMark);
+    expect(() => centerTreatment(treated, CAMP.treatmentPerMark)).toThrow(/no knockout marks/);
   });
 });

@@ -14,6 +14,8 @@ export interface MealDef {
 }
 
 export interface CampRules {
+  /** Pokémon Center treatment price per knockout mark. */
+  readonly treatmentPerMark: number;
   /** Resting without a meal: fraction of max HP restored, fatigue left, and the lasting penalty. */
   readonly hungry: {
     readonly hpFraction: number;
@@ -62,4 +64,16 @@ export function rest(
 export function centerHeal(content: BattleContent, prog: ProgressionContent, game: GameState): GameState {
   const heal = (m: PartyMember): PartyMember => ({ ...m, hp: memberMaxHp(content, prog, m) });
   return { ...game, roster: { ...game.roster, party: game.roster.party.map(heal), storage: game.roster.storage.map(heal) } };
+}
+
+/** Pokémon Center treatment: removes every knockout mark in the party for a price per mark. */
+export function centerTreatmentCost(game: GameState, pricePerMark: number): number {
+  return game.roster.party.reduce((n, m) => n + m.knockouts, 0) * pricePerMark;
+}
+
+export function centerTreatment(game: GameState, pricePerMark: number): GameState {
+  const cost = centerTreatmentCost(game, pricePerMark);
+  if (cost <= 0) throw new Error("no knockout marks to treat");
+  if (game.money < cost) throw new Error(`not enough money (need ₽${cost}, have ₽${game.money})`);
+  return { ...game, money: game.money - cost, roster: { ...game.roster, party: game.roster.party.map((m) => ({ ...m, knockouts: 0 })) } };
 }

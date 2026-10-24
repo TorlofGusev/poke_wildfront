@@ -2,7 +2,7 @@
  "id": "route-2",
  "name": "Route 2 & Viridian Forest",
  "rows": [
-  "########################",
+  "##########.#############",
   "#\"\"\"\"\"..........^^^^^^^#",
   "#\"\"\"\"\"..........^^^cccc#",
   "#\"\"\"\"\".\"\"\"\"\"\"\"\"\"^^^cccc#",
@@ -151,13 +151,70 @@
    "balls": {
     "ultra-ball": 1
    }
+  },
+  {
+   "id": "r2-berries",
+   "pos": {
+    "x": 5,
+    "y": 8
+   },
+   "items": {
+    "oran-berry": 2,
+    "cheri-berry": 1
+   }
+  },
+  {
+   "id": "r2-forest-cache",
+   "pos": {
+    "x": 10,
+    "y": 8
+   },
+   "items": {
+    "miracle-seed": 1,
+    "potion": 1
+   }
+  },
+  {
+   "id": "r2-ridge-herb",
+   "pos": {
+    "x": 19,
+    "y": 7
+   },
+   "items": {
+    "revival-herb": 1,
+    "rawst-berry": 2
+   }
+  },
+  {
+   "id": "r2-lakeside",
+   "pos": {
+    "x": 22,
+    "y": 13
+   },
+   "items": {
+    "sharp-beak": 1
+   }
   }
  ],
- "exit": {
-  "name": "Pewter City",
-  "pos": {
-   "x": 10,
-   "y": 0
+ "areaNames": {
+  "town": "Viridian City",
+  "route": "Route 2",
+  "forest": "Viridian Forest",
+  "mountain": "Rocky ridge",
+  "cave": "Diglett hollow"
+ },
+ "exits": [
+  {
+   "name": "Pewter City",
+   "pos": {
+    "x": 10,
+    "y": 0
+   },
+   "to": "route-3",
+   "arrive": {
+    "x": 4,
+    "y": 14
+   }
   }
- }
+ ]
 }

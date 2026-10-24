@@ -1,9 +1,10 @@
 import { describe, expect, it } from "vitest";
-import { WORLD, WORLD_CONTENT, CONTENT, PROGRESSION } from "../../src/content";
+import { WORLD, WORLD_CONTENT, WORLDS, CONTENT, PROGRESSION } from "../../src/content";
 import { wildSetup } from "../../src/core/progression";
 import {
   addTravelFatigue,
   biomeAt,
+  changeMap,
   effectiveGroup,
   fatigueLevel,
   generateEncounter,
@@ -154,5 +155,37 @@ describe("team-scaled encounters", () => {
     expect(effectiveGroup(g, 2)).toMatchObject({ species: ["b", "c"], levels: [5, 4] });
     expect(effectiveGroup(g, 6)).toMatchObject({ species: ["a", "b", "c"], levels: [3, 5, 4] });
     expect(effectiveGroup(g, 0).species).toHaveLength(1);
+  });
+});
+
+describe("multiple maps", () => {
+  it("every map is consistent and open exits lead to passable tiles on real maps", () => {
+    for (const def of Object.values(WORLDS)) {
+      const grid = worldGrid(WORLD_CONTENT, def);
+      const passable = (p: { x: number; y: number }) => grid.inBounds(p) && grid.terrainAt(p).moveCost !== null;
+      expect(passable(def.start), def.id).toBe(true);
+      for (const z of def.spawnZones) for (const p of z.points) expect(biomeAt(WORLD_CONTENT, def, p).id, `${def.id} ${key(p)}`).toBe(z.biome);
+      const world = { ...newWorld(WORLD_CONTENT, def, 5), encounters: [] };
+      for (const p of def.pickups) expect(travelPath(WORLD_CONTENT, def, world, p.pos), `${def.id} ${p.id}`).not.toBeNull();
+      for (const e of def.exits ?? []) {
+        if (!e.to) continue;
+        expect(travelPath(WORLD_CONTENT, def, world, e.pos), `${def.id} exit ${e.name}`).not.toBeNull();
+        const target = WORLDS[e.to]!;
+        expect(target, e.to).toBeDefined();
+        const arrive = e.arrive ?? target.start;
+        expect(worldGrid(WORLD_CONTENT, target).terrainAt(arrive).moveCost, `${e.to} arrival`).not.toBeNull();
+      }
+    }
+  });
+
+  it("changing maps keeps fatigue, meal and collected pickups, and uses the zone's levels", () => {
+    const from = { ...newWorld(WORLD_CONTENT, WORLD, 9), fatigue: 33, collected: ["grove-balls"] };
+    const next = changeMap(WORLD_CONTENT, from, WORLDS["route-3"]!, { x: 4, y: 14 });
+    expect(next).toMatchObject({ mapId: "route-3", pos: { x: 4, y: 14 }, lastCamp: { x: 4, y: 14 }, fatigue: 33, collected: ["grove-balls"] });
+    expect(next.encounters.length).toBeGreaterThan(0);
+    for (const g of next.encounters) {
+      const zone = WORLDS["route-3"]!.spawnZones.find((z) => z.biome === g.biome)!;
+      for (const lv of g.levels) expect(lv).toBeGreaterThanOrEqual(zone.levels!.min);
+    }
   });
 });

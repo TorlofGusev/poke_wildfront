@@ -1,4 +1,6 @@
-export const TILE = 48;
+export const TILE = 36;
+/** Unit graphics are drawn for 48 px tiles and scaled to the board. */
+export const UNIT_SCALE = TILE / 48;
 export const BOARD_X = 16;
 export const BOARD_Y = 72;
 export const PANEL_X = 616;

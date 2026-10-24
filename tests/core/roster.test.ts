@@ -15,7 +15,7 @@ const member = (uid: string, knockouts = 0, hp = 40): PartyMember => pm(uid, "fa
 
 function game(party: PartyMember[], storage: PartyMember[] = []): GameState {
   return { roster: { party, storage, fallen: [] }, inventory: { balls: { "poke-ball": 2 }, items: {} }, nextUid: 100, money: 0,
-    world: { pos: { x: 0, y: 0 }, fatigue: 0, lastCamp: { x: 0, y: 0 }, encounters: [], collected: [], rngState: 1, nextEncounterId: 1, meal: null },
+    world: { mapId: "route-2", pos: { x: 0, y: 0 }, fatigue: 0, lastCamp: { x: 0, y: 0 }, encounters: [], collected: [], rngState: 1, nextEncounterId: 1, meal: null },
   };
 }
 

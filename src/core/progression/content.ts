@@ -39,12 +39,14 @@ export interface ItemDef {
   readonly id: string;
   readonly name: string;
   readonly description: string;
-  readonly kind: "held" | "potion" | "candy" | "food";
+  readonly kind: "held" | "potion" | "candy" | "food" | "remedy";
   readonly price: number;
   /** Held items: battle modifiers. */
   readonly mods?: Partial<UnitModifiers>;
   /** Potions: HP restored. */
   readonly heal?: number;
+  /** Remedies: knockout marks removed. */
+  readonly clearsKnockouts?: number;
 }
 
 export interface ProgressionRules {

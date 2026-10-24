@@ -16,7 +16,7 @@ interface Ware {
   readonly owned: number;
 }
 
-const CATEGORY: Record<string, string> = { potion: "Healing", food: "Food", candy: "Candy", held: "Held items" };
+const CATEGORY: Record<string, string> = { potion: "Healing", remedy: "Healing", food: "Food", candy: "Candy", held: "Held items" };
 const TABS = ["Balls", "Healing", "Food", "Held items", "Candy"];
 const LIST_TOP = 86;
 const LIST_BOTTOM = 480;

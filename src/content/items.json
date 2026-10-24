@@ -144,5 +144,20 @@
   "description": "A sweet, soothing berry. Ingredient for camp meals.",
   "kind": "food",
   "price": 60
+ },
+ "revival-herb": {
+  "id": "revival-herb",
+  "name": "Revival Herb",
+  "description": "A bitter, potent herb. Removes 1 knockout mark from a Pokémon.",
+  "kind": "remedy",
+  "price": 600,
+  "clearsKnockouts": 1
+ },
+ "rawst-berry": {
+  "id": "rawst-berry",
+  "name": "Rawst Berry",
+  "description": "A tough, bitter berry. Ingredient for camp meals.",
+  "kind": "food",
+  "price": 60
  }
 }

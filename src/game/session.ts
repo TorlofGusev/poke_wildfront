@@ -1,4 +1,5 @@
-import { CONTENT, PROGRESSION, WORLD, WORLD_CONTENT } from "../content";
+import { CONTENT, PROGRESSION, WORLD, WORLD_CONTENT, WORLDS } from "../content";
+import type { WorldDef } from "../core/expedition";
 import { toUnitSetup } from "../core/progression";
 import { newWorld } from "../core/expedition";
 import type { DeployCandidate } from "../core/battle";
@@ -82,3 +83,6 @@ class Session {
 }
 
 export const session = new Session();
+
+/** The map the party is currently on. */
+export const currentWorld = (): WorldDef => WORLDS[session.game.world.mapId] ?? WORLD;

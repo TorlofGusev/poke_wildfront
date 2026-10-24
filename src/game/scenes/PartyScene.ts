@@ -1,9 +1,9 @@
 import Phaser from "phaser";
-import { CAMP, CONTENT, MEALS, PROGRESSION, WORLD, WORLD_CONTENT } from "../../content";
+import { CAMP, CONTENT, MEALS, PROGRESSION, WORLD_CONTENT } from "../../content";
 import { canCook, KNOCKOUTS_TO_DEATH, MAX_PARTY_SIZE, memberMaxHp, rest, type MealDef, type PartyMember } from "../../core/party";
 import { describeModifiers } from "../ui/describeEffects";
 import { pendingChoice } from "../../core/progression";
-import { session } from "../session";
+import { currentWorld, session } from "../session";
 import { portraitKey } from "../sprites";
 import { Button } from "../ui/Button";
 import { tag } from "../ui/markup";
@@ -34,7 +34,7 @@ export class PartyScene extends Phaser.Scene {
     const food = Object.values(PROGRESSION.items).filter((i) => i.kind === "food");
     new RichText(this, 16, 68, 928, 12).setMarkup(`${tag("title", `Cook a meal (${CONTENT.terms.food.toLowerCase()} in the bag:`)} ${food.map((f) => `${f.name} ${tag("num", bag[f.id] ?? 0)}`).join(" · ")}${tag("title", ")")}`);
     const doRest = (meal: MealDef | null) => {
-      session.update(rest(CONTENT, PROGRESSION, { content: WORLD_CONTENT, def: WORLD }, CAMP, session.game, meal));
+      session.update(rest(CONTENT, PROGRESSION, { content: WORLD_CONTENT, def: currentWorld() }, CAMP, session.game, meal));
       this.scene.restart({ rested: true });
     };
     Object.values(MEALS).forEach((meal, i) => {

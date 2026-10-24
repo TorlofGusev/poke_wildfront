@@ -4,8 +4,8 @@
  "statOffset": 6,
  "damageDivisor": 4,
  "moveBase": 2,
- "speedPerMove": 6,
- "moveMax": 4,
+ "speedPerMove": 4,
+ "moveMax": 5,
  "impactDamage": 8,
  "bond": {
   "start": 2,

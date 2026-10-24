@@ -17,6 +17,7 @@ import capture from "./capture.json";
 import fatigue from "./fatigue.json";
 import moves from "./moves.json";
 import route2 from "./worlds/route-2.json";
+import route3 from "./worlds/route-3.json";
 import rules from "./rules.json";
 import speciesData from "./species.json";
 import types from "./types.json";
@@ -64,6 +65,12 @@ export const WORLD_CONTENT: WorldContent = {
 };
 
 export const WORLD: WorldDef = route2 as unknown as WorldDef; // shape checked by tests/content.test.ts
+
+/** Every overworld map by id; the game starts on WORLD. */
+export const WORLDS: Readonly<Record<string, WorldDef>> = {
+  [route2.id]: WORLD,
+  [route3.id]: route3 as unknown as WorldDef,
+};
 
 export const PROGRESSION: ProgressionContent = {
   roles: roles as Record<string, RoleDef>,

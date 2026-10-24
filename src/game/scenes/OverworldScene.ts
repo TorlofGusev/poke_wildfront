@@ -1,8 +1,11 @@
 import Phaser from "phaser";
-import { CONTENT, PROGRESSION, WORLD, WORLD_CONTENT } from "../../content";
+import { CAMP, CONTENT, PROGRESSION, WORLD_CONTENT, WORLDS } from "../../content";
 import { pendingChoice, wildSetup } from "../../core/progression";
 import {
+  areaName,
   biomeAt,
+  changeMap,
+  exitAt,
   effectiveGroup,
   fatigueLevel,
   makeCamp,
@@ -13,8 +16,8 @@ import {
   type WorldState,
 } from "../../core/expedition";
 import { samePoint, type Point } from "../../core/grid";
-import { centerHeal, KNOCKOUTS_TO_DEATH, memberMaxHp, restAll } from "../../core/party";
-import { session } from "../session";
+import { centerHeal, centerTreatment, centerTreatmentCost, KNOCKOUTS_TO_DEATH, memberMaxHp, restAll } from "../../core/party";
+import { currentWorld, session } from "../session";
 import { animKey, facingFor, hasSprite } from "../sprites";
 import { Button } from "../ui/Button";
 import { addFullscreenButton } from "../ui/fullscreen";
@@ -53,7 +56,7 @@ export class OverworldScene extends Phaser.Scene {
   }
 
   create(): void {
-    this.add.text(MAP_X, 16, WORLD.name, { fontFamily: FONT, fontSize: "20px", color: "#f5d76e" });
+    this.add.text(MAP_X, 16, currentWorld().name, { fontFamily: FONT, fontSize: "20px", color: "#f5d76e" });
     this.add.text(MAP_X, 40, "Tap a tile to walk (yellow = path, costs fatigue). Red ring: wild group. Tent: camp. Houses: town.", {
       fontFamily: FONT, fontSize: px(11), color: COLORS.dim, wordWrap: { width: 672 },
     });
@@ -83,8 +86,7 @@ export class OverworldScene extends Phaser.Scene {
       if (t) void this.travelTo(t);
     });
     this.render();
-    const area = biomeAt(WORLD_CONTENT, WORLD, this.world.pos);
-    this.toast(area.id === "town" ? `${area.name}\n${CONTENT.terms.healCenter} · Poké Mart` : area.name);
+    this.announceArea(this.world.pos);
   }
 
   /** Party members able to fight; wild groups never outnumber them (see effectiveGroup). */
@@ -102,7 +104,7 @@ export class OverworldScene extends Phaser.Scene {
 
   private tileAt(p: Phaser.Input.Pointer): Point | null {
     const t = { x: Math.floor((p.worldX - MAP_X) / T), y: Math.floor((p.worldY - MAP_Y) / T) };
-    return worldGrid(WORLD_CONTENT, WORLD).inBounds(t) ? t : null;
+    return worldGrid(WORLD_CONTENT, currentWorld()).inBounds(t) ? t : null;
   }
 
   private center(p: Point) {
@@ -110,7 +112,7 @@ export class OverworldScene extends Phaser.Scene {
   }
 
   private drawMap(): void {
-    const grid = worldGrid(WORLD_CONTENT, WORLD);
+    const grid = worldGrid(WORLD_CONTENT, currentWorld());
     const g = this.add.graphics();
     for (let y = 0; y < grid.height; y++)
       for (let x = 0; x < grid.width; x++) {
@@ -125,14 +127,18 @@ export class OverworldScene extends Phaser.Scene {
         }
         if (id === "cave") g.fillStyle(0x221c18, 1).fillCircle(MAP_X + x * T + 14, MAP_Y + y * T + 16, 6);
       }
-    // Where the route continues; locked until the next area exists.
-    if (WORLD.exit) {
-      const e = this.center(WORLD.exit.pos);
-      g.fillStyle(0x10141c, 0.85).fillRect(e.x - T / 2, e.y - T / 2, T, T);
-      this.add.text(e.x, e.y, "▲", { fontFamily: FONT, fontSize: px(14), color: "#f5d76e" }).setOrigin(0.5);
-      this.add.text(e.x, e.y + T / 2 + 2, `▲ ${WORLD.exit.name} (coming soon)`, {
+    // Edge exits to other maps; ones without a target are not open yet.
+    for (const exit of currentWorld().exits ?? []) {
+      const e = this.center(exit.pos);
+      const open = Boolean(exit.to);
+      const arrow = exit.pos.y === 0 ? "▲" : exit.pos.y === grid.height - 1 ? "▼" : exit.pos.x === 0 ? "◀" : "▶";
+      g.fillStyle(open ? 0xf5d76e : 0x10141c, open ? 0.35 : 0.85).fillRect(e.x - T / 2, e.y - T / 2, T, T);
+      this.add.text(e.x, e.y, arrow, { fontFamily: FONT, fontSize: px(14), color: "#f5d76e", fontStyle: "bold" }).setOrigin(0.5).setDepth(6);
+      // The label points inward, so it stays on the map.
+      const inward = exit.pos.y === 0 ? { x: 0, y: 1 } : exit.pos.y === grid.height - 1 ? { x: 0, y: -1 } : exit.pos.x === 0 ? { x: 1, y: 0 } : { x: -1, y: 0 };
+      this.add.text(e.x + inward.x * (T / 2 + 2), e.y + inward.y * (T / 2 + 2), `${arrow} ${exit.name}${open ? "" : " (coming soon)"}`, {
         fontFamily: FONT, fontSize: px(10), color: "#f5d76e", backgroundColor: "#10141ccc", padding: { x: 3, y: 1 },
-      }).setOrigin(0.5, 0).setDepth(6);
+      }).setOrigin(inward.x === 0 ? 0.5 : inward.x > 0 ? 0 : 1, inward.y === 0 ? 0.5 : inward.y > 0 ? 0 : 1).setDepth(6);
     }
     g.lineStyle(1, 0x000000, 0.15);
     for (let x = 0; x <= grid.width; x++) g.lineBetween(MAP_X + x * T, MAP_Y, MAP_X + x * T, MAP_Y + grid.height * T);
@@ -145,7 +151,7 @@ export class OverworldScene extends Phaser.Scene {
     // The last camp is where a defeated party wakes up.
     const camp = this.center(world.lastCamp);
     this.markers.add(this.add.triangle(camp.x, camp.y, 0, 16, 8, 0, 16, 16, 0xe8d8b0, 0.85).setStrokeStyle(1, 0x5a4a30));
-    for (const p of WORLD.pickups) {
+    for (const p of currentWorld().pickups) {
       if (world.collected.includes(p.id)) continue;
       const { x, y } = this.center(p.pos);
       this.markers.add(this.add.circle(x, y, 6, 0xffffff).setStrokeStyle(2, 0xd0021b));
@@ -177,13 +183,13 @@ export class OverworldScene extends Phaser.Scene {
       ? [level.movePenalty ? `−${level.movePenalty} movement` : "", level.damageMultiplier !== 1 ? `−${Math.round((1 - level.damageMultiplier) * 100)}% damage` : ""].filter(Boolean).join(", ")
       : `no penalty until ${WORLD_CONTENT.fatigue.max}`;
     const bar = "█".repeat(Math.round(world.fatigue / 10)) + "░".repeat(10 - Math.round(world.fatigue / 10));
-    const here = biomeAt(WORLD_CONTENT, WORLD, world.pos);
+    const here = biomeAt(WORLD_CONTENT, currentWorld(), world.pos);
     const lines = [
       `${tag("title", "Fatigue")} ${tag(levelKey, `${world.fatigue}/${WORLD_CONTENT.fatigue.max} ${level.name}`)}`,
       tag(levelKey, bar),
       tag("dim", `In battle: ${effect}`),
       "",
-      `Here: ${tag("num", here.name)}`,
+      `Here: ${tag("num", areaName(WORLD_CONTENT, currentWorld(), world.pos))}`,
       "",
       tag("title", "Party"),
       ...roster.party.map((m) => {
@@ -217,6 +223,17 @@ export class OverworldScene extends Phaser.Scene {
         this.render();
       }).setEnabled(hurt && !this.moving));
       y += 34;
+      const cost = centerTreatmentCost(session.game, CAMP.treatmentPerMark);
+      this.buttons.add(new Button(this, 0, y, 240, 28, cost ? `✚ Treat KO marks ₽${cost}` : "✚ Treat KO marks", () => {
+        try {
+          session.update(centerTreatment(session.game, CAMP.treatmentPerMark));
+          this.message = tag("heal", "All knockout marks treated.");
+        } catch (e) {
+          this.message = tag("bad", e instanceof Error ? e.message : "Cannot treat.");
+        }
+        this.render();
+      }).setEnabled(cost > 0 && session.game.money >= cost && !this.moving));
+      y += 34;
       this.buttons.add(new Button(this, 0, y, 240, 28, "🛒 Poké Mart", () => this.scene.start("Shop", {})));
       y += 34;
     }
@@ -231,6 +248,11 @@ export class OverworldScene extends Phaser.Scene {
     }
   }
 
+  private announceArea(p: Point): void {
+    const name = areaName(WORLD_CONTENT, currentWorld(), p);
+    this.toast(biomeAt(WORLD_CONTENT, currentWorld(), p).id === "town" ? `${name}\n${CONTENT.terms.healCenter} · Poké Mart` : name);
+  }
+
   /** Floating banner when the party enters a new area. */
   private toast(text: string): void {
     const t = this.add.text(MAP_X + 336, MAP_Y + 30, text, {
@@ -242,9 +264,9 @@ export class OverworldScene extends Phaser.Scene {
   private showPreview(t: Point | null): void {
     this.preview.clear();
     if (!t || this.moving) return;
-    const path = travelPath(WORLD_CONTENT, WORLD, this.world, t);
+    const path = travelPath(WORLD_CONTENT, currentWorld(), this.world, t);
     if (!path) return;
-    const grid = worldGrid(WORLD_CONTENT, WORLD);
+    const grid = worldGrid(WORLD_CONTENT, currentWorld());
     let cost = 0;
     this.preview.fillStyle(0xf5d76e, 0.25);
     for (const p of path) {
@@ -261,9 +283,9 @@ export class OverworldScene extends Phaser.Scene {
 
   private async travelTo(t: Point): Promise<void> {
     if (this.moving || samePoint(t, this.world.pos)) return;
-    if (!travelPath(WORLD_CONTENT, WORLD, this.world, t)) return;
+    if (!travelPath(WORLD_CONTENT, currentWorld(), this.world, t)) return;
     const before = this.world.pos;
-    const result = travel(WORLD_CONTENT, WORLD, this.world, t);
+    const result = travel(WORLD_CONTENT, currentWorld(), this.world, t);
     this.moving = true;
     this.preview.clear();
     for (const step of result.path) {
@@ -279,18 +301,30 @@ export class OverworldScene extends Phaser.Scene {
     const found: string[] = [];
     for (const p of result.pickedUp) {
       const balls = { ...inventory.balls };
-      for (const [id, n] of Object.entries(p.balls)) {
+      const items = { ...inventory.items };
+      for (const [id, n] of Object.entries(p.balls ?? {})) {
         balls[id] = (balls[id] ?? 0) + n;
         found.push(`${n} ${CONTENT.balls[id]?.name ?? id}`);
       }
-      inventory = { ...inventory, balls };
+      for (const [id, n] of Object.entries(p.items ?? {})) {
+        items[id] = (items[id] ?? 0) + n;
+        found.push(`${n} ${PROGRESSION.items[id]?.name ?? id}`);
+      }
+      inventory = { ...inventory, balls, items };
     }
     // An encounter stops the party on the tile next to the wild group.
     const stopAt = result.encounter ? (result.path.length >= 2 ? result.path[result.path.length - 2]! : before) : t;
     session.update({ ...session.game, inventory, world: { ...result.world, pos: stopAt } });
-    const area = biomeAt(WORLD_CONTENT, WORLD, stopAt);
-    if (area.id !== biomeAt(WORLD_CONTENT, WORLD, before).id) this.toast(area.id === "town" ? `${area.name}\n${CONTENT.terms.healCenter} · Poké Mart` : area.name);
     this.message = found.length ? tag("good", `Found ${found.join(", ")}!`) : "";
+    const exit = !result.encounter ? exitAt(currentWorld(), stopAt) : undefined;
+    if (exit?.to && WORLDS[exit.to]) {
+      // Through the exit: the next map starts fresh around the arrival point.
+      const target = WORLDS[exit.to]!;
+      session.update({ ...session.game, world: changeMap(WORLD_CONTENT, session.game.world, target, exit.arrive ?? target.start) });
+      this.scene.start("Overworld", { message: this.message });
+      return;
+    }
+    if (areaName(WORLD_CONTENT, currentWorld(), stopAt) !== areaName(WORLD_CONTENT, currentWorld(), before)) this.announceArea(stopAt);
     this.render();
 
     if (result.encounter) {

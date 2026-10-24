@@ -50,5 +50,6 @@ export function describeTalent(content: BattleContent, prog: ProgressionContent,
 export function describeItem(content: BattleContent, item: ItemDef): string[] {
   if (item.kind === "potion") return [`Restores ${tag("heal", `${item.heal} HP`)} outside battle (not to fainted Pokémon).`];
   if (item.kind === "candy" || item.kind === "food") return [item.description];
+  if (item.kind === "remedy") return [`Removes ${tag("heal", `${item.clearsKnockouts} knockout mark`)} from a Pokémon.`];
   return describeModifiers(content, item.mods ?? {});
 }

@@ -10,6 +10,7 @@ import {
   memberMaxHp,
   moveBetweenPartyAndStorage,
   usePotion,
+  useRemedy,
   withMember,
   type PartyMember,
 } from "../../core/party";
@@ -351,6 +352,17 @@ export class PokemonScene extends Phaser.Scene {
         this.act(() => session.update(usePotion(CONTENT, PROGRESSION, session.game, m.uid, id)), `${s.name} recovered HP.`)).setEnabled(m.hp > 0 && m.hp < max));
     });
     if (potions.length) y += 36;
+    // Knockout marks: only remedies (or Pokémon Center treatment) remove them.
+    const remedies = Object.entries(session.game.inventory.items).filter(([id, n]) => n > 0 && PROGRESSION.items[id]?.kind === "remedy");
+    if (m.knockouts > 0) {
+      y += add(new RichText(this, DETAIL_X, y, DETAIL_W, 12)).setMarkup(`${tag("ko", `Knockout marks ${m.knockouts}/3`)} ${tag("dim", remedies.length ? "" : "· a Revival Herb or Pokémon Center treatment removes them")}`) + 4;
+      remedies.forEach(([id, n], i) => {
+        const item = PROGRESSION.items[id]!;
+        add(new Button(this, DETAIL_X + i * 236, y, 230, 26, `Use ${item.name} (−${item.clearsKnockouts} mark) ×${n}`, () =>
+          this.act(() => session.update(useRemedy(PROGRESSION, session.game, m.uid, id)), `A knockout mark faded from ${s.name}.`)));
+      });
+      if (remedies.length) y += 36;
+    }
 
     const held = m.heldItem ? PROGRESSION.items[m.heldItem] : null;
     y += add(new RichText(this, DETAIL_X, y, DETAIL_W, 13)).setMarkup(

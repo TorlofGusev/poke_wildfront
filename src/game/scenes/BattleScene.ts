@@ -2,8 +2,8 @@ import Phaser from "phaser";
 import { CONTENT, SCENARIOS, type ScenarioDef } from "../../content";
 import { captureChance, captureTargets, captureUnavailableReason } from "../../core/capture";
 import { KNOCKOUTS_TO_DEATH, resolveBattle, type BattleSummary } from "../../core/party";
-import { session } from "../session";
-import { PROGRESSION, WORLD, WORLD_CONTENT } from "../../content";
+import { currentWorld, session } from "../session";
+import { PROGRESSION, WORLD_CONTENT } from "../../content";
 import { fatigueLevel, fatigueModifiers, removeEncounter, returnToLastCamp } from "../../core/expedition";
 import { teamBond } from "../../core/progression";
 import { nextRandom } from "../../core/rng";
@@ -42,7 +42,7 @@ import { describeMove } from "../ui/describeMove";
 import { stripMarkup, tag } from "../ui/markup";
 import { RichText } from "../ui/RichText";
 import { animKey, FACE_LEFT, FACE_RIGHT, facingFor, hasSprite, portraitKey, type Facing, type SpriteAnim } from "../sprites";
-import { BOARD_X, BOARD_Y, COLORS, FONT, PANEL_X, TILE, TYPE_COLORS, tileToWorld, px, PHONE } from "../ui/theme";
+import { BOARD_X, BOARD_Y, COLORS, FONT, PANEL_X, TILE, TYPE_COLORS, tileToWorld, UNIT_SCALE, px, PHONE } from "../ui/theme";
 
 type Phase = "deploy" | "battle" | "over";
 
@@ -226,7 +226,7 @@ export class BattleScene extends Phaser.Scene {
       : null;
     const hpBg = this.add.rectangle(-18, 21, 36, 4, 0x000000).setOrigin(0, 0.5);
     const hpBar = this.add.rectangle(-18, 21, 36, 4, 0x7ed321).setOrigin(0, 0.5);
-    const container = this.add.container(x, y, [ring, ...(sprite ? [sprite] : []), body, label, hpBg, hpBar]);
+    const container = this.add.container(x, y, [ring, ...(sprite ? [sprite] : []), body, label, hpBg, hpBar]).setScale(UNIT_SCALE);
     this.units.set(id, { container, hpBar, ring, body, label, sprite, speciesId, facing });
     this.applyDisguise(id);
   }
@@ -723,8 +723,18 @@ export class BattleScene extends Phaser.Scene {
           const found = Object.entries(forage).map(([id, n]) => `${n} ${PROGRESSION.items[id]?.name ?? id}`).join(", ");
           this.rewardText = [this.rewardText, `Foraged ${found}.`].filter(Boolean).join(" ");
         }
+        // Loot: each of the area's items has its own chance to turn up.
+        const looted: string[] = [];
+        for (const { item, chance } of (this.biome ? WORLD_CONTENT.biomes[this.biome]?.loot : undefined) ?? []) {
+          const r = nextRandom(game.world.rngState);
+          game = { ...game, world: { ...game.world, rngState: r.state } };
+          if (r.value >= chance) continue;
+          game = { ...game, inventory: { ...game.inventory, items: { ...game.inventory.items, [item]: (game.inventory.items[item] ?? 0) + 1 } } };
+          looted.push(PROGRESSION.items[item]?.name ?? item);
+        }
+        if (looted.length) this.rewardText = [this.rewardText, `Found ${looted.join(", ")}!`].filter(Boolean).join(" ");
       }
-      if (this.state.outcome === "defeat") game = { ...game, world: returnToLastCamp(WORLD_CONTENT, WORLD, game.world) };
+      if (this.state.outcome === "defeat") game = { ...game, world: returnToLastCamp(WORLD_CONTENT, currentWorld(), game.world) };
       session.update(game);
       this.summary = result.summary;
     }
@@ -882,7 +892,7 @@ export class BattleScene extends Phaser.Scene {
     const view = this.units.get(unitId);
     if (!view) return Promise.resolve();
     return new Promise((resolve) =>
-      this.tweens.add({ targets: view.container, alpha: 0, scale: 0.4, duration: 300, onComplete: () => resolve() }),
+      this.tweens.add({ targets: view.container, alpha: 0, scale: 0.4 * UNIT_SCALE, duration: 300, onComplete: () => resolve() }),
     );
   }
 
