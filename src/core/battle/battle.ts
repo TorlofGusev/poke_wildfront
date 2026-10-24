@@ -31,6 +31,8 @@ export interface BattleOptions {
   readonly balls?: Readonly<Record<string, number>>;
   /** Wild battles allow capture; trainer and boss battles do not. */
   readonly captureAllowed?: boolean;
+  /** Applied to every player unit, e.g. expedition fatigue. */
+  readonly playerModifiers?: { readonly movePenalty: number; readonly damageMultiplier: number };
 }
 
 export interface StepResult {
@@ -64,7 +66,7 @@ export function movementPoints(content: BattleContent, unit: BattleUnit): number
   const speed = content.species[unit.speciesId]!.stats.speed;
   const base = content.rules.movementBySpeed.find((t) => speed >= t.minSpeed)?.move ?? 0;
   const penalty = unit.statuses.reduce((s, st) => s + (content.statuses[st.id]?.movePenalty ?? 0), 0);
-  return Math.max(0, base - penalty);
+  return Math.max(0, base - penalty - unit.movePenalty);
 }
 
 function occupancyFor(state: BattleState, unit: BattleUnit): Occupancy {
@@ -209,6 +211,8 @@ export function createBattle(
         cooldowns: {},
         usedUltimates: [],
         captured: false,
+        movePenalty: u.side === "player" ? options.playerModifiers?.movePenalty ?? 0 : 0,
+        damageMultiplier: u.side === "player" ? options.playerModifiers?.damageMultiplier ?? 1 : 1,
       };
     }),
     round: 0,
@@ -307,7 +311,7 @@ function doUseMove(
       const attacker = content.species[user.speciesId]!.stats;
       const defender = content.species[t.speciesId]!;
       const eff = typeMultiplier(content.typeChart, move.type, defender.types);
-      const raw = (move.power * attacker.attack) / defender.stats.defense * eff / content.rules.damageDivisor;
+      const raw = (move.power * attacker.attack) / defender.stats.defense * eff * user.damageMultiplier / content.rules.damageDivisor;
       dealDamage(state, t, Math.max(1, Math.round(raw)), "move", events, eff);
     }
     for (const effect of move.effects ?? []) {

@@ -27,6 +27,8 @@ import { typeMultiplier } from "../../core/rules/typeChart";
 import { Button } from "../ui/Button";
 import { formatEvent, type LogEntry, type LogTone } from "../ui/combatLog";
 import { describeMove } from "../ui/describeMove";
+import { stripMarkup, tag } from "../ui/markup";
+import { RichText } from "../ui/RichText";
 import { BOARD_X, BOARD_Y, COLORS, FONT, PANEL_X, TILE, TYPE_COLORS, tileToWorld } from "../ui/theme";
 
 type Phase = "deploy" | "battle" | "over";
@@ -63,14 +65,14 @@ export class BattleScene extends Phaser.Scene {
   private hovered: Point | null = null;
   private revealed = new Set<string>();
   private log: LogEntry[] = [];
-  private logStrip!: Phaser.GameObjects.Text;
+  private logStrip!: RichText;
   private logOverlay: Phaser.GameObjects.Container | null = null;
   private logScroll = 0;
 
   private overlay!: Phaser.GameObjects.Graphics;
   private units = new Map<string, UnitView>();
   private panel!: Phaser.GameObjects.Container;
-  private infoText!: Phaser.GameObjects.Text;
+  private infoText!: RichText;
   private header!: Phaser.GameObjects.Text;
 
   constructor() {
@@ -103,13 +105,9 @@ export class BattleScene extends Phaser.Scene {
     this.drawBoard();
     this.overlay = this.add.graphics();
     this.panel = this.add.container(PANEL_X, 16);
-    this.infoText = this.add.text(PANEL_X, 330, "", {
-      fontFamily: FONT, fontSize: "12px", color: COLORS.text, wordWrap: { width: 330 }, lineSpacing: 2,
-    });
+    this.infoText = new RichText(this, PANEL_X, 330, 330, 12);
 
-    this.logStrip = this.add.text(BOARD_X, BOARD_Y + this.grid.height * TILE + 6, "", {
-      fontFamily: FONT, fontSize: "11px", color: COLORS.dim, lineSpacing: 1,
-    });
+    this.logStrip = new RichText(this, BOARD_X, BOARD_Y + this.grid.height * TILE + 4, 450, 11, COLORS.dim, 15);
     const logButton = new Button(this, BOARD_X + this.grid.width * TILE - 110, BOARD_Y + this.grid.height * TILE + 6, 110, 22, "Full log [L]", () => this.toggleLogOverlay());
     logButton.setDepth(5);
     this.input.keyboard?.on("keydown-L", () => this.toggleLogOverlay());
@@ -309,10 +307,11 @@ export class BattleScene extends Phaser.Scene {
         const move = CONTENT.moves[moveId]!;
         const reason = moveUnavailableReason(state, CONTENT, unit.id, moveId);
         const targets = reason ? [] : validTargets(state, CONTENT, unit.id, moveId);
-        const tag = move.kind === "basic" ? "" : move.kind === "special"
-          ? (unit.cooldowns[moveId] ? ` cd ${unit.cooldowns[moveId]}` : ` cd ${move.cooldown}`)
-          : unit.usedUltimates.includes(moveId) ? " used" : " 1×";
-        button(`${move.name} [${move.kind}${tag}] ${move.power ? `pw ${move.power}` : ""}`, targets.length > 0, this.selectedMove === moveId, () => {
+        const cd = unit.cooldowns[moveId] ?? 0;
+        const status = move.kind === "basic" ? "basic"
+          : move.kind === "special" ? (cd > 0 ? `wait ${cd}` : "special")
+          : unit.usedUltimates.includes(moveId) ? "ult used" : "ult 1×";
+        button(`${move.name.padEnd(13)} ${move.power ? `Power ${String(move.power).padStart(2)}` : "        "}  ${status}`, targets.length > 0, this.selectedMove === moveId, () => {
           this.selectedBall = null;
           this.selectedMove = this.selectedMove === moveId ? null : moveId;
           this.refreshAll();
@@ -352,9 +351,9 @@ export class BattleScene extends Phaser.Scene {
       if (unit) {
         const reason = moveUnavailableReason(this.state!, CONTENT, unit.id, this.hoveredMove)
           ?? (validTargets(this.state!, CONTENT, unit.id, this.hoveredMove).length === 0 ? "no valid target from here" : null);
-        if (reason) text += `\n\nNot usable now: ${reason}`;
+        if (reason) text += `\n\n${tag("bad", `Not usable now: ${reason}`)}`;
       }
-      this.infoText.setText(text);
+      this.infoText.setMarkup(text);
       return;
     }
     let unit: BattleUnit | undefined;
@@ -372,37 +371,37 @@ export class BattleScene extends Phaser.Scene {
       const terrainText = terrain ? this.terrainInfo(terrain.id) : "";
       // Without a hovered unit, show the selected move's rules (also covers touch screens).
       const moveText = this.selectedMove ? describeMove(CONTENT, CONTENT.moves[this.selectedMove]!) : "";
-      this.infoText.setText([moveText, terrainText].filter(Boolean).join("\n\n"));
+      this.infoText.setMarkup([moveText, terrainText].filter(Boolean).join("\n\n"));
       return;
     }
     if (unit.side === "enemy" && this.isHidden(unit.id)) {
-      this.infoText.setText("??? Unknown Pokémon\nIts details are revealed once it acts or is hit.");
+      this.infoText.setMarkup(`${tag("enemy", "??? Unknown Pokémon")}\n${tag("dim", "Its details are revealed once it acts or is hit.")}`);
       return;
     }
     const s = CONTENT.species[unit.speciesId]!;
     const lines = [
-      `${s.name} (${unit.side})  ${s.types.join("/")}`,
-      `HP ${unit.hp}/${unit.maxHp}  Atk ${s.stats.attack}  Def ${s.stats.defense}  Spe ${s.stats.speed}`,
-      unit.statuses.length ? `Status: ${unit.statuses.map((x) => `${x.id} (${x.turnsLeft})`).join(", ")}` : "",
+      `${tag(unit.side, s.name)} ${tag("dim", unit.side === "enemy" ? "(foe)" : "(yours)")}  ${s.types.map((t) => tag(t, t)).join("/")}`,
+      `HP ${tag(unit.hp / unit.maxHp > 0.5 ? "heal" : "dmg", `${unit.hp}/${unit.maxHp}`)}  Atk ${s.stats.attack}  Def ${s.stats.defense}  Spe ${s.stats.speed}`,
+      unit.statuses.length ? `Status: ${unit.statuses.map((x) => `${tag("status", CONTENT.statuses[x.id]?.name ?? x.id)} (${x.turnsLeft})`).join(", ")}` : "",
       ...s.moves.map((m) => {
         const mv = CONTENT.moves[m]!;
-        const shape = mv.shape.kind === "single" ? "" : mv.shape.kind === "burst" ? ` burst ${mv.shape.radius}` : ` line ${mv.shape.length}`;
-        return `· ${mv.name} — ${mv.type} ${mv.kind}, range ${mv.range.min}-${mv.range.max}${shape}${mv.power ? `, pw ${mv.power}` : ""}`;
+        const shape = mv.shape.kind === "single" ? "" : mv.shape.kind === "burst" ? `, area ${mv.shape.radius}` : `, line ${mv.shape.length}`;
+        return `· ${tag(mv.kind, mv.name)} ${tag(mv.type, mv.type)}, range ${mv.range.min}-${mv.range.max}${shape}${mv.power ? `, power ${tag("dmg", mv.power)}` : ""}`;
       }),
     ];
     const active = this.state ? activeUnit(this.state) : null;
     if (active && active.side === "player" && unit.side === "enemy" && this.selectedMove) {
       const mv = CONTENT.moves[this.selectedMove]!;
       const eff = typeMultiplier(CONTENT.typeChart, mv.type, s.types);
-      if (eff !== 1) lines.push(eff > 1 ? `${mv.name} is super effective (×${eff})` : `${mv.name} is not very effective (×${eff})`);
+      if (eff !== 1) lines.push(eff > 1 ? tag("good", `${mv.name} is super effective (×${eff})`) : tag("bad", `${mv.name} is not very effective (×${eff})`));
     }
     if (active && active.side === "player" && unit.side === "enemy" && this.selectedBall && this.state) {
       const ball = CONTENT.balls[this.selectedBall]!;
       const reason = captureUnavailableReason(this.state, CONTENT, active.id, this.selectedBall, unit.pos);
-      lines.push(reason ? `${ball.name}: ${reason}` : `${ball.name}: ${Math.round(captureChance(CONTENT, unit, this.selectedBall) * 100)}% to catch (ball is used up either way)`);
+      lines.push(reason ? `${ball.name}: ${tag("bad", reason)}` : `${ball.name}: ${tag("good", `${Math.round(captureChance(CONTENT, unit, this.selectedBall) * 100)}% to catch`)} ${tag("dim", "(ball is used up either way)")}`);
     }
-    if (unit.side === "player" && this.knockoutsOf(unit.id) > 0) lines.push(`Knockouts: ${this.knockoutsOf(unit.id)}/${KNOCKOUTS_TO_DEATH}`);
-    this.infoText.setText(lines.filter(Boolean).join("\n"));
+    if (unit.side === "player" && this.knockoutsOf(unit.id) > 0) lines.push(`Knockouts: ${tag("ko", `${this.knockoutsOf(unit.id)}/${KNOCKOUTS_TO_DEATH}`)}`);
+    this.infoText.setMarkup(lines.filter(Boolean).join("\n"));
   }
 
   private knockoutsOf(uid: string): number {
@@ -426,7 +425,7 @@ export class BattleScene extends Phaser.Scene {
     const maxHp = Math.round(CONTENT.species[speciesId]!.stats.hp * CONTENT.rules.hpMultiplier);
     return {
       id, speciesId, side: enemy ? "enemy" : "player", maxHp, hp: member?.hp ?? maxHp,
-      pos: enemy?.pos ?? { x: 0, y: 0 }, statuses: [], cooldowns: {}, usedUltimates: [], captured: false,
+      pos: enemy?.pos ?? { x: 0, y: 0 }, statuses: [], cooldowns: {}, usedUltimates: [], captured: false, movePenalty: 0, damageMultiplier: 1,
     };
   }
 
@@ -629,7 +628,7 @@ export class BattleScene extends Phaser.Scene {
   private pushLog(entry: LogEntry): void {
     this.log.push(entry);
     if (this.log.length > 500) this.log.shift();
-    this.logStrip.setText(this.log.slice(-4).map((l) => l.text).join("\n"));
+    this.logStrip.setMarkup(this.log.slice(-4).map((l) => this.fitLine(l.text, 64)).join("\n"));
     if (this.logOverlay) this.renderLogOverlay();
   }
 
@@ -659,10 +658,15 @@ export class BattleScene extends Phaser.Scene {
     const title = this.add.text(10, 8, `Combat log (${this.log.length})  ·  wheel to scroll  ·  click or L to close`, {
       fontFamily: FONT, fontSize: "12px", color: "#f5d76e",
     });
-    const texts = lines.map((l, i) =>
-      this.add.text(10, 32 + i * lineH, l.text, { fontFamily: FONT, fontSize: "12px", color: LOG_COLORS[l.tone] }),
-    );
-    this.logOverlay = this.add.container(BOARD_X, BOARD_Y, [bg, title, ...texts]).setDepth(10);
+    const body = new RichText(this, 10, 32, w - 20, 12, LOG_COLORS.info, lineH);
+    body.setMarkup(lines.map((l) => this.fitLine(l.text, 76)).join("\n"));
+    this.logOverlay = this.add.container(BOARD_X, BOARD_Y, [bg, title, body]).setDepth(10);
+  }
+
+  /** Keeps a log line on one row: long lines lose their colours and get an ellipsis. */
+  private fitLine(markup: string, maxChars: number): string {
+    const plain = stripMarkup(markup);
+    return plain.length <= maxChars ? markup : `${plain.slice(0, maxChars - 1)}…`;
   }
 
   private tweenPath(unitId: string, path: readonly Point[]): Promise<void> {

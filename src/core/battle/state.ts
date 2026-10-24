@@ -22,6 +22,9 @@ export interface BattleUnit {
   usedUltimates: string[];
   /** Caught in a Poké Ball and removed from the field. */
   captured: boolean;
+  /** Fixed modifiers for this battle, e.g. from expedition fatigue. */
+  readonly movePenalty: number;
+  readonly damageMultiplier: number;
 }
 
 export interface TurnState {

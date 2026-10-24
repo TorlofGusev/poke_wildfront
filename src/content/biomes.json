@@ -1,0 +1,466 @@
+{
+ "route": {
+  "id": "route",
+  "name": "Route",
+  "char": ".",
+  "travelCost": 1,
+  "encounters": {
+   "groupSize": {
+    "min": 2,
+    "max": 3
+   },
+   "entries": [
+    {
+     "speciesId": "pidgey",
+     "weight": 4
+    },
+    {
+     "speciesId": "rattata",
+     "weight": 4
+    },
+    {
+     "speciesId": "spearow",
+     "weight": 2,
+     "maxPerGroup": 1
+    }
+   ]
+  },
+  "arena": {
+   "mapRows": [
+    "............",
+    "..\"\"........",
+    "......#.....",
+    "..##........",
+    "......\"\"....",
+    "......\"\"..#.",
+    "....#.......",
+    "............"
+   ],
+   "deploymentZone": [
+    {
+     "x": 0,
+     "y": 1
+    },
+    {
+     "x": 1,
+     "y": 1
+    },
+    {
+     "x": 0,
+     "y": 2
+    },
+    {
+     "x": 1,
+     "y": 2
+    },
+    {
+     "x": 0,
+     "y": 3
+    },
+    {
+     "x": 1,
+     "y": 3
+    },
+    {
+     "x": 0,
+     "y": 4
+    },
+    {
+     "x": 1,
+     "y": 4
+    },
+    {
+     "x": 0,
+     "y": 5
+    },
+    {
+     "x": 1,
+     "y": 5
+    },
+    {
+     "x": 0,
+     "y": 6
+    },
+    {
+     "x": 1,
+     "y": 6
+    }
+   ],
+   "enemySpawns": [
+    {
+     "x": 10,
+     "y": 1
+    },
+    {
+     "x": 10,
+     "y": 4
+    },
+    {
+     "x": 11,
+     "y": 6
+    },
+    {
+     "x": 9,
+     "y": 2
+    },
+    {
+     "x": 11,
+     "y": 3
+    }
+   ]
+  }
+ },
+ "forest": {
+  "id": "forest",
+  "name": "Viridian Forest",
+  "char": "\"",
+  "travelCost": 2,
+  "encounters": {
+   "groupSize": {
+    "min": 2,
+    "max": 4
+   },
+   "entries": [
+    {
+     "speciesId": "caterpie",
+     "weight": 4
+    },
+    {
+     "speciesId": "weedle",
+     "weight": 4
+    },
+    {
+     "speciesId": "oddish",
+     "weight": 2
+    },
+    {
+     "speciesId": "pikachu",
+     "weight": 1,
+     "maxPerGroup": 1
+    }
+   ]
+  },
+  "arena": {
+   "mapRows": [
+    "..\"\"....##..",
+    "..\"\"........",
+    "......#...\"\"",
+    "..##..#...\"\"",
+    "......mm....",
+    "..\"\"..mm..#.",
+    "..\"\".....##.",
+    "............"
+   ],
+   "deploymentZone": [
+    {
+     "x": 0,
+     "y": 1
+    },
+    {
+     "x": 1,
+     "y": 1
+    },
+    {
+     "x": 0,
+     "y": 2
+    },
+    {
+     "x": 1,
+     "y": 2
+    },
+    {
+     "x": 0,
+     "y": 3
+    },
+    {
+     "x": 1,
+     "y": 3
+    },
+    {
+     "x": 0,
+     "y": 4
+    },
+    {
+     "x": 1,
+     "y": 4
+    },
+    {
+     "x": 0,
+     "y": 5
+    },
+    {
+     "x": 1,
+     "y": 5
+    },
+    {
+     "x": 0,
+     "y": 6
+    },
+    {
+     "x": 1,
+     "y": 6
+    }
+   ],
+   "enemySpawns": [
+    {
+     "x": 10,
+     "y": 1
+    },
+    {
+     "x": 10,
+     "y": 4
+    },
+    {
+     "x": 11,
+     "y": 6
+    },
+    {
+     "x": 9,
+     "y": 2
+    },
+    {
+     "x": 11,
+     "y": 3
+    }
+   ]
+  }
+ },
+ "mountain": {
+  "id": "mountain",
+  "name": "Mountain",
+  "char": "^",
+  "travelCost": 3,
+  "encounters": {
+   "groupSize": {
+    "min": 2,
+    "max": 4
+   },
+   "entries": [
+    {
+     "speciesId": "mankey",
+     "weight": 3
+    },
+    {
+     "speciesId": "spearow",
+     "weight": 3
+    },
+    {
+     "speciesId": "geodude",
+     "weight": 3
+    }
+   ]
+  },
+  "arena": {
+   "mapRows": [
+    "....##......",
+    "............",
+    "..#...##....",
+    "..#.........",
+    "......mm.#..",
+    "....#.mm....",
+    "..........#.",
+    "...##......."
+   ],
+   "deploymentZone": [
+    {
+     "x": 0,
+     "y": 1
+    },
+    {
+     "x": 1,
+     "y": 1
+    },
+    {
+     "x": 0,
+     "y": 2
+    },
+    {
+     "x": 1,
+     "y": 2
+    },
+    {
+     "x": 0,
+     "y": 3
+    },
+    {
+     "x": 1,
+     "y": 3
+    },
+    {
+     "x": 0,
+     "y": 4
+    },
+    {
+     "x": 1,
+     "y": 4
+    },
+    {
+     "x": 0,
+     "y": 5
+    },
+    {
+     "x": 1,
+     "y": 5
+    },
+    {
+     "x": 0,
+     "y": 6
+    },
+    {
+     "x": 1,
+     "y": 6
+    }
+   ],
+   "enemySpawns": [
+    {
+     "x": 10,
+     "y": 1
+    },
+    {
+     "x": 10,
+     "y": 4
+    },
+    {
+     "x": 11,
+     "y": 6
+    },
+    {
+     "x": 9,
+     "y": 2
+    },
+    {
+     "x": 11,
+     "y": 3
+    }
+   ]
+  }
+ },
+ "cave": {
+  "id": "cave",
+  "name": "Diglett's Cave",
+  "char": "c",
+  "travelCost": 2,
+  "encounters": {
+   "groupSize": {
+    "min": 3,
+    "max": 4
+   },
+   "entries": [
+    {
+     "speciesId": "zubat",
+     "weight": 4
+    },
+    {
+     "speciesId": "diglett",
+     "weight": 4
+    },
+    {
+     "speciesId": "geodude",
+     "weight": 2
+    }
+   ]
+  },
+  "arena": {
+   "mapRows": [
+    "############",
+    "......#.....",
+    "..#.........",
+    "....##..#...",
+    "............",
+    "..#....##...",
+    "......#.....",
+    "############"
+   ],
+   "deploymentZone": [
+    {
+     "x": 0,
+     "y": 1
+    },
+    {
+     "x": 1,
+     "y": 1
+    },
+    {
+     "x": 0,
+     "y": 2
+    },
+    {
+     "x": 1,
+     "y": 2
+    },
+    {
+     "x": 0,
+     "y": 3
+    },
+    {
+     "x": 1,
+     "y": 3
+    },
+    {
+     "x": 0,
+     "y": 4
+    },
+    {
+     "x": 1,
+     "y": 4
+    },
+    {
+     "x": 0,
+     "y": 5
+    },
+    {
+     "x": 1,
+     "y": 5
+    },
+    {
+     "x": 0,
+     "y": 6
+    },
+    {
+     "x": 1,
+     "y": 6
+    }
+   ],
+   "enemySpawns": [
+    {
+     "x": 10,
+     "y": 1
+    },
+    {
+     "x": 10,
+     "y": 4
+    },
+    {
+     "x": 11,
+     "y": 6
+    },
+    {
+     "x": 9,
+     "y": 2
+    },
+    {
+     "x": 11,
+     "y": 3
+    }
+   ]
+  }
+ },
+ "town": {
+  "id": "town",
+  "name": "Viridian outskirts",
+  "char": "T",
+  "travelCost": 1
+ },
+ "water": {
+  "id": "water",
+  "name": "Water",
+  "char": "~",
+  "travelCost": null
+ },
+ "trees": {
+  "id": "trees",
+  "name": "Dense trees",
+  "char": "#",
+  "travelCost": null
+ }
+}

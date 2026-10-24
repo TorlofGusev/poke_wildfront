@@ -1,12 +1,16 @@
 import type { BattleContent, BattleScenario } from "../core/battle";
+import type { BiomeDef, FatigueRules, WorldContent, WorldDef } from "../core/expedition";
+import typeChart from "./typeChart.json";
 import balls from "./balls.json";
+import biomes from "./biomes.json";
 import capture from "./capture.json";
+import fatigue from "./fatigue.json";
 import moves from "./moves.json";
+import route2 from "./worlds/route-2.json";
 import rules from "./rules.json";
-import viridianForestAmbush from "./scenarios/viridian-forest-ambush.json";
 import species from "./species.json";
 import statuses from "./statuses.json";
-import typeChart from "./typeChart.json";
+import viridianForestAmbush from "./scenarios/viridian-forest-ambush.json";
 
 export const CONTENT: BattleContent = {
   species,
@@ -29,3 +33,10 @@ export interface ScenarioDef extends BattleScenario {
 export const SCENARIOS: Readonly<Record<string, ScenarioDef>> = {
   [viridianForestAmbush.id]: viridianForestAmbush as ScenarioDef,
 };
+
+export const WORLD_CONTENT: WorldContent = {
+  biomes: biomes as Record<string, BiomeDef>,
+  fatigue: fatigue as FatigueRules,
+};
+
+export const WORLD: WorldDef = route2 as unknown as WorldDef; // shape checked by tests/content.test.ts

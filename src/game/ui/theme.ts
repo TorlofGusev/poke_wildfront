@@ -36,3 +36,29 @@ export const tileToWorld = (p: { x: number; y: number }) => ({
   x: BOARD_X + p.x * TILE + TILE / 2,
   y: BOARD_Y + p.y * TILE + TILE / 2,
 });
+
+const toHex = (n: number) => `#${n.toString(16).padStart(6, "0")}`;
+
+/** Semantic colours for `{key|text}` markup; any Pokémon type name also works as a key. */
+export const MARKUP_COLORS: Record<string, string> = {
+  dmg: "#ff8a5c",
+  heal: "#7ed321",
+  status: "#c58cff",
+  player: "#8fb8f0",
+  enemy: "#f08f8f",
+  num: "#f5d76e",
+  dim: "#8a93a6",
+  good: "#7ed321",
+  bad: "#ff6b6b",
+  basic: "#c8d0e0",
+  special: "#6fc3ff",
+  ultimate: "#ffb347",
+  ko: "#ff5050",
+  title: "#f5d76e",
+};
+
+export function markupColor(key: string): string {
+  if (MARKUP_COLORS[key]) return MARKUP_COLORS[key]!;
+  const typeColor = TYPE_COLORS[key];
+  return typeColor !== undefined ? toHex(typeColor) : "#e8ecf4";
+}

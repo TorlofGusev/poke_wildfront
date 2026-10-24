@@ -222,3 +222,16 @@ describe("statuses and healing", () => {
     expect(r.events).toContainEqual({ type: "healed", unitId: "p", amount: 10, hp: 40 });
   });
 });
+
+describe("player modifiers (fatigue)", () => {
+  it("reduce player movement and damage only", () => {
+    const { state } = createBattle(content, OPEN, [u("p", "slow", "player", 0, 0), u("e", "slow", "enemy", 1, 0)], {
+      playerModifiers: { movePenalty: 1, damageMultiplier: 0.5 },
+    });
+    expect(state.turn?.movePointsLeft).toBe(2);
+    expect(movementPoints(content, unitById(state, "e"))).toBe(3);
+    const r = act(state, { type: "useMove", unitId: "p", moveId: "tackle", target: { x: 1, y: 0 } });
+    // tackle normal 40 vs grass: 40 * 1 * 0.5 / 4 = 5
+    expect(r.events).toContainEqual({ type: "damaged", unitId: "e", amount: 5, hp: 35, source: "move", effectiveness: 1 });
+  });
+});
