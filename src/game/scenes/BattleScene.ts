@@ -32,7 +32,7 @@ import { formatEvent, type LogEntry, type LogTone } from "../ui/combatLog";
 import { describeMove } from "../ui/describeMove";
 import { stripMarkup, tag } from "../ui/markup";
 import { RichText } from "../ui/RichText";
-import { BOARD_X, BOARD_Y, COLORS, FONT, PANEL_X, TILE, TYPE_COLORS, tileToWorld } from "../ui/theme";
+import { BOARD_X, BOARD_Y, COLORS, FONT, PANEL_X, TILE, TYPE_COLORS, tileToWorld, px, PHONE } from "../ui/theme";
 
 type Phase = "deploy" | "battle" | "over";
 
@@ -73,6 +73,9 @@ export class BattleScene extends Phaser.Scene {
   private logStrip!: RichText;
   private logOverlay: Phaser.GameObjects.Container | null = null;
   private logScroll = 0;
+  /** Set while a touch drag scrolls the log, so lifting the finger does not close it. */
+  private logDragged = false;
+  private logOpenedAt = 0;
 
   private overlay!: Phaser.GameObjects.Graphics;
   private units = new Map<string, UnitView>();
@@ -108,19 +111,32 @@ export class BattleScene extends Phaser.Scene {
 
   create(): void {
     this.header = this.add.text(BOARD_X, 16, "", { fontFamily: FONT, fontSize: "20px", color: "#f5d76e" });
-    this.add.text(BOARD_X, 44, this.scenario.name, { fontFamily: FONT, fontSize: "13px", color: COLORS.dim });
+    this.add.text(BOARD_X, 44, this.scenario.name, { fontFamily: FONT, fontSize: px(13), color: COLORS.dim });
     this.drawBoard();
     this.overlay = this.add.graphics();
     this.panel = this.add.container(PANEL_X, 16);
     this.infoText = new RichText(this, PANEL_X, 330, 330, 12);
 
     this.logStrip = new RichText(this, BOARD_X, BOARD_Y + this.grid.height * TILE + 4, 450, 11, COLORS.dim, 15);
-    const logButton = new Button(this, BOARD_X + this.grid.width * TILE - 110, BOARD_Y + this.grid.height * TILE + 6, 110, 22, "Full log [L]", () => this.toggleLogOverlay());
+    const logButton = new Button(this, BOARD_X + this.grid.width * TILE - 110, BOARD_Y + this.grid.height * TILE + 6, 110, 22, PHONE ? "Full log" : "Full log [L]", () => this.toggleLogOverlay());
     logButton.setDepth(5);
     this.input.keyboard?.on("keydown-L", () => this.toggleLogOverlay());
     this.input.on("wheel", (_p: unknown, _o: unknown, _dx: number, dy: number) => {
       if (!this.logOverlay) return;
       this.logScroll = Math.max(0, this.logScroll + Math.sign(dy) * 3);
+      this.renderLogOverlay();
+    });
+    // Touch: drag up/down on the open log to scroll it.
+    let dragY: number | null = null;
+    this.input.on("pointerdown", (p: Phaser.Input.Pointer) => { dragY = this.logOverlay ? p.y : null; });
+    this.input.on("pointerup", () => { dragY = null; });
+    this.input.on("pointermove", (p: Phaser.Input.Pointer) => {
+      if (!this.logOverlay || dragY === null || !p.isDown) return;
+      const lines = Math.trunc((p.y - dragY) / 15);
+      if (lines === 0) return;
+      this.logDragged = true;
+      dragY = p.y;
+      this.logScroll = Math.max(0, this.logScroll + lines);
       this.renderLogOverlay();
     });
 
@@ -255,7 +271,7 @@ export class BattleScene extends Phaser.Scene {
     this.hoveredMove = null;
     let y = 0;
     const text = (s: string, color: string = COLORS.text, size = 13) => {
-      const t = this.add.text(0, y, s, { fontFamily: FONT, fontSize: `${size}px`, color, wordWrap: { width: 330 } });
+      const t = this.add.text(0, y, s, { fontFamily: FONT, fontSize: px(size), color, wordWrap: { width: 330 } });
       this.panel.add(t);
       y += t.height + 4;
     };
@@ -347,7 +363,7 @@ export class BattleScene extends Phaser.Scene {
         y += 30;
       }
       const half = 161;
-      this.panel.add(new Button(this, 0, y, half, 26, "End turn [Space]", () => this.playerEndTurn()));
+      this.panel.add(new Button(this, 0, y, half, 26, PHONE ? "End turn" : "End turn [Space]", () => this.playerEndTurn()));
       this.panel.add(new Button(this, half + 8, y, half, 26, "Retreat", () => this.playerRetreat()));
       y += 30;
     } else {
@@ -667,6 +683,7 @@ export class BattleScene extends Phaser.Scene {
       return;
     }
     this.logScroll = 0;
+    this.logOpenedAt = this.time.now;
     this.renderLogOverlay();
   }
 
@@ -682,9 +699,13 @@ export class BattleScene extends Phaser.Scene {
     const end = this.log.length - this.logScroll;
     const lines = this.log.slice(Math.max(0, end - visible), end);
     const bg = this.add.rectangle(0, 0, w, h, 0x0b0e14, 0.94).setOrigin(0).setStrokeStyle(1, 0x5a6785).setInteractive();
-    bg.on("pointerdown", () => this.toggleLogOverlay());
-    const title = this.add.text(10, 8, `Combat log (${this.log.length})  ·  wheel to scroll  ·  click or L to close`, {
-      fontFamily: FONT, fontSize: "12px", color: "#f5d76e",
+    bg.on("pointerup", () => {
+      // Ignore the finger lifting from the tap that opened the log.
+      if (!this.logDragged && this.time.now - this.logOpenedAt > 300) this.toggleLogOverlay();
+      this.logDragged = false;
+    });
+    const title = this.add.text(10, 8, `Combat log (${this.log.length})  ·  scroll or drag  ·  tap or L to close`, {
+      fontFamily: FONT, fontSize: px(12), color: "#f5d76e",
     });
     const body = new RichText(this, 10, 32, w - 20, 12, LOG_COLORS.info, lineH);
     body.setMarkup(lines.map((l) => this.fitLine(l.text, 76)).join("\n"));

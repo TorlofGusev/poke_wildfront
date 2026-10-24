@@ -1,7 +1,9 @@
 import Phaser from "phaser";
+import { px } from "../ui/theme";
 import { DISCLAIMER, GAME_VERSION } from "../../core/version";
 import { session } from "../session";
 import { Button } from "../ui/Button";
+import { addFullscreenButton } from "../ui/fullscreen";
 
 export class TitleScene extends Phaser.Scene {
   private confirmNew = false;
@@ -36,17 +38,18 @@ export class TitleScene extends Phaser.Scene {
       this.scene.start("Overworld");
     });
     y += 42;
+    if (addFullscreenButton(this, width / 2 - 140, y, 280)) y += 42;
     if (session.loadError) {
       this.add
         .text(width / 2, y + 10, `Your save could not be loaded (${session.loadError}).`, {
-          fontFamily: "monospace", fontSize: "12px", color: "#ff6b6b",
+          fontFamily: "monospace", fontSize: px(12), color: "#ff6b6b",
         })
         .setOrigin(0.5);
     }
 
     this.add
       .text(width / 2, height - 30, `v${GAME_VERSION} · ${DISCLAIMER}`, {
-        fontFamily: "monospace", fontSize: "11px", color: "#7a8499", align: "center", wordWrap: { width: width - 40 },
+        fontFamily: "monospace", fontSize: px(11), color: "#7a8499", align: "center", wordWrap: { width: width - 40 },
       })
       .setOrigin(0.5);
   }

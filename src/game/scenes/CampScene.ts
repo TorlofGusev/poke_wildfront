@@ -4,7 +4,7 @@ import { maxHpOf } from "../../core/battle";
 import { KNOCKOUTS_TO_DEATH, MAX_PARTY_SIZE, moveBetweenPartyAndStorage, type PartyMember } from "../../core/party";
 import { session } from "../session";
 import { Button } from "../ui/Button";
-import { COLORS, FONT, TYPE_COLORS } from "../ui/theme";
+import { COLORS, FONT, TYPE_COLORS, px } from "../ui/theme";
 
 /** Camp site: party/storage management after resting. */
 export class CampScene extends Phaser.Scene {
@@ -29,7 +29,7 @@ export class CampScene extends Phaser.Scene {
       return o;
     };
     const label = (x: number, y: number, s: string, color: string = COLORS.text, size = 13) =>
-      add(this.add.text(x, y, s, { fontFamily: FONT, fontSize: `${size}px`, color }));
+      add(this.add.text(x, y, s, { fontFamily: FONT, fontSize: px(size), color }));
 
     label(16, 16, "Camp", "#f5d76e", 20);
     label(16, 44, "Click a Pokémon to move it between party and storage.", COLORS.dim, 12);
@@ -49,7 +49,7 @@ export class CampScene extends Phaser.Scene {
     y += 50;
     add(new Button(this, 656, y, 288, 28, "➜ Break camp", () => this.scene.start("Overworld")));
     y += 44;
-    if (this.message) add(this.add.text(656, y, this.message, { fontFamily: FONT, fontSize: "12px", color: COLORS.good, wordWrap: { width: 288 } }));
+    if (this.message) add(this.add.text(656, y, this.message, { fontFamily: FONT, fontSize: px(12), color: COLORS.good, wordWrap: { width: 288 } }));
 
     if (roster.fallen.length) {
       label(656, 400, "Fallen", COLORS.bad, 14);
@@ -65,9 +65,9 @@ export class CampScene extends Phaser.Scene {
     const bg = this.add.rectangle(0, 0, 300, 38, 0x1c2130).setOrigin(0).setStrokeStyle(1, m.knockouts === 2 ? 0xd0021b : 0x3a4560);
     bg.setInteractive({ useHandCursor: true }).on("pointerdown", onClick);
     const dot = this.add.circle(19, 19, 12, TYPE_COLORS[s.types[0]!] ?? 0x888888);
-    const name = this.add.text(38, 4, s.name, { fontFamily: FONT, fontSize: "13px", color: COLORS.text });
-    const hp = this.add.text(38, 21, m.hp > 0 ? `HP ${m.hp}/${max}` : "fainted", { fontFamily: FONT, fontSize: "11px", color: m.hp > 0 ? COLORS.dim : COLORS.bad });
-    const ko = this.add.text(292, 19, `KO ${pips}`, { fontFamily: FONT, fontSize: "12px", color: m.knockouts === 2 ? COLORS.bad : COLORS.dim }).setOrigin(1, 0.5);
+    const name = this.add.text(38, 4, s.name, { fontFamily: FONT, fontSize: px(13), color: COLORS.text });
+    const hp = this.add.text(38, 21, m.hp > 0 ? `HP ${m.hp}/${max}` : "fainted", { fontFamily: FONT, fontSize: px(11), color: m.hp > 0 ? COLORS.dim : COLORS.bad });
+    const ko = this.add.text(292, 19, `KO ${pips}`, { fontFamily: FONT, fontSize: px(12), color: m.knockouts === 2 ? COLORS.bad : COLORS.dim }).setOrigin(1, 0.5);
     return this.add.container(x, y, [bg, dot, name, hp, ko]);
   }
 

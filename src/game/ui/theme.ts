@@ -85,3 +85,15 @@ export function markupColor(key: string): string {
   const typeColor = TYPE_COLORS[key];
   return typeColor !== undefined ? toHex(typeColor) : "#e8ecf4";
 }
+
+/** Touch device with a small screen (a phone): small text is bumped up so it stays readable once scaled down. */
+export const PHONE =
+  typeof window !== "undefined" &&
+  window.matchMedia?.("(pointer: coarse)").matches === true &&
+  Math.min(window.screen.width, window.screen.height) < 600;
+
+const SMALL_TEXT_BUMP = PHONE ? 2 : 0;
+
+/** Font size in px for small UI text (≤ 13px), larger on phones. */
+export const fs = (n: number): number => (n <= 13 ? n + SMALL_TEXT_BUMP : n);
+export const px = (n: number): string => `${fs(n)}px`;

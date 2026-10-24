@@ -1,9 +1,11 @@
 import Phaser from "phaser";
 import { parseMarkup } from "./markup";
-import { FONT, markupStyle } from "./theme";
+import { FONT, fs, markupStyle } from "./theme";
 
 /** Multi-colour, word-wrapped text built from `{key|text}` markup. */
 export class RichText extends Phaser.GameObjects.Container {
+  private readonly fontSize: number;
+  private readonly lineHeight: number;
   private readonly measure: Phaser.GameObjects.Text;
 
   constructor(
@@ -11,11 +13,13 @@ export class RichText extends Phaser.GameObjects.Container {
     x: number,
     y: number,
     private readonly wrapWidth: number,
-    private readonly fontSize = 12,
+    fontSize = 12,
     private readonly baseColor = "#e8ecf4",
-    private readonly lineHeight = fontSize + 4,
+    lineHeight = fontSize + 4,
   ) {
     super(scene, x, y);
+    this.fontSize = fs(fontSize);
+    this.lineHeight = lineHeight + (this.fontSize - fontSize);
     this.measure = scene.make.text({ text: "", style: this.style("#000") }, false);
     scene.add.existing(this);
   }

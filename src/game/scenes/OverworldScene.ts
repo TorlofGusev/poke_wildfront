@@ -15,9 +15,10 @@ import { samePoint, type Point } from "../../core/grid";
 import { KNOCKOUTS_TO_DEATH, restAll } from "../../core/party";
 import { session } from "../session";
 import { Button } from "../ui/Button";
+import { addFullscreenButton } from "../ui/fullscreen";
 import { tag } from "../ui/markup";
 import { RichText } from "../ui/RichText";
-import { COLORS, FONT, TYPE_COLORS } from "../ui/theme";
+import { COLORS, FONT, TYPE_COLORS, px } from "../ui/theme";
 
 const T = 28;
 const MAP_X = 16;
@@ -49,15 +50,15 @@ export class OverworldScene extends Phaser.Scene {
 
   create(): void {
     this.add.text(MAP_X, 16, WORLD.name, { fontFamily: FONT, fontSize: "20px", color: "#f5d76e" });
-    this.add.text(MAP_X, 40, "Click a tile to travel. Red markers are wild Pokémon (number = group size). The tent is your last camp.", {
-      fontFamily: FONT, fontSize: "11px", color: COLORS.dim,
+    this.add.text(MAP_X, 40, "Tap a tile to travel. Red markers: wild Pokémon (number = group size). Tent: your last camp.", {
+      fontFamily: FONT, fontSize: px(11), color: COLORS.dim, wordWrap: { width: 672 },
     });
     this.drawMap();
     this.preview = this.add.graphics();
     this.markers = this.add.container(0, 0);
     this.token = this.add.container(0, 0, [
       this.add.circle(0, 0, 10, 0xf5d76e).setStrokeStyle(2, 0x10141c),
-      this.add.text(0, 0, "★", { fontFamily: FONT, fontSize: "12px", color: "#10141c" }).setOrigin(0.5),
+      this.add.text(0, 0, "★", { fontFamily: FONT, fontSize: px(12), color: "#10141c" }).setOrigin(0.5),
     ]).setDepth(5);
     this.hud = new RichText(this, HUD_X, 16, 240, 12);
     this.buttons = this.add.container(HUD_X, 0);
@@ -119,7 +120,7 @@ export class OverworldScene extends Phaser.Scene {
     for (const e of world.encounters) {
       const { x, y } = this.center(e.pos);
       this.markers.add(this.add.circle(x, y, 10, 0xd0021b).setStrokeStyle(2, 0x10141c));
-      this.markers.add(this.add.text(x, y, String(e.species.length), { fontFamily: FONT, fontSize: "12px", color: "#ffffff", fontStyle: "bold" }).setOrigin(0.5));
+      this.markers.add(this.add.text(x, y, String(e.species.length), { fontFamily: FONT, fontSize: px(12), color: "#ffffff", fontStyle: "bold" }).setOrigin(0.5));
     }
     const c = this.center(world.pos);
     if (!this.moving) this.token.setPosition(c.x, c.y);
@@ -160,10 +161,12 @@ export class OverworldScene extends Phaser.Scene {
     campButton.setEnabled(!this.moving);
     this.buttons.add(campButton);
     y += 30;
-    const note = this.add.text(0, y, "Restores HP and fatigue. Wild groups move.", { fontFamily: FONT, fontSize: "10px", color: COLORS.dim });
+    const note = this.add.text(0, y, "Restores HP and fatigue. Wild groups move.", { fontFamily: FONT, fontSize: px(10), color: COLORS.dim, wordWrap: { width: 240 } });
     this.buttons.add(note);
-    y += 20;
-    this.buttons.add(new Button(this, 0, y, 240, 28, "⌂ Title", () => this.scene.start("Title")));
+    y += note.height + 6;
+    this.buttons.add(new Button(this, 0, y, 116, 28, "⌂ Title", () => this.scene.start("Title")));
+    const full = addFullscreenButton(this, 124, y, 116);
+    if (full) this.buttons.add(full);
     y += 40;
     if (this.message) {
       const msg = new RichText(this, 0, y, 240, 12);
