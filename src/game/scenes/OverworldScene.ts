@@ -1,6 +1,6 @@
 import Phaser from "phaser";
-import { CONTENT, WORLD, WORLD_CONTENT } from "../../content";
-import { maxHpOf } from "../../core/battle";
+import { CONTENT, PROGRESSION, WORLD, WORLD_CONTENT } from "../../content";
+import { wildSetup } from "../../core/progression";
 import {
   biomeAt,
   fatigueLevel,
@@ -12,7 +12,7 @@ import {
   type WorldState,
 } from "../../core/expedition";
 import { samePoint, type Point } from "../../core/grid";
-import { KNOCKOUTS_TO_DEATH, restAll } from "../../core/party";
+import { KNOCKOUTS_TO_DEATH, memberMaxHp, restAll } from "../../core/party";
 import { session } from "../session";
 import { Button } from "../ui/Button";
 import { addFullscreenButton } from "../ui/fullscreen";
@@ -147,7 +147,7 @@ export class OverworldScene extends Phaser.Scene {
       tag("title", "Party"),
       ...roster.party.map((m) => {
         const s = CONTENT.species[m.speciesId]!;
-        const hpKey = m.hp === 0 ? "ko" : m.hp / maxHpOf(CONTENT, m.speciesId) > 0.5 ? "heal" : "dmg";
+        const hpKey = m.hp === 0 ? "ko" : m.hp / memberMaxHp(CONTENT, PROGRESSION, m) > 0.5 ? "heal" : "dmg";
         const pips = "●".repeat(m.knockouts) + "○".repeat(KNOCKOUTS_TO_DEATH - m.knockouts);
         return `${tag(s.types[0]!, s.name.padEnd(11))}${tag(hpKey, m.hp === 0 ? "fainted" : `${m.hp} HP`)} ${tag(m.knockouts ? "ko" : "dim", pips)}`;
       }),
@@ -225,14 +225,14 @@ export class OverworldScene extends Phaser.Scene {
     this.render();
 
     if (result.encounter) {
-      const scenario = wildScenario(WORLD_CONTENT, result.encounter);
+      const scenario = wildScenario(WORLD_CONTENT, result.encounter, (s, lv) => wildSetup(CONTENT, PROGRESSION, s, lv));
       this.scene.start("Battle", { scenario, encounterId: result.encounter.id });
     }
   }
 
   private makeCamp(): void {
     const world = makeCamp(WORLD_CONTENT, WORLD, this.world);
-    session.update({ ...session.game, world, roster: restAll(CONTENT, session.game.roster) });
+    session.update({ ...session.game, world, roster: restAll(CONTENT, PROGRESSION, session.game.roster) });
     this.scene.start("Camp");
   }
 }

@@ -1,0 +1,120 @@
+{
+ "potion": {
+  "id": "potion",
+  "name": "Potion",
+  "description": "Restores 40 HP outside battle.",
+  "kind": "potion",
+  "price": 100,
+  "heal": 40
+ },
+ "super-potion": {
+  "id": "super-potion",
+  "name": "Super Potion",
+  "description": "Restores 90 HP outside battle.",
+  "kind": "potion",
+  "price": 250,
+  "heal": 90
+ },
+ "charcoal": {
+  "id": "charcoal",
+  "name": "Charcoal",
+  "description": "Fire moves deal 20% more damage.",
+  "kind": "held",
+  "price": 500,
+  "mods": {
+   "typeDamage": {
+    "fire": 1.2
+   }
+  }
+ },
+ "mystic-water": {
+  "id": "mystic-water",
+  "name": "Mystic Water",
+  "description": "Water moves deal 20% more damage.",
+  "kind": "held",
+  "price": 500,
+  "mods": {
+   "typeDamage": {
+    "water": 1.2
+   }
+  }
+ },
+ "miracle-seed": {
+  "id": "miracle-seed",
+  "name": "Miracle Seed",
+  "description": "Grass moves deal 20% more damage.",
+  "kind": "held",
+  "price": 500,
+  "mods": {
+   "typeDamage": {
+    "grass": 1.2
+   }
+  }
+ },
+ "magnet": {
+  "id": "magnet",
+  "name": "Magnet",
+  "description": "Electric moves deal 20% more damage.",
+  "kind": "held",
+  "price": 500,
+  "mods": {
+   "typeDamage": {
+    "electric": 1.2
+   }
+  }
+ },
+ "hard-stone": {
+  "id": "hard-stone",
+  "name": "Hard Stone",
+  "description": "Rock moves deal 20% more damage.",
+  "kind": "held",
+  "price": 500,
+  "mods": {
+   "typeDamage": {
+    "rock": 1.2
+   }
+  }
+ },
+ "sharp-beak": {
+  "id": "sharp-beak",
+  "name": "Sharp Beak",
+  "description": "Flying moves deal 20% more damage.",
+  "kind": "held",
+  "price": 500,
+  "mods": {
+   "typeDamage": {
+    "flying": 1.2
+   }
+  }
+ },
+ "quick-claw": {
+  "id": "quick-claw",
+  "name": "Quick Claw",
+  "description": "+1 movement.",
+  "kind": "held",
+  "price": 800,
+  "mods": {
+   "moveBonus": 1
+  }
+ },
+ "leftovers": {
+  "id": "leftovers",
+  "name": "Leftovers",
+  "description": "Heals 6% max HP at the start of each turn.",
+  "kind": "held",
+  "price": 900,
+  "mods": {
+   "healPerTurn": 0.06
+  }
+ },
+ "muscle-band": {
+  "id": "muscle-band",
+  "name": "Muscle Band",
+  "description": "All moves deal 10% more damage.",
+  "kind": "held",
+  "price": 700,
+  "mods": {
+   "damageDealt": 1.1
+  }
+ }
+}

@@ -23,7 +23,11 @@
      "weight": 2,
      "maxPerGroup": 1
     }
-   ]
+   ],
+   "levels": {
+    "min": 3,
+    "max": 5
+   }
   },
   "arena": {
    "mapRows": [
@@ -138,7 +142,11 @@
      "weight": 1,
      "maxPerGroup": 1
     }
-   ]
+   ],
+   "levels": {
+    "min": 3,
+    "max": 6
+   }
   },
   "arena": {
    "mapRows": [
@@ -248,7 +256,11 @@
      "speciesId": "geodude",
      "weight": 3
     }
-   ]
+   ],
+   "levels": {
+    "min": 7,
+    "max": 10
+   }
   },
   "arena": {
    "mapRows": [
@@ -358,7 +370,11 @@
      "speciesId": "geodude",
      "weight": 2
     }
-   ]
+   ],
+   "levels": {
+    "min": 8,
+    "max": 11
+   }
   },
   "arena": {
    "mapRows": [

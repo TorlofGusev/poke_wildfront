@@ -1,0 +1,134 @@
+{
+ "vigor": {
+  "id": "vigor",
+  "name": "Vigor",
+  "description": "+10% HP.",
+  "stackable": true,
+  "stats": {
+   "hp": 0.1
+  }
+ },
+ "power": {
+  "id": "power",
+  "name": "Power",
+  "description": "+8% Attack.",
+  "stackable": true,
+  "stats": {
+   "attack": 0.08
+  }
+ },
+ "guard": {
+  "id": "guard",
+  "name": "Guard",
+  "description": "+8% Defense.",
+  "stackable": true,
+  "stats": {
+   "defense": 0.08
+  }
+ },
+ "agility": {
+  "id": "agility",
+  "name": "Agility",
+  "description": "+4 Speed.",
+  "stackable": true,
+  "stats": {
+   "speed": 4
+  }
+ },
+ "sturdy-shell": {
+  "id": "sturdy-shell",
+  "name": "Sturdy Shell",
+  "description": "Takes 15% less damage.",
+  "mods": {
+   "damageTaken": 0.85
+  }
+ },
+ "bulldozer": {
+  "id": "bulldozer",
+  "name": "Bulldozer",
+  "description": "Pushing a foe into an obstacle deals 6 extra damage.",
+  "mods": {
+   "impactBonus": 6
+  }
+ },
+ "regrowth": {
+  "id": "regrowth",
+  "name": "Regrowth",
+  "description": "Heals 5% max HP at the start of each turn.",
+  "mods": {
+   "healPerTurn": 0.05
+  }
+ },
+ "opening-blow": {
+  "id": "opening-blow",
+  "name": "Opening Blow",
+  "description": "+30% damage against foes at full HP.",
+  "mods": {
+   "fullHpTargetDamage": 1.3
+  }
+ },
+ "last-stand": {
+  "id": "last-stand",
+  "name": "Last Stand",
+  "description": "+30% damage while below half HP.",
+  "mods": {
+   "lowHpDamage": 1.3
+  }
+ },
+ "brutal": {
+  "id": "brutal",
+  "name": "Brutal",
+  "description": "+10% damage.",
+  "mods": {
+   "damageDealt": 1.1
+  }
+ },
+ "lingering": {
+  "id": "lingering",
+  "name": "Lingering",
+  "description": "Statuses it inflicts last 1 turn longer.",
+  "mods": {
+   "statusDurationBonus": 1
+  }
+ },
+ "exploit": {
+  "id": "exploit",
+  "name": "Exploit",
+  "description": "+25% damage against foes with a status effect.",
+  "mods": {
+   "vsStatusDamage": 1.25
+  }
+ },
+ "quick-step": {
+  "id": "quick-step",
+  "name": "Quick Step",
+  "description": "+1 movement.",
+  "mods": {
+   "moveBonus": 1
+  }
+ },
+ "fleet-foot": {
+  "id": "fleet-foot",
+  "name": "Fleet Foot",
+  "description": "+1 movement.",
+  "mods": {
+   "moveBonus": 1
+  }
+ },
+ "ambush": {
+  "id": "ambush",
+  "name": "Ambush",
+  "description": "+25% damage against foes at full HP.",
+  "mods": {
+   "fullHpTargetDamage": 1.25
+  }
+ },
+ "evasive": {
+  "id": "evasive",
+  "name": "Evasive",
+  "description": "Takes 10% less damage.",
+  "mods": {
+   "damageTaken": 0.9
+  }
+ }
+}

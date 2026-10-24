@@ -1,4 +1,5 @@
-import { CONTENT, WORLD, WORLD_CONTENT } from "../content";
+import { CONTENT, PROGRESSION, WORLD, WORLD_CONTENT } from "../content";
+import { toUnitSetup } from "../core/progression";
 import { newWorld } from "../core/expedition";
 import type { DeployCandidate } from "../core/battle";
 import { newMember, type GameState } from "../core/party";
@@ -8,14 +9,18 @@ const SAVE_KEY = "pokemon-wildfront.save";
 
 const STARTERS = ["bulbasaur", "charmander", "squirtle", "pikachu", "geodude", "pidgey"];
 
+/** Starters begin at the role level, so the first role choice is available right away. */
+const STARTING_LEVEL = 5;
+
 const freshWorld = () => newWorld(WORLD_CONTENT, WORLD, Date.now() >>> 0);
 
 export function newGame(): GameState {
   return {
-    roster: { party: STARTERS.map((s, i) => newMember(CONTENT, s, i + 1)), storage: [], fallen: [] },
-    inventory: { balls: { "poke-ball": 5, "great-ball": 2, "ultra-ball": 1 } },
+    roster: { party: STARTERS.map((s, i) => newMember(CONTENT, PROGRESSION, s, i + 1, STARTING_LEVEL)), storage: [], fallen: [] },
+    inventory: { balls: { "poke-ball": 5, "great-ball": 2, "ultra-ball": 1 }, items: { potion: 2 } },
     nextUid: STARTERS.length + 1,
     world: freshWorld(),
+    money: 500,
   };
 }
 
@@ -37,7 +42,11 @@ class Session {
     try {
       const raw = localStorage.getItem(SAVE_KEY);
       if (!raw) return false;
-      this.game = loadSaveFile(CONTENT, raw, { freshWorld, startPos: WORLD.start }).game;
+      this.game = loadSaveFile(CONTENT, raw, {
+        freshWorld,
+        startPos: WORLD.start,
+        upgradeMember: (m) => ({ ...newMember(CONTENT, PROGRESSION, m.speciesId, 0, STARTING_LEVEL), uid: m.uid, hp: m.hp, knockouts: m.knockouts }),
+      }).game;
       this.loadError = null;
       return true;
     } catch (e) {
@@ -60,7 +69,10 @@ class Session {
   }
 
   partyCandidates(): DeployCandidate[] {
-    return this.game.roster.party.map((m) => ({ id: m.uid, speciesId: m.speciesId, hp: m.hp }));
+    return this.game.roster.party.map((m) => {
+      const { speciesId: _s, hp: _h, ...setup } = toUnitSetup(CONTENT, PROGRESSION, m);
+      return { id: m.uid, speciesId: m.speciesId, hp: m.hp, setup };
+    });
   }
 }
 

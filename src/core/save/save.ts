@@ -2,7 +2,7 @@ import type { BattleContent } from "../battle/content";
 import type { WorldState } from "../expedition/world";
 import { KNOCKOUTS_TO_DEATH, MAX_PARTY_SIZE, type GameState, type PartyMember } from "../party/roster";
 
-export const SAVE_VERSION = 3;
+export const SAVE_VERSION = 4;
 
 export interface SaveFile {
   readonly version: number;
@@ -21,6 +21,8 @@ export interface MigrationContext {
   readonly freshWorld: () => WorldState;
   /** The map's start tile, used where an old save only named a fixed camp site. */
   readonly startPos: { readonly x: number; readonly y: number };
+  /** Gives a pre-progression Pokémon (v3) its level, moves and progression fields. */
+  readonly upgradeMember: (m: { uid: string; speciesId: string; hp: number; knockouts: number }) => PartyMember;
 }
 
 /** One function per version step: MIGRATIONS[n] turns a version-n save into version n+1. */
@@ -31,6 +33,27 @@ const MIGRATIONS: Record<number, (save: RawSave, ctx: MigrationContext) => RawSa
   2: (save, ctx) => {
     const game = save.game as { world: Record<string, unknown> };
     return { ...save, version: 3, game: { ...game, world: { ...game.world, lastCamp: ctx.startPos } } };
+  },
+  // v4 adds levels, roles, talents, moves, held items, money and wild group levels.
+  3: (save, ctx) => {
+    type V3Member = Parameters<MigrationContext["upgradeMember"]>[0];
+    const game = save.game as {
+      roster: Record<"party" | "storage" | "fallen", V3Member[]>;
+      inventory: Record<string, unknown>;
+      world: { encounters: { species: string[] }[] } & Record<string, unknown>;
+    };
+    const up = (list: V3Member[]) => list.map(ctx.upgradeMember);
+    return {
+      ...save,
+      version: 4,
+      game: {
+        ...game,
+        roster: { party: up(game.roster.party), storage: up(game.roster.storage), fallen: up(game.roster.fallen) },
+        inventory: { ...game.inventory, items: {} },
+        money: 300,
+        world: { ...game.world, encounters: game.world.encounters.map((e) => ({ ...e, levels: e.species.map(() => 4) })) },
+      },
+    };
   },
 };
 
@@ -74,10 +97,14 @@ function validateGame(content: BattleContent, game: GameState): void {
     if (where !== "fallen" && m.knockouts >= KNOCKOUTS_TO_DEATH) fail(`${m.uid} has 3 knockouts but is not fallen`);
     if (where === "fallen" && m.knockouts < KNOCKOUTS_TO_DEATH) fail(`${m.uid} is fallen without 3 knockouts`);
     if (typeof m.hp !== "number" || m.hp < 0) fail(`bad HP for ${m.uid}`);
+    if (!Number.isInteger(m.level) || m.level < 1) fail(`bad level for ${m.uid}`);
+    if (!Array.isArray(m.knownMoves) || !Array.isArray(m.activeMoves) || !Array.isArray(m.talents)) fail(`missing moves or talents for ${m.uid}`);
+    if (m.activeMoves.some((mv) => !m.knownMoves.includes(mv))) fail(`${m.uid} has an active move it does not know`);
   };
   party.forEach((m) => check(m, "party"));
   storage.forEach((m) => check(m, "storage"));
   fallen.forEach((m) => check(m, "fallen"));
+  if (typeof game.money !== "number" || game.money < 0) fail("bad money");
   const w = game.world;
   if (!w || typeof w.fatigue !== "number" || w.fatigue < 0 || !w.pos || !Array.isArray(w.encounters)) fail("missing or invalid world state");
   for (const [id, n] of Object.entries(game.inventory.balls ?? {})) {

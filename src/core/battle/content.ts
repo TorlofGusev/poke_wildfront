@@ -15,6 +15,11 @@ export interface SpeciesDef {
   readonly moves: readonly string[];
   /** Base capture chance before ball, HP and status modifiers (0–1). */
   readonly captureBase: number;
+  /** Moves learned on reaching a level (in addition to `moves`, known from the start). */
+  readonly learnset?: readonly { readonly level: number; readonly move: string }[];
+  /** The two roles this species can specialise into. */
+  readonly roles?: readonly string[];
+  readonly evolution?: { readonly level: number; readonly into: string };
 }
 
 /** basic: once per turn, free. special: has a cooldown. ultimate: once per battle (Valour later). */
@@ -74,6 +79,8 @@ export interface BallDef {
   readonly id: string;
   readonly name: string;
   readonly multiplier: number;
+  /** Poké Mart price in Pokédollars. */
+  readonly price?: number;
 }
 
 export interface CaptureRules {

@@ -1,5 +1,6 @@
 import { describe, expect, it } from "vitest";
-import { WORLD, WORLD_CONTENT, CONTENT } from "../../src/content";
+import { WORLD, WORLD_CONTENT, CONTENT, PROGRESSION } from "../../src/content";
+import { wildSetup } from "../../src/core/progression";
 import {
   addTravelFatigue,
   biomeAt,
@@ -37,6 +38,7 @@ describe("fatigue", () => {
 describe("encounter generation", () => {
   const table: EncounterTable = {
     groupSize: { min: 2, max: 4 },
+    levels: { min: 3, max: 5 },
     entries: [{ speciesId: "a", weight: 5 }, { speciesId: "b", weight: 1, maxPerGroup: 1 }],
   };
 
@@ -50,6 +52,8 @@ describe("encounter generation", () => {
       expect(g.species.length).toBeLessThanOrEqual(4);
       expect(g.species.filter((s) => s === "b").length).toBeLessThanOrEqual(1);
       g.species.forEach((s) => seen.add(s));
+      expect(g.levels).toHaveLength(g.species.length);
+      for (const lv of g.levels) expect(lv >= 3 && lv <= 5).toBe(true);
     }
     expect(seen).toEqual(new Set(["a", "b"]));
   });
@@ -99,7 +103,7 @@ describe("world", () => {
   });
 
   it("routes around wild groups unless one is the destination", () => {
-    const g = { id: "g", pos: { x: 5, y: 13 }, biome: "route", species: ["pidgey"] };
+    const g = { id: "g", pos: { x: 5, y: 13 }, biome: "route", species: ["pidgey"], levels: [3] };
     const w = { ...world, encounters: [g] };
     const around = travel(WORLD_CONTENT, WORLD, w, { x: 6, y: 13 });
     expect(around.path.some((p) => key(p) === "5,13")).toBe(false);
@@ -130,7 +134,8 @@ describe("world", () => {
 
   it("builds a valid wild battle for every spawned group", () => {
     for (const g of world.encounters) {
-      const scenario = wildScenario(WORLD_CONTENT, g);
+      const scenario = wildScenario(WORLD_CONTENT, g, (s, lv) => wildSetup(CONTENT, PROGRESSION, s, lv));
+      expect(scenario.enemies.map((e) => e.level)).toEqual(g.levels);
       expect(scenario.captureAllowed).toBe(true);
       expect(() => createBattle(CONTENT, scenario.mapRows, [
         { id: "p", speciesId: "pikachu", side: "player", pos: scenario.deploymentZone[0]! },

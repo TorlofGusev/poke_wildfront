@@ -21,6 +21,8 @@ export interface DeployCandidate {
   readonly id: string;
   readonly speciesId: string;
   readonly hp: number;
+  /** Level, stats, moves and modifiers from progression; species defaults otherwise. */
+  readonly setup?: Omit<UnitSetup, "id" | "side" | "pos" | "speciesId" | "hp">;
 }
 
 export interface Placement {
@@ -72,7 +74,7 @@ export function lockDeployment(
   if (errors.length > 0) throw new Error(`Invalid deployment: ${errors.join("; ")}`);
   const players: UnitSetup[] = placements.map((p) => {
     const member = party.find((m) => m.id === p.unitId)!;
-    return { id: member.id, speciesId: member.speciesId, side: "player", pos: p.pos, hp: member.hp };
+    return { ...member.setup, id: member.id, speciesId: member.speciesId, side: "player", pos: p.pos, hp: member.hp };
   });
   return createBattle(content, scenario.mapRows, [...players, ...scenario.enemies], options);
 }

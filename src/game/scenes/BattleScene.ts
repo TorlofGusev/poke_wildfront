@@ -3,7 +3,7 @@ import { CONTENT, SCENARIOS, type ScenarioDef } from "../../content";
 import { captureChance, captureTargets, captureUnavailableReason } from "../../core/capture";
 import { KNOCKOUTS_TO_DEATH, resolveBattle, type BattleSummary } from "../../core/party";
 import { session } from "../session";
-import { WORLD, WORLD_CONTENT } from "../../content";
+import { PROGRESSION, WORLD, WORLD_CONTENT } from "../../content";
 import { fatigueLevel, fatigueModifiers, removeEncounter, returnToLastCamp } from "../../core/expedition";
 import { nextRandom } from "../../core/rng";
 import { planTurn } from "../../core/ai";
@@ -589,7 +589,7 @@ export class BattleScene extends Phaser.Scene {
     if (this.state && this.state.outcome !== "ongoing" && this.phase !== "over") {
       this.phase = "over";
       // Knockouts, deaths, captures and used balls become permanent here, and are autosaved.
-      const result = resolveBattle(CONTENT, session.game, this.state, { countsKnockouts: this.scenario.countsKnockouts ?? true });
+      const result = resolveBattle(CONTENT, PROGRESSION, session.game, this.state, { countsKnockouts: this.scenario.countsKnockouts ?? true });
       let game = result.game;
       if (this.state.outcome === "victory" && this.encounterId) {
         game = { ...game, world: removeEncounter(game.world, this.encounterId) };

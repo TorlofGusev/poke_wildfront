@@ -41,6 +41,8 @@ export interface EncounterGroup {
   readonly pos: Point;
   readonly biome: string;
   readonly species: readonly string[];
+  /** Level of each species entry. */
+  readonly levels: readonly number[];
 }
 
 export interface WorldState {
@@ -93,7 +95,7 @@ export function respawnEncounters(content: WorldContent, def: WorldDef, world: W
       const pos = free.splice(idx.value, 1)[0]!;
       const rolled = generateEncounter(table, rng);
       rng = rolled.rngState;
-      groups.push({ id: `wild${nextId++}`, pos, biome: zone.biome, species: rolled.species });
+      groups.push({ id: `wild${nextId++}`, pos, biome: zone.biome, species: rolled.species, levels: rolled.levels });
     }
   }
   return { ...world, encounters: groups, rngState: rng, nextEncounterId: nextId };
@@ -155,13 +157,17 @@ export function removeEncounter(world: WorldState, id: string): WorldState {
 }
 
 /** Builds the battle for a wild group on its biome's arena. */
-export function wildScenario(content: WorldContent, group: EncounterGroup): BattleScenario & { name: string; captureAllowed: boolean } {
+export function wildScenario(
+  content: WorldContent,
+  group: EncounterGroup,
+  setup: (speciesId: string, level: number) => Omit<UnitSetup, "id" | "side" | "pos">,
+): BattleScenario & { name: string; captureAllowed: boolean } {
   const biome = content.biomes[group.biome]!;
   const arena = biome.arena;
   if (!arena) throw new Error(`biome ${biome.id} has no arena`);
   if (group.species.length > arena.enemySpawns.length) throw new Error(`arena for ${biome.id} has too few spawn points`);
   const enemies: UnitSetup[] = group.species.map((speciesId, i) => ({
-    id: `${group.id}-${i}`, speciesId, side: "enemy", pos: arena.enemySpawns[i]!,
+    ...setup(speciesId, group.levels[i] ?? 1), id: `${group.id}-${i}`, side: "enemy", pos: arena.enemySpawns[i]!,
   }));
   return {
     id: group.id, name: `Wild Pokémon · ${biome.name}`, mapRows: arena.mapRows, deploymentZone: arena.deploymentZone,

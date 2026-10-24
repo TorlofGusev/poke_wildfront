@@ -1,7 +1,6 @@
 import Phaser from "phaser";
-import { CONTENT } from "../../content";
-import { maxHpOf } from "../../core/battle";
-import { KNOCKOUTS_TO_DEATH, MAX_PARTY_SIZE, moveBetweenPartyAndStorage, type PartyMember } from "../../core/party";
+import { CONTENT, PROGRESSION } from "../../content";
+import { KNOCKOUTS_TO_DEATH, MAX_PARTY_SIZE, memberMaxHp, moveBetweenPartyAndStorage, type PartyMember } from "../../core/party";
 import { session } from "../session";
 import { Button } from "../ui/Button";
 import { COLORS, FONT, TYPE_COLORS, px } from "../ui/theme";
@@ -60,7 +59,7 @@ export class CampScene extends Phaser.Scene {
 
   private memberCard(x: number, y: number, m: PartyMember, onClick: () => void): Phaser.GameObjects.Container {
     const s = CONTENT.species[m.speciesId]!;
-    const max = maxHpOf(CONTENT, m.speciesId);
+    const max = memberMaxHp(CONTENT, PROGRESSION, m);
     const pips = "●".repeat(m.knockouts) + "○".repeat(KNOCKOUTS_TO_DEATH - m.knockouts);
     const bg = this.add.rectangle(0, 0, 300, 38, 0x1c2130).setOrigin(0).setStrokeStyle(1, m.knockouts === 2 ? 0xd0021b : 0x3a4560);
     bg.setInteractive({ useHandCursor: true }).on("pointerdown", onClick);

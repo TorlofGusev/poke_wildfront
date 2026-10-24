@@ -1,0 +1,42 @@
+{
+ "tank": {
+  "id": "tank",
+  "name": "Tank",
+  "description": "Holds the line and shrugs off hits.",
+  "talents": [
+   "sturdy-shell",
+   "bulldozer",
+   "regrowth"
+  ]
+ },
+ "striker": {
+  "id": "striker",
+  "name": "Striker",
+  "description": "Deals heavy damage, best at finishing or opening fights.",
+  "talents": [
+   "opening-blow",
+   "last-stand",
+   "brutal"
+  ]
+ },
+ "controller": {
+  "id": "controller",
+  "name": "Controller",
+  "description": "Slows, poisons and exploits weakened foes.",
+  "talents": [
+   "lingering",
+   "exploit",
+   "quick-step"
+  ]
+ },
+ "skirmisher": {
+  "id": "skirmisher",
+  "name": "Skirmisher",
+  "description": "Fast, mobile, hard to pin down.",
+  "talents": [
+   "fleet-foot",
+   "ambush",
+   "evasive"
+  ]
+ }
+}

@@ -1,15 +1,21 @@
-import { maxHpOf } from "../battle/battle";
 import type { BattleContent } from "../battle/content";
+import {
+  defaultActiveMoves,
+  gainXp,
+  memberStats,
+  movesKnownAt,
+  type Progress,
+  type ProgressEvent,
+  type ProgressionContent,
+} from "../progression";
 import type { BattleState } from "../battle/state";
 import type { WorldState } from "../expedition/world";
 
 export const MAX_PARTY_SIZE = 6;
 export const KNOCKOUTS_TO_DEATH = 3;
 
-export interface PartyMember {
+export interface PartyMember extends Progress {
   readonly uid: string;
-  readonly speciesId: string;
-  readonly hp: number;
   /** Persistent combat knockouts, 0–3. Never reset by healing, resting or evolution. */
   readonly knockouts: number;
 }
@@ -25,6 +31,8 @@ export interface Roster {
 
 export interface Inventory {
   readonly balls: Readonly<Record<string, number>>;
+  /** Potions and unequipped held items. */
+  readonly items: Readonly<Record<string, number>>;
 }
 
 export interface GameState {
@@ -33,11 +41,23 @@ export interface GameState {
   /** Counter for unique Pokémon ids. */
   readonly nextUid: number;
   readonly world: WorldState;
+  /** Pokédollars. */
+  readonly money: number;
 }
 
-export function newMember(content: BattleContent, speciesId: string, uidNumber: number, hp?: number): PartyMember {
-  return { uid: `pk${uidNumber}`, speciesId, hp: hp ?? maxHpOf(content, speciesId), knockouts: 0 };
+export function newMember(
+  content: BattleContent, prog: ProgressionContent, speciesId: string, uidNumber: number, level: number, hp?: number,
+): PartyMember {
+  const knownMoves = movesKnownAt(content.species[speciesId]!, level);
+  const base: PartyMember = {
+    uid: `pk${uidNumber}`, speciesId, level, xp: 0, role: null, talents: [], heldItem: null, knownMoves,
+    activeMoves: defaultActiveMoves(content, prog, speciesId, knownMoves), hp: 0, knockouts: 0,
+  };
+  return { ...base, hp: hp ?? memberMaxHp(content, prog, base) };
 }
+
+export const memberMaxHp = (content: BattleContent, prog: ProgressionContent, m: Progress): number =>
+  memberStats(content, prog, m).maxHp;
 
 /** Adds a Pokémon to the party, or to storage when the party is full. */
 export function addPokemon(game: GameState, member: PartyMember): { game: GameState; to: "party" | "storage" } {
@@ -63,8 +83,8 @@ export function moveBetweenPartyAndStorage(roster: Roster, uid: string): Roster 
 }
 
 /** Full rest: restores HP of every living Pokémon. Knockout counters are untouched. */
-export function restAll(content: BattleContent, roster: Roster): Roster {
-  const heal = (m: PartyMember) => ({ ...m, hp: maxHpOf(content, m.speciesId) });
+export function restAll(content: BattleContent, prog: ProgressionContent, roster: Roster): Roster {
+  const heal = (m: PartyMember) => ({ ...m, hp: memberMaxHp(content, prog, m) });
   return { ...roster, party: roster.party.map(heal), storage: roster.storage.map(heal) };
 }
 
@@ -73,6 +93,11 @@ export interface BattleSummary {
   readonly knockedOut: readonly string[];
   readonly fallen: readonly string[];
   readonly captured: readonly { readonly member: PartyMember; readonly to: "party" | "storage" }[];
+  /** XP given to each deployed Pokémon (victory only). */
+  readonly xp: number;
+  readonly money: number;
+  /** Level-ups, new moves and evolutions, by Pokémon uid. */
+  readonly progress: Readonly<Record<string, readonly ProgressEvent[]>>;
 }
 
 export interface ResolveOptions {
@@ -86,6 +111,7 @@ export interface ResolveOptions {
  */
 export function resolveBattle(
   content: BattleContent,
+  prog: ProgressionContent,
   game: GameState,
   battle: BattleState,
   options: ResolveOptions = {},
@@ -116,9 +142,32 @@ export function resolveBattle(
     inventory: { ...game.inventory, balls: { ...battle.balls } },
   };
 
+  // Victory rewards: every deployed Pokémon that is still in the party shares the full XP.
+  const defeatedLevels = battle.units.filter((u) => u.side === "enemy" && (u.hp <= 0 || u.captured)).reduce((s, u) => s + u.level, 0);
+  const won = battle.outcome === "victory";
+  const xp = won ? defeatedLevels * prog.rules.xpPerEnemyLevel : 0;
+  const money = won ? defeatedLevels * prog.rules.moneyPerEnemyLevel : 0;
+  const progress: Record<string, ProgressEvent[]> = {};
+  if (xp > 0) {
+    const deployed = new Set(battle.units.filter((u) => u.side === "player").map((u) => u.id));
+    next = {
+      ...next,
+      roster: {
+        ...next.roster,
+        party: next.roster.party.map((m) => {
+          if (!deployed.has(m.uid)) return m;
+          const r = gainXp(content, prog, m, xp);
+          progress[m.uid] = r.events;
+          return r.member;
+        }),
+      },
+    };
+  }
+  next = { ...next, money: next.money + money };
+
   const captured: { member: PartyMember; to: "party" | "storage" }[] = [];
   for (const u of battle.units.filter((x) => x.captured)) {
-    const member = newMember(content, u.speciesId, next.nextUid, u.hp);
+    const member = newMember(content, prog, u.speciesId, next.nextUid, u.level, u.hp);
     const added = addPokemon({ ...next, nextUid: next.nextUid + 1 }, member);
     next = added.game;
     captured.push({ member, to: added.to });
@@ -126,8 +175,8 @@ export function resolveBattle(
 
   if (battle.outcome === "defeat") {
     // Prototype stand-in for "return to the last camp": the party rests there.
-    next = { ...next, roster: restAll(content, next.roster) };
+    next = { ...next, roster: restAll(content, prog, next.roster) };
   }
 
-  return { game: next, summary: { outcome: battle.outcome, knockedOut, fallen: fallenIds, captured } };
+  return { game: next, summary: { outcome: battle.outcome, knockedOut, fallen: fallenIds, captured, xp, money, progress } };
 }

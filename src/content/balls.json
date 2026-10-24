@@ -1,5 +1,20 @@
 {
-  "poke-ball":  { "id": "poke-ball",  "name": "Poké Ball",  "multiplier": 1 },
-  "great-ball": { "id": "great-ball", "name": "Great Ball", "multiplier": 1.5 },
-  "ultra-ball": { "id": "ultra-ball", "name": "Ultra Ball", "multiplier": 2 }
+ "poke-ball": {
+  "id": "poke-ball",
+  "name": "Poké Ball",
+  "multiplier": 1,
+  "price": 100
+ },
+ "great-ball": {
+  "id": "great-ball",
+  "name": "Great Ball",
+  "multiplier": 1.5,
+  "price": 250
+ },
+ "ultra-ball": {
+  "id": "ultra-ball",
+  "name": "Ultra Ball",
+  "multiplier": 2,
+  "price": 600
+ }
 }

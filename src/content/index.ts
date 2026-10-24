@@ -1,5 +1,10 @@
 import type { BattleContent, BattleScenario } from "../core/battle";
 import type { BiomeDef, FatigueRules, WorldContent, WorldDef } from "../core/expedition";
+import type { ItemDef, ProgressionContent, RoleDef, TalentDef } from "../core/progression";
+import items from "./items.json";
+import progression from "./progression.json";
+import roles from "./roles.json";
+import talents from "./talents.json";
 import typeChart from "./typeChart.json";
 import balls from "./balls.json";
 import biomes from "./biomes.json";
@@ -40,3 +45,10 @@ export const WORLD_CONTENT: WorldContent = {
 };
 
 export const WORLD: WorldDef = route2 as unknown as WorldDef; // shape checked by tests/content.test.ts
+
+export const PROGRESSION: ProgressionContent = {
+  roles: roles as Record<string, RoleDef>,
+  talents: talents as Record<string, TalentDef>,
+  items: items as unknown as Record<string, ItemDef>,
+  rules: progression,
+};
