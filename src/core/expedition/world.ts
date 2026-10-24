@@ -156,6 +156,22 @@ export function removeEncounter(world: WorldState, id: string): WorldState {
   return { ...world, encounters: world.encounters.filter((e) => e.id !== id) };
 }
 
+/**
+ * The part of a wild group that actually fights: never more Pokémon than the player can field
+ * (healthy party members, max 3), so a lone starter is not swarmed. Keeps the strongest members.
+ */
+export function effectiveGroup(group: EncounterGroup, healthyPartyMembers: number): EncounterGroup {
+  const cap = Math.max(1, Math.min(3, healthyPartyMembers));
+  if (group.species.length <= cap) return group;
+  const keep = group.levels
+    .map((lv, i) => ({ lv, i }))
+    .sort((a, b) => b.lv - a.lv || a.i - b.i)
+    .slice(0, cap)
+    .map((e) => e.i)
+    .sort((a, b) => a - b);
+  return { ...group, species: keep.map((i) => group.species[i]!), levels: keep.map((i) => group.levels[i]!) };
+}
+
 /** Builds the battle for a wild group on its biome's arena. */
 export function wildScenario(
   content: WorldContent,

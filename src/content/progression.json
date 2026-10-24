@@ -1,5 +1,5 @@
 {
- "roleLevel": 5,
+ "roleLevel": 3,
  "maxLevel": 30,
  "xpPerLevel": 30,
  "xpPerEnemyLevel": 6,
@@ -8,5 +8,16 @@
  "pointsPerLevel": 1,
  "evolutionPoints": 2,
  "candyBonus": 1,
- "candiesPerVictory": 1
+ "candiesPerVictory": 1,
+ "talentLevels": [
+  4,
+  6,
+  8,
+  10,
+  12,
+  14,
+  16,
+  18,
+  20
+ ]
 }

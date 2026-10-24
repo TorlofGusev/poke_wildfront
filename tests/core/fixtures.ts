@@ -51,11 +51,11 @@ import type { ProgressionContent } from "../../src/core/progression";
 /** Minimal progression rules for tests. */
 export const prog: ProgressionContent = {
   roles: {
-    striker: { id: "striker", name: "Striker", description: "", talents: ["brutal"] },
-    tank: { id: "tank", name: "Tank", description: "", talents: ["shell"] },
+    striker: { id: "striker", name: "Striker", description: "", tree: [{ talent: "power", level: 6, col: 0 }, { talent: "brutal", level: 7, col: 0, requires: ["power"] }] },
+    tank: { id: "tank", name: "Tank", description: "", tree: [{ talent: "shell", level: 6, col: 0 }] },
   },
   talents: {
-    power: { id: "power", name: "Power", description: "", stackable: true, stats: { attack: 20 } },
+    power: { id: "power", name: "Power", description: "", stats: { attack: 20 } },
     brutal: { id: "brutal", name: "Brutal", description: "", mods: { damageDealt: 2 } },
     shell: { id: "shell", name: "Shell", description: "", mods: { damageTaken: 0.5 } },
   },
@@ -63,7 +63,7 @@ export const prog: ProgressionContent = {
     potion: { id: "potion", name: "Potion", description: "", kind: "potion", price: 100, heal: 20 },
     claw: { id: "claw", name: "Claw", description: "", kind: "held", price: 300, mods: { moveBonus: 1 } },
   },
-  rules: { roleLevel: 5, maxLevel: 30, xpPerLevel: 10, pointsPerLevel: 1, evolutionPoints: 2, candyBonus: 1, candiesPerVictory: 1, xpPerEnemyLevel: 5, moneyPerEnemyLevel: 10, maxActiveMoves: 3 },
+  rules: { roleLevel: 5, talentLevels: [6, 7], maxLevel: 30, xpPerLevel: 10, pointsPerLevel: 1, evolutionPoints: 2, candyBonus: 1, candiesPerVictory: 1, xpPerEnemyLevel: 5, moneyPerEnemyLevel: 10, maxActiveMoves: 3 },
 };
 
 /** A party member with default progression fields. */

@@ -23,11 +23,14 @@ try {
     await page.waitForFunction(() => document.querySelector("canvas"));
     await page.waitForTimeout(800);
   });
-  await step("new game creates a save", async () => {
+  await step("new game shows the starter choice; the playtest team creates a save", async () => {
     await page.mouse.click(480, 276);
     await page.waitForTimeout(600);
+    if (await save()) throw new Error("a save was created before choosing a starter");
+    await page.mouse.click(480, 476);
+    await page.waitForTimeout(600);
     const s = await save();
-    if (!s || s.game.roster.party.length !== 6) throw new Error("no save with a 6-Pokémon party");
+    if (!s || s.game.roster.party.length !== 6) throw new Error("no save with the 6-Pokémon playtest team");
   });
   await step("walking into a wild group opens deployment", async () => {
     const s = await save();

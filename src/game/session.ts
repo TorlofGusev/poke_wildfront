@@ -7,18 +7,21 @@ import { loadSaveFile, SaveError, toSaveFile } from "../core/save";
 
 const SAVE_KEY = "pokemon-wildfront.save";
 
-const STARTERS = ["bulbasaur", "charmander", "squirtle", "pikachu", "geodude", "pidgey"];
+/** The classic choice of one. */
+export const STARTERS = ["bulbasaur", "charmander", "squirtle"];
+/** Fixed team for quick playtesting. */
+export const PLAYTEST_TEAM = ["bulbasaur", "charmander", "squirtle", "pikachu", "geodude", "pidgey"];
 
-/** Starters begin at the role level, so the first role choice is available right away. */
+/** Starters begin above the role level, so the first role choice is available right away. */
 const STARTING_LEVEL = 5;
 
 const freshWorld = () => newWorld(WORLD_CONTENT, WORLD, Date.now() >>> 0);
 
-export function newGame(): GameState {
+export function newGame(team: readonly string[] = PLAYTEST_TEAM): GameState {
   return {
-    roster: { party: STARTERS.map((s, i) => newMember(CONTENT, PROGRESSION, s, i + 1, STARTING_LEVEL)), storage: [], fallen: [] },
+    roster: { party: team.map((s, i) => newMember(CONTENT, PROGRESSION, s, i + 1, STARTING_LEVEL)), storage: [], fallen: [] },
     inventory: { balls: { "poke-ball": 5, "great-ball": 2, "ultra-ball": 1 }, items: { potion: 2, candy: 3 } },
-    nextUid: STARTERS.length + 1,
+    nextUid: team.length + 1,
     world: freshWorld(),
     money: 500,
   };
@@ -66,8 +69,8 @@ class Session {
     }
   }
 
-  start(): void {
-    this.update(newGame());
+  start(team: readonly string[]): void {
+    this.update(newGame(team));
   }
 
   partyCandidates(): DeployCandidate[] {

@@ -3,6 +3,7 @@ import { CONTENT, PROGRESSION, WORLD, WORLD_CONTENT } from "../../content";
 import { pendingChoice, wildSetup } from "../../core/progression";
 import {
   biomeAt,
+  effectiveGroup,
   fatigueLevel,
   makeCamp,
   travel,
@@ -84,6 +85,11 @@ export class OverworldScene extends Phaser.Scene {
     this.render();
   }
 
+  /** Party members able to fight; wild groups never outnumber them (see effectiveGroup). */
+  private healthy(): number {
+    return session.game.roster.party.filter((m) => m.hp > 0).length;
+  }
+
   private get world(): WorldState {
     return session.game.world;
   }
@@ -129,7 +135,8 @@ export class OverworldScene extends Phaser.Scene {
       const { x, y } = this.center(p.pos);
       this.markers.add(this.add.circle(x, y, 6, 0xffffff).setStrokeStyle(2, 0xd0021b));
     }
-    for (const e of world.encounters) {
+    for (const raw of world.encounters) {
+      const e = effectiveGroup(raw, this.healthy());
       const { x, y } = this.center(e.pos);
       // Wild groups are visible: the strongest member stands on the map, with the group size.
       this.markers.add(this.add.ellipse(x, y + 8, 22, 8, 0xd0021b, 0.6).setStrokeStyle(1, 0xd0021b));
@@ -178,15 +185,12 @@ export class OverworldScene extends Phaser.Scene {
     const h = this.hud.setMarkup(lines.join("\n"));
     this.buttons.removeAll(true);
     let y = 16 + h + 10;
-    const campButton = new Button(this, 0, y, 116, 28, "⛺ Camp", () => this.makeCamp());
-    campButton.setEnabled(!this.moving);
-    this.buttons.add(campButton);
+    // One button: the camp screen manages the party, and resting there is a separate choice.
     const pending = roster.party.some((m) => pendingChoice(PROGRESSION, m) || m.unspentPoints > 0);
-    this.buttons.add(new Button(this, 124, y, 116, 28, pending ? "★ Party" : "☰ Party", () => this.scene.start("Party")).setHighlighted(pending));
-    y += 30;
-    const note = this.add.text(0, y, "Camping restores HP and fatigue. Wild groups move.", { fontFamily: FONT, fontSize: px(10), color: COLORS.dim, wordWrap: { width: 240 } });
-    this.buttons.add(note);
-    y += note.height + 6;
+    const campButton = new Button(this, 0, y, 240, 28, pending ? "★ Camp (level-ups waiting)" : "⛺ Camp", () => this.scene.start("Party"));
+    campButton.setEnabled(!this.moving).setHighlighted(pending);
+    this.buttons.add(campButton);
+    y += 36;
     if (here.id === "town") {
       this.buttons.add(new Button(this, 0, y, 240, 28, "🛒 Poké Mart", () => this.scene.start("Shop")));
       y += 34;
@@ -215,7 +219,8 @@ export class OverworldScene extends Phaser.Scene {
       this.preview.fillRect(MAP_X + p.x * T + 4, MAP_Y + p.y * T + 4, T - 8, T - 8);
     }
     const after = Math.min(WORLD_CONTENT.fatigue.max, this.world.fatigue + cost);
-    const enc = this.world.encounters.find((e) => samePoint(e.pos, t));
+    const rawEnc = this.world.encounters.find((e) => samePoint(e.pos, t));
+    const enc = rawEnc ? effectiveGroup(rawEnc, this.healthy()) : undefined;
     const hint = `${tag("num", `${path.length} tiles`)}, fatigue ${tag("dmg", `+${cost}`)} → ${after} (${fatigueLevel(WORLD_CONTENT.fatigue, after).name})${enc ? `\n${tag("enemy", "Wild group — battle!")}\n${enc.species.map((sp, i) => `${tag(`foe:${CONTENT.species[sp]!.types[0]}`, CONTENT.species[sp]!.name)} Lv ${enc.levels[i]}`).join("\n")}` : ""}`;
     this.message = hint;
     this.renderHud();
@@ -254,14 +259,9 @@ export class OverworldScene extends Phaser.Scene {
     this.render();
 
     if (result.encounter) {
-      const scenario = wildScenario(WORLD_CONTENT, result.encounter, (s, lv) => wildSetup(CONTENT, PROGRESSION, s, lv));
+      const scenario = wildScenario(WORLD_CONTENT, effectiveGroup(result.encounter, this.healthy()), (s, lv) => wildSetup(CONTENT, PROGRESSION, s, lv));
       this.scene.start("Battle", { scenario, encounterId: result.encounter.id });
     }
   }
 
-  private makeCamp(): void {
-    const world = makeCamp(WORLD_CONTENT, WORLD, this.world);
-    session.update({ ...session.game, world, roster: restAll(CONTENT, PROGRESSION, session.game.roster) });
-    this.scene.start("Party", { camped: true });
-  }
 }

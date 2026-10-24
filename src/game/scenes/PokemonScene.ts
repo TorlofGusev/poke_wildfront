@@ -18,7 +18,11 @@ import {
   chooseRole,
   chooseTalent,
   memberStats,
+  nodeState,
+  nodeTalent,
   pendingChoice,
+  talentPointsAt,
+  type TreeNode,
   roleOptions,
   setActiveMoves,
   talentOptions,
@@ -34,8 +38,8 @@ import { RichText } from "../ui/RichText";
 import { COLORS, FONT, TYPE_COLORS, px } from "../ui/theme";
 
 const LIST_X = 16;
-const DETAIL_X = 336;
-const DETAIL_W = 608;
+const DETAIL_X = 16;
+const DETAIL_W = 928;
 
 /** One Pokémon: level-ups (stat points and talent tree), moves, equipment. */
 export class PokemonScene extends Phaser.Scene {
@@ -44,6 +48,8 @@ export class PokemonScene extends Phaser.Scene {
   private message = "";
   private tab: Tab = "levelup";
   private selectedTalent: string | null = null;
+  private selectedNodeLevel = 0;
+  private previewRole: string | null = null;
 
   constructor() {
     super("Pokemon");
@@ -82,13 +88,22 @@ export class PokemonScene extends Phaser.Scene {
     const text = (x: number, y: number, s: string, color: string = COLORS.text, size = 13) =>
       add(this.add.text(x, y, s, { fontFamily: FONT, fontSize: px(size), color }));
 
-    add(new Button(this, LIST_X, 12, 150, 26, "← Party", () => this.scene.start("Party")));
-    text(LIST_X + 170, 18, `₽${money}`, "#f5d76e", 14);
-
-    // Quick switch between Pokémon of the same list (party, or storage when viewing a stored one).
+    add(new Button(this, LIST_X, 12, 120, 26, "← Camp", () => this.scene.start("Party")));
+    // ◀ ▶ cycle through the same list (party, or storage when viewing a stored Pokémon).
     const list = roster.party.some((m) => m.uid === this.selected) ? roster.party : roster.storage;
-    text(LIST_X, 48, list === roster.party ? `Party ${roster.party.length}/${MAX_PARTY_SIZE}` : "Storage", COLORS.dim, 12);
-    list.slice(0, 10).forEach((m, i) => add(this.card(LIST_X, 66 + i * 40, m)));
+    const idx = list.findIndex((m) => m.uid === this.selected);
+    const go = (d: number) => {
+      const next = list[(idx + d + list.length) % list.length];
+      if (!next) return;
+      this.selected = next.uid;
+      this.selectedTalent = null;
+      this.message = "";
+      this.render();
+    };
+    add(new Button(this, LIST_X + 132, 12, 40, 26, " ◀", () => go(-1)).setEnabled(list.length > 1));
+    text(LIST_X + 180, 17, `${idx + 1}/${list.length}${list === roster.storage ? " in storage" : ""}`, COLORS.dim, 13);
+    add(new Button(this, LIST_X + 270, 12, 40, 26, " ▶", () => go(1)).setEnabled(list.length > 1));
+    text(LIST_X + 330, 18, `₽${money}`, "#f5d76e", 14);
 
     const member = this.selected ? findMember(session.game, this.selected) : undefined;
     if (member) this.renderDetail(member, add);
@@ -131,7 +146,7 @@ export class PokemonScene extends Phaser.Scene {
       `Role: ${role ? tag("special", role.name) : tag("dim", m.level < PROGRESSION.rules.roleLevel ? `chosen at Lv ${PROGRESSION.rules.roleLevel}` : "not chosen")}  Held: ${held ? tag("num", held.name) : tag("dim", "nothing")}`,
     ];
     let y = 48;
-    if (this.textures.exists(portraitKey(m.speciesId))) add(this.add.image(DETAIL_X + DETAIL_W - 32, 72, portraitKey(m.speciesId)).setDisplaySize(64, 64));
+    if (this.textures.exists(portraitKey(m.speciesId))) add(this.add.image(DETAIL_X + DETAIL_W - 32, 12 + 32, portraitKey(m.speciesId)).setDisplaySize(64, 64));
     y += add(new RichText(this, DETAIL_X, y, DETAIL_W - 76, 13)).setMarkup(header.join("\n")) + 8;
 
     // Tabs. A ★ marks where a decision is waiting.
@@ -209,114 +224,134 @@ export class PokemonScene extends Phaser.Scene {
       add(new Button(this, bx.x, y, w, 24, label, onClick));
       bx.x += w + 6;
     };
-    for (const [id, n] of Object.entries(session.game.inventory.items)) {
-      const item = PROGRESSION.items[id];
-      if (item?.kind === "potion" && n > 0)
-        chip(`Use ${item.name} (+${item.heal} HP, ${n} left)`, () => this.act(() => session.update(usePotion(CONTENT, PROGRESSION, session.game, m.uid, id)), `${s.name} recovered HP.`));
-    }
     const inParty = session.game.roster.party.some((x) => x.uid === m.uid);
     chip(inParty ? "Send to storage" : "Move to party", () => this.act(() => session.update({ ...session.game, roster: moveBetweenPartyAndStorage(session.game.roster, m.uid) })));
   }
 
   /**
-   * Talent tree: the role's talents and the Pokémon's type talents by unlock level (left),
-   * and the exact rules of the selected talent with a Learn button (right).
+   * Talent tree: role buttons on top (preview / choose), then the tree by level rows with
+   * lines to prerequisites (left), and the exact rules of the selected talent (right).
    */
   private renderTalents(m: PartyMember, y: number, add: <T extends Phaser.GameObjects.GameObject>(o: T) => T): void {
     const s = CONTENT.species[m.speciesId]!;
     const pending = pendingChoice(PROGRESSION, m);
-    const treeW = 300;
-    const infoX = DETAIL_X + treeW + 12;
-    const infoW = DETAIL_W - treeW - 12;
+    const canChooseRole = !m.role && m.level >= PROGRESSION.rules.roleLevel;
+    const roles = m.role ? [m.role] : roleOptions(CONTENT, m);
+    const shown = m.role ?? (this.previewRole && roles.includes(this.previewRole) ? this.previewRole : roles[0]!);
 
-    // Before the role is chosen, compare both roles; the role is picked on the right.
-    const roleIds = m.role ? [m.role] : roleOptions(CONTENT, m);
-    const intro = m.role
-      ? `${tag("special", PROGRESSION.roles[m.role]!.name)} tree · ${pending === "talent" ? tag("num", "★ 1 talent to learn") : tag("dim", `next pick at Lv ${m.level + 1}`)}`
-      : m.level >= PROGRESSION.rules.roleLevel
-        ? tag("num", "★ Choose a role first. Tap a talent to see exactly what it does.")
-        : tag("dim", `A role is chosen at Lv ${PROGRESSION.rules.roleLevel}. Preview its talents here.`);
-    y += add(new RichText(this, DETAIL_X, y, DETAIL_W, 12)).setMarkup(intro) + 6;
+    // Top row: which tree is shown, and the role choice.
+    let x = DETAIL_X;
+    if (!m.role) {
+      for (const r of roles) {
+        add(new Button(this, x, y, 140, 26, `Preview ${PROGRESSION.roles[r]!.name}`, () => {
+          this.previewRole = r;
+          this.selectedTalent = null;
+          this.render();
+        }).setHighlighted(r === shown));
+        x += 146;
+      }
+      if (canChooseRole) {
+        const def = PROGRESSION.roles[shown]!;
+        add(new Button(this, x + 8, y, 200, 26, `★ Become ${def.name}`, () =>
+          this.act(() => this.updateMember(m, (x2) => chooseRole(CONTENT, PROGRESSION, x2, shown)), `${s.name} is now a ${def.name}.`)).setHighlighted(true));
+      }
+      const note = canChooseRole ? "Role choice is permanent." : `Roles unlock at Lv ${PROGRESSION.rules.roleLevel}.`;
+      add(new RichText(this, x + (canChooseRole ? 216 : 8), y + 6, 300, 11)).setMarkup(tag("dim", note));
+    } else {
+      const free = talentPointsAt(PROGRESSION, m.level) - m.talents.length;
+      const next = PROGRESSION.rules.talentLevels.find((l) => l > m.level);
+      add(new RichText(this, x, y + 5, 520, 12)).setMarkup(
+        `${tag("special", PROGRESSION.roles[shown]!.name)} tree · ${free > 0 ? tag("num", `★ ${free} talent point${free > 1 ? "s" : ""}`) : tag("dim", next ? `next talent point at Lv ${next}` : "all talent points used")}`);
+    }
+    y += 34;
 
-    const typeTalents = Object.values(PROGRESSION.talents).filter((t) => t.requiresType && s.types.includes(t.requiresType)).map((t) => t.id);
-    const available = new Set(pending === "talent" ? talentOptions(PROGRESSION, m, s.types) : []);
-    const node = (x: number, ny: number, w: number, id: string) => {
+    // The tree: one row per level, label once per row, up to 3 columns, lines to prerequisites.
+    const tree = PROGRESSION.roles[shown]!.tree;
+    const rows = [...new Set(tree.map((n) => n.level))].sort((a, b) => a - b);
+    const labelW = 46;
+    const colW = 158;
+    const rowH = 32;
+    const pos = (n: TreeNode) => ({ x: DETAIL_X + labelW + n.col * (colW + 8), y: y + rows.indexOf(n.level) * rowH });
+    const types = s.types;
+    const lines = add(this.add.graphics());
+    for (const n of tree) {
+      for (const r of n.requires ?? []) {
+        const parent = tree.find((p2) => nodeTalent(PROGRESSION, p2, types) === r);
+        if (!parent) continue;
+        const a = pos(parent);
+        const b = pos(n);
+        const learned = m.talents.includes(r);
+        // Elbow connector: down from the parent, across, down into the child.
+        const ax = a.x + colW / 2;
+        const bx = b.x + colW / 2;
+        const midY = b.y - 4;
+        lines.lineStyle(2, learned ? 0x7ed321 : 0x4a5675, 1);
+        lines.lineBetween(ax, a.y + 24, ax, midY);
+        lines.lineBetween(ax, midY, bx, midY);
+        lines.lineBetween(bx, midY, bx, b.y);
+      }
+    }
+    rows.forEach((lv, i) => add(new RichText(this, DETAIL_X, y + i * rowH + 5, labelW, 12)).setMarkup(m.level >= lv ? tag("num", `Lv ${lv}`) : tag("dim", `Lv ${lv}`)));
+    const canLearn = new Set(m.role === shown ? talentOptions(PROGRESSION, m, types) : []);
+    for (const n of tree) {
+      const id = nodeTalent(PROGRESSION, n, types);
+      if (!id) continue;
       const t = PROGRESSION.talents[id]!;
-      const taken = m.talents.filter((x2) => x2 === id).length;
-      const locked = (t.minLevel ?? 0) > m.level;
-      const state = t.stackable ? "" : taken ? "✓ " : available.has(id) ? "★ " : locked ? `Lv${t.minLevel} ` : "";
-      const label = `${state}${t.name}${t.stackable && taken ? ` ×${taken}` : ""}`;
-      const b = new Button(this, x, ny, w, 24, label, () => {
+      const state = m.role === shown ? nodeState(PROGRESSION, m, n, types) : "locked-path";
+      const mark = state === "learned" ? "✓ " : canLearn.has(id) ? "★ " : "";
+      const p2 = pos(n);
+      const b = new Button(this, p2.x, p2.y, colW, 24, `${mark}${t.name}`, () => {
         this.selectedTalent = id;
+        this.selectedNodeLevel = n.level;
         this.render();
       }).setHighlighted(this.selectedTalent === id);
-      if (locked && !taken) b.setAlpha(0.55);
+      if (state === "locked-level" || state === "locked-path") b.setAlpha(0.6);
       add(b);
-    };
-
-    // Two columns: both roles side by side before the choice, or one role's tree in rows of two.
-    const colW = Math.floor((treeW - 6) / 2);
-    let bottom = y;
-    if (roleIds.length > 1) {
-      roleIds.forEach((roleId, col) => {
-        const x = DETAIL_X + col * (colW + 6);
-        let ry = y;
-        add(new RichText(this, x, ry, colW, 12)).setMarkup(tag("special", PROGRESSION.roles[roleId]!.name));
-        ry += 18;
-        const ids = [...PROGRESSION.roles[roleId]!.talents].sort((a, b) => (PROGRESSION.talents[a]!.minLevel ?? 0) - (PROGRESSION.talents[b]!.minLevel ?? 0));
-        for (const id of ids) {
-          node(x, ry, colW, id);
-          ry += 27;
-        }
-        if (!m.role && m.level >= PROGRESSION.rules.roleLevel) {
-          const def = PROGRESSION.roles[roleId]!;
-          add(new Button(this, x, ry + 4, colW, 26, `Become ${def.name}`, () =>
-            this.act(() => this.updateMember(m, (x2) => chooseRole(CONTENT, PROGRESSION, x2, roleId)), `${s.name} is now a ${def.name}.`)).setHighlighted(true));
-          ry += 34;
-        }
-        bottom = Math.max(bottom, ry);
-      });
-    } else {
-      const ids = [...PROGRESSION.roles[roleIds[0]!]!.talents, ...typeTalents]
-        .sort((a, b) => (PROGRESSION.talents[a]!.minLevel ?? 0) - (PROGRESSION.talents[b]!.minLevel ?? 0));
-      ids.forEach((id, i) => node(DETAIL_X + (i % 2) * (colW + 6), y + Math.floor(i / 2) * 27, colW, id));
-      bottom = y + Math.ceil(ids.length / 2) * 27;
     }
 
-    // Repeatable stat talents.
-    const statY = bottom + 22;
-    add(new RichText(this, DETAIL_X, statY - 17, treeW, 11)).setMarkup(tag("dim", "Repeatable stat talents"));
-    const stats = Object.values(PROGRESSION.talents).filter((t) => t.stackable).map((t) => t.id);
-    const sw = Math.floor((treeW - 6 * (stats.length - 1)) / stats.length);
-    stats.forEach((id, i) => node(DETAIL_X + i * (sw + 6), statY, sw, id));
-
     // Detail panel.
+    const infoX = DETAIL_X + labelW + 3 * (colW + 8) + 16;
+    const infoW = DETAIL_X + DETAIL_W - infoX;
     const id = this.selectedTalent;
-    if (!id) {
-      add(new RichText(this, infoX, y, infoW, 12)).setMarkup(`${tag("dim", "Tap a talent to see its exact effect.")}\n\n${tag("dim", "✓ learned · ★ can be learned now · LvN unlocks at that level")}`);
+    if (!id || !PROGRESSION.talents[id]) {
+      add(new RichText(this, infoX, y, infoW, 12)).setMarkup(
+        `${tag("dim", "Tap a talent to see its exact effect.")}\n\n${tag("dim", "✓ learned · ★ can learn now")}\n${tag("dim", "A talent needs its level and one")}\n${tag("dim", "learned talent it is connected to.")}`);
       return;
     }
     const t = PROGRESSION.talents[id]!;
-    const kind = t.stackable ? "Stat talent" : t.grantsMove ? "Skill talent" : t.requiresType ? `${t.requiresType} type talent` : "Role talent";
-    const lines = [
+    const node = tree.find((n) => nodeTalent(PROGRESSION, n, types) === id);
+    const kind = t.grantsMove ? "Skill talent" : t.requiresType ? `${t.requiresType} type talent` : t.stats && !t.mods ? "Stat talent" : "Talent";
+    const reqs = (node?.requires ?? []).map((r) => PROGRESSION.talents[r]?.name ?? r);
+    const textLines = [
       tag("title", t.name),
-      tag("dim", `${kind}${t.minLevel ? ` · from Lv ${t.minLevel}` : ""}`),
+      tag("dim", `${kind} · Lv ${node?.level ?? this.selectedNodeLevel}${reqs.length ? ` · after ${reqs.join(" or ")}` : ""}`),
       ...describeTalent(CONTENT, PROGRESSION, t),
     ];
-    const h = add(new RichText(this, infoX, y, infoW, 12)).setMarkup(lines.join("\n"));
-    if (available.has(id)) {
+    const h = add(new RichText(this, infoX, y, infoW, 12)).setMarkup(textLines.join("\n"));
+    if (canLearn.has(id)) {
       add(new Button(this, infoX, Math.min(y + h + 8, 476), infoW, 28, `Learn ${t.name}`, () => {
-        this.act(() => this.updateMember(m, (x2) => chooseTalent(PROGRESSION, x2, id, s.types)), `${s.name} learned ${t.name}.`);
+        this.act(() => this.updateMember(m, (x2) => chooseTalent(PROGRESSION, x2, id, types)), `${s.name} learned ${t.name}.`);
         this.selectedTalent = null;
       }).setHighlighted(true));
-    } else if (m.talents.includes(id) && !t.stackable) {
+    } else if (m.talents.includes(id)) {
       add(new RichText(this, infoX, y + h + 8, infoW, 12)).setMarkup(tag("good", "Learned."));
     }
   }
 
-  /** Held item: what it holds now, and every held item in the bag with its exact effect. */
+  /** Healing items, then the held item: what it holds now and every held item in the bag with its exact effect. */
   private renderEquipment(m: PartyMember, y: number, add: <T extends Phaser.GameObjects.GameObject>(o: T) => T): void {
     const s = CONTENT.species[m.speciesId]!;
+    const potions = Object.entries(session.game.inventory.items).filter(([id, n]) => n > 0 && PROGRESSION.items[id]?.kind === "potion");
+    const max = memberMaxHp(CONTENT, PROGRESSION, m);
+    y += add(new RichText(this, DETAIL_X, y, DETAIL_W, 13)).setMarkup(`${tag("title", "Healing")}  HP ${m.hp}/${max}`) + 4;
+    if (!potions.length) y += add(new RichText(this, DETAIL_X, y, DETAIL_W, 12)).setMarkup(tag("dim", "No potions. Resting at camp restores all HP.")) + 8;
+    potions.forEach(([id, n], i) => {
+      const item = PROGRESSION.items[id]!;
+      add(new Button(this, DETAIL_X + i * 236, y, 230, 26, `Use ${item.name} (+${item.heal} HP) ×${n}`, () =>
+        this.act(() => session.update(usePotion(CONTENT, PROGRESSION, session.game, m.uid, id)), `${s.name} recovered HP.`)).setEnabled(m.hp > 0 && m.hp < max));
+    });
+    if (potions.length) y += 36;
+
     const held = m.heldItem ? PROGRESSION.items[m.heldItem] : null;
     y += add(new RichText(this, DETAIL_X, y, DETAIL_W, 13)).setMarkup(
       `${tag("title", "Holding")}: ${held ? `${tag("num", held.name)} · ${describeItem(CONTENT, held).join(" · ")}` : tag("dim", "nothing (one held item per Pokémon)")}`) + 6;

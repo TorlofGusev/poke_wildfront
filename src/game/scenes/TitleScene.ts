@@ -34,8 +34,7 @@ export class TitleScene extends Phaser.Scene {
         newButton.setText("✦ New game: click again to overwrite");
         return;
       }
-      session.start();
-      this.scene.start("Overworld");
+      this.scene.start("Starter");
     });
     y += 42;
     if (addFullscreenButton(this, width / 2 - 140, y, 280)) y += 42;

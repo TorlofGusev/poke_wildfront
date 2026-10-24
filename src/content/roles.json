@@ -3,48 +3,284 @@
   "id": "tank",
   "name": "Tank",
   "description": "Holds the line and shrugs off hits.",
-  "talents": [
-   "sturdy-shell",
-   "bulldozer",
-   "skill-protect",
-   "regrowth",
-   "skill-iron-defense"
+  "tree": [
+   {
+    "talent": "guard",
+    "level": 4,
+    "col": 0
+   },
+   {
+    "talent": "sturdy-shell",
+    "level": 4,
+    "col": 2
+   },
+   {
+    "talent": "bulldozer",
+    "level": 6,
+    "col": 0,
+    "requires": [
+     "guard"
+    ]
+   },
+   {
+    "talent": "skill-protect",
+    "level": 6,
+    "col": 2,
+    "requires": [
+     "sturdy-shell"
+    ]
+   },
+   {
+    "talent": "@type",
+    "level": 8,
+    "col": 1
+   },
+   {
+    "talent": "vigor",
+    "level": 10,
+    "col": 0,
+    "requires": [
+     "bulldozer"
+    ]
+   },
+   {
+    "talent": "regrowth",
+    "level": 10,
+    "col": 2,
+    "requires": [
+     "skill-protect"
+    ]
+   },
+   {
+    "talent": "skill-iron-defense",
+    "level": 12,
+    "col": 1,
+    "requires": [
+     "vigor",
+     "regrowth"
+    ]
+   },
+   {
+    "talent": "bastion",
+    "level": 14,
+    "col": 1,
+    "requires": [
+     "skill-iron-defense"
+    ]
+   }
   ]
  },
  "striker": {
   "id": "striker",
   "name": "Striker",
   "description": "Deals heavy damage, best at finishing or opening fights.",
-  "talents": [
-   "brutal",
-   "opening-blow",
-   "skill-focus-energy",
-   "last-stand",
-   "skill-mega-punch"
+  "tree": [
+   {
+    "talent": "power",
+    "level": 4,
+    "col": 0
+   },
+   {
+    "talent": "brutal",
+    "level": 4,
+    "col": 2
+   },
+   {
+    "talent": "opening-blow",
+    "level": 6,
+    "col": 0,
+    "requires": [
+     "power"
+    ]
+   },
+   {
+    "talent": "skill-focus-energy",
+    "level": 6,
+    "col": 2,
+    "requires": [
+     "brutal"
+    ]
+   },
+   {
+    "talent": "@type",
+    "level": 8,
+    "col": 1
+   },
+   {
+    "talent": "agility",
+    "level": 10,
+    "col": 0,
+    "requires": [
+     "opening-blow"
+    ]
+   },
+   {
+    "talent": "last-stand",
+    "level": 10,
+    "col": 2,
+    "requires": [
+     "skill-focus-energy"
+    ]
+   },
+   {
+    "talent": "skill-mega-punch",
+    "level": 12,
+    "col": 1,
+    "requires": [
+     "agility",
+     "last-stand"
+    ]
+   },
+   {
+    "talent": "killer-instinct",
+    "level": 14,
+    "col": 1,
+    "requires": [
+     "skill-mega-punch"
+    ]
+   }
   ]
  },
  "controller": {
   "id": "controller",
   "name": "Controller",
   "description": "Slows, poisons and exploits weakened foes.",
-  "talents": [
-   "lingering",
-   "quick-step",
-   "skill-leer",
-   "exploit",
-   "skill-glare"
+  "tree": [
+   {
+    "talent": "guard",
+    "level": 4,
+    "col": 0
+   },
+   {
+    "talent": "lingering",
+    "level": 4,
+    "col": 2
+   },
+   {
+    "talent": "quick-step",
+    "level": 6,
+    "col": 0,
+    "requires": [
+     "guard"
+    ]
+   },
+   {
+    "talent": "skill-leer",
+    "level": 6,
+    "col": 2,
+    "requires": [
+     "lingering"
+    ]
+   },
+   {
+    "talent": "@type",
+    "level": 8,
+    "col": 1
+   },
+   {
+    "talent": "vigor",
+    "level": 10,
+    "col": 0,
+    "requires": [
+     "quick-step"
+    ]
+   },
+   {
+    "talent": "exploit",
+    "level": 10,
+    "col": 2,
+    "requires": [
+     "skill-leer"
+    ]
+   },
+   {
+    "talent": "skill-glare",
+    "level": 12,
+    "col": 1,
+    "requires": [
+     "vigor",
+     "exploit"
+    ]
+   },
+   {
+    "talent": "mastermind",
+    "level": 14,
+    "col": 1,
+    "requires": [
+     "skill-glare"
+    ]
+   }
   ]
  },
  "skirmisher": {
   "id": "skirmisher",
   "name": "Skirmisher",
   "description": "Fast, mobile, hard to pin down.",
-  "talents": [
-   "fleet-foot",
-   "evasive",
-   "skill-agility",
-   "ambush",
-   "skill-feint-attack"
+  "tree": [
+   {
+    "talent": "agility",
+    "level": 4,
+    "col": 0
+   },
+   {
+    "talent": "fleet-foot",
+    "level": 4,
+    "col": 2
+   },
+   {
+    "talent": "evasive",
+    "level": 6,
+    "col": 0,
+    "requires": [
+     "agility"
+    ]
+   },
+   {
+    "talent": "skill-agility",
+    "level": 6,
+    "col": 2,
+    "requires": [
+     "fleet-foot"
+    ]
+   },
+   {
+    "talent": "@type",
+    "level": 8,
+    "col": 1
+   },
+   {
+    "talent": "power",
+    "level": 10,
+    "col": 0,
+    "requires": [
+     "evasive"
+    ]
+   },
+   {
+    "talent": "ambush",
+    "level": 10,
+    "col": 2,
+    "requires": [
+     "skill-agility"
+    ]
+   },
+   {
+    "talent": "skill-feint-attack",
+    "level": 12,
+    "col": 1,
+    "requires": [
+     "power",
+     "ambush"
+    ]
+   },
+   {
+    "talent": "phantom-step",
+    "level": 14,
+    "col": 1,
+    "requires": [
+     "skill-feint-attack"
+    ]
+   }
   ]
  }
 }

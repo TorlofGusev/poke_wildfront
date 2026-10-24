@@ -14,12 +14,13 @@ Prototype (Route 2 & Viridian Forest):
 
 - **Overworld**: click to travel across route, forest, mountain and cave. Wild groups are visible red markers (the number is the group size); walking into one starts a battle, or you can go around. Item pickups give Poké Balls.
 - **Fatigue**: only travel tires the team (route 1, forest/cave 2, mountain 3 per tile). No penalty until it reaches 100; then the team is Exhausted (−1 movement, −20% damage in battle) until it camps. The path preview shows the cost before you move.
-- **Camp anywhere**: making camp restores HP and fatigue, wild groups move, and you can manage party and storage. Defeat carries the team back to the last camp (tent marker).
+- **Camp anywhere**: the camp screen shows the party; *Rest here* restores HP and fatigue (wild groups move). Each Pokémon has a screen for level-ups, moves and equipment. Defeat carries the team back to the last camp (tent marker).
+- **Classic start**: choose Bulbasaur, Charmander or Squirtle and catch the rest (a fixed playtest team is also available). Wild groups never outnumber your healthy team.
 - **Battles**: mandatory deployment (3 of your party), initiative order, Wartales-style turns, cooldown specials, once-per-battle ultimates, push/pull, statuses, tall grass, hidden enemies, enemy AI, colour-coded combat log and move rules.
 - **Capture**: Poké/Great/Ultra Balls on wild Pokémon below 50% HP; the chance is shown and the ball is always used. A full party sends captures to storage.
 - **Permadeath**: each faint adds a knockout (●○○); at 3/3 the Pokémon is gone for good. Defeat carries the team back to the last camp.
 - **Identity**: every type has a playstyle that sets its small starting stats and a mechanic (Fire burns, Water pushes, Electric paralyzes, Fighting flanks, Flying flies…); every species line has an Ability (Blaze, Static, Sturdy, Arena Trap…).
-- **Progression**: XP and levels, 1 stat point per level into any stat (2 with a Candy, earned from every victory), a role at level 5 (Tank, Striker, Controller, Skirmisher) and a talent every level after: role talents, skill talents that teach new moves, type talents and stat talents. Learnable moves with a 3-move loadout, evolutions, one held item per Pokémon.
+- **Progression**: XP and levels, 1 stat point per level into any stat (2 with a Candy, earned from every victory), a role from level 3 (Tank, Striker, Controller, Skirmisher) and a branching talent tree per role (talent points at even levels from 4): passive talents, skill talents that teach new moves, the type talent and stat talents. Learnable moves with a 3-move loadout, evolutions, one held item per Pokémon.
 - **Money and Poké Mart**: victories pay Pokédollars; the town sells balls, potions and held items.
 - Autosave in browser storage (saves from older prototype versions are discarded). Plays on phones in landscape (fullscreen button, larger text, touch log scrolling).
 

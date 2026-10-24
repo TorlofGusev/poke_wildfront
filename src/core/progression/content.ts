@@ -1,23 +1,30 @@
 import type { BaseStats } from "../battle/content";
 import type { UnitModifiers } from "../battle/modifiers";
 
+/** A node of a role's talent tree. */
+export interface TreeNode {
+  /** Talent id, or "@type" for the Pokémon's own type talent. */
+  readonly talent: string;
+  /** Row: the level the node unlocks at. */
+  readonly level: number;
+  /** Column 0–2 (layout only). */
+  readonly col: number;
+  /** Learnable once ANY of these is learned (empty = a root). */
+  readonly requires?: readonly string[];
+}
+
 export interface RoleDef {
   readonly id: string;
   readonly name: string;
   readonly description: string;
-  /** Role-specific talents, each can be taken once. */
-  readonly talents: readonly string[];
+  readonly tree: readonly TreeNode[];
 }
 
 export interface TalentDef {
   readonly id: string;
   readonly name: string;
   readonly description: string;
-  /** Plain stat talents can be taken repeatedly and belong to every role. */
-  readonly stackable?: boolean;
-  /** Earliest level at which the talent is offered. */
-  readonly minLevel?: number;
-  /** Only offered to Pokémon of this type. */
+  /** Type talent: what "@type" resolves to for Pokémon of this type. */
   readonly requiresType?: string;
   /** Teaches this move (a new skill). */
   readonly grantsMove?: string;
@@ -39,8 +46,10 @@ export interface ItemDef {
 }
 
 export interface ProgressionRules {
-  /** Level at which a Pokémon chooses its role. Every level after that gives one talent pick. */
+  /** Level at which a Pokémon can choose its role. */
   readonly roleLevel: number;
+  /** Levels that give one talent point. */
+  readonly talentLevels: readonly number[];
   readonly maxLevel: number;
   /** XP needed to go from level L to L+1 = L × xpPerLevel. */
   readonly xpPerLevel: number;

@@ -23,3 +23,11 @@ All numbers live in `src/content/progression.json`, `roles.json`, `talents.json`
 - **Money**: a victory gives `sum of defeated enemy levels × ₽12`. New games start with ₽500 and 2 Potions.
 - **Poké Mart** on the town tiles of the map: balls, Potion (40 HP), Super Potion (90 HP), held items (type boosters, Quick Claw, Leftovers, Muscle Band). Potions are used outside battle and cannot revive.
 - **Wild levels** by biome: route 3–5, forest 3–6, mountain 7–10, cave 8–11.
+
+## Revision after playtest (2026-10-24)
+
+- **Camp screen** = party overview without stats, a *Rest here* button (resting is a separate choice) and per-Pokémon screens with ◀ ▶ to cycle: Level up (stat points + talent tree), Moves, Equipment (held item and healing items).
+- **Role** can be chosen from **level 3**.
+- **Talent tree** per role (`roles.json` → `tree`): rows by level (4, 6, 8, 10, 12, 14), two branches that merge, prerequisites (a talent needs one connected talent learned), filler stat talents as normal nodes, the type talent at level 8 for every role. **Talent points** only at levels 4, 6, 8, … 20 (not every level). Repeatable stat talents were removed.
+- **Classic start**: choose Bulbasaur, Charmander or Squirtle (level 5); the 6-Pokémon playtest team remains as an option.
+- **Team-scaled encounters**: a wild group never fields more Pokémon than the player's healthy party members (max 3), keeping its strongest; the map shows the scaled group.

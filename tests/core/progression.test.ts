@@ -10,6 +10,7 @@ import {
   pendingChoice,
   setActiveMoves,
   talentOptions,
+  talentPointsAt,
   toUnitSetup,
   xpToNext,
 } from "../../src/core/progression";
@@ -72,7 +73,7 @@ describe("levels and stats", () => {
 });
 
 describe("roles and talents", () => {
-  it("asks for a role at the role level, then one talent per level", () => {
+  it("asks for a role at the role level, then talents along the tree at talent levels", () => {
     let m = pm("a", "fast", 0, 40, { level: 4 });
     const fastWithRoles = { ...content, species: { ...content.species, fast: { ...content.species.fast!, roles: ["striker", "tank"] } } };
     expect(pendingChoice(prog, m)).toBeNull();
@@ -82,12 +83,14 @@ describe("roles and talents", () => {
     m = chooseRole(fastWithRoles, prog, m, "striker");
     expect(pendingChoice(prog, m)).toBeNull();
     m = { ...m, level: 7 };
-    expect(talentOptions(prog, m)).toEqual(["brutal", "power"]);
-    m = chooseTalent(prog, m, "brutal");
+    // Brutal needs Power first: only the root is open.
     expect(talentOptions(prog, m)).toEqual(["power"]);
+    expect(() => chooseTalent(prog, m, "brutal")).toThrow(/not available/);
     m = chooseTalent(prog, m, "power");
+    expect(talentOptions(prog, m)).toEqual(["brutal"]);
+    m = chooseTalent(prog, m, "brutal");
     expect(pendingChoice(prog, m)).toBeNull();
-    expect(() => chooseTalent(prog, m, "power")).toThrow(/no talent choice/);
+    expect(() => chooseTalent(prog, m, "brutal")).toThrow(/no talent choice/);
   });
 
   it("stat talents raise stats and role talents change battle results", () => {
@@ -193,7 +196,6 @@ describe("money, shop and items", () => {
 
 describe("content", () => {
   it("roles, talents, items and learnsets reference valid data", () => {
-    for (const r of Object.values(PROGRESSION.roles)) for (const t of r.talents) expect(PROGRESSION.talents).toHaveProperty(t);
     for (const s of Object.values(CONTENT.species)) {
       for (const r of s.roles ?? []) expect(PROGRESSION.roles, `${s.id} role ${r}`).toHaveProperty(r);
       for (const l of s.learnset ?? []) expect(CONTENT.moves, `${s.id} learns ${l.move}`).toHaveProperty(l.move);
@@ -205,21 +207,24 @@ describe("content", () => {
 });
 
 describe("talent trees", () => {
-  const charmander = (level: number) => ({ ...starter("charmander", level), role: "striker" });
+  const charmander = (level: number, talents: string[] = []) => ({ ...starter("charmander", level), role: "striker", talents });
 
-  it("offers role talents by level, type talents from level 8, and stat talents always", () => {
-    const at6 = talentOptions(PROGRESSION, charmander(6), ["fire"]);
-    expect(at6).toContain("brutal");
-    expect(at6).not.toContain("skill-focus-energy");
-    expect(at6).not.toContain("type-fire");
-    expect(at6).toEqual(expect.arrayContaining(["vigor", "power", "guard", "agility"]));
-    const at8 = talentOptions(PROGRESSION, charmander(8), ["fire"]);
-    expect(at8).toEqual(expect.arrayContaining(["skill-focus-energy", "type-fire"]));
-    expect(at8).not.toContain("type-water");
+  it("grants talent points only at talent levels", () => {
+    expect(talentPointsAt(PROGRESSION, 3)).toBe(0);
+    expect(talentPointsAt(PROGRESSION, 4)).toBe(1);
+    expect(talentPointsAt(PROGRESSION, 5)).toBe(1);
+    expect(talentPointsAt(PROGRESSION, 6)).toBe(2);
+    expect(pendingChoice(PROGRESSION, charmander(5, ["power"]))).toBeNull();
+  });
+
+  it("opens roots first, then children of learned talents, and the type talent at its level", () => {
+    expect(talentOptions(PROGRESSION, charmander(4), ["fire"])).toEqual(["power", "brutal"]);
+    expect(talentOptions(PROGRESSION, charmander(6, ["brutal"]), ["fire"])).toEqual(["power", "skill-focus-energy"]);
+    expect(talentOptions(PROGRESSION, charmander(8, ["brutal", "skill-focus-energy"]), ["fire"])).toContain("type-fire");
   });
 
   it("skill talents teach a new move and activate it when there is room", () => {
-    const m = { ...charmander(7), activeMoves: ["ember"] };
+    const m = { ...charmander(6, ["brutal"]), activeMoves: ["ember"] };
     const next = chooseTalent(PROGRESSION, m, "skill-focus-energy", ["fire"]);
     expect(next.knownMoves).toContain("focus-energy");
     expect(next.activeMoves).toEqual(["ember", "focus-energy"]);
@@ -237,11 +242,18 @@ describe("talent trees", () => {
     expect(r.events).toContainEqual(expect.objectContaining({ type: "damaged", unitId: "p", amount: 0 }));
   });
 
-  it("every talent, role and skill references valid data", () => {
-    for (const t of Object.values(PROGRESSION.talents)) {
-      if (t.grantsMove) expect(CONTENT.moves, t.id).toHaveProperty(t.grantsMove);
-      if (t.requiresType) expect(CONTENT.types, t.id).toHaveProperty(t.requiresType);
+  it("every tree references valid talents and prerequisites in earlier rows", () => {
+    for (const role of Object.values(PROGRESSION.roles)) {
+      for (const n of role.tree) {
+        if (n.talent !== "@type") expect(PROGRESSION.talents, `${role.id}: ${n.talent}`).toHaveProperty(n.talent);
+        for (const r of n.requires ?? []) {
+          const parent = role.tree.find((p) => p.talent === r);
+          expect(parent, `${role.id}: ${n.talent} requires ${r}`).toBeDefined();
+          expect(parent!.level).toBeLessThan(n.level);
+        }
+      }
     }
+    for (const t of Object.values(PROGRESSION.talents)) if (t.grantsMove) expect(CONTENT.moves, t.id).toHaveProperty(t.grantsMove);
     for (const id of Object.keys(CONTENT.types)) expect(Object.values(PROGRESSION.talents).some((t) => t.requiresType === id), id).toBe(true);
   });
 });

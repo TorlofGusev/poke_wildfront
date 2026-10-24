@@ -39,7 +39,6 @@ export function describeTalent(content: BattleContent, prog: ProgressionContent,
   }
   out.push(...describeModifiers(content, t.mods ?? {}));
   if (t.grantsMove && content.moves[t.grantsMove]) out.push(`${tag("special", "New skill")} (joins the move list):`, describeMove(content, content.moves[t.grantsMove]!));
-  if (t.stackable) out.push(tag("dim", "Repeatable: can be taken at any level, any number of times."));
   return out;
 }
 

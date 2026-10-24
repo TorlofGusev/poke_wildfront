@@ -3,7 +3,7 @@ import type { BaseStats, BattleContent, SpeciesDef } from "../battle/content";
 import { STAT_NAMES, type StatName } from "../battle/species";
 import { combineModifiers, type UnitModifiers } from "../battle/modifiers";
 import type { UnitSetup } from "../battle/battle";
-import type { ProgressionContent } from "./content";
+import type { ProgressionContent, TreeNode } from "./content";
 
 /** The parts of a party member that progression reads and changes. */
 export interface Progress {
@@ -138,11 +138,14 @@ export function gainXp<T extends Progress>(content: BattleContent, prog: Progres
   return { member: cur, events };
 }
 
+/** Talent points earned by a level. */
+export const talentPointsAt = (prog: ProgressionContent, level: number): number => prog.rules.talentLevels.filter((l) => l <= level).length;
+
 /** The choice a member is waiting for, if any. */
 export function pendingChoice(prog: ProgressionContent, m: Progress): "role" | "talent" | null {
   if (m.level < prog.rules.roleLevel) return null;
   if (m.role === null) return "role";
-  return m.talents.length < m.level - prog.rules.roleLevel ? "talent" : null;
+  return m.talents.length < talentPointsAt(prog, m.level) ? "talent" : null;
 }
 
 export function roleOptions(content: BattleContent, m: Progress): string[] {
@@ -155,20 +158,30 @@ export function chooseRole<T extends Progress>(content: BattleContent, prog: Pro
   return { ...m, role: roleId };
 }
 
-/**
- * Talents on offer at the member's level: its role's talents and its types' talents
- * (each once), then the stackable stat talents.
- */
+/** The talent a tree node stands for: "@type" becomes the talent of the Pokémon's primary type. */
+export function nodeTalent(prog: ProgressionContent, node: TreeNode, types: readonly string[]): string | null {
+  if (node.talent !== "@type") return node.talent;
+  return Object.values(prog.talents).find((t) => t.requiresType === types[0])?.id ?? null;
+}
+
+export type NodeState = "learned" | "available" | "locked-level" | "locked-path";
+
+/** State of a tree node for this Pokémon (ignores whether a talent point is free). */
+export function nodeState(prog: ProgressionContent, m: Progress, node: TreeNode, types: readonly string[]): NodeState {
+  const id = nodeTalent(prog, node, types);
+  if (id && m.talents.includes(id)) return "learned";
+  if (node.level > m.level) return "locked-level";
+  const reqs = node.requires ?? [];
+  return reqs.length === 0 || reqs.some((r) => m.talents.includes(r)) ? "available" : "locked-path";
+}
+
+/** Talents that can be learned right now (requires a free talent point). */
 export function talentOptions(prog: ProgressionContent, m: Progress, types: readonly string[] = []): string[] {
-  const role = m.role ? prog.roles[m.role] : undefined;
-  const open = (id: string) => {
-    const t = prog.talents[id];
-    return t !== undefined && !m.talents.includes(id) && (t.minLevel ?? 0) <= m.level;
-  };
-  const roleTalents = (role?.talents ?? []).filter(open);
-  const typeTalents = Object.values(prog.talents).filter((t) => t.requiresType && types.includes(t.requiresType)).map((t) => t.id).filter(open);
-  const statTalents = Object.values(prog.talents).filter((t) => t.stackable).map((t) => t.id);
-  return [...roleTalents, ...typeTalents, ...statTalents];
+  if (pendingChoice(prog, m) !== "talent" || !m.role) return [];
+  return (prog.roles[m.role]?.tree ?? [])
+    .filter((n) => nodeState(prog, m, n, types) === "available")
+    .map((n) => nodeTalent(prog, n, types))
+    .filter((id): id is string => id !== null);
 }
 
 export function chooseTalent<T extends Progress>(prog: ProgressionContent, m: T, talentId: string, types: readonly string[] = []): T {

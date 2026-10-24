@@ -4,6 +4,7 @@ import { wildSetup } from "../../src/core/progression";
 import {
   addTravelFatigue,
   biomeAt,
+  effectiveGroup,
   fatigueLevel,
   generateEncounter,
   makeCamp,
@@ -143,5 +144,15 @@ describe("world", () => {
       ])).not.toThrow();
     }
     expect(removeEncounter(world, world.encounters[0]!.id).encounters).toHaveLength(world.encounters.length - 1);
+  });
+});
+
+describe("team-scaled encounters", () => {
+  const g = { id: "g", pos: { x: 0, y: 0 }, biome: "route", species: ["a", "b", "c", "d"], levels: [3, 5, 4, 2] };
+  it("never fields more wild Pokémon than the player's healthy team (max 3), keeping the strongest", () => {
+    expect(effectiveGroup(g, 1)).toMatchObject({ species: ["b"], levels: [5] });
+    expect(effectiveGroup(g, 2)).toMatchObject({ species: ["b", "c"], levels: [5, 4] });
+    expect(effectiveGroup(g, 6)).toMatchObject({ species: ["a", "b", "c"], levels: [3, 5, 4] });
+    expect(effectiveGroup(g, 0).species).toHaveLength(1);
   });
 });
