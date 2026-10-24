@@ -33,6 +33,8 @@ export function captureUnavailableReason(
   if (!state.captureAllowed) return "capture is not possible in this battle";
   if (state.turn?.unitId !== unitId) return "not this unit's turn";
   if (state.turn.actionUsed) return "action already used this turn";
+  const self = unitById(state, unitId);
+  if (self.statuses.some((st) => content.statuses[st.id]?.noAction)) return "cannot act this turn";
   if (!content.balls[ballId]) return "unknown ball";
   if ((state.balls[ballId] ?? 0) <= 0) return `no ${content.balls[ballId]!.name} left`;
   const victim = unitAt(state, target);

@@ -5,6 +5,10 @@
    "attack": 5,
    "defense": 5,
    "speed": 5
+  },
+  "summary": "Adaptable generalist. Normal moves are never resisted.",
+  "move": {
+   "neverResisted": true
   }
  },
  "fire": {
@@ -13,6 +17,13 @@
    "attack": 7,
    "defense": 3,
    "speed": 6
+  },
+  "summary": "Burst striker. Fire moves Burn: damage each turn and \u221220% damage dealt.",
+  "move": {
+   "appliesStatus": {
+    "status": "burn",
+    "duration": 2
+   }
   }
  },
  "water": {
@@ -21,6 +32,10 @@
    "attack": 5,
    "defense": 5,
    "speed": 4
+  },
+  "summary": "Displacement and sustain. Water moves push the target 1 extra tile.",
+  "move": {
+   "extraPush": 1
   }
  },
  "grass": {
@@ -29,6 +44,10 @@
    "attack": 4,
    "defense": 5,
    "speed": 5
+  },
+  "summary": "Drain and control. Grass moves heal the user for 25% of the damage dealt.",
+  "move": {
+   "drain": 0.25
   }
  },
  "electric": {
@@ -37,6 +56,13 @@
    "attack": 6,
    "defense": 3,
    "speed": 8
+  },
+  "summary": "Fast skirmisher. Electric moves Paralyze: the target cannot move on its next turn.",
+  "move": {
+   "appliesStatus": {
+    "status": "paralysis",
+    "duration": 1
+   }
   }
  },
  "ice": {
@@ -45,6 +71,13 @@
    "attack": 5,
    "defense": 4,
    "speed": 6
+  },
+  "summary": "Lockdown control. Ice moves Freeze: the target cannot act on its next turn.",
+  "move": {
+   "appliesStatus": {
+    "status": "freeze",
+    "duration": 1
+   }
   }
  },
  "fighting": {
@@ -53,6 +86,10 @@
    "attack": 7,
    "defense": 4,
    "speed": 3
+  },
+  "summary": "Melee bruiser. +25% damage when an ally also stands next to the target.",
+  "move": {
+   "flankBonus": 1.25
   }
  },
  "poison": {
@@ -61,7 +98,8 @@
    "attack": 4,
    "defense": 5,
    "speed": 6
-  }
+  },
+  "summary": "Attrition. Poison stacks: every new application adds its turns."
  },
  "ground": {
   "profile": {
@@ -69,6 +107,10 @@
    "attack": 6,
    "defense": 6,
    "speed": 2
+  },
+  "summary": "Terrain shaper. Ground moves turn the target's tile into mud.",
+  "move": {
+   "terrainOnHit": "m"
   }
  },
  "flying": {
@@ -77,6 +119,10 @@
    "attack": 5,
    "defense": 3,
    "speed": 8
+  },
+  "summary": "Mobility. Flies over water, mud and other Pok\u00e9mon.",
+  "unit": {
+   "flies": true
   }
  },
  "psychic": {
@@ -85,6 +131,10 @@
    "attack": 7,
    "defense": 3,
    "speed": 6
+  },
+  "summary": "Ranged manipulation. Psychic moves pull the target 1 tile closer.",
+  "move": {
+   "extraPull": 1
   }
  },
  "bug": {
@@ -93,6 +143,10 @@
    "attack": 5,
    "defense": 4,
    "speed": 7
+  },
+  "summary": "Swarm tactics. +10% damage for each ally next to the target.",
+  "move": {
+   "swarmBonus": 0.1
   }
  },
  "rock": {
@@ -101,6 +155,10 @@
    "attack": 6,
    "defense": 8,
    "speed": 0
+  },
+  "summary": "Fortress. Cannot be pushed or pulled.",
+  "unit": {
+   "immovable": true
   }
  },
  "ghost": {
@@ -109,6 +167,16 @@
    "attack": 6,
    "defense": 3,
    "speed": 7
+  },
+  "summary": "Trickster. Moves through enemies; Ghost moves Curse: +25% damage taken.",
+  "move": {
+   "appliesStatus": {
+    "status": "curse",
+    "duration": 2
+   }
+  },
+  "unit": {
+   "phases": true
   }
  },
  "dragon": {
@@ -117,6 +185,10 @@
    "attack": 7,
    "defense": 5,
    "speed": 2
+  },
+  "summary": "Rare all-rounder. Dragon moves ignore Defense.",
+  "move": {
+   "ignoresDefense": true
   }
  }
 }

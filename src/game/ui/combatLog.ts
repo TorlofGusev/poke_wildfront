@@ -63,6 +63,8 @@ export function formatEvent(e: BattleEvent, ctx: LogContext): LogEntry | null {
       };
     case "captured":
       return null;
+    case "terrainChanged":
+      return { text: tag("dim", "The ground turns to mud."), tone: "info" };
     case "turnEnded":
       return null;
     case "battleEnded":

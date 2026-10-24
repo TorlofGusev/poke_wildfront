@@ -23,11 +23,23 @@ export interface UnitModifiers {
   readonly statusDurationBonus: number;
   /** Extra damage when this unit pushes a target into an obstacle. */
   readonly impactBonus: number;
+  /** Added to the Fighting flank multiplier. */
+  readonly flankBonus: number;
+  /** Added to the Bug swarm bonus per helper. */
+  readonly swarmBonus: number;
+  /** Added to the Grass drain fraction. */
+  readonly drainBonus: number;
+  /** Extra tiles on pushes / pulls this unit causes. */
+  readonly pushBonus: number;
+  readonly pullBonus: number;
+  /** Status ids this unit cannot receive ("*" = all). */
+  readonly statusImmune: readonly string[];
 }
 
 export const NO_MODIFIERS: UnitModifiers = {
   moveBonus: 0, damageDealt: 1, damageTaken: 1, typeDamage: {}, vsStatusDamage: 1, fullHpTargetDamage: 1,
   lowHpDamage: 1, healPerTurn: 0, statusDurationBonus: 0, impactBonus: 0,
+  flankBonus: 0, swarmBonus: 0, drainBonus: 0, pushBonus: 0, pullBonus: 0, statusImmune: [],
 };
 
 export function combineModifiers(...parts: readonly Partial<UnitModifiers>[]): UnitModifiers {
@@ -45,6 +57,12 @@ export function combineModifiers(...parts: readonly Partial<UnitModifiers>[]): U
       healPerTurn: acc.healPerTurn + (p.healPerTurn ?? 0),
       statusDurationBonus: acc.statusDurationBonus + (p.statusDurationBonus ?? 0),
       impactBonus: acc.impactBonus + (p.impactBonus ?? 0),
+      flankBonus: acc.flankBonus + (p.flankBonus ?? 0),
+      swarmBonus: acc.swarmBonus + (p.swarmBonus ?? 0),
+      drainBonus: acc.drainBonus + (p.drainBonus ?? 0),
+      pushBonus: acc.pushBonus + (p.pushBonus ?? 0),
+      pullBonus: acc.pullBonus + (p.pullBonus ?? 0),
+      statusImmune: [...new Set([...acc.statusImmune, ...(p.statusImmune ?? [])])],
     };
   }, NO_MODIFIERS);
 }

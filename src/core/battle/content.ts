@@ -1,4 +1,5 @@
 import type { PokemonType, TypeChartData } from "../rules/typeChart";
+import type { TypeDef } from "./species";
 
 export interface BaseStats {
   readonly hp: number;
@@ -64,6 +65,16 @@ export interface StatusDef {
   readonly damagePerTurn?: number;
   /** Movement points removed while active. */
   readonly movePenalty?: number;
+  /** Cannot move at all while active (Paralysis). */
+  readonly noMove?: boolean;
+  /** Cannot use moves or balls while active (Freeze). */
+  readonly noAction?: boolean;
+  /** Multiplies damage dealt by the affected unit (Burn). */
+  readonly damageDealt?: number;
+  /** Multiplies damage taken by the affected unit (Curse). */
+  readonly damageTaken?: number;
+  /** Re-applying adds the durations instead of keeping the longer one (Poison). */
+  readonly stacks?: boolean;
 }
 
 /**
@@ -107,6 +118,8 @@ export interface BattleContent {
   readonly moves: Readonly<Record<string, MoveDef>>;
   readonly statuses: Readonly<Record<string, StatusDef>>;
   readonly typeChart: TypeChartData;
+  /** Type playstyles: stat profiles and type mechanics. */
+  readonly types: Readonly<Record<string, TypeDef>>;
   readonly rules: BattleRules;
   readonly balls: Readonly<Record<string, BallDef>>;
   readonly capture: CaptureRules;

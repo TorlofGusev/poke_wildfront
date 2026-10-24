@@ -1,4 +1,5 @@
-import { Grid } from "../grid/Grid";
+import { ASCII_LEGEND, Grid } from "../grid/Grid";
+import type { TerrainDef } from "../grid/terrain";
 import { hasLineOfSight } from "../grid/lineOfSight";
 import { reachableTiles, type Occupancy, type Reachable } from "../grid/movement";
 import { key, manhattan, samePoint, type Point } from "../grid/types";
@@ -7,6 +8,12 @@ import { nextRandom } from "../rng";
 import { typeMultiplier } from "../rules/typeChart";
 import type { BaseStats, BattleContent, MoveDef } from "./content";
 import { combineModifiers, type UnitModifiers } from "./modifiers";
+import type { TypeUnitTraits } from "./species";
+
+/** Fliers cross water and mud at normal cost; rocks still block them. */
+const FLYING_LEGEND: Readonly<Record<string, TerrainDef>> = Object.fromEntries(
+  Object.entries(ASCII_LEGEND).map(([ch, t]) => [ch, t.id === "water" || t.id === "mud" ? { ...t, moveCost: 1 } : t]),
+);
 import type { BattleEvent } from "./events";
 import type { BattleState, BattleUnit, Side } from "./state";
 
@@ -72,13 +79,24 @@ export const activeUnit = (state: BattleState): BattleUnit | null =>
   state.turn ? unitById(state, state.turn.unitId) : null;
 
 export function movementPoints(content: BattleContent, unit: BattleUnit): number {
+  if (unit.statuses.some((st) => content.statuses[st.id]?.noMove)) return 0;
   const r = content.rules;
   const base = Math.min(r.moveMax, r.moveBase + Math.floor(unit.stats.speed / r.speedPerMove));
   const penalty = unit.statuses.reduce((s, st) => s + (content.statuses[st.id]?.movePenalty ?? 0), 0);
   return Math.max(0, base - penalty + unit.mods.moveBonus);
 }
 
+/** Combined battlefield traits of a Pokémon's types. */
+export function unitTraits(content: BattleContent, types: readonly string[]): TypeUnitTraits {
+  const all = types.map((t) => content.types[t]?.unit ?? {});
+  return { flies: all.some((t) => t.flies), phases: all.some((t) => t.phases), immovable: all.some((t) => t.immovable) };
+}
+
 function occupancyFor(state: BattleState, unit: BattleUnit): Occupancy {
+  // Fliers and ghosts pass over/through enemies but still cannot stop on them.
+  if (unit.traits.flies || unit.traits.phases) {
+    return { isAlly: (p) => unitAt(state, p) !== undefined, isEnemy: () => false };
+  }
   return {
     isAlly: (p) => unitAt(state, p)?.side === unit.side,
     isEnemy: (p) => {
@@ -92,7 +110,8 @@ function occupancyFor(state: BattleState, unit: BattleUnit): Occupancy {
 export function reachableFor(state: BattleState, unitId: string): Reachable {
   const unit = unitById(state, unitId);
   const mp = state.turn?.unitId === unitId ? state.turn.movePointsLeft : 0;
-  return reachableTiles(gridOf(state), unit.pos, mp, occupancyFor(state, unit));
+  const grid = unit.traits.flies ? Grid.fromAscii(state.mapRows, FLYING_LEGEND) : gridOf(state);
+  return reachableTiles(grid, unit.pos, mp, occupancyFor(state, unit));
 }
 
 /** Why a move is currently unavailable, or null if it can be used. */
@@ -108,6 +127,8 @@ export function moveUnavailableReason(
   if (state.turn.actionUsed) return "action already used this turn";
   if ((unit.cooldowns[moveId] ?? 0) > 0) return `on cooldown (${unit.cooldowns[moveId]})`;
   if (unit.usedUltimates.includes(moveId)) return "already used this battle";
+  const blocking = unit.statuses.find((st) => content.statuses[st.id]?.noAction);
+  if (blocking) return `${content.statuses[blocking.id]!.name.toLowerCase()}: cannot act this turn`;
   return null;
 }
 
@@ -227,6 +248,7 @@ export function createBattle(
         stats: { ...(u.stats ?? species.stats) },
         moves: [...(u.moves ?? species.moves)],
         mods: combineModifiers(u.mods ?? {}, u.side === "player" ? options.playerModifiers ?? {} : {}),
+        traits: unitTraits(content, species.types),
       };
     }),
     round: 0,
@@ -319,46 +341,92 @@ function doUseMove(
   if (move.kind === "ultimate") user.usedUltimates.push(moveId);
   events.push({ type: "moveUsed", unitId, moveId, target, affected: affected.map((u) => u.id) });
 
+  const mech = content.types[move.type]?.move ?? {};
   for (const t of affected) {
     if (t.hp <= 0) continue;
+    const isFoe = t.side !== user.side;
     if (move.power > 0) {
       const defender = content.species[t.speciesId]!;
-      const eff = typeMultiplier(content.typeChart, move.type, defender.types);
+      const typeEff = typeMultiplier(content.typeChart, move.type, defender.types);
+      const eff = mech.neverResisted ? Math.max(1, typeEff) : typeEff;
       const m = user.mods;
       const situational =
         (t.statuses.length > 0 ? m.vsStatusDamage : 1) *
         (t.hp === t.maxHp ? m.fullHpTargetDamage : 1) *
         (user.hp * 2 < user.maxHp ? m.lowHpDamage : 1);
-      const mult = eff * m.damageDealt * (m.typeDamage[move.type] ?? 1) * situational * t.mods.damageTaken;
+      const helpers = adjacentAllies(state, user, t);
+      const positional =
+        (mech.flankBonus && helpers > 0 ? mech.flankBonus + m.flankBonus : 1) *
+        (1 + (mech.swarmBonus ? (mech.swarmBonus + m.swarmBonus) * helpers : 0));
+      const statusMult = statusFactor(content, user, "damageDealt") * statusFactor(content, t, "damageTaken");
+      const mult = eff * m.damageDealt * (m.typeDamage[move.type] ?? 1) * situational * positional * statusMult * t.mods.damageTaken;
       const off = content.rules.statOffset;
-      const raw = (move.power * (off + user.stats.attack)) / (off + t.stats.defense) * mult / content.rules.damageDivisor;
-      dealDamage(state, t, Math.max(1, Math.round(raw)), "move", events, eff);
+      const defense = mech.ignoresDefense ? 0 : t.stats.defense;
+      const raw = (move.power * (off + user.stats.attack)) / (off + defense) * mult / content.rules.damageDivisor;
+      const dealt = dealDamage(state, t, Math.max(1, Math.round(raw)), "move", events, eff);
+      if (mech.drain && dealt > 0 && user.hp > 0) {
+        heal(user, Math.max(1, Math.round(dealt * (mech.drain + m.drainBonus))), events);
+      }
     }
     for (const effect of move.effects ?? []) {
       if (t.hp <= 0) break;
       switch (effect.kind) {
-        case "heal": {
-          const amount = Math.min(effect.amount, t.maxHp - t.hp);
-          t.hp += amount;
-          events.push({ type: "healed", unitId: t.id, amount, hp: t.hp });
+        case "heal":
+          heal(t, effect.amount, events);
           break;
-        }
-        case "status": {
-          const duration = effect.duration + user.mods.statusDurationBonus;
-          const existing = t.statuses.find((s) => s.id === effect.status);
-          if (existing) existing.turnsLeft = Math.max(existing.turnsLeft, duration);
-          else t.statuses.push({ id: effect.status, turnsLeft: duration });
-          events.push({ type: "statusApplied", unitId: t.id, status: effect.status, duration });
+        case "status":
+          applyStatus(content, user, t, effect.status, effect.duration, events);
           break;
-        }
         case "push":
         case "pull":
-          displace(state, content, user, t, effect.kind, effect.distance, events);
+          displace(state, content, user, t, effect.kind, effect.distance + (effect.kind === "push" ? user.mods.pushBonus : user.mods.pullBonus), events);
           break;
       }
     }
+    // Type mechanics apply to the enemies a move hits.
+    if (!isFoe || t.hp <= 0) continue;
+    if (mech.appliesStatus) applyStatus(content, user, t, mech.appliesStatus.status, mech.appliesStatus.duration, events);
+    if (mech.extraPush) displace(state, content, user, t, "push", mech.extraPush + user.mods.pushBonus, events);
+    if (mech.extraPull) displace(state, content, user, t, "pull", mech.extraPull + user.mods.pullBonus, events);
+    if (mech.terrainOnHit) changeTerrain(state, t.pos, mech.terrainOnHit, events);
   }
   checkOutcome(state, events);
+}
+
+/** Other living allies of `user` standing next to `target`. */
+function adjacentAllies(state: BattleState, user: BattleUnit, target: BattleUnit): number {
+  return livingUnits(state).filter((u) => u.side === user.side && u.id !== user.id && manhattan(u.pos, target.pos) === 1).length;
+}
+
+/** Product of a multiplier over the unit's active statuses (Burn, Curse…). */
+function statusFactor(content: BattleContent, unit: BattleUnit, field: "damageDealt" | "damageTaken"): number {
+  return unit.statuses.reduce((f, st) => f * (content.statuses[st.id]?.[field] ?? 1), 1);
+}
+
+function heal(unit: BattleUnit, amount: number, events: BattleEvent[]): void {
+  const healed = Math.min(amount, unit.maxHp - unit.hp);
+  if (healed <= 0) return;
+  unit.hp += healed;
+  events.push({ type: "healed", unitId: unit.id, amount: healed, hp: unit.hp });
+}
+
+function applyStatus(content: BattleContent, user: BattleUnit, t: BattleUnit, status: string, base: number, events: BattleEvent[]): void {
+  if (t.mods.statusImmune.includes(status) || t.mods.statusImmune.includes("*")) return;
+  const duration = base + user.mods.statusDurationBonus;
+  const existing = t.statuses.find((s) => s.id === status);
+  if (existing) existing.turnsLeft = content.statuses[status]?.stacks ? existing.turnsLeft + duration : Math.max(existing.turnsLeft, duration);
+  else t.statuses.push({ id: status, turnsLeft: duration });
+  events.push({ type: "statusApplied", unitId: t.id, status, duration });
+}
+
+/** Ground and similar mechanics reshape the battlefield: floor and grass become the new terrain. */
+function changeTerrain(state: BattleState, p: Point, char: string, events: BattleEvent[]): void {
+  const row = state.mapRows[p.y]!;
+  if (row[p.x] !== "." && row[p.x] !== '"') return;
+  const rows = [...state.mapRows];
+  rows[p.y] = row.slice(0, p.x) + char + row.slice(p.x + 1);
+  state.mapRows = rows;
+  events.push({ type: "terrainChanged", pos: { ...p }, terrain: char });
 }
 
 function doThrowBall(
@@ -398,7 +466,8 @@ function displace(
 ): void {
   const dx = target.pos.x - user.pos.x;
   const dy = target.pos.y - user.pos.y;
-  if (dx === 0 && dy === 0) return;
+  if ((dx === 0 && dy === 0) || distance <= 0) return;
+  if (target.traits.immovable) return;
   const away = Math.abs(dx) >= Math.abs(dy) ? { x: Math.sign(dx), y: 0 } : { x: 0, y: Math.sign(dy) };
   const dir = kind === "push" ? away : { x: -away.x, y: -away.y };
   const grid = gridOf(state);
@@ -425,7 +494,7 @@ function dealDamage(
   source: "move" | "status" | "impact",
   events: BattleEvent[],
   effectiveness?: number,
-): void {
+): number {
   const dealt = Math.min(amount, unit.hp);
   unit.hp -= dealt;
   events.push({ type: "damaged", unitId: unit.id, amount: dealt, hp: unit.hp, source, ...(effectiveness !== undefined && { effectiveness }) });
@@ -433,6 +502,7 @@ function dealDamage(
     events.push({ type: "fainted", unitId: unit.id });
     state.queue = state.queue.filter((id, i) => i === 0 || id !== unit.id);
   }
+  return dealt;
 }
 
 // ---------------------------------------------------------------- turn flow

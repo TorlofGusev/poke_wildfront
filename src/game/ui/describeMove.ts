@@ -32,6 +32,8 @@ export function describeMove(content: BattleContent, move: MoveDef): string {
       }
     }
   }
+  const typeRule = content.types[move.type]?.summary?.split(". ").slice(1).join(". ");
+  if (typeRule && move.affects === "enemies") lines.push(`${tag(move.type, "Type")}: ${typeRule}`);
   lines.push(tag("dim", `Affects ${move.affects === "enemies" ? "enemies only" : "allies"}`));
   return lines.join("\n");
 }

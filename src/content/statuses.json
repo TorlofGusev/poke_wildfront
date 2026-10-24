@@ -1,4 +1,34 @@
 {
-  "poison": { "id": "poison", "name": "Poison", "damagePerTurn": 0.1 },
-  "slow": { "id": "slow", "name": "Slow", "movePenalty": 2 }
+ "poison": {
+  "id": "poison",
+  "name": "Poison",
+  "damagePerTurn": 0.1,
+  "stacks": true
+ },
+ "slow": {
+  "id": "slow",
+  "name": "Slow",
+  "movePenalty": 2
+ },
+ "burn": {
+  "id": "burn",
+  "name": "Burn",
+  "damagePerTurn": 0.06,
+  "damageDealt": 0.8
+ },
+ "paralysis": {
+  "id": "paralysis",
+  "name": "Paralysis",
+  "noMove": true
+ },
+ "freeze": {
+  "id": "freeze",
+  "name": "Freeze",
+  "noAction": true
+ },
+ "curse": {
+  "id": "curse",
+  "name": "Curse",
+  "damageTaken": 1.25
+ }
 }

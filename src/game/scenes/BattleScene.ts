@@ -17,6 +17,7 @@ import {
   reachableFor,
   unitAt,
   maxHpOf,
+  unitTraits,
   unitById,
   validTargets,
   type BattleAction,
@@ -85,6 +86,7 @@ export class BattleScene extends Phaser.Scene {
   private logOpenedAt = 0;
 
   private overlay!: Phaser.GameObjects.Graphics;
+  private boardGfx: Phaser.GameObjects.Graphics | null = null;
   private units = new Map<string, UnitView>();
   private panel!: Phaser.GameObjects.Container;
   private infoText!: RichText;
@@ -114,6 +116,7 @@ export class BattleScene extends Phaser.Scene {
     this.logOverlay = null;
     this.logScroll = 0;
     this.units = new Map();
+    this.boardGfx = null;
   }
 
   create(): void {
@@ -172,7 +175,8 @@ export class BattleScene extends Phaser.Scene {
   // ------------------------------------------------------------ drawing
 
   private drawBoard(): void {
-    const g = this.add.graphics();
+    this.boardGfx ??= this.add.graphics().setDepth(-1);
+    const g = this.boardGfx.clear();
     for (let y = 0; y < this.grid.height; y++)
       for (let x = 0; x < this.grid.width; x++) {
         const id = this.grid.terrainAt({ x, y }).id as keyof typeof COLORS;
@@ -450,6 +454,7 @@ export class BattleScene extends Phaser.Scene {
     const lines = [
       `${tag(`${unit.side === "player" ? "ally" : "foe"}:${s.types[0]}`, s.name)} ${tag("dim", unit.side === "enemy" ? "(foe)" : "(yours)")}  ${s.types.map((t) => tag(t, t)).join("/")}`,
       `HP ${tag(unit.hp / unit.maxHp > 0.5 ? "heal" : "dmg", `${unit.hp}/${unit.maxHp}`)}  Atk ${unit.stats.attack}  Def ${unit.stats.defense}  Spe ${unit.stats.speed}`,
+      ...s.types.map((t) => `${tag(t, t)}: ${tag("dim", CONTENT.types[t]?.summary ?? "")}`),
       unit.statuses.length ? `Status: ${unit.statuses.map((x) => `${tag("status", CONTENT.statuses[x.id]?.name ?? x.id)} (${x.turnsLeft})`).join(", ")}` : "",
       ...unit.moves.map((m) => {
         const mv = CONTENT.moves[m]!;
@@ -494,6 +499,7 @@ export class BattleScene extends Phaser.Scene {
     return {
       id, speciesId, side: enemy ? "enemy" : "player", maxHp, hp: member?.hp ?? maxHp,
       pos: enemy?.pos ?? { x: 0, y: 0 }, statuses: [], cooldowns: {}, usedUltimates: [], captured: false, level: 1, stats: CONTENT.species[speciesId]!.stats, moves: CONTENT.species[speciesId]!.moves, mods: NO_MODIFIERS,
+      traits: unitTraits(CONTENT, CONTENT.species[speciesId]!.types),
     };
   }
 
@@ -713,6 +719,10 @@ export class BattleScene extends Phaser.Scene {
           break;
         case "statusApplied":
           this.floatText(e.unitId, e.status, "#c070ff");
+          break;
+        case "terrainChanged":
+          this.grid = Grid.fromAscii(this.state!.mapRows);
+          this.drawBoard();
           break;
         case "captured":
           await this.fadeOut(e.unitId);

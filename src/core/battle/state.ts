@@ -1,6 +1,7 @@
 import type { Point } from "../grid/types";
 import type { BaseStats } from "./content";
 import type { UnitModifiers } from "./modifiers";
+import type { TypeUnitTraits } from "./species";
 
 export type Side = "player" | "enemy";
 
@@ -31,6 +32,8 @@ export interface BattleUnit {
   readonly moves: readonly string[];
   /** Fixed modifiers for this battle (fatigue, held item, talents). */
   readonly mods: UnitModifiers;
+  /** Battlefield traits from its types. */
+  readonly traits: TypeUnitTraits;
 }
 
 export interface TurnState {
@@ -43,7 +46,8 @@ export type BattleOutcome = "ongoing" | "victory" | "defeat" | "retreated";
 
 /** Plain, serializable battle state. Never mutated by the public API. */
 export interface BattleState {
-  readonly mapRows: readonly string[];
+  /** Terrain rows; some type mechanics reshape them during battle. */
+  mapRows: readonly string[];
   units: BattleUnit[];
   round: number;
   /** Unit ids still to act this round, in order; the head is acting now. */

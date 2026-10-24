@@ -15,5 +15,6 @@ export type BattleEvent =
   | { type: "fainted"; unitId: string }
   | { type: "ballThrown"; unitId: string; targetId: string; ballId: string; chance: number; success: boolean }
   | { type: "captured"; unitId: string }
+  | { type: "terrainChanged"; pos: Point; terrain: string }
   | { type: "turnEnded"; unitId: string }
   | { type: "battleEnded"; outcome: Exclude<BattleOutcome, "ongoing"> };
