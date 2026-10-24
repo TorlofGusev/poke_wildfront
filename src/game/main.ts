@@ -1,4 +1,5 @@
 import Phaser from "phaser";
+import { setupRotation } from "./rotation";
 import { BattleScene } from "./scenes/BattleScene";
 import { BootScene } from "./scenes/BootScene";
 import { CreditsScene } from "./scenes/CreditsScene";
@@ -7,7 +8,7 @@ import { ShopScene } from "./scenes/ShopScene";
 import { OverworldScene } from "./scenes/OverworldScene";
 import { TitleScene } from "./scenes/TitleScene";
 
-new Phaser.Game({
+const game = new Phaser.Game({
   type: Phaser.AUTO,
   parent: "game",
   backgroundColor: "#10141c",
@@ -20,3 +21,4 @@ new Phaser.Game({
   },
   scene: [BootScene, TitleScene, OverworldScene, PartyScene, ShopScene, BattleScene, CreditsScene],
 });
+setupRotation(game);

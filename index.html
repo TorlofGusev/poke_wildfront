@@ -33,6 +33,16 @@
           font: 16px/1.4 monospace; padding: 0 max(16px, env(safe-area-inset-left, 0px));
         }
         #rotate small { color: var(--dim); }
+        #rotate button {
+          font: 15px monospace; color: var(--fg); background: #2a3245; border: 1px solid #5a6785;
+          padding: 10px 16px; margin-top: 8px; cursor: pointer;
+        }
+        /* Rotated mode: the game is drawn sideways, so a phone with auto-rotate off can be held in landscape. */
+        body.rotated #rotate { display: none; }
+        body.rotated #game {
+          position: fixed; top: 0; left: 100vw; width: 100vh; height: 100vw;
+          transform-origin: top left; transform: rotate(90deg);
+        }
       }
     </style>
   </head>
@@ -44,7 +54,7 @@
       <span>Loading the game…</span>
       <small>Unofficial fan game. Not affiliated with or endorsed by Nintendo, Game Freak, Creatures Inc. or The Pokémon Company.</small>
     </div>
-    <div id="rotate"><span style="font-size: 40px">⟳</span><span>Turn your phone sideways to play.</span><small>Pokémon Wildfront is played in landscape.</small></div>
+    <div id="rotate"><span style="font-size: 40px">⟳</span><span>Turn your phone sideways to play.</span><small>Pokémon Wildfront is played in landscape.</small><button id="play-rotated" type="button">Auto-rotate is off? Play sideways anyway</button></div>
     <script type="module" src="/src/game/main.ts"></script>
   </body>
 </html>

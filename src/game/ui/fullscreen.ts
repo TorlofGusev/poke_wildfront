@@ -1,4 +1,5 @@
 import type Phaser from "phaser";
+import { lockLandscape } from "../rotation";
 import { Button } from "./Button";
 
 /** Adds a fullscreen toggle when the browser allows it (it may not inside embedded viewers). */
@@ -9,7 +10,10 @@ export function addFullscreenButton(scene: Phaser.Scene, x: number, y: number, w
   const button = new Button(scene, x, y, w, 28, label(), () => {
     try {
       if (scene.scale.isFullscreen) scene.scale.stopFullscreen();
-      else scene.scale.startFullscreen();
+      else {
+        scene.scale.startFullscreen();
+        lockLandscape();
+      }
     } catch {
       // Refused by the browser or the embedding page: the game keeps running windowed.
     }
