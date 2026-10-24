@@ -88,7 +88,7 @@ export class PokemonScene extends Phaser.Scene {
     const text = (x: number, y: number, s: string, color: string = COLORS.text, size = 13) =>
       add(this.add.text(x, y, s, { fontFamily: FONT, fontSize: px(size), color }));
 
-    add(new Button(this, LIST_X, 12, 120, 26, "← Camp", () => this.scene.start("Party")));
+    add(new Button(this, LIST_X, 12, 120, 26, "← Camp", () => this.scene.start("Party", { rested: false, choosingMeal: false })));
     // ◀ ▶ cycle through the same list (party, or storage when viewing a stored Pokémon).
     const list = roster.party.some((m) => m.uid === this.selected) ? roster.party : roster.storage;
     const idx = list.findIndex((m) => m.uid === this.selected);

@@ -68,7 +68,8 @@ export class PartyScene extends Phaser.Scene {
     const { roster, money, inventory, world } = session.game;
     this.add.text(16, 14, "Camp", { fontFamily: FONT, fontSize: "20px", color: "#f5d76e" });
     new RichText(this, 100, 19, 400, 14).setMarkup(`${tag("num", `₽${money}`)}   Candy ${tag("num", inventory.items.candy ?? 0)}   Fatigue ${tag("num", world.fatigue)}`);
-    new Button(this, 794, 12, 150, 26, "➜ Back to map", () => this.scene.start("Overworld"));
+    new Button(this, 794, 12, 150, 26, "➜ Back to map", () => this.scene.start("Overworld", {}));
+    new Button(this, 474, 12, 150, 26, "🎒 Bag", () => this.scene.start("Inventory", { from: "Party" }));
     // Resting is a decision: pick a meal (or go hungry); wild groups move and this becomes the respawn point.
     new Button(this, 634, 12, 150, 26, this.choosingMeal ? "✕ Cancel" : "⛺ Rest here…", () =>
       this.scene.restart({ rested: this.rested, choosingMeal: !this.choosingMeal })).setEnabled(!this.rested);

@@ -188,12 +188,14 @@ export class OverworldScene extends Phaser.Scene {
     let y = 16 + h + 10;
     // One button: the camp screen manages the party, and resting there is a separate choice.
     const pending = roster.party.some((m) => pendingChoice(PROGRESSION, m) || m.unspentPoints > 0);
-    const campButton = new Button(this, 0, y, 240, 28, pending ? "★ Camp (level-ups waiting)" : "⛺ Camp", () => this.scene.start("Party"));
+    const campButton = new Button(this, 0, y, 240, 28, pending ? "★ Camp (level-ups waiting)" : "⛺ Camp", () => this.scene.start("Party", { rested: false, choosingMeal: false }));
     campButton.setEnabled(!this.moving).setHighlighted(pending);
     this.buttons.add(campButton);
+    y += 34;
+    this.buttons.add(new Button(this, 0, y, 240, 28, "🎒 Bag", () => this.scene.start("Inventory", { from: "Overworld" })).setEnabled(!this.moving));
     y += 36;
     if (here.id === "town") {
-      this.buttons.add(new Button(this, 0, y, 240, 28, "🛒 Poké Mart", () => this.scene.start("Shop")));
+      this.buttons.add(new Button(this, 0, y, 240, 28, "🛒 Poké Mart", () => this.scene.start("Shop", {})));
       y += 34;
     }
     this.buttons.add(new Button(this, 0, y, 116, 28, "⌂ Title", () => this.scene.start("Title")));

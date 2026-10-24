@@ -39,13 +39,13 @@ export class StarterScene extends Phaser.Scene {
       ].filter((l, idx, arr) => l !== "" || arr[idx - 1] !== "").join("\n"));
       new Button(this, x + 12, y + 316, cardW - 24, 32, `Choose ${s.name}`, () => {
         session.start([id]);
-        this.scene.start("Overworld");
+        this.scene.start("Overworld", {});
       }).setHighlighted(true);
     });
 
     new Button(this, width / 2 - 200, 462, 400, 28, `Playtest: start with a fixed team of ${PLAYTEST_TEAM.length}`, () => {
       session.start(PLAYTEST_TEAM);
-      this.scene.start("Overworld");
+      this.scene.start("Overworld", {});
     });
     new Button(this, width / 2 - 200, 496, 400, 28, "← Back", () => this.scene.start("Title"));
   }

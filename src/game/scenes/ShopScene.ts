@@ -45,7 +45,7 @@ export class ShopScene extends Phaser.Scene {
     const add = <T extends Phaser.GameObjects.GameObject>(o: T) => (this.root.add(o), o);
     add(this.add.text(16, 14, "Poké Mart", { fontFamily: FONT, fontSize: "20px", color: "#f5d76e" }));
     add(this.add.text(160, 20, `You have ₽${session.game.money}`, { fontFamily: FONT, fontSize: px(14), color: "#f5d76e" }));
-    add(new Button(this, 794, 12, 150, 26, "➜ Leave", () => this.scene.start("Overworld")));
+    add(new Button(this, 794, 12, 150, 26, "➜ Leave", () => this.scene.start("Overworld", {})));
     this.wares().forEach((w, i) => {
       const col = i % 2;
       const row = Math.floor(i / 2);

@@ -11,6 +11,9 @@ import { planTurn } from "../../core/ai";
 import {
   activeUnit,
   affectedUnits,
+  moveArea,
+  previewMove,
+  type HitPreview,
   applyAction,
   deploymentErrors,
   lockDeployment,
@@ -96,6 +99,8 @@ export class BattleScene extends Phaser.Scene {
   private infoText!: RichText;
   private header!: Phaser.GameObjects.Text;
   private orderStrip: Phaser.GameObjects.Container | null = null;
+  private previewLabels: Phaser.GameObjects.Container | null = null;
+  private lastPreview: readonly HitPreview[] = [];
 
   constructor() {
     super("Battle");
@@ -124,6 +129,7 @@ export class BattleScene extends Phaser.Scene {
     this.units = new Map();
     this.boardGfx = null;
     this.orderStrip = null;
+    this.previewLabels = null;
   }
 
   create(): void {
@@ -278,6 +284,8 @@ export class BattleScene extends Phaser.Scene {
 
   private refreshOverlay(): void {
     this.overlay.clear();
+    this.previewLabels?.destroy();
+    this.previewLabels = null;
     if (this.phase === "deploy") {
       this.fillTiles(this.scenario.deploymentZone, COLORS.zone, 0.25);
     } else if (this.phase === "battle" && this.state && this.isPlayerTurn() && !this.busy) {
@@ -285,11 +293,15 @@ export class BattleScene extends Phaser.Scene {
       if (this.selectedBall) {
         this.fillTiles(captureTargets(this.state, CONTENT, unit.id, this.selectedBall), COLORS.active, 0.35);
       } else if (this.selectedMove) {
+        const move = CONTENT.moves[this.selectedMove]!;
         const targets = validTargets(this.state, CONTENT, unit.id, this.selectedMove);
-        this.fillTiles(targets, COLORS.target, 0.3);
+        // Aim tiles: red for single-target moves, violet for area moves (they hit everything in the shape).
+        const isArea = move.shape.kind !== "single";
+        this.fillTiles(targets, isArea ? COLORS.areaAim : COLORS.target, 0.3);
         if (this.hovered && targets.some((t) => samePoint(t, this.hovered!))) {
-          const move = CONTENT.moves[this.selectedMove]!;
-          this.fillTiles(affectedUnits(this.state, move, unit, this.hovered).map((u) => u.pos), COLORS.area, 0.55);
+          this.fillTiles(moveArea(this.state, move, unit, this.hovered), COLORS.area, 0.3);
+          this.fillTiles(affectedUnits(this.state, move, unit, this.hovered).map((u) => u.pos), COLORS.area, 0.5);
+          this.showPreview(previewMove(this.state, CONTENT, unit.id, this.selectedMove, this.hovered));
         }
       } else {
         this.fillTiles(reachableFor(this.state, unit.id).destinations, COLORS.reach, 0.25);
@@ -308,6 +320,23 @@ export class BattleScene extends Phaser.Scene {
     this.refreshPanel();
     this.refreshOverlay();
     this.refreshInfo();
+  }
+
+  /** Exact predicted damage above every Pokémon the hovered aim would hit. */
+  private showPreview(hits: readonly HitPreview[]): void {
+    const items = hits.flatMap((h) => {
+      const view = this.units.get(h.unitId);
+      if (!view) return [];
+      const parts = [h.damage ? `-${h.damage}` : "", h.healed ? `+${h.healed}` : "", h.knockedOut ? "KO" : ""].filter(Boolean);
+      if (!parts.length && !h.statuses.length) return [];
+      const label = parts.length ? parts.join(" ") : h.statuses.join(", ");
+      return [this.add.text(view.container.x, view.container.y - 30, label, {
+        fontFamily: FONT, fontSize: "14px", fontStyle: "bold", color: h.knockedOut ? "#ff5050" : h.healed && !h.damage ? "#7ed321" : "#ffd27a",
+        backgroundColor: "#10141ccc", padding: { x: 3, y: 1 },
+      }).setOrigin(0.5).setDepth(8)];
+    });
+    this.previewLabels = this.add.container(0, 0, items);
+    this.lastPreview = hits;
   }
 
   /** Who acts this round, in order, next to the round counter: portraits ringed in team colours. */
@@ -366,7 +395,7 @@ export class BattleScene extends Phaser.Scene {
       const errors = deploymentErrors(this.scenario, this.party, this.placements);
       y += 4;
       button(`▶ Lock deployment & start (${this.placements.length}/3)`, errors.length === 0, false, () => this.startBattle());
-      button("← Avoid this battle", true, false, () => this.scene.start("Overworld"));
+      button("← Avoid this battle", true, false, () => this.scene.start("Overworld", {}));
       return;
     }
 
@@ -392,7 +421,7 @@ export class BattleScene extends Phaser.Scene {
         if (!sum.captured.length && !sum.knockedOut.length && !sum.xp) text("No losses.", COLORS.dim);
       }
       if (this.rewardText) text(this.rewardText, COLORS.good);
-      button("➜ Continue", true, false, () => this.scene.start("Overworld"));
+      button("➜ Continue", true, false, () => this.scene.start("Overworld", {}));
       return;
     }
 

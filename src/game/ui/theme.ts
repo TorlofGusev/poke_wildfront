@@ -16,6 +16,7 @@ export const COLORS = {
   reach: 0x4a90e2,
   target: 0xe2574a,
   area: 0xf5a623,
+  areaAim: 0x9b6bff,
   player: 0x4a90e2,
   enemy: 0xd0021b,
   active: 0xf5d76e,

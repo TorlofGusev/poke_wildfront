@@ -148,42 +148,39 @@ export function moveUnavailableReason(
   return null;
 }
 
-/** Units a move would affect if aimed at `target` from the user's current position. */
-export function affectedUnits(
-  state: BattleState,
-  move: MoveDef,
-  user: BattleUnit,
-  target: Point,
-): BattleUnit[] {
+/** Every tile a move would cover if aimed at `target` (its area of effect). */
+export function moveArea(state: BattleState, move: MoveDef, user: BattleUnit, target: Point): Point[] {
   const grid = gridOf(state);
-  const wantsSide = (u: BattleUnit) => (move.affects === "allies") === (u.side === user.side);
-  let tiles: Point[];
   switch (move.shape.kind) {
     case "single":
-      tiles = [target];
-      break;
+      return [target];
     case "burst": {
       const r = move.shape.radius;
-      tiles = [];
+      const tiles: Point[] = [];
       for (let dy = -r; dy <= r; dy++)
         for (let dx = -r; dx <= r; dx++) {
           const p = { x: target.x + dx, y: target.y + dy };
           if (Math.abs(dx) + Math.abs(dy) <= r && grid.inBounds(p)) tiles.push(p);
         }
-      break;
+      return tiles;
     }
     case "line": {
       const dir = { x: Math.sign(target.x - user.pos.x), y: Math.sign(target.y - user.pos.y) };
-      tiles = [];
+      const tiles: Point[] = [];
       for (let i = 1; i <= move.shape.length; i++) {
         const p = { x: user.pos.x + dir.x * i, y: user.pos.y + dir.y * i };
         if (!grid.inBounds(p) || grid.terrainAt(p).blocksSight) break;
         tiles.push(p);
       }
-      break;
+      return tiles;
     }
   }
-  return tiles
+}
+
+/** Units a move would affect if aimed at `target` from the user's current position. */
+export function affectedUnits(state: BattleState, move: MoveDef, user: BattleUnit, target: Point): BattleUnit[] {
+  const wantsSide = (u: BattleUnit) => (move.affects === "allies") === (u.side === user.side);
+  return moveArea(state, move, user, target)
     .map((p) => unitAt(state, p))
     .filter((u): u is BattleUnit => u !== undefined && wantsSide(u))
     .sort((a, b) => a.pos.y - b.pos.y || a.pos.x - b.pos.x);

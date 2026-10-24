@@ -17,7 +17,7 @@ export function describeMove(content: BattleContent, move: MoveDef): string {
     `${tag("title", move.name)} — ${tag(move.type, move.type.toUpperCase())}`,
     kind,
     `Range ${tag("num", range)} · ${shape}${move.requiresLineOfSight ? " · needs line of sight" : ""}`,
-    move.power > 0 ? `Power ${tag("dmg", move.power)} · always hits` : tag("dim", "No damage"),
+    move.power > 0 ? `Power ${tag("dmg", move.power)} ${tag("dim", "(hover a target to see the exact damage)")}` : tag("dim", "No damage"),
   ];
   for (const e of move.effects ?? []) {
     switch (e.kind) {
