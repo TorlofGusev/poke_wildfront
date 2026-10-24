@@ -41,7 +41,9 @@ npm run preview    # serve the production build locally
 - `src/core/` – pure game rules, no Phaser/DOM/`Math.random` (enforced by `tests/architecture.test.ts`)
 - `src/content/` – data files (species, moves, encounters…)
 - `src/game/` – Phaser scenes, rendering, input, UI
-- `docs/` – [project brief](docs/PROJECT_BRIEF.md), [Phase 1 audit](docs/PHASE1_AUDIT.md)
+- `docs/` – [project brief](docs/PROJECT_BRIEF.md), [Phase 1 audit](docs/PHASE1_AUDIT.md), [design notes](docs/design), [building and hosting](docs/BUILD.md)
+
+See [CONTRIBUTING.md](CONTRIBUTING.md) to help, and [ASSETS.md](ASSETS.md) for licences.
 
 ## Licence
 
