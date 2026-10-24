@@ -21,14 +21,6 @@
     4,
     4
    ]
-  },
-  "hurt": {
-   "frameWidth": 40,
-   "frameHeight": 56,
-   "durations": [
-    2,
-    8
-   ]
   }
  },
  "charmander": {
@@ -50,14 +42,6 @@
     6,
     8,
     6,
-    8
-   ]
-  },
-  "hurt": {
-   "frameWidth": 48,
-   "frameHeight": 56,
-   "durations": [
-    2,
     8
    ]
   }
@@ -87,14 +71,6 @@
     12,
     8
    ]
-  },
-  "hurt": {
-   "frameWidth": 40,
-   "frameHeight": 56,
-   "durations": [
-    2,
-    8
-   ]
   }
  },
  "pikachu": {
@@ -120,14 +96,6 @@
     8,
     10
    ]
-  },
-  "hurt": {
-   "frameWidth": 48,
-   "frameHeight": 64,
-   "durations": [
-    2,
-    8
-   ]
   }
  },
  "geodude": {
@@ -150,14 +118,6 @@
     10,
     8,
     10
-   ]
-  },
-  "hurt": {
-   "frameWidth": 40,
-   "frameHeight": 48,
-   "durations": [
-    2,
-    8
    ]
   }
  },
@@ -183,14 +143,6 @@
     4,
     4,
     4
-   ]
-  },
-  "hurt": {
-   "frameWidth": 48,
-   "frameHeight": 48,
-   "durations": [
-    2,
-    8
    ]
   }
  },
@@ -221,14 +173,6 @@
     4,
     4,
     4
-   ]
-  },
-  "hurt": {
-   "frameWidth": 56,
-   "frameHeight": 56,
-   "durations": [
-    2,
-    8
    ]
   }
  },
@@ -261,14 +205,6 @@
     6,
     6
    ]
-  },
-  "hurt": {
-   "frameWidth": 40,
-   "frameHeight": 48,
-   "durations": [
-    2,
-    8
-   ]
   }
  },
  "oddish": {
@@ -296,14 +232,6 @@
     4,
     8,
     6
-   ]
-  },
-  "hurt": {
-   "frameWidth": 56,
-   "frameHeight": 48,
-   "durations": [
-    2,
-    8
    ]
   }
  },
@@ -333,14 +261,6 @@
     4,
     4
    ]
-  },
-  "hurt": {
-   "frameWidth": 48,
-   "frameHeight": 64,
-   "durations": [
-    2,
-    8
-   ]
   }
  },
  "caterpie": {
@@ -369,14 +289,6 @@
     10,
     10
    ]
-  },
-  "hurt": {
-   "frameWidth": 48,
-   "frameHeight": 56,
-   "durations": [
-    2,
-    8
-   ]
   }
  },
  "weedle": {
@@ -397,14 +309,6 @@
    "durations": [
     8,
     10,
-    8
-   ]
-  },
-  "hurt": {
-   "frameWidth": 56,
-   "frameHeight": 64,
-   "durations": [
-    2,
     8
    ]
   }
@@ -433,14 +337,6 @@
     4,
     4
    ]
-  },
-  "hurt": {
-   "frameWidth": 40,
-   "frameHeight": 56,
-   "durations": [
-    2,
-    8
-   ]
   }
  },
  "diglett": {
@@ -459,14 +355,6 @@
    "durations": [
     8,
     8,
-    8
-   ]
-  },
-  "hurt": {
-   "frameWidth": 32,
-   "frameHeight": 32,
-   "durations": [
-    2,
     8
    ]
   }
@@ -491,14 +379,6 @@
     10,
     8,
     10
-   ]
-  },
-  "hurt": {
-   "frameWidth": 48,
-   "frameHeight": 56,
-   "durations": [
-    2,
-    8
    ]
   }
  },
@@ -525,14 +405,6 @@
     8,
     10
    ]
-  },
-  "hurt": {
-   "frameWidth": 48,
-   "frameHeight": 64,
-   "durations": [
-    2,
-    8
-   ]
   }
  },
  "wartortle": {
@@ -555,14 +427,6 @@
     10,
     8,
     10
-   ]
-  },
-  "hurt": {
-   "frameWidth": 48,
-   "frameHeight": 48,
-   "durations": [
-    2,
-    8
    ]
   }
  },
@@ -597,14 +461,6 @@
     6,
     10
    ]
-  },
-  "hurt": {
-   "frameWidth": 40,
-   "frameHeight": 56,
-   "durations": [
-    2,
-    8
-   ]
   }
  },
  "pidgeotto": {
@@ -627,14 +483,6 @@
     10,
     6,
     10
-   ]
-  },
-  "hurt": {
-   "frameWidth": 48,
-   "frameHeight": 64,
-   "durations": [
-    2,
-    8
    ]
   }
  },
@@ -662,14 +510,6 @@
     4,
     4,
     4
-   ]
-  },
-  "hurt": {
-   "frameWidth": 40,
-   "frameHeight": 48,
-   "durations": [
-    2,
-    8
    ]
   }
  },
@@ -699,14 +539,6 @@
     4,
     4,
     4
-   ]
-  },
-  "hurt": {
-   "frameWidth": 48,
-   "frameHeight": 64,
-   "durations": [
-    2,
-    8
    ]
   }
  },
@@ -739,14 +571,6 @@
     8,
     8
    ]
-  },
-  "hurt": {
-   "frameWidth": 56,
-   "frameHeight": 72,
-   "durations": [
-    2,
-    8
-   ]
   }
  },
  "kakuna": {
@@ -773,14 +597,6 @@
     4,
     10
    ]
-  },
-  "hurt": {
-   "frameWidth": 48,
-   "frameHeight": 56,
-   "durations": [
-    2,
-    8
-   ]
   }
  },
  "beedrill": {
@@ -803,14 +619,6 @@
     4,
     4,
     4
-   ]
-  },
-  "hurt": {
-   "frameWidth": 48,
-   "frameHeight": 64,
-   "durations": [
-    2,
-    8
    ]
   }
  },
@@ -843,14 +651,6 @@
     5,
     6
    ]
-  },
-  "hurt": {
-   "frameWidth": 48,
-   "frameHeight": 72,
-   "durations": [
-    2,
-    8
-   ]
   }
  },
  "golbat": {
@@ -878,14 +678,6 @@
     6,
     6
    ]
-  },
-  "hurt": {
-   "frameWidth": 40,
-   "frameHeight": 64,
-   "durations": [
-    2,
-    8
-   ]
   }
  },
  "gloom": {
@@ -908,14 +700,6 @@
     6,
     8,
     6,
-    8
-   ]
-  },
-  "hurt": {
-   "frameWidth": 48,
-   "frameHeight": 64,
-   "durations": [
-    2,
     8
    ]
   }
@@ -945,14 +729,6 @@
     6,
     8
    ]
-  },
-  "hurt": {
-   "frameWidth": 48,
-   "frameHeight": 64,
-   "durations": [
-    2,
-    8
-   ]
   }
  },
  "dugtrio": {
@@ -971,14 +747,6 @@
    "durations": [
     8,
     8,
-    8
-   ]
-  },
-  "hurt": {
-   "frameWidth": 40,
-   "frameHeight": 40,
-   "durations": [
-    2,
     8
    ]
   }

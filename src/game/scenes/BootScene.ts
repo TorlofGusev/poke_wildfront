@@ -18,6 +18,7 @@ export class BootScene extends Phaser.Scene {
   }
 
   preload(): void {
+    performance.mark("wildfront:boot-start");
     // The game is running: the HTML loading screen can go.
     document.getElementById("loading")?.remove();
 
@@ -39,7 +40,9 @@ export class BootScene extends Phaser.Scene {
   }
 
   create(): void {
+    performance.mark("wildfront:assets-loaded");
     createSpriteAnims(this);
+    performance.mark("wildfront:anims-ready");
     this.scene.start("Title");
   }
 }

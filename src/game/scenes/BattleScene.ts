@@ -227,13 +227,21 @@ export class BattleScene extends Phaser.Scene {
     view.label.setVisible(!showSprite);
   }
 
-  /** Plays an animation on the unit's sprite, facing a direction; a one-shot (hurt) returns to idle. */
+  /** Plays an animation on the unit's sprite, facing a direction. */
   private animate(unitId: string, anim: SpriteAnim, facing?: Facing): void {
     const view = this.units.get(unitId);
     if (!view?.sprite) return;
     if (facing !== undefined) view.facing = facing;
     view.sprite.play(animKey(view.speciesId, anim, view.facing), true);
-    if (anim === "hurt") view.sprite.once("animationcomplete", () => this.animate(unitId, "idle"));
+  }
+
+  /** Red flash and a small shake when a unit takes damage. */
+  private flinch(unitId: string): void {
+    const view = this.units.get(unitId);
+    if (!view?.sprite) return;
+    view.sprite.setTint(0xff4040);
+    this.time.delayedCall(90, () => view.sprite?.clearTint());
+    this.tweens.add({ targets: view.sprite, x: { from: -3, to: 0 }, duration: 160, ease: "Bounce.Out" });
   }
 
   private syncUnits(): void {
@@ -688,7 +696,7 @@ export class BattleScene extends Phaser.Scene {
           break;
         }
         case "damaged": {
-          if (e.source !== "status" || e.amount > 0) this.animate(e.unitId, "hurt");
+          this.flinch(e.unitId);
           const eff = e.effectiveness && e.effectiveness !== 1 ? (e.effectiveness > 1 ? " !" : " ↓") : "";
           this.floatText(e.unitId, `-${e.amount}${eff}`, e.source === "status" ? "#c070ff" : "#ff6b6b");
           this.syncUnits();

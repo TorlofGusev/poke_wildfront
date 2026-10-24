@@ -1,6 +1,6 @@
 // Downloads PMDCollab SpriteCollab sprites (CC BY-NC 4.0) for every species in the content,
 // writes frame metadata to src/content/sprites.json and the per-artist credits to CREDITS.md.
-// Usage: node tools/fetch-sprites.mjs   (needs network access to raw.githubusercontent.com)
+// Usage: node tools/fetch-sprites.mjs && python3 tools/pack-sprites.py   (needs network access to raw.githubusercontent.com)
 import { mkdirSync, readFileSync, writeFileSync } from "node:fs";
 
 const BASE = "https://raw.githubusercontent.com/PMDCollab/SpriteCollab/master";
