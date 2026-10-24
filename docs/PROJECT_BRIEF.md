@@ -61,7 +61,7 @@ The project should be easy to clone, install (`npm install`), run (`npm run dev`
 Hosting:
 
 - GitHub for source code, issues, documentation, and community contributions.
-- **GitHub Pages** for the playable build, deployed automatically by GitHub Actions. itch.io may be used as an additional mirror.
+- Static web hosting for the playable build (provider to be decided later; GitHub Pages and itch.io are candidates).
 
 No multiplayer, persistent online world, backend account system, or server infrastructure is required for the initial version.
 

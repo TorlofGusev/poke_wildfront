@@ -6,7 +6,7 @@ A free, open-source, browser-only Pokémon tactical RPG fan game inspired by War
 
 ## Play
 
-The latest build of `main` is deployed automatically to GitHub Pages.
+No public build yet; hosting will be chosen later. Run it locally (see below).
 
 ## Develop
 
