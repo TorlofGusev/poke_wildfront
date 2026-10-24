@@ -1,0 +1,21 @@
+{
+  "superEffective": 1.5,
+  "notVeryEffective": 0.75,
+  "chart": {
+    "normal":   { "strong": [], "weak": ["rock", "ghost"] },
+    "fire":     { "strong": ["grass", "ice", "bug"], "weak": ["fire", "water", "rock", "dragon"] },
+    "water":    { "strong": ["fire", "ground", "rock"], "weak": ["water", "grass", "dragon"] },
+    "electric": { "strong": ["water", "flying"], "weak": ["electric", "grass", "dragon", "ground"] },
+    "grass":    { "strong": ["water", "ground", "rock"], "weak": ["fire", "grass", "poison", "flying", "bug", "dragon"] },
+    "ice":      { "strong": ["grass", "ground", "flying", "dragon"], "weak": ["fire", "water", "ice"] },
+    "fighting": { "strong": ["normal", "ice", "rock"], "weak": ["poison", "flying", "psychic", "bug", "ghost"] },
+    "poison":   { "strong": ["grass"], "weak": ["poison", "ground", "rock", "ghost"] },
+    "ground":   { "strong": ["fire", "electric", "poison", "rock"], "weak": ["grass", "bug", "flying"] },
+    "flying":   { "strong": ["grass", "fighting", "bug"], "weak": ["electric", "rock"] },
+    "psychic":  { "strong": ["fighting", "poison"], "weak": ["psychic"] },
+    "bug":      { "strong": ["grass", "psychic"], "weak": ["fire", "fighting", "flying", "ghost", "poison"] },
+    "rock":     { "strong": ["fire", "ice", "flying", "bug"], "weak": ["fighting", "ground"] },
+    "ghost":    { "strong": ["ghost", "psychic"], "weak": ["normal"] },
+    "dragon":   { "strong": ["dragon"], "weak": [] }
+  }
+}
