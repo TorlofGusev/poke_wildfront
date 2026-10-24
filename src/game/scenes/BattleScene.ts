@@ -4,7 +4,7 @@ import { captureChance, captureTargets, captureUnavailableReason } from "../../c
 import { KNOCKOUTS_TO_DEATH, resolveBattle, type BattleSummary } from "../../core/party";
 import { session } from "../session";
 import { WORLD, WORLD_CONTENT } from "../../content";
-import { fatigueLevel, removeEncounter, returnToLastCamp } from "../../core/expedition";
+import { fatigueLevel, fatigueModifiers, removeEncounter, returnToLastCamp } from "../../core/expedition";
 import { nextRandom } from "../../core/rng";
 import { planTurn } from "../../core/ai";
 import {
@@ -21,6 +21,7 @@ import {
   type BattleAction,
   type BattleEvent,
   type DeployCandidate,
+  NO_MODIFIERS,
   type BattleState,
   type BattleUnit,
   type Placement,
@@ -330,7 +331,7 @@ export class BattleScene extends Phaser.Scene {
     if (unit && unit.side === "player" && !this.busy) {
       const species = CONTENT.species[unit.speciesId]!;
       text(`${species.name} · move ${state.turn!.movePointsLeft} · ${state.turn!.actionUsed ? "action used" : "action ready"}`, COLORS.good);
-      for (const moveId of species.moves) {
+      for (const moveId of unit.moves) {
         const move = CONTENT.moves[moveId]!;
         const reason = moveUnavailableReason(state, CONTENT, unit.id, moveId);
         const targets = reason ? [] : validTargets(state, CONTENT, unit.id, moveId);
@@ -408,9 +409,9 @@ export class BattleScene extends Phaser.Scene {
     const s = CONTENT.species[unit.speciesId]!;
     const lines = [
       `${tag(`${unit.side === "player" ? "ally" : "foe"}:${s.types[0]}`, s.name)} ${tag("dim", unit.side === "enemy" ? "(foe)" : "(yours)")}  ${s.types.map((t) => tag(t, t)).join("/")}`,
-      `HP ${tag(unit.hp / unit.maxHp > 0.5 ? "heal" : "dmg", `${unit.hp}/${unit.maxHp}`)}  Atk ${s.stats.attack}  Def ${s.stats.defense}  Spe ${s.stats.speed}`,
+      `HP ${tag(unit.hp / unit.maxHp > 0.5 ? "heal" : "dmg", `${unit.hp}/${unit.maxHp}`)}  Atk ${unit.stats.attack}  Def ${unit.stats.defense}  Spe ${unit.stats.speed}`,
       unit.statuses.length ? `Status: ${unit.statuses.map((x) => `${tag("status", CONTENT.statuses[x.id]?.name ?? x.id)} (${x.turnsLeft})`).join(", ")}` : "",
-      ...s.moves.map((m) => {
+      ...unit.moves.map((m) => {
         const mv = CONTENT.moves[m]!;
         const shape = mv.shape.kind === "single" ? "" : mv.shape.kind === "burst" ? `, area ${mv.shape.radius}` : `, line ${mv.shape.length}`;
         return `· ${tag(mv.kind, mv.name)} ${tag(mv.type, mv.type)}, range ${mv.range.min}-${mv.range.max}${shape}${mv.power ? `, power ${tag("dmg", mv.power)}` : ""}`;
@@ -452,7 +453,7 @@ export class BattleScene extends Phaser.Scene {
     const maxHp = Math.round(CONTENT.species[speciesId]!.stats.hp * CONTENT.rules.hpMultiplier);
     return {
       id, speciesId, side: enemy ? "enemy" : "player", maxHp, hp: member?.hp ?? maxHp,
-      pos: enemy?.pos ?? { x: 0, y: 0 }, statuses: [], cooldowns: {}, usedUltimates: [], captured: false, movePenalty: 0, damageMultiplier: 1,
+      pos: enemy?.pos ?? { x: 0, y: 0 }, statuses: [], cooldowns: {}, usedUltimates: [], captured: false, level: 1, stats: CONTENT.species[speciesId]!.stats, moves: CONTENT.species[speciesId]!.moves, mods: NO_MODIFIERS,
     };
   }
 
@@ -543,7 +544,7 @@ export class BattleScene extends Phaser.Scene {
       captureAllowed: this.scenario.captureAllowed ?? false,
       balls: session.game.inventory.balls,
       seed: Date.now() >>> 0,
-      playerModifiers: fatigueLevel(WORLD_CONTENT.fatigue, session.game.world.fatigue),
+      playerModifiers: fatigueModifiers(fatigueLevel(WORLD_CONTENT.fatigue, session.game.world.fatigue)),
     });
     this.state = state;
     this.phase = "battle";

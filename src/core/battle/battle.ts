@@ -5,7 +5,8 @@ import { key, manhattan, samePoint, type Point } from "../grid/types";
 import { captureChance, captureUnavailableReason } from "../capture/capture";
 import { nextRandom } from "../rng";
 import { typeMultiplier } from "../rules/typeChart";
-import type { BattleContent, MoveDef } from "./content";
+import type { BaseStats, BattleContent, MoveDef } from "./content";
+import { combineModifiers, type UnitModifiers } from "./modifiers";
 import type { BattleEvent } from "./events";
 import type { BattleState, BattleUnit, Side } from "./state";
 
@@ -16,6 +17,14 @@ export interface UnitSetup {
   readonly pos: Point;
   /** Defaults to the species' max HP. */
   readonly hp?: number;
+  readonly level?: number;
+  /** Effective stats; defaults to the species' base stats. */
+  readonly stats?: BaseStats;
+  /** Battle max HP; defaults to the species' base HP × hpMultiplier. */
+  readonly maxHp?: number;
+  /** Usable moves; defaults to the species' move list. */
+  readonly moves?: readonly string[];
+  readonly mods?: Partial<UnitModifiers>;
 }
 
 export type BattleAction =
@@ -32,7 +41,7 @@ export interface BattleOptions {
   /** Wild battles allow capture; trainer and boss battles do not. */
   readonly captureAllowed?: boolean;
   /** Applied to every player unit, e.g. expedition fatigue. */
-  readonly playerModifiers?: { readonly movePenalty: number; readonly damageMultiplier: number };
+  readonly playerModifiers?: Partial<UnitModifiers>;
 }
 
 export interface StepResult {
@@ -63,10 +72,10 @@ export const activeUnit = (state: BattleState): BattleUnit | null =>
   state.turn ? unitById(state, state.turn.unitId) : null;
 
 export function movementPoints(content: BattleContent, unit: BattleUnit): number {
-  const speed = content.species[unit.speciesId]!.stats.speed;
+  const speed = unit.stats.speed;
   const base = content.rules.movementBySpeed.find((t) => speed >= t.minSpeed)?.move ?? 0;
   const penalty = unit.statuses.reduce((s, st) => s + (content.statuses[st.id]?.movePenalty ?? 0), 0);
-  return Math.max(0, base - penalty - unit.movePenalty);
+  return Math.max(0, base - penalty + unit.mods.moveBonus);
 }
 
 function occupancyFor(state: BattleState, unit: BattleUnit): Occupancy {
@@ -94,8 +103,7 @@ export function moveUnavailableReason(
   moveId: string,
 ): string | null {
   const unit = unitById(state, unitId);
-  const species = content.species[unit.speciesId]!;
-  if (!species.moves.includes(moveId)) return "unit does not know this move";
+  if (!unit.moves.includes(moveId)) return "unit does not know this move";
   if (state.turn?.unitId !== unitId) return "not this unit's turn";
   if (state.turn.actionUsed) return "action already used this turn";
   if ((unit.cooldowns[moveId] ?? 0) > 0) return `on cooldown (${unit.cooldowns[moveId]})`;
@@ -199,7 +207,8 @@ export function createBattle(
   const state: BattleState = {
     mapRows: [...mapRows],
     units: units.map((u) => {
-      const maxHp = maxHpOf(content, u.speciesId);
+      const species = content.species[u.speciesId]!;
+      const maxHp = u.maxHp ?? maxHpOf(content, u.speciesId);
       return {
         id: u.id,
         speciesId: u.speciesId,
@@ -211,8 +220,10 @@ export function createBattle(
         cooldowns: {},
         usedUltimates: [],
         captured: false,
-        movePenalty: u.side === "player" ? options.playerModifiers?.movePenalty ?? 0 : 0,
-        damageMultiplier: u.side === "player" ? options.playerModifiers?.damageMultiplier ?? 1 : 1,
+        level: u.level ?? 1,
+        stats: { ...(u.stats ?? species.stats) },
+        moves: [...(u.moves ?? species.moves)],
+        mods: combineModifiers(u.mods ?? {}, u.side === "player" ? options.playerModifiers ?? {} : {}),
       };
     }),
     round: 0,
@@ -234,8 +245,8 @@ export function initiativeOrder(state: BattleState, content: BattleContent): str
   return livingUnits(state)
     .slice()
     .sort((a, b) => {
-      const sa = content.species[a.speciesId]!.stats.speed;
-      const sb = content.species[b.speciesId]!.stats.speed;
+      const sa = a.stats.speed;
+      const sb = b.stats.speed;
       if (sa !== sb) return sb - sa;
       if (a.side !== b.side) return a.side === "player" ? -1 : 1;
       return a.id < b.id ? -1 : a.id > b.id ? 1 : 0;
@@ -308,10 +319,15 @@ function doUseMove(
   for (const t of affected) {
     if (t.hp <= 0) continue;
     if (move.power > 0) {
-      const attacker = content.species[user.speciesId]!.stats;
       const defender = content.species[t.speciesId]!;
       const eff = typeMultiplier(content.typeChart, move.type, defender.types);
-      const raw = (move.power * attacker.attack) / defender.stats.defense * eff * user.damageMultiplier / content.rules.damageDivisor;
+      const m = user.mods;
+      const situational =
+        (t.statuses.length > 0 ? m.vsStatusDamage : 1) *
+        (t.hp === t.maxHp ? m.fullHpTargetDamage : 1) *
+        (user.hp * 2 < user.maxHp ? m.lowHpDamage : 1);
+      const mult = eff * m.damageDealt * (m.typeDamage[move.type] ?? 1) * situational * t.mods.damageTaken;
+      const raw = (move.power * user.stats.attack) / t.stats.defense * mult / content.rules.damageDivisor;
       dealDamage(state, t, Math.max(1, Math.round(raw)), "move", events, eff);
     }
     for (const effect of move.effects ?? []) {
@@ -324,10 +340,11 @@ function doUseMove(
           break;
         }
         case "status": {
+          const duration = effect.duration + user.mods.statusDurationBonus;
           const existing = t.statuses.find((s) => s.id === effect.status);
-          if (existing) existing.turnsLeft = Math.max(existing.turnsLeft, effect.duration);
-          else t.statuses.push({ id: effect.status, turnsLeft: effect.duration });
-          events.push({ type: "statusApplied", unitId: t.id, status: effect.status, duration: effect.duration });
+          if (existing) existing.turnsLeft = Math.max(existing.turnsLeft, duration);
+          else t.statuses.push({ id: effect.status, turnsLeft: duration });
+          events.push({ type: "statusApplied", unitId: t.id, status: effect.status, duration });
           break;
         }
         case "push":
@@ -394,7 +411,7 @@ function displace(
   if (!samePoint(from, target.pos) || blocked)
     events.push({ type: "displaced", unitId: target.id, from, to: { ...target.pos }, blocked });
   // Only a push into an obstacle hurts; a pull that reaches the user simply stops.
-  if (blocked && kind === "push") dealDamage(state, target, content.rules.impactDamage, "impact", events);
+  if (blocked && kind === "push") dealDamage(state, target, content.rules.impactDamage + user.mods.impactBonus, "impact", events);
 }
 
 function dealDamage(
@@ -435,6 +452,11 @@ function startTurn(state: BattleState, content: BattleContent, events: BattleEve
   for (const st of unit.statuses) {
     const frac = content.statuses[st.id]?.damagePerTurn;
     if (frac && unit.hp > 0) dealDamage(state, unit, Math.max(1, Math.floor(unit.maxHp * frac)), "status", events);
+  }
+  if (unit.hp > 0 && unit.mods.healPerTurn > 0 && unit.hp < unit.maxHp) {
+    const amount = Math.min(unit.maxHp - unit.hp, Math.max(1, Math.floor(unit.maxHp * unit.mods.healPerTurn)));
+    unit.hp += amount;
+    events.push({ type: "healed", unitId: unit.id, amount, hp: unit.hp });
   }
   checkOutcome(state, events);
   if (state.outcome === "ongoing" && unit.hp <= 0) endTurn(state, content, events);

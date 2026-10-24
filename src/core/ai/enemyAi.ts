@@ -56,7 +56,6 @@ export function planTurn(
   if (!turn) return [];
   const unitId = turn.unitId;
   const self = unitById(state, unitId);
-  const species = content.species[self.speciesId]!;
   const end: BattleAction = { type: "endTurn", unitId };
 
   const stops: (Point | null)[] = [null, ...reachableFor(state, unitId).destinations];
@@ -65,7 +64,7 @@ export function planTurn(
   for (const stop of stops) {
     const moveAction: BattleAction | null = stop ? { type: "move", unitId, to: stop } : null;
     const afterMove = moveAction ? applyAction(state, content, moveAction).state : state;
-    for (const moveId of species.moves) {
+    for (const moveId of self.moves) {
       for (const target of validTargets(afterMove, content, unitId, moveId)) {
         const use: BattleAction = { type: "useMove", unitId, moveId, target };
         const result = applyAction(afterMove, content, use);

@@ -21,3 +21,8 @@ export function fatigueLevel(rules: FatigueRules, fatigue: number): FatigueLevel
 export function addTravelFatigue(rules: FatigueRules, fatigue: number, travelCost: number): number {
   return Math.min(rules.max, fatigue + travelCost);
 }
+
+/** Battle modifiers for the player's units at this fatigue. */
+export function fatigueModifiers(level: FatigueLevel): { moveBonus: number; damageDealt: number } {
+  return { moveBonus: -level.movePenalty, damageDealt: level.damageMultiplier };
+}

@@ -1,4 +1,6 @@
 import type { Point } from "../grid/types";
+import type { BaseStats } from "./content";
+import type { UnitModifiers } from "./modifiers";
 
 export type Side = "player" | "enemy";
 
@@ -22,9 +24,13 @@ export interface BattleUnit {
   usedUltimates: string[];
   /** Caught in a Poké Ball and removed from the field. */
   captured: boolean;
-  /** Fixed modifiers for this battle, e.g. from expedition fatigue. */
-  readonly movePenalty: number;
-  readonly damageMultiplier: number;
+  readonly level: number;
+  /** Effective stats for this battle (level, talents and items applied); hp here is unused, see maxHp. */
+  readonly stats: BaseStats;
+  /** Moves usable in this battle. */
+  readonly moves: readonly string[];
+  /** Fixed modifiers for this battle (fatigue, held item, talents). */
+  readonly mods: UnitModifiers;
 }
 
 export interface TurnState {

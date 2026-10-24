@@ -226,7 +226,7 @@ describe("statuses and healing", () => {
 describe("player modifiers (fatigue)", () => {
   it("reduce player movement and damage only", () => {
     const { state } = createBattle(content, OPEN, [u("p", "slow", "player", 0, 0), u("e", "slow", "enemy", 1, 0)], {
-      playerModifiers: { movePenalty: 1, damageMultiplier: 0.5 },
+      playerModifiers: { moveBonus: -1, damageDealt: 0.5 },
     });
     expect(state.turn?.movePointsLeft).toBe(2);
     expect(movementPoints(content, unitById(state, "e"))).toBe(3);
