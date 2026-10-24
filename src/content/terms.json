@@ -1,5 +1,7 @@
 {
  "bond": "Bond",
  "bondDescription": "Your team's shared fighting spirit. Bond moves spend it; knockouts and good meals build it.",
- "food": "Food"
+ "food": "Food",
+ "healCenter": "Pokémon Center",
+ "healCenterDescription": "Free full heal for the whole team, including knocked-out Pokémon. Does not remove fatigue or knockout marks."
 }

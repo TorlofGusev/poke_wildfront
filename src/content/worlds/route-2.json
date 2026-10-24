@@ -152,5 +152,12 @@
     "ultra-ball": 1
    }
   }
- ]
+ ],
+ "exit": {
+  "name": "Pewter City",
+  "pos": {
+   "x": 10,
+   "y": 0
+  }
+ }
 }

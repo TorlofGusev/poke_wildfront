@@ -1,7 +1,7 @@
 import { describe, expect, it } from "vitest";
 import { CAMP, CONTENT, MEALS, PROGRESSION, WORLD, WORLD_CONTENT } from "../../src/content";
 import { newWorld } from "../../src/core/expedition";
-import { canCook, newMember, rest, type GameState } from "../../src/core/party";
+import { canCook, centerHeal, newMember, rest, type GameState } from "../../src/core/party";
 import { memberStats } from "../../src/core/progression";
 
 function game(items: Record<string, number>): GameState {
@@ -41,5 +41,15 @@ describe("camp meals", () => {
   it("every meal uses known food items", () => {
     for (const meal of Object.values(MEALS))
       for (const id of Object.keys(meal.ingredients)) expect(PROGRESSION.items[id]?.kind, `${meal.id}: ${id}`).toBe("food");
+  });
+});
+
+describe("Pokémon Center", () => {
+  it("heals everyone to full for free and leaves fatigue alone", () => {
+    const g = game({});
+    const r = centerHeal(CONTENT, PROGRESSION, g);
+    expect(r.roster.party[0]!.hp).toBe(memberStats(CONTENT, PROGRESSION, r.roster.party[0]!).maxHp);
+    expect(r.world.fatigue).toBe(80);
+    expect(r.money).toBe(0);
   });
 });

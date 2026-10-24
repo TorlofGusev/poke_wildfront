@@ -35,6 +35,8 @@ export interface WorldDef {
   readonly rows: readonly string[];
   readonly start: Point;
   readonly spawnZones: readonly { readonly biome: string; readonly points: readonly Point[]; readonly count: number }[];
+  /** Where the route continues to the next area (shown on the map). */
+  readonly exit?: { readonly name: string; readonly pos: Point };
   readonly pickups: readonly { readonly id: string; readonly pos: Point; readonly balls: Readonly<Record<string, number>> }[];
 }
 

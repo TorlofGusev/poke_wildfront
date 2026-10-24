@@ -432,8 +432,14 @@ export class BattleScene extends Phaser.Scene {
     text(`${CONTENT.terms.bond} ${"●".repeat(bond)}${"○".repeat(Math.max(0, state.bondMax.player - bond))} ${bond}/${state.bondMax.player}`, "#f5d76e", 13);
     if (unit && unit.side === "player" && !this.busy) {
       const species = CONTENT.species[unit.speciesId]!;
-      text(`${species.name} · move ${state.turn!.movePointsLeft} · ${state.turn!.actionUsed ? "action used" : "action ready"}`, COLORS.good);
-      for (const moveId of unit.moves) {
+      text(`${species.name} · move ${state.turn!.movePointsLeft}`, COLORS.good);
+      // Basic attack and action are separate budgets: one of each per turn, in any order.
+      const basics = unit.moves.filter((m) => CONTENT.moves[m]!.kind === "basic");
+      const others = unit.moves.filter((m) => CONTENT.moves[m]!.kind !== "basic");
+      const ordered = [...basics, ...others];
+      for (const moveId of ordered) {
+        if (moveId === basics[0]) text(`Basic attack · ${state.turn!.basicUsed ? "used" : "ready"} (1 per turn)`, state.turn!.basicUsed ? COLORS.dim : "#9fd3ff", 12);
+        if (moveId === others[0]) text(`Action · ${state.turn!.actionUsed ? "used" : "ready"} (1 per turn)`, state.turn!.actionUsed ? COLORS.dim : "#9fd3ff", 12);
         const move = CONTENT.moves[moveId]!;
         const reason = moveUnavailableReason(state, CONTENT, unit.id, moveId);
         const targets = reason ? [] : validTargets(state, CONTENT, unit.id, moveId);

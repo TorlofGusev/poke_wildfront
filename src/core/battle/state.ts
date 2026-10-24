@@ -45,6 +45,8 @@ export interface TurnState {
   readonly unitId: string;
   movePointsLeft: number;
   actionUsed: boolean;
+  /** The basic attack is separate from the action: one of each per turn. */
+  basicUsed: boolean;
 }
 
 export type BattleOutcome = "ongoing" | "victory" | "defeat" | "retreated";

@@ -13,7 +13,7 @@ import {
   type WorldState,
 } from "../../core/expedition";
 import { samePoint, type Point } from "../../core/grid";
-import { KNOCKOUTS_TO_DEATH, memberMaxHp, restAll } from "../../core/party";
+import { centerHeal, KNOCKOUTS_TO_DEATH, memberMaxHp, restAll } from "../../core/party";
 import { session } from "../session";
 import { animKey, facingFor, hasSprite } from "../sprites";
 import { Button } from "../ui/Button";
@@ -29,7 +29,7 @@ const HUD_X = 704;
 const STEP_MS = 70;
 
 const BIOME_COLORS: Record<string, number> = {
-  route: 0x55704a, forest: 0x2f6b34, mountain: 0x7a6a55, cave: 0x4a4038, town: 0x8a7a62, water: 0x2d5a8c, trees: 0x1d3a20,
+  route: 0x55704a, forest: 0x2f6b34, mountain: 0x7a6a55, cave: 0x4a4038, town: 0x6f8fae, water: 0x2d5a8c, trees: 0x1d3a20,
 };
 
 export class OverworldScene extends Phaser.Scene {
@@ -54,7 +54,7 @@ export class OverworldScene extends Phaser.Scene {
 
   create(): void {
     this.add.text(MAP_X, 16, WORLD.name, { fontFamily: FONT, fontSize: "20px", color: "#f5d76e" });
-    this.add.text(MAP_X, 40, "Tap to travel. Red-ringed Pokémon: wild groups (hover for details). Tent: last camp.", {
+    this.add.text(MAP_X, 40, "Tap a tile to walk (yellow = path, costs fatigue). Red ring: wild group. Tent: camp. Houses: town.", {
       fontFamily: FONT, fontSize: px(11), color: COLORS.dim, wordWrap: { width: 672 },
     });
     this.drawMap();
@@ -83,6 +83,8 @@ export class OverworldScene extends Phaser.Scene {
       if (t) void this.travelTo(t);
     });
     this.render();
+    const area = biomeAt(WORLD_CONTENT, WORLD, this.world.pos);
+    this.toast(area.id === "town" ? `${area.name}\n${CONTENT.terms.healCenter} · Poké Mart` : area.name);
   }
 
   /** Party members able to fight; wild groups never outnumber them (see effectiveGroup). */
@@ -117,8 +119,21 @@ export class OverworldScene extends Phaser.Scene {
         if (id === "mountain") g.fillStyle(0x9a8a72, 1).fillTriangle(MAP_X + x * T + 6, MAP_Y + y * T + 22, MAP_X + x * T + 14, MAP_Y + y * T + 7, MAP_X + x * T + 22, MAP_Y + y * T + 22);
         if (id === "trees") g.fillStyle(0x2a5a2e, 1).fillCircle(MAP_X + x * T + 14, MAP_Y + y * T + 14, 10);
         if (id === "forest") g.fillStyle(0x3f8a45, 1).fillTriangle(MAP_X + x * T + 9, MAP_Y + y * T + 20, MAP_X + x * T + 14, MAP_Y + y * T + 8, MAP_X + x * T + 19, MAP_Y + y * T + 20);
+        if (id === "town") {
+          g.fillStyle(0xe8e0d0, 1).fillRect(MAP_X + x * T + 8, MAP_Y + y * T + 13, 12, 9);
+          g.fillStyle(0xc0392b, 1).fillTriangle(MAP_X + x * T + 6, MAP_Y + y * T + 14, MAP_X + x * T + 14, MAP_Y + y * T + 6, MAP_X + x * T + 22, MAP_Y + y * T + 14);
+        }
         if (id === "cave") g.fillStyle(0x221c18, 1).fillCircle(MAP_X + x * T + 14, MAP_Y + y * T + 16, 6);
       }
+    // Where the route continues; locked until the next area exists.
+    if (WORLD.exit) {
+      const e = this.center(WORLD.exit.pos);
+      g.fillStyle(0x10141c, 0.85).fillRect(e.x - T / 2, e.y - T / 2, T, T);
+      this.add.text(e.x, e.y, "▲", { fontFamily: FONT, fontSize: px(14), color: "#f5d76e" }).setOrigin(0.5);
+      this.add.text(e.x, e.y + T / 2 + 2, `▲ ${WORLD.exit.name} (coming soon)`, {
+        fontFamily: FONT, fontSize: px(10), color: "#f5d76e", backgroundColor: "#10141ccc", padding: { x: 3, y: 1 },
+      }).setOrigin(0.5, 0).setDepth(6);
+    }
     g.lineStyle(1, 0x000000, 0.15);
     for (let x = 0; x <= grid.width; x++) g.lineBetween(MAP_X + x * T, MAP_Y, MAP_X + x * T, MAP_Y + grid.height * T);
     for (let y = 0; y <= grid.height; y++) g.lineBetween(MAP_X, MAP_Y + y * T, MAP_X + grid.width * T, MAP_Y + y * T);
@@ -195,6 +210,13 @@ export class OverworldScene extends Phaser.Scene {
     this.buttons.add(new Button(this, 0, y, 240, 28, "🎒 Bag", () => this.scene.start("Inventory", { from: "Overworld" })).setEnabled(!this.moving));
     y += 36;
     if (here.id === "town") {
+      const hurt = roster.party.some((m) => m.hp < memberMaxHp(CONTENT, PROGRESSION, m));
+      this.buttons.add(new Button(this, 0, y, 240, 28, `❤ ${CONTENT.terms.healCenter}`, () => {
+        session.update(centerHeal(CONTENT, PROGRESSION, session.game));
+        this.message = tag("heal", `Your team is fully healed!`);
+        this.render();
+      }).setEnabled(hurt && !this.moving));
+      y += 34;
       this.buttons.add(new Button(this, 0, y, 240, 28, "🛒 Poké Mart", () => this.scene.start("Shop", {})));
       y += 34;
     }
@@ -207,6 +229,14 @@ export class OverworldScene extends Phaser.Scene {
       msg.setMarkup(this.message);
       this.buttons.add(msg);
     }
+  }
+
+  /** Floating banner when the party enters a new area. */
+  private toast(text: string): void {
+    const t = this.add.text(MAP_X + 336, MAP_Y + 30, text, {
+      fontFamily: FONT, fontSize: "18px", color: "#f5d76e", align: "center", backgroundColor: "#10141cdd", padding: { x: 14, y: 8 },
+    }).setOrigin(0.5).setDepth(20).setAlpha(0);
+    this.tweens.add({ targets: t, alpha: 1, y: t.y + 10, duration: 250, yoyo: true, hold: 1600, onComplete: () => t.destroy() });
   }
 
   private showPreview(t: Point | null): void {
@@ -258,6 +288,8 @@ export class OverworldScene extends Phaser.Scene {
     // An encounter stops the party on the tile next to the wild group.
     const stopAt = result.encounter ? (result.path.length >= 2 ? result.path[result.path.length - 2]! : before) : t;
     session.update({ ...session.game, inventory, world: { ...result.world, pos: stopAt } });
+    const area = biomeAt(WORLD_CONTENT, WORLD, stopAt);
+    if (area.id !== biomeAt(WORLD_CONTENT, WORLD, before).id) this.toast(area.id === "town" ? `${area.name}\n${CONTENT.terms.healCenter} · Poké Mart` : area.name);
     this.message = found.length ? tag("good", `Found ${found.join(", ")}!`) : "";
     this.render();
 

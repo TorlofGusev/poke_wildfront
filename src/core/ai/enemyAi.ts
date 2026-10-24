@@ -76,8 +76,11 @@ export function planTurn(
         if (mv.kind === "ultimate") score -= weights.ultimateCost;
         if (mv.kind === "bond") score -= weights.bondCost * (mv.bondCost ?? 0);
         if (score <= 0) continue;
-        if (!best || score > best.score) {
-          best = { actions: [...(moveAction ? [moveAction] : []), use, end], score };
+        // The basic attack and the main action are separate: greedily add the best follow-up of the other kind.
+        const follow = bestFollowUp(result.state, content, self, weights, mv.kind === "basic");
+        const total = score + (follow?.score ?? 0);
+        if (!best || total > best.score) {
+          best = { actions: [...(moveAction ? [moveAction] : []), use, ...(follow ? [follow.action] : []), end], score: total };
         }
       }
     }
@@ -97,6 +100,30 @@ export function planTurn(
     }
   }
   return bestStop ? [{ type: "move", unitId, to: bestStop }, end] : [end];
+}
+
+function bestFollowUp(
+  after: BattleState,
+  content: BattleContent,
+  self: BattleUnit,
+  w: AiWeights,
+  firstWasBasic: boolean,
+): { action: BattleAction; score: number } | null {
+  if (after.outcome !== "ongoing" || after.turn?.unitId !== self.id) return null;
+  let best: { action: BattleAction; score: number } | null = null;
+  for (const moveId of self.moves) {
+    const mv = content.moves[moveId]!;
+    if ((mv.kind === "basic") === firstWasBasic) continue;
+    for (const target of validTargets(after, content, self.id, moveId)) {
+      const action: BattleAction = { type: "useMove", unitId: self.id, moveId, target };
+      const r = applyAction(after, content, action);
+      let score = evaluate(after, r.state, self, w, r.events);
+      if (mv.kind === "ultimate") score -= w.ultimateCost;
+      if (mv.kind === "bond") score -= w.bondCost * (mv.bondCost ?? 0);
+      if (score > 0 && (!best || score > best.score)) best = { action, score };
+    }
+  }
+  return best;
 }
 
 function evaluate(

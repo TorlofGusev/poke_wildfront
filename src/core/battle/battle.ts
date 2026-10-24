@@ -138,7 +138,9 @@ export function moveUnavailableReason(
   const unit = unitById(state, unitId);
   if (!unit.moves.includes(moveId)) return "unit does not know this move";
   if (state.turn?.unitId !== unitId) return "not this unit's turn";
-  if (state.turn.actionUsed) return "action already used this turn";
+  const kind = content.moves[moveId]?.kind;
+  if (kind === "basic" && state.turn.basicUsed) return "basic attack already used this turn";
+  if (kind !== "basic" && state.turn.actionUsed) return "action already used this turn";
   if ((unit.cooldowns[moveId] ?? 0) > 0) return `on cooldown (${unit.cooldowns[moveId]})`;
   if (unit.usedUltimates.includes(moveId)) return "already used this battle";
   const move = content.moves[moveId];
@@ -355,7 +357,8 @@ function doUseMove(
   const user = unitById(state, unitId);
   const move = content.moves[moveId]!;
   const affected = affectedUnits(state, move, user, target);
-  state.turn!.actionUsed = true;
+  if (move.kind === "basic") state.turn!.basicUsed = true;
+  else state.turn!.actionUsed = true;
   if (move.kind === "special" && move.cooldown) user.cooldowns[moveId] = move.cooldown;
   if (move.kind === "ultimate") user.usedUltimates.push(moveId);
   if (move.kind === "bond") {
@@ -570,7 +573,7 @@ function startTurn(state: BattleState, content: BattleContent, events: BattleEve
   for (const id of Object.keys(unit.cooldowns)) {
     unit.cooldowns[id] = Math.max(0, unit.cooldowns[id]! - 1);
   }
-  state.turn = { unitId, movePointsLeft: movementPoints(content, unit, state), actionUsed: false };
+  state.turn = { unitId, movePointsLeft: movementPoints(content, unit, state), actionUsed: false, basicUsed: false };
   events.push({ type: "turnStarted", unitId, movePoints: state.turn.movePointsLeft });
 
   for (const st of unit.statuses) {

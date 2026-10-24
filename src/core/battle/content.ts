@@ -148,6 +148,8 @@ export interface Terms {
   readonly bond: string;
   readonly bondDescription: string;
   readonly food: string;
+  readonly healCenter: string;
+  readonly healCenterDescription: string;
 }
 
 export interface BattleContent {

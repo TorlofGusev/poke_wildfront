@@ -36,7 +36,7 @@ describe("battle setup and initiative", () => {
       u("p-fast", "fast", "player", 0, 1),
     ]);
     expect(events[0]).toEqual({ type: "roundStarted", round: 1, order: ["p-fast", "p-mid", "e-mid", "e-slow"] });
-    expect(state.turn).toEqual({ unitId: "p-fast", movePointsLeft: 5, actionUsed: false });
+    expect(state.turn).toEqual({ unitId: "p-fast", movePointsLeft: 5, actionUsed: false, basicUsed: false });
   });
 
   it("rejects invalid placements", () => {
@@ -71,10 +71,12 @@ describe("turn economy", () => {
     expect(() => act(state, { type: "move", unitId: "a", to: { x: 2, y: 4 } })).toThrow(IllegalActionError);
   });
 
-  it("permits only one action per turn", () => {
+  it("permits one basic attack and one action per turn", () => {
     let { state } = battle([u("a", "fast", "player", 0, 0), u("b", "slow", "enemy", 1, 0)]);
     state = act(state, { type: "useMove", unitId: "a", moveId: "tackle", target: { x: 1, y: 0 } }).state;
-    expect(() => act(state, { type: "useMove", unitId: "a", moveId: "zap", target: { x: 1, y: 0 } })).toThrow(/action already used/);
+    expect(() => act(state, { type: "useMove", unitId: "a", moveId: "tackle", target: { x: 1, y: 0 } })).toThrow(/basic attack already used/);
+    state = act(state, { type: "useMove", unitId: "a", moveId: "zap", target: { x: 1, y: 0 } }).state;
+    expect(() => act(state, { type: "useMove", unitId: "a", moveId: "shove", target: { x: 1, y: 0 } })).toThrow(/action already used/);
   });
 
   it("rejects actions from units whose turn it is not", () => {

@@ -57,3 +57,9 @@ export function rest(
     world: { ...camped, fatigue: meal ? 0 : rules.hungry.fatigue, meal: active },
   };
 }
+
+/** Town healing (Pokémon Center): every party and storage member back to full HP, free. */
+export function centerHeal(content: BattleContent, prog: ProgressionContent, game: GameState): GameState {
+  const heal = (m: PartyMember): PartyMember => ({ ...m, hp: memberMaxHp(content, prog, m) });
+  return { ...game, roster: { ...game.roster, party: game.roster.party.map(heal), storage: game.roster.storage.map(heal) } };
+}
