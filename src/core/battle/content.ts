@@ -13,6 +13,8 @@ export interface SpeciesDef {
   readonly types: readonly PokemonType[];
   readonly stats: BaseStats;
   readonly moves: readonly string[];
+  /** Base capture chance before ball, HP and status modifiers (0–1). */
+  readonly captureBase: number;
 }
 
 /** basic: once per turn, free. special: has a cooldown. ultimate: once per battle (Valour later). */
@@ -68,10 +70,28 @@ export interface BattleRules {
   readonly movementBySpeed: readonly { readonly minSpeed: number; readonly move: number }[];
 }
 
+export interface BallDef {
+  readonly id: string;
+  readonly name: string;
+  readonly multiplier: number;
+}
+
+export interface CaptureRules {
+  /** Capture is possible below this HP fraction. */
+  readonly hpThreshold: number;
+  readonly minChance: number;
+  readonly maxChance: number;
+  /** Multiplier when the target has any status effect. */
+  readonly statusBonus: number;
+  readonly throwRange: { readonly min: number; readonly max: number };
+}
+
 export interface BattleContent {
   readonly species: Readonly<Record<string, SpeciesDef>>;
   readonly moves: Readonly<Record<string, MoveDef>>;
   readonly statuses: Readonly<Record<string, StatusDef>>;
   readonly typeChart: TypeChartData;
   readonly rules: BattleRules;
+  readonly balls: Readonly<Record<string, BallDef>>;
+  readonly capture: CaptureRules;
 }

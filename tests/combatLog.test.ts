@@ -6,6 +6,7 @@ const ctx: LogContext = {
   isPlayer: (id) => id === "p",
   moveName: () => "Ember",
   statusName: () => "Poison",
+  ballName: () => "Poké Ball",
 };
 
 describe("combat log", () => {

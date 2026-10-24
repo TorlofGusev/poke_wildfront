@@ -373,7 +373,7 @@ export class BattleScene extends Phaser.Scene {
     const maxHp = Math.round(CONTENT.species[speciesId]!.stats.hp * CONTENT.rules.hpMultiplier);
     return {
       id, speciesId, side: enemy ? "enemy" : "player", maxHp, hp: member?.hp ?? maxHp,
-      pos: enemy?.pos ?? { x: 0, y: 0 }, statuses: [], cooldowns: {}, usedUltimates: [],
+      pos: enemy?.pos ?? { x: 0, y: 0 }, statuses: [], cooldowns: {}, usedUltimates: [], captured: false,
     };
   }
 
@@ -501,6 +501,7 @@ export class BattleScene extends Phaser.Scene {
       isPlayer: (id: string) => unitById(state, id).side === "player",
       moveName: (id: string) => CONTENT.moves[id]!.name,
       statusName: (id: string) => CONTENT.statuses[id]?.name ?? id,
+      ballName: (id: string) => CONTENT.balls[id]?.name ?? id,
     };
     for (const e of events) {
       if (e.type === "moveUsed") {

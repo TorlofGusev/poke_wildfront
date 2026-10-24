@@ -1,4 +1,6 @@
 import type { BattleContent, BattleScenario, DeployCandidate } from "../core/battle";
+import balls from "./balls.json";
+import capture from "./capture.json";
 import moves from "./moves.json";
 import rules from "./rules.json";
 import viridianForestAmbush from "./scenarios/viridian-forest-ambush.json";
@@ -12,6 +14,8 @@ export const CONTENT: BattleContent = {
   statuses,
   typeChart,
   rules,
+  balls,
+  capture,
 };
 
 export const SCENARIOS: Readonly<Record<string, BattleScenario & { name: string }>> = {

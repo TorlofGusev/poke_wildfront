@@ -14,14 +14,19 @@ export const content: BattleContent = {
       { minSpeed: 0, move: 3 },
     ],
   },
+  balls: {
+    "poke-ball": { id: "poke-ball", name: "Poké Ball", multiplier: 1 },
+    "ultra-ball": { id: "ultra-ball", name: "Ultra Ball", multiplier: 2 },
+  },
+  capture: { hpThreshold: 0.5, minChance: 0.05, maxChance: 0.95, statusBonus: 1.25, throwRange: { min: 1, max: 3 } },
   statuses: {
     poison: { id: "poison", name: "Poison", damagePerTurn: 0.125 },
     slow: { id: "slow", name: "Slow", movePenalty: 2 },
   },
   species: {
-    fast: { id: "fast", name: "Fast", types: ["normal"], stats: { hp: 40, attack: 40, defense: 40, speed: 100 }, moves: ["tackle", "shove", "zap", "nova"] },
-    mid: { id: "mid", name: "Mid", types: ["water"], stats: { hp: 40, attack: 40, defense: 40, speed: 70 }, moves: ["tackle", "spray", "toxin", "mend", "lasso"] },
-    slow: { id: "slow", name: "Slow", types: ["grass"], stats: { hp: 40, attack: 40, defense: 40, speed: 30 }, moves: ["tackle", "ember"] },
+    fast: { id: "fast", name: "Fast", types: ["normal"], stats: { hp: 40, attack: 40, defense: 40, speed: 100 }, moves: ["tackle", "shove", "zap", "nova"], captureBase: 0.5 },
+    mid: { id: "mid", name: "Mid", types: ["water"], stats: { hp: 40, attack: 40, defense: 40, speed: 70 }, moves: ["tackle", "spray", "toxin", "mend", "lasso"], captureBase: 0.5 },
+    slow: { id: "slow", name: "Slow", types: ["grass"], stats: { hp: 40, attack: 40, defense: 40, speed: 30 }, moves: ["tackle", "ember"], captureBase: 0.5 },
   },
   moves: {
     tackle: { id: "tackle", name: "Tackle", type: "normal", kind: "basic", power: 40, range: { min: 1, max: 1 }, requiresLineOfSight: false, shape: { kind: "single" }, affects: "enemies" },

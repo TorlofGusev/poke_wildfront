@@ -2,6 +2,8 @@ import { Grid } from "../grid/Grid";
 import { hasLineOfSight } from "../grid/lineOfSight";
 import { reachableTiles, type Occupancy, type Reachable } from "../grid/movement";
 import { key, manhattan, samePoint, type Point } from "../grid/types";
+import { captureChance, captureUnavailableReason } from "../capture/capture";
+import { nextRandom } from "../rng";
 import { typeMultiplier } from "../rules/typeChart";
 import type { BattleContent, MoveDef } from "./content";
 import type { BattleEvent } from "./events";
@@ -19,7 +21,17 @@ export interface UnitSetup {
 export type BattleAction =
   | { readonly type: "move"; readonly unitId: string; readonly to: Point }
   | { readonly type: "useMove"; readonly unitId: string; readonly moveId: string; readonly target: Point }
+  | { readonly type: "throwBall"; readonly unitId: string; readonly ballId: string; readonly target: Point }
+  | { readonly type: "retreat"; readonly unitId: string }
   | { readonly type: "endTurn"; readonly unitId: string };
+
+export interface BattleOptions {
+  /** PRNG seed for capture rolls. */
+  readonly seed?: number;
+  readonly balls?: Readonly<Record<string, number>>;
+  /** Wild battles allow capture; trainer and boss battles do not. */
+  readonly captureAllowed?: boolean;
+}
 
 export interface StepResult {
   readonly state: BattleState;
@@ -38,7 +50,9 @@ export const unitById = (state: BattleState, id: string): BattleUnit => {
   return u;
 };
 
-export const livingUnits = (state: BattleState): BattleUnit[] => state.units.filter((u) => u.hp > 0);
+/** Units still on the field: not fainted and not captured. */
+export const livingUnits = (state: BattleState): BattleUnit[] =>
+  state.units.filter((u) => u.hp > 0 && !u.captured);
 
 export const unitAt = (state: BattleState, p: Point): BattleUnit | undefined =>
   livingUnits(state).find((u) => samePoint(u.pos, p));
@@ -170,6 +184,7 @@ export function createBattle(
   content: BattleContent,
   mapRows: readonly string[],
   units: readonly UnitSetup[],
+  options: BattleOptions = {},
 ): StepResult {
   const grid = Grid.fromAscii(mapRows);
   const seen = new Set<string>();
@@ -193,12 +208,16 @@ export function createBattle(
         statuses: [],
         cooldowns: {},
         usedUltimates: [],
+        captured: false,
       };
     }),
     round: 0,
     queue: [],
     turn: null,
     outcome: "ongoing",
+    rngState: (options.seed ?? 1) >>> 0,
+    balls: { ...(options.balls ?? {}) },
+    captureAllowed: options.captureAllowed ?? false,
   };
   const events: BattleEvent[] = [];
   checkOutcome(state, events);
@@ -233,6 +252,15 @@ export function applyAction(state: BattleState, content: BattleContent, action: 
       break;
     case "useMove":
       doUseMove(next, content, action.unitId, action.moveId, action.target, events);
+      break;
+    case "throwBall":
+      doThrowBall(next, content, action.unitId, action.ballId, action.target, events);
+      break;
+    case "retreat":
+      if (unitById(next, action.unitId).side !== "player") throw new IllegalActionError("only the player can retreat");
+      next.outcome = "retreated";
+      next.turn = null;
+      events.push({ type: "battleEnded", outcome: "retreated" });
       break;
     case "endTurn":
       endTurn(next, content, events);
@@ -306,6 +334,32 @@ function doUseMove(
     }
   }
   checkOutcome(state, events);
+}
+
+function doThrowBall(
+  state: BattleState,
+  content: BattleContent,
+  unitId: string,
+  ballId: string,
+  target: Point,
+  events: BattleEvent[],
+): void {
+  const reason = captureUnavailableReason(state, content, unitId, ballId, target);
+  if (reason) throw new IllegalActionError(`capture: ${reason}`);
+  const victim = unitAt(state, target)!;
+  const chance = captureChance(content, victim, ballId);
+  const roll = nextRandom(state.rngState);
+  state.rngState = roll.state;
+  const success = roll.value < chance;
+  state.balls[ballId] = state.balls[ballId]! - 1;
+  state.turn!.actionUsed = true;
+  events.push({ type: "ballThrown", unitId, targetId: victim.id, ballId, chance, success });
+  if (success) {
+    victim.captured = true;
+    state.queue = state.queue.filter((id, i) => i === 0 || id !== victim.id);
+    events.push({ type: "captured", unitId: victim.id });
+    checkOutcome(state, events);
+  }
 }
 
 function displace(
@@ -392,7 +446,7 @@ function endTurn(state: BattleState, content: BattleContent, events: BattleEvent
   }
   events.push({ type: "turnEnded", unitId: unit.id });
   state.turn = null;
-  state.queue = state.queue.slice(1).filter((id) => unitById(state, id).hp > 0);
+  state.queue = state.queue.slice(1).filter((id) => livingUnits(state).some((u) => u.id === id));
   if (state.outcome !== "ongoing") return;
   if (state.queue.length === 0) startRound(state, content, events);
   else startTurn(state, content, events);

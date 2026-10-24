@@ -20,6 +20,8 @@ export interface BattleUnit {
   cooldowns: Record<string, number>;
   /** Ultimate moves already spent this battle. */
   usedUltimates: string[];
+  /** Caught in a Poké Ball and removed from the field. */
+  captured: boolean;
 }
 
 export interface TurnState {
@@ -28,7 +30,7 @@ export interface TurnState {
   actionUsed: boolean;
 }
 
-export type BattleOutcome = "ongoing" | "victory" | "defeat";
+export type BattleOutcome = "ongoing" | "victory" | "defeat" | "retreated";
 
 /** Plain, serializable battle state. Never mutated by the public API. */
 export interface BattleState {
@@ -39,4 +41,9 @@ export interface BattleState {
   queue: string[];
   turn: TurnState | null;
   outcome: BattleOutcome;
+  /** Seeded PRNG state; only capture rolls consume it. */
+  rngState: number;
+  /** Poké Balls carried into this battle, by ball id. */
+  balls: Record<string, number>;
+  captureAllowed: boolean;
 }

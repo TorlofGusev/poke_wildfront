@@ -1,0 +1,5 @@
+{
+  "poke-ball":  { "id": "poke-ball",  "name": "Poké Ball",  "multiplier": 1 },
+  "great-ball": { "id": "great-ball", "name": "Great Ball", "multiplier": 1.5 },
+  "ultra-ball": { "id": "ultra-ball", "name": "Ultra Ball", "multiplier": 2 }
+}

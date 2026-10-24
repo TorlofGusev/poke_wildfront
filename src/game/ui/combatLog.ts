@@ -13,6 +13,7 @@ export interface LogContext {
   isPlayer(unitId: string): boolean;
   moveName(moveId: string): string;
   statusName(statusId: string): string;
+  ballName(ballId: string): string;
 }
 
 /** Turns one battle event into a log line; returns null for events not worth logging. */
@@ -50,9 +51,16 @@ export function formatEvent(e: BattleEvent, ctx: LogContext): LogEntry | null {
       return { text: `${ctx.name(e.unitId)} is no longer affected by ${ctx.statusName(e.status)}`, tone: "status" };
     case "fainted":
       return { text: `${ctx.name(e.unitId)} fainted!`, tone: "ko" };
+    case "ballThrown":
+      return {
+        text: `${ctx.name(e.unitId)} throws a ${ctx.ballName(e.ballId)} at ${ctx.name(e.targetId)} (${Math.round(e.chance * 100)}%) — ${e.success ? "caught!" : "it broke free"}`,
+        tone: e.success ? "result" : "info",
+      };
+    case "captured":
+      return null;
     case "turnEnded":
       return null;
     case "battleEnded":
-      return { text: e.outcome === "victory" ? "Victory!" : "Defeat…", tone: "result" };
+      return { text: e.outcome === "victory" ? "Victory!" : e.outcome === "defeat" ? "Defeat…" : "Retreated from battle", tone: "result" };
   }
 }
