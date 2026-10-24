@@ -20,6 +20,13 @@ export class Button extends Phaser.GameObjects.Container {
     scene.add.existing(this);
   }
 
+  /** Called with true on hover and false when the pointer leaves. */
+  onHover(cb: (over: boolean) => void): this {
+    this.bg.on("pointerover", () => cb(true));
+    this.bg.on("pointerout", () => cb(false));
+    return this;
+  }
+
   setText(text: string): this {
     this.label.setText(text);
     return this;

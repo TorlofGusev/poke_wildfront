@@ -22,6 +22,7 @@ import {
 import { Grid, key, samePoint, type Point } from "../../core/grid";
 import { typeMultiplier } from "../../core/rules/typeChart";
 import { Button } from "../ui/Button";
+import { describeMove } from "../ui/describeMove";
 import { BOARD_X, BOARD_Y, COLORS, FONT, PANEL_X, TILE, TYPE_COLORS, tileToWorld } from "../ui/theme";
 
 type Phase = "deploy" | "battle" | "over";
@@ -45,6 +46,7 @@ export class BattleScene extends Phaser.Scene {
   private selectedCandidate: string | null = null;
   private state: BattleState | null = null;
   private selectedMove: string | null = null;
+  private hoveredMove: string | null = null;
   private busy = false;
   private hovered: Point | null = null;
   private revealed = new Set<string>();
@@ -68,6 +70,7 @@ export class BattleScene extends Phaser.Scene {
     this.selectedCandidate = PROTOTYPE_PARTY[0]?.id ?? null;
     this.state = null;
     this.selectedMove = null;
+    this.hoveredMove = null;
     this.busy = false;
     this.revealed = new Set();
     this.log = [];
@@ -208,6 +211,7 @@ export class BattleScene extends Phaser.Scene {
 
   private refreshPanel(): void {
     this.panel.removeAll(true);
+    this.hoveredMove = null;
     let y = 0;
     const text = (s: string, color: string = COLORS.text, size = 13) => {
       const t = this.add.text(0, y, s, { fontFamily: FONT, fontSize: `${size}px`, color, wordWrap: { width: 330 } });
@@ -218,6 +222,7 @@ export class BattleScene extends Phaser.Scene {
       const b = new Button(this, 0, y, 330, 26, label, onClick).setEnabled(enabled).setHighlighted(highlighted);
       this.panel.add(b);
       y += 30;
+      return b;
     };
 
     if (this.phase === "deploy") {
@@ -262,6 +267,9 @@ export class BattleScene extends Phaser.Scene {
         button(`${move.name} [${move.kind}${tag}] ${move.power ? `pw ${move.power}` : ""}`, targets.length > 0, this.selectedMove === moveId, () => {
           this.selectedMove = this.selectedMove === moveId ? null : moveId;
           this.refreshAll();
+        }).onHover((over) => {
+          this.hoveredMove = over ? moveId : this.hoveredMove === moveId ? null : this.hoveredMove;
+          this.refreshInfo();
         });
       }
       button("End turn [Space]", true, false, () => this.playerEndTurn());
@@ -277,6 +285,17 @@ export class BattleScene extends Phaser.Scene {
   }
 
   private refreshInfo(): void {
+    if (this.hoveredMove) {
+      let text = describeMove(CONTENT, CONTENT.moves[this.hoveredMove]!);
+      const unit = this.state ? activeUnit(this.state) : null;
+      if (unit) {
+        const reason = moveUnavailableReason(this.state!, CONTENT, unit.id, this.hoveredMove)
+          ?? (validTargets(this.state!, CONTENT, unit.id, this.hoveredMove).length === 0 ? "no valid target from here" : null);
+        if (reason) text += `\n\nNot usable now: ${reason}`;
+      }
+      this.infoText.setText(text);
+      return;
+    }
     let unit: BattleUnit | undefined;
     if (this.hovered && this.grid.inBounds(this.hovered)) {
       if (this.state) unit = unitAt(this.state, this.hovered);
@@ -289,7 +308,10 @@ export class BattleScene extends Phaser.Scene {
     }
     if (!unit) {
       const terrain = this.hovered && this.grid.inBounds(this.hovered) ? this.grid.terrainAt(this.hovered) : null;
-      this.infoText.setText(terrain ? this.terrainInfo(terrain.id) : "");
+      const terrainText = terrain ? this.terrainInfo(terrain.id) : "";
+      // Without a hovered unit, show the selected move's rules (also covers touch screens).
+      const moveText = this.selectedMove ? describeMove(CONTENT, CONTENT.moves[this.selectedMove]!) : "";
+      this.infoText.setText([moveText, terrainText].filter(Boolean).join("\n\n"));
       return;
     }
     if (unit.side === "enemy" && this.isHidden(unit.id)) {
