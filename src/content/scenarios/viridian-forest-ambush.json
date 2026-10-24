@@ -1,0 +1,26 @@
+{
+  "id": "viridian-forest-ambush",
+  "name": "Viridian Forest Ambush",
+  "mapRows": [
+    "..\"\"....##..",
+    "..\"\"........",
+    "......#...\"\"",
+    "..##..#...\"\"",
+    "......mm....",
+    "..\"\"..mm..#.",
+    "..\"\".....##.",
+    "............"
+  ],
+  "deploymentZone": [
+    { "x": 0, "y": 1 }, { "x": 1, "y": 1 }, { "x": 0, "y": 2 }, { "x": 1, "y": 2 },
+    { "x": 0, "y": 3 }, { "x": 1, "y": 3 }, { "x": 0, "y": 4 }, { "x": 1, "y": 4 },
+    { "x": 0, "y": 5 }, { "x": 1, "y": 5 }, { "x": 0, "y": 6 }, { "x": 1, "y": 6 }
+  ],
+  "enemies": [
+    { "id": "wild-mankey",  "speciesId": "mankey",  "side": "enemy", "pos": { "x": 9,  "y": 1 } },
+    { "id": "wild-rattata", "speciesId": "rattata", "side": "enemy", "pos": { "x": 10, "y": 4 } },
+    { "id": "wild-zubat",   "speciesId": "zubat",   "side": "enemy", "pos": { "x": 11, "y": 6 } },
+    { "id": "wild-oddish",  "speciesId": "oddish",  "side": "enemy", "pos": { "x": 10, "y": 2 } }
+  ],
+  "hiddenEnemies": ["wild-oddish"]
+}

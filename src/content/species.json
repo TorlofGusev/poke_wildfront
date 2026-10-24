@@ -1,0 +1,12 @@
+{
+  "bulbasaur":  { "id": "bulbasaur",  "name": "Bulbasaur",  "types": ["grass", "poison"], "stats": { "hp": 45, "attack": 49, "defense": 49,  "speed": 45 }, "moves": ["vine-whip", "poison-powder", "solar-beam"] },
+  "charmander": { "id": "charmander", "name": "Charmander", "types": ["fire"],             "stats": { "hp": 39, "attack": 52, "defense": 43,  "speed": 65 }, "moves": ["scratch", "ember", "flamethrower"] },
+  "squirtle":   { "id": "squirtle",   "name": "Squirtle",   "types": ["water"],            "stats": { "hp": 44, "attack": 48, "defense": 65,  "speed": 43 }, "moves": ["water-gun", "bubble", "hydro-pump"] },
+  "pikachu":    { "id": "pikachu",    "name": "Pikachu",    "types": ["electric"],         "stats": { "hp": 35, "attack": 55, "defense": 40,  "speed": 90 }, "moves": ["thunder-shock", "thunder-wave", "thunder"] },
+  "geodude":    { "id": "geodude",    "name": "Geodude",    "types": ["rock", "ground"],   "stats": { "hp": 40, "attack": 80, "defense": 100, "speed": 20 }, "moves": ["tackle", "rollout", "rock-throw"] },
+  "pidgey":     { "id": "pidgey",     "name": "Pidgey",     "types": ["normal", "flying"], "stats": { "hp": 40, "attack": 45, "defense": 40,  "speed": 56 }, "moves": ["gust", "whirlwind"] },
+  "rattata":    { "id": "rattata",    "name": "Rattata",    "types": ["normal"],           "stats": { "hp": 30, "attack": 56, "defense": 35,  "speed": 72 }, "moves": ["tackle", "quick-attack"] },
+  "zubat":      { "id": "zubat",      "name": "Zubat",      "types": ["poison", "flying"], "stats": { "hp": 40, "attack": 45, "defense": 35,  "speed": 55 }, "moves": ["poison-sting", "supersonic"] },
+  "oddish":     { "id": "oddish",     "name": "Oddish",     "types": ["grass", "poison"],  "stats": { "hp": 45, "attack": 50, "defense": 55,  "speed": 30 }, "moves": ["absorb", "poison-powder"] },
+  "mankey":     { "id": "mankey",     "name": "Mankey",     "types": ["fighting"],         "stats": { "hp": 40, "attack": 80, "defense": 35,  "speed": 70 }, "moves": ["karate-chop", "low-kick"] }
+}

@@ -1,0 +1,10 @@
+{
+  "hpMultiplier": 2,
+  "damageDivisor": 2,
+  "impactDamage": 8,
+  "movementBySpeed": [
+    { "minSpeed": 85, "move": 5 },
+    { "minSpeed": 50, "move": 4 },
+    { "minSpeed": 0, "move": 3 }
+  ]
+}

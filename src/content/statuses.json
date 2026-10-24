@@ -1,0 +1,4 @@
+{
+  "poison": { "id": "poison", "name": "Poison", "damagePerTurn": 0.1 },
+  "slow": { "id": "slow", "name": "Slow", "movePenalty": 2 }
+}
