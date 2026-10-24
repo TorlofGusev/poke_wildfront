@@ -127,7 +127,7 @@ describe("money, shop and items", () => {
   });
 
   it("equips one held item, swapping the old one back into the bag", () => {
-    let g = { ...game(), inventory: { balls: {}, items: { claw: 1 } } };
+    let g: GameState = { ...game(), inventory: { balls: {}, items: { claw: 1 } } };
     g = equipItem(prog, g, "a", "claw");
     expect(g.roster.party[0]!.heldItem).toBe("claw");
     expect(g.inventory.items.claw).toBe(0);
@@ -143,7 +143,7 @@ describe("money, shop and items", () => {
   });
 
   it("potions heal outside battle but cannot revive", () => {
-    let g = { ...game(), inventory: { balls: {}, items: { potion: 2 } } };
+    let g: GameState = { ...game(), inventory: { balls: {}, items: { potion: 2 } } };
     g = usePotion(content, prog, g, "a", "potion");
     expect(g.roster.party[0]!.hp).toBe(30);
     expect(g.inventory.items.potion).toBe(1);

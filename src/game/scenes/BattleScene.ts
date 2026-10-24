@@ -318,7 +318,15 @@ export class BattleScene extends Phaser.Scene {
         for (const uid of sum.knockedOut.filter((u) => !sum.fallen.includes(u)))
           text(`${name(uid)} was knocked out (KO ${this.knockoutsOf(uid)}/${KNOCKOUTS_TO_DEATH}).`, COLORS.bad);
         for (const uid of sum.fallen) text(`${name(uid)} has fallen for good.`, COLORS.bad);
-        if (!sum.captured.length && !sum.knockedOut.length) text("No losses.", COLORS.dim);
+        if (sum.xp || sum.money) text(`+${sum.xp} XP for each Pokémon that fought · +₽${sum.money}`, "#f5d76e");
+        for (const [uid, evs] of Object.entries(sum.progress)) {
+          for (const e of evs) {
+            if (e.type === "levelUp") text(`${name(uid)} reached Lv ${e.level}!`, COLORS.good, 12);
+            else if (e.type === "evolved") text(`${name(uid)} evolved into ${CONTENT.species[e.into]!.name}!`, "#f5d76e");
+            else text(`${name(uid)} learned ${CONTENT.moves[e.move]!.name}${e.activated ? "" : " (set it active in Party)"}.`, COLORS.good, 12);
+          }
+        }
+        if (!sum.captured.length && !sum.knockedOut.length && !sum.xp) text("No losses.", COLORS.dim);
       }
       if (this.rewardText) text(this.rewardText, COLORS.good);
       button("➜ Continue", true, false, () => this.scene.start("Overworld"));

@@ -1,6 +1,6 @@
 import Phaser from "phaser";
 import { CONTENT, PROGRESSION, WORLD, WORLD_CONTENT } from "../../content";
-import { wildSetup } from "../../core/progression";
+import { pendingChoice, wildSetup } from "../../core/progression";
 import {
   biomeAt,
   fatigueLevel,
@@ -149,21 +149,29 @@ export class OverworldScene extends Phaser.Scene {
         const s = CONTENT.species[m.speciesId]!;
         const hpKey = m.hp === 0 ? "ko" : m.hp / memberMaxHp(CONTENT, PROGRESSION, m) > 0.5 ? "heal" : "dmg";
         const pips = "●".repeat(m.knockouts) + "○".repeat(KNOCKOUTS_TO_DEATH - m.knockouts);
-        return `${tag(s.types[0]!, s.name.padEnd(11))}${tag(hpKey, m.hp === 0 ? "fainted" : `${m.hp} HP`)} ${tag(m.knockouts ? "ko" : "dim", pips)}`;
+        const star = pendingChoice(PROGRESSION, m) ? tag("num", "★") : " ";
+        return `${star}${tag(s.types[0]!, s.name.slice(0, 10).padEnd(11))}${tag("dim", `L${m.level}`.padEnd(4))}${tag(hpKey, m.hp === 0 ? "KO'd" : `${m.hp}`.padStart(3))} ${tag(m.knockouts ? "ko" : "dim", pips)}`;
       }),
       "",
+      `${tag("title", "Money")} ${tag("num", `₽${session.game.money}`)}`,
       `${tag("title", "Bag")} ${Object.entries(inventory.balls).map(([id, n]) => `${CONTENT.balls[id]?.name.replace(" Ball", "") ?? id} ${n}`).join(" · ")}`,
     ];
     const h = this.hud.setMarkup(lines.join("\n"));
     this.buttons.removeAll(true);
     let y = 16 + h + 10;
-    const campButton = new Button(this, 0, y, 240, 28, "⛺ Make camp here", () => this.makeCamp());
+    const campButton = new Button(this, 0, y, 116, 28, "⛺ Camp", () => this.makeCamp());
     campButton.setEnabled(!this.moving);
     this.buttons.add(campButton);
+    const pending = roster.party.some((m) => pendingChoice(PROGRESSION, m));
+    this.buttons.add(new Button(this, 124, y, 116, 28, pending ? "★ Party" : "☰ Party", () => this.scene.start("Party")).setHighlighted(pending));
     y += 30;
-    const note = this.add.text(0, y, "Restores HP and fatigue. Wild groups move.", { fontFamily: FONT, fontSize: px(10), color: COLORS.dim, wordWrap: { width: 240 } });
+    const note = this.add.text(0, y, "Camping restores HP and fatigue. Wild groups move.", { fontFamily: FONT, fontSize: px(10), color: COLORS.dim, wordWrap: { width: 240 } });
     this.buttons.add(note);
     y += note.height + 6;
+    if (here.id === "town") {
+      this.buttons.add(new Button(this, 0, y, 240, 28, "🛒 Poké Mart", () => this.scene.start("Shop")));
+      y += 34;
+    }
     this.buttons.add(new Button(this, 0, y, 116, 28, "⌂ Title", () => this.scene.start("Title")));
     const full = addFullscreenButton(this, 124, y, 116);
     if (full) this.buttons.add(full);
@@ -233,6 +241,6 @@ export class OverworldScene extends Phaser.Scene {
   private makeCamp(): void {
     const world = makeCamp(WORLD_CONTENT, WORLD, this.world);
     session.update({ ...session.game, world, roster: restAll(CONTENT, PROGRESSION, session.game.roster) });
-    this.scene.start("Camp");
+    this.scene.start("Party", { camped: true });
   }
 }

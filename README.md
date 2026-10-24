@@ -10,7 +10,7 @@ No public build yet; hosting will be chosen later. Run it locally (see below).
 
 ## Current state
 
-Phase 4 prototype (Route 2 & Viridian Forest):
+Prototype (Route 2 & Viridian Forest):
 
 - **Overworld**: click to travel across route, forest, mountain and cave. Wild groups are visible red markers (the number is the group size); walking into one starts a battle, or you can go around. Item pickups give Poké Balls.
 - **Fatigue**: only travel tires the team (route 1, forest/cave 2, mountain 3 per tile). No penalty until it reaches 100; then the team is Exhausted (−1 movement, −20% damage in battle) until it camps. The path preview shows the cost before you move.
@@ -18,7 +18,9 @@ Phase 4 prototype (Route 2 & Viridian Forest):
 - **Battles**: mandatory deployment (3 of your party), initiative order, Wartales-style turns, cooldown specials, once-per-battle ultimates, push/pull, statuses, tall grass, hidden enemies, enemy AI, colour-coded combat log and move rules.
 - **Capture**: Poké/Great/Ultra Balls on wild Pokémon below 50% HP; the chance is shown and the ball is always used. A full party sends captures to storage.
 - **Permadeath**: each faint adds a knockout (●○○); at 3/3 the Pokémon is gone for good. Defeat carries the team back to the last camp.
-- Autosave in browser storage (save format v3, migrates older saves).
+- **Progression**: XP and levels, a role at level 5 (Tank, Striker, Controller, Skirmisher) and a talent every level after, learnable moves with a 3-move loadout, evolutions, one held item per Pokémon.
+- **Money and Poké Mart**: victories pay Pokédollars; the town sells balls, potions and held items.
+- Autosave in browser storage (save format v4, migrates older saves). Plays on phones in landscape (fullscreen button, larger text, touch log scrolling).
 
 Placeholder art only. Design notes: [docs/design](docs/design).
 
