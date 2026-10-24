@@ -35,7 +35,7 @@ export class RichText extends Phaser.GameObjects.Container {
     return this.measure.setText(s).width;
   }
 
-  /** Replaces the content. Returns the rendered height in pixels. */
+  /** Replaces the content. Returns the rendered height in pixels. Markup tokens must not span lines. */
   setMarkup(markup: string): number {
     this.removeAll(true);
     let cx = 0;

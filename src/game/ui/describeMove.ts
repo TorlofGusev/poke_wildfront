@@ -1,4 +1,4 @@
-import type { BattleContent, MoveDef } from "../../core/battle";
+import type { BattleContent, MoveDef, StatusDef } from "../../core/battle";
 import { tag } from "./markup";
 
 /** Rules text (with colour markup) generated from move data, so it never drifts from the rules. */
@@ -25,15 +25,29 @@ export function describeMove(content: BattleContent, move: MoveDef): string {
       case "heal": lines.push(`Heals ${tag("heal", `${e.amount} HP`)}`); break;
       case "status": {
         const st = content.statuses[e.status];
-        const what = st?.damagePerTurn ? `loses ${Math.round(st.damagePerTurn * 100)}% max HP each turn`
-          : st?.movePenalty ? `−${st.movePenalty} movement` : "";
-        lines.push(`Inflicts ${tag("status", st?.name ?? e.status)} for ${tag("num", e.duration)} turn${e.duration > 1 ? "s" : ""}${what ? ` (${what})` : ""}`);
+        const verb = move.affects === "allies" ? "Grants" : "Inflicts";
+        const what = st ? statusEffectText(st) : "";
+        lines.push(`${verb} ${tag("status", st?.name ?? e.status)} for ${tag("num", e.duration)} turn${e.duration > 1 ? "s" : ""}${what ? ` (${what})` : ""}`);
         break;
       }
     }
   }
   const typeRule = content.types[move.type]?.summary?.split(". ").slice(1).join(". ");
   if (typeRule && move.affects === "enemies") lines.push(`${tag(move.type, "Type")}: ${typeRule}`);
-  lines.push(tag("dim", `Affects ${move.affects === "enemies" ? "enemies only" : "allies"}`));
+  lines.push(tag("dim", move.range.max === 0 && move.affects === "allies" ? "Targets itself" : `Affects ${move.affects === "enemies" ? "enemies only" : "allies"}`));
   return lines.join("\n");
+}
+
+/** What a status does, in exact numbers. Durations count the affected Pokémon's own turns. */
+export function statusEffectText(st: StatusDef): string {
+  const parts: string[] = [];
+  if (st.damagePerTurn) parts.push(`loses ${Math.round(st.damagePerTurn * 100)}% max HP each turn`);
+  if (st.movePenalty) parts.push(st.movePenalty > 0 ? `−${st.movePenalty} movement` : `+${-st.movePenalty} movement`);
+  if (st.noMove) parts.push("cannot move");
+  if (st.noAction) parts.push("cannot use moves");
+  if (st.damageDealt !== undefined && st.damageDealt !== 1) parts.push(`${st.damageDealt > 1 ? "+" : "−"}${Math.round(Math.abs(st.damageDealt - 1) * 100)}% damage dealt`);
+  if (st.damageTaken !== undefined && st.damageTaken !== 1)
+    parts.push(st.damageTaken === 0 ? "takes no damage" : `${st.damageTaken > 1 ? "+" : "−"}${Math.round(Math.abs(st.damageTaken - 1) * 100)}% damage taken`);
+  if (st.stacks) parts.push("stacks");
+  return parts.join(", ");
 }
