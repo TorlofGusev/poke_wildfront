@@ -1,5 +1,8 @@
 import Phaser from "phaser";
-import { CONTENT, PROTOTYPE_PARTY, SCENARIOS } from "../../content";
+import { CONTENT, SCENARIOS, type ScenarioDef } from "../../content";
+import { captureChance, captureTargets, captureUnavailableReason } from "../../core/capture";
+import { KNOCKOUTS_TO_DEATH, resolveBattle, type BattleSummary } from "../../core/party";
+import { session } from "../session";
 import { planTurn } from "../../core/ai";
 import {
   activeUnit,
@@ -14,7 +17,7 @@ import {
   validTargets,
   type BattleAction,
   type BattleEvent,
-  type BattleScenario,
+  type DeployCandidate,
   type BattleState,
   type BattleUnit,
   type Placement,
@@ -45,7 +48,10 @@ const LOG_COLORS: Record<LogTone, string> = {
 };
 
 export class BattleScene extends Phaser.Scene {
-  private scenario!: BattleScenario & { name: string };
+  private scenario!: ScenarioDef;
+  private party: DeployCandidate[] = [];
+  private selectedBall: string | null = null;
+  private summary: BattleSummary | null = null;
   private grid!: Grid;
   private phase: Phase = "deploy";
   private placements: Placement[] = [];
@@ -76,7 +82,10 @@ export class BattleScene extends Phaser.Scene {
     this.grid = Grid.fromAscii(this.scenario.mapRows);
     this.phase = "deploy";
     this.placements = [];
-    this.selectedCandidate = PROTOTYPE_PARTY[0]?.id ?? null;
+    this.party = session.partyCandidates();
+    this.selectedCandidate = this.party.find((m) => m.hp > 0)?.id ?? null;
+    this.selectedBall = null;
+    this.summary = null;
     this.state = null;
     this.selectedMove = null;
     this.hoveredMove = null;
@@ -208,7 +217,9 @@ export class BattleScene extends Phaser.Scene {
       this.fillTiles(this.scenario.deploymentZone, COLORS.zone, 0.25);
     } else if (this.phase === "battle" && this.state && this.isPlayerTurn() && !this.busy) {
       const unit = activeUnit(this.state)!;
-      if (this.selectedMove) {
+      if (this.selectedBall) {
+        this.fillTiles(captureTargets(this.state, CONTENT, unit.id, this.selectedBall), COLORS.active, 0.35);
+      } else if (this.selectedMove) {
         const targets = validTargets(this.state, CONTENT, unit.id, this.selectedMove);
         this.fillTiles(targets, COLORS.target, 0.3);
         if (this.hovered && targets.some((t) => samePoint(t, this.hovered!))) {
@@ -253,25 +264,38 @@ export class BattleScene extends Phaser.Scene {
     if (this.phase === "deploy") {
       this.header.setText("Deployment");
       text(`Choose up to 3 Pokémon and place them in the blue zone. Inspect enemies by hovering/tapping.`, COLORS.dim, 12);
-      for (const m of PROTOTYPE_PARTY) {
+      for (const m of this.party) {
         const placed = this.placements.some((p) => p.unitId === m.id);
         const name = CONTENT.species[m.speciesId]!.name;
-        button(`${placed ? "■" : "□"} ${name.padEnd(11)} HP ${m.hp}`, true, this.selectedCandidate === m.id, () => {
+        const ko = this.knockoutsOf(m.id);
+        const pips = "●".repeat(ko) + "○".repeat(KNOCKOUTS_TO_DEATH - ko);
+        const hpText = m.hp > 0 ? `HP ${String(m.hp).padStart(3)}` : "fainted";
+        button(`${placed ? "■" : "□"} ${name.padEnd(11)} ${hpText}  KO ${pips}${ko === 2 ? " !" : ""}`, m.hp > 0, this.selectedCandidate === m.id, () => {
           this.selectedCandidate = m.id;
           this.refreshAll();
         });
       }
-      const errors = deploymentErrors(this.scenario, PROTOTYPE_PARTY, this.placements);
+      const errors = deploymentErrors(this.scenario, this.party, this.placements);
       y += 4;
       button(`▶ Lock deployment & start (${this.placements.length}/3)`, errors.length === 0, false, () => this.startBattle());
+      button("← Back to camp", true, false, () => this.scene.start("Camp"));
       return;
     }
 
     const state = this.state!;
     if (this.phase === "over") {
-      this.header.setText(state.outcome === "victory" ? "Victory!" : "Defeat");
-      button("↻ Play again", true, false, () => this.scene.restart({ scenarioId: this.scenario.id }));
-      button("⌂ Title", true, false, () => this.scene.start("Title"));
+      this.header.setText(state.outcome === "victory" ? "Victory!" : state.outcome === "defeat" ? "Defeat" : "Retreated");
+      const sum = this.summary;
+      if (sum) {
+        const name = (uid: string) => CONTENT.species[this.party.find((m) => m.id === uid)!.speciesId]!.name;
+        if (state.outcome === "defeat") text("Your team falls back to camp and rests there.", COLORS.dim, 12);
+        for (const c of sum.captured) text(`Caught ${CONTENT.species[c.member.speciesId]!.name}! Sent to ${c.to === "party" ? "your party" : "storage (party full)"}.`, COLORS.good);
+        for (const uid of sum.knockedOut.filter((u) => !sum.fallen.includes(u)))
+          text(`${name(uid)} was knocked out (KO ${this.knockoutsOf(uid)}/${KNOCKOUTS_TO_DEATH}).`, COLORS.bad);
+        for (const uid of sum.fallen) text(`${name(uid)} has fallen for good.`, COLORS.bad);
+        if (!sum.captured.length && !sum.knockedOut.length) text("No losses.", COLORS.dim);
+      }
+      button("⛺ Back to camp", true, false, () => this.scene.start("Camp"));
       return;
     }
 
@@ -289,6 +313,7 @@ export class BattleScene extends Phaser.Scene {
           ? (unit.cooldowns[moveId] ? ` cd ${unit.cooldowns[moveId]}` : ` cd ${move.cooldown}`)
           : unit.usedUltimates.includes(moveId) ? " used" : " 1×";
         button(`${move.name} [${move.kind}${tag}] ${move.power ? `pw ${move.power}` : ""}`, targets.length > 0, this.selectedMove === moveId, () => {
+          this.selectedBall = null;
           this.selectedMove = this.selectedMove === moveId ? null : moveId;
           this.refreshAll();
         }).onHover((over) => {
@@ -296,7 +321,25 @@ export class BattleScene extends Phaser.Scene {
           this.refreshInfo();
         });
       }
-      button("End turn [Space]", true, false, () => this.playerEndTurn());
+      if (state.captureAllowed) {
+        const ballIds = Object.keys(CONTENT.balls);
+        const w = Math.floor((330 - 8 * (ballIds.length - 1)) / ballIds.length);
+        ballIds.forEach((ballId, i) => {
+          const count = state.balls[ballId] ?? 0;
+          const usable = captureTargets(state, CONTENT, unit.id, ballId).length > 0;
+          const b = new Button(this, i * (w + 8), y, w, 26, `${CONTENT.balls[ballId]!.name.replace(" Ball", "")} ×${count}`, () => {
+            this.selectedMove = null;
+            this.selectedBall = this.selectedBall === ballId ? null : ballId;
+            this.refreshAll();
+          }).setEnabled(usable).setHighlighted(this.selectedBall === ballId);
+          this.panel.add(b);
+        });
+        y += 30;
+      }
+      const half = 161;
+      this.panel.add(new Button(this, 0, y, half, 26, "End turn [Space]", () => this.playerEndTurn()));
+      this.panel.add(new Button(this, half + 8, y, half, 26, "Retreat", () => this.playerRetreat()));
+      y += 30;
     } else {
       text("Enemy turn…", COLORS.bad);
     }
@@ -353,7 +396,17 @@ export class BattleScene extends Phaser.Scene {
       const eff = typeMultiplier(CONTENT.typeChart, mv.type, s.types);
       if (eff !== 1) lines.push(eff > 1 ? `${mv.name} is super effective (×${eff})` : `${mv.name} is not very effective (×${eff})`);
     }
+    if (active && active.side === "player" && unit.side === "enemy" && this.selectedBall && this.state) {
+      const ball = CONTENT.balls[this.selectedBall]!;
+      const reason = captureUnavailableReason(this.state, CONTENT, active.id, this.selectedBall, unit.pos);
+      lines.push(reason ? `${ball.name}: ${reason}` : `${ball.name}: ${Math.round(captureChance(CONTENT, unit, this.selectedBall) * 100)}% to catch (ball is used up either way)`);
+    }
+    if (unit.side === "player" && this.knockoutsOf(unit.id) > 0) lines.push(`Knockouts: ${this.knockoutsOf(unit.id)}/${KNOCKOUTS_TO_DEATH}`);
     this.infoText.setText(lines.filter(Boolean).join("\n"));
+  }
+
+  private knockoutsOf(uid: string): number {
+    return session.game.roster.party.find((m) => m.uid === uid)?.knockouts ?? 0;
   }
 
   private terrainInfo(id: string): string {
@@ -368,7 +421,7 @@ export class BattleScene extends Phaser.Scene {
 
   private previewUnit(id: string): BattleUnit {
     const enemy = this.scenario.enemies.find((e) => e.id === id);
-    const member = PROTOTYPE_PARTY.find((m) => m.id === id);
+    const member = this.party.find((m) => m.id === id);
     const speciesId = enemy?.speciesId ?? member!.speciesId;
     const maxHp = Math.round(CONTENT.species[speciesId]!.stats.hp * CONTENT.rules.hpMultiplier);
     return {
@@ -398,6 +451,16 @@ export class BattleScene extends Phaser.Scene {
     if (this.phase !== "battle" || this.busy || !this.isPlayerTurn()) return;
     const state = this.state!;
     const unit = activeUnit(state)!;
+    if (this.selectedBall) {
+      const ballId = this.selectedBall;
+      if (captureTargets(state, CONTENT, unit.id, ballId).some((p) => samePoint(p, t))) {
+        this.selectedBall = null;
+        void this.perform({ type: "throwBall", unitId: unit.id, ballId, target: t });
+      } else {
+        this.cancelSelection();
+      }
+      return;
+    }
     if (this.selectedMove) {
       if (validTargets(state, CONTENT, unit.id, this.selectedMove).some((p) => samePoint(p, t))) {
         const moveId = this.selectedMove;
@@ -430,14 +493,15 @@ export class BattleScene extends Phaser.Scene {
     if (without.length >= 3) return;
     this.placements = [...without, { unitId: id, pos: t }];
     this.units.get(id)?.container.destroy();
-    this.createUnitView(id, PROTOTYPE_PARTY.find((m) => m.id === id)!.speciesId, "player", t);
-    // Auto-advance to the next unplaced party member for quick deployment.
-    this.selectedCandidate = PROTOTYPE_PARTY.find((m) => !this.placements.some((p) => p.unitId === m.id))?.id ?? null;
+    this.createUnitView(id, this.party.find((m) => m.id === id)!.speciesId, "player", t);
+    // Auto-advance to the next unplaced, healthy party member for quick deployment.
+    this.selectedCandidate = this.party.find((m) => m.hp > 0 && !this.placements.some((p) => p.unitId === m.id))?.id ?? null;
     this.refreshAll();
   }
 
   private cancelSelection(): void {
     this.selectedMove = null;
+    this.selectedBall = null;
     this.refreshAll();
   }
 
@@ -449,7 +513,11 @@ export class BattleScene extends Phaser.Scene {
   // ------------------------------------------------------------ flow
 
   private startBattle(): void {
-    const { state, events } = lockDeployment(CONTENT, this.scenario, PROTOTYPE_PARTY, this.placements);
+    const { state, events } = lockDeployment(CONTENT, this.scenario, this.party, this.placements, {
+      captureAllowed: this.scenario.captureAllowed ?? false,
+      balls: session.game.inventory.balls,
+      seed: Date.now() >>> 0,
+    });
     this.state = state;
     this.phase = "battle";
     void this.playEvents(events).then(() => this.continueFlow());
@@ -459,6 +527,11 @@ export class BattleScene extends Phaser.Scene {
     if (this.phase !== "battle" || this.busy || !this.isPlayerTurn()) return;
     this.selectedMove = null;
     void this.perform({ type: "endTurn", unitId: activeUnit(this.state!)!.id });
+  }
+
+  private playerRetreat(): void {
+    if (this.phase !== "battle" || this.busy || !this.isPlayerTurn()) return;
+    void this.perform({ type: "retreat", unitId: activeUnit(this.state!)!.id });
   }
 
   private async perform(action: BattleAction): Promise<void> {
@@ -485,7 +558,13 @@ export class BattleScene extends Phaser.Scene {
       }
     }
     this.busy = false;
-    if (this.state?.outcome !== "ongoing") this.phase = "over";
+    if (this.state && this.state.outcome !== "ongoing" && this.phase !== "over") {
+      this.phase = "over";
+      // Knockouts, deaths, captures and used balls become permanent here, and are autosaved.
+      const result = resolveBattle(CONTENT, session.game, this.state, { countsKnockouts: this.scenario.countsKnockouts ?? true });
+      session.update(result.game);
+      this.summary = result.summary;
+    }
     this.refreshAll();
   }
 
@@ -533,6 +612,9 @@ export class BattleScene extends Phaser.Scene {
           break;
         case "statusApplied":
           this.floatText(e.unitId, e.status, "#c070ff");
+          break;
+        case "captured":
+          await this.fadeOut(e.unitId);
           break;
         case "fainted":
           await this.fadeOut(e.unitId);

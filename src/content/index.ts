@@ -1,4 +1,4 @@
-import type { BattleContent, BattleScenario, DeployCandidate } from "../core/battle";
+import type { BattleContent, BattleScenario } from "../core/battle";
 import balls from "./balls.json";
 import capture from "./capture.json";
 import moves from "./moves.json";
@@ -18,11 +18,14 @@ export const CONTENT: BattleContent = {
   capture,
 };
 
-export const SCENARIOS: Readonly<Record<string, BattleScenario & { name: string }>> = {
-  [viridianForestAmbush.id]: viridianForestAmbush as BattleScenario & { name: string },
-};
+export interface ScenarioDef extends BattleScenario {
+  readonly name: string;
+  /** Wild battles allow Poké Balls. */
+  readonly captureAllowed?: boolean;
+  /** Scripted battles can opt out of knockout counting. */
+  readonly countsKnockouts?: boolean;
+}
 
-/** Prototype starting party until the party/save system exists (Phase 3). */
-export const PROTOTYPE_PARTY: readonly DeployCandidate[] = [
-  "bulbasaur", "charmander", "squirtle", "pikachu", "geodude", "pidgey",
-].map((speciesId) => ({ id: `party-${speciesId}`, speciesId, hp: Math.round(species[speciesId as keyof typeof species].stats.hp * rules.hpMultiplier) }));
+export const SCENARIOS: Readonly<Record<string, ScenarioDef>> = {
+  [viridianForestAmbush.id]: viridianForestAmbush as ScenarioDef,
+};

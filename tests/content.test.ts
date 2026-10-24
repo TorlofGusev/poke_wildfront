@@ -2,7 +2,8 @@ import { describe, expect, it } from "vitest";
 import { planTurn } from "../src/core/ai";
 import { applyAction, deploymentErrors, lockDeployment } from "../src/core/battle";
 import { Grid, key } from "../src/core/grid";
-import { CONTENT, PROTOTYPE_PARTY, SCENARIOS } from "../src/content";
+import { CONTENT, SCENARIOS } from "../src/content";
+import { maxHpOf } from "../src/core/battle";
 
 describe("content integrity", () => {
   it("species reference existing types and moves; ids match keys", () => {
@@ -10,6 +11,7 @@ describe("content integrity", () => {
       expect(s.id).toBe(id);
       for (const t of s.types) expect(CONTENT.typeChart.chart).toHaveProperty(t);
       for (const m of s.moves) expect(CONTENT.moves, `${id} → ${m}`).toHaveProperty(m);
+      expect(s.captureBase).toBeGreaterThan(0);
       expect(s.moves.some((m) => CONTENT.moves[m]!.kind === "basic"), `${id} needs a basic move`).toBe(true);
     }
   });
@@ -37,6 +39,7 @@ describe("content integrity", () => {
   });
 
   it("prototype battle is completable by AI vs AI", () => {
+    const PROTOTYPE_PARTY = ["bulbasaur", "charmander", "squirtle"].map((s) => ({ id: s, speciesId: s, hp: maxHpOf(CONTENT, s) }));
     const scenario = SCENARIOS["viridian-forest-ambush"]!;
     const placements = PROTOTYPE_PARTY.slice(0, 3).map((m, i) => ({ unitId: m.id, pos: scenario.deploymentZone[i * 2]! }));
     expect(deploymentErrors(scenario, PROTOTYPE_PARTY, placements)).toEqual([]);

@@ -1,7 +1,7 @@
 import { Grid } from "../grid/Grid";
 import { key, type Point } from "../grid/types";
 import type { BattleContent } from "./content";
-import { createBattle, type StepResult, type UnitSetup } from "./battle";
+import { createBattle, type BattleOptions, type StepResult, type UnitSetup } from "./battle";
 
 export const MAX_ACTIVE_UNITS = 3;
 
@@ -66,6 +66,7 @@ export function lockDeployment(
   scenario: BattleScenario,
   party: readonly DeployCandidate[],
   placements: readonly Placement[],
+  options: BattleOptions = {},
 ): StepResult {
   const errors = deploymentErrors(scenario, party, placements);
   if (errors.length > 0) throw new Error(`Invalid deployment: ${errors.join("; ")}`);
@@ -73,5 +74,5 @@ export function lockDeployment(
     const member = party.find((m) => m.id === p.unitId)!;
     return { id: member.id, speciesId: member.speciesId, side: "player", pos: p.pos, hp: member.hp };
   });
-  return createBattle(content, scenario.mapRows, [...players, ...scenario.enemies]);
+  return createBattle(content, scenario.mapRows, [...players, ...scenario.enemies], options);
 }

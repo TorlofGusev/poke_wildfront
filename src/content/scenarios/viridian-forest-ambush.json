@@ -1,6 +1,7 @@
 {
   "id": "viridian-forest-ambush",
   "name": "Viridian Forest Ambush",
+  "captureAllowed": true,
   "mapRows": [
     "..\"\"....##..",
     "..\"\"........",

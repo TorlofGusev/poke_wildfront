@@ -10,9 +10,17 @@ No public build yet; hosting will be chosen later. Run it locally (see below).
 
 ## Current state
 
-Phase 2 prototype: one tactical battle (*Viridian Forest Ambush*) with mandatory deployment (3 of 6 party Pokémon), initiative turn order, Wartales-style turns (split movement + one action), cooldown specials, once-per-battle ultimates, push/pull, poison/slow, tall-grass concealment, hidden enemies and a simple enemy AI. Placeholder art only.
+Phase 3 prototype:
 
-Controls: click a tile to move, click a move then a red tile to use it (hover a move for its rules), right-click/Esc to cancel, Space to end the turn, L for the full combat log.
+- **Camp**: party (max 6) and unlimited storage, rest to restore HP, pick a battle. Autosaves to browser storage.
+- **Battle** (*Viridian Forest Ambush*): mandatory deployment (3 of your party), initiative order, Wartales-style turns (split movement + one action), cooldown specials, once-per-battle ultimates, push/pull, poison/slow, tall-grass concealment, hidden enemies, simple enemy AI, combat log.
+- **Capture**: Poké/Great/Ultra Balls, usable as the turn's action on wild Pokémon below 50% HP (range 1–3); the chance is shown before throwing and the ball is always used up. A full party sends captures to storage.
+- **Permadeath**: every Pokémon that faints gets a knockout (●○○). At 3/3 it is gone for good. Resting never clears knockouts.
+- **Retreat** at any time; knockouts already suffered still count. Defeat sends the team back to camp to rest.
+
+Placeholder art only. Design notes: [docs/design](docs/design).
+
+Controls: click a tile to move, click a move (or a ball) then a highlighted tile to use it (hover a move for its rules), right-click/Esc to cancel, Space to end the turn, L for the full combat log.
 
 ## Develop
 
