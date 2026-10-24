@@ -22,6 +22,5 @@
     { "id": "wild-rattata", "speciesId": "rattata", "side": "enemy", "pos": { "x": 10, "y": 4 } },
     { "id": "wild-zubat",   "speciesId": "zubat",   "side": "enemy", "pos": { "x": 11, "y": 6 } },
     { "id": "wild-oddish",  "speciesId": "oddish",  "side": "enemy", "pos": { "x": 10, "y": 2 } }
-  ],
-  "hiddenEnemies": ["wild-oddish"]
+  ]
 }

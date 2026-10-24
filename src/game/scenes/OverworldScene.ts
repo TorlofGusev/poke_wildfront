@@ -53,7 +53,7 @@ export class OverworldScene extends Phaser.Scene {
 
   create(): void {
     this.add.text(MAP_X, 16, WORLD.name, { fontFamily: FONT, fontSize: "20px", color: "#f5d76e" });
-    this.add.text(MAP_X, 40, "Tap a tile to travel. Red markers: wild Pokémon (number = group size). Tent: your last camp.", {
+    this.add.text(MAP_X, 40, "Tap to travel. Red-ringed Pokémon: wild groups (hover for details). Tent: last camp.", {
       fontFamily: FONT, fontSize: px(11), color: COLORS.dim, wordWrap: { width: 672 },
     });
     this.drawMap();
@@ -131,8 +131,15 @@ export class OverworldScene extends Phaser.Scene {
     }
     for (const e of world.encounters) {
       const { x, y } = this.center(e.pos);
-      this.markers.add(this.add.circle(x, y, 10, 0xd0021b).setStrokeStyle(2, 0x10141c));
-      this.markers.add(this.add.text(x, y, String(e.species.length), { fontFamily: FONT, fontSize: px(12), color: "#ffffff", fontStyle: "bold" }).setOrigin(0.5));
+      // Wild groups are visible: the strongest member stands on the map, with the group size.
+      this.markers.add(this.add.ellipse(x, y + 8, 22, 8, 0xd0021b, 0.6).setStrokeStyle(1, 0xd0021b));
+      const leadIdx = e.levels.indexOf(Math.max(...e.levels));
+      const lead = e.species[leadIdx] ?? e.species[0]!;
+      if (hasSprite(lead)) this.markers.add(this.add.sprite(x, y + 8, `${lead}-idle`).setOrigin(0.5, 0.85).play(animKey(lead, "idle", 0)));
+      else this.markers.add(this.add.circle(x, y, 10, 0xd0021b).setStrokeStyle(2, 0x10141c));
+      this.markers.add(this.add.text(x + 9, y - 13, String(e.species.length), {
+        fontFamily: FONT, fontSize: px(11), color: "#ffffff", fontStyle: "bold", backgroundColor: "#a0101a", padding: { x: 2, y: 0 },
+      }).setOrigin(0.5));
     }
     const c = this.center(world.pos);
     if (!this.moving) this.token.setPosition(c.x, c.y);
@@ -209,7 +216,7 @@ export class OverworldScene extends Phaser.Scene {
     }
     const after = Math.min(WORLD_CONTENT.fatigue.max, this.world.fatigue + cost);
     const enc = this.world.encounters.find((e) => samePoint(e.pos, t));
-    const hint = `${tag("num", `${path.length} tiles`)}, fatigue ${tag("dmg", `+${cost}`)} → ${after} (${fatigueLevel(WORLD_CONTENT.fatigue, after).name})${enc ? `\n${tag("enemy", `Wild group of ${enc.species.length} (${biomeAt(WORLD_CONTENT, WORLD, enc.pos).name}) — battle!`)}` : ""}`;
+    const hint = `${tag("num", `${path.length} tiles`)}, fatigue ${tag("dmg", `+${cost}`)} → ${after} (${fatigueLevel(WORLD_CONTENT.fatigue, after).name})${enc ? `\n${tag("enemy", "Wild group — battle!")}\n${enc.species.map((sp, i) => `${tag(`foe:${CONTENT.species[sp]!.types[0]}`, CONTENT.species[sp]!.name)} Lv ${enc.levels[i]}`).join("\n")}` : ""}`;
     this.message = hint;
     this.renderHud();
   }
