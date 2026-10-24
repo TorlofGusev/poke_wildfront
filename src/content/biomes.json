@@ -112,6 +112,10 @@
      "y": 3
     }
    ]
+  },
+  "forage": {
+   "oran-berry": 2,
+   "cheri-berry": 1
   }
  },
  "forest": {
@@ -231,6 +235,10 @@
      "y": 3
     }
    ]
+  },
+  "forage": {
+   "oran-berry": 1,
+   "pecha-berry": 2
   }
  },
  "mountain": {
@@ -345,6 +353,10 @@
      "y": 3
     }
    ]
+  },
+  "forage": {
+   "cheri-berry": 2,
+   "oran-berry": 1
   }
  },
  "cave": {
@@ -459,6 +471,10 @@
      "y": 3
     }
    ]
+  },
+  "forage": {
+   "pecha-berry": 1,
+   "cheri-berry": 1
   }
  },
  "town": {

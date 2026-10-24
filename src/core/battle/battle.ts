@@ -49,6 +49,8 @@ export interface BattleOptions {
   readonly captureAllowed?: boolean;
   /** Applied to every player unit, e.g. expedition fatigue. */
   readonly playerModifiers?: Partial<UnitModifiers>;
+  /** Team Bond at the start of the battle and its cap, per side; rules defaults otherwise. */
+  readonly bond?: Partial<Record<Side, { readonly start: number; readonly max: number }>>;
 }
 
 export interface StepResult {
@@ -77,6 +79,17 @@ export const unitAt = (state: BattleState, p: Point): BattleUnit | undefined =>
 
 export const activeUnit = (state: BattleState): BattleUnit | null =>
   state.turn ? unitById(state, state.turn.unitId) : null;
+
+/** Bond points a bond move costs this unit. */
+export function bondCostFor(move: MoveDef, unit: BattleUnit): number {
+  return Math.max(1, (move.bondCost ?? 0) - unit.mods.bondCostReduction);
+}
+
+function gainBond(state: BattleState, side: Side, amount: number, reason: "knockout" | "fainted", events: BattleEvent[]): void {
+  const before = state.bond[side];
+  state.bond[side] = Math.min(state.bondMax[side], before + amount);
+  if (state.bond[side] !== before) events.push({ type: "bondChanged", side, amount: state.bond[side] - before, total: state.bond[side], reason });
+}
 
 export function movementPoints(content: BattleContent, unit: BattleUnit, state?: BattleState): number {
   if (unit.statuses.some((st) => content.statuses[st.id]?.noMove)) return 0;
@@ -128,6 +141,8 @@ export function moveUnavailableReason(
   if (state.turn.actionUsed) return "action already used this turn";
   if ((unit.cooldowns[moveId] ?? 0) > 0) return `on cooldown (${unit.cooldowns[moveId]})`;
   if (unit.usedUltimates.includes(moveId)) return "already used this battle";
+  const move = content.moves[moveId];
+  if (move?.kind === "bond" && state.bond[unit.side] < bondCostFor(move, unit)) return `needs ${bondCostFor(move, unit)} Bond`;
   const blocking = unit.statuses.find((st) => content.statuses[st.id]?.noAction);
   if (blocking) return `${content.statuses[blocking.id]!.name.toLowerCase()}: cannot act this turn`;
   return null;
@@ -260,6 +275,8 @@ export function createBattle(
     queue: [],
     turn: null,
     outcome: "ongoing",
+    bond: { player: options.bond?.player?.start ?? content.rules.bond.start, enemy: options.bond?.enemy?.start ?? content.rules.bond.start },
+    bondMax: { player: options.bond?.player?.max ?? content.rules.bond.max, enemy: options.bond?.enemy?.max ?? content.rules.bond.max },
     rngState: (options.seed ?? 1) >>> 0,
     balls: { ...(options.balls ?? {}) },
     captureAllowed: options.captureAllowed ?? false,
@@ -344,6 +361,11 @@ function doUseMove(
   state.turn!.actionUsed = true;
   if (move.kind === "special" && move.cooldown) user.cooldowns[moveId] = move.cooldown;
   if (move.kind === "ultimate") user.usedUltimates.push(moveId);
+  if (move.kind === "bond") {
+    const cost = bondCostFor(move, user);
+    state.bond[user.side] -= cost;
+    events.push({ type: "bondChanged", side: user.side, amount: -cost, total: state.bond[user.side], reason: "spent" });
+  }
   events.push({ type: "moveUsed", unitId, moveId, target, affected: affected.map((u) => u.id) });
 
   const mech = content.types[move.type]?.move ?? {};
@@ -371,6 +393,7 @@ function doUseMove(
       // Any hit deals at least 1, unless something blocks all damage (Protect).
       const dealt = dealDamage(state, t, mult > 0 ? Math.max(1, Math.round(raw)) : 0, "move", events, eff);
       if (dealt > 0 && t.hp > 0) onDamaged(content, user, t, manhattan(user.pos, t.pos) === 1, events);
+      if (t.hp <= 0 && t.side !== user.side) gainBond(state, user.side, content.rules.bond.perKnockout + user.mods.bondOnKo, "knockout", events);
       if (mech.drain && dealt > 0 && user.hp > 0) {
         heal(user, Math.max(1, Math.round(dealt * (mech.drain + m.drainBonus))), events);
       }
@@ -529,6 +552,7 @@ function dealDamage(
   events.push({ type: "damaged", unitId: unit.id, amount: dealt, hp: unit.hp, source, ...(effectiveness !== undefined && { effectiveness }) });
   if (unit.hp === 0) {
     events.push({ type: "fainted", unitId: unit.id });
+    if (unit.mods.bondOnFaint) gainBond(state, unit.side, unit.mods.bondOnFaint, "fainted", events);
     state.queue = state.queue.filter((id, i) => i === 0 || id !== unit.id);
   }
   return dealt;

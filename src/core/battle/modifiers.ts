@@ -34,6 +34,12 @@ export interface UnitModifiers {
   readonly pullBonus: number;
   /** Per-type damage multipliers that only apply below half HP (Blaze, Torrent…). */
   readonly lowHpTypeDamage: Readonly<Record<string, number>>;
+  /** Extra team Bond when this unit knocks out a foe. */
+  readonly bondOnKo: number;
+  /** Team Bond gained when this unit faints. */
+  readonly bondOnFaint: number;
+  /** Its bond moves cost this much less (minimum 1). */
+  readonly bondCostReduction: number;
   /** Status ids this unit cannot receive ("*" = all). */
   readonly statusImmune: readonly string[];
 }
@@ -41,7 +47,7 @@ export interface UnitModifiers {
 export const NO_MODIFIERS: UnitModifiers = {
   moveBonus: 0, damageDealt: 1, damageTaken: 1, typeDamage: {}, vsStatusDamage: 1, fullHpTargetDamage: 1,
   lowHpDamage: 1, healPerTurn: 0, statusDurationBonus: 0, impactBonus: 0,
-  flankBonus: 0, swarmBonus: 0, drainBonus: 0, pushBonus: 0, pullBonus: 0, lowHpTypeDamage: {}, statusImmune: [],
+  flankBonus: 0, swarmBonus: 0, drainBonus: 0, pushBonus: 0, pullBonus: 0, lowHpTypeDamage: {}, bondOnKo: 0, bondOnFaint: 0, bondCostReduction: 0, statusImmune: [],
 };
 
 export function combineModifiers(...parts: readonly Partial<UnitModifiers>[]): UnitModifiers {
@@ -67,6 +73,9 @@ export function combineModifiers(...parts: readonly Partial<UnitModifiers>[]): U
       pushBonus: acc.pushBonus + (p.pushBonus ?? 0),
       pullBonus: acc.pullBonus + (p.pullBonus ?? 0),
       lowHpTypeDamage,
+      bondOnKo: acc.bondOnKo + (p.bondOnKo ?? 0),
+      bondOnFaint: acc.bondOnFaint + (p.bondOnFaint ?? 0),
+      bondCostReduction: acc.bondCostReduction + (p.bondCostReduction ?? 0),
       statusImmune: [...new Set([...acc.statusImmune, ...(p.statusImmune ?? [])])],
     };
   }, NO_MODIFIERS);

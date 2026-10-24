@@ -24,6 +24,8 @@ export interface AiWeights {
   readonly ultimateCost: number;
   /** Value of applying a status, per turn of duration. */
   readonly statusPerTurn: number;
+  /** Cost of spending one team Bond point. */
+  readonly bondCost: number;
 }
 
 export const DEFAULT_AI_WEIGHTS: AiWeights = {
@@ -33,6 +35,7 @@ export const DEFAULT_AI_WEIGHTS: AiWeights = {
   ownLoss: 1.2,
   ultimateCost: 20,
   statusPerTurn: 2,
+  bondCost: 8,
 };
 
 interface Plan {
@@ -69,7 +72,9 @@ export function planTurn(
         const use: BattleAction = { type: "useMove", unitId, moveId, target };
         const result = applyAction(afterMove, content, use);
         let score = evaluate(state, result.state, self, weights, result.events);
-        if (content.moves[moveId]!.kind === "ultimate") score -= weights.ultimateCost;
+        const mv = content.moves[moveId]!;
+        if (mv.kind === "ultimate") score -= weights.ultimateCost;
+        if (mv.kind === "bond") score -= weights.bondCost * (mv.bondCost ?? 0);
         if (score <= 0) continue;
         if (!best || score > best.score) {
           best = { actions: [...(moveAction ? [moveAction] : []), use, end], score };

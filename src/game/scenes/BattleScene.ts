@@ -5,6 +5,7 @@ import { KNOCKOUTS_TO_DEATH, resolveBattle, type BattleSummary } from "../../cor
 import { session } from "../session";
 import { PROGRESSION, WORLD, WORLD_CONTENT } from "../../content";
 import { fatigueLevel, fatigueModifiers, removeEncounter, returnToLastCamp } from "../../core/expedition";
+import { teamBond } from "../../core/progression";
 import { nextRandom } from "../../core/rng";
 import { planTurn } from "../../core/ai";
 import {
@@ -24,6 +25,8 @@ import {
   type BattleEvent,
   type DeployCandidate,
   NO_MODIFIERS,
+  bondCostFor,
+  combineModifiers,
   type BattleState,
   type BattleUnit,
   type Placement,
@@ -35,7 +38,7 @@ import { formatEvent, type LogEntry, type LogTone } from "../ui/combatLog";
 import { describeMove } from "../ui/describeMove";
 import { stripMarkup, tag } from "../ui/markup";
 import { RichText } from "../ui/RichText";
-import { animKey, FACE_LEFT, FACE_RIGHT, facingFor, hasSprite, type Facing, type SpriteAnim } from "../sprites";
+import { animKey, FACE_LEFT, FACE_RIGHT, facingFor, hasSprite, portraitKey, type Facing, type SpriteAnim } from "../sprites";
 import { BOARD_X, BOARD_Y, COLORS, FONT, PANEL_X, TILE, TYPE_COLORS, tileToWorld, px, PHONE } from "../ui/theme";
 
 type Phase = "deploy" | "battle" | "over";
@@ -66,6 +69,7 @@ export class BattleScene extends Phaser.Scene {
   private selectedBall: string | null = null;
   private summary: BattleSummary | null = null;
   private encounterId: string | null = null;
+  private biome: string | null = null;
   private rewardText = "";
   private grid!: Grid;
   private phase: Phase = "deploy";
@@ -91,14 +95,16 @@ export class BattleScene extends Phaser.Scene {
   private panel!: Phaser.GameObjects.Container;
   private infoText!: RichText;
   private header!: Phaser.GameObjects.Text;
+  private orderStrip: Phaser.GameObjects.Container | null = null;
 
   constructor() {
     super("Battle");
   }
 
-  init(data: { scenarioId?: string; scenario?: ScenarioDef; encounterId?: string }): void {
+  init(data: { scenarioId?: string; scenario?: ScenarioDef; encounterId?: string; biome?: string }): void {
     this.scenario = data.scenario ?? SCENARIOS[data.scenarioId!]!;
     this.encounterId = data.encounterId ?? null;
+    this.biome = data.biome ?? null;
     this.rewardText = "";
     this.grid = Grid.fromAscii(this.scenario.mapRows);
     this.phase = "deploy";
@@ -117,6 +123,7 @@ export class BattleScene extends Phaser.Scene {
     this.logScroll = 0;
     this.units = new Map();
     this.boardGfx = null;
+    this.orderStrip = null;
   }
 
   create(): void {
@@ -303,7 +310,27 @@ export class BattleScene extends Phaser.Scene {
     this.refreshInfo();
   }
 
+  /** Who acts this round, in order, next to the round counter: portraits ringed in team colours. */
+  private renderTurnOrder(state: BattleState): void {
+    this.orderStrip?.destroy();
+    const items: Phaser.GameObjects.GameObject[] = [];
+    const x0 = BOARD_X + this.header.width + 16;
+    state.queue.forEach((id, i) => {
+      const u = unitById(state, id);
+      const x = x0 + i * 30;
+      const active = i === 0;
+      const color = u.side === "player" ? COLORS.player : COLORS.enemy;
+      items.push(this.add.rectangle(x, 10, 26, 26, 0x10141c).setOrigin(0).setStrokeStyle(active ? 3 : 2, active ? COLORS.active : color));
+      if (this.textures.exists(portraitKey(u.speciesId)) && !this.isHidden(u.id)) items.push(this.add.image(x + 13, 23, portraitKey(u.speciesId)).setDisplaySize(22, 22));
+      else items.push(this.add.text(x + 13, 23, "?", { fontFamily: FONT, fontSize: "14px", color: COLORS.text }).setOrigin(0.5));
+      if (i < state.queue.length - 1) items.push(this.add.text(x + 27, 23, "›", { fontFamily: FONT, fontSize: "12px", color: COLORS.dim }).setOrigin(0, 0.5));
+    });
+    this.orderStrip = this.add.container(0, 0, items);
+  }
+
   private refreshPanel(): void {
+    this.orderStrip?.destroy();
+    this.orderStrip = null;
     this.panel.removeAll(true);
     this.hoveredMove = null;
     let y = 0;
@@ -371,7 +398,9 @@ export class BattleScene extends Phaser.Scene {
 
     const unit = activeUnit(state);
     this.header.setText(`Round ${state.round}`);
-    text(`Order: ${state.queue.map((id) => this.displayName(unitById(state, id))).join(" › ")}`, COLORS.dim, 11);
+    this.renderTurnOrder(state);
+    const bond = state.bond.player;
+    text(`${CONTENT.terms.bond} ${"●".repeat(bond)}${"○".repeat(Math.max(0, state.bondMax.player - bond))} ${bond}/${state.bondMax.player}`, "#f5d76e", 13);
     if (unit && unit.side === "player" && !this.busy) {
       const species = CONTENT.species[unit.speciesId]!;
       text(`${species.name} · move ${state.turn!.movePointsLeft} · ${state.turn!.actionUsed ? "action used" : "action ready"}`, COLORS.good);
@@ -382,6 +411,7 @@ export class BattleScene extends Phaser.Scene {
         const cd = unit.cooldowns[moveId] ?? 0;
         const status = move.kind === "basic" ? "basic"
           : move.kind === "special" ? (cd > 0 ? `wait ${cd}` : "special")
+          : move.kind === "bond" ? `${CONTENT.terms.bond} ${bondCostFor(move, unit)}`
           : unit.usedUltimates.includes(moveId) ? "ult used" : "ult 1×";
         button(`${move.name.padEnd(13)} ${move.power ? `Power ${String(move.power).padStart(2)}` : "        "}  ${status}`, targets.length > 0, this.selectedMove === moveId, () => {
           this.selectedBall = null;
@@ -592,7 +622,8 @@ export class BattleScene extends Phaser.Scene {
       captureAllowed: this.scenario.captureAllowed ?? false,
       balls: session.game.inventory.balls,
       seed: Date.now() >>> 0,
-      playerModifiers: fatigueModifiers(fatigueLevel(WORLD_CONTENT.fatigue, session.game.world.fatigue)),
+      bond: { player: teamBond(CONTENT, PROGRESSION, this.placements.map((p) => session.game.roster.party.find((m) => m.uid === p.unitId)!), session.game.world.meal?.bond ?? {}) },
+      playerModifiers: combineModifiers(fatigueModifiers(fatigueLevel(WORLD_CONTENT.fatigue, session.game.world.fatigue)), session.game.world.meal?.mods ?? {}),
     });
     this.state = state;
     this.phase = "battle";
@@ -648,6 +679,15 @@ export class BattleScene extends Phaser.Scene {
           game = { ...game, inventory: { ...game.inventory, balls: { ...game.inventory.balls, "poke-ball": (game.inventory.balls["poke-ball"] ?? 0) + 1 } } };
           this.rewardText = "Found a Poké Ball after the battle!";
         }
+        // Foraging: the area's food is found after a won wild battle.
+        const forage = this.biome ? WORLD_CONTENT.biomes[this.biome]?.forage : undefined;
+        if (forage) {
+          const items = { ...game.inventory.items };
+          for (const [id, n] of Object.entries(forage)) items[id] = (items[id] ?? 0) + n;
+          game = { ...game, inventory: { ...game.inventory, items } };
+          const found = Object.entries(forage).map(([id, n]) => `${n} ${PROGRESSION.items[id]?.name ?? id}`).join(", ");
+          this.rewardText = [this.rewardText, `Foraged ${found}.`].filter(Boolean).join(" ");
+        }
       }
       if (this.state.outcome === "defeat") game = { ...game, world: returnToLastCamp(WORLD_CONTENT, WORLD, game.world) };
       session.update(game);
@@ -674,6 +714,7 @@ export class BattleScene extends Phaser.Scene {
       statusName: (id: string) => CONTENT.statuses[id]?.name ?? id,
       ballName: (id: string) => CONTENT.balls[id]?.name ?? id,
       abilityName: (id: string) => CONTENT.abilities[id]?.name ?? id,
+      bondName: CONTENT.terms.bond,
     };
     for (const e of events) {
       if (e.type === "moveUsed") {

@@ -180,6 +180,7 @@ export class OverworldScene extends Phaser.Scene {
       }),
       "",
       `${tag("title", "Money")} ${tag("num", `₽${session.game.money}`)}  ${tag("title", "Candy")} ${tag("num", inventory.items.candy ?? 0)}`,
+      `${tag("title", CONTENT.terms.food)} ${tag("num", Object.entries(inventory.items).filter(([id]) => PROGRESSION.items[id]?.kind === "food").reduce((n, [, c]) => n + c, 0))}  ${tag("title", "Meal")} ${world.meal ? tag(world.meal.id === "hungry" ? "bad" : "good", world.meal.name) : tag("dim", "none")}`,
       `${tag("title", "Bag")} ${Object.entries(inventory.balls).map(([id, n]) => `${CONTENT.balls[id]?.name.replace(" Ball", "") ?? id} ${n}`).join(" · ")}`,
     ];
     const h = this.hud.setMarkup(lines.join("\n"));
@@ -260,7 +261,7 @@ export class OverworldScene extends Phaser.Scene {
 
     if (result.encounter) {
       const scenario = wildScenario(WORLD_CONTENT, effectiveGroup(result.encounter, this.healthy()), (s, lv) => wildSetup(CONTENT, PROGRESSION, s, lv));
-      this.scene.start("Battle", { scenario, encounterId: result.encounter.id });
+      this.scene.start("Battle", { scenario, encounterId: result.encounter.id, biome: result.encounter.biome });
     }
   }
 

@@ -59,6 +59,9 @@ export interface BattleState {
   queue: string[];
   turn: TurnState | null;
   outcome: BattleOutcome;
+  /** Team Bond points per side, spent by bond moves. */
+  bond: Record<Side, number>;
+  bondMax: Record<Side, number>;
   /** Seeded PRNG state; only capture rolls consume it. */
   rngState: number;
   /** Poké Balls carried into this battle, by ball id. */

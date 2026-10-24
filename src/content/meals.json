@@ -1,0 +1,49 @@
+{
+ "simple-meal": {
+  "id": "simple-meal",
+  "name": "Simple Meal",
+  "description": "A plain, filling meal. Full rest, no extra effect.",
+  "ingredients": {
+   "oran-berry": 2
+  }
+ },
+ "hearty-stew": {
+  "id": "hearty-stew",
+  "name": "Hearty Stew",
+  "description": "Warm and comforting: the team starts battles with +1 Bond.",
+  "ingredients": {
+   "oran-berry": 2,
+   "cheri-berry": 1
+  },
+  "bond": {
+   "startBond": 1
+  }
+ },
+ "spicy-curry": {
+  "id": "spicy-curry",
+  "name": "Spicy Curry",
+  "description": "Fires everyone up: +10% damage.",
+  "ingredients": {
+   "cheri-berry": 2,
+   "pecha-berry": 1
+  },
+  "mods": {
+   "damageDealt": 1.1
+  }
+ },
+ "calming-tea": {
+  "id": "calming-tea",
+  "name": "Calming Tea",
+  "description": "Steady nerves: +1 Bond cap and 10% less damage taken.",
+  "ingredients": {
+   "pecha-berry": 2,
+   "oran-berry": 1
+  },
+  "bond": {
+   "maxBond": 1
+  },
+  "mods": {
+   "damageTaken": 0.9
+  }
+ }
+}

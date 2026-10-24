@@ -126,7 +126,7 @@ describe("money, shop and items", () => {
     inventory: { balls: {}, items: {} },
     nextUid: 2,
     money: 500,
-    world: { pos: { x: 0, y: 0 }, fatigue: 0, lastCamp: { x: 0, y: 0 }, encounters: [], collected: [], rngState: 1, nextEncounterId: 1 },
+    world: { pos: { x: 0, y: 0 }, fatigue: 0, lastCamp: { x: 0, y: 0 }, encounters: [], collected: [], rngState: 1, nextEncounterId: 1, meal: null },
   });
   const shopContent = { ...content, balls: { ...content.balls, "poke-ball": { ...content.balls["poke-ball"]!, price: 100 } } };
 
@@ -218,8 +218,8 @@ describe("talent trees", () => {
   });
 
   it("opens roots first, then children of learned talents, and the type talent at its level", () => {
-    expect(talentOptions(PROGRESSION, charmander(4), ["fire"])).toEqual(["power", "brutal"]);
-    expect(talentOptions(PROGRESSION, charmander(6, ["brutal"]), ["fire"])).toEqual(["power", "skill-focus-energy"]);
+    expect(talentOptions(PROGRESSION, charmander(4), ["fire"])).toEqual(["rally", "brutal"]);
+    expect(talentOptions(PROGRESSION, charmander(6, ["brutal"]), ["fire"])).toEqual(["rally", "skill-focus-energy"]);
     expect(talentOptions(PROGRESSION, charmander(8, ["brutal", "skill-focus-energy"]), ["fire"])).toContain("type-fire");
   });
 

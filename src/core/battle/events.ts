@@ -17,5 +17,6 @@ export type BattleEvent =
   | { type: "captured"; unitId: string }
   | { type: "terrainChanged"; pos: Point; terrain: string }
   | { type: "abilityTriggered"; unitId: string; ability: string }
+  | { type: "bondChanged"; side: "player" | "enemy"; amount: number; total: number; reason: "spent" | "knockout" | "fainted" }
   | { type: "turnEnded"; unitId: string }
   | { type: "battleEnded"; outcome: Exclude<BattleOutcome, "ongoing"> };

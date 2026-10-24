@@ -123,5 +123,26 @@
   "description": "Use with a level-up point to put +2 into any stat instead of +1.",
   "kind": "candy",
   "price": 400
+ },
+ "oran-berry": {
+  "id": "oran-berry",
+  "name": "Oran Berry",
+  "description": "A common, filling berry. Ingredient for camp meals.",
+  "kind": "food",
+  "price": 60
+ },
+ "cheri-berry": {
+  "id": "cheri-berry",
+  "name": "Cheri Berry",
+  "description": "A spicy berry. Ingredient for camp meals.",
+  "kind": "food",
+  "price": 60
+ },
+ "pecha-berry": {
+  "id": "pecha-berry",
+  "name": "Pecha Berry",
+  "description": "A sweet, soothing berry. Ingredient for camp meals.",
+  "kind": "food",
+  "price": 60
  }
 }

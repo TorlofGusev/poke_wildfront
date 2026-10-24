@@ -1,0 +1,14 @@
+{
+ "hungry": {
+  "hpFraction": 0.5,
+  "fatigue": 40,
+  "effect": {
+   "id": "hungry",
+   "name": "Hungry",
+   "description": "Rested on an empty stomach: the team starts battles with 1 less Bond.",
+   "bond": {
+    "startBond": -1
+   }
+  }
+ }
+}

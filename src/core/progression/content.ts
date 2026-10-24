@@ -24,6 +24,8 @@ export interface TalentDef {
   readonly id: string;
   readonly name: string;
   readonly description: string;
+  /** Team-wide Bond effects while this Pokémon is deployed. */
+  readonly team?: { readonly startBond?: number; readonly maxBond?: number };
   /** Type talent: what "@type" resolves to for Pokémon of this type. */
   readonly requiresType?: string;
   /** Teaches this move (a new skill). */
@@ -37,7 +39,7 @@ export interface ItemDef {
   readonly id: string;
   readonly name: string;
   readonly description: string;
-  readonly kind: "held" | "potion" | "candy";
+  readonly kind: "held" | "potion" | "candy" | "food";
   readonly price: number;
   /** Held items: battle modifiers. */
   readonly mods?: Partial<UnitModifiers>;

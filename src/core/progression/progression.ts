@@ -206,3 +206,20 @@ export function setActiveMoves<T extends Progress>(content: BattleContent, prog:
   }
   return { ...m, activeMoves: [...moves] };
 }
+
+/** Team Bond for a battle: rules defaults plus the team talents of the deployed Pokémon and any bonus (meals). */
+export function teamBond(
+  content: BattleContent,
+  prog: ProgressionContent,
+  deployed: readonly Progress[],
+  bonus: { readonly startBond?: number; readonly maxBond?: number } = {},
+): { start: number; max: number } {
+  let start = content.rules.bond.start + (bonus.startBond ?? 0);
+  let max = content.rules.bond.max + (bonus.maxBond ?? 0);
+  for (const m of deployed)
+    for (const t of m.talents) {
+      start += prog.talents[t]?.team?.startBond ?? 0;
+      max += prog.talents[t]?.team?.maxBond ?? 0;
+    }
+  return { start: Math.min(start, max), max };
+}

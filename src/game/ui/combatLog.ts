@@ -16,6 +16,8 @@ export interface LogContext {
   statusName(statusId: string): string;
   ballName(ballId: string): string;
   abilityName(abilityId: string): string;
+  /** Display name of the team resource (a content term). */
+  readonly bondName: string;
   /** Primary type of the unit, or null while it is hidden. */
   typeOf(unitId: string): string | null;
 }
@@ -64,6 +66,11 @@ export function formatEvent(e: BattleEvent, ctx: LogContext): LogEntry | null {
       };
     case "captured":
       return null;
+    case "bondChanged":
+      return {
+        text: `${tag(e.side === "player" ? "player" : "enemy", e.side === "player" ? "Your team" : "Foes")} ${e.amount > 0 ? "gain" : "spend"} ${tag("num", `${Math.abs(e.amount)} ${ctx.bondName}`)} — ${e.total} left${e.reason === "knockout" ? " (knockout)" : e.reason === "fainted" ? " (a fallen ally)" : ""}`,
+        tone: "info",
+      };
     case "abilityTriggered":
       return { text: `${name(e.unitId)}'s ${tag("special", ctx.abilityName(e.ability))}!`, tone: "info" };
     case "terrainChanged":

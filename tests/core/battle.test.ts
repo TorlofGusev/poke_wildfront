@@ -102,7 +102,7 @@ describe("damage", () => {
   it("knocks out at 0 HP and ends the battle", () => {
     const { state } = battle([u("a", "fast", "player", 0, 0), u("b", "slow", "enemy", 1, 0, 5)]);
     const r = act(state, { type: "useMove", unitId: "a", moveId: "tackle", target: { x: 1, y: 0 } });
-    expect(r.events.map((e) => e.type)).toEqual(["moveUsed", "damaged", "fainted", "battleEnded"]);
+    expect(r.events.map((e) => e.type)).toEqual(["moveUsed", "damaged", "fainted", "bondChanged", "battleEnded"]);
     expect(r.state.outcome).toBe("victory");
     expect(() => act(r.state, { type: "endTurn", unitId: "a" })).toThrow(/over/);
   });

@@ -5,7 +5,7 @@
   "description": "Holds the line and shrugs off hits.",
   "tree": [
    {
-    "talent": "guard",
+    "talent": "steadfast",
     "level": 4,
     "col": 0
    },
@@ -19,7 +19,7 @@
     "level": 6,
     "col": 0,
     "requires": [
-     "guard"
+     "steadfast"
     ]
    },
    {
@@ -36,7 +36,7 @@
     "col": 1
    },
    {
-    "talent": "vigor",
+    "talent": "second-wind",
     "level": 10,
     "col": 0,
     "requires": [
@@ -56,7 +56,7 @@
     "level": 12,
     "col": 1,
     "requires": [
-     "vigor",
+     "second-wind",
      "regrowth"
     ]
    },
@@ -76,7 +76,7 @@
   "description": "Deals heavy damage, best at finishing or opening fights.",
   "tree": [
    {
-    "talent": "power",
+    "talent": "rally",
     "level": 4,
     "col": 0
    },
@@ -90,7 +90,7 @@
     "level": 6,
     "col": 0,
     "requires": [
-     "power"
+     "rally"
     ]
    },
    {
@@ -107,7 +107,7 @@
     "col": 1
    },
    {
-    "talent": "agility",
+    "talent": "momentum",
     "level": 10,
     "col": 0,
     "requires": [
@@ -127,7 +127,7 @@
     "level": 12,
     "col": 1,
     "requires": [
-     "agility",
+     "momentum",
      "last-stand"
     ]
    },
@@ -147,7 +147,7 @@
   "description": "Slows, poisons and exploits weakened foes.",
   "tree": [
    {
-    "talent": "guard",
+    "talent": "steadfast",
     "level": 4,
     "col": 0
    },
@@ -161,7 +161,7 @@
     "level": 6,
     "col": 0,
     "requires": [
-     "guard"
+     "steadfast"
     ]
    },
    {
@@ -178,7 +178,7 @@
     "col": 1
    },
    {
-    "talent": "vigor",
+    "talent": "deep-bond",
     "level": 10,
     "col": 0,
     "requires": [
@@ -198,7 +198,7 @@
     "level": 12,
     "col": 1,
     "requires": [
-     "vigor",
+     "deep-bond",
      "exploit"
     ]
    },
@@ -218,7 +218,7 @@
   "description": "Fast, mobile, hard to pin down.",
   "tree": [
    {
-    "talent": "agility",
+    "talent": "rally",
     "level": 4,
     "col": 0
    },
@@ -232,7 +232,7 @@
     "level": 6,
     "col": 0,
     "requires": [
-     "agility"
+     "rally"
     ]
    },
    {
@@ -249,7 +249,7 @@
     "col": 1
    },
    {
-    "talent": "power",
+    "talent": "momentum",
     "level": 10,
     "col": 0,
     "requires": [
@@ -269,7 +269,7 @@
     "level": 12,
     "col": 1,
     "requires": [
-     "power",
+     "momentum",
      "ambush"
     ]
    },

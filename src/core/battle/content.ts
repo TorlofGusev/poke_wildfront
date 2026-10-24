@@ -27,8 +27,12 @@ export interface SpeciesDef {
   readonly ability?: string;
 }
 
-/** basic: once per turn, free. special: has a cooldown. ultimate: once per battle (Valour later). */
-export type MoveKind = "basic" | "special" | "ultimate";
+/**
+ * basic: the free attack. special: has a cooldown. ultimate: once per battle.
+ * bond: costs the team's shared Bond points (the name is a content term, see terms.json).
+ * A unit uses one of them per turn.
+ */
+export type MoveKind = "basic" | "special" | "ultimate" | "bond";
 
 export type TargetShape =
   | { readonly kind: "single" }
@@ -57,6 +61,8 @@ export interface MoveDef {
   readonly affects: "enemies" | "allies";
   /** Turns before a special can be used again (special moves only). */
   readonly cooldown?: number;
+  /** Team Bond points spent (bond moves only). */
+  readonly bondCost?: number;
   readonly effects?: readonly MoveEffect[];
 }
 
@@ -95,6 +101,8 @@ export interface BattleRules {
   readonly moveMax: number;
   /** Damage taken when pushed into an obstacle or another unit. */
   readonly impactDamage: number;
+  /** Team Bond: default start and cap per side, and the gain per knockout. */
+  readonly bond: { readonly start: number; readonly max: number; readonly perKnockout: number };
 }
 
 export interface BallDef {
@@ -135,7 +143,15 @@ export interface AbilityDef {
   readonly arenaTrap?: boolean;
 }
 
+/** Player-facing names of setting-specific concepts, kept in data so the setting can be swapped. */
+export interface Terms {
+  readonly bond: string;
+  readonly bondDescription: string;
+  readonly food: string;
+}
+
 export interface BattleContent {
+  readonly terms: Terms;
   readonly abilities: Readonly<Record<string, AbilityDef>>;
   readonly species: Readonly<Record<string, SpeciesDef>>;
   readonly moves: Readonly<Record<string, MoveDef>>;

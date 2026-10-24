@@ -25,6 +25,9 @@ export function describeModifiers(content: BattleContent, m: Partial<UnitModifie
   if (m.drainBonus) out.push(`Grass drain heals ${up(`+${pct(m.drainBonus)}`)} more of the damage dealt`);
   if (m.pushBonus) out.push(`Pushes it causes go ${up(`+${m.pushBonus} tile`)}`);
   if (m.pullBonus) out.push(`Pulls it causes go ${up(`+${m.pullBonus} tile`)}`);
+  if (m.bondOnKo) out.push(`${up(`+${m.bondOnKo} extra ${content.terms.bond}`)} when it knocks out a foe`);
+  if (m.bondOnFaint) out.push(`Team gains ${up(`+${m.bondOnFaint} ${content.terms.bond}`)} when it faints`);
+  if (m.bondCostReduction) out.push(`Its ${content.terms.bond} moves cost ${up(`${m.bondCostReduction} less`)} (minimum 1)`);
   if (m.statusImmune?.length) out.push(`Immune to ${m.statusImmune.includes("*") ? "all statuses" : m.statusImmune.join(", ")}`);
   return out;
 }
@@ -38,12 +41,14 @@ export function describeTalent(content: BattleContent, prog: ProgressionContent,
     out.push(`${tag("good", `+${v} ${STAT_LABEL[s]}`)}${tag("dim", extra)}`);
   }
   out.push(...describeModifiers(content, t.mods ?? {}));
+  if (t.team?.startBond) out.push(`While deployed, the team starts battles with ${tag("good", `+${t.team.startBond} ${content.terms.bond}`)} (base ${content.rules.bond.start})`);
+  if (t.team?.maxBond) out.push(`While deployed, the team's ${content.terms.bond} cap is ${tag("good", `+${t.team.maxBond}`)} (base ${content.rules.bond.max})`);
   if (t.grantsMove && content.moves[t.grantsMove]) out.push(`${tag("special", "New skill")} (joins the move list):`, describeMove(content, content.moves[t.grantsMove]!));
   return out;
 }
 
 export function describeItem(content: BattleContent, item: ItemDef): string[] {
   if (item.kind === "potion") return [`Restores ${tag("heal", `${item.heal} HP`)} outside battle (not to fainted Pokémon).`];
-  if (item.kind === "candy") return [item.description];
+  if (item.kind === "candy" || item.kind === "food") return [item.description];
   return describeModifiers(content, item.mods ?? {});
 }

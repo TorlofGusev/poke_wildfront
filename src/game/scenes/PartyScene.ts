@@ -1,7 +1,7 @@
 import Phaser from "phaser";
-import { CONTENT, PROGRESSION, WORLD, WORLD_CONTENT } from "../../content";
-import { makeCamp } from "../../core/expedition";
-import { KNOCKOUTS_TO_DEATH, MAX_PARTY_SIZE, memberMaxHp, restAll, type PartyMember } from "../../core/party";
+import { CAMP, CONTENT, MEALS, PROGRESSION, WORLD, WORLD_CONTENT } from "../../content";
+import { canCook, KNOCKOUTS_TO_DEATH, MAX_PARTY_SIZE, memberMaxHp, rest, type MealDef, type PartyMember } from "../../core/party";
+import { describeModifiers } from "../ui/describeEffects";
 import { pendingChoice } from "../../core/progression";
 import { session } from "../session";
 import { portraitKey } from "../sprites";
@@ -16,13 +16,52 @@ const CARD_H = 124;
 /** Camp: party overview (what needs attention) and the choice to rest. Details open per Pokémon. */
 export class PartyScene extends Phaser.Scene {
   private rested = false;
+  private choosingMeal = false;
 
   constructor() {
     super("Party");
   }
 
-  init(data: { rested?: boolean }): void {
+  init(data: { rested?: boolean; choosingMeal?: boolean }): void {
     this.rested = data?.rested ?? false;
+    this.choosingMeal = data?.choosingMeal ?? false;
+  }
+
+  /** Recipes with what they need and what they do; cooking one rests the team. */
+  private mealChooser(): void {
+    const game = session.game;
+    const bag = game.inventory.items;
+    const food = Object.values(PROGRESSION.items).filter((i) => i.kind === "food");
+    new RichText(this, 16, 68, 928, 12).setMarkup(`${tag("title", `Cook a meal (${CONTENT.terms.food.toLowerCase()} in the bag:`)} ${food.map((f) => `${f.name} ${tag("num", bag[f.id] ?? 0)}`).join(" · ")}${tag("title", ")")}`);
+    const doRest = (meal: MealDef | null) => {
+      session.update(rest(CONTENT, PROGRESSION, { content: WORLD_CONTENT, def: WORLD }, CAMP, session.game, meal));
+      this.scene.restart({ rested: true });
+    };
+    Object.values(MEALS).forEach((meal, i) => {
+      const x = 16 + (i % 2) * 470;
+      const y = 92 + Math.floor(i / 2) * 96;
+      const ok = canCook(game, meal);
+      this.add.rectangle(x, y, 460, 88, 0x1c2130).setOrigin(0).setStrokeStyle(1, ok ? 0x5a6785 : 0x2a3040);
+      const needs = Object.entries(meal.ingredients).map(([id, n]) => {
+        const have = bag[id] ?? 0;
+        return tag(have >= n ? "good" : "bad", `${n} ${PROGRESSION.items[id]?.name ?? id} (${have})`);
+      }).join(", ");
+      const effects = [
+        ...(meal.bond?.startBond ? [`Battles start with ${tag("good", `+${meal.bond.startBond} ${CONTENT.terms.bond}`)}`] : []),
+        ...(meal.bond?.maxBond ? [`${CONTENT.terms.bond} cap ${tag("good", `+${meal.bond.maxBond}`)}`] : []),
+        ...describeModifiers(CONTENT, meal.mods ?? {}),
+      ];
+      new RichText(this, x + 10, y + 6, 330, 12).setMarkup([
+        tag("title", meal.name),
+        `Needs: ${needs}`,
+        `Full rest${effects.length ? `; until the next rest: ${effects.join(", ")}` : ""}`,
+      ].join("\n"));
+      new Button(this, x + 350, y + 30, 100, 28, "Cook", () => doRest(meal)).setEnabled(ok).setHighlighted(ok);
+    });
+    const hy = 92 + Math.ceil(Object.keys(MEALS).length / 2) * 96 + 6;
+    const h = CAMP.hungry;
+    new RichText(this, 16, hy, 700, 12).setMarkup(`${tag("bad", "Rest without eating")}: only ${Math.round(h.hpFraction * 100)}% HP, fatigue stays at ${h.fatigue}, and ${h.effect.description.toLowerCase()}`);
+    new Button(this, 734, hy, 210, 26, "Rest hungry", () => doRest(null));
   }
 
   create(): void {
@@ -30,15 +69,17 @@ export class PartyScene extends Phaser.Scene {
     this.add.text(16, 14, "Camp", { fontFamily: FONT, fontSize: "20px", color: "#f5d76e" });
     new RichText(this, 100, 19, 400, 14).setMarkup(`${tag("num", `₽${money}`)}   Candy ${tag("num", inventory.items.candy ?? 0)}   Fatigue ${tag("num", world.fatigue)}`);
     new Button(this, 794, 12, 150, 26, "➜ Back to map", () => this.scene.start("Overworld"));
-    // Resting is a decision: it heals and clears fatigue, but wild groups move and this becomes the respawn point.
-    new Button(this, 634, 12, 150, 26, "⛺ Rest here", () => {
-      const rested = makeCamp(WORLD_CONTENT, WORLD, session.game.world);
-      session.update({ ...session.game, world: rested, roster: restAll(CONTENT, PROGRESSION, session.game.roster) });
-      this.scene.restart({ rested: true });
-    }).setEnabled(!this.rested);
+    // Resting is a decision: pick a meal (or go hungry); wild groups move and this becomes the respawn point.
+    new Button(this, 634, 12, 150, 26, this.choosingMeal ? "✕ Cancel" : "⛺ Rest here…", () =>
+      this.scene.restart({ rested: this.rested, choosingMeal: !this.choosingMeal })).setEnabled(!this.rested);
+    const meal = world.meal;
     new RichText(this, 16, 44, 928, 12).setMarkup(this.rested
-      ? tag("good", "Rested: HP and fatigue restored, wild Pokémon have moved. Defeat brings you back here.")
-      : tag("dim", "Rest here to restore HP and fatigue (wild Pokémon move and this becomes your respawn point)."));
+      ? tag("good", `Rested${meal && meal.id !== CAMP.hungry.effect.id ? ` and ate ${meal.name}` : " hungry"}. Wild Pokémon have moved; defeat brings you back here.`)
+      : meal ? `${tag("dim", "Current meal:")} ${tag("num", meal.name)} ${tag("dim", `— ${(MEALS[meal.id] ?? CAMP.hungry.effect).description}`)}` : tag("dim", "Rest here to restore HP and fatigue with a camp meal."));
+    if (this.choosingMeal) {
+      this.mealChooser();
+      return;
+    }
 
     this.add.text(16, 64, `Party ${roster.party.length}/${MAX_PARTY_SIZE} · tap a Pokémon for level-ups, moves and equipment`, {
       fontFamily: FONT, fontSize: px(12), color: COLORS.dim,

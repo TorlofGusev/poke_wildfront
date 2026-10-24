@@ -16,6 +16,7 @@ Prototype (Route 2 & Viridian Forest):
 - **Fatigue**: only travel tires the team (route 1, forest/cave 2, mountain 3 per tile). No penalty until it reaches 100; then the team is Exhausted (−1 movement, −20% damage in battle) until it camps. The path preview shows the cost before you move.
 - **Camp anywhere**: the camp screen shows the party; *Rest here* restores HP and fatigue (wild groups move). Each Pokémon has a screen for level-ups, moves and equipment. Defeat carries the team back to the last camp (tent marker).
 - **Classic start**: choose Bulbasaur, Charmander or Squirtle and catch the rest (a fixed playtest team is also available). Wild groups never outnumber your healthy team.
+- **Bond and food**: a shared team Bond pool fuels the strongest moves (knockouts and meals build it); berries are foraged after wins or bought, and cooked into camp meals that buff the team until the next rest.
 - **Battles**: mandatory deployment (3 of your party), initiative order, Wartales-style turns, cooldown specials, once-per-battle ultimates, push/pull, statuses, tall grass, hidden enemies, enemy AI, colour-coded combat log and move rules.
 - **Capture**: Poké/Great/Ultra Balls on wild Pokémon below 50% HP; the chance is shown and the ball is always used. A full party sends captures to storage.
 - **Permadeath**: each faint adds a knockout (●○○); at 3/3 the Pokémon is gone for good. Defeat carries the team back to the last camp.

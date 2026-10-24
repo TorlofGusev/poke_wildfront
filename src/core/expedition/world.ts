@@ -1,4 +1,4 @@
-import type { BattleScenario, UnitSetup } from "../battle";
+import type { BattleScenario, UnitModifiers, UnitSetup } from "../battle";
 import { Grid } from "../grid/Grid";
 import { reachableTiles } from "../grid/movement";
 import type { TerrainDef } from "../grid/terrain";
@@ -24,6 +24,8 @@ export interface BiomeDef {
   /** Fatigue per tile entered; null = impassable. */
   readonly travelCost: number | null;
   readonly encounters?: EncounterTable;
+  /** Food found after winning a wild battle here (item id → amount). */
+  readonly forage?: Readonly<Record<string, number>>;
   readonly arena?: ArenaDef;
 }
 
@@ -54,6 +56,16 @@ export interface WorldState {
   readonly collected: readonly string[];
   readonly rngState: number;
   readonly nextEncounterId: number;
+  /** Effect of the last camp meal; lasts until the next rest. */
+  readonly meal: ActiveMeal | null;
+}
+
+/** A meal's lasting effect, copied from its definition when eaten. */
+export interface ActiveMeal {
+  readonly id: string;
+  readonly name: string;
+  readonly bond?: { readonly startBond?: number; readonly maxBond?: number };
+  readonly mods?: Partial<UnitModifiers>;
 }
 
 export interface WorldContent {
@@ -74,7 +86,7 @@ export const biomeAt = (content: WorldContent, def: WorldDef, p: Point): BiomeDe
 
 export function newWorld(content: WorldContent, def: WorldDef, seed: number): WorldState {
   const base: WorldState = {
-    pos: def.start, fatigue: 0, lastCamp: def.start, encounters: [], collected: [], rngState: seed >>> 0, nextEncounterId: 1,
+    pos: def.start, fatigue: 0, lastCamp: def.start, encounters: [], collected: [], rngState: seed >>> 0, nextEncounterId: 1, meal: null,
   };
   return respawnEncounters(content, def, base);
 }

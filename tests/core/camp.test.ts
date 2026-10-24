@@ -1,0 +1,45 @@
+import { describe, expect, it } from "vitest";
+import { CAMP, CONTENT, MEALS, PROGRESSION, WORLD, WORLD_CONTENT } from "../../src/content";
+import { newWorld } from "../../src/core/expedition";
+import { canCook, newMember, rest, type GameState } from "../../src/core/party";
+import { memberStats } from "../../src/core/progression";
+
+function game(items: Record<string, number>): GameState {
+  const m = newMember(CONTENT, PROGRESSION, "charmander", 1, 5);
+  return {
+    roster: { party: [{ ...m, hp: 10 }], storage: [], fallen: [] },
+    inventory: { balls: {}, items },
+    nextUid: 2,
+    money: 0,
+    world: { ...newWorld(WORLD_CONTENT, WORLD, 1), fatigue: 80 },
+  };
+}
+const world = { content: WORLD_CONTENT, def: WORLD };
+
+describe("camp meals", () => {
+  it("a meal uses its ingredients, fully rests the team and lasts until the next rest", () => {
+    const g = game({ "oran-berry": 3, "cheri-berry": 1 });
+    expect(canCook(g, MEALS["hearty-stew"]!)).toBe(true);
+    const r = rest(CONTENT, PROGRESSION, world, CAMP, g, MEALS["hearty-stew"]!);
+    expect(r.inventory.items).toMatchObject({ "oran-berry": 1, "cheri-berry": 0 });
+    expect(r.roster.party[0]!.hp).toBe(memberStats(CONTENT, PROGRESSION, r.roster.party[0]!).maxHp);
+    expect(r.world).toMatchObject({ fatigue: 0, meal: { id: "hearty-stew", bond: { startBond: 1 } } });
+  });
+
+  it("refuses a meal without enough ingredients", () => {
+    expect(() => rest(CONTENT, PROGRESSION, world, CAMP, game({ "oran-berry": 1 }), MEALS["simple-meal"]!)).toThrow(/not enough ingredients/);
+  });
+
+  it("resting hungry restores only part of the HP and fatigue, with a Bond penalty", () => {
+    const r = rest(CONTENT, PROGRESSION, world, CAMP, game({}), null);
+    const max = memberStats(CONTENT, PROGRESSION, r.roster.party[0]!).maxHp;
+    expect(r.roster.party[0]!.hp).toBe(Math.round(max * CAMP.hungry.hpFraction));
+    expect(r.world.fatigue).toBe(CAMP.hungry.fatigue);
+    expect(r.world.meal).toMatchObject({ id: "hungry", bond: { startBond: -1 } });
+  });
+
+  it("every meal uses known food items", () => {
+    for (const meal of Object.values(MEALS))
+      for (const id of Object.keys(meal.ingredients)) expect(PROGRESSION.items[id]?.kind, `${meal.id}: ${id}`).toBe("food");
+  });
+});

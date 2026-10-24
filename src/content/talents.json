@@ -1,36 +1,4 @@
 {
- "vigor": {
-  "id": "vigor",
-  "name": "Vigor",
-  "description": "+1 HP point.",
-  "stats": {
-   "hp": 1
-  }
- },
- "power": {
-  "id": "power",
-  "name": "Power",
-  "description": "+1 Attack point.",
-  "stats": {
-   "attack": 1
-  }
- },
- "guard": {
-  "id": "guard",
-  "name": "Guard",
-  "description": "+1 Defense point.",
-  "stats": {
-   "defense": 1
-  }
- },
- "agility": {
-  "id": "agility",
-  "name": "Agility",
-  "description": "+1 Speed point.",
-  "stats": {
-   "speed": 1
-  }
- },
  "sturdy-shell": {
   "id": "sturdy-shell",
   "name": "Sturdy Shell",
@@ -352,6 +320,46 @@
   },
   "mods": {
    "moveBonus": 1
+  }
+ },
+ "steadfast": {
+  "id": "steadfast",
+  "name": "Steadfast",
+  "description": "While deployed, the team starts each battle with +1 Bond.",
+  "team": {
+   "startBond": 1
+  }
+ },
+ "deep-bond": {
+  "id": "deep-bond",
+  "name": "Deep Bond",
+  "description": "While deployed, the team's Bond cap is +1.",
+  "team": {
+   "maxBond": 1
+  }
+ },
+ "rally": {
+  "id": "rally",
+  "name": "Rally",
+  "description": "+1 extra Bond when it knocks out a foe.",
+  "mods": {
+   "bondOnKo": 1
+  }
+ },
+ "second-wind": {
+  "id": "second-wind",
+  "name": "Second Wind",
+  "description": "+2 Bond for the team when it faints.",
+  "mods": {
+   "bondOnFaint": 2
+  }
+ },
+ "momentum": {
+  "id": "momentum",
+  "name": "Momentum",
+  "description": "Its Bond moves cost 1 less (minimum 1).",
+  "mods": {
+   "bondCostReduction": 1
   }
  }
 }

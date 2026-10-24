@@ -1,12 +1,16 @@
 import { speciesStats, type BaseStats, type BattleContent, type BattleScenario, type SpeciesDef, type TypeDef } from "../core/battle";
 import type { BiomeDef, FatigueRules, WorldContent, WorldDef } from "../core/expedition";
 import type { ItemDef, ProgressionContent, RoleDef, TalentDef } from "../core/progression";
+import type { CampRules, MealDef } from "../core/party";
 import items from "./items.json";
 import progression from "./progression.json";
 import roles from "./roles.json";
 import talents from "./talents.json";
 import typeChart from "./typeChart.json";
 import abilities from "./abilities.json";
+import camp from "./camp.json";
+import meals from "./meals.json";
+import terms from "./terms.json";
 import balls from "./balls.json";
 import biomes from "./biomes.json";
 import capture from "./capture.json";
@@ -30,6 +34,7 @@ const species: Record<string, SpeciesDef> = Object.fromEntries(
 );
 
 export const CONTENT: BattleContent = {
+  terms,
   species,
   abilities: abilities as BattleContent["abilities"],
   types: TYPES,
@@ -66,3 +71,6 @@ export const PROGRESSION: ProgressionContent = {
   items: items as unknown as Record<string, ItemDef>,
   rules: progression,
 };
+
+export const MEALS: Readonly<Record<string, MealDef>> = meals as Record<string, MealDef>;
+export const CAMP: CampRules = camp as CampRules;

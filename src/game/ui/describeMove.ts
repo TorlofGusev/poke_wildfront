@@ -6,6 +6,7 @@ export function describeMove(content: BattleContent, move: MoveDef): string {
   const kind =
     move.kind === "basic" ? `${tag("basic", "Basic attack")} · usable every turn`
     : move.kind === "special" ? `${tag("special", "Special")} · ${tag("num", move.cooldown ?? 0)}-turn cooldown`
+    : move.kind === "bond" ? `${tag("ultimate", content.terms.bond)} · costs ${tag("num", move.bondCost ?? 0)} team ${content.terms.bond}`
     : `${tag("ultimate", "Ultimate")} · once per battle`;
   const range = move.range.min === move.range.max ? `${move.range.max}` : `${move.range.min}–${move.range.max}`;
   const shape =
