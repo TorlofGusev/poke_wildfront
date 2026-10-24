@@ -1,50 +1,20 @@
 import Phaser from "phaser";
 import { CONTENT, PROGRESSION } from "../../content";
-import {
-  allocatePoint,
-  CANDY,
-  equipItem,
-  findMember,
-  KNOCKOUTS_TO_DEATH,
-  MAX_PARTY_SIZE,
-  memberMaxHp,
-  moveBetweenPartyAndStorage,
-  usePotion,
-  withMember,
-  type PartyMember,
-} from "../../core/party";
-import {
-  basicMoveOf,
-  chooseRole,
-  chooseTalent,
-  memberStats,
-  pendingChoice,
-  roleOptions,
-  setActiveMoves,
-  talentOptions,
-  xpToNext,
-} from "../../core/progression";
-import { STAT_NAMES, type StatName } from "../../core/battle";
+import { KNOCKOUTS_TO_DEATH, MAX_PARTY_SIZE, memberMaxHp, type PartyMember } from "../../core/party";
+import { pendingChoice } from "../../core/progression";
 import { session } from "../session";
 import { portraitKey } from "../sprites";
 import { Button } from "../ui/Button";
-import { describeItem, describeTalent } from "../ui/describeEffects";
 import { tag } from "../ui/markup";
 import { RichText } from "../ui/RichText";
 import { COLORS, FONT, TYPE_COLORS, px } from "../ui/theme";
 
-const LIST_X = 16;
-const DETAIL_X = 336;
-const DETAIL_W = 608;
+const CARD_W = 300;
+const CARD_H = 112;
 
-/** Party management: details, role and talent choices, moves, items, potions, storage. */
+/** Party overview: who is in the team and what needs attention. Details open per Pokémon. */
 export class PartyScene extends Phaser.Scene {
-  private root!: Phaser.GameObjects.Container;
-  private selected: string | null = null;
-  private message = "";
   private camped = false;
-  private tab: Tab = "overview";
-  private selectedTalent: string | null = null;
 
   constructor() {
     super("Party");
@@ -52,284 +22,73 @@ export class PartyScene extends Phaser.Scene {
 
   init(data: { camped?: boolean }): void {
     this.camped = data?.camped ?? false;
-    this.message = this.camped ? tag("good", "You made camp: HP and fatigue restored, wild Pokémon have moved. Defeat brings you back here.") : "";
-    this.selected = session.game.roster.party.find((m) => pendingChoice(PROGRESSION, m) || m.unspentPoints > 0)?.uid ?? session.game.roster.party[0]?.uid ?? null;
-    this.tab = "overview";
-    this.selectedTalent = null;
   }
 
   create(): void {
-    this.root = this.add.container(0, 0);
-    this.render();
-  }
-
-  private act(f: () => void, success?: string): void {
-    try {
-      f();
-      this.message = success ? tag("good", success) : "";
-    } catch (e) {
-      this.message = tag("bad", e instanceof Error ? `Cannot do that: ${e.message}.` : "Cannot do that.");
+    const { roster, money, inventory } = session.game;
+    this.add.text(16, 14, this.camped ? "Camp" : "Party", { fontFamily: FONT, fontSize: "20px", color: "#f5d76e" });
+    new RichText(this, 120, 19, 400, 14).setMarkup(`${tag("num", `₽${money}`)}   Candy ${tag("num", inventory.items.candy ?? 0)}`);
+    new Button(this, 794, 12, 150, 26, "➜ Back to map", () => this.scene.start("Overworld"));
+    if (this.camped) {
+      new RichText(this, 16, 44, 928, 12).setMarkup(tag("good", "You made camp: HP and fatigue restored, wild Pokémon have moved. Defeat brings you back here."));
     }
-    this.render();
-  }
 
-  private updateMember(member: PartyMember, f: (m: PartyMember) => PartyMember): void {
-    session.update(withMember(session.game, member.uid, f));
-  }
-
-  private render(): void {
-    this.root.removeAll(true);
-    const { roster, money } = session.game;
-    const add = <T extends Phaser.GameObjects.GameObject>(o: T) => (this.root.add(o), o);
-    const text = (x: number, y: number, s: string, color: string = COLORS.text, size = 13) =>
-      add(this.add.text(x, y, s, { fontFamily: FONT, fontSize: px(size), color }));
-
-    text(LIST_X, 14, this.camped ? "Camp" : "Party", "#f5d76e", 20);
-    text(LIST_X + 120, 20, `₽${money}`, "#f5d76e", 14);
-    add(new Button(this, DETAIL_X + DETAIL_W - 150, 12, 150, 26, "➜ Back to map", () => this.scene.start("Overworld")));
-
-    text(LIST_X, 48, `Party ${roster.party.length}/${MAX_PARTY_SIZE}`, COLORS.dim, 12);
-    roster.party.forEach((m, i) => add(this.card(LIST_X, 66 + i * 40, m)));
-    const sy = 66 + MAX_PARTY_SIZE * 40 + 6;
-    text(LIST_X, sy, `Storage (${roster.storage.length})`, COLORS.dim, 12);
-    roster.storage.slice(0, 4).forEach((m, i) => add(this.card(LIST_X, sy + 18 + i * 40, m)));
-    if (roster.storage.length > 4) text(LIST_X, sy + 18 + 4 * 40, `+${roster.storage.length - 4} more`, COLORS.dim, 11);
-
-    const member = this.selected ? findMember(session.game, this.selected) : undefined;
-    if (member) this.renderDetail(member, add);
-    if (this.message) add(new RichText(this, DETAIL_X, 506, DETAIL_W, 12)).setMarkup(this.message);
-  }
-
-  private card(x: number, y: number, m: PartyMember): Phaser.GameObjects.Container {
-    const s = CONTENT.species[m.speciesId]!;
-    const sel = m.uid === this.selected;
-    const pending = pendingChoice(PROGRESSION, m) ?? (m.unspentPoints > 0 ? "points" : null);
-    const bg = this.add.rectangle(0, 0, 304, 36, sel ? 0x2a3245 : 0x1c2130).setOrigin(0)
-      .setStrokeStyle(sel ? 2 : 1, sel ? 0xf5d76e : m.knockouts === 2 ? 0xd0021b : 0x3a4560);
-    bg.setInteractive({ useHandCursor: true }).on("pointerdown", () => {
-      this.selected = m.uid;
-      this.selectedTalent = null;
-      this.message = "";
-      this.render();
+    this.add.text(16, 64, `Party ${roster.party.length}/${MAX_PARTY_SIZE} · tap a Pokémon for level-ups, moves and equipment`, {
+      fontFamily: FONT, fontSize: px(12), color: COLORS.dim,
     });
-    const dot = this.textures.exists(portraitKey(m.speciesId))
-      ? this.add.image(18, 18, portraitKey(m.speciesId)).setDisplaySize(30, 30)
-      : this.add.circle(18, 18, 11, TYPE_COLORS[s.types[0]!] ?? 0x888888);
-    const name = this.add.text(36, 3, `${s.name}  Lv ${m.level}`, { fontFamily: FONT, fontSize: px(13), color: COLORS.text });
+    roster.party.forEach((m, i) => this.card(16 + (i % 3) * (CARD_W + 14), 84 + Math.floor(i / 3) * (CARD_H + 10), m));
+
+    const sy = 84 + 2 * (CARD_H + 10) + 6;
+    this.add.text(16, sy, `Storage (${roster.storage.length})`, { fontFamily: FONT, fontSize: px(12), color: COLORS.dim });
+    roster.storage.slice(0, 6).forEach((m, i) => this.mini(16 + i * 154, sy + 18, m));
+    if (roster.storage.length > 6) this.add.text(16, sy + 62, `+${roster.storage.length - 6} more`, { fontFamily: FONT, fontSize: px(11), color: COLORS.dim });
+    if (roster.fallen.length) {
+      new RichText(this, 16, 512, 928, 12).setMarkup(`${tag("ko", "Fallen")}: ${roster.fallen.map((m) => CONTENT.species[m.speciesId]!.name).join(", ")}`);
+    }
+  }
+
+  private open(m: PartyMember): void {
+    this.scene.start("Pokemon", { uid: m.uid });
+  }
+
+  private portrait(x: number, y: number, size: number, speciesId: string): void {
+    if (this.textures.exists(portraitKey(speciesId))) this.add.image(x, y, portraitKey(speciesId)).setOrigin(0).setDisplaySize(size, size);
+    else this.add.circle(x + size / 2, y + size / 2, size / 2 - 2, TYPE_COLORS[CONTENT.species[speciesId]!.types[0]!] ?? 0x888888);
+  }
+
+  /** A party card: portrait, name, level, HP bar, knockouts, role, held item, and what is waiting. */
+  private card(x: number, y: number, m: PartyMember): void {
+    const s = CONTENT.species[m.speciesId]!;
+    const pending = pendingChoice(PROGRESSION, m);
+    const waiting = [pending === "role" ? "choose a role" : pending === "talent" ? "learn a talent" : "", m.unspentPoints ? `${m.unspentPoints} stat point${m.unspentPoints > 1 ? "s" : ""}` : ""].filter(Boolean);
+    const bg = this.add.rectangle(x, y, CARD_W, CARD_H, 0x1c2130).setOrigin(0)
+      .setStrokeStyle(waiting.length ? 2 : 1, waiting.length ? 0xf5d76e : m.knockouts === 2 ? 0xd0021b : 0x3a4560);
+    bg.setInteractive({ useHandCursor: true }).on("pointerdown", () => this.open(m));
+    this.portrait(x + 8, y + 8, 56, m.speciesId);
+
     const max = memberMaxHp(CONTENT, PROGRESSION, m);
-    const hp = this.add.text(36, 19, m.hp > 0 ? `HP ${m.hp}/${max}` : "fainted", { fontFamily: FONT, fontSize: px(11), color: m.hp > 0 ? COLORS.dim : COLORS.bad });
+    const frac = m.hp / max;
+    const role = m.role ? PROGRESSION.roles[m.role]!.name : "no role yet";
+    const held = m.heldItem ? PROGRESSION.items[m.heldItem]!.name : "no item";
     const pips = "●".repeat(m.knockouts) + "○".repeat(KNOCKOUTS_TO_DEATH - m.knockouts);
-    const ko = this.add.text(296, 18, `${pending ? "★ " : ""}KO ${pips}`, { fontFamily: FONT, fontSize: px(12), color: pending ? "#f5d76e" : m.knockouts === 2 ? COLORS.bad : COLORS.dim }).setOrigin(1, 0.5);
-    return this.add.container(x, y, [bg, dot, name, hp, ko]);
+    new RichText(this, x + 74, y + 8, CARD_W - 82, 13).setMarkup([
+      `${tag("title", s.name)}  Lv ${tag("num", m.level)}`,
+      `${s.types.map((t) => tag(t, t)).join("/")}  ${tag("dim", role)}`,
+      `${tag("dim", held)}`,
+    ].join("\n"));
+    // HP bar and knockouts.
+    this.add.rectangle(x + 8, y + 72, CARD_W - 16, 6, 0x000000).setOrigin(0, 0.5);
+    this.add.rectangle(x + 8, y + 72, (CARD_W - 16) * frac, 6, frac > 0.5 ? 0x7ed321 : frac > 0.25 ? 0xf5a623 : 0xd0021b).setOrigin(0, 0.5);
+    new RichText(this, x + 8, y + 80, CARD_W - 16, 12).setMarkup(
+      `${m.hp > 0 ? `HP ${m.hp}/${max}` : tag("ko", "fainted")}   KO ${tag(m.knockouts ? "ko" : "dim", pips)}${waiting.length ? `   ${tag("num", `★ ${waiting.join(", ")}`)}` : ""}`);
   }
 
-  private renderDetail(m: PartyMember, add: <T extends Phaser.GameObjects.GameObject>(o: T) => T): void {
+  private mini(x: number, y: number, m: PartyMember): void {
     const s = CONTENT.species[m.speciesId]!;
-    const { stats, maxHp } = memberStats(CONTENT, PROGRESSION, m);
-    const role = m.role ? PROGRESSION.roles[m.role] : null;
-    const held = m.heldItem ? PROGRESSION.items[m.heldItem] : null;
-    const evo = s.evolution ? ` · evolves at Lv ${s.evolution.level}` : "";
-    const header = [
-      `${tag("title", s.name)}  ${s.types.map((t) => tag(t, t)).join("/")}  Lv ${tag("num", m.level)}  XP ${m.xp}/${xpToNext(PROGRESSION, m.level)}${tag("dim", evo)}`,
-      `HP ${tag(m.hp > 0 ? "heal" : "ko", `${m.hp}/${maxHp}`)}  Atk ${stats.attack}  Def ${stats.defense}  Spe ${stats.speed}  KO ${tag(m.knockouts ? "ko" : "dim", `${m.knockouts}/${KNOCKOUTS_TO_DEATH}`)}`,
-      ...(s.ability && CONTENT.abilities[s.ability] ? [`Ability: ${tag("special", CONTENT.abilities[s.ability]!.name)} ${tag("dim", CONTENT.abilities[s.ability]!.description)}`] : []),
-      `Role: ${role ? tag("special", role.name) : tag("dim", m.level < PROGRESSION.rules.roleLevel ? `chosen at Lv ${PROGRESSION.rules.roleLevel}` : "not chosen")}  Held: ${held ? tag("num", held.name) : tag("dim", "nothing")}`,
-    ];
-    let y = 48;
-    if (this.textures.exists(portraitKey(m.speciesId))) add(this.add.image(DETAIL_X + DETAIL_W - 32, 72, portraitKey(m.speciesId)).setDisplaySize(64, 64));
-    y += add(new RichText(this, DETAIL_X, y, DETAIL_W - 76, 13)).setMarkup(header.join("\n")) + 8;
-
-    // Tabs. A ★ marks where a decision is waiting.
-    const pending = pendingChoice(PROGRESSION, m);
-    const tabs: [Tab, string][] = [
-      ["overview", `${m.unspentPoints > 0 ? "★ " : ""}Stats & moves`],
-      ["talents", `${pending ? "★ " : ""}Talent tree`],
-      ["equipment", "Equipment"],
-    ];
-    const tw = Math.floor((DETAIL_W - 12) / 3);
-    tabs.forEach(([id, label], i) => {
-      add(new Button(this, DETAIL_X + i * (tw + 6), y, tw, 26, label, () => {
-        this.tab = id;
-        this.selectedTalent = null;
-        this.message = "";
-        this.render();
-      }).setHighlighted(this.tab === id));
-    });
-    y += 34;
-    if (this.tab === "talents") this.renderTalents(m, y, add);
-    else if (this.tab === "equipment") this.renderEquipment(m, y, add);
-    else this.renderOverview(m, y, add);
-  }
-
-  private renderOverview(m: PartyMember, y: number, add: <T extends Phaser.GameObjects.GameObject>(o: T) => T): void {
-    const s = CONTENT.species[m.speciesId]!;
-    // Stat points: +1 per level into any stat, +2 when a Candy is spent with it.
-    if (m.unspentPoints > 0) {
-      const candies = session.game.inventory.items[CANDY] ?? 0;
-      y += add(new RichText(this, DETAIL_X, y, DETAIL_W, 13)).setMarkup(
-        `${tag("num", `★ ${m.unspentPoints} stat point${m.unspentPoints > 1 ? "s" : ""} to spend`)}  ${tag("dim", `Candy ×${candies}: a point with a Candy gives +2`)}`) + 4;
-      const labels: Record<StatName, string> = { hp: "HP", attack: "Atk", defense: "Def", speed: "Spe" };
-      const w = Math.floor((DETAIL_W - 18) / 4);
-      STAT_NAMES.forEach((stat, i) => {
-        add(new Button(this, DETAIL_X + i * (w + 6), y, w, 24, `+1 ${labels[stat]}`, () =>
-          this.act(() => session.update(allocatePoint(PROGRESSION, session.game, m.uid, stat)))));
-        if (candies > 0) {
-          add(new Button(this, DETAIL_X + i * (w + 6), y + 27, w, 22, `+2 ${labels[stat]} (Candy)`, () =>
-            this.act(() => session.update(allocatePoint(PROGRESSION, session.game, m.uid, stat, true)), `Candy used: +2 ${labels[stat]}.`)));
-        }
-      });
-      y += candies > 0 ? 56 : 30;
-      y += add(new RichText(this, DETAIL_X, y, DETAIL_W, 11)).setMarkup(tag("dim",
-        `HP: +${CONTENT.rules.hpPerPoint} max HP per point · Attack/Defense: about +7% / −7% damage per point · Speed: +1 movement every ${CONTENT.rules.speedPerMove} points, acts earlier`)) + 6;
-    }
-
-    // Moves: the basic attack is fixed; toggle up to 3 others.
-    const basic = basicMoveOf(CONTENT, s);
-    y += add(new RichText(this, DETAIL_X, y, DETAIL_W, 13)).setMarkup(
-      `${tag("title", "Moves")} ${tag("dim", `(${m.activeMoves.length}/${PROGRESSION.rules.maxActiveMoves} active + ${CONTENT.moves[basic]!.name}; tap to toggle)`)}`) + 4;
-    const known = m.knownMoves.filter((mv) => mv !== basic);
-    const colW = Math.floor((DETAIL_W - 8) / 2);
-    known.forEach((mv, i) => {
-      const def = CONTENT.moves[mv]!;
-      const active = m.activeMoves.includes(mv);
-      const label = `${active ? "■" : "□"} ${def.name} · ${def.kind}${def.power ? ` · Power ${def.power}` : ""}`;
-      add(new Button(this, DETAIL_X + (i % 2) * (colW + 8), y + Math.floor(i / 2) * 28, colW, 24, label, () => {
-        const next = active ? m.activeMoves.filter((x) => x !== mv) : [...m.activeMoves, mv];
-        this.act(() => this.updateMember(m, (x) => setActiveMoves(CONTENT, PROGRESSION, x, next)));
-      }).setHighlighted(active));
-    });
-    y += Math.ceil(known.length / 2) * 28 + 6;
-
-    const bx = { x: DETAIL_X };
-    const chip = (label: string, onClick: () => void) => {
-      const w = Math.min(DETAIL_W, label.length * 8 + 20);
-      if (bx.x + w > DETAIL_X + DETAIL_W) {
-        bx.x = DETAIL_X;
-        y += 28;
-      }
-      add(new Button(this, bx.x, y, w, 24, label, onClick));
-      bx.x += w + 6;
-    };
-    for (const [id, n] of Object.entries(session.game.inventory.items)) {
-      const item = PROGRESSION.items[id];
-      if (item?.kind === "potion" && n > 0)
-        chip(`Use ${item.name} (+${item.heal} HP, ${n} left)`, () => this.act(() => session.update(usePotion(CONTENT, PROGRESSION, session.game, m.uid, id)), `${s.name} recovered HP.`));
-    }
-    const inParty = session.game.roster.party.some((x) => x.uid === m.uid);
-    chip(inParty ? "Send to storage" : "Move to party", () => this.act(() => session.update({ ...session.game, roster: moveBetweenPartyAndStorage(session.game.roster, m.uid) })));
-  }
-
-  /**
-   * Talent tree: the role's talents and the Pokémon's type talents by unlock level (left),
-   * and the exact rules of the selected talent with a Learn button (right).
-   */
-  private renderTalents(m: PartyMember, y: number, add: <T extends Phaser.GameObjects.GameObject>(o: T) => T): void {
-    const s = CONTENT.species[m.speciesId]!;
-    const pending = pendingChoice(PROGRESSION, m);
-    const treeW = 300;
-    const infoX = DETAIL_X + treeW + 12;
-    const infoW = DETAIL_W - treeW - 12;
-
-    // Before the role is chosen, compare both roles; the role is picked on the right.
-    const roleIds = m.role ? [m.role] : roleOptions(CONTENT, m);
-    const intro = m.role
-      ? `${tag("special", PROGRESSION.roles[m.role]!.name)} tree · ${pending === "talent" ? tag("num", "★ 1 talent to learn") : tag("dim", `next pick at Lv ${m.level + 1}`)}`
-      : m.level >= PROGRESSION.rules.roleLevel
-        ? tag("num", "★ Choose a role first. Tap a talent to see exactly what it does.")
-        : tag("dim", `A role is chosen at Lv ${PROGRESSION.rules.roleLevel}. Preview its talents here.`);
-    y += add(new RichText(this, DETAIL_X, y, DETAIL_W, 12)).setMarkup(intro) + 6;
-
-    const typeTalents = Object.values(PROGRESSION.talents).filter((t) => t.requiresType && s.types.includes(t.requiresType)).map((t) => t.id);
-    const available = new Set(pending === "talent" ? talentOptions(PROGRESSION, m, s.types) : []);
-    const node = (x: number, ny: number, w: number, id: string) => {
-      const t = PROGRESSION.talents[id]!;
-      const taken = m.talents.filter((x2) => x2 === id).length;
-      const locked = (t.minLevel ?? 0) > m.level;
-      const state = t.stackable ? "" : taken ? "✓ " : available.has(id) ? "★ " : locked ? `Lv${t.minLevel} ` : "";
-      const label = `${state}${t.name}${t.stackable && taken ? ` ×${taken}` : ""}`;
-      const b = new Button(this, x, ny, w, 24, label, () => {
-        this.selectedTalent = id;
-        this.render();
-      }).setHighlighted(this.selectedTalent === id);
-      if (locked && !taken) b.setAlpha(0.55);
-      add(b);
-    };
-
-    const colW = roleIds.length > 1 ? Math.floor((treeW - 6) / 2) : treeW;
-    roleIds.forEach((roleId, col) => {
-      const x = DETAIL_X + col * (colW + 6);
-      let ry = y;
-      add(new RichText(this, x, ry, colW, 12)).setMarkup(tag("special", PROGRESSION.roles[roleId]!.name));
-      ry += 18;
-      const ids = [...PROGRESSION.roles[roleId]!.talents, ...(roleIds.length === 1 ? typeTalents : [])];
-      ids.sort((a, b) => (PROGRESSION.talents[a]!.minLevel ?? 0) - (PROGRESSION.talents[b]!.minLevel ?? 0));
-      for (const id of ids) {
-        node(x, ry, colW, id);
-        ry += 27;
-      }
-      if (!m.role && m.level >= PROGRESSION.rules.roleLevel) {
-        const def = PROGRESSION.roles[roleId]!;
-        add(new Button(this, x, ry + 4, colW, 26, `Become ${def.name}`, () =>
-          this.act(() => this.updateMember(m, (x2) => chooseRole(CONTENT, PROGRESSION, x2, roleId)), `${s.name} is now a ${def.name}.`)).setHighlighted(true));
-      }
-    });
-
-    // Repeatable stat talents.
-    const statY = 470;
-    add(new RichText(this, DETAIL_X, statY - 18, treeW, 11)).setMarkup(tag("dim", "Repeatable stat talents"));
-    const stats = Object.values(PROGRESSION.talents).filter((t) => t.stackable).map((t) => t.id);
-    const sw = Math.floor((treeW - 6 * (stats.length - 1)) / stats.length);
-    stats.forEach((id, i) => node(DETAIL_X + i * (sw + 6), statY, sw, id));
-
-    // Detail panel.
-    const id = this.selectedTalent;
-    if (!id) {
-      add(new RichText(this, infoX, y, infoW, 12)).setMarkup(`${tag("dim", "Tap a talent to see its exact effect.")}\n\n${tag("dim", "✓ learned · ★ can be learned now · LvN unlocks at that level")}`);
-      return;
-    }
-    const t = PROGRESSION.talents[id]!;
-    const kind = t.stackable ? "Stat talent" : t.grantsMove ? "Skill talent" : t.requiresType ? `${t.requiresType} type talent` : "Role talent";
-    const lines = [
-      tag("title", t.name),
-      tag("dim", `${kind}${t.minLevel ? ` · from Lv ${t.minLevel}` : ""}`),
-      ...describeTalent(CONTENT, PROGRESSION, t),
-    ];
-    const h = add(new RichText(this, infoX, y, infoW, 12)).setMarkup(lines.join("\n"));
-    if (available.has(id)) {
-      add(new Button(this, infoX, Math.min(y + h + 8, 470), infoW, 28, `Learn ${t.name}`, () => {
-        this.act(() => this.updateMember(m, (x2) => chooseTalent(PROGRESSION, x2, id, s.types)), `${s.name} learned ${t.name}.`);
-        this.selectedTalent = null;
-      }).setHighlighted(true));
-    } else if (m.talents.includes(id) && !t.stackable) {
-      add(new RichText(this, infoX, y + h + 8, infoW, 12)).setMarkup(tag("good", "Learned."));
-    }
-  }
-
-  /** Held item: what it holds now, and every held item in the bag with its exact effect. */
-  private renderEquipment(m: PartyMember, y: number, add: <T extends Phaser.GameObjects.GameObject>(o: T) => T): void {
-    const s = CONTENT.species[m.speciesId]!;
-    const held = m.heldItem ? PROGRESSION.items[m.heldItem] : null;
-    y += add(new RichText(this, DETAIL_X, y, DETAIL_W, 13)).setMarkup(
-      `${tag("title", "Holding")}: ${held ? `${tag("num", held.name)} · ${describeItem(CONTENT, held).join(" · ")}` : tag("dim", "nothing (one held item per Pokémon)")}`) + 6;
-    if (held) {
-      add(new Button(this, DETAIL_X, y, 160, 24, "Take off", () => this.act(() => session.update(equipItem(PROGRESSION, session.game, m.uid, null)), `${held.name} returned to the bag.`)));
-      y += 32;
-    }
-    const bagItems = Object.entries(session.game.inventory.items).filter(([id, n]) => n > 0 && PROGRESSION.items[id]?.kind === "held");
-    y += add(new RichText(this, DETAIL_X, y, DETAIL_W, 13)).setMarkup(tag("title", "In the bag")) + 4;
-    if (!bagItems.length) {
-      add(new RichText(this, DETAIL_X, y, DETAIL_W, 12)).setMarkup(tag("dim", "No held items. The Poké Mart in towns sells them."));
-      return;
-    }
-    for (const [id, n] of bagItems) {
-      const item = PROGRESSION.items[id]!;
-      add(this.add.rectangle(DETAIL_X, y, DETAIL_W, 40, 0x1c2130).setOrigin(0).setStrokeStyle(1, 0x3a4560));
-      add(new RichText(this, DETAIL_X + 8, y + 4, DETAIL_W - 120, 12)).setMarkup(`${tag("num", item.name)} ×${n}\n${describeItem(CONTENT, item).join(" · ")}`);
-      add(new Button(this, DETAIL_X + DETAIL_W - 100, y + 8, 92, 24, held ? "Swap" : "Equip", () =>
-        this.act(() => session.update(equipItem(PROGRESSION, session.game, m.uid, id)), `${s.name} now holds ${item.name}.`)));
-      y += 46;
-    }
+    const bg = this.add.rectangle(x, y, 148, 40, 0x1c2130).setOrigin(0).setStrokeStyle(1, 0x3a4560);
+    bg.setInteractive({ useHandCursor: true }).on("pointerdown", () => this.open(m));
+    this.portrait(x + 4, y + 4, 32, m.speciesId);
+    this.add.text(x + 42, y + 4, `${s.name}`, { fontFamily: FONT, fontSize: px(12), color: COLORS.text });
+    this.add.text(x + 42, y + 21, `Lv ${m.level}`, { fontFamily: FONT, fontSize: px(11), color: COLORS.dim });
   }
 }
-
-type Tab = "overview" | "talents" | "equipment";
