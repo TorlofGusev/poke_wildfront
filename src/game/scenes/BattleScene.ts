@@ -22,6 +22,7 @@ import {
 import { Grid, key, samePoint, type Point } from "../../core/grid";
 import { typeMultiplier } from "../../core/rules/typeChart";
 import { Button } from "../ui/Button";
+import { formatEvent, type LogEntry, type LogTone } from "../ui/combatLog";
 import { describeMove } from "../ui/describeMove";
 import { BOARD_X, BOARD_Y, COLORS, FONT, PANEL_X, TILE, TYPE_COLORS, tileToWorld } from "../ui/theme";
 
@@ -38,6 +39,11 @@ interface UnitView {
 
 const AI_STEP_MS = 350;
 
+const LOG_COLORS: Record<LogTone, string> = {
+  info: "#8a93a6", player: "#8fb8f0", enemy: "#f08f8f", damage: "#ffb070",
+  heal: "#7ed321", status: "#c070ff", ko: "#ff5050", result: "#f5d76e",
+};
+
 export class BattleScene extends Phaser.Scene {
   private scenario!: BattleScenario & { name: string };
   private grid!: Grid;
@@ -50,7 +56,10 @@ export class BattleScene extends Phaser.Scene {
   private busy = false;
   private hovered: Point | null = null;
   private revealed = new Set<string>();
-  private log: string[] = [];
+  private log: LogEntry[] = [];
+  private logStrip!: Phaser.GameObjects.Text;
+  private logOverlay: Phaser.GameObjects.Container | null = null;
+  private logScroll = 0;
 
   private overlay!: Phaser.GameObjects.Graphics;
   private units = new Map<string, UnitView>();
@@ -74,6 +83,8 @@ export class BattleScene extends Phaser.Scene {
     this.busy = false;
     this.revealed = new Set();
     this.log = [];
+    this.logOverlay = null;
+    this.logScroll = 0;
     this.units = new Map();
   }
 
@@ -87,6 +98,18 @@ export class BattleScene extends Phaser.Scene {
       fontFamily: FONT, fontSize: "12px", color: COLORS.text, wordWrap: { width: 330 }, lineSpacing: 2,
     });
 
+    this.logStrip = this.add.text(BOARD_X, BOARD_Y + this.grid.height * TILE + 6, "", {
+      fontFamily: FONT, fontSize: "11px", color: COLORS.dim, lineSpacing: 1,
+    });
+    const logButton = new Button(this, BOARD_X + this.grid.width * TILE - 110, BOARD_Y + this.grid.height * TILE + 6, 110, 22, "Full log [L]", () => this.toggleLogOverlay());
+    logButton.setDepth(5);
+    this.input.keyboard?.on("keydown-L", () => this.toggleLogOverlay());
+    this.input.on("wheel", (_p: unknown, _o: unknown, _dx: number, dy: number) => {
+      if (!this.logOverlay) return;
+      this.logScroll = Math.max(0, this.logScroll + Math.sign(dy) * 3);
+      this.renderLogOverlay();
+    });
+
     for (const e of this.scenario.enemies) this.createUnitView(e.id, e.speciesId, "enemy", e.pos);
 
     this.input.on("pointermove", (p: Phaser.Input.Pointer) => {
@@ -94,7 +117,9 @@ export class BattleScene extends Phaser.Scene {
       this.refreshOverlay();
       this.refreshInfo();
     });
-    this.input.on("pointerdown", (p: Phaser.Input.Pointer) => {
+    this.input.on("pointerdown", (p: Phaser.Input.Pointer, over: Phaser.GameObjects.GameObject[]) => {
+      // Clicks on UI (buttons, the log overlay) never fall through to the board.
+      if (over.length > 0) return;
       if (p.rightButtonDown()) return this.cancelSelection();
       const t = this.pointerTile(p);
       if (t) this.onTileClicked(t);
@@ -247,7 +272,6 @@ export class BattleScene extends Phaser.Scene {
       this.header.setText(state.outcome === "victory" ? "Victory!" : "Defeat");
       button("↻ Play again", true, false, () => this.scene.restart({ scenarioId: this.scenario.id }));
       button("⌂ Title", true, false, () => this.scene.start("Title"));
-      this.renderLog(text);
       return;
     }
 
@@ -276,12 +300,6 @@ export class BattleScene extends Phaser.Scene {
     } else {
       text("Enemy turn…", COLORS.bad);
     }
-    this.renderLog(text);
-  }
-
-  private renderLog(text: (s: string, color?: string, size?: number) => void): void {
-    text("", COLORS.dim, 6);
-    for (const line of this.log.slice(-5)) text(line, COLORS.dim, 11);
   }
 
   private refreshInfo(): void {
@@ -475,16 +493,27 @@ export class BattleScene extends Phaser.Scene {
 
   private async playEvents(events: readonly BattleEvent[]): Promise<void> {
     const state = this.state!;
-    const name = (id: string) => this.displayName(unitById(state, id));
+    const ctx = {
+      name: (id: string) => {
+        const u = unitById(state, id);
+        return u.side === "enemy" ? `Foe ${this.displayName(u)}` : this.displayName(u);
+      },
+      isPlayer: (id: string) => unitById(state, id).side === "player",
+      moveName: (id: string) => CONTENT.moves[id]!.name,
+      statusName: (id: string) => CONTENT.statuses[id]?.name ?? id,
+    };
     for (const e of events) {
+      if (e.type === "moveUsed") {
+        this.revealed.add(e.unitId);
+        e.affected.forEach((id) => this.revealed.add(id));
+      }
+      const entry = formatEvent(e, ctx);
+      if (entry) this.pushLog(entry);
       switch (e.type) {
         case "moved":
           await this.tweenPath(e.unitId, e.path);
           break;
         case "moveUsed":
-          this.revealed.add(e.unitId);
-          e.affected.forEach((id) => this.revealed.add(id));
-          this.pushLog(`${name(e.unitId)} used ${CONTENT.moves[e.moveId]!.name}`);
           break;
         case "damaged": {
           const eff = e.effectiveness && e.effectiveness !== 1 ? (e.effectiveness > 1 ? " !" : " ↓") : "";
@@ -505,14 +534,7 @@ export class BattleScene extends Phaser.Scene {
           this.floatText(e.unitId, e.status, "#c070ff");
           break;
         case "fainted":
-          this.pushLog(`${name(e.unitId)} fainted!`);
           await this.fadeOut(e.unitId);
-          break;
-        case "roundStarted":
-          this.pushLog(`— Round ${e.round} —`);
-          break;
-        case "battleEnded":
-          this.pushLog(e.outcome === "victory" ? "Victory!" : "Defeat…");
           break;
         default:
           break;
@@ -521,9 +543,43 @@ export class BattleScene extends Phaser.Scene {
     this.syncUnits();
   }
 
-  private pushLog(line: string): void {
-    this.log.push(line);
-    if (this.log.length > 50) this.log.shift();
+  private pushLog(entry: LogEntry): void {
+    this.log.push(entry);
+    if (this.log.length > 500) this.log.shift();
+    this.logStrip.setText(this.log.slice(-4).map((l) => l.text).join("\n"));
+    if (this.logOverlay) this.renderLogOverlay();
+  }
+
+  private toggleLogOverlay(): void {
+    if (this.logOverlay) {
+      this.logOverlay.destroy();
+      this.logOverlay = null;
+      return;
+    }
+    this.logScroll = 0;
+    this.renderLogOverlay();
+  }
+
+  /** Full scrollable history drawn over the board; newest at the bottom, wheel scrolls back. */
+  private renderLogOverlay(): void {
+    this.logOverlay?.destroy();
+    const w = this.grid.width * TILE;
+    const h = this.grid.height * TILE;
+    const lineH = 15;
+    const visible = Math.floor((h - 40) / lineH);
+    const maxScroll = Math.max(0, this.log.length - visible);
+    this.logScroll = Math.min(this.logScroll, maxScroll);
+    const end = this.log.length - this.logScroll;
+    const lines = this.log.slice(Math.max(0, end - visible), end);
+    const bg = this.add.rectangle(0, 0, w, h, 0x0b0e14, 0.94).setOrigin(0).setStrokeStyle(1, 0x5a6785).setInteractive();
+    bg.on("pointerdown", () => this.toggleLogOverlay());
+    const title = this.add.text(10, 8, `Combat log (${this.log.length})  ·  wheel to scroll  ·  click or L to close`, {
+      fontFamily: FONT, fontSize: "12px", color: "#f5d76e",
+    });
+    const texts = lines.map((l, i) =>
+      this.add.text(10, 32 + i * lineH, l.text, { fontFamily: FONT, fontSize: "12px", color: LOG_COLORS[l.tone] }),
+    );
+    this.logOverlay = this.add.container(BOARD_X, BOARD_Y, [bg, title, ...texts]).setDepth(10);
   }
 
   private tweenPath(unitId: string, path: readonly Point[]): Promise<void> {

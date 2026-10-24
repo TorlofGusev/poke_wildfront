@@ -12,7 +12,7 @@ No public build yet; hosting will be chosen later. Run it locally (see below).
 
 Phase 2 prototype: one tactical battle (*Viridian Forest Ambush*) with mandatory deployment (3 of 6 party Pokémon), initiative turn order, Wartales-style turns (split movement + one action), cooldown specials, once-per-battle ultimates, push/pull, poison/slow, tall-grass concealment, hidden enemies and a simple enemy AI. Placeholder art only.
 
-Controls: click a tile to move, click a move then a red tile to use it, right-click/Esc to cancel, Space to end the turn.
+Controls: click a tile to move, click a move then a red tile to use it (hover a move for its rules), right-click/Esc to cancel, Space to end the turn, L for the full combat log.
 
 ## Develop
 
