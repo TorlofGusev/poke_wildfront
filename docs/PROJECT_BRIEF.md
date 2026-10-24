@@ -35,25 +35,46 @@ Before publishing, audit all third-party code, graphics, audio, fonts, and other
 
 ## 3. Target Platform and Technology
 
-Preferred engine: **Godot 4.x**. Preferred language: **GDScript**.
+**The browser is the only target platform.** There is no installable desktop or mobile build. Anyone must be able to open a link and play immediately.
+
+Selected stack:
+
+- **Engine:** Phaser (latest stable release).
+- **Language:** TypeScript.
+- **Build tool:** Vite.
+- **Maps:** Tiled map editor (JSON export), loaded natively by Phaser.
+- **Content data:** JSON files validated against typed schemas.
+- **Tests:** Vitest, running headless against pure game logic.
+- **Saves:** Browser storage (localStorage / IndexedDB) using a versioned JSON format.
 
 Target rendering:
 
 - 2D top-down or lightweight isometric presentation.
 - Pixel art is acceptable and preferred for a manageable hobby scope.
 - Grid-based tactical battles.
-- Desktop development, with a browser-playable Web export.
+- Must run on current desktop browsers; mobile browser support is a goal (touch input, responsive scaling).
 
-Use the Godot Compatibility renderer and validate web export early. Avoid unnecessary native extensions or platform-specific dependencies.
+Keep the initial download small and load assets on demand. Avoid dependencies that require a backend or native code.
 
-The project should be easy to clone, open, run, test, and build by contributors.
+The project should be easy to clone, install (`npm install`), run (`npm run dev`), test, and build by contributors.
 
-Preferred hosting:
+Hosting:
 
 - GitHub for source code, issues, documentation, and community contributions.
-- itch.io or equivalent static web hosting for the browser-playable build.
+- **GitHub Pages** for the playable build, deployed automatically by GitHub Actions. itch.io may be used as an additional mirror.
 
 No multiplayer, persistent online world, backend account system, or server infrastructure is required for the initial version.
+
+### Engine decision record
+
+Godot 4 was originally preferred. It was replaced by Phaser + TypeScript because the browser became the sole target:
+
+- Godot web exports carry a ~30-40 MB engine payload; a Phaser game loads in a fraction of that.
+- Godot 4 web exports remain unreliable on some mobile browsers (notably iOS Safari).
+- A web-native stack needs no export step and deploys as a static site on every push.
+- TypeScript is familiar to a much larger pool of potential contributors.
+
+Accepted trade-offs: no integrated visual scene editor (Tiled covers maps; UI is built in code), and more infrastructure (scene flow, saving, input) must be written by the project.
 
 ## 4. World and Scope
 
@@ -258,7 +279,7 @@ Suggested systems:
 - UI and battle feedback.
 - Enemy AI.
 
-Pokémon, moves, capture modifiers, encounter tables, and other content should use Godot Resources or another appropriate data-driven representation.
+Pokémon, moves, capture modifiers, encounter tables, and other content should use typed JSON data files (or another appropriate data-driven representation).
 
 Avoid embedding all rules in scene scripts. The core combat rules should be testable independently from animations and UI.
 
@@ -271,9 +292,9 @@ The project should be suitable for public development on GitHub.
 Requirements:
 
 - Clear setup instructions.
-- A documented Godot version.
+- Documented Node.js and Phaser versions.
 - Reproducible project structure.
-- A documented build and web-export process.
+- A documented build and deployment process.
 - A test suite for core rules.
 - A contribution guide.
 - Issue templates or an equivalent lightweight bug-reporting process.
@@ -304,7 +325,7 @@ Prefer deterministic combat simulation tests that can run without rendering the 
 
 Create reproducible battle scenarios for debugging and balance analysis.
 
-Web export should be tested separately from the desktop build.
+The production build should be smoke-tested in a real browser (e.g. automated with Playwright) in addition to the headless rule tests.
 
 ## 15. Existing Project Investigation
 
@@ -321,7 +342,7 @@ For every candidate:
 
 - Verify the current repository and commit.
 - Inspect the actual licence at the intended commit.
-- Determine whether it is technically compatible with the selected Godot version and target platforms.
+- Determine whether it is technically compatible with the selected stack (Phaser + TypeScript, browser-only). Godot projects can only serve as architectural references, not as code sources.
 - Identify reusable architecture and systems.
 - Check whether code, art, sound, and other assets have separate licences.
 - Distinguish learning from a reference implementation from actually copying code.
@@ -379,10 +400,10 @@ The combat prototype should be playable before the overworld is developed.
 
 ### Phase 5: Browser release
 
-- Implement and verify HTML5/Web export.
-- Test on a current desktop browser.
-- Document how to run locally and how to build the web version.
-- Prepare a playable browser build.
+- Automated deployment to GitHub Pages is set up from Phase 2 onward; this phase hardens it.
+- Test on current desktop browsers and at least one mobile browser.
+- Document how to run locally and how to build and deploy.
+- Publish a stable, shareable link to the playable build.
 
 ### Phase 6: Expand Kanto
 
