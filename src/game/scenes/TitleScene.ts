@@ -39,6 +39,8 @@ export class TitleScene extends Phaser.Scene {
     });
     y += 42;
     if (addFullscreenButton(this, width / 2 - 140, y, 280)) y += 42;
+    new Button(this, width / 2 - 140, y, 280, 32, "ⓘ Credits", () => this.scene.start("Credits"));
+    y += 42;
     if (session.loadError) {
       this.add
         .text(width / 2, y + 10, `Your save could not be loaded (${session.loadError}).`, {

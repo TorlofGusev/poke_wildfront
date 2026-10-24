@@ -9,6 +9,8 @@ export interface BaseStats {
 
 export interface SpeciesDef {
   readonly id: string;
+  /** National Pokédex number (used for sprites). */
+  readonly dex?: number;
   readonly name: string;
   readonly types: readonly PokemonType[];
   readonly stats: BaseStats;

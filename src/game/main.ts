@@ -1,5 +1,7 @@
 import Phaser from "phaser";
 import { BattleScene } from "./scenes/BattleScene";
+import { BootScene } from "./scenes/BootScene";
+import { CreditsScene } from "./scenes/CreditsScene";
 import { PartyScene } from "./scenes/PartyScene";
 import { ShopScene } from "./scenes/ShopScene";
 import { OverworldScene } from "./scenes/OverworldScene";
@@ -16,5 +18,5 @@ new Phaser.Game({
     width: 960,
     height: 540,
   },
-  scene: [TitleScene, OverworldScene, PartyScene, ShopScene, BattleScene],
+  scene: [BootScene, TitleScene, OverworldScene, PartyScene, ShopScene, BattleScene, CreditsScene],
 });

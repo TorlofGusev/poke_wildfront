@@ -23,6 +23,7 @@ import {
   xpToNext,
 } from "../../core/progression";
 import { session } from "../session";
+import { portraitKey } from "../sprites";
 import { Button } from "../ui/Button";
 import { tag } from "../ui/markup";
 import { RichText } from "../ui/RichText";
@@ -102,7 +103,9 @@ export class PartyScene extends Phaser.Scene {
       this.message = "";
       this.render();
     });
-    const dot = this.add.circle(18, 18, 11, TYPE_COLORS[s.types[0]!] ?? 0x888888);
+    const dot = this.textures.exists(portraitKey(m.speciesId))
+      ? this.add.image(18, 18, portraitKey(m.speciesId)).setDisplaySize(30, 30)
+      : this.add.circle(18, 18, 11, TYPE_COLORS[s.types[0]!] ?? 0x888888);
     const name = this.add.text(36, 3, `${s.name}  Lv ${m.level}`, { fontFamily: FONT, fontSize: px(13), color: COLORS.text });
     const max = memberMaxHp(CONTENT, PROGRESSION, m);
     const hp = this.add.text(36, 19, m.hp > 0 ? `HP ${m.hp}/${max}` : "fainted", { fontFamily: FONT, fontSize: px(11), color: m.hp > 0 ? COLORS.dim : COLORS.bad });
@@ -123,7 +126,8 @@ export class PartyScene extends Phaser.Scene {
         (m.talents.length ? `  Talents: ${m.talents.map((t) => tag("num", PROGRESSION.talents[t]?.name ?? t)).join(", ")}` : ""),
     ];
     let y = 48;
-    y += add(new RichText(this, DETAIL_X, y, DETAIL_W, 13)).setMarkup(header.join("\n")) + 6;
+    if (this.textures.exists(portraitKey(m.speciesId))) add(this.add.image(DETAIL_X + DETAIL_W - 32, 72, portraitKey(m.speciesId)).setDisplaySize(64, 64));
+    y += add(new RichText(this, DETAIL_X, y, DETAIL_W - 76, 13)).setMarkup(header.join("\n")) + 6;
 
     const pending = pendingChoice(PROGRESSION, m);
     if (pending === "role") {

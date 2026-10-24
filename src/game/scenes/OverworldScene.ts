@@ -14,6 +14,7 @@ import {
 import { samePoint, type Point } from "../../core/grid";
 import { KNOCKOUTS_TO_DEATH, memberMaxHp, restAll } from "../../core/party";
 import { session } from "../session";
+import { animKey, facingFor, hasSprite } from "../sprites";
 import { Button } from "../ui/Button";
 import { addFullscreenButton } from "../ui/fullscreen";
 import { tag } from "../ui/markup";
@@ -37,6 +38,8 @@ export class OverworldScene extends Phaser.Scene {
   private hud!: RichText;
   private buttons!: Phaser.GameObjects.Container;
   private moving = false;
+  private leader: string | null = null;
+  private leaderSprite: Phaser.GameObjects.Sprite | null = null;
   private message = "";
 
   constructor() {
@@ -56,9 +59,18 @@ export class OverworldScene extends Phaser.Scene {
     this.drawMap();
     this.preview = this.add.graphics();
     this.markers = this.add.container(0, 0);
+    // The party leader walks the map; a yellow marker stands in if it has no sprite.
+    const leader = session.game.roster.party[0]?.speciesId;
+    this.leader = leader && hasSprite(leader) ? leader : null;
+    this.leaderSprite = this.leader
+      ? this.add.sprite(0, 8, `${this.leader}-idle`).setOrigin(0.5, 0.85).play(animKey(this.leader, "idle", 0))
+      : null;
     this.token = this.add.container(0, 0, [
-      this.add.circle(0, 0, 10, 0xf5d76e).setStrokeStyle(2, 0x10141c),
-      this.add.text(0, 0, "★", { fontFamily: FONT, fontSize: px(12), color: "#10141c" }).setOrigin(0.5),
+      this.add.ellipse(0, 8, 22, 8, 0xf5d76e, 0.5).setStrokeStyle(1, 0xf5d76e),
+      ...(this.leaderSprite ? [this.leaderSprite] : [
+        this.add.circle(0, 0, 10, 0xf5d76e).setStrokeStyle(2, 0x10141c),
+        this.add.text(0, 0, "★", { fontFamily: FONT, fontSize: px(12), color: "#10141c" }).setOrigin(0.5),
+      ]),
     ]).setDepth(5);
     this.hud = new RichText(this, HUD_X, 16, 240, 12);
     this.buttons = this.add.container(HUD_X, 0);
@@ -212,8 +224,10 @@ export class OverworldScene extends Phaser.Scene {
     for (const step of result.path) {
       if (result.encounter && samePoint(step, t)) break;
       const c = this.center(step);
+      if (this.leader) this.leaderSprite?.play(animKey(this.leader, "walk", facingFor(c.x - this.token.x, c.y - this.token.y)), true);
       await new Promise<void>((resolve) => this.tweens.add({ targets: this.token, x: c.x, y: c.y, duration: STEP_MS, onComplete: () => resolve() }));
     }
+    if (this.leader) this.leaderSprite?.play(animKey(this.leader, "idle", 0), true);
     this.moving = false;
 
     let inventory = session.game.inventory;

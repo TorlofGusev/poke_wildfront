@@ -33,6 +33,7 @@ import { formatEvent, type LogEntry, type LogTone } from "../ui/combatLog";
 import { describeMove } from "../ui/describeMove";
 import { stripMarkup, tag } from "../ui/markup";
 import { RichText } from "../ui/RichText";
+import { animKey, FACE_LEFT, FACE_RIGHT, facingFor, hasSprite, type Facing, type SpriteAnim } from "../sprites";
 import { BOARD_X, BOARD_Y, COLORS, FONT, PANEL_X, TILE, TYPE_COLORS, tileToWorld, px, PHONE } from "../ui/theme";
 
 type Phase = "deploy" | "battle" | "over";
@@ -40,10 +41,14 @@ type Phase = "deploy" | "battle" | "over";
 interface UnitView {
   container: Phaser.GameObjects.Container;
   hpBar: Phaser.GameObjects.Rectangle;
-  ring: Phaser.GameObjects.Arc;
+  /** Team-coloured base under the Pokémon's feet. */
+  ring: Phaser.GameObjects.Ellipse;
+  /** Placeholder shown for hidden enemies (and species without a sprite). */
   body: Phaser.GameObjects.Arc;
   label: Phaser.GameObjects.Text;
+  sprite: Phaser.GameObjects.Sprite | null;
   speciesId: string;
+  facing: Facing;
 }
 
 const AI_STEP_MS = 350;
@@ -191,15 +196,20 @@ export class BattleScene extends Phaser.Scene {
   private createUnitView(id: string, speciesId: string, side: "player" | "enemy", pos: Point): void {
     const species = CONTENT.species[speciesId]!;
     const { x, y } = tileToWorld(pos);
-    const ring = this.add.circle(0, 0, 19).setStrokeStyle(3, side === "player" ? COLORS.player : COLORS.enemy);
+    const teamColor = side === "player" ? COLORS.player : COLORS.enemy;
+    const ring = this.add.ellipse(0, 12, 38, 14, teamColor, 0.3).setStrokeStyle(2, teamColor);
     const body = this.add.circle(0, 0, 16, TYPE_COLORS[species.types[0]!] ?? 0x888888);
     const label = this.add
       .text(0, -1, species.name.slice(0, 2), { fontFamily: FONT, fontSize: "14px", color: "#10141c", fontStyle: "bold" })
       .setOrigin(0.5);
-    const hpBg = this.add.rectangle(-18, 20, 36, 4, 0x000000).setOrigin(0, 0.5);
-    const hpBar = this.add.rectangle(-18, 20, 36, 4, 0x7ed321).setOrigin(0, 0.5);
-    const container = this.add.container(x, y, [ring, body, label, hpBg, hpBar]);
-    this.units.set(id, { container, hpBar, ring, body, label, speciesId });
+    const facing = side === "player" ? FACE_RIGHT : FACE_LEFT;
+    const sprite = hasSprite(speciesId)
+      ? this.add.sprite(0, 14, `${speciesId}-idle`).setOrigin(0.5, 0.82).setScale(1.25).play(animKey(speciesId, "idle", facing))
+      : null;
+    const hpBg = this.add.rectangle(-18, 21, 36, 4, 0x000000).setOrigin(0, 0.5);
+    const hpBar = this.add.rectangle(-18, 21, 36, 4, 0x7ed321).setOrigin(0, 0.5);
+    const container = this.add.container(x, y, [ring, ...(sprite ? [sprite] : []), body, label, hpBg, hpBar]);
+    this.units.set(id, { container, hpBar, ring, body, label, sprite, speciesId, facing });
     this.applyDisguise(id);
   }
 
@@ -210,6 +220,19 @@ export class BattleScene extends Phaser.Scene {
     const hidden = this.isHidden(id);
     view.body.setFillStyle(hidden ? 0x777777 : TYPE_COLORS[species.types[0]!] ?? 0x888888);
     view.label.setText(hidden ? "?" : species.name.slice(0, 2));
+    const showSprite = Boolean(view.sprite) && !hidden;
+    view.sprite?.setVisible(showSprite);
+    view.body.setVisible(!showSprite);
+    view.label.setVisible(!showSprite);
+  }
+
+  /** Plays an animation on the unit's sprite, facing a direction; a one-shot (hurt) returns to idle. */
+  private animate(unitId: string, anim: SpriteAnim, facing?: Facing): void {
+    const view = this.units.get(unitId);
+    if (!view?.sprite) return;
+    if (facing !== undefined) view.facing = facing;
+    view.sprite.play(animKey(view.speciesId, anim, view.facing), true);
+    if (anim === "hurt") view.sprite.once("animationcomplete", () => this.animate(unitId, "idle"));
   }
 
   private syncUnits(): void {
@@ -645,9 +668,26 @@ export class BattleScene extends Phaser.Scene {
         case "moved":
           await this.tweenPath(e.unitId, e.path);
           break;
-        case "moveUsed":
+        case "moveUsed": {
+          // Face the target and lunge towards it.
+          const view = this.units.get(e.unitId);
+          if (view) {
+            const to = tileToWorld(e.target);
+            const dx = to.x - view.container.x;
+            const dy = to.y - view.container.y;
+            if (dx || dy) {
+              this.animate(e.unitId, "idle", facingFor(dx, dy));
+              const len = Math.hypot(dx, dy);
+              await new Promise<void>((resolve) => this.tweens.add({
+                targets: view.container, x: view.container.x + (dx / len) * 8, y: view.container.y + (dy / len) * 8,
+                duration: 90, yoyo: true, onComplete: () => resolve(),
+              }));
+            }
+          }
           break;
+        }
         case "damaged": {
+          if (e.source !== "status" || e.amount > 0) this.animate(e.unitId, "hurt");
           const eff = e.effectiveness && e.effectiveness !== 1 ? (e.effectiveness > 1 ? " !" : " ↓") : "";
           this.floatText(e.unitId, `-${e.amount}${eff}`, e.source === "status" ? "#c070ff" : "#ff6b6b");
           this.syncUnits();
@@ -730,13 +770,14 @@ export class BattleScene extends Phaser.Scene {
   private tweenPath(unitId: string, path: readonly Point[]): Promise<void> {
     const view = this.units.get(unitId);
     if (!view || path.length === 0) return Promise.resolve();
-    return new Promise((resolve) => {
-      this.tweens.chain({
-        targets: view.container,
-        tweens: path.map((p) => ({ ...tileToWorld(p), duration: 90 })),
-        onComplete: () => resolve(),
-      });
-    });
+    return (async () => {
+      for (const p of path) {
+        const to = tileToWorld(p);
+        this.animate(unitId, "walk", facingFor(to.x - view.container.x, to.y - view.container.y));
+        await new Promise<void>((resolve) => this.tweens.add({ targets: view.container, ...to, duration: 110, onComplete: () => resolve() }));
+      }
+      this.animate(unitId, "idle");
+    })();
   }
 
   private fadeOut(unitId: string): Promise<void> {

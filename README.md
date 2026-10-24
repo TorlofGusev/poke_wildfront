@@ -22,7 +22,7 @@ Prototype (Route 2 & Viridian Forest):
 - **Money and Poké Mart**: victories pay Pokédollars; the town sells balls, potions and held items.
 - Autosave in browser storage (save format v4, migrates older saves). Plays on phones in landscape (fullscreen button, larger text, touch log scrolling).
 
-Placeholder art only. Design notes: [docs/design](docs/design).
+Pokémon sprites from PMDCollab SpriteCollab (CC BY-NC 4.0, see [CREDITS.md](CREDITS.md)); map and UI are drawn in code. Design notes: [docs/design](docs/design).
 
 Controls: click a tile to move, click a move (or a ball) then a highlighted tile to use it (hover a move for its rules), right-click/Esc to cancel, Space to end the turn, L for the full combat log.
 
