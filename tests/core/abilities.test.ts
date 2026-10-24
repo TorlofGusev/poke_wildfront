@@ -39,7 +39,8 @@ describe("abilities", () => {
     const fastStats = { hp: 40, attack: 40, defense: 40, speed: 200 };
     const { state } = createBattle(c, ['...""'], [u("p", "slow", "player", 0, 0, { stats: fastStats }), u("e", "fast", "enemy", 3, 0)]);
     expect(validTargets(state, c, "p", "ember").length).toBe(1);
-    expect(validTargets(state, base, "p", "ember")).toEqual([]);
+    const plain = createBattle(base, ['...""'], [u("p", "slow", "player", 0, 0, { stats: fastStats }), u("e", "fast", "enemy", 3, 0)]).state;
+    expect(validTargets(plain, base, "p", "ember")).toEqual([]);
   });
 
   it("Anger Point raises Attack each time it is hit, up to +3", () => {
