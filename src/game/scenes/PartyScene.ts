@@ -2,6 +2,7 @@ import Phaser from "phaser";
 import { CONTENT, PROGRESSION } from "../../content";
 import {
   allocatePoint,
+  CANDY,
   equipItem,
   findMember,
   KNOCKOUTS_TO_DEATH,
@@ -132,23 +133,22 @@ export class PartyScene extends Phaser.Scene {
     if (this.textures.exists(portraitKey(m.speciesId))) add(this.add.image(DETAIL_X + DETAIL_W - 32, 72, portraitKey(m.speciesId)).setDisplaySize(64, 64));
     y += add(new RichText(this, DETAIL_X, y, DETAIL_W - 76, 13)).setMarkup(header.join("\n")) + 6;
 
-    // Stat points: +1 per level, +2 with the matching vitamin.
+    // Stat points: +1 per level into any stat, +2 when a Candy is spent with it.
     if (m.unspentPoints > 0) {
-      y += add(new RichText(this, DETAIL_X, y, DETAIL_W, 13)).setMarkup(tag("num", `★ ${m.unspentPoints} stat point${m.unspentPoints > 1 ? "s" : ""} to spend:`)) + 4;
+      const candies = session.game.inventory.items[CANDY] ?? 0;
+      y += add(new RichText(this, DETAIL_X, y, DETAIL_W, 13)).setMarkup(
+        `${tag("num", `★ ${m.unspentPoints} stat point${m.unspentPoints > 1 ? "s" : ""} to spend`)}  ${tag("dim", `Candy ×${candies}: a point with a Candy gives +2`)}`) + 4;
       const labels: Record<StatName, string> = { hp: "HP", attack: "Atk", defense: "Def", speed: "Spe" };
       const w = Math.floor((DETAIL_W - 18) / 4);
       STAT_NAMES.forEach((stat, i) => {
         add(new Button(this, DETAIL_X + i * (w + 6), y, w, 24, `+1 ${labels[stat]}`, () =>
           this.act(() => session.update(allocatePoint(PROGRESSION, session.game, m.uid, stat)))));
-        const vit = Object.values(PROGRESSION.items).find((it) => it.kind === "vitamin" && it.stat === stat);
-        const owned = vit ? session.game.inventory.items[vit.id] ?? 0 : 0;
-        if (vit && owned > 0) {
-          add(new Button(this, DETAIL_X + i * (w + 6), y + 27, w, 22, `+2 (${vit.name} ×${owned})`, () =>
-            this.act(() => session.update(allocatePoint(PROGRESSION, session.game, m.uid, stat, vit.id)), `${vit.name} used: +2 ${labels[stat]}.`)));
+        if (candies > 0) {
+          add(new Button(this, DETAIL_X + i * (w + 6), y + 27, w, 22, `+2 ${labels[stat]} (Candy)`, () =>
+            this.act(() => session.update(allocatePoint(PROGRESSION, session.game, m.uid, stat, true)), `Candy used: +2 ${labels[stat]}.`)));
         }
       });
-      const anyVit = STAT_NAMES.some((stat) => Object.values(PROGRESSION.items).some((it) => it.kind === "vitamin" && it.stat === stat && (session.game.inventory.items[it.id] ?? 0) > 0));
-      y += anyVit ? 56 : 30;
+      y += candies > 0 ? 56 : 30;
     }
 
     const pending = pendingChoice(PROGRESSION, m);

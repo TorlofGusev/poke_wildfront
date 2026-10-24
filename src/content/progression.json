@@ -7,5 +7,6 @@
  "maxActiveMoves": 3,
  "pointsPerLevel": 1,
  "evolutionPoints": 2,
- "vitaminBonus": 1
+ "candyBonus": 1,
+ "candiesPerVictory": 1
 }

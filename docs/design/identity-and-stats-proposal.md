@@ -37,7 +37,7 @@ Worked example: Atk 5 vs Def 5, power 40 → 10 damage; a Pokémon with HP 5 has
 ### Stat points
 
 - **+1 point per level**, spent freely in the Party screen.
-- **Vitamins** (HP Up, Protein, Iron, Carbos) are the resource: using one with a level's point makes it **+2 in that vitamin's stat**. Rare: found on the map, given by trainers/gyms, expensive in the Poké Mart.
+- **Candy** is the resource (one generic item, replacing the four vitamins after playtest feedback): spending one with a level's point makes it **+2 in any stat**. Every won battle gives 1 Candy; the Poké Mart sells them (₽400); new games start with 3.
 - **Evolution** grants +2 free points (and may change type → new type mechanic, e.g. Butterfree gains Flying).
 - Points can be reset at a Pokémon Center for money (optional, later).
 

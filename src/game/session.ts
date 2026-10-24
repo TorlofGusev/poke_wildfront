@@ -17,7 +17,7 @@ const freshWorld = () => newWorld(WORLD_CONTENT, WORLD, Date.now() >>> 0);
 export function newGame(): GameState {
   return {
     roster: { party: STARTERS.map((s, i) => newMember(CONTENT, PROGRESSION, s, i + 1, STARTING_LEVEL)), storage: [], fallen: [] },
-    inventory: { balls: { "poke-ball": 5, "great-ball": 2, "ultra-ball": 1 }, items: { potion: 2 } },
+    inventory: { balls: { "poke-ball": 5, "great-ball": 2, "ultra-ball": 1 }, items: { potion: 2, candy: 3 } },
     nextUid: STARTERS.length + 1,
     world: freshWorld(),
     money: 500,

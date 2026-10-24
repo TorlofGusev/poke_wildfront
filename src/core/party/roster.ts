@@ -98,6 +98,7 @@ export interface BattleSummary {
   /** XP given to each deployed Pokémon (victory only). */
   readonly xp: number;
   readonly money: number;
+  readonly candies: number;
   /** Level-ups, new moves and evolutions, by Pokémon uid. */
   readonly progress: Readonly<Record<string, readonly ProgressEvent[]>>;
 }
@@ -166,6 +167,8 @@ export function resolveBattle(
     };
   }
   next = { ...next, money: next.money + money };
+  const candies = won ? prog.rules.candiesPerVictory : 0;
+  if (candies) next = { ...next, inventory: { ...next.inventory, items: { ...next.inventory.items, candy: (next.inventory.items.candy ?? 0) + candies } } };
 
   const captured: { member: PartyMember; to: "party" | "storage" }[] = [];
   for (const u of battle.units.filter((x) => x.captured)) {
@@ -180,5 +183,5 @@ export function resolveBattle(
     next = { ...next, roster: restAll(content, prog, next.roster) };
   }
 
-  return { game: next, summary: { outcome: battle.outcome, knockedOut, fallen: fallenIds, captured, xp, money, progress } };
+  return { game: next, summary: { outcome: battle.outcome, knockedOut, fallen: fallenIds, captured, xp, money, candies, progress } };
 }

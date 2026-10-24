@@ -165,7 +165,7 @@ export class OverworldScene extends Phaser.Scene {
         return `${star}${tag(s.types[0]!, s.name.slice(0, 10).padEnd(11))}${tag("dim", `L${m.level}`.padEnd(4))}${tag(hpKey, m.hp === 0 ? "KO'd" : `${m.hp}`.padStart(3))} ${tag(m.knockouts ? "ko" : "dim", pips)}`;
       }),
       "",
-      `${tag("title", "Money")} ${tag("num", `₽${session.game.money}`)}`,
+      `${tag("title", "Money")} ${tag("num", `₽${session.game.money}`)}  ${tag("title", "Candy")} ${tag("num", inventory.items.candy ?? 0)}`,
       `${tag("title", "Bag")} ${Object.entries(inventory.balls).map(([id, n]) => `${CONTENT.balls[id]?.name.replace(" Ball", "") ?? id} ${n}`).join(" · ")}`,
     ];
     const h = this.hud.setMarkup(lines.join("\n"));

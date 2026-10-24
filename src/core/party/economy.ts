@@ -70,21 +70,17 @@ export function usePotion(content: BattleContent, prog: ProgressionContent, game
 /** Applies a change to one member (role, talent, moves) by uid. */
 export const withMember = updateMember;
 
-/** Spends one level-up point on a stat; with a matching vitamin from the bag it counts double. */
-export function allocatePoint(
-  prog: ProgressionContent, game: GameState, uid: string, stat: StatName, vitaminId: string | null = null,
-): GameState {
-  const member = findMember(game, uid);
-  if (!member) throw new Error(`${uid} is not in party or storage`);
-  let amount = 1;
+export const CANDY = "candy";
+
+/** Spends one level-up point on any stat; with a Candy from the bag it counts double. */
+export function allocatePoint(prog: ProgressionContent, game: GameState, uid: string, stat: StatName, useCandy = false): GameState {
+  if (!findMember(game, uid)) throw new Error(`${uid} is not in party or storage`);
   let items = game.inventory.items;
-  if (vitaminId) {
-    const v = prog.items[vitaminId];
-    if (v?.kind !== "vitamin" || v.stat !== stat) throw new Error(`${vitaminId} does not boost ${stat}`);
-    if (count(items, vitaminId) < 1) throw new Error(`no ${v.name} in the bag`);
-    items = { ...items, [vitaminId]: count(items, vitaminId) - 1 };
-    amount += prog.rules.vitaminBonus;
+  if (useCandy) {
+    if (count(items, CANDY) < 1) throw new Error("no Candy in the bag");
+    items = { ...items, [CANDY]: count(items, CANDY) - 1 };
   }
+  const amount = 1 + (useCandy ? prog.rules.candyBonus : 0);
   const next = updateMember(game, uid, (m) => spendPoints(m, stat, amount, 1));
   return { ...next, inventory: { ...next.inventory, items } };
 }

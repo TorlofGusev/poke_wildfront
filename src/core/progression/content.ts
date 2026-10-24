@@ -30,14 +30,12 @@ export interface ItemDef {
   readonly id: string;
   readonly name: string;
   readonly description: string;
-  readonly kind: "held" | "potion" | "vitamin";
+  readonly kind: "held" | "potion" | "candy";
   readonly price: number;
   /** Held items: battle modifiers. */
   readonly mods?: Partial<UnitModifiers>;
   /** Potions: HP restored. */
   readonly heal?: number;
-  /** Vitamins: the stat whose level-up point they double. */
-  readonly stat?: keyof BaseStats;
 }
 
 export interface ProgressionRules {
@@ -50,8 +48,10 @@ export interface ProgressionRules {
   readonly pointsPerLevel: number;
   /** Free stat points gained on evolving. */
   readonly evolutionPoints: number;
-  /** Extra points when a vitamin is used with a stat point. */
-  readonly vitaminBonus: number;
+  /** Extra points when a Candy is used with a stat point. */
+  readonly candyBonus: number;
+  /** Candies earned per won battle. */
+  readonly candiesPerVictory: number;
   /** XP each deployed Pokémon earns per defeated enemy level. */
   readonly xpPerEnemyLevel: number;
   /** Pokédollars per defeated enemy level. */

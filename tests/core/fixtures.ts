@@ -63,7 +63,7 @@ export const prog: ProgressionContent = {
     potion: { id: "potion", name: "Potion", description: "", kind: "potion", price: 100, heal: 20 },
     claw: { id: "claw", name: "Claw", description: "", kind: "held", price: 300, mods: { moveBonus: 1 } },
   },
-  rules: { roleLevel: 5, maxLevel: 30, xpPerLevel: 10, pointsPerLevel: 1, evolutionPoints: 2, vitaminBonus: 1, xpPerEnemyLevel: 5, moneyPerEnemyLevel: 10, maxActiveMoves: 3 },
+  rules: { roleLevel: 5, maxLevel: 30, xpPerLevel: 10, pointsPerLevel: 1, evolutionPoints: 2, candyBonus: 1, candiesPerVictory: 1, xpPerEnemyLevel: 5, moneyPerEnemyLevel: 10, maxActiveMoves: 3 },
 };
 
 /** A party member with default progression fields. */
