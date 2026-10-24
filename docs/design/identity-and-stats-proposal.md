@@ -28,9 +28,9 @@ Four stats, small numbers. Starting values (Lv 1) come from the type profile; du
 | Stat | Effect |
 |---|---|
 | **HP** | Max HP = 30 + 6 × HP |
-| **Attack** | Damage = power × (10 + Atk) / (10 + Def of target) × type × modifiers / 4 |
+| **Attack** | Damage = power × (6 + Atk) / (6 + Def of target) × type × modifiers / 4 |
 | **Defense** | see Attack (each point ≈ −5% damage taken at low values) |
-| **Speed** | Movement = 3 + ⌊Speed / 3⌋ (max 6); turn order |
+| **Speed** | Movement = 2 + ⌊Speed / 4⌋ (max 5); turn order |
 
 Worked example: Atk 5 vs Def 5, power 40 → 10 damage; a Pokémon with HP 5 has 60 HP → about 6 hits. One extra Attack point ≈ +7% damage; three extra Speed points = +1 tile of movement.
 
@@ -107,3 +107,14 @@ Per-species signature talents can come later for the most iconic lines.
 3. Abilities for the current 14 lines.
 4. Talent trees with filler and skill talents.
 5. Phase 6 areas, trainers, Brock and badges.
+
+## Balance pass 1 (after the first playtest)
+
+Playtest: Pikachu/Charmander/Pidgey lost to 3 Rattata; enemies too fast, player damage too low.
+
+- Movement 3 + Spe/3 (max 6) → **2 + Spe/4 (max 5)**: Rattata 5 → 4 tiles, Geodude 2.
+- Stat offset 10 → **6**: Attack and Defense matter more.
+- New Pokémon arrive with the points of their earlier levels **pre-spent** along their playstyle (they used to arrive with them unspent while wild Pokémon had theirs spent).
+- Ember 30 → 35, Gust 30 → 40, Whirlwind 0 → 20, Quick Attack 50 → 45.
+- Route wild levels 3–5 → 2–4, forest 3–6 → 3–5.
+- `npm run balance` prints an AI-vs-AI report (route 3v3: player wins; 2v3 and late areas: risky or losing, as intended).

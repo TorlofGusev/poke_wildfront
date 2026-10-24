@@ -12,7 +12,8 @@
     "test": "vitest run",
     "typecheck": "tsc --noEmit",
     "build:single": "npm run build && node tools/build-single.mjs",
-    "test:e2e": "node e2e/smoke.mjs"
+    "test:e2e": "node e2e/smoke.mjs",
+    "balance": "BALANCE=1 vitest run tests/balance.report.test.ts --silent=false"
   },
   "repository": {
     "type": "git",

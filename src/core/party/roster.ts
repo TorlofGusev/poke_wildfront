@@ -4,7 +4,7 @@ import {
   gainXp,
   memberStats,
   movesKnownAt,
-  NO_POINTS,
+  playstylePoints,
   type Progress,
   type ProgressEvent,
   type ProgressionContent,
@@ -53,7 +53,8 @@ export function newMember(
   const base: PartyMember = {
     uid: `pk${uidNumber}`, speciesId, level, xp: 0, role: null, talents: [], heldItem: null, knownMoves,
     activeMoves: defaultActiveMoves(content, prog, speciesId, knownMoves), hp: 0, knockouts: 0,
-    statPoints: { ...NO_POINTS }, unspentPoints: (level - 1) * prog.rules.pointsPerLevel,
+    // Points from levels it already had are pre-spent along its playstyle; new levels are the player's choice.
+    statPoints: playstylePoints(content, speciesId, (level - 1) * prog.rules.pointsPerLevel), unspentPoints: 0,
   };
   return { ...base, hp: hp ?? memberMaxHp(content, prog, base) };
 }

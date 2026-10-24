@@ -1,10 +1,10 @@
 {
  "hpBase": 30,
  "hpPerPoint": 6,
- "statOffset": 10,
+ "statOffset": 6,
  "damageDivisor": 4,
- "moveBase": 3,
- "speedPerMove": 3,
- "moveMax": 6,
+ "moveBase": 2,
+ "speedPerMove": 4,
+ "moveMax": 5,
  "impactDamage": 8
 }

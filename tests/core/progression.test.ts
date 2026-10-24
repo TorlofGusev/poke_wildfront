@@ -21,11 +21,12 @@ describe("levels and stats", () => {
   it("needs level × xpPerLevel XP per level; stats grow only through spent points", () => {
     expect(xpToNext(PROGRESSION, 5)).toBe(5 * PROGRESSION.rules.xpPerLevel);
     const fresh = starter("charmander", 5);
-    expect(fresh.unspentPoints).toBe(4);
-    expect(memberStats(CONTENT, PROGRESSION, fresh).stats).toEqual(CONTENT.species.charmander!.stats);
+    // Points from the 4 levels it arrived with are pre-spent along the Fire playstyle.
+    expect(fresh.unspentPoints).toBe(0);
+    expect(fresh.statPoints).toEqual({ hp: 1, attack: 2, defense: 0, speed: 1 });
     const up = gainXp(CONTENT, PROGRESSION, fresh, xpToNext(PROGRESSION, 5)).member;
-    expect(up.unspentPoints).toBe(5);
-    expect(memberStats(CONTENT, PROGRESSION, up).stats).toEqual(CONTENT.species.charmander!.stats);
+    expect(up.unspentPoints).toBe(1);
+    expect(memberStats(CONTENT, PROGRESSION, up).stats).toEqual(memberStats(CONTENT, PROGRESSION, fresh).stats);
   });
 
   it("type profiles give small stats: Fire is a striker, Rock a fortress", () => {

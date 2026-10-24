@@ -56,6 +56,19 @@ export function memberStats(content: BattleContent, prog: ProgressionContent, m:
   return { stats: out, maxHp: hpFromStat(content, out.hp) };
 }
 
+/**
+ * Spends points along a species' playstyle: its best stat, second best, then HP, repeating.
+ * Used for wild Pokémon and for the points a new Pokémon arrives with.
+ */
+export function playstylePoints(content: BattleContent, speciesId: string, count: number): BaseStats {
+  const base = content.species[speciesId]!.stats;
+  const ranked = [...STAT_NAMES].filter((s) => s !== "hp").sort((a, b) => base[b] - base[a]);
+  const cycle: StatName[] = [ranked[0]!, ranked[1]!, "hp"];
+  const points = { ...NO_POINTS };
+  for (let i = 0; i < count; i++) points[cycle[i % cycle.length]!] += 1;
+  return points;
+}
+
 /** Spends unspent points on a stat. */
 export function spendPoints<T extends Progress>(m: T, stat: StatName, amount: number, cost = amount): T {
   if (cost > m.unspentPoints) throw new Error("no stat points left");
@@ -81,12 +94,7 @@ export function toUnitSetup(content: BattleContent, prog: ProgressionContent, m:
 /** A wild Pokémon of a given level, with its default loadout. */
 export function wildSetup(content: BattleContent, prog: ProgressionContent, speciesId: string, level: number): Omit<UnitSetup, "id" | "side" | "pos"> {
   const known = movesKnownAt(content.species[speciesId]!, level);
-  // Wild Pokémon spend their level points along their playstyle: best stat, second best, HP, repeat.
-  const base = content.species[speciesId]!.stats;
-  const ranked = [...STAT_NAMES].filter((s) => s !== "hp").sort((a, b) => base[b] - base[a]);
-  const cycle: StatName[] = [ranked[0]!, ranked[1]!, "hp"];
-  const points = { ...NO_POINTS };
-  for (let i = 0; i < (level - 1) * prog.rules.pointsPerLevel; i++) points[cycle[i % cycle.length]!] += 1;
+  const points = playstylePoints(content, speciesId, (level - 1) * prog.rules.pointsPerLevel);
   const m: Progress = {
     speciesId, level, xp: 0, role: null, talents: [], heldItem: null, knownMoves: known,
     activeMoves: defaultActiveMoves(content, prog, speciesId, known), hp: Number.MAX_SAFE_INTEGER,
