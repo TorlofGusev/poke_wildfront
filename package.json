@@ -1,0 +1,35 @@
+{
+  "name": "pokemon-wildfront",
+  "version": "0.0.1",
+  "description": "Unofficial, free, open-source Pokémon tactical RPG fan game for the browser.",
+  "directories": {
+    "doc": "docs"
+  },
+  "scripts": {
+    "dev": "vite",
+    "build": "tsc --noEmit && vite build",
+    "preview": "vite preview",
+    "test": "vitest run",
+    "typecheck": "tsc --noEmit"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/TorlofGusev/pokemon_wildfront.git"
+  },
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/TorlofGusev/pokemon_wildfront/issues"
+  },
+  "homepage": "https://github.com/TorlofGusev/pokemon_wildfront#readme",
+  "dependencies": {
+    "phaser": "^4.2.1"
+  },
+  "devDependencies": {
+    "@types/node": "^26.6.5",
+    "typescript": "^7.0.2",
+    "vite": "^8.3.5",
+    "vitest": "^5.0.5"
+  },
+  "private": true,
+  "type": "module"
+}

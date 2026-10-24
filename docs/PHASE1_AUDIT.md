@@ -155,3 +155,9 @@ One playable battle, deployed to a public GitHub Pages link:
 - https://github.com/JPTER78/pokesurvivor
 - Kanto Tactics: https://retrododo.com/kanto-tactics-combines-pokemon-with-teamfight-tactics-gameplay/
 - Phaser releases: https://phaser.io/download/stable ; npm `phaser@latest` = 4.2.1
+
+## Decisions log
+
+- 2026-10-24: **Placeholder art** (coloured shapes) for Phase 2; final sprite source decided before the first public build with Pokémon visuals.
+- 2026-10-24: **Softened type chart**: 1.5× super-effective, 0.75× not very effective, no immunities; values live in data.
+- 2026-10-24: Clean implementation, no candidate adopted as a foundation. Code licence MIT.
