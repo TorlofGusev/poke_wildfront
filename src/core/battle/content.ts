@@ -58,6 +58,8 @@ export interface StatusDef {
 }
 
 export interface BattleRules {
+  /** Battle max HP = species base HP × this. */
+  readonly hpMultiplier: number;
   /** Damage = max(1, round(power * attack / defense * typeMultiplier / damageDivisor)). */
   readonly damageDivisor: number;
   /** Damage taken when pushed into an obstacle or another unit. */

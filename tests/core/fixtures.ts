@@ -5,6 +5,7 @@ import type { BattleContent } from "../../src/core/battle";
 export const content: BattleContent = {
   typeChart,
   rules: {
+    hpMultiplier: 1,
     damageDivisor: 4,
     impactDamage: 5,
     movementBySpeed: [

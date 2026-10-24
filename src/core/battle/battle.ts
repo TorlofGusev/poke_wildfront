@@ -162,6 +162,10 @@ export function validTargets(
 
 // ---------------------------------------------------------------- setup
 
+export const maxHpOf = (content: BattleContent, speciesId: string): number =>
+  Math.round(content.species[speciesId]!.stats.hp * content.rules.hpMultiplier);
+
+
 export function createBattle(
   content: BattleContent,
   mapRows: readonly string[],
@@ -178,7 +182,7 @@ export function createBattle(
   const state: BattleState = {
     mapRows: [...mapRows],
     units: units.map((u) => {
-      const maxHp = content.species[u.speciesId]!.stats.hp;
+      const maxHp = maxHpOf(content, u.speciesId);
       return {
         id: u.id,
         speciesId: u.speciesId,
