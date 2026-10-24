@@ -1,6 +1,6 @@
 # Proposal: type playstyles, small stats, stat points, abilities and talents
 
-Status: **proposal, awaiting the owner's approval** (2026-10-24). Replaces the percentage-based stat growth of the first progression version.
+Status: **approved and implemented** (2026-10-24), except Rock raising rock tiles and per-species signature talents (later). Replaces the percentage-based stat growth of the first progression version.
 
 ## Goals (from the owner)
 

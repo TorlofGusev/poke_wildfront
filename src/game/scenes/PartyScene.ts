@@ -162,12 +162,23 @@ export class PartyScene extends Phaser.Scene {
       }
     } else if (pending === "talent") {
       y += add(new RichText(this, DETAIL_X, y, DETAIL_W, 13)).setMarkup(tag("num", "★ Choose a talent:")) + 4;
-      for (const t of talentOptions(PROGRESSION, m)) {
+      const options = talentOptions(PROGRESSION, m, s.types);
+      // Role, skill and type talents get a full row each; stat talents share one row.
+      for (const t of options.filter((id) => !PROGRESSION.talents[id]!.stackable)) {
         const def = PROGRESSION.talents[t]!;
-        add(new Button(this, DETAIL_X, y, DETAIL_W, 24, `${def.name}${def.stackable ? " (stat)" : ""}: ${def.description}`, () =>
-          this.act(() => this.updateMember(m, (x) => chooseTalent(PROGRESSION, x, t)), `${s.name} learned ${def.name}.`)));
+        const kind = def.grantsMove ? "skill" : def.requiresType ? def.requiresType : "role";
+        add(new Button(this, DETAIL_X, y, DETAIL_W, 24, `[${kind}] ${def.name}: ${def.description}`, () =>
+          this.act(() => this.updateMember(m, (x) => chooseTalent(PROGRESSION, x, t, s.types)), `${s.name} learned ${def.name}.`)));
         y += 27;
       }
+      const stats = options.filter((id) => PROGRESSION.talents[id]!.stackable);
+      const w = Math.floor((DETAIL_W - 6 * (stats.length - 1)) / Math.max(1, stats.length));
+      stats.forEach((t, i) => {
+        const def = PROGRESSION.talents[t]!;
+        add(new Button(this, DETAIL_X + i * (w + 6), y, w, 24, `${def.name} (${def.description.replace(" point.", "")})`, () =>
+          this.act(() => this.updateMember(m, (x) => chooseTalent(PROGRESSION, x, t, s.types)), `${s.name} learned ${def.name}.`)));
+      });
+      if (stats.length) y += 27;
     }
 
     // Moves: the basic attack is fixed; toggle up to 3 others.

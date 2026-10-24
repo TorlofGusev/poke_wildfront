@@ -147,18 +147,31 @@ export function chooseRole<T extends Progress>(content: BattleContent, prog: Pro
   return { ...m, role: roleId };
 }
 
-/** Role talents not yet taken, then the stackable stat talents. */
-export function talentOptions(prog: ProgressionContent, m: Progress): string[] {
+/**
+ * Talents on offer at the member's level: its role's talents and its types' talents
+ * (each once), then the stackable stat talents.
+ */
+export function talentOptions(prog: ProgressionContent, m: Progress, types: readonly string[] = []): string[] {
   const role = m.role ? prog.roles[m.role] : undefined;
-  const roleTalents = (role?.talents ?? []).filter((t) => !m.talents.includes(t));
+  const open = (id: string) => {
+    const t = prog.talents[id];
+    return t !== undefined && !m.talents.includes(id) && (t.minLevel ?? 0) <= m.level;
+  };
+  const roleTalents = (role?.talents ?? []).filter(open);
+  const typeTalents = Object.values(prog.talents).filter((t) => t.requiresType && types.includes(t.requiresType)).map((t) => t.id).filter(open);
   const statTalents = Object.values(prog.talents).filter((t) => t.stackable).map((t) => t.id);
-  return [...roleTalents, ...statTalents];
+  return [...roleTalents, ...typeTalents, ...statTalents];
 }
 
-export function chooseTalent<T extends Progress>(prog: ProgressionContent, m: T, talentId: string): T {
+export function chooseTalent<T extends Progress>(prog: ProgressionContent, m: T, talentId: string, types: readonly string[] = []): T {
   if (pendingChoice(prog, m) !== "talent") throw new Error("no talent choice pending");
-  if (!talentOptions(prog, m).includes(talentId)) throw new Error(`talent ${talentId} is not available`);
-  return { ...m, talents: [...m.talents, talentId] };
+  if (!talentOptions(prog, m, types).includes(talentId)) throw new Error(`talent ${talentId} is not available`);
+  const next = { ...m, talents: [...m.talents, talentId] };
+  const move = prog.talents[talentId]!.grantsMove;
+  if (!move || next.knownMoves.includes(move)) return next;
+  // A skill talent teaches a move; it becomes active if there is room.
+  const room = next.activeMoves.length < prog.rules.maxActiveMoves;
+  return { ...next, knownMoves: [...next.knownMoves, move], activeMoves: room ? [...next.activeMoves, move] : next.activeMoves };
 }
 
 /** Sets the active moves (besides the basic attack). */

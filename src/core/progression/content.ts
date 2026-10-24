@@ -15,6 +15,12 @@ export interface TalentDef {
   readonly description: string;
   /** Plain stat talents can be taken repeatedly and belong to every role. */
   readonly stackable?: boolean;
+  /** Earliest level at which the talent is offered. */
+  readonly minLevel?: number;
+  /** Only offered to Pokémon of this type. */
+  readonly requiresType?: string;
+  /** Teaches this move (a new skill). */
+  readonly grantsMove?: string;
   /** Flat stat points added. */
   readonly stats?: Partial<BaseStats>;
   readonly mods?: Partial<UnitModifiers>;

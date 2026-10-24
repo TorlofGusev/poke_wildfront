@@ -18,9 +18,10 @@ Prototype (Route 2 & Viridian Forest):
 - **Battles**: mandatory deployment (3 of your party), initiative order, Wartales-style turns, cooldown specials, once-per-battle ultimates, push/pull, statuses, tall grass, hidden enemies, enemy AI, colour-coded combat log and move rules.
 - **Capture**: Poké/Great/Ultra Balls on wild Pokémon below 50% HP; the chance is shown and the ball is always used. A full party sends captures to storage.
 - **Permadeath**: each faint adds a knockout (●○○); at 3/3 the Pokémon is gone for good. Defeat carries the team back to the last camp.
-- **Progression**: XP and levels, a role at level 5 (Tank, Striker, Controller, Skirmisher) and a talent every level after, learnable moves with a 3-move loadout, evolutions, one held item per Pokémon.
+- **Identity**: every type has a playstyle that sets its small starting stats and a mechanic (Fire burns, Water pushes, Electric paralyzes, Fighting flanks, Flying flies…); every species line has an Ability (Blaze, Static, Sturdy, Arena Trap…).
+- **Progression**: XP and levels, 1 stat point per level (2 with a vitamin), a role at level 5 (Tank, Striker, Controller, Skirmisher) and a talent every level after: role talents, skill talents that teach new moves, type talents and stat talents. Learnable moves with a 3-move loadout, evolutions, one held item per Pokémon.
 - **Money and Poké Mart**: victories pay Pokédollars; the town sells balls, potions and held items.
-- Autosave in browser storage (save format v4, migrates older saves). Plays on phones in landscape (fullscreen button, larger text, touch log scrolling).
+- Autosave in browser storage (saves from older prototype versions are discarded). Plays on phones in landscape (fullscreen button, larger text, touch log scrolling).
 
 Pokémon sprites from PMDCollab SpriteCollab (CC BY-NC 4.0, see [CREDITS.md](CREDITS.md)); map and UI are drawn in code. Design notes: [docs/design](docs/design).
 

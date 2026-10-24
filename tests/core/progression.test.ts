@@ -201,3 +201,45 @@ describe("content", () => {
     for (const b of Object.values(CONTENT.balls)) expect(b.price).toBeGreaterThan(0);
   });
 });
+
+describe("talent trees", () => {
+  const charmander = (level: number) => ({ ...starter("charmander", level), role: "striker" });
+
+  it("offers role talents by level, type talents from level 8, and stat talents always", () => {
+    const at6 = talentOptions(PROGRESSION, charmander(6), ["fire"]);
+    expect(at6).toContain("brutal");
+    expect(at6).not.toContain("skill-focus-energy");
+    expect(at6).not.toContain("type-fire");
+    expect(at6).toEqual(expect.arrayContaining(["vigor", "power", "guard", "agility"]));
+    const at8 = talentOptions(PROGRESSION, charmander(8), ["fire"]);
+    expect(at8).toEqual(expect.arrayContaining(["skill-focus-energy", "type-fire"]));
+    expect(at8).not.toContain("type-water");
+  });
+
+  it("skill talents teach a new move and activate it when there is room", () => {
+    const m = { ...charmander(7), activeMoves: ["ember"] };
+    const next = chooseTalent(PROGRESSION, m, "skill-focus-energy", ["fire"]);
+    expect(next.knownMoves).toContain("focus-energy");
+    expect(next.activeMoves).toEqual(["ember", "focus-energy"]);
+  });
+
+  it("Protect blocks all damage until the user's next turn ends", () => {
+    const setup = toUnitSetup(CONTENT, PROGRESSION, { ...starter("geodude", 7), activeMoves: ["protect"], knownMoves: ["tackle", "protect"] });
+    let { state } = createBattle(CONTENT, ["....."], [
+      { ...setup, id: "p", side: "player", pos: { x: 0, y: 0 }, stats: { ...setup.stats!, speed: 9 } },
+      { id: "e", speciesId: "rattata", side: "enemy", pos: { x: 1, y: 0 } },
+    ]);
+    state = applyAction(state, CONTENT, { type: "useMove", unitId: "p", moveId: "protect", target: { x: 0, y: 0 } }).state;
+    state = applyAction(state, CONTENT, { type: "endTurn", unitId: "p" }).state;
+    const r = applyAction(state, CONTENT, { type: "useMove", unitId: "e", moveId: "tackle", target: { x: 0, y: 0 } });
+    expect(r.events).toContainEqual(expect.objectContaining({ type: "damaged", unitId: "p", amount: 0 }));
+  });
+
+  it("every talent, role and skill references valid data", () => {
+    for (const t of Object.values(PROGRESSION.talents)) {
+      if (t.grantsMove) expect(CONTENT.moves, t.id).toHaveProperty(t.grantsMove);
+      if (t.requiresType) expect(CONTENT.types, t.id).toHaveProperty(t.requiresType);
+    }
+    for (const id of Object.keys(CONTENT.types)) expect(Object.values(PROGRESSION.talents).some((t) => t.requiresType === id), id).toBe(true);
+  });
+});

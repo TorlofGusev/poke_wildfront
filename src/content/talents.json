@@ -41,7 +41,8 @@
   "description": "Takes 15% less damage.",
   "mods": {
    "damageTaken": 0.85
-  }
+  },
+  "minLevel": 6
  },
  "bulldozer": {
   "id": "bulldozer",
@@ -49,7 +50,8 @@
   "description": "Pushing a foe into an obstacle deals 6 extra damage.",
   "mods": {
    "impactBonus": 6
-  }
+  },
+  "minLevel": 6
  },
  "regrowth": {
   "id": "regrowth",
@@ -57,7 +59,8 @@
   "description": "Heals 5% max HP at the start of each turn.",
   "mods": {
    "healPerTurn": 0.05
-  }
+  },
+  "minLevel": 9
  },
  "opening-blow": {
   "id": "opening-blow",
@@ -65,7 +68,8 @@
   "description": "+30% damage against foes at full HP.",
   "mods": {
    "fullHpTargetDamage": 1.3
-  }
+  },
+  "minLevel": 6
  },
  "last-stand": {
   "id": "last-stand",
@@ -73,7 +77,8 @@
   "description": "+30% damage while below half HP.",
   "mods": {
    "lowHpDamage": 1.3
-  }
+  },
+  "minLevel": 9
  },
  "brutal": {
   "id": "brutal",
@@ -81,7 +86,8 @@
   "description": "+10% damage.",
   "mods": {
    "damageDealt": 1.1
-  }
+  },
+  "minLevel": 6
  },
  "lingering": {
   "id": "lingering",
@@ -89,7 +95,8 @@
   "description": "Statuses it inflicts last 1 turn longer.",
   "mods": {
    "statusDurationBonus": 1
-  }
+  },
+  "minLevel": 6
  },
  "exploit": {
   "id": "exploit",
@@ -97,7 +104,8 @@
   "description": "+25% damage against foes with a status effect.",
   "mods": {
    "vsStatusDamage": 1.25
-  }
+  },
+  "minLevel": 9
  },
  "quick-step": {
   "id": "quick-step",
@@ -105,7 +113,8 @@
   "description": "+1 movement.",
   "mods": {
    "moveBonus": 1
-  }
+  },
+  "minLevel": 6
  },
  "fleet-foot": {
   "id": "fleet-foot",
@@ -113,7 +122,8 @@
   "description": "+1 movement.",
   "mods": {
    "moveBonus": 1
-  }
+  },
+  "minLevel": 6
  },
  "ambush": {
   "id": "ambush",
@@ -121,7 +131,8 @@
   "description": "+25% damage against foes at full HP.",
   "mods": {
    "fullHpTargetDamage": 1.25
-  }
+  },
+  "minLevel": 9
  },
  "evasive": {
   "id": "evasive",
@@ -129,6 +140,217 @@
   "description": "Takes 10% less damage.",
   "mods": {
    "damageTaken": 0.9
+  },
+  "minLevel": 6
+ },
+ "skill-protect": {
+  "id": "skill-protect",
+  "name": "Protect",
+  "description": "New skill: blocks all damage to itself until its next turn ends.",
+  "minLevel": 7,
+  "grantsMove": "protect"
+ },
+ "skill-iron-defense": {
+  "id": "skill-iron-defense",
+  "name": "Iron Defense",
+  "description": "New skill: takes 40% less damage for 3 turns.",
+  "minLevel": 10,
+  "grantsMove": "iron-defense"
+ },
+ "skill-focus-energy": {
+  "id": "skill-focus-energy",
+  "name": "Focus Energy",
+  "description": "New skill: +50% damage on its next turn.",
+  "minLevel": 7,
+  "grantsMove": "focus-energy"
+ },
+ "skill-mega-punch": {
+  "id": "skill-mega-punch",
+  "name": "Mega Punch",
+  "description": "New skill: a heavy melee strike (Power 65).",
+  "minLevel": 10,
+  "grantsMove": "mega-punch"
+ },
+ "skill-leer": {
+  "id": "skill-leer",
+  "name": "Leer",
+  "description": "New skill: foes in an area take 25% more damage for 2 turns.",
+  "minLevel": 7,
+  "grantsMove": "leer"
+ },
+ "skill-glare": {
+  "id": "skill-glare",
+  "name": "Glare",
+  "description": "New skill: Paralyzes a foe at range.",
+  "minLevel": 10,
+  "grantsMove": "glare"
+ },
+ "skill-agility": {
+  "id": "skill-agility",
+  "name": "Agility",
+  "description": "New skill: +2 movement on its next turn.",
+  "minLevel": 7,
+  "grantsMove": "agility"
+ },
+ "skill-feint-attack": {
+  "id": "skill-feint-attack",
+  "name": "Feint Attack",
+  "description": "New skill: strikes from 2 tiles, ignoring line of sight.",
+  "minLevel": 10,
+  "grantsMove": "feint-attack"
+ },
+ "type-fire": {
+  "id": "type-fire",
+  "name": "Kindling",
+  "description": "Fire moves deal 15% more damage.",
+  "minLevel": 8,
+  "requiresType": "fire",
+  "mods": {
+   "typeDamage": {
+    "fire": 1.15
+   }
+  }
+ },
+ "type-water": {
+  "id": "type-water",
+  "name": "Riptide",
+  "description": "Pushes it causes go 1 tile further.",
+  "minLevel": 8,
+  "requiresType": "water",
+  "mods": {
+   "pushBonus": 1
+  }
+ },
+ "type-grass": {
+  "id": "type-grass",
+  "name": "Deep Roots",
+  "description": "Grass drain heals 15% more of the damage dealt.",
+  "minLevel": 8,
+  "requiresType": "grass",
+  "mods": {
+   "drainBonus": 0.15
+  }
+ },
+ "type-electric": {
+  "id": "type-electric",
+  "name": "Overcharge",
+  "description": "Electric moves deal 15% more damage.",
+  "minLevel": 8,
+  "requiresType": "electric",
+  "mods": {
+   "typeDamage": {
+    "electric": 1.15
+   }
+  }
+ },
+ "type-ice": {
+  "id": "type-ice",
+  "name": "Permafrost",
+  "description": "Statuses it inflicts last 1 turn longer.",
+  "minLevel": 8,
+  "requiresType": "ice",
+  "mods": {
+   "statusDurationBonus": 1
+  }
+ },
+ "type-fighting": {
+  "id": "type-fighting",
+  "name": "Pincer",
+  "description": "Flanking bonus +20%.",
+  "minLevel": 8,
+  "requiresType": "fighting",
+  "mods": {
+   "flankBonus": 0.2
+  }
+ },
+ "type-poison": {
+  "id": "type-poison",
+  "name": "Toxic",
+  "description": "Statuses it inflicts last 1 turn longer.",
+  "minLevel": 8,
+  "requiresType": "poison",
+  "mods": {
+   "statusDurationBonus": 1
+  }
+ },
+ "type-ground": {
+  "id": "type-ground",
+  "name": "Quake",
+  "description": "Pushing a foe into an obstacle deals 6 extra damage.",
+  "minLevel": 8,
+  "requiresType": "ground",
+  "mods": {
+   "impactBonus": 6
+  }
+ },
+ "type-flying": {
+  "id": "type-flying",
+  "name": "Tailwind",
+  "description": "+1 movement.",
+  "minLevel": 8,
+  "requiresType": "flying",
+  "mods": {
+   "moveBonus": 1
+  }
+ },
+ "type-psychic": {
+  "id": "type-psychic",
+  "name": "Mind Grip",
+  "description": "Pulls it causes go 1 tile further.",
+  "minLevel": 8,
+  "requiresType": "psychic",
+  "mods": {
+   "pullBonus": 1
+  }
+ },
+ "type-bug": {
+  "id": "type-bug",
+  "name": "Hive Mind",
+  "description": "Swarm bonus +5% per helper.",
+  "minLevel": 8,
+  "requiresType": "bug",
+  "mods": {
+   "swarmBonus": 0.05
+  }
+ },
+ "type-rock": {
+  "id": "type-rock",
+  "name": "Bedrock",
+  "description": "Takes 10% less damage.",
+  "minLevel": 8,
+  "requiresType": "rock",
+  "mods": {
+   "damageTaken": 0.9
+  }
+ },
+ "type-ghost": {
+  "id": "type-ghost",
+  "name": "Phantom",
+  "description": "+20% damage against foes with a status effect.",
+  "minLevel": 8,
+  "requiresType": "ghost",
+  "mods": {
+   "vsStatusDamage": 1.2
+  }
+ },
+ "type-normal": {
+  "id": "type-normal",
+  "name": "Versatile",
+  "description": "+5% damage.",
+  "minLevel": 8,
+  "requiresType": "normal",
+  "mods": {
+   "damageDealt": 1.05
+  }
+ },
+ "type-dragon": {
+  "id": "type-dragon",
+  "name": "Draconic",
+  "description": "+10% damage.",
+  "minLevel": 8,
+  "requiresType": "dragon",
+  "mods": {
+   "damageDealt": 1.1
   }
  }
 }

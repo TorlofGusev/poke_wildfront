@@ -30,5 +30,30 @@
   "id": "curse",
   "name": "Curse",
   "damageTaken": 1.25
+ },
+ "protected": {
+  "id": "protected",
+  "name": "Protected",
+  "damageTaken": 0
+ },
+ "fortified": {
+  "id": "fortified",
+  "name": "Fortified",
+  "damageTaken": 0.6
+ },
+ "focused": {
+  "id": "focused",
+  "name": "Focused",
+  "damageDealt": 1.5
+ },
+ "hasted": {
+  "id": "hasted",
+  "name": "Hasted",
+  "movePenalty": -2
+ },
+ "exposed": {
+  "id": "exposed",
+  "name": "Exposed",
+  "damageTaken": 1.25
  }
 }

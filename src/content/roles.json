@@ -6,7 +6,9 @@
   "talents": [
    "sturdy-shell",
    "bulldozer",
-   "regrowth"
+   "skill-protect",
+   "regrowth",
+   "skill-iron-defense"
   ]
  },
  "striker": {
@@ -14,9 +16,11 @@
   "name": "Striker",
   "description": "Deals heavy damage, best at finishing or opening fights.",
   "talents": [
+   "brutal",
    "opening-blow",
+   "skill-focus-energy",
    "last-stand",
-   "brutal"
+   "skill-mega-punch"
   ]
  },
  "controller": {
@@ -25,8 +29,10 @@
   "description": "Slows, poisons and exploits weakened foes.",
   "talents": [
    "lingering",
+   "quick-step",
+   "skill-leer",
    "exploit",
-   "quick-step"
+   "skill-glare"
   ]
  },
  "skirmisher": {
@@ -35,8 +41,10 @@
   "description": "Fast, mobile, hard to pin down.",
   "talents": [
    "fleet-foot",
+   "evasive",
+   "skill-agility",
    "ambush",
-   "evasive"
+   "skill-feint-attack"
   ]
  }
 }

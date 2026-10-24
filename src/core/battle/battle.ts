@@ -368,7 +368,8 @@ function doUseMove(
       const off = content.rules.statOffset;
       const defense = mech.ignoresDefense ? 0 : t.stats.defense;
       const raw = (move.power * (off + user.stats.attack + user.attackBoost)) / (off + defense) * mult / content.rules.damageDivisor;
-      const dealt = dealDamage(state, t, Math.max(1, Math.round(raw)), "move", events, eff);
+      // Any hit deals at least 1, unless something blocks all damage (Protect).
+      const dealt = dealDamage(state, t, mult > 0 ? Math.max(1, Math.round(raw)) : 0, "move", events, eff);
       if (dealt > 0 && t.hp > 0) onDamaged(content, user, t, manhattan(user.pos, t.pos) === 1, events);
       if (mech.drain && dealt > 0 && user.hp > 0) {
         heal(user, Math.max(1, Math.round(dealt * (mech.drain + m.drainBonus))), events);
