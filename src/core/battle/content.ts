@@ -1,4 +1,5 @@
 import type { PokemonType, TypeChartData } from "../rules/typeChart";
+import type { UnitModifiers } from "./modifiers";
 import type { TypeDef } from "./species";
 
 export interface BaseStats {
@@ -23,6 +24,7 @@ export interface SpeciesDef {
   /** The two roles this species can specialise into. */
   readonly roles?: readonly string[];
   readonly evolution?: { readonly level: number; readonly into: string };
+  readonly ability?: string;
 }
 
 /** basic: once per turn, free. special: has a cooldown. ultimate: once per battle (Valour later). */
@@ -113,7 +115,28 @@ export interface CaptureRules {
   readonly throwRange: { readonly min: number; readonly max: number };
 }
 
+/** A species line's innate passive (as in the main games). */
+export interface AbilityDef {
+  readonly id: string;
+  readonly name: string;
+  readonly description: string;
+  readonly mods?: Partial<UnitModifiers>;
+  /** Melee attackers that hit this Pokémon receive this status. */
+  readonly contactStatus?: { readonly status: string; readonly duration: number };
+  /** Moves of a type also inflict a status. */
+  readonly moveStatus?: { readonly type: string; readonly status: string; readonly duration: number };
+  /** Once per battle, a knockout blow leaves it at 1 HP instead. */
+  readonly sturdy?: boolean;
+  /** Can target Pokémon hidden in tall grass from range. */
+  readonly keenEye?: boolean;
+  /** +1 Attack for the rest of the battle each time it is damaged (max +3). */
+  readonly angerPoint?: boolean;
+  /** Enemies that start their turn next to it cannot move. */
+  readonly arenaTrap?: boolean;
+}
+
 export interface BattleContent {
+  readonly abilities: Readonly<Record<string, AbilityDef>>;
   readonly species: Readonly<Record<string, SpeciesDef>>;
   readonly moves: Readonly<Record<string, MoveDef>>;
   readonly statuses: Readonly<Record<string, StatusDef>>;

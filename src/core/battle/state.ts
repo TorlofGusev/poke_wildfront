@@ -1,5 +1,5 @@
 import type { Point } from "../grid/types";
-import type { BaseStats } from "./content";
+import type { AbilityDef, BaseStats } from "./content";
 import type { UnitModifiers } from "./modifiers";
 import type { TypeUnitTraits } from "./species";
 
@@ -34,6 +34,11 @@ export interface BattleUnit {
   readonly mods: UnitModifiers;
   /** Battlefield traits from its types. */
   readonly traits: TypeUnitTraits;
+  readonly ability: AbilityDef | null;
+  /** Battle-long Attack bonus (Anger Point). */
+  attackBoost: number;
+  /** Sturdy has already saved it this battle. */
+  sturdyUsed: boolean;
 }
 
 export interface TurnState {

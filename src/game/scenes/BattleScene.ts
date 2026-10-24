@@ -455,6 +455,7 @@ export class BattleScene extends Phaser.Scene {
       `${tag(`${unit.side === "player" ? "ally" : "foe"}:${s.types[0]}`, s.name)} ${tag("dim", unit.side === "enemy" ? "(foe)" : "(yours)")}  ${s.types.map((t) => tag(t, t)).join("/")}`,
       `HP ${tag(unit.hp / unit.maxHp > 0.5 ? "heal" : "dmg", `${unit.hp}/${unit.maxHp}`)}  Atk ${unit.stats.attack}  Def ${unit.stats.defense}  Spe ${unit.stats.speed}`,
       ...s.types.map((t) => `${tag(t, t)}: ${tag("dim", CONTENT.types[t]?.summary ?? "")}`),
+      unit.ability ? `${tag("special", unit.ability.name)}: ${tag("dim", unit.ability.description)}${unit.attackBoost ? tag("num", ` (+${unit.attackBoost} Atk)`) : ""}` : "",
       unit.statuses.length ? `Status: ${unit.statuses.map((x) => `${tag("status", CONTENT.statuses[x.id]?.name ?? x.id)} (${x.turnsLeft})`).join(", ")}` : "",
       ...unit.moves.map((m) => {
         const mv = CONTENT.moves[m]!;
@@ -500,6 +501,7 @@ export class BattleScene extends Phaser.Scene {
       id, speciesId, side: enemy ? "enemy" : "player", maxHp, hp: member?.hp ?? maxHp,
       pos: enemy?.pos ?? { x: 0, y: 0 }, statuses: [], cooldowns: {}, usedUltimates: [], captured: false, level: 1, stats: CONTENT.species[speciesId]!.stats, moves: CONTENT.species[speciesId]!.moves, mods: NO_MODIFIERS,
       traits: unitTraits(CONTENT, CONTENT.species[speciesId]!.types),
+      ability: CONTENT.abilities[CONTENT.species[speciesId]!.ability ?? ""] ?? null, attackBoost: 0, sturdyUsed: false,
     };
   }
 
@@ -671,6 +673,7 @@ export class BattleScene extends Phaser.Scene {
       moveName: (id: string) => CONTENT.moves[id]!.name,
       statusName: (id: string) => CONTENT.statuses[id]?.name ?? id,
       ballName: (id: string) => CONTENT.balls[id]?.name ?? id,
+      abilityName: (id: string) => CONTENT.abilities[id]?.name ?? id,
     };
     for (const e of events) {
       if (e.type === "moveUsed") {

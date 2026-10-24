@@ -10,6 +10,7 @@ const ctx: LogContext = {
   moveName: () => "Ember",
   statusName: () => "Poison",
   ballName: () => "Poké Ball",
+  abilityName: () => "Static",
   typeOf: (id) => (id === "p" ? "fire" : "grass"),
 };
 

@@ -6,6 +6,7 @@ import progression from "./progression.json";
 import roles from "./roles.json";
 import talents from "./talents.json";
 import typeChart from "./typeChart.json";
+import abilities from "./abilities.json";
 import balls from "./balls.json";
 import biomes from "./biomes.json";
 import capture from "./capture.json";
@@ -30,6 +31,7 @@ const species: Record<string, SpeciesDef> = Object.fromEntries(
 
 export const CONTENT: BattleContent = {
   species,
+  abilities: abilities as BattleContent["abilities"],
   types: TYPES,
   moves: moves as BattleContent["moves"],
   statuses,

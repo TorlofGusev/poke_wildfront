@@ -78,8 +78,9 @@ export const unitAt = (state: BattleState, p: Point): BattleUnit | undefined =>
 export const activeUnit = (state: BattleState): BattleUnit | null =>
   state.turn ? unitById(state, state.turn.unitId) : null;
 
-export function movementPoints(content: BattleContent, unit: BattleUnit): number {
+export function movementPoints(content: BattleContent, unit: BattleUnit, state?: BattleState): number {
   if (unit.statuses.some((st) => content.statuses[st.id]?.noMove)) return 0;
+  if (state && livingUnits(state).some((o) => o.side !== unit.side && o.ability?.arenaTrap && manhattan(o.pos, unit.pos) === 1)) return 0;
   const r = content.rules;
   const base = Math.min(r.moveMax, r.moveBase + Math.floor(unit.stats.speed / r.speedPerMove));
   const penalty = unit.statuses.reduce((s, st) => s + (content.statuses[st.id]?.movePenalty ?? 0), 0);
@@ -197,7 +198,7 @@ export function validTargets(
         const t = unitAt(state, p);
         if (!t) continue;
         // Enemies hiding in concealing terrain can only be targeted from an adjacent tile.
-        if (t.side !== user.side && dist > 1 && grid.terrainAt(p).concealsAtRange) continue;
+        if (t.side !== user.side && dist > 1 && grid.terrainAt(p).concealsAtRange && !user.ability?.keenEye) continue;
       }
       if (affectedUnits(state, move, user, p).length === 0) continue;
       out.push(p);
@@ -232,6 +233,7 @@ export function createBattle(
     mapRows: [...mapRows],
     units: units.map((u) => {
       const species = content.species[u.speciesId]!;
+      const ability = species.ability ? content.abilities[species.ability] ?? null : null;
       const maxHp = u.maxHp ?? maxHpOf(content, u.speciesId);
       return {
         id: u.id,
@@ -247,8 +249,11 @@ export function createBattle(
         level: u.level ?? 1,
         stats: { ...(u.stats ?? species.stats) },
         moves: [...(u.moves ?? species.moves)],
-        mods: combineModifiers(u.mods ?? {}, u.side === "player" ? options.playerModifiers ?? {} : {}),
+        mods: combineModifiers(u.mods ?? {}, ability?.mods ?? {}, u.side === "player" ? options.playerModifiers ?? {} : {}),
         traits: unitTraits(content, species.types),
+        ability,
+        attackBoost: 0,
+        sturdyUsed: false,
       };
     }),
     round: 0,
@@ -353,7 +358,7 @@ function doUseMove(
       const situational =
         (t.statuses.length > 0 ? m.vsStatusDamage : 1) *
         (t.hp === t.maxHp ? m.fullHpTargetDamage : 1) *
-        (user.hp * 2 < user.maxHp ? m.lowHpDamage : 1);
+        (user.hp * 2 < user.maxHp ? m.lowHpDamage * (m.lowHpTypeDamage[move.type] ?? 1) : 1);
       const helpers = adjacentAllies(state, user, t);
       const positional =
         (mech.flankBonus && helpers > 0 ? mech.flankBonus + m.flankBonus : 1) *
@@ -362,8 +367,9 @@ function doUseMove(
       const mult = eff * m.damageDealt * (m.typeDamage[move.type] ?? 1) * situational * positional * statusMult * t.mods.damageTaken;
       const off = content.rules.statOffset;
       const defense = mech.ignoresDefense ? 0 : t.stats.defense;
-      const raw = (move.power * (off + user.stats.attack)) / (off + defense) * mult / content.rules.damageDivisor;
+      const raw = (move.power * (off + user.stats.attack + user.attackBoost)) / (off + defense) * mult / content.rules.damageDivisor;
       const dealt = dealDamage(state, t, Math.max(1, Math.round(raw)), "move", events, eff);
+      if (dealt > 0 && t.hp > 0) onDamaged(content, user, t, manhattan(user.pos, t.pos) === 1, events);
       if (mech.drain && dealt > 0 && user.hp > 0) {
         heal(user, Math.max(1, Math.round(dealt * (mech.drain + m.drainBonus))), events);
       }
@@ -386,11 +392,27 @@ function doUseMove(
     // Type mechanics apply to the enemies a move hits.
     if (!isFoe || t.hp <= 0) continue;
     if (mech.appliesStatus) applyStatus(content, user, t, mech.appliesStatus.status, mech.appliesStatus.duration, events);
+    const extra = user.ability?.moveStatus;
+    if (extra && extra.type === move.type) applyStatus(content, user, t, extra.status, extra.duration, events);
     if (mech.extraPush) displace(state, content, user, t, "push", mech.extraPush + user.mods.pushBonus, events);
     if (mech.extraPull) displace(state, content, user, t, "pull", mech.extraPull + user.mods.pullBonus, events);
     if (mech.terrainOnHit) changeTerrain(state, t.pos, mech.terrainOnHit, events);
   }
   checkOutcome(state, events);
+}
+
+/** Abilities that react to being hit: Static/Poison Point punish melee attackers, Anger Point raises Attack. */
+function onDamaged(content: BattleContent, attacker: BattleUnit, target: BattleUnit, contact: boolean, events: BattleEvent[]): void {
+  const a = target.ability;
+  if (!a) return;
+  if (a.angerPoint && target.attackBoost < 3) {
+    target.attackBoost += 1;
+    events.push({ type: "abilityTriggered", unitId: target.id, ability: a.id });
+  }
+  if (a.contactStatus && contact && attacker.hp > 0) {
+    events.push({ type: "abilityTriggered", unitId: target.id, ability: a.id });
+    applyStatus(content, target, attacker, a.contactStatus.status, a.contactStatus.duration, events);
+  }
 }
 
 /** Other living allies of `user` standing next to `target`. */
@@ -495,7 +517,13 @@ function dealDamage(
   events: BattleEvent[],
   effectiveness?: number,
 ): number {
-  const dealt = Math.min(amount, unit.hp);
+  let dealt = Math.min(amount, unit.hp);
+  if (dealt === unit.hp && unit.ability?.sturdy && !unit.sturdyUsed && unit.hp > 1) {
+    // Sturdy: hangs on at 1 HP once per battle.
+    unit.sturdyUsed = true;
+    dealt = unit.hp - 1;
+    events.push({ type: "abilityTriggered", unitId: unit.id, ability: unit.ability.id });
+  }
   unit.hp -= dealt;
   events.push({ type: "damaged", unitId: unit.id, amount: dealt, hp: unit.hp, source, ...(effectiveness !== undefined && { effectiveness }) });
   if (unit.hp === 0) {
@@ -520,7 +548,7 @@ function startTurn(state: BattleState, content: BattleContent, events: BattleEve
   for (const id of Object.keys(unit.cooldowns)) {
     unit.cooldowns[id] = Math.max(0, unit.cooldowns[id]! - 1);
   }
-  state.turn = { unitId, movePointsLeft: movementPoints(content, unit), actionUsed: false };
+  state.turn = { unitId, movePointsLeft: movementPoints(content, unit, state), actionUsed: false };
   events.push({ type: "turnStarted", unitId, movePoints: state.turn.movePointsLeft });
 
   for (const st of unit.statuses) {

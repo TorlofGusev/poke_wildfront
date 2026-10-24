@@ -32,6 +32,8 @@ export interface UnitModifiers {
   /** Extra tiles on pushes / pulls this unit causes. */
   readonly pushBonus: number;
   readonly pullBonus: number;
+  /** Per-type damage multipliers that only apply below half HP (Blaze, Torrent…). */
+  readonly lowHpTypeDamage: Readonly<Record<string, number>>;
   /** Status ids this unit cannot receive ("*" = all). */
   readonly statusImmune: readonly string[];
 }
@@ -39,13 +41,15 @@ export interface UnitModifiers {
 export const NO_MODIFIERS: UnitModifiers = {
   moveBonus: 0, damageDealt: 1, damageTaken: 1, typeDamage: {}, vsStatusDamage: 1, fullHpTargetDamage: 1,
   lowHpDamage: 1, healPerTurn: 0, statusDurationBonus: 0, impactBonus: 0,
-  flankBonus: 0, swarmBonus: 0, drainBonus: 0, pushBonus: 0, pullBonus: 0, statusImmune: [],
+  flankBonus: 0, swarmBonus: 0, drainBonus: 0, pushBonus: 0, pullBonus: 0, lowHpTypeDamage: {}, statusImmune: [],
 };
 
 export function combineModifiers(...parts: readonly Partial<UnitModifiers>[]): UnitModifiers {
   return parts.reduce<UnitModifiers>((acc, p) => {
     const typeDamage: Record<string, number> = { ...acc.typeDamage };
     for (const [t, m] of Object.entries(p.typeDamage ?? {})) typeDamage[t] = (typeDamage[t] ?? 1) * m;
+    const lowHpTypeDamage: Record<string, number> = { ...acc.lowHpTypeDamage };
+    for (const [t, m] of Object.entries(p.lowHpTypeDamage ?? {})) lowHpTypeDamage[t] = (lowHpTypeDamage[t] ?? 1) * m;
     return {
       moveBonus: acc.moveBonus + (p.moveBonus ?? 0),
       damageDealt: acc.damageDealt * (p.damageDealt ?? 1),
@@ -62,6 +66,7 @@ export function combineModifiers(...parts: readonly Partial<UnitModifiers>[]): U
       drainBonus: acc.drainBonus + (p.drainBonus ?? 0),
       pushBonus: acc.pushBonus + (p.pushBonus ?? 0),
       pullBonus: acc.pullBonus + (p.pullBonus ?? 0),
+      lowHpTypeDamage,
       statusImmune: [...new Set([...acc.statusImmune, ...(p.statusImmune ?? [])])],
     };
   }, NO_MODIFIERS);

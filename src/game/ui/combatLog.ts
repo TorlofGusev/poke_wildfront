@@ -15,6 +15,7 @@ export interface LogContext {
   moveName(moveId: string): string;
   statusName(statusId: string): string;
   ballName(ballId: string): string;
+  abilityName(abilityId: string): string;
   /** Primary type of the unit, or null while it is hidden. */
   typeOf(unitId: string): string | null;
 }
@@ -63,6 +64,8 @@ export function formatEvent(e: BattleEvent, ctx: LogContext): LogEntry | null {
       };
     case "captured":
       return null;
+    case "abilityTriggered":
+      return { text: `${name(e.unitId)}'s ${tag("special", ctx.abilityName(e.ability))}!`, tone: "info" };
     case "terrainChanged":
       return { text: tag("dim", "The ground turns to mud."), tone: "info" };
     case "turnEnded":

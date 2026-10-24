@@ -4,6 +4,7 @@ import type { BattleContent } from "../../src/core/battle";
 /** Small, hand-tuned content set for rule tests. Numbers are deliberately round. */
 export const content: BattleContent = {
   typeChart,
+  abilities: {},
   // Profiles are unused by rule tests (species set their stats directly); no type mechanics by default.
   types: Object.fromEntries(Object.keys(typeChart.chart).map((t) => [t, { profile: { hp: 5, attack: 5, defense: 5, speed: 5 } }])),
   rules: {

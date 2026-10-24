@@ -124,6 +124,7 @@ export class PartyScene extends Phaser.Scene {
     const header = [
       `${tag("title", s.name)}  ${s.types.map((t) => tag(t, t)).join("/")}  Lv ${tag("num", m.level)}  XP ${m.xp}/${xpToNext(PROGRESSION, m.level)}${tag("dim", evo)}`,
       `HP ${tag(m.hp > 0 ? "heal" : "ko", `${m.hp}/${maxHp}`)}  Atk ${stats.attack}  Def ${stats.defense}  Spe ${stats.speed}  KO ${tag(m.knockouts ? "ko" : "dim", `${m.knockouts}/${KNOCKOUTS_TO_DEATH}`)}`,
+      ...(s.ability && CONTENT.abilities[s.ability] ? [`Ability: ${tag("special", CONTENT.abilities[s.ability]!.name)} ${tag("dim", CONTENT.abilities[s.ability]!.description)}`] : []),
       `Role: ${role ? tag("special", role.name) : tag("dim", m.level < PROGRESSION.rules.roleLevel ? `chosen at Lv ${PROGRESSION.rules.roleLevel}` : "not chosen")}` +
         (m.talents.length ? `  Talents: ${m.talents.map((t) => tag("num", PROGRESSION.talents[t]?.name ?? t)).join(", ")}` : ""),
     ];

@@ -1,0 +1,131 @@
+{
+ "overgrow": {
+  "id": "overgrow",
+  "name": "Overgrow",
+  "description": "+30% Grass damage while below half HP.",
+  "mods": {
+   "lowHpTypeDamage": {
+    "grass": 1.3
+   }
+  }
+ },
+ "blaze": {
+  "id": "blaze",
+  "name": "Blaze",
+  "description": "+30% Fire damage while below half HP.",
+  "mods": {
+   "lowHpTypeDamage": {
+    "fire": 1.3
+   }
+  }
+ },
+ "torrent": {
+  "id": "torrent",
+  "name": "Torrent",
+  "description": "+30% Water damage while below half HP.",
+  "mods": {
+   "lowHpTypeDamage": {
+    "water": 1.3
+   }
+  }
+ },
+ "static": {
+  "id": "static",
+  "name": "Static",
+  "description": "Pokémon that hit it in melee become Paralyzed.",
+  "contactStatus": {
+   "status": "paralysis",
+   "duration": 1
+  }
+ },
+ "sturdy": {
+  "id": "sturdy",
+  "name": "Sturdy",
+  "description": "Once per battle, survives a knockout blow with 1 HP.",
+  "sturdy": true
+ },
+ "keen-eye": {
+  "id": "keen-eye",
+  "name": "Keen Eye",
+  "description": "Can target Pokémon hidden in tall grass from range.",
+  "keenEye": true
+ },
+ "run-away": {
+  "id": "run-away",
+  "name": "Run Away",
+  "description": "+1 movement.",
+  "mods": {
+   "moveBonus": 1
+  }
+ },
+ "shield-dust": {
+  "id": "shield-dust",
+  "name": "Shield Dust",
+  "description": "Immune to all status effects.",
+  "mods": {
+   "statusImmune": [
+    "*"
+   ]
+  }
+ },
+ "poison-point": {
+  "id": "poison-point",
+  "name": "Poison Point",
+  "description": "Pokémon that hit it in melee become Poisoned.",
+  "contactStatus": {
+   "status": "poison",
+   "duration": 2
+  }
+ },
+ "inner-focus": {
+  "id": "inner-focus",
+  "name": "Inner Focus",
+  "description": "Immune to Paralysis and Freeze.",
+  "mods": {
+   "statusImmune": [
+    "paralysis",
+    "freeze"
+   ]
+  }
+ },
+ "effect-spore": {
+  "id": "effect-spore",
+  "name": "Effect Spore",
+  "description": "Grass moves also Poison the target.",
+  "moveStatus": {
+   "type": "grass",
+   "status": "poison",
+   "duration": 1
+  }
+ },
+ "anger-point": {
+  "id": "anger-point",
+  "name": "Anger Point",
+  "description": "+1 Attack each time it takes damage (max +3, this battle).",
+  "angerPoint": true
+ },
+ "arena-trap": {
+  "id": "arena-trap",
+  "name": "Arena Trap",
+  "description": "Enemies that start their turn next to it cannot move.",
+  "arenaTrap": true
+ },
+ "swarm": {
+  "id": "swarm",
+  "name": "Swarm",
+  "description": "+30% Bug damage while below half HP.",
+  "mods": {
+   "lowHpTypeDamage": {
+    "bug": 1.3
+   }
+  }
+ },
+ "chlorophyll": {
+  "id": "chlorophyll",
+  "name": "Chlorophyll",
+  "description": "+1 movement.",
+  "mods": {
+   "moveBonus": 1
+  }
+ }
+}
