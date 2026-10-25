@@ -8,8 +8,8 @@ import { loadSaveFile, SaveError, toSaveFile } from "../core/save";
 
 const SAVE_KEY = "pokemon-wildfront.save";
 
-/** The classic choice of one. */
-export const STARTERS = ["bulbasaur", "charmander", "squirtle"];
+/** The classic choice of one, plus Pikachu. */
+export const STARTERS = ["bulbasaur", "charmander", "squirtle", "pikachu"];
 /** Fixed team for quick playtesting. */
 export const PLAYTEST_TEAM = ["bulbasaur", "charmander", "squirtle", "pikachu", "geodude", "pidgey"];
 
