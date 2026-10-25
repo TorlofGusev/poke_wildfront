@@ -114,12 +114,22 @@ describe("world", () => {
     expect(into.encounter).toEqual(g);
   });
 
-  it("collects pickups once", () => {
+  it("collects a pickup once; refilling ones come back elsewhere in the same area after a rest", () => {
     const clear = { ...world, encounters: [] };
-    const r = travel(WORLD_CONTENT, WORLD, clear, { x: 2, y: 2 });
+    const grove = clear.pickups.find((p) => p.id === "grove-balls")!;
+    const r = travel(WORLD_CONTENT, WORLD, clear, grove.pos);
     expect(r.pickedUp.map((p) => p.id)).toEqual(["grove-balls"]);
-    const back = travel(WORLD_CONTENT, WORLD, travel(WORLD_CONTENT, WORLD, r.world, { x: 3, y: 4 }).world, { x: 2, y: 2 });
+    expect(r.world.pickups.some((p) => p.id === "grove-balls")).toBe(false);
+    const step = r.path.length >= 2 ? r.path[r.path.length - 2]! : clear.pos;
+    const back = travel(WORLD_CONTENT, WORLD, travel(WORLD_CONTENT, WORLD, r.world, step).world, grove.pos);
     expect(back.pickedUp).toEqual([]);
+    const rested = makeCamp(WORLD_CONTENT, WORLD, back.world);
+    const again = rested.pickups.find((p) => p.id === "grove-balls")!;
+    expect(biomeAt(WORLD_CONTENT, WORLD, again.pos).id).toBe(biomeAt(WORLD_CONTENT, WORLD, WORLD.pickups.find((p) => p.id === "grove-balls")!.pos).id);
+    // One-time finds never return.
+    const once = WORLD.pickups.find((p) => p.once)!;
+    const took = travel(WORLD_CONTENT, WORLD, { ...rested, encounters: [] }, rested.pickups.find((p) => p.id === once.id)!.pos).world;
+    expect(makeCamp(WORLD_CONTENT, WORLD, took).pickups.some((p) => p.id === once.id)).toBe(false);
   });
 
   it("camping works anywhere: resets fatigue, respawns groups away from the party, remembers the spot", () => {
@@ -187,5 +197,12 @@ describe("multiple maps", () => {
       const zone = WORLDS["route-3"]!.spawnZones.find((z) => z.biome === g.biome)!;
       for (const lv of g.levels) expect(lv).toBeGreaterThanOrEqual(zone.levels!.min);
     }
+  });
+});
+
+describe("first map difficulty", () => {
+  it("never has wild Pokémon above level 3", () => {
+    for (let seed = 1; seed < 30; seed++)
+      for (const g of newWorld(WORLD_CONTENT, WORLD, seed).encounters) expect(Math.max(...g.levels)).toBeLessThanOrEqual(3);
   });
 });

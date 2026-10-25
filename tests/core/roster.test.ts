@@ -2,6 +2,7 @@ import { describe, expect, it } from "vitest";
 import { applyAction, createBattle, type BattleState } from "../../src/core/battle";
 import {
   addPokemon,
+  memberMaxHp,
   moveBetweenPartyAndStorage,
   newMember,
   resolveBattle,
@@ -15,7 +16,7 @@ const member = (uid: string, knockouts = 0, hp = 40): PartyMember => pm(uid, "fa
 
 function game(party: PartyMember[], storage: PartyMember[] = []): GameState {
   return { roster: { party, storage, fallen: [] }, inventory: { balls: { "poke-ball": 2 }, items: {} }, nextUid: 100, money: 0,
-    world: { mapId: "route-2", pos: { x: 0, y: 0 }, fatigue: 0, lastCamp: { x: 0, y: 0 }, encounters: [], collected: [], rngState: 1, nextEncounterId: 1, meal: null },
+    world: { mapId: "route-2", pos: { x: 0, y: 0 }, fatigue: 0, lastCamp: { x: 0, y: 0 }, encounters: [], collected: [], pickups: [], rngState: 1, nextEncounterId: 1, meal: null },
   };
 }
 
@@ -118,5 +119,14 @@ describe("captured Pokémon after battle", () => {
     expect(next.nextUid).toBe(101);
     expect(next.inventory.balls["poke-ball"]).toBe(0);
     expect(newMember(content, prog, "mid", 5, 1)).toMatchObject({ uid: "pk5", speciesId: "mid", hp: 40, knockouts: 0, level: 1 });
+  });
+});
+
+describe("caught Pokémon", () => {
+  it("arrive with their earlier levels' points unspent, for the player to distribute", () => {
+    const m = newMember(content, prog, "fast", 9, 3, 999, true);
+    expect(m.unspentPoints).toBe(2 * prog.rules.pointsPerLevel);
+    expect(Object.values(m.statPoints).every((v) => v === 0)).toBe(true);
+    expect(m.hp).toBe(memberMaxHp(content, prog, m));
   });
 });

@@ -48,15 +48,19 @@ export interface GameState {
 
 export function newMember(
   content: BattleContent, prog: ProgressionContent, speciesId: string, uidNumber: number, level: number, hp?: number,
+  /** Caught Pokémon: points from earlier levels are left for the player to spend (a stat reset). */
+  playerSpendsPoints = false,
 ): PartyMember {
+  const earned = (level - 1) * prog.rules.pointsPerLevel;
   const knownMoves = movesKnownAt(content.species[speciesId]!, level);
   const base: PartyMember = {
     uid: `pk${uidNumber}`, speciesId, level, xp: 0, role: null, talents: [], heldItem: null, knownMoves,
     activeMoves: defaultActiveMoves(content, prog, speciesId, knownMoves), hp: 0, knockouts: 0,
     // Points from levels it already had are pre-spent along its playstyle; new levels are the player's choice.
-    statPoints: playstylePoints(content, speciesId, (level - 1) * prog.rules.pointsPerLevel), unspentPoints: 0,
+    statPoints: playstylePoints(content, speciesId, playerSpendsPoints ? 0 : earned), unspentPoints: playerSpendsPoints ? earned : 0,
   };
-  return { ...base, hp: hp ?? memberMaxHp(content, prog, base) };
+  const max = memberMaxHp(content, prog, base);
+  return { ...base, hp: Math.min(max, hp ?? max) };
 }
 
 export const memberMaxHp = (content: BattleContent, prog: ProgressionContent, m: Progress): number =>
@@ -173,7 +177,7 @@ export function resolveBattle(
 
   const captured: { member: PartyMember; to: "party" | "storage" }[] = [];
   for (const u of battle.units.filter((x) => x.captured)) {
-    const member = newMember(content, prog, u.speciesId, next.nextUid, u.level, u.hp);
+    const member = newMember(content, prog, u.speciesId, next.nextUid, u.level, u.hp, true);
     const added = addPokemon({ ...next, nextUid: next.nextUid + 1 }, member);
     next = added.game;
     captured.push({ member, to: added.to });

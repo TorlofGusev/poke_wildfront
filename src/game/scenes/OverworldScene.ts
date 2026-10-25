@@ -151,8 +151,7 @@ export class OverworldScene extends Phaser.Scene {
     // The last camp is where a defeated party wakes up.
     const camp = this.center(world.lastCamp);
     this.markers.add(this.add.triangle(camp.x, camp.y, 0, 16, 8, 0, 16, 16, 0xe8d8b0, 0.85).setStrokeStyle(1, 0x5a4a30));
-    for (const p of currentWorld().pickups) {
-      if (world.collected.includes(p.id)) continue;
+    for (const p of world.pickups) {
       const { x, y } = this.center(p.pos);
       this.markers.add(this.add.circle(x, y, 6, 0xffffff).setStrokeStyle(2, 0xd0021b));
     }

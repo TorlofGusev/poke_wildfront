@@ -48,7 +48,11 @@
      "x": 6,
      "y": 2
     }
-   ]
+   ],
+   "levels": {
+    "min": 1,
+    "max": 2
+   }
   },
   {
    "biome": "forest",
@@ -78,7 +82,11 @@
      "x": 8,
      "y": 11
     }
-   ]
+   ],
+   "levels": {
+    "min": 1,
+    "max": 3
+   }
   },
   {
    "biome": "mountain",
@@ -100,7 +108,11 @@
      "x": 16,
      "y": 4
     }
-   ]
+   ],
+   "levels": {
+    "min": 2,
+    "max": 3
+   }
   },
   {
    "biome": "cave",
@@ -118,7 +130,11 @@
      "x": 22,
      "y": 4
     }
-   ]
+   ],
+   "levels": {
+    "min": 3,
+    "max": 3
+   }
   }
  ],
  "pickups": [
@@ -172,7 +188,8 @@
    "items": {
     "miracle-seed": 1,
     "potion": 1
-   }
+   },
+   "once": true
   },
   {
    "id": "r2-ridge-herb",
@@ -193,7 +210,8 @@
    },
    "items": {
     "sharp-beak": 1
-   }
+   },
+   "once": true
   }
  ],
  "areaNames": {

@@ -195,7 +195,8 @@
    },
    "items": {
     "muscle-band": 1
-   }
+   },
+   "once": true
   },
   {
    "id": "r3-cave",
@@ -208,7 +209,8 @@
    },
    "items": {
     "hard-stone": 1
-   }
+   },
+   "once": true
   },
   {
    "id": "r3-pond",

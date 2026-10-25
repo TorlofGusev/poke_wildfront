@@ -12,7 +12,7 @@ const game: GameState = {
   inventory: { balls: { "poke-ball": 4 }, items: {} },
   money: 120,
   nextUid: 4,
-  world: { mapId: "route-2", pos: { x: 3, y: 13 }, fatigue: 42, lastCamp: { x: 3, y: 13 }, encounters: [{ id: "wild1", pos: { x: 5, y: 5 }, biome: "route", species: ["fast"], levels: [3] }], collected: ["grove-balls"], rngState: 77, nextEncounterId: 2, meal: null },
+  world: { mapId: "route-2", pos: { x: 3, y: 13 }, fatigue: 42, lastCamp: { x: 3, y: 13 }, encounters: [{ id: "wild1", pos: { x: 5, y: 5 }, biome: "route", species: ["fast"], levels: [3] }], collected: ["grove-balls"], pickups: [], rngState: 77, nextEncounterId: 2, meal: null },
 };
 
 const roundTrip = (g: GameState) => loadSaveFile(content, JSON.stringify(toSaveFile(g, new Date("2026-10-24T12:00:00Z"))));

@@ -63,6 +63,8 @@ export interface WorldPickup {
   readonly pos: Point;
   readonly balls?: Readonly<Record<string, number>>;
   readonly items?: Readonly<Record<string, number>>;
+  /** Found once at its fixed spot. Others refill after every rest, somewhere else in the same area. */
+  readonly once?: boolean;
 }
 
 export interface EncounterGroup {
@@ -82,7 +84,10 @@ export interface WorldState {
   /** Where the party last made camp; defeat carries it back here. */
   readonly lastCamp: Point;
   readonly encounters: readonly EncounterGroup[];
+  /** One-time pickups already taken. */
   readonly collected: readonly string[];
+  /** Pickups lying on this map right now, at their rolled positions. */
+  readonly pickups: readonly WorldPickup[];
   readonly rngState: number;
   readonly nextEncounterId: number;
   /** Effect of the last camp meal; lasts until the next rest. */
@@ -131,7 +136,7 @@ export function changeMap(content: WorldContent, from: WorldState, target: World
 
 export function newWorld(content: WorldContent, def: WorldDef, seed: number): WorldState {
   const base: WorldState = {
-    mapId: def.id, pos: def.start, fatigue: 0, lastCamp: def.start, encounters: [], collected: [], rngState: seed >>> 0, nextEncounterId: 1, meal: null,
+    mapId: def.id, pos: def.start, fatigue: 0, lastCamp: def.start, encounters: [], collected: [], pickups: [], rngState: seed >>> 0, nextEncounterId: 1, meal: null,
   };
   return respawnEncounters(content, def, base);
 }
@@ -155,7 +160,37 @@ export function respawnEncounters(content: WorldContent, def: WorldDef, world: W
       groups.push({ id: `wild${nextId++}`, pos, biome: zone.biome, species: rolled.species, levels: rolled.levels });
     }
   }
-  return { ...world, encounters: groups, rngState: rng, nextEncounterId: nextId };
+  return rollPickups(def, content, { ...world, encounters: groups, rngState: rng, nextEncounterId: nextId });
+}
+
+/**
+ * Places this map's pickups: one-time finds at their fixed spot until taken, the rest on a random
+ * reachable tile of the same area as their defined spot (so cave finds stay in the cave).
+ */
+function rollPickups(def: WorldDef, content: WorldContent, world: WorldState): WorldState {
+  const grid = worldGrid(content, def);
+  const reachable = reachableTiles(grid, world.pos, Number.MAX_SAFE_INTEGER, { isAlly: () => false, isEnemy: () => false }).destinations;
+  const taken = new Set([...world.encounters.map((e) => key(e.pos)), ...(def.exits ?? []).map((e) => key(e.pos)), key(world.pos)]);
+  let rng = world.rngState;
+  const pickups: WorldPickup[] = [];
+  for (const p of def.pickups) {
+    if (p.once) {
+      if (!world.collected.includes(p.id)) {
+        pickups.push(p);
+        taken.add(key(p.pos));
+      }
+      continue;
+    }
+    const area = grid.terrainAt(p.pos).id;
+    const spots = reachable.filter((t) => grid.terrainAt(t).id === area && !taken.has(key(t)) && manhattan(t, world.pos) > SPAWN_CLEARANCE);
+    if (!spots.length) continue;
+    const pick = randomInt(rng, 0, spots.length - 1);
+    rng = pick.state;
+    const pos = spots[pick.value]!;
+    taken.add(key(pos));
+    pickups.push({ ...p, pos });
+  }
+  return { ...world, pickups, rngState: rng };
 }
 
 export interface TravelResult {
@@ -183,17 +218,19 @@ export function travel(content: WorldContent, def: WorldDef, world: WorldState, 
   const grid = worldGrid(content, def);
   let fatigue = world.fatigue;
   const collected = [...world.collected];
+  let pickups = world.pickups;
   const pickedUp: WorldPickup[] = [];
   for (const step of path) {
     fatigue = addTravelFatigue(content.fatigue, fatigue, grid.terrainAt(step).moveCost!);
-    const pickup = def.pickups.find((p) => samePoint(p.pos, step) && !collected.includes(p.id));
+    const pickup = pickups.find((p) => samePoint(p.pos, step));
     if (pickup) {
-      collected.push(pickup.id);
+      if (pickup.once) collected.push(pickup.id);
+      pickups = pickups.filter((p) => p !== pickup);
       pickedUp.push(pickup);
     }
   }
   const encounter = world.encounters.find((e) => samePoint(e.pos, to)) ?? null;
-  return { world: { ...world, pos: to, fatigue, collected }, path, pickedUp, encounter };
+  return { world: { ...world, pos: to, fatigue, collected, pickups }, path, pickedUp, encounter };
 }
 
 /**

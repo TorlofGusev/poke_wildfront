@@ -126,7 +126,7 @@ describe("money, shop and items", () => {
     inventory: { balls: {}, items: {} },
     nextUid: 2,
     money: 500,
-    world: { mapId: "route-2", pos: { x: 0, y: 0 }, fatigue: 0, lastCamp: { x: 0, y: 0 }, encounters: [], collected: [], rngState: 1, nextEncounterId: 1, meal: null },
+    world: { mapId: "route-2", pos: { x: 0, y: 0 }, fatigue: 0, lastCamp: { x: 0, y: 0 }, encounters: [], collected: [], pickups: [], rngState: 1, nextEncounterId: 1, meal: null },
   });
   const shopContent = { ...content, balls: { ...content.balls, "poke-ball": { ...content.balls["poke-ball"]!, price: 100 } } };
 
