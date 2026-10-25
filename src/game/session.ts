@@ -13,8 +13,8 @@ export const STARTERS = ["bulbasaur", "charmander", "squirtle"];
 /** Fixed team for quick playtesting. */
 export const PLAYTEST_TEAM = ["bulbasaur", "charmander", "squirtle", "pikachu", "geodude", "pidgey"];
 
-/** Starters begin above the role level, so the first role choice is available right away. */
-const STARTING_LEVEL = 3;
+/** Starters begin at level 1; the role choice unlocks at the role level. */
+const STARTING_LEVEL = 1;
 
 const freshWorld = () => newWorld(WORLD_CONTENT, WORLD, Date.now() >>> 0);
 
