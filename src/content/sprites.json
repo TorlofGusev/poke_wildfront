@@ -750,5 +750,3049 @@
     8
    ]
   }
+ },
+ "venusaur": {
+  "dex": 3,
+  "idle": {
+   "frameWidth": 32,
+   "frameHeight": 32,
+   "durations": [
+    30,
+    16,
+    12,
+    16
+   ]
+  },
+  "walk": {
+   "frameWidth": 32,
+   "frameHeight": 32,
+   "durations": [
+    8,
+    16,
+    8,
+    16
+   ]
+  }
+ },
+ "charizard": {
+  "dex": 6,
+  "idle": {
+   "frameWidth": 40,
+   "frameHeight": 48,
+   "durations": [
+    15,
+    15,
+    15,
+    15
+   ]
+  },
+  "walk": {
+   "frameWidth": 40,
+   "frameHeight": 48,
+   "durations": [
+    8,
+    10,
+    8,
+    10
+   ]
+  }
+ },
+ "blastoise": {
+  "dex": 9,
+  "idle": {
+   "frameWidth": 40,
+   "frameHeight": 40,
+   "durations": [
+    32,
+    12,
+    4,
+    4,
+    4,
+    4,
+    4,
+    8
+   ]
+  },
+  "walk": {
+   "frameWidth": 32,
+   "frameHeight": 40,
+   "durations": [
+    8,
+    14,
+    8,
+    14
+   ]
+  }
+ },
+ "pidgeot": {
+  "dex": 18,
+  "idle": {
+   "frameWidth": 32,
+   "frameHeight": 48,
+   "durations": [
+    40,
+    2,
+    4,
+    2
+   ]
+  },
+  "walk": {
+   "frameWidth": 32,
+   "frameHeight": 40,
+   "durations": [
+    8,
+    12,
+    8,
+    12
+   ]
+  }
+ },
+ "golem": {
+  "dex": 76,
+  "idle": {
+   "frameWidth": 32,
+   "frameHeight": 40,
+   "durations": [
+    30,
+    25
+   ]
+  },
+  "walk": {
+   "frameWidth": 32,
+   "frameHeight": 40,
+   "durations": [
+    8,
+    12,
+    8,
+    12
+   ]
+  }
+ },
+ "vileplume": {
+  "dex": 45,
+  "idle": {
+   "frameWidth": 32,
+   "frameHeight": 40,
+   "durations": [
+    30,
+    3,
+    3,
+    8,
+    3,
+    3,
+    30,
+    3,
+    3,
+    8,
+    3,
+    3
+   ]
+  },
+  "walk": {
+   "frameWidth": 32,
+   "frameHeight": 32,
+   "durations": [
+    8,
+    10,
+    8,
+    10
+   ]
+  }
+ },
+ "raichu": {
+  "dex": 26,
+  "idle": {
+   "frameWidth": 40,
+   "frameHeight": 56,
+   "durations": [
+    40,
+    2,
+    4,
+    4,
+    4,
+    2
+   ]
+  },
+  "walk": {
+   "frameWidth": 40,
+   "frameHeight": 48,
+   "durations": [
+    8,
+    10,
+    8,
+    10
+   ]
+  }
+ },
+ "clefairy": {
+  "dex": 35,
+  "idle": {
+   "frameWidth": 32,
+   "frameHeight": 40,
+   "durations": [
+    30,
+    3,
+    4,
+    5,
+    4,
+    3
+   ]
+  },
+  "walk": {
+   "frameWidth": 24,
+   "frameHeight": 40,
+   "durations": [
+    8,
+    4,
+    8,
+    4,
+    8,
+    4,
+    8,
+    4
+   ]
+  }
+ },
+ "clefable": {
+  "dex": 36,
+  "idle": {
+   "frameWidth": 32,
+   "frameHeight": 48,
+   "durations": [
+    30,
+    6,
+    6,
+    6,
+    6,
+    6
+   ]
+  },
+  "walk": {
+   "frameWidth": 32,
+   "frameHeight": 48,
+   "durations": [
+    8,
+    6,
+    6,
+    6,
+    8,
+    6,
+    6,
+    6
+   ]
+  }
+ },
+ "paras": {
+  "dex": 46,
+  "idle": {
+   "frameWidth": 24,
+   "frameHeight": 24,
+   "durations": [
+    24,
+    6,
+    6,
+    6
+   ]
+  },
+  "walk": {
+   "frameWidth": 32,
+   "frameHeight": 24,
+   "durations": [
+    6,
+    8,
+    6,
+    8
+   ]
+  }
+ },
+ "parasect": {
+  "dex": 47,
+  "idle": {
+   "frameWidth": 32,
+   "frameHeight": 32,
+   "durations": [
+    40,
+    4,
+    2
+   ]
+  },
+  "walk": {
+   "frameWidth": 32,
+   "frameHeight": 32,
+   "durations": [
+    8,
+    10,
+    8,
+    10
+   ]
+  }
+ },
+ "abra": {
+  "dex": 63,
+  "idle": {
+   "frameWidth": 24,
+   "frameHeight": 48,
+   "durations": [
+    24,
+    8,
+    8,
+    24,
+    8,
+    8
+   ]
+  },
+  "walk": {
+   "frameWidth": 32,
+   "frameHeight": 48,
+   "durations": [
+    8,
+    10,
+    8,
+    10,
+    8,
+    10,
+    8,
+    10
+   ]
+  }
+ },
+ "kadabra": {
+  "dex": 64,
+  "idle": {
+   "frameWidth": 40,
+   "frameHeight": 56,
+   "durations": [
+    4,
+    4,
+    6,
+    6,
+    6,
+    6,
+    6,
+    6,
+    4
+   ]
+  },
+  "walk": {
+   "frameWidth": 40,
+   "frameHeight": 40,
+   "durations": [
+    8,
+    12,
+    8,
+    12
+   ]
+  }
+ },
+ "alakazam": {
+  "dex": 65,
+  "idle": {
+   "frameWidth": 32,
+   "frameHeight": 48,
+   "durations": [
+    6,
+    6,
+    6,
+    6,
+    6,
+    6,
+    6,
+    6
+   ]
+  },
+  "walk": {
+   "frameWidth": 32,
+   "frameHeight": 40,
+   "durations": [
+    8,
+    12,
+    8,
+    12
+   ]
+  }
+ },
+ "gastly": {
+  "dex": 92,
+  "idle": {
+   "frameWidth": 48,
+   "frameHeight": 56,
+   "durations": [
+    10,
+    10,
+    10,
+    10,
+    10,
+    10
+   ]
+  },
+  "walk": {
+   "frameWidth": 48,
+   "frameHeight": 64,
+   "durations": [
+    6,
+    6,
+    6,
+    6,
+    6,
+    6,
+    6,
+    6,
+    6,
+    6,
+    6,
+    6
+   ]
+  }
+ },
+ "haunter": {
+  "dex": 93,
+  "idle": {
+   "frameWidth": 32,
+   "frameHeight": 56,
+   "durations": [
+    14,
+    8,
+    14,
+    8
+   ]
+  },
+  "walk": {
+   "frameWidth": 32,
+   "frameHeight": 56,
+   "durations": [
+    6,
+    6,
+    6,
+    10,
+    6,
+    6,
+    6,
+    6,
+    10,
+    6
+   ]
+  }
+ },
+ "gengar": {
+  "dex": 94,
+  "idle": {
+   "frameWidth": 32,
+   "frameHeight": 40,
+   "durations": [
+    40,
+    4,
+    3,
+    3,
+    3,
+    3,
+    3,
+    4
+   ]
+  },
+  "walk": {
+   "frameWidth": 32,
+   "frameHeight": 40,
+   "durations": [
+    8,
+    10,
+    8,
+    10
+   ]
+  }
+ },
+ "seel": {
+  "dex": 86,
+  "idle": {
+   "frameWidth": 32,
+   "frameHeight": 32,
+   "durations": [
+    30,
+    20
+   ]
+  },
+  "walk": {
+   "frameWidth": 32,
+   "frameHeight": 40,
+   "durations": [
+    8,
+    6,
+    8,
+    10,
+    6,
+    6,
+    6
+   ]
+  }
+ },
+ "dewgong": {
+  "dex": 87,
+  "idle": {
+   "frameWidth": 48,
+   "frameHeight": 40,
+   "durations": [
+    30,
+    12,
+    8,
+    12,
+    8,
+    12
+   ]
+  },
+  "walk": {
+   "frameWidth": 40,
+   "frameHeight": 48,
+   "durations": [
+    8,
+    6,
+    6,
+    6,
+    10,
+    8,
+    8
+   ]
+  }
+ },
+ "dratini": {
+  "dex": 147,
+  "idle": {
+   "frameWidth": 32,
+   "frameHeight": 40,
+   "durations": [
+    10,
+    20,
+    10,
+    20
+   ]
+  },
+  "walk": {
+   "frameWidth": 32,
+   "frameHeight": 40,
+   "durations": [
+    10,
+    8,
+    8,
+    8,
+    8
+   ]
+  }
+ },
+ "dragonair": {
+  "dex": 148,
+  "idle": {
+   "frameWidth": 48,
+   "frameHeight": 56,
+   "durations": [
+    8,
+    6,
+    6,
+    8,
+    6,
+    6,
+    6
+   ]
+  },
+  "walk": {
+   "frameWidth": 48,
+   "frameHeight": 56,
+   "durations": [
+    8,
+    6,
+    6,
+    8,
+    6,
+    6,
+    6
+   ]
+  }
+ },
+ "dragonite": {
+  "dex": 149,
+  "idle": {
+   "frameWidth": 40,
+   "frameHeight": 64,
+   "durations": [
+    40,
+    2,
+    2,
+    3,
+    3,
+    2,
+    2
+   ]
+  },
+  "walk": {
+   "frameWidth": 40,
+   "frameHeight": 56,
+   "durations": [
+    8,
+    12,
+    8,
+    12
+   ]
+  }
+ },
+ "ekans": {
+  "dex": 23,
+  "idle": {
+   "frameWidth": 32,
+   "frameHeight": 48,
+   "durations": [
+    16,
+    16
+   ]
+  },
+  "walk": {
+   "frameWidth": 40,
+   "frameHeight": 48,
+   "durations": [
+    6,
+    6,
+    6,
+    6,
+    6,
+    6
+   ]
+  }
+ },
+ "arbok": {
+  "dex": 24,
+  "idle": {
+   "frameWidth": 32,
+   "frameHeight": 56,
+   "durations": [
+    32,
+    14
+   ]
+  },
+  "walk": {
+   "frameWidth": 40,
+   "frameHeight": 56,
+   "durations": [
+    6,
+    6,
+    8,
+    6,
+    6,
+    6
+   ]
+  }
+ },
+ "sandshrew": {
+  "dex": 27,
+  "idle": {
+   "frameWidth": 32,
+   "frameHeight": 40,
+   "durations": [
+    40,
+    2,
+    2,
+    2
+   ]
+  },
+  "walk": {
+   "frameWidth": 32,
+   "frameHeight": 32,
+   "durations": [
+    6,
+    10,
+    6,
+    10
+   ]
+  }
+ },
+ "sandslash": {
+  "dex": 28,
+  "idle": {
+   "frameWidth": 32,
+   "frameHeight": 40,
+   "durations": [
+    25,
+    10,
+    25,
+    10
+   ]
+  },
+  "walk": {
+   "frameWidth": 32,
+   "frameHeight": 40,
+   "durations": [
+    8,
+    10,
+    8,
+    10
+   ]
+  }
+ },
+ "nidoran-f": {
+  "dex": 29,
+  "idle": {
+   "frameWidth": 24,
+   "frameHeight": 40,
+   "durations": [
+    24,
+    6,
+    6,
+    6,
+    6
+   ]
+  },
+  "walk": {
+   "frameWidth": 40,
+   "frameHeight": 48,
+   "durations": [
+    6,
+    4,
+    4,
+    4,
+    4,
+    4,
+    4
+   ]
+  }
+ },
+ "nidorina": {
+  "dex": 30,
+  "idle": {
+   "frameWidth": 24,
+   "frameHeight": 40,
+   "durations": [
+    40,
+    2,
+    4,
+    2
+   ]
+  },
+  "walk": {
+   "frameWidth": 24,
+   "frameHeight": 32,
+   "durations": [
+    6,
+    8,
+    6,
+    8
+   ]
+  }
+ },
+ "nidoqueen": {
+  "dex": 31,
+  "idle": {
+   "frameWidth": 32,
+   "frameHeight": 40,
+   "durations": [
+    20,
+    6,
+    6,
+    6,
+    12
+   ]
+  },
+  "walk": {
+   "frameWidth": 32,
+   "frameHeight": 40,
+   "durations": [
+    8,
+    10,
+    8,
+    10
+   ]
+  }
+ },
+ "nidoran-m": {
+  "dex": 32,
+  "idle": {
+   "frameWidth": 32,
+   "frameHeight": 48,
+   "durations": [
+    30,
+    4,
+    4,
+    4,
+    4
+   ]
+  },
+  "walk": {
+   "frameWidth": 40,
+   "frameHeight": 48,
+   "durations": [
+    6,
+    6,
+    5,
+    6,
+    6,
+    4
+   ]
+  }
+ },
+ "nidorino": {
+  "dex": 33,
+  "idle": {
+   "frameWidth": 40,
+   "frameHeight": 40,
+   "durations": [
+    40,
+    10,
+    2,
+    2,
+    2,
+    2,
+    2,
+    2,
+    2,
+    6
+   ]
+  },
+  "walk": {
+   "frameWidth": 40,
+   "frameHeight": 40,
+   "durations": [
+    6,
+    12,
+    6,
+    12
+   ]
+  }
+ },
+ "nidoking": {
+  "dex": 34,
+  "idle": {
+   "frameWidth": 32,
+   "frameHeight": 48,
+   "durations": [
+    35,
+    12
+   ]
+  },
+  "walk": {
+   "frameWidth": 40,
+   "frameHeight": 48,
+   "durations": [
+    8,
+    14,
+    8,
+    14
+   ]
+  }
+ },
+ "vulpix": {
+  "dex": 37,
+  "idle": {
+   "frameWidth": 32,
+   "frameHeight": 32,
+   "durations": [
+    40,
+    12,
+    20,
+    12
+   ]
+  },
+  "walk": {
+   "frameWidth": 32,
+   "frameHeight": 40,
+   "durations": [
+    6,
+    4,
+    4,
+    4,
+    6
+   ]
+  }
+ },
+ "ninetales": {
+  "dex": 38,
+  "idle": {
+   "frameWidth": 40,
+   "frameHeight": 40,
+   "durations": [
+    60,
+    10,
+    2,
+    2,
+    2,
+    2,
+    2,
+    2,
+    2,
+    2,
+    2,
+    2,
+    2,
+    10
+   ]
+  },
+  "walk": {
+   "frameWidth": 40,
+   "frameHeight": 40,
+   "durations": [
+    8,
+    10,
+    8,
+    10
+   ]
+  }
+ },
+ "jigglypuff": {
+  "dex": 39,
+  "idle": {
+   "frameWidth": 24,
+   "frameHeight": 32,
+   "durations": [
+    25,
+    8,
+    15,
+    8,
+    15
+   ]
+  },
+  "walk": {
+   "frameWidth": 32,
+   "frameHeight": 40,
+   "durations": [
+    6,
+    4,
+    4,
+    4,
+    6
+   ]
+  }
+ },
+ "wigglytuff": {
+  "dex": 40,
+  "idle": {
+   "frameWidth": 32,
+   "frameHeight": 48,
+   "durations": [
+    40,
+    4,
+    6,
+    4
+   ]
+  },
+  "walk": {
+   "frameWidth": 32,
+   "frameHeight": 40,
+   "durations": [
+    8,
+    10,
+    8,
+    10
+   ]
+  }
+ },
+ "venonat": {
+  "dex": 48,
+  "idle": {
+   "frameWidth": 24,
+   "frameHeight": 40,
+   "durations": [
+    16,
+    16
+   ]
+  },
+  "walk": {
+   "frameWidth": 32,
+   "frameHeight": 48,
+   "durations": [
+    8,
+    6,
+    6,
+    6,
+    8
+   ]
+  }
+ },
+ "venomoth": {
+  "dex": 49,
+  "idle": {
+   "frameWidth": 32,
+   "frameHeight": 56,
+   "durations": [
+    12,
+    12,
+    12,
+    12,
+    12,
+    12,
+    12,
+    12
+   ]
+  },
+  "walk": {
+   "frameWidth": 40,
+   "frameHeight": 48,
+   "durations": [
+    8,
+    8,
+    8,
+    8,
+    8,
+    8,
+    8,
+    8,
+    8,
+    8,
+    8,
+    8
+   ]
+  }
+ },
+ "meowth": {
+  "dex": 52,
+  "idle": {
+   "frameWidth": 32,
+   "frameHeight": 32,
+   "durations": [
+    12,
+    12,
+    12,
+    12
+   ]
+  },
+  "walk": {
+   "frameWidth": 24,
+   "frameHeight": 32,
+   "durations": [
+    6,
+    10,
+    6,
+    10
+   ]
+  }
+ },
+ "persian": {
+  "dex": 53,
+  "idle": {
+   "frameWidth": 32,
+   "frameHeight": 48,
+   "durations": [
+    8
+   ]
+  },
+  "walk": {
+   "frameWidth": 32,
+   "frameHeight": 40,
+   "durations": [
+    8,
+    10,
+    8,
+    10
+   ]
+  }
+ },
+ "psyduck": {
+  "dex": 54,
+  "idle": {
+   "frameWidth": 24,
+   "frameHeight": 40,
+   "durations": [
+    16,
+    20,
+    16,
+    20
+   ]
+  },
+  "walk": {
+   "frameWidth": 24,
+   "frameHeight": 40,
+   "durations": [
+    8,
+    12,
+    8,
+    12
+   ]
+  }
+ },
+ "golduck": {
+  "dex": 55,
+  "idle": {
+   "frameWidth": 32,
+   "frameHeight": 40,
+   "durations": [
+    40,
+    20,
+    40,
+    20
+   ]
+  },
+  "walk": {
+   "frameWidth": 32,
+   "frameHeight": 40,
+   "durations": [
+    8,
+    12,
+    8,
+    12
+   ]
+  }
+ },
+ "growlithe": {
+  "dex": 58,
+  "idle": {
+   "frameWidth": 40,
+   "frameHeight": 48,
+   "durations": [
+    40,
+    4,
+    2
+   ]
+  },
+  "walk": {
+   "frameWidth": 32,
+   "frameHeight": 40,
+   "durations": [
+    6,
+    8,
+    6,
+    8
+   ]
+  }
+ },
+ "arcanine": {
+  "dex": 59,
+  "idle": {
+   "frameWidth": 40,
+   "frameHeight": 48,
+   "durations": [
+    8
+   ]
+  },
+  "walk": {
+   "frameWidth": 32,
+   "frameHeight": 48,
+   "durations": [
+    8,
+    10,
+    8,
+    10
+   ]
+  }
+ },
+ "poliwag": {
+  "dex": 60,
+  "idle": {
+   "frameWidth": 40,
+   "frameHeight": 48,
+   "durations": [
+    30,
+    8,
+    6,
+    6,
+    4,
+    4,
+    4,
+    4
+   ]
+  },
+  "walk": {
+   "frameWidth": 32,
+   "frameHeight": 40,
+   "durations": [
+    8,
+    6,
+    6,
+    6,
+    6
+   ]
+  }
+ },
+ "poliwhirl": {
+  "dex": 61,
+  "idle": {
+   "frameWidth": 32,
+   "frameHeight": 40,
+   "durations": [
+    40,
+    2,
+    4,
+    4,
+    2
+   ]
+  },
+  "walk": {
+   "frameWidth": 32,
+   "frameHeight": 40,
+   "durations": [
+    8,
+    10,
+    8,
+    10
+   ]
+  }
+ },
+ "poliwrath": {
+  "dex": 62,
+  "idle": {
+   "frameWidth": 32,
+   "frameHeight": 48,
+   "durations": [
+    40,
+    2,
+    4,
+    2
+   ]
+  },
+  "walk": {
+   "frameWidth": 40,
+   "frameHeight": 40,
+   "durations": [
+    8,
+    10,
+    8,
+    10
+   ]
+  }
+ },
+ "machop": {
+  "dex": 66,
+  "idle": {
+   "frameWidth": 24,
+   "frameHeight": 40,
+   "durations": [
+    40,
+    4,
+    4,
+    4
+   ]
+  },
+  "walk": {
+   "frameWidth": 24,
+   "frameHeight": 32,
+   "durations": [
+    8,
+    8,
+    8,
+    8
+   ]
+  }
+ },
+ "machoke": {
+  "dex": 67,
+  "idle": {
+   "frameWidth": 32,
+   "frameHeight": 48,
+   "durations": [
+    40,
+    4,
+    4,
+    4
+   ]
+  },
+  "walk": {
+   "frameWidth": 32,
+   "frameHeight": 48,
+   "durations": [
+    8,
+    10,
+    8,
+    10
+   ]
+  }
+ },
+ "machamp": {
+  "dex": 68,
+  "idle": {
+   "frameWidth": 40,
+   "frameHeight": 48,
+   "durations": [
+    40,
+    2,
+    2,
+    2,
+    2,
+    2,
+    2,
+    2,
+    2,
+    12
+   ]
+  },
+  "walk": {
+   "frameWidth": 32,
+   "frameHeight": 48,
+   "durations": [
+    8,
+    10,
+    8,
+    10
+   ]
+  }
+ },
+ "bellsprout": {
+  "dex": 69,
+  "idle": {
+   "frameWidth": 24,
+   "frameHeight": 32,
+   "durations": [
+    20,
+    22
+   ]
+  },
+  "walk": {
+   "frameWidth": 24,
+   "frameHeight": 32,
+   "durations": [
+    8,
+    10,
+    8,
+    10
+   ]
+  }
+ },
+ "weepinbell": {
+  "dex": 70,
+  "idle": {
+   "frameWidth": 32,
+   "frameHeight": 32,
+   "durations": [
+    16,
+    8,
+    16,
+    8
+   ]
+  },
+  "walk": {
+   "frameWidth": 32,
+   "frameHeight": 32,
+   "durations": [
+    8,
+    10,
+    8,
+    10
+   ]
+  }
+ },
+ "victreebel": {
+  "dex": 71,
+  "idle": {
+   "frameWidth": 32,
+   "frameHeight": 56,
+   "durations": [
+    35,
+    3,
+    3,
+    5,
+    5,
+    5,
+    3,
+    3,
+    3
+   ]
+  },
+  "walk": {
+   "frameWidth": 32,
+   "frameHeight": 56,
+   "durations": [
+    6,
+    8,
+    6,
+    8
+   ]
+  }
+ },
+ "tentacool": {
+  "dex": 72,
+  "idle": {
+   "frameWidth": 24,
+   "frameHeight": 48,
+   "durations": [
+    4,
+    8,
+    8,
+    4,
+    8,
+    8,
+    8
+   ]
+  },
+  "walk": {
+   "frameWidth": 24,
+   "frameHeight": 40,
+   "durations": [
+    8,
+    10,
+    8,
+    10
+   ]
+  }
+ },
+ "tentacruel": {
+  "dex": 73,
+  "idle": {
+   "frameWidth": 32,
+   "frameHeight": 48,
+   "durations": [
+    6,
+    10,
+    10,
+    6,
+    10,
+    10,
+    10
+   ]
+  },
+  "walk": {
+   "frameWidth": 32,
+   "frameHeight": 40,
+   "durations": [
+    8,
+    10,
+    8,
+    10
+   ]
+  }
+ },
+ "ponyta": {
+  "dex": 77,
+  "idle": {
+   "frameWidth": 32,
+   "frameHeight": 40,
+   "durations": [
+    60,
+    10,
+    2,
+    2,
+    2,
+    2,
+    2,
+    2,
+    2,
+    2,
+    2,
+    2,
+    2,
+    10
+   ]
+  },
+  "walk": {
+   "frameWidth": 32,
+   "frameHeight": 40,
+   "durations": [
+    8,
+    10,
+    8,
+    10
+   ]
+  }
+ },
+ "rapidash": {
+  "dex": 78,
+  "idle": {
+   "frameWidth": 40,
+   "frameHeight": 56,
+   "durations": [
+    60,
+    10,
+    2,
+    2,
+    2,
+    2,
+    2,
+    2,
+    2,
+    2,
+    2,
+    2,
+    2,
+    10
+   ]
+  },
+  "walk": {
+   "frameWidth": 40,
+   "frameHeight": 56,
+   "durations": [
+    8,
+    10,
+    8,
+    10
+   ]
+  }
+ },
+ "slowpoke": {
+  "dex": 79,
+  "idle": {
+   "frameWidth": 24,
+   "frameHeight": 32,
+   "durations": [
+    40,
+    8,
+    8,
+    8
+   ]
+  },
+  "walk": {
+   "frameWidth": 24,
+   "frameHeight": 32,
+   "durations": [
+    8,
+    10,
+    8,
+    10
+   ]
+  }
+ },
+ "slowbro": {
+  "dex": 80,
+  "idle": {
+   "frameWidth": 40,
+   "frameHeight": 40,
+   "durations": [
+    30,
+    30
+   ]
+  },
+  "walk": {
+   "frameWidth": 32,
+   "frameHeight": 40,
+   "durations": [
+    8,
+    12,
+    8,
+    12
+   ]
+  }
+ },
+ "magnemite": {
+  "dex": 81,
+  "idle": {
+   "frameWidth": 24,
+   "frameHeight": 32,
+   "durations": [
+    10,
+    14,
+    10,
+    14
+   ]
+  },
+  "walk": {
+   "frameWidth": 24,
+   "frameHeight": 32,
+   "durations": [
+    8,
+    6,
+    6,
+    8,
+    6,
+    6
+   ]
+  }
+ },
+ "magneton": {
+  "dex": 82,
+  "idle": {
+   "frameWidth": 32,
+   "frameHeight": 40,
+   "durations": [
+    14,
+    10,
+    14,
+    10
+   ]
+  },
+  "walk": {
+   "frameWidth": 32,
+   "frameHeight": 48,
+   "durations": [
+    8,
+    8,
+    8,
+    8,
+    8,
+    8,
+    8,
+    8
+   ]
+  }
+ },
+ "farfetchd": {
+  "dex": 83,
+  "idle": {
+   "frameWidth": 24,
+   "frameHeight": 32,
+   "durations": [
+    30,
+    12,
+    30,
+    12
+   ]
+  },
+  "walk": {
+   "frameWidth": 24,
+   "frameHeight": 32,
+   "durations": [
+    6,
+    12,
+    6,
+    12
+   ]
+  }
+ },
+ "doduo": {
+  "dex": 84,
+  "idle": {
+   "frameWidth": 40,
+   "frameHeight": 40,
+   "durations": [
+    40,
+    6,
+    12,
+    6
+   ]
+  },
+  "walk": {
+   "frameWidth": 32,
+   "frameHeight": 40,
+   "durations": [
+    8,
+    12,
+    8,
+    12
+   ]
+  }
+ },
+ "dodrio": {
+  "dex": 85,
+  "idle": {
+   "frameWidth": 40,
+   "frameHeight": 48,
+   "durations": [
+    40,
+    10,
+    16,
+    10,
+    16,
+    10
+   ]
+  },
+  "walk": {
+   "frameWidth": 32,
+   "frameHeight": 48,
+   "durations": [
+    8,
+    12,
+    8,
+    12
+   ]
+  }
+ },
+ "grimer": {
+  "dex": 88,
+  "idle": {
+   "frameWidth": 24,
+   "frameHeight": 32,
+   "durations": [
+    40,
+    8,
+    30,
+    8
+   ]
+  },
+  "walk": {
+   "frameWidth": 32,
+   "frameHeight": 32,
+   "durations": [
+    8,
+    8,
+    8,
+    8,
+    8,
+    8
+   ]
+  }
+ },
+ "muk": {
+  "dex": 89,
+  "idle": {
+   "frameWidth": 40,
+   "frameHeight": 40,
+   "durations": [
+    40,
+    8,
+    30,
+    8
+   ]
+  },
+  "walk": {
+   "frameWidth": 48,
+   "frameHeight": 40,
+   "durations": [
+    10,
+    8,
+    6,
+    10,
+    8
+   ]
+  }
+ },
+ "shellder": {
+  "dex": 90,
+  "idle": {
+   "frameWidth": 24,
+   "frameHeight": 32,
+   "durations": [
+    14,
+    40,
+    14,
+    30
+   ]
+  },
+  "walk": {
+   "frameWidth": 24,
+   "frameHeight": 32,
+   "durations": [
+    10,
+    6,
+    10,
+    10,
+    6,
+    10
+   ]
+  }
+ },
+ "cloyster": {
+  "dex": 91,
+  "idle": {
+   "frameWidth": 32,
+   "frameHeight": 48,
+   "durations": [
+    12,
+    12,
+    12,
+    14,
+    12,
+    12
+   ]
+  },
+  "walk": {
+   "frameWidth": 32,
+   "frameHeight": 48,
+   "durations": [
+    8,
+    8,
+    8,
+    10,
+    8,
+    8
+   ]
+  }
+ },
+ "onix": {
+  "dex": 95,
+  "idle": {
+   "frameWidth": 96,
+   "frameHeight": 104,
+   "durations": [
+    16,
+    16,
+    16,
+    16
+   ]
+  },
+  "walk": {
+   "frameWidth": 88,
+   "frameHeight": 112,
+   "durations": [
+    10,
+    14,
+    10,
+    14
+   ]
+  }
+ },
+ "drowzee": {
+  "dex": 96,
+  "idle": {
+   "frameWidth": 32,
+   "frameHeight": 40,
+   "durations": [
+    40,
+    10,
+    6,
+    10
+   ]
+  },
+  "walk": {
+   "frameWidth": 32,
+   "frameHeight": 40,
+   "durations": [
+    8,
+    12,
+    8,
+    12
+   ]
+  }
+ },
+ "hypno": {
+  "dex": 97,
+  "idle": {
+   "frameWidth": 40,
+   "frameHeight": 48,
+   "durations": [
+    30,
+    1,
+    2,
+    3,
+    3,
+    3,
+    2,
+    1
+   ]
+  },
+  "walk": {
+   "frameWidth": 40,
+   "frameHeight": 40,
+   "durations": [
+    8,
+    10,
+    8,
+    10
+   ]
+  }
+ },
+ "krabby": {
+  "dex": 98,
+  "idle": {
+   "frameWidth": 24,
+   "frameHeight": 40,
+   "durations": [
+    30,
+    30
+   ]
+  },
+  "walk": {
+   "frameWidth": 32,
+   "frameHeight": 32,
+   "durations": [
+    8,
+    10,
+    8,
+    10
+   ]
+  }
+ },
+ "kingler": {
+  "dex": 99,
+  "idle": {
+   "frameWidth": 32,
+   "frameHeight": 48,
+   "durations": [
+    30,
+    30
+   ]
+  },
+  "walk": {
+   "frameWidth": 32,
+   "frameHeight": 32,
+   "durations": [
+    8,
+    10,
+    8,
+    10
+   ]
+  }
+ },
+ "voltorb": {
+  "dex": 100,
+  "idle": {
+   "frameWidth": 24,
+   "frameHeight": 32,
+   "durations": [
+    22,
+    6,
+    2,
+    6,
+    6
+   ]
+  },
+  "walk": {
+   "frameWidth": 32,
+   "frameHeight": 40,
+   "durations": [
+    6,
+    6,
+    10,
+    4,
+    4,
+    4,
+    6,
+    8
+   ]
+  }
+ },
+ "electrode": {
+  "dex": 101,
+  "idle": {
+   "frameWidth": 24,
+   "frameHeight": 32,
+   "durations": [
+    10,
+    18,
+    10,
+    18
+   ]
+  },
+  "walk": {
+   "frameWidth": 32,
+   "frameHeight": 40,
+   "durations": [
+    4,
+    4,
+    6,
+    8,
+    6,
+    4,
+    10
+   ]
+  }
+ },
+ "exeggcute": {
+  "dex": 102,
+  "idle": {
+   "frameWidth": 32,
+   "frameHeight": 40,
+   "durations": [
+    30,
+    2,
+    4,
+    4,
+    4,
+    2
+   ]
+  },
+  "walk": {
+   "frameWidth": 32,
+   "frameHeight": 32,
+   "durations": [
+    6,
+    8,
+    6,
+    8
+   ]
+  }
+ },
+ "exeggutor": {
+  "dex": 103,
+  "idle": {
+   "frameWidth": 40,
+   "frameHeight": 56,
+   "durations": [
+    40,
+    12,
+    8,
+    12
+   ]
+  },
+  "walk": {
+   "frameWidth": 40,
+   "frameHeight": 48,
+   "durations": [
+    8,
+    12,
+    8,
+    12
+   ]
+  }
+ },
+ "cubone": {
+  "dex": 104,
+  "idle": {
+   "frameWidth": 32,
+   "frameHeight": 40,
+   "durations": [
+    40,
+    1,
+    2,
+    3,
+    2,
+    1
+   ]
+  },
+  "walk": {
+   "frameWidth": 32,
+   "frameHeight": 32,
+   "durations": [
+    8,
+    10,
+    8,
+    10
+   ]
+  }
+ },
+ "marowak": {
+  "dex": 105,
+  "idle": {
+   "frameWidth": 32,
+   "frameHeight": 48,
+   "durations": [
+    40,
+    6,
+    16,
+    6
+   ]
+  },
+  "walk": {
+   "frameWidth": 32,
+   "frameHeight": 40,
+   "durations": [
+    8,
+    10,
+    8,
+    10
+   ]
+  }
+ },
+ "hitmonlee": {
+  "dex": 106,
+  "idle": {
+   "frameWidth": 40,
+   "frameHeight": 48,
+   "durations": [
+    40,
+    20
+   ]
+  },
+  "walk": {
+   "frameWidth": 40,
+   "frameHeight": 48,
+   "durations": [
+    10,
+    12,
+    10,
+    12
+   ]
+  }
+ },
+ "hitmonchan": {
+  "dex": 107,
+  "idle": {
+   "frameWidth": 48,
+   "frameHeight": 56,
+   "durations": [
+    30,
+    6,
+    8,
+    6
+   ]
+  },
+  "walk": {
+   "frameWidth": 32,
+   "frameHeight": 40,
+   "durations": [
+    8,
+    10,
+    8,
+    10
+   ]
+  }
+ },
+ "lickitung": {
+  "dex": 108,
+  "idle": {
+   "frameWidth": 48,
+   "frameHeight": 48,
+   "durations": [
+    36,
+    12,
+    10,
+    12
+   ]
+  },
+  "walk": {
+   "frameWidth": 32,
+   "frameHeight": 40,
+   "durations": [
+    10,
+    14,
+    10,
+    14
+   ]
+  }
+ },
+ "koffing": {
+  "dex": 109,
+  "idle": {
+   "frameWidth": 32,
+   "frameHeight": 56,
+   "durations": [
+    10,
+    10,
+    8,
+    10,
+    10,
+    8
+   ]
+  },
+  "walk": {
+   "frameWidth": 32,
+   "frameHeight": 56,
+   "durations": [
+    6,
+    6,
+    6,
+    6,
+    8,
+    6,
+    6,
+    6,
+    6,
+    8
+   ]
+  }
+ },
+ "weezing": {
+  "dex": 110,
+  "idle": {
+   "frameWidth": 32,
+   "frameHeight": 64,
+   "durations": [
+    12,
+    12,
+    12,
+    12,
+    12,
+    12,
+    12,
+    12,
+    12,
+    12,
+    12
+   ]
+  },
+  "walk": {
+   "frameWidth": 32,
+   "frameHeight": 56,
+   "durations": [
+    8,
+    8,
+    8,
+    8,
+    8,
+    8
+   ]
+  }
+ },
+ "rhyhorn": {
+  "dex": 111,
+  "idle": {
+   "frameWidth": 40,
+   "frameHeight": 32,
+   "durations": [
+    40,
+    20,
+    15
+   ]
+  },
+  "walk": {
+   "frameWidth": 32,
+   "frameHeight": 32,
+   "durations": [
+    8,
+    10,
+    8,
+    10
+   ]
+  }
+ },
+ "rhydon": {
+  "dex": 112,
+  "idle": {
+   "frameWidth": 48,
+   "frameHeight": 48,
+   "durations": [
+    40,
+    26
+   ]
+  },
+  "walk": {
+   "frameWidth": 32,
+   "frameHeight": 48,
+   "durations": [
+    8,
+    12,
+    8,
+    12
+   ]
+  }
+ },
+ "chansey": {
+  "dex": 113,
+  "idle": {
+   "frameWidth": 24,
+   "frameHeight": 40,
+   "durations": [
+    40,
+    2,
+    3,
+    4,
+    3,
+    2
+   ]
+  },
+  "walk": {
+   "frameWidth": 24,
+   "frameHeight": 32,
+   "durations": [
+    8,
+    10,
+    8,
+    10
+   ]
+  }
+ },
+ "tangela": {
+  "dex": 114,
+  "idle": {
+   "frameWidth": 32,
+   "frameHeight": 48,
+   "durations": [
+    34,
+    6,
+    6,
+    6
+   ]
+  },
+  "walk": {
+   "frameWidth": 32,
+   "frameHeight": 48,
+   "durations": [
+    8,
+    6,
+    6,
+    6,
+    6,
+    6
+   ]
+  }
+ },
+ "kangaskhan": {
+  "dex": 115,
+  "idle": {
+   "frameWidth": 40,
+   "frameHeight": 56,
+   "durations": [
+    30,
+    3,
+    4,
+    3,
+    20
+   ]
+  },
+  "walk": {
+   "frameWidth": 40,
+   "frameHeight": 56,
+   "durations": [
+    16,
+    10,
+    16,
+    10
+   ]
+  }
+ },
+ "horsea": {
+  "dex": 116,
+  "idle": {
+   "frameWidth": 24,
+   "frameHeight": 48,
+   "durations": [
+    8,
+    16,
+    8,
+    16
+   ]
+  },
+  "walk": {
+   "frameWidth": 24,
+   "frameHeight": 48,
+   "durations": [
+    8,
+    12,
+    8,
+    12
+   ]
+  }
+ },
+ "seadra": {
+  "dex": 117,
+  "idle": {
+   "frameWidth": 32,
+   "frameHeight": 64,
+   "durations": [
+    12,
+    12,
+    12,
+    12,
+    8,
+    8,
+    8,
+    8
+   ]
+  },
+  "walk": {
+   "frameWidth": 40,
+   "frameHeight": 56,
+   "durations": [
+    8,
+    8,
+    10,
+    8,
+    10
+   ]
+  }
+ },
+ "goldeen": {
+  "dex": 118,
+  "idle": {
+   "frameWidth": 32,
+   "frameHeight": 40,
+   "durations": [
+    16,
+    10,
+    16,
+    10,
+    16,
+    10,
+    16,
+    2,
+    4,
+    4,
+    4,
+    12,
+    10,
+    16,
+    10
+   ]
+  },
+  "walk": {
+   "frameWidth": 32,
+   "frameHeight": 40,
+   "durations": [
+    10,
+    10,
+    10,
+    10,
+    10,
+    10,
+    10,
+    10
+   ]
+  }
+ },
+ "seaking": {
+  "dex": 119,
+  "idle": {
+   "frameWidth": 32,
+   "frameHeight": 48,
+   "durations": [
+    16,
+    10,
+    16,
+    10,
+    16,
+    10,
+    16,
+    2,
+    4,
+    4,
+    4,
+    12,
+    10,
+    16,
+    10
+   ]
+  },
+  "walk": {
+   "frameWidth": 32,
+   "frameHeight": 48,
+   "durations": [
+    10,
+    8,
+    10,
+    8
+   ]
+  }
+ },
+ "staryu": {
+  "dex": 120,
+  "idle": {
+   "frameWidth": 24,
+   "frameHeight": 32,
+   "durations": [
+    36,
+    10,
+    6,
+    10
+   ]
+  },
+  "walk": {
+   "frameWidth": 24,
+   "frameHeight": 32,
+   "durations": [
+    8,
+    10,
+    8,
+    10
+   ]
+  }
+ },
+ "starmie": {
+  "dex": 121,
+  "idle": {
+   "frameWidth": 24,
+   "frameHeight": 32,
+   "durations": [
+    60,
+    4,
+    4,
+    4,
+    4,
+    4,
+    4,
+    4
+   ]
+  },
+  "walk": {
+   "frameWidth": 24,
+   "frameHeight": 40,
+   "durations": [
+    8,
+    10,
+    8,
+    10
+   ]
+  }
+ },
+ "mr-mime": {
+  "dex": 122,
+  "idle": {
+   "frameWidth": 32,
+   "frameHeight": 48,
+   "durations": [
+    20,
+    12
+   ]
+  },
+  "walk": {
+   "frameWidth": 32,
+   "frameHeight": 48,
+   "durations": [
+    8,
+    12,
+    8,
+    12
+   ]
+  }
+ },
+ "scyther": {
+  "dex": 123,
+  "idle": {
+   "frameWidth": 32,
+   "frameHeight": 48,
+   "durations": [
+    40,
+    10,
+    14,
+    10
+   ]
+  },
+  "walk": {
+   "frameWidth": 40,
+   "frameHeight": 48,
+   "durations": [
+    8,
+    10,
+    8,
+    10
+   ]
+  }
+ },
+ "jynx": {
+  "dex": 124,
+  "idle": {
+   "frameWidth": 32,
+   "frameHeight": 40,
+   "durations": [
+    30,
+    14,
+    30,
+    14
+   ]
+  },
+  "walk": {
+   "frameWidth": 32,
+   "frameHeight": 40,
+   "durations": [
+    8,
+    12,
+    8,
+    12
+   ]
+  }
+ },
+ "electabuzz": {
+  "dex": 125,
+  "idle": {
+   "frameWidth": 40,
+   "frameHeight": 56,
+   "durations": [
+    28,
+    18,
+    28,
+    18
+   ]
+  },
+  "walk": {
+   "frameWidth": 40,
+   "frameHeight": 56,
+   "durations": [
+    8,
+    10,
+    8,
+    10
+   ]
+  }
+ },
+ "magmar": {
+  "dex": 126,
+  "idle": {
+   "frameWidth": 32,
+   "frameHeight": 48,
+   "durations": [
+    40,
+    6,
+    12,
+    6
+   ]
+  },
+  "walk": {
+   "frameWidth": 32,
+   "frameHeight": 48,
+   "durations": [
+    8,
+    10,
+    8,
+    10
+   ]
+  }
+ },
+ "pinsir": {
+  "dex": 127,
+  "idle": {
+   "frameWidth": 32,
+   "frameHeight": 48,
+   "durations": [
+    40,
+    2,
+    6,
+    3,
+    2
+   ]
+  },
+  "walk": {
+   "frameWidth": 32,
+   "frameHeight": 48,
+   "durations": [
+    8,
+    12,
+    8,
+    12
+   ]
+  }
+ },
+ "tauros": {
+  "dex": 128,
+  "idle": {
+   "frameWidth": 32,
+   "frameHeight": 56,
+   "durations": [
+    40,
+    3,
+    6,
+    3,
+    2
+   ]
+  },
+  "walk": {
+   "frameWidth": 40,
+   "frameHeight": 56,
+   "durations": [
+    8,
+    6,
+    6,
+    6,
+    6,
+    6,
+    6
+   ]
+  }
+ },
+ "magikarp": {
+  "dex": 129,
+  "idle": {
+   "frameWidth": 32,
+   "frameHeight": 32,
+   "durations": [
+    8,
+    10,
+    10,
+    12
+   ]
+  },
+  "walk": {
+   "frameWidth": 32,
+   "frameHeight": 40,
+   "durations": [
+    6,
+    2,
+    4,
+    6,
+    4,
+    2,
+    6
+   ]
+  }
+ },
+ "gyarados": {
+  "dex": 130,
+  "idle": {
+   "frameWidth": 72,
+   "frameHeight": 128,
+   "durations": [
+    18,
+    8,
+    18,
+    8
+   ]
+  },
+  "walk": {
+   "frameWidth": 88,
+   "frameHeight": 128,
+   "durations": [
+    10,
+    14,
+    10,
+    14
+   ]
+  }
+ },
+ "lapras": {
+  "dex": 131,
+  "idle": {
+   "frameWidth": 48,
+   "frameHeight": 56,
+   "durations": [
+    40,
+    12,
+    16,
+    12
+   ]
+  },
+  "walk": {
+   "frameWidth": 48,
+   "frameHeight": 56,
+   "durations": [
+    10,
+    12,
+    10,
+    12
+   ]
+  }
+ },
+ "ditto": {
+  "dex": 132,
+  "idle": {
+   "frameWidth": 24,
+   "frameHeight": 32,
+   "durations": [
+    16,
+    16
+   ]
+  },
+  "walk": {
+   "frameWidth": 32,
+   "frameHeight": 32,
+   "durations": [
+    10,
+    8,
+    10,
+    8,
+    8
+   ]
+  }
+ },
+ "eevee": {
+  "dex": 133,
+  "idle": {
+   "frameWidth": 24,
+   "frameHeight": 32,
+   "durations": [
+    16,
+    16
+   ]
+  },
+  "walk": {
+   "frameWidth": 40,
+   "frameHeight": 48,
+   "durations": [
+    4,
+    4,
+    4,
+    4,
+    6,
+    2,
+    2
+   ]
+  }
+ },
+ "vaporeon": {
+  "dex": 134,
+  "idle": {
+   "frameWidth": 40,
+   "frameHeight": 56,
+   "durations": [
+    60,
+    16
+   ]
+  },
+  "walk": {
+   "frameWidth": 32,
+   "frameHeight": 48,
+   "durations": [
+    8,
+    10,
+    8,
+    10
+   ]
+  }
+ },
+ "jolteon": {
+  "dex": 135,
+  "idle": {
+   "frameWidth": 32,
+   "frameHeight": 40,
+   "durations": [
+    60,
+    16
+   ]
+  },
+  "walk": {
+   "frameWidth": 32,
+   "frameHeight": 40,
+   "durations": [
+    8,
+    10,
+    8,
+    10
+   ]
+  }
+ },
+ "flareon": {
+  "dex": 136,
+  "idle": {
+   "frameWidth": 32,
+   "frameHeight": 40,
+   "durations": [
+    12,
+    16,
+    12,
+    16
+   ]
+  },
+  "walk": {
+   "frameWidth": 32,
+   "frameHeight": 40,
+   "durations": [
+    8,
+    8,
+    8,
+    8
+   ]
+  }
+ },
+ "porygon": {
+  "dex": 137,
+  "idle": {
+   "frameWidth": 32,
+   "frameHeight": 40,
+   "durations": [
+    12,
+    8,
+    12,
+    8
+   ]
+  },
+  "walk": {
+   "frameWidth": 32,
+   "frameHeight": 40,
+   "durations": [
+    10,
+    10,
+    10,
+    10
+   ]
+  }
+ },
+ "omanyte": {
+  "dex": 138,
+  "idle": {
+   "frameWidth": 32,
+   "frameHeight": 32,
+   "durations": [
+    30,
+    12
+   ]
+  },
+  "walk": {
+   "frameWidth": 32,
+   "frameHeight": 32,
+   "durations": [
+    8,
+    8,
+    8,
+    8
+   ]
+  }
+ },
+ "omastar": {
+  "dex": 139,
+  "idle": {
+   "frameWidth": 32,
+   "frameHeight": 40,
+   "durations": [
+    30,
+    20
+   ]
+  },
+  "walk": {
+   "frameWidth": 40,
+   "frameHeight": 40,
+   "durations": [
+    8,
+    8,
+    8,
+    8
+   ]
+  }
+ },
+ "kabuto": {
+  "dex": 140,
+  "idle": {
+   "frameWidth": 24,
+   "frameHeight": 24,
+   "durations": [
+    40,
+    4,
+    4
+   ]
+  },
+  "walk": {
+   "frameWidth": 24,
+   "frameHeight": 24,
+   "durations": [
+    8,
+    10,
+    8,
+    10
+   ]
+  }
+ },
+ "kabutops": {
+  "dex": 141,
+  "idle": {
+   "frameWidth": 40,
+   "frameHeight": 48,
+   "durations": [
+    20,
+    10,
+    20,
+    10
+   ]
+  },
+  "walk": {
+   "frameWidth": 40,
+   "frameHeight": 48,
+   "durations": [
+    6,
+    4,
+    8,
+    4,
+    6,
+    4,
+    8,
+    4
+   ]
+  }
+ },
+ "aerodactyl": {
+  "dex": 142,
+  "idle": {
+   "frameWidth": 40,
+   "frameHeight": 64,
+   "durations": [
+    8,
+    8,
+    8,
+    8,
+    8,
+    8,
+    8,
+    8
+   ]
+  },
+  "walk": {
+   "frameWidth": 40,
+   "frameHeight": 64,
+   "durations": [
+    8,
+    8,
+    8,
+    8
+   ]
+  }
+ },
+ "snorlax": {
+  "dex": 143,
+  "idle": {
+   "frameWidth": 32,
+   "frameHeight": 64,
+   "durations": [
+    40,
+    1,
+    3,
+    4,
+    3,
+    1
+   ]
+  },
+  "walk": {
+   "frameWidth": 32,
+   "frameHeight": 48,
+   "durations": [
+    8,
+    10,
+    8,
+    10
+   ]
+  }
+ },
+ "articuno": {
+  "dex": 144,
+  "idle": {
+   "frameWidth": 88,
+   "frameHeight": 88,
+   "durations": [
+    8,
+    10,
+    8,
+    16
+   ]
+  },
+  "walk": {
+   "frameWidth": 88,
+   "frameHeight": 88,
+   "durations": [
+    8,
+    10,
+    8,
+    10
+   ]
+  }
+ },
+ "zapdos": {
+  "dex": 145,
+  "idle": {
+   "frameWidth": 56,
+   "frameHeight": 96,
+   "durations": [
+    8,
+    10,
+    8,
+    10
+   ]
+  },
+  "walk": {
+   "frameWidth": 56,
+   "frameHeight": 96,
+   "durations": [
+    6,
+    6,
+    6,
+    6
+   ]
+  }
+ },
+ "moltres": {
+  "dex": 146,
+  "idle": {
+   "frameWidth": 80,
+   "frameHeight": 96,
+   "durations": [
+    8,
+    12,
+    8,
+    12
+   ]
+  },
+  "walk": {
+   "frameWidth": 80,
+   "frameHeight": 96,
+   "durations": [
+    8,
+    10,
+    8,
+    10
+   ]
+  }
+ },
+ "mewtwo": {
+  "dex": 150,
+  "idle": {
+   "frameWidth": 32,
+   "frameHeight": 64,
+   "durations": [
+    40,
+    2,
+    4,
+    6,
+    8,
+    6,
+    4,
+    2
+   ]
+  },
+  "walk": {
+   "frameWidth": 48,
+   "frameHeight": 56,
+   "durations": [
+    12,
+    6,
+    6,
+    12,
+    6,
+    6
+   ]
+  }
+ },
+ "mew": {
+  "dex": 151,
+  "idle": {
+   "frameWidth": 32,
+   "frameHeight": 56,
+   "durations": [
+    12,
+    8,
+    12,
+    8
+   ]
+  },
+  "walk": {
+   "frameWidth": 40,
+   "frameHeight": 64,
+   "durations": [
+    8,
+    8,
+    8,
+    8,
+    8,
+    8
+   ]
+  }
  }
 }

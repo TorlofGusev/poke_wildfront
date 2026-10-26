@@ -1,4 +1,5 @@
 import Phaser from "phaser";
+import { setupAudio } from "./audio";
 import { setupRotation } from "./rotation";
 import { BattleScene } from "./scenes/BattleScene";
 import { BootScene } from "./scenes/BootScene";
@@ -25,3 +26,4 @@ const game = new Phaser.Game({
   scene: [BootScene, TitleScene, StarterScene, OverworldScene, PartyScene, PokemonScene, ShopScene, InventoryScene, BattleScene, CreditsScene],
 });
 setupRotation(game);
+setupAudio(game);

@@ -1,0 +1,99 @@
+{
+ "id": "digletts-cave",
+ "name": "Diglett's Cave",
+ "ai": "normal",
+ "deploySlots": 5,
+ "rows": [
+  "########################",
+  "#GGGGG#GGGGGGGGGG#GGGGG#",
+  "#GGGGG#GGGGGGGGGG#GGGGG#",
+  "#GGGGG#GGGGGGGGGG#GGGGG#",
+  "#GGGGG#GGGGG#GGGG#GGGGG#",
+  "#GGGGG#GGGGG#GGGG#GGGGG#",
+  "#GGGGGGGGGGG#GGGGGGGGGG#",
+  "#GGGGGGGGGGG#GGGGGGGGGG#",
+  "#GGGGGGGGGGG#GGGGGGGGGG#",
+  "###G####################"
+ ],
+ "start": {
+  "x": 3,
+  "y": 8
+ },
+ "areaNames": {
+  "vermilion-digletts": "Diglett's Cave"
+ },
+ "exits": [
+  {
+   "name": "Route 11",
+   "pos": {
+    "x": 3,
+    "y": 9
+   },
+   "to": "route-11",
+   "arrive": {
+    "x": 3,
+    "y": 1
+   }
+  }
+ ],
+ "spawnZones": [
+  {
+   "biome": "vermilion-digletts",
+   "count": 3,
+   "levels": {
+    "min": 15,
+    "max": 17
+   },
+   "points": [
+    {
+     "x": 3,
+     "y": 2
+    },
+    {
+     "x": 9,
+     "y": 2
+    },
+    {
+     "x": 9,
+     "y": 7
+    },
+    {
+     "x": 15,
+     "y": 2
+    },
+    {
+     "x": 15,
+     "y": 7
+    },
+    {
+     "x": 20,
+     "y": 4
+    }
+   ]
+  }
+ ],
+ "pickups": [
+  {
+   "id": "digletts-stone",
+   "pos": {
+    "x": 21,
+    "y": 1
+   },
+   "items": {
+    "hard-stone": 1
+   },
+   "once": true
+  },
+  {
+   "id": "digletts-herb",
+   "pos": {
+    "x": 14,
+    "y": 8
+   },
+   "items": {
+    "revival-herb": 1
+   }
+  }
+ ],
+ "npcs": []
+}

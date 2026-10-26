@@ -1,0 +1,238 @@
+{
+ "id": "route-11",
+ "name": "Route 11",
+ "ai": "normal",
+ "deploySlots": 5,
+ "rows": [
+  "###H####################",
+  "###H##HHHHHHHHHHHHxxxHH#",
+  "###H##HHHHHHHHHHHHxxxHH#",
+  "#HHHHHHHHHHHHHHHHHHHHHH#",
+  "#HHHHHHHHHHHHHHHHHHHHHH#",
+  "HHHHHHHHHH####HHHHHHHHHH",
+  "#HHHHHHHHH####HHHHHHHHH#",
+  "#HHHHHHHHHHHHHHHHHHHHHH#",
+  "#HHHHHHHHHHHHHHHHHHHHHH#",
+  "#HHHHHHHHHHHHHHHHHHHHHH#",
+  "#HHHHHHHHHHHHHHHHHHHHHH#",
+  "########################"
+ ],
+ "start": {
+  "x": 1,
+  "y": 5
+ },
+ "areaNames": {
+  "vermilion-route11": "Route 11",
+  "kanto-shallows": "Route 11 pond"
+ },
+ "exits": [
+  {
+   "name": "Vermilion City",
+   "pos": {
+    "x": 0,
+    "y": 5
+   },
+   "to": "vermilion-city",
+   "arrive": {
+    "x": 22,
+    "y": 7
+   }
+  },
+  {
+   "name": "Route 12",
+   "pos": {
+    "x": 23,
+    "y": 5
+   },
+   "to": "route-12",
+   "arrive": {
+    "x": 1,
+    "y": 3
+   }
+  },
+  {
+   "name": "Diglett's Cave",
+   "pos": {
+    "x": 3,
+    "y": 0
+   },
+   "to": "digletts-cave",
+   "arrive": {
+    "x": 3,
+    "y": 8
+   }
+  }
+ ],
+ "spawnZones": [
+  {
+   "biome": "vermilion-route11",
+   "count": 3,
+   "levels": {
+    "min": 14,
+    "max": 17
+   },
+   "points": [
+    {
+     "x": 7,
+     "y": 2
+    },
+    {
+     "x": 15,
+     "y": 3
+    },
+    {
+     "x": 21,
+     "y": 8
+    },
+    {
+     "x": 5,
+     "y": 8
+    },
+    {
+     "x": 12,
+     "y": 9
+    },
+    {
+     "x": 17,
+     "y": 6
+    }
+   ]
+  },
+  {
+   "biome": "kanto-shallows",
+   "count": 1,
+   "levels": {
+    "min": 14,
+    "max": 17
+   },
+   "points": [
+    {
+     "x": 18,
+     "y": 1
+    },
+    {
+     "x": 20,
+     "y": 2
+    }
+   ]
+  }
+ ],
+ "pickups": [
+  {
+   "id": "r11-berries",
+   "pos": {
+    "x": 8,
+    "y": 9
+   },
+   "items": {
+    "rawst-berry": 2,
+    "cheri-berry": 1
+   }
+  },
+  {
+   "id": "r11-claw",
+   "pos": {
+    "x": 22,
+    "y": 1
+   },
+   "items": {
+    "sharp-beak": 1
+   },
+   "once": true
+  }
+ ],
+ "npcs": [
+  {
+   "id": "r11-youngster",
+   "name": "Youngster Eddie",
+   "kind": "trainer",
+   "pos": {
+    "x": 8,
+    "y": 3
+   },
+   "text": [
+    "My Pokémon are on a roll!"
+   ],
+   "afterText": [
+    "Rolled over."
+   ],
+   "team": [
+    {
+     "species": "ekans",
+     "level": 16
+    },
+    {
+     "species": "sandshrew",
+     "level": 16
+    }
+   ],
+   "reward": {
+    "money": 320
+   }
+  },
+  {
+   "id": "r11-gambler",
+   "name": "Gambler Darian",
+   "kind": "trainer",
+   "pos": {
+    "x": 14,
+    "y": 8
+   },
+   "text": [
+    "Let's bet on a battle!"
+   ],
+   "afterText": [
+    "Lost my bet."
+   ],
+   "team": [
+    {
+     "species": "voltorb",
+     "level": 17
+    },
+    {
+     "species": "poliwag",
+     "level": 16
+    }
+   ],
+   "reward": {
+    "money": 1000
+   }
+  },
+  {
+   "id": "r11-engineer",
+   "name": "Engineer Braxton",
+   "kind": "trainer",
+   "pos": {
+    "x": 17,
+    "y": 4
+   },
+   "text": [
+    "Careful, live wires around!"
+   ],
+   "afterText": [
+    "Short circuit!"
+   ],
+   "team": [
+    {
+     "species": "magnemite",
+     "level": 17
+    }
+   ],
+   "reward": {
+    "money": 600
+   }
+  },
+  {
+   "id": "r11-aide",
+   "name": "Route 11 Aide",
+   "kind": "talk",
+   "pos": {
+    "x": 2,
+    "y": 4
+   },
+   "text": [
+    "Diglett's Cave is just north. Diglett dug that tunnel all by themselves!"
+   ]
+  }
+ ]
+}

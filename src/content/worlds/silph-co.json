@@ -1,0 +1,365 @@
+{
+ "id": "silph-co",
+ "name": "Silph Co.",
+ "ai": "normal",
+ "deploySlots": 5,
+ "rows": [
+  "################",
+  "#111111##111111#",
+  "#111111##111111#",
+  "#11##11111##111#",
+  "#11111111111111#",
+  "####11####11####",
+  "#11111111111111#",
+  "#11#111##111#11#",
+  "#11111111111111#",
+  "#111##1111##111#",
+  "#11111111111111#",
+  "#######1########"
+ ],
+ "start": {
+  "x": 7,
+  "y": 10
+ },
+ "exits": [
+  {
+   "name": "Saffron City",
+   "pos": {
+    "x": 7,
+    "y": 11
+   },
+   "to": "saffron-city",
+   "arrive": {
+    "x": 5,
+    "y": 1
+   }
+  }
+ ],
+ "spawnZones": [],
+ "pickups": [
+  {
+   "id": "silph-supplies",
+   "pos": {
+    "x": 14,
+    "y": 10
+   },
+   "items": {
+    "super-potion": 2
+   },
+   "balls": {
+    "ultra-ball": 1
+   }
+  },
+  {
+   "id": "silph-magnet",
+   "pos": {
+    "x": 1,
+    "y": 1
+   },
+   "items": {
+    "magnet": 1
+   },
+   "once": true
+  }
+ ],
+ "npcs": [
+  {
+   "id": "rocket-silph-1",
+   "name": "Rocket Grunt",
+   "kind": "rocket",
+   "pos": {
+    "x": 3,
+    "y": 8
+   },
+   "text": [
+    "Silph Co. belongs to Team Rocket now!"
+   ],
+   "afterText": [
+    "You won't get past the doors without a key."
+   ],
+   "team": [
+    {
+     "species": "arbok",
+     "level": 22
+    },
+    {
+     "species": "golbat",
+     "level": 22
+    }
+   ],
+   "reward": {
+    "money": 700
+   }
+  },
+  {
+   "id": "rocket-silph-2",
+   "name": "Rocket Scientist",
+   "kind": "rocket",
+   "pos": {
+    "x": 12,
+    "y": 6
+   },
+   "text": [
+    "Our research is not for kids!"
+   ],
+   "afterText": [
+    "My experiments..."
+   ],
+   "team": [
+    {
+     "species": "koffing",
+     "level": 22
+    },
+    {
+     "species": "magnemite",
+     "level": 22
+    },
+    {
+     "species": "weezing",
+     "level": 23
+    }
+   ],
+   "reward": {
+    "money": 800
+   }
+  },
+  {
+   "id": "rocket-silph-3",
+   "name": "Rocket Grunt",
+   "kind": "rocket",
+   "pos": {
+    "x": 2,
+    "y": 3
+   },
+   "text": [
+    "The Boss is upstairs. You'll never see him!"
+   ],
+   "afterText": [
+    "Ugh..."
+   ],
+   "team": [
+    {
+     "species": "machoke",
+     "level": 23
+    },
+    {
+     "species": "drowzee",
+     "level": 22
+    }
+   ],
+   "reward": {
+    "money": 800
+   }
+  },
+  {
+   "id": "rival-silph",
+   "name": "Rival",
+   "kind": "rival",
+   "pos": {
+    "x": 7,
+    "y": 6
+   },
+   "text": [
+    "You're here too? I'm going to stop Team Rocket myself!",
+    "But first, I'll beat you!"
+   ],
+   "afterText": [
+    "Fine, go on ahead. Giovanni's yours. Smell ya later!"
+   ],
+   "teamByStarter": {
+    "bulbasaur": [
+     {
+      "species": "pidgeot",
+      "level": 23
+     },
+     {
+      "species": "kadabra",
+      "level": 23
+     },
+     {
+      "species": "gyarados",
+      "level": 23
+     },
+     {
+      "species": "exeggcute",
+      "level": 23
+     },
+     {
+      "species": "charmeleon",
+      "level": 24
+     }
+    ],
+    "charmander": [
+     {
+      "species": "pidgeot",
+      "level": 23
+     },
+     {
+      "species": "kadabra",
+      "level": 23
+     },
+     {
+      "species": "growlithe",
+      "level": 23
+     },
+     {
+      "species": "exeggcute",
+      "level": 23
+     },
+     {
+      "species": "wartortle",
+      "level": 24
+     }
+    ],
+    "squirtle": [
+     {
+      "species": "pidgeot",
+      "level": 23
+     },
+     {
+      "species": "kadabra",
+      "level": 23
+     },
+     {
+      "species": "growlithe",
+      "level": 23
+     },
+     {
+      "species": "gyarados",
+      "level": 23
+     },
+     {
+      "species": "ivysaur",
+      "level": 24
+     }
+    ],
+    "pikachu": [
+     {
+      "species": "pidgeot",
+      "level": 23
+     },
+     {
+      "species": "kadabra",
+      "level": 23
+     },
+     {
+      "species": "growlithe",
+      "level": 23
+     },
+     {
+      "species": "exeggcute",
+      "level": 23
+     },
+     {
+      "species": "vaporeon",
+      "level": 24
+     }
+    ]
+   },
+   "reward": {
+    "money": 1800
+   }
+  },
+  {
+   "id": "silph-worker",
+   "name": "Silph Worker",
+   "kind": "gift",
+   "pos": {
+    "x": 13,
+    "y": 8
+   },
+   "text": [
+    "You're fighting the Rockets? Take this Card Key!",
+    "It opens the president's office."
+   ],
+   "afterText": [
+    "Please save the president!"
+   ],
+   "reward": {
+    "keyItems": [
+     "card-key"
+    ]
+   }
+  },
+  {
+   "id": "giovanni-silph",
+   "name": "Team Rocket Boss Giovanni",
+   "kind": "rocket",
+   "pos": {
+    "x": 4,
+    "y": 1
+   },
+   "arena": "silph-office",
+   "requires": {
+    "keyItems": [
+     "card-key"
+    ]
+   },
+   "lockedText": [
+    "The door to the president's office is locked. It needs a Card Key."
+   ],
+   "text": [
+    "You again! Silph Co. is about to belong to Team Rocket.",
+    "I won't let a child get in my way twice!"
+   ],
+   "afterText": [
+    "Blast! Team Rocket withdraws from Silph Co."
+   ],
+   "team": [
+    {
+     "species": "nidorino",
+     "level": 23
+    },
+    {
+     "species": "kangaskhan",
+     "level": 23,
+     "heldItem": "muscle-band"
+    },
+    {
+     "species": "rhyhorn",
+     "level": 23,
+     "heldItem": "hard-stone"
+    },
+    {
+     "species": "nidoqueen",
+     "level": 24,
+     "heldItem": "leftovers"
+    }
+   ],
+   "reward": {
+    "money": 3000
+   }
+  },
+  {
+   "id": "silph-lapras",
+   "name": "Silph Employee",
+   "kind": "gift",
+   "pos": {
+    "x": 12,
+    "y": 1
+   },
+   "requires": {
+    "flags": [
+     "npc:giovanni-silph"
+    ]
+   },
+   "lockedText": [
+    "The Rockets are guarding me. Please, help us!"
+   ],
+   "text": [
+    "You saved Silph Co.! Please take this Lapras as thanks."
+   ],
+   "afterText": [
+    "Lapras is gentle. Treat it well."
+   ],
+   "reward": {
+    "pokemon": [
+     {
+      "species": "lapras",
+      "level": 24
+     }
+    ]
+   }
+  }
+ ]
+}

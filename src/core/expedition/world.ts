@@ -1,4 +1,5 @@
-import type { BattleScenario, UnitModifiers, UnitSetup } from "../battle";
+import { MAX_ACTIVE_UNITS, type BattleScenario, type UnitModifiers, type UnitSetup } from "../battle";
+import { battleArena, formationLabel } from "../battle/arenaGen";
 import { Grid } from "../grid/Grid";
 import { reachableTiles } from "../grid/movement";
 import type { TerrainDef } from "../grid/terrain";
@@ -6,9 +7,10 @@ import { key, manhattan, samePoint, type Point } from "../grid/types";
 
 /** Wild groups never (re)spawn within this many tiles of the party. */
 const SPAWN_CLEARANCE = 2;
-import { randomInt } from "../rng";
+import { nextRandom, randomInt } from "../rng";
 import { generateEncounter, type EncounterTable } from "./encounters";
 import { addTravelFatigue, type FatigueRules } from "./fatigue";
+import type { Condition, NpcDef, ObstacleDef } from "../story/story";
 
 export interface ArenaDef {
   readonly mapRows: readonly string[];
@@ -43,11 +45,25 @@ export interface WorldDef {
     /** Overrides the biome's levels, so later maps reuse biomes with stronger Pokémon. */
     readonly levels?: { readonly min: number; readonly max: number };
   }[];
+  /** How cleverly its wild Pokémon fight: "tutorial" on the first map, then "novice", default "normal". */
+  readonly ai?: "tutorial" | "novice" | "normal";
+  /** How many Pokémon the player may deploy per battle here (default 3); wild groups never outnumber it. */
+  readonly deploySlots?: number;
   /** Map-specific names for biomes, e.g. which town this is. */
   readonly areaNames?: Readonly<Record<string, string>>;
   /** Edge tiles leading to other maps. Without `to` the way is not open yet. */
   readonly exits?: readonly WorldExit[];
   readonly pickups: readonly WorldPickup[];
+  /** Trainers, gym leaders, quest givers and wild bosses standing on this map. */
+  readonly npcs?: readonly NpcDef[];
+  /** Cut trees, boulders, guards… that block a tile until a condition holds. */
+  readonly obstacles?: readonly ObstacleDef[];
+}
+
+/** What the party can pass right now: tiles blocked by NPCs/obstacles, and water once Surf is usable. */
+export interface WorldAccess {
+  readonly blocked: ReadonlySet<string>;
+  readonly surf: boolean;
 }
 
 export interface WorldExit {
@@ -56,6 +72,9 @@ export interface WorldExit {
   readonly to?: string;
   /** Where the party appears on the target map. */
   readonly arrive?: Point;
+  /** The way is shut until this holds (badges, Flash for dark caves…). */
+  readonly requires?: Condition;
+  readonly lockedText?: string;
 }
 
 export interface WorldPickup {
@@ -107,10 +126,12 @@ export interface WorldContent {
   readonly fatigue: FatigueRules;
 }
 
-export function worldGrid(content: WorldContent, def: WorldDef): Grid {
+export function worldGrid(content: WorldContent, def: WorldDef, access?: WorldAccess): Grid {
   const legend: Record<string, TerrainDef> = {};
   for (const b of Object.values(content.biomes)) {
-    legend[b.char] = { id: b.id, moveCost: b.travelCost, blocksSight: false, concealsAtRange: false };
+    // Surf turns open water into a (tiring) route.
+    const cost = b.travelCost === null && b.id === "water" && access?.surf ? 2 : b.travelCost;
+    legend[b.char] = { id: b.id, moveCost: cost, blocksSight: false, concealsAtRange: false };
   }
   return Grid.fromAscii(def.rows, legend);
 }
@@ -203,19 +224,19 @@ export interface TravelResult {
 }
 
 /** Shortest (least tiring) path to `to`; wild groups block the way unless they are the destination. */
-export function travelPath(content: WorldContent, def: WorldDef, world: WorldState, to: Point): Point[] | null {
-  const grid = worldGrid(content, def);
-  const blocked = new Set(world.encounters.filter((e) => !samePoint(e.pos, to)).map((e) => key(e.pos)));
+export function travelPath(content: WorldContent, def: WorldDef, world: WorldState, to: Point, access?: WorldAccess): Point[] | null {
+  const grid = worldGrid(content, def, access);
+  const blocked = new Set([...world.encounters.filter((e) => !samePoint(e.pos, to)).map((e) => key(e.pos)), ...(access?.blocked ?? [])]);
   return reachableTiles(grid, world.pos, Number.MAX_SAFE_INTEGER, {
     isAlly: () => false,
     isEnemy: (p) => blocked.has(key(p)),
   }).pathTo(to);
 }
 
-export function travel(content: WorldContent, def: WorldDef, world: WorldState, to: Point): TravelResult {
-  const path = travelPath(content, def, world, to);
+export function travel(content: WorldContent, def: WorldDef, world: WorldState, to: Point, access?: WorldAccess): TravelResult {
+  const path = travelPath(content, def, world, to, access);
   if (!path) throw new Error(`cannot travel to ${key(to)}`);
-  const grid = worldGrid(content, def);
+  const grid = worldGrid(content, def, access);
   let fatigue = world.fatigue;
   const collected = [...world.collected];
   let pickups = world.pickups;
@@ -252,10 +273,11 @@ export function removeEncounter(world: WorldState, id: string): WorldState {
 
 /**
  * The part of a wild group that actually fights: never more Pokémon than the player can field
- * (healthy party members, max 3), so a lone starter is not swarmed. Keeps the strongest members.
+ * (healthy party members, at most the map's deploy slots), so a lone starter is not swarmed.
+ * Keeps the strongest members.
  */
-export function effectiveGroup(group: EncounterGroup, healthyPartyMembers: number): EncounterGroup {
-  const cap = Math.max(1, Math.min(3, healthyPartyMembers));
+export function effectiveGroup(group: EncounterGroup, healthyPartyMembers: number, deploySlots = MAX_ACTIVE_UNITS): EncounterGroup {
+  const cap = Math.max(1, Math.min(deploySlots, healthyPartyMembers));
   if (group.species.length <= cap) return group;
   const keep = group.levels
     .map((lv, i) => ({ lv, i }))
@@ -266,21 +288,56 @@ export function effectiveGroup(group: EncounterGroup, healthyPartyMembers: numbe
   return { ...group, species: keep.map((i) => group.species[i]!), levels: keep.map((i) => group.levels[i]!) };
 }
 
-/** Builds the battle for a wild group on its biome's arena. */
+/** Share of wild battles that start as an ambush (the party surrounded or caught in a pincer). */
+export const AMBUSH_CHANCE = 0.2;
+
+/**
+ * Builds the battle for a wild group on its biome's terrain. With a seed the arena is generated with a
+ * random formation (sometimes an ambush); without one the biome's hand-drawn arena is used.
+ */
 export function wildScenario(
   content: WorldContent,
   group: EncounterGroup,
   setup: (speciesId: string, level: number) => Omit<UnitSetup, "id" | "side" | "pos">,
+  maxDeploy = MAX_ACTIVE_UNITS,
+  seed?: number,
 ): BattleScenario & { name: string; captureAllowed: boolean } {
   const biome = content.biomes[group.biome]!;
-  const arena = biome.arena;
+  let arena: { readonly mapRows: readonly string[]; readonly deploymentZone: readonly Point[]; readonly enemySpawns: readonly Point[] } | undefined = biome.arena;
   if (!arena) throw new Error(`biome ${biome.id} has no arena`);
+  let name = `Wild Pokémon · ${biome.name}`;
+  if (seed !== undefined) {
+    const ambush = (nextRandom(seed).value) < AMBUSH_CHANCE;
+    const gen = battleArena(arena, biome.id, seed, ambush ? "wildAmbush" : "wild", maxDeploy, group.species.length);
+    arena = gen;
+    name = `${name} · ${formationLabel(gen.formation)}`;
+  }
   if (group.species.length > arena.enemySpawns.length) throw new Error(`arena for ${biome.id} has too few spawn points`);
   const enemies: UnitSetup[] = group.species.map((speciesId, i) => ({
     ...setup(speciesId, group.levels[i] ?? 1), id: `${group.id}-${i}`, side: "enemy", pos: arena.enemySpawns[i]!,
   }));
-  return {
-    id: group.id, name: `Wild Pokémon · ${biome.name}`, mapRows: arena.mapRows, deploymentZone: arena.deploymentZone,
-    enemies, captureAllowed: true,
-  };
+  return { id: group.id, name, mapRows: arena.mapRows, deploymentZone: arena.deploymentZone, enemies, captureAllowed: true, maxDeploy };
+}
+
+/** Rolls a won battle's loot table in order: at most one item turns up (the first that hits). */
+export function rollLoot(table: readonly { readonly item: string; readonly chance: number }[], rngState: number): { item: string | null; rngState: number } {
+  let state = rngState;
+  for (const { item, chance } of table) {
+    const r = nextRandom(state);
+    state = r.state;
+    if (r.value < chance) return { item, rngState: state };
+  }
+  return { item: null, rngState: state };
+}
+
+export type PickupKind = "rare" | "held" | "ball" | "heal" | "food";
+
+/** What a pickup looks like on the map: one-time finds are marked rare, otherwise its most valuable content decides. */
+export function pickupKind(p: WorldPickup, itemKind: (id: string) => string | undefined): PickupKind {
+  if (p.once) return "rare";
+  const kinds = Object.keys(p.items ?? {}).map(itemKind);
+  if (kinds.includes("held")) return "held";
+  if (Object.keys(p.balls ?? {}).length) return "ball";
+  if (kinds.some((k) => k === "potion" || k === "remedy")) return "heal";
+  return "food";
 }

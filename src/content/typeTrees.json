@@ -1,0 +1,377 @@
+{
+ "normal": {
+  "id": "normal",
+  "tree": [
+   {
+    "talent": "type-normal",
+    "level": 6
+   },
+   {
+    "talent": "adaptable",
+    "level": 6
+   },
+   {
+    "talent": "skill-body-slam",
+    "level": 12
+   },
+   {
+    "talent": "relentless",
+    "level": 18
+   },
+   {
+    "talent": "veteran",
+    "level": 18
+   }
+  ]
+ },
+ "fire": {
+  "id": "fire",
+  "tree": [
+   {
+    "talent": "type-fire",
+    "level": 6
+   },
+   {
+    "talent": "flame-body",
+    "level": 6
+   },
+   {
+    "talent": "skill-fire-spin",
+    "level": 12
+   },
+   {
+    "talent": "scorch",
+    "level": 18
+   },
+   {
+    "talent": "blazing-heart",
+    "level": 18
+   }
+  ]
+ },
+ "water": {
+  "id": "water",
+  "tree": [
+   {
+    "talent": "type-water",
+    "level": 6
+   },
+   {
+    "talent": "hydration",
+    "level": 6
+   },
+   {
+    "talent": "skill-surf",
+    "level": 12
+   },
+   {
+    "talent": "riptide",
+    "level": 18
+   },
+   {
+    "talent": "rain-dish",
+    "level": 18
+   }
+  ]
+ },
+ "grass": {
+  "id": "grass",
+  "tree": [
+   {
+    "talent": "type-grass",
+    "level": 6
+   },
+   {
+    "talent": "spore-cloud",
+    "level": 6
+   },
+   {
+    "talent": "skill-giga-drain",
+    "level": 12
+   },
+   {
+    "talent": "overgrowth",
+    "level": 18
+   },
+   {
+    "talent": "photosynthesis",
+    "level": 18
+   }
+  ]
+ },
+ "electric": {
+  "id": "electric",
+  "tree": [
+   {
+    "talent": "type-electric",
+    "level": 6
+   },
+   {
+    "talent": "static-charge",
+    "level": 6
+   },
+   {
+    "talent": "skill-discharge",
+    "level": 12
+   },
+   {
+    "talent": "overcharge",
+    "level": 18
+   },
+   {
+    "talent": "high-voltage",
+    "level": 18
+   }
+  ]
+ },
+ "ice": {
+  "id": "ice",
+  "tree": [
+   {
+    "talent": "type-ice",
+    "level": 6
+   },
+   {
+    "talent": "chill",
+    "level": 6
+   },
+   {
+    "talent": "skill-ice-beam",
+    "level": 12
+   },
+   {
+    "talent": "shatter",
+    "level": 18
+   },
+   {
+    "talent": "frost-armor",
+    "level": 18
+   }
+  ]
+ },
+ "fighting": {
+  "id": "fighting",
+  "tree": [
+   {
+    "talent": "type-fighting",
+    "level": 6
+   },
+   {
+    "talent": "iron-fist",
+    "level": 6
+   },
+   {
+    "talent": "skill-close-combat",
+    "level": 12
+   },
+   {
+    "talent": "moxie",
+    "level": 18
+   },
+   {
+    "talent": "guts",
+    "level": 18
+   }
+  ]
+ },
+ "poison": {
+  "id": "poison",
+  "tree": [
+   {
+    "talent": "type-poison",
+    "level": 6
+   },
+   {
+    "talent": "toxic-barbs",
+    "level": 6
+   },
+   {
+    "talent": "skill-toxic",
+    "level": 12
+   },
+   {
+    "talent": "immunity",
+    "level": 18
+   },
+   {
+    "talent": "miasma",
+    "level": 18
+   }
+  ]
+ },
+ "ground": {
+  "id": "ground",
+  "tree": [
+   {
+    "talent": "type-ground",
+    "level": 6
+   },
+   {
+    "talent": "tremor",
+    "level": 6
+   },
+   {
+    "talent": "skill-bulldoze",
+    "level": 12
+   },
+   {
+    "talent": "tectonic",
+    "level": 18
+   },
+   {
+    "talent": "landslide",
+    "level": 18
+   }
+  ]
+ },
+ "flying": {
+  "id": "flying",
+  "tree": [
+   {
+    "talent": "type-flying",
+    "level": 6
+   },
+   {
+    "talent": "gale",
+    "level": 6
+   },
+   {
+    "talent": "skill-aerial-ace",
+    "level": 12
+   },
+   {
+    "talent": "dive-bomb",
+    "level": 18
+   },
+   {
+    "talent": "sky-lord",
+    "level": 18
+   }
+  ]
+ },
+ "psychic": {
+  "id": "psychic",
+  "tree": [
+   {
+    "talent": "type-psychic",
+    "level": 6
+   },
+   {
+    "talent": "foresight",
+    "level": 6
+   },
+   {
+    "talent": "skill-psybeam",
+    "level": 12
+   },
+   {
+    "talent": "telekinesis",
+    "level": 18
+   },
+   {
+    "talent": "calm-mind",
+    "level": 18
+   }
+  ]
+ },
+ "bug": {
+  "id": "bug",
+  "tree": [
+   {
+    "talent": "type-bug",
+    "level": 6
+   },
+   {
+    "talent": "shed-skin",
+    "level": 6
+   },
+   {
+    "talent": "skill-pin-missile",
+    "level": 12
+   },
+   {
+    "talent": "pest",
+    "level": 18
+   },
+   {
+    "talent": "swarm-lord",
+    "level": 18
+   }
+  ]
+ },
+ "rock": {
+  "id": "rock",
+  "tree": [
+   {
+    "talent": "type-rock",
+    "level": 6
+   },
+   {
+    "talent": "rough-skin",
+    "level": 6
+   },
+   {
+    "talent": "skill-ancient-power",
+    "level": 12
+   },
+   {
+    "talent": "sturdy-core",
+    "level": 18
+   },
+   {
+    "talent": "rock-crusher",
+    "level": 18
+   }
+  ]
+ },
+ "ghost": {
+  "id": "ghost",
+  "tree": [
+   {
+    "talent": "type-ghost",
+    "level": 6
+   },
+   {
+    "talent": "nightmare",
+    "level": 6
+   },
+   {
+    "talent": "skill-shadow-ball",
+    "level": 12
+   },
+   {
+    "talent": "soul-feast",
+    "level": 18
+   },
+   {
+    "talent": "hex-mastery",
+    "level": 18
+   }
+  ]
+ },
+ "dragon": {
+  "id": "dragon",
+  "tree": [
+   {
+    "talent": "type-dragon",
+    "level": 6
+   },
+   {
+    "talent": "outrage",
+    "level": 6
+   },
+   {
+    "talent": "skill-dragon-rage",
+    "level": 12
+   },
+   {
+    "talent": "dragon-fury",
+    "level": 18
+   },
+   {
+    "talent": "draconic-might",
+    "level": 18
+   }
+  ]
+ }
+}

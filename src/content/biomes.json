@@ -138,11 +138,11 @@
   "loot": [
    {
     "item": "potion",
-    "chance": 0.25
+    "chance": 0.15
    },
    {
     "item": "oran-berry",
-    "chance": 0.3
+    "chance": 0.18
    }
   ]
  },
@@ -289,15 +289,15 @@
   "loot": [
    {
     "item": "potion",
-    "chance": 0.2
+    "chance": 0.12
    },
    {
     "item": "miracle-seed",
-    "chance": 0.05
+    "chance": 0.03
    },
    {
     "item": "revival-herb",
-    "chance": 0.05
+    "chance": 0.03
    }
   ]
  },
@@ -439,19 +439,19 @@
   "loot": [
    {
     "item": "super-potion",
-    "chance": 0.15
+    "chance": 0.09
    },
    {
     "item": "hard-stone",
-    "chance": 0.08
+    "chance": 0.048
    },
    {
     "item": "revival-herb",
-    "chance": 0.08
+    "chance": 0.048
    },
    {
     "item": "rawst-berry",
-    "chance": 0.3
+    "chance": 0.18
    }
   ]
  },
@@ -593,19 +593,19 @@
   "loot": [
    {
     "item": "revival-herb",
-    "chance": 0.12
+    "chance": 0.072
    },
    {
     "item": "quick-claw",
-    "chance": 0.04
+    "chance": 0.024
    },
    {
     "item": "leftovers",
-    "chance": 0.03
+    "chance": 0.018
    },
    {
     "item": "super-potion",
-    "chance": 0.2
+    "chance": 0.12
    }
   ]
  },
@@ -626,5 +626,481 @@
   "name": "Dense trees",
   "char": "#",
   "travelCost": null
+ },
+ "moon-cave": {
+  "id": "moon-cave",
+  "name": "Mt. Moon",
+  "char": "M",
+  "travelCost": 2,
+  "encounters": {
+   "groupSize": {
+    "min": 3,
+    "max": 4
+   },
+   "entries": [
+    {
+     "speciesId": "zubat",
+     "weight": 5
+    },
+    {
+     "speciesId": "geodude",
+     "weight": 4
+    },
+    {
+     "speciesId": "paras",
+     "weight": 3
+    },
+    {
+     "speciesId": "clefairy",
+     "weight": 1,
+     "maxPerGroup": 1
+    }
+   ],
+   "levels": {
+    "min": 9,
+    "max": 12
+   }
+  },
+  "arena": {
+   "mapRows": [
+    "################",
+    "......#...m.....",
+    "..#.......#..#..",
+    "....##.........#",
+    "..........##....",
+    "..#..m.##.......",
+    "......#.....#...",
+    "....#....m....#.",
+    "..........#.....",
+    "################"
+   ],
+   "deploymentZone": [
+    {
+     "x": 0,
+     "y": 1
+    },
+    {
+     "x": 1,
+     "y": 1
+    },
+    {
+     "x": 0,
+     "y": 2
+    },
+    {
+     "x": 1,
+     "y": 2
+    },
+    {
+     "x": 0,
+     "y": 3
+    },
+    {
+     "x": 1,
+     "y": 3
+    },
+    {
+     "x": 0,
+     "y": 4
+    },
+    {
+     "x": 1,
+     "y": 4
+    },
+    {
+     "x": 0,
+     "y": 5
+    },
+    {
+     "x": 1,
+     "y": 5
+    },
+    {
+     "x": 0,
+     "y": 6
+    },
+    {
+     "x": 1,
+     "y": 6
+    },
+    {
+     "x": 0,
+     "y": 7
+    },
+    {
+     "x": 1,
+     "y": 7
+    },
+    {
+     "x": 0,
+     "y": 8
+    },
+    {
+     "x": 1,
+     "y": 8
+    }
+   ],
+   "enemySpawns": [
+    {
+     "x": 14,
+     "y": 1
+    },
+    {
+     "x": 14,
+     "y": 5
+    },
+    {
+     "x": 15,
+     "y": 8
+    },
+    {
+     "x": 13,
+     "y": 3
+    },
+    {
+     "x": 15,
+     "y": 6
+    }
+   ]
+  },
+  "forage": {
+   "pecha-berry": 1,
+   "cheri-berry": 1
+  },
+  "loot": [
+   {
+    "item": "revival-herb",
+    "chance": 0.072
+   },
+   {
+    "item": "quick-claw",
+    "chance": 0.024
+   },
+   {
+    "item": "leftovers",
+    "chance": 0.018
+   },
+   {
+    "item": "super-potion",
+    "chance": 0.12
+   }
+  ]
+ },
+ "moon-crater": {
+  "id": "moon-crater",
+  "name": "Mt. Moon crater",
+  "char": "o",
+  "travelCost": 2,
+  "encounters": {
+   "groupSize": {
+    "min": 2,
+    "max": 4
+   },
+   "entries": [
+    {
+     "speciesId": "clefairy",
+     "weight": 5
+    },
+    {
+     "speciesId": "geodude",
+     "weight": 2
+    },
+    {
+     "speciesId": "paras",
+     "weight": 2
+    },
+    {
+     "speciesId": "zubat",
+     "weight": 2
+    }
+   ],
+   "levels": {
+    "min": 11,
+    "max": 13
+   }
+  },
+  "arena": {
+   "mapRows": [
+    "................",
+    "..\"\"....##....\".",
+    "..\"\"..........\"\"",
+    "......##........",
+    "...........\"\"...",
+    "..#....\"\"..\"\"...",
+    ".......\"\"....#..",
+    "....#...........",
+    "..........\"\"....",
+    "................"
+   ],
+   "deploymentZone": [
+    {
+     "x": 0,
+     "y": 1
+    },
+    {
+     "x": 1,
+     "y": 1
+    },
+    {
+     "x": 0,
+     "y": 2
+    },
+    {
+     "x": 1,
+     "y": 2
+    },
+    {
+     "x": 0,
+     "y": 3
+    },
+    {
+     "x": 1,
+     "y": 3
+    },
+    {
+     "x": 0,
+     "y": 4
+    },
+    {
+     "x": 1,
+     "y": 4
+    },
+    {
+     "x": 0,
+     "y": 5
+    },
+    {
+     "x": 1,
+     "y": 5
+    },
+    {
+     "x": 0,
+     "y": 6
+    },
+    {
+     "x": 1,
+     "y": 6
+    },
+    {
+     "x": 0,
+     "y": 7
+    },
+    {
+     "x": 1,
+     "y": 7
+    },
+    {
+     "x": 0,
+     "y": 8
+    },
+    {
+     "x": 1,
+     "y": 8
+    }
+   ],
+   "enemySpawns": [
+    {
+     "x": 14,
+     "y": 1
+    },
+    {
+     "x": 14,
+     "y": 5
+    },
+    {
+     "x": 15,
+     "y": 8
+    },
+    {
+     "x": 13,
+     "y": 3
+    },
+    {
+     "x": 15,
+     "y": 6
+    }
+   ]
+  },
+  "forage": {
+   "pecha-berry": 1,
+   "cheri-berry": 1
+  },
+  "loot": [
+   {
+    "item": "revival-herb",
+    "chance": 0.072
+   },
+   {
+    "item": "quick-claw",
+    "chance": 0.024
+   },
+   {
+    "item": "leftovers",
+    "chance": 0.018
+   },
+   {
+    "item": "super-potion",
+    "chance": 0.12
+   }
+  ]
+ },
+ "moon-lake": {
+  "id": "moon-lake",
+  "name": "Mt. Moon spring",
+  "char": "l",
+  "travelCost": 2,
+  "encounters": {
+   "groupSize": {
+    "min": 2,
+    "max": 4
+   },
+   "entries": [
+    {
+     "speciesId": "zubat",
+     "weight": 4
+    },
+    {
+     "speciesId": "paras",
+     "weight": 3
+    },
+    {
+     "speciesId": "geodude",
+     "weight": 2
+    },
+    {
+     "speciesId": "clefairy",
+     "weight": 1,
+     "maxPerGroup": 1
+    }
+   ],
+   "levels": {
+    "min": 11,
+    "max": 14
+   }
+  },
+  "arena": {
+   "mapRows": [
+    "################",
+    "...........~~...",
+    "..mm...~~..~~...",
+    "..mm...~~.......",
+    "...........mm...",
+    "..#..~~....mm...",
+    ".....~~.........",
+    "....#.....~~....",
+    "..........~~....",
+    "################"
+   ],
+   "deploymentZone": [
+    {
+     "x": 0,
+     "y": 1
+    },
+    {
+     "x": 1,
+     "y": 1
+    },
+    {
+     "x": 0,
+     "y": 2
+    },
+    {
+     "x": 1,
+     "y": 2
+    },
+    {
+     "x": 0,
+     "y": 3
+    },
+    {
+     "x": 1,
+     "y": 3
+    },
+    {
+     "x": 0,
+     "y": 4
+    },
+    {
+     "x": 1,
+     "y": 4
+    },
+    {
+     "x": 0,
+     "y": 5
+    },
+    {
+     "x": 1,
+     "y": 5
+    },
+    {
+     "x": 0,
+     "y": 6
+    },
+    {
+     "x": 1,
+     "y": 6
+    },
+    {
+     "x": 0,
+     "y": 7
+    },
+    {
+     "x": 1,
+     "y": 7
+    },
+    {
+     "x": 0,
+     "y": 8
+    },
+    {
+     "x": 1,
+     "y": 8
+    }
+   ],
+   "enemySpawns": [
+    {
+     "x": 14,
+     "y": 1
+    },
+    {
+     "x": 14,
+     "y": 5
+    },
+    {
+     "x": 15,
+     "y": 8
+    },
+    {
+     "x": 13,
+     "y": 3
+    },
+    {
+     "x": 15,
+     "y": 6
+    }
+   ]
+  },
+  "forage": {
+   "pecha-berry": 1,
+   "cheri-berry": 1
+  },
+  "loot": [
+   {
+    "item": "revival-herb",
+    "chance": 0.072
+   },
+   {
+    "item": "quick-claw",
+    "chance": 0.024
+   },
+   {
+    "item": "leftovers",
+    "chance": 0.018
+   },
+   {
+    "item": "super-potion",
+    "chance": 0.12
+   }
+  ]
  }
 }

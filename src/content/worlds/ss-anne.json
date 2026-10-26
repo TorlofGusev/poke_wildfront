@@ -1,0 +1,305 @@
+{
+ "id": "ss-anne",
+ "name": "S.S. Anne",
+ "ai": "normal",
+ "deploySlots": 5,
+ "rows": [
+  "########################",
+  "#vvvvvvvvvvvvvvvvvv#vvv#",
+  "#vvvvvvvvvvvvvvvvvv#vvv#",
+  "#vvvvvvvvvvvvvvvvvv#vvv#",
+  "####v###vvvvvvvvvvv#v###",
+  "#vvvvvvvvvvvvvvvvvvvvvv#",
+  "#vvvvvvvvvvvvvvvvvvvvvv#",
+  "#vvvvvvvv######vvvvvvvv#",
+  "#vvvvvvvvvvvvvvvvvvvvvv#",
+  "#vvvvvvvvvvvvvvvvvvvvvv#",
+  "#vvvvvvvvvvvvvvvvvvvvvv#",
+  "###########v############"
+ ],
+ "start": {
+  "x": 11,
+  "y": 10
+ },
+ "areaNames": {
+  "ss-anne-deck": "S.S. Anne"
+ },
+ "exits": [
+  {
+   "name": "Vermilion City",
+   "pos": {
+    "x": 11,
+    "y": 11
+   },
+   "to": "vermilion-city",
+   "arrive": {
+    "x": 11,
+    "y": 13
+   }
+  }
+ ],
+ "spawnZones": [],
+ "pickups": [
+  {
+   "id": "ssanne-galley",
+   "pos": {
+    "x": 2,
+    "y": 1
+   },
+   "items": {
+    "super-potion": 2
+   },
+   "once": true
+  },
+  {
+   "id": "ssanne-cabin",
+   "pos": {
+    "x": 22,
+    "y": 9
+   },
+   "balls": {
+    "great-ball": 2
+   },
+   "once": true
+  },
+  {
+   "id": "ssanne-snacks",
+   "pos": {
+    "x": 8,
+    "y": 9
+   },
+   "items": {
+    "oran-berry": 2,
+    "pecha-berry": 1
+   }
+  }
+ ],
+ "npcs": [
+  {
+   "id": "ssanne-sailor-1",
+   "name": "Sailor Leonard",
+   "kind": "trainer",
+   "pos": {
+    "x": 5,
+    "y": 8
+   },
+   "text": [
+    "Matey, you're up for a battle?"
+   ],
+   "afterText": [
+    "Sea legs failed me."
+   ],
+   "team": [
+    {
+     "species": "shellder",
+     "level": 15
+    },
+    {
+     "species": "tentacool",
+     "level": 16
+    }
+   ],
+   "reward": {
+    "money": 480
+   }
+  },
+  {
+   "id": "ssanne-gentleman",
+   "name": "Gentleman Brooks",
+   "kind": "trainer",
+   "pos": {
+    "x": 16,
+    "y": 8
+   },
+   "text": [
+    "A refined battle, if you please."
+   ],
+   "afterText": [
+    "Splendid show."
+   ],
+   "team": [
+    {
+     "species": "growlithe",
+     "level": 16
+    },
+    {
+     "species": "ponyta",
+     "level": 16
+    }
+   ],
+   "reward": {
+    "money": 1120
+   }
+  },
+  {
+   "id": "ssanne-sailor-2",
+   "name": "Sailor Huey",
+   "kind": "trainer",
+   "pos": {
+    "x": 3,
+    "y": 2
+   },
+   "text": [
+    "Below deck is my turf!"
+   ],
+   "afterText": [
+    "Blimey!"
+   ],
+   "team": [
+    {
+     "species": "machop",
+     "level": 16
+    },
+    {
+     "species": "tentacool",
+     "level": 15
+    }
+   ],
+   "reward": {
+    "money": 480
+   }
+  },
+  {
+   "id": "ssanne-lass",
+   "name": "Lass Dawn",
+   "kind": "trainer",
+   "pos": {
+    "x": 14,
+    "y": 2
+   },
+   "text": [
+    "Isn't this cruise lovely?"
+   ],
+   "afterText": [
+    "My dress got wet..."
+   ],
+   "team": [
+    {
+     "species": "pidgey",
+     "level": 15
+    },
+    {
+     "species": "nidoran-f",
+     "level": 16
+    }
+   ],
+   "reward": {
+    "money": 320
+   }
+  },
+  {
+   "id": "rival-ssanne",
+   "name": "Rival",
+   "kind": "rival",
+   "pos": {
+    "x": 11,
+    "y": 5
+   },
+   "arena": "ss-anne-deck",
+   "text": [
+    "Bonjour! You're on the S.S. Anne too? Let's battle on deck!"
+   ],
+   "afterText": [
+    "The captain taught some trick to cut trees. Smell ya later!"
+   ],
+   "teamByStarter": {
+    "bulbasaur": [
+     {
+      "species": "pidgeotto",
+      "level": 17
+     },
+     {
+      "species": "raticate",
+      "level": 16
+     },
+     {
+      "species": "kadabra",
+      "level": 16
+     },
+     {
+      "species": "charmeleon",
+      "level": 17
+     }
+    ],
+    "charmander": [
+     {
+      "species": "pidgeotto",
+      "level": 17
+     },
+     {
+      "species": "raticate",
+      "level": 16
+     },
+     {
+      "species": "kadabra",
+      "level": 16
+     },
+     {
+      "species": "wartortle",
+      "level": 17
+     }
+    ],
+    "squirtle": [
+     {
+      "species": "pidgeotto",
+      "level": 17
+     },
+     {
+      "species": "raticate",
+      "level": 16
+     },
+     {
+      "species": "kadabra",
+      "level": 16
+     },
+     {
+      "species": "ivysaur",
+      "level": 17
+     }
+    ],
+    "pikachu": [
+     {
+      "species": "pidgeotto",
+      "level": 17
+     },
+     {
+      "species": "raticate",
+      "level": 16
+     },
+     {
+      "species": "kadabra",
+      "level": 16
+     },
+     {
+      "species": "eevee",
+      "level": 17
+     }
+    ]
+   },
+   "reward": {
+    "money": 1700
+   }
+  },
+  {
+   "id": "ss-anne-captain",
+   "name": "Captain",
+   "kind": "gift",
+   "pos": {
+    "x": 21,
+    "y": 2
+   },
+   "text": [
+    "Ooargh... I feel seasick. Thank you for rubbing my back!",
+    "Please, take this HM. It teaches Cut."
+   ],
+   "afterText": [
+    "Cut needs the Cascade Badge to use outside battle. Off you go, the ship sails soon!"
+   ],
+   "reward": {
+    "keyItems": [
+     "hm-cut"
+    ]
+   }
+  }
+ ]
+}

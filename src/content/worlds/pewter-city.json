@@ -1,0 +1,180 @@
+{
+ "id": "pewter-city",
+ "name": "Pewter City",
+ "ai": "novice",
+ "deploySlots": 4,
+ "rows": [
+  "########################",
+  "#########TTTTTT#########",
+  "##TTTTTT#TTTTTT#TTTTTT##",
+  "##TTTTTT#TTTTTT#TTTTTT##",
+  "##TTTTTT#TTTTTT#TTTTTT##",
+  "##TTTTTT#TTTTTT###T#####",
+  "##TTTTTT#TTTTTTTTTTTTTT#",
+  "#####T###TTTTTTTTTTTTTTT",
+  "#TTTTTTTTTTTTTTTTTTTTTT#",
+  "#TTTTTTTT###TTTTTTTTTTT#",
+  "#TT###TTTTTTTTTTT###TTT#",
+  "#TT###TTTTTTTTTTT###TTT#",
+  "#TTTTTTTTTTTTTTTT###TTT#",
+  "#TTTTTTTTTTTTTTTTTTT~~~#",
+  "#TTTTTTTTTTTTTTTTTTT~~~#",
+  "############T###########"
+ ],
+ "start": {
+  "x": 12,
+  "y": 14
+ },
+ "areaNames": {
+  "town": "Pewter City"
+ },
+ "exits": [
+  {
+   "name": "Viridian Forest",
+   "pos": {
+    "x": 12,
+    "y": 15
+   },
+   "to": "viridian-forest",
+   "arrive": {
+    "x": 11,
+    "y": 1
+   }
+  },
+  {
+   "name": "Route 3",
+   "pos": {
+    "x": 23,
+    "y": 7
+   },
+   "to": "route-3",
+   "arrive": {
+    "x": 1,
+    "y": 8
+   }
+  }
+ ],
+ "spawnZones": [],
+ "pickups": [
+  {
+   "id": "pw-potion",
+   "pos": {
+    "x": 1,
+    "y": 14
+   },
+   "items": {
+    "potion": 1,
+    "rawst-berry": 1
+   }
+  },
+  {
+   "id": "pw-park",
+   "pos": {
+    "x": 13,
+    "y": 10
+   },
+   "items": {
+    "oran-berry": 2
+   }
+  }
+ ],
+ "npcs": [
+  {
+   "id": "pewter-gym-camper",
+   "name": "Camper Liam",
+   "kind": "trainer",
+   "pos": {
+    "x": 3,
+    "y": 4
+   },
+   "arena": "mountain",
+   "text": [
+    "Stop right there! You're light-years from facing Brock!"
+   ],
+   "afterText": [
+    "Light-years measure distance, not time... whatever."
+   ],
+   "team": [
+    {
+     "species": "geodude",
+     "level": 7
+    },
+    {
+     "species": "sandshrew",
+     "level": 8
+    }
+   ],
+   "reward": {
+    "money": 160
+   }
+  },
+  {
+   "id": "brock",
+   "name": "Brock",
+   "kind": "leader",
+   "pos": {
+    "x": 5,
+    "y": 2
+   },
+   "arena": "mountain",
+   "text": [
+    "I'm Brock, Pewter's Gym Leader.",
+    "My rock-hard willpower shows in my Pokémon. Show me your best!"
+   ],
+   "afterText": [
+    "I took you for granted. Take the Boulder Badge.",
+    "With it, Flash works outside battle. Oak's aide on Route 2 has the HM."
+   ],
+   "team": [
+    {
+     "species": "geodude",
+     "level": 9,
+     "heldItem": "hard-stone"
+    },
+    {
+     "species": "onix",
+     "level": 11,
+     "heldItem": "hard-stone"
+    }
+   ],
+   "reward": {
+    "money": 1100,
+    "badge": "boulder"
+   }
+  },
+  {
+   "id": "pewter-museum",
+   "name": "Museum Curator",
+   "kind": "gift",
+   "pos": {
+    "x": 18,
+    "y": 2
+   },
+   "text": [
+    "Welcome to the Pewter Museum of Science!",
+    "We have spare amber with ancient DNA inside. Take it - Cinnabar's lab might revive it."
+   ],
+   "afterText": [
+    "Science is so wonderful!"
+   ],
+   "reward": {
+    "keyItems": [
+     "old-amber"
+    ]
+   }
+  },
+  {
+   "id": "pewter-guide",
+   "name": "Youngster",
+   "kind": "talk",
+   "pos": {
+    "x": 14,
+    "y": 6
+   },
+   "text": [
+    "Brock's Gym is the stone building to the west.",
+    "Rock types shrug off Normal and Fire. Bring Water or Grass!"
+   ]
+  }
+ ]
+}

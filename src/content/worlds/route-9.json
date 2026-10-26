@@ -1,0 +1,216 @@
+{
+ "id": "route-9",
+ "name": "Route 9",
+ "ai": "normal",
+ "deploySlots": 5,
+ "rows": [
+  "########################",
+  "#KKKKK#KKKKKKKKKKKKKKKK#",
+  "#KKKKK#KKKKKKKKKKKKKKKK#",
+  "#KKKKK#KKK###KKKKKKKKKK#",
+  "#KKKKK#KKK###KKKKKKKKKK#",
+  "KKKKKKKKKKKKKKKKKKKKKKK#",
+  "#KKKKK#KKKKKKKKKKKKKKKK#",
+  "#KKKKK#KKKKKKKK###KKKKK#",
+  "#KKKKK#KKKKKKKK###KKKKK#",
+  "#KKKKK#KKKKKKKKKKKKKKKKK",
+  "#KKKKK#KKKKKKKKKKKKKKKK#",
+  "########################"
+ ],
+ "start": {
+  "x": 1,
+  "y": 5
+ },
+ "areaNames": {
+  "rock-tunnel-route": "Route 9"
+ },
+ "exits": [
+  {
+   "name": "Cerulean City",
+   "pos": {
+    "x": 0,
+    "y": 5
+   },
+   "to": "cerulean-city",
+   "arrive": {
+    "x": 22,
+    "y": 5
+   }
+  },
+  {
+   "name": "Rock Tunnel",
+   "pos": {
+    "x": 23,
+    "y": 9
+   },
+   "to": "rock-tunnel",
+   "arrive": {
+    "x": 1,
+    "y": 2
+   },
+   "requires": {
+    "fieldMove": "flash"
+   },
+   "lockedText": "It's pitch black inside. You need Flash to go in."
+  }
+ ],
+ "spawnZones": [
+  {
+   "biome": "rock-tunnel-route",
+   "count": 3,
+   "levels": {
+    "min": 16,
+    "max": 18
+   },
+   "points": [
+    {
+     "x": 3,
+     "y": 2
+    },
+    {
+     "x": 3,
+     "y": 9
+    },
+    {
+     "x": 9,
+     "y": 7
+    },
+    {
+     "x": 14,
+     "y": 2
+    },
+    {
+     "x": 19,
+     "y": 4
+    },
+    {
+     "x": 20,
+     "y": 9
+    }
+   ]
+  }
+ ],
+ "obstacles": [
+  {
+   "pos": {
+    "x": 6,
+    "y": 5
+   },
+   "kind": "cut",
+   "opensIf": {
+    "fieldMove": "cut"
+   },
+   "text": "A thin tree blocks the path. It could be cut down."
+  }
+ ],
+ "pickups": [
+  {
+   "id": "r9-berries",
+   "pos": {
+    "x": 13,
+    "y": 10
+   },
+   "items": {
+    "oran-berry": 2,
+    "pecha-berry": 1
+   }
+  },
+  {
+   "id": "r9-band",
+   "pos": {
+    "x": 22,
+    "y": 1
+   },
+   "items": {
+    "quick-claw": 1
+   },
+   "once": true
+  }
+ ],
+ "npcs": [
+  {
+   "id": "r9-hiker",
+   "name": "Hiker Alan",
+   "kind": "trainer",
+   "pos": {
+    "x": 9,
+    "y": 2
+   },
+   "text": [
+    "The tunnel ahead is dark and rocky!"
+   ],
+   "afterText": [
+    "Get Flash before you go in."
+   ],
+   "team": [
+    {
+     "species": "geodude",
+     "level": 17
+    },
+    {
+     "species": "onix",
+     "level": 17
+    }
+   ],
+   "reward": {
+    "money": 680
+   }
+  },
+  {
+   "id": "r9-picnicker",
+   "name": "Picnicker Alicia",
+   "kind": "trainer",
+   "pos": {
+    "x": 13,
+    "y": 6
+   },
+   "text": [
+    "What a nice day for a battle!"
+   ],
+   "afterText": [
+    "Oh well."
+   ],
+   "team": [
+    {
+     "species": "bellsprout",
+     "level": 16
+    },
+    {
+     "species": "meowth",
+     "level": 17
+    }
+   ],
+   "reward": {
+    "money": 340
+   }
+  },
+  {
+   "id": "r9-bugcatcher",
+   "name": "Bug Catcher Brent",
+   "kind": "trainer",
+   "pos": {
+    "x": 19,
+    "y": 7
+   },
+   "text": [
+    "Bugs are the best!"
+   ],
+   "afterText": [
+    "Squashed..."
+   ],
+   "team": [
+    {
+     "species": "beedrill",
+     "level": 17
+    },
+    {
+     "species": "butterfree",
+     "level": 17
+    }
+   ],
+   "reward": {
+    "money": 340
+   }
+  }
+ ]
+}

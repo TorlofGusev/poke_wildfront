@@ -1,16 +1,21 @@
 import { describe, expect, it } from "vitest";
 import { CONTENT, PROGRESSION } from "../../src/content";
-import { applyAction, createBattle } from "../../src/core/battle";
-import { allocatePoint, buy, equipItem, newMember, resolveBattle, usePotion, type GameState } from "../../src/core/party";
+import { applyAction, createBattle, isSpecialMove, maxHpAt, moveRange } from "../../src/core/battle";
+import { allocatePoint, buy, equipItem, sell, newMember, resolveBattle, usePotion, type GameState } from "../../src/core/party";
 import {
   chooseRole,
   chooseTalent,
   gainXp,
+  memberModifiers,
   memberStats,
   pendingChoice,
   setActiveMoves,
+  talentFor,
   talentOptions,
-  talentPointsAt,
+  wildForm,
+  wildSetup,
+  masteryGrid,
+  resetMasteries,
   toUnitSetup,
   xpToNext,
 } from "../../src/core/progression";
@@ -19,22 +24,57 @@ import { content, pm, prog } from "./fixtures";
 const starter = (species: string, level = 5) => newMember(CONTENT, PROGRESSION, species, 1, level);
 
 describe("levels and stats", () => {
-  it("needs level × xpPerLevel XP per level; stats grow only through spent points", () => {
+  it("needs level × xpPerLevel XP per level; a level-up only adds points to spend", () => {
     expect(xpToNext(PROGRESSION, 5)).toBe(5 * PROGRESSION.rules.xpPerLevel);
     const fresh = starter("charmander", 5);
     // Points from the 4 levels it arrived with are pre-spent along the Fire playstyle.
     expect(fresh.unspentPoints).toBe(0);
-    expect(fresh.statPoints).toEqual({ hp: 1, attack: 2, defense: 0, speed: 1 });
+    expect(fresh.statPoints).toEqual({ hp: 1, attack: 1, defense: 0, spAttack: 2, spDefense: 0, speed: 0 });
     const up = gainXp(CONTENT, PROGRESSION, fresh, xpToNext(PROGRESSION, 5)).member;
     expect(up.unspentPoints).toBe(1);
     expect(memberStats(CONTENT, PROGRESSION, up).stats).toEqual(memberStats(CONTENT, PROGRESSION, fresh).stats);
   });
 
   it("type profiles give small stats: Fire is a striker, Rock a fortress", () => {
-    expect(CONTENT.species.charmander!.stats).toEqual({ hp: 4, attack: 7, defense: 3, speed: 6 });
+    expect(CONTENT.species.charmander!.stats).toEqual({ hp: 4, attack: 7, defense: 3, spAttack: 8, spDefense: 5, speed: 6 });
     // Geodude: Rock/Ground average, +1 Defense nudge.
-    expect(CONTENT.species.geodude!.stats).toEqual({ hp: 6, attack: 6, defense: 8, speed: 1 });
-    for (const sp of Object.values(CONTENT.species)) for (const v of Object.values(sp.stats)) expect(v).toBeLessThan(10);
+    expect(CONTENT.species.geodude!.stats).toEqual({ hp: 6, attack: 6, defense: 8, spAttack: 3, spDefense: 4, speed: 1 });
+    for (const sp of Object.values(CONTENT.species)) for (const v of Object.values(sp.stats)) expect(v).toBeLessThanOrEqual(10);
+  });
+
+  it("grows the chosen role's stats every level, and max HP with level and Defense", () => {
+    const m = { ...starter("squirtle", 10), role: "tank" };
+    const at = (level: number) => memberStats(CONTENT, PROGRESSION, { ...m, level });
+    const growth = PROGRESSION.roles.tank!.growth;
+    expect(at(20).stats.defense - at(10).stats.defense).toBe(Math.floor(growth.defense! * 19) - Math.floor(growth.defense! * 9));
+    expect(at(20).stats.speed).toBe(at(10).stats.speed);
+    expect(at(20).maxHp).toBeGreaterThan(at(10).maxHp);
+    const r = CONTENT.rules;
+    // Sturdier species (higher base Defense) gain more HP per level; Defense growth itself does not add HP.
+    expect(maxHpAt(CONTENT, 5, 8, 20) - maxHpAt(CONTENT, 5, 3, 20)).toBe(Math.round(19 * (r.hpPerLevel + r.hpPerLevelPerDefense * 8)) - Math.round(19 * (r.hpPerLevel + r.hpPerLevelPerDefense * 3)));
+    expect(at(20).maxHp - at(10).maxHp).toBe(maxHpAt(CONTENT, at(20).stats.hp, CONTENT.species.squirtle!.stats.defense, 20) - maxHpAt(CONTENT, at(10).stats.hp, CONTENT.species.squirtle!.stats.defense, 10));
+  });
+
+  it("splits moves by type: Fire/Water/Grass/... use Sp. Atk vs Sp. Def, the rest Attack vs Defense", () => {
+    expect(isSpecialMove(CONTENT, CONTENT.moves.ember!)).toBe(true);
+    expect(isSpecialMove(CONTENT, CONTENT.moves.tackle!)).toBe(false);
+    expect(isSpecialMove(CONTENT, { ...CONTENT.moves.tackle!, category: "special" })).toBe(true);
+  });
+
+  it("Sharpshooter: ranged moves reach further, melee moves do not; weak up close, strong at distance", () => {
+    const m = { ...starter("pikachu", 10), role: "sharpshooter", talents: ["long-shot"] };
+    const unit = toUnitSetup(CONTENT, PROGRESSION, m) as { mods: ReturnType<typeof memberModifiers> };
+    expect(moveRange(unit, CONTENT.moves["thunder-shock"]!)).toEqual({ min: 1, max: 4 });
+    expect(moveRange(unit, CONTENT.moves["quick-attack"]!)).toEqual({ min: 1, max: 1 });
+    expect(unit.mods.closeDamage).toBeLessThan(1);
+    expect(unit.mods.farDamage).toBeGreaterThan(1);
+  });
+
+  it("wild Pokémon appear evolved once their level reaches the evolution level", () => {
+    expect(wildForm(CONTENT, "caterpie", 3)).toBe("caterpie");
+    expect(wildForm(CONTENT, "caterpie", 6)).toBe("metapod");
+    expect(wildForm(CONTENT, "caterpie", 9)).toBe("butterfree");
+    expect(wildSetup(CONTENT, PROGRESSION, "weedle", 6).speciesId).toBe("kakuna");
   });
 
   it("levels up, possibly several times, and keeps leftover XP", () => {
@@ -73,24 +113,24 @@ describe("levels and stats", () => {
 });
 
 describe("roles and talents", () => {
-  it("asks for a role at the role level, then talents along the tree at talent levels", () => {
+  it("asks for a role at the role level, then one mastery per reached row", () => {
+    const c = { ...content, species: { ...content.species, fast: { ...content.species.fast!, roles: ["striker", "tank"] } } };
     let m = pm("a", "fast", 0, 40, { level: 4 });
-    const fastWithRoles = { ...content, species: { ...content.species, fast: { ...content.species.fast!, roles: ["striker", "tank"] } } };
-    expect(pendingChoice(prog, m)).toBeNull();
+    expect(pendingChoice(c, prog, m)).toBeNull();
     m = { ...m, level: 5 };
-    expect(pendingChoice(prog, m)).toBe("role");
-    expect(() => chooseRole(fastWithRoles, prog, m, "healer")).toThrow();
-    m = chooseRole(fastWithRoles, prog, m, "striker");
-    expect(pendingChoice(prog, m)).toBeNull();
+    expect(pendingChoice(c, prog, m)).toBe("role");
+    expect(() => chooseRole(c, prog, m, "healer")).toThrow();
+    m = chooseRole(c, prog, m, "striker");
+    expect(pendingChoice(c, prog, m)).toBeNull();
     m = { ...m, level: 7 };
-    // Brutal needs Power first: only the root is open.
-    expect(talentOptions(prog, m)).toEqual(["power"]);
-    expect(() => chooseTalent(prog, m, "brutal")).toThrow(/not available/);
-    m = chooseTalent(prog, m, "power");
-    expect(talentOptions(prog, m)).toEqual(["brutal"]);
-    m = chooseTalent(prog, m, "brutal");
-    expect(pendingChoice(prog, m)).toBeNull();
-    expect(() => chooseTalent(prog, m, "brutal")).toThrow(/no talent choice/);
+    // Power and Brutal share the Lv 6 row: picking one closes the other.
+    expect(talentOptions(c, prog, m)).toEqual(["power", "brutal", "shell"]);
+    m = chooseTalent(c, prog, m, "power");
+    expect(talentOptions(c, prog, m)).toEqual(["shell"]);
+    expect(() => chooseTalent(c, prog, m, "brutal")).toThrow(/not available/);
+    m = chooseTalent(c, prog, m, "shell");
+    expect(pendingChoice(c, prog, m)).toBeNull();
+    expect(() => chooseTalent(c, prog, m, "brutal")).toThrow(/no talent choice/);
   });
 
   it("stat talents raise stats and role talents change battle results", () => {
@@ -140,6 +180,15 @@ describe("money, shop and items", () => {
     expect(() => buy(shopContent, prog, g, "rare-candy")).toThrow(/not sold/);
   });
 
+  it("sells balls and items back for half their price", () => {
+    let g = buy(shopContent, prog, game(), "poke-ball", 2);
+    g = sell(shopContent, prog, g, "poke-ball");
+    expect(g.money).toBe(500 - 200 + 50);
+    expect(g.inventory.balls["poke-ball"]).toBe(1);
+    expect(() => sell(shopContent, prog, g, "poke-ball", 2)).toThrow(/not enough in the bag/);
+    expect(() => sell(shopContent, prog, g, "rare-candy")).toThrow();
+  });
+
   it("equips one held item, swapping the old one back into the bag", () => {
     let g: GameState = { ...game(), inventory: { balls: {}, items: { claw: 1 } } };
     g = equipItem(prog, g, "a", "claw");
@@ -177,7 +226,7 @@ describe("money, shop and items", () => {
     expect(() => usePotion(content, prog, fainted, "a", "potion")).toThrow(/fainted/);
   });
 
-  it("victory pays XP to deployed Pokémon and money by defeated levels", () => {
+  it("victory pays full XP to deployed Pokémon, half to the bench (Exp. Share), and money by defeated levels", () => {
     const g = { ...game(), roster: { ...game().roster, party: [pm("a", "fast", 0, 40, { level: 5 }), pm("b", "fast", 0, 40, { level: 5 })] } };
     let { state } = createBattle(content, ["..."], [
       { id: "a", speciesId: "fast", side: "player", pos: { x: 0, y: 0 } },
@@ -189,8 +238,8 @@ describe("money, shop and items", () => {
     expect(summary).toMatchObject({ xp: 20, money: 40, candies: 1 });
     expect(next.inventory.items.candy).toBe(1);
     expect(next.money).toBe(540);
-    expect(next.roster.party.find((m) => m.uid === "a")!.xp).toBe(20);
-    expect(next.roster.party.find((m) => m.uid === "b")!.xp).toBe(0);
+    expect(next.roster.party.find((m) => m.uid === "a")!.xp).toBe(14); // L5 vs an L4 foe: 30% less
+    expect(next.roster.party.find((m) => m.uid === "b")!.xp).toBe(7);
   });
 });
 
@@ -206,28 +255,44 @@ describe("content", () => {
   });
 });
 
-describe("talent trees", () => {
+describe("mastery grid", () => {
   const charmander = (level: number, talents: string[] = []) => ({ ...starter("charmander", level), role: "striker", talents });
 
-  it("grants talent points only at talent levels", () => {
-    expect(talentPointsAt(PROGRESSION, 3)).toBe(0);
-    expect(talentPointsAt(PROGRESSION, 4)).toBe(1);
-    expect(talentPointsAt(PROGRESSION, 5)).toBe(1);
-    expect(talentPointsAt(PROGRESSION, 6)).toBe(2);
-    expect(pendingChoice(PROGRESSION, charmander(5, ["power"]))).toBeNull();
+  it("rows merge the role tree and every type tree by level", () => {
+    const rows = masteryGrid(CONTENT, PROGRESSION, "charmander", "striker");
+    expect(rows.find((r) => r.level === 6)!.options).toEqual(["type-fire", "flame-body"]);
+    expect(rows.find((r) => r.level === 12)!.options).toEqual(["momentum", "last-stand", "skill-fire-spin"]);
+    // A dual type gets both types' options in the same rows; without a role only type rows exist.
+    const bulba = masteryGrid(CONTENT, PROGRESSION, "bulbasaur", null);
+    expect(bulba.find((r) => r.level === 6)!.options).toEqual(["type-grass", "spore-cloud", "type-poison", "toxic-barbs"]);
+    expect(bulba.some((r) => r.level === 4)).toBe(false);
   });
 
-  it("opens roots first, then children of learned talents, and the type talent at its level", () => {
-    expect(talentOptions(PROGRESSION, charmander(4), ["fire"])).toEqual(["rally", "brutal"]);
-    expect(talentOptions(PROGRESSION, charmander(6, ["brutal"]), ["fire"])).toEqual(["rally", "skill-focus-energy"]);
-    expect(talentOptions(PROGRESSION, charmander(8, ["brutal", "skill-focus-energy"]), ["fire"])).toContain("type-fire");
+  it("offers the options of every reached row without a pick", () => {
+    expect(pendingChoice(CONTENT, PROGRESSION, charmander(3))).toBeNull();
+    expect(talentOptions(CONTENT, PROGRESSION, charmander(4))).toEqual(["rally", "heavy-hitter"]);
+    expect(talentOptions(CONTENT, PROGRESSION, charmander(6, ["rally"]))).toEqual(["type-fire", "flame-body"]);
+    expect(talentOptions(CONTENT, PROGRESSION, charmander(8, ["rally", "flame-body"]))).toEqual(["follow-through", "skill-focus-energy"]);
   });
 
-  it("skill talents teach a new move and activate it when there is room", () => {
-    const m = { ...charmander(6, ["brutal"]), activeMoves: ["ember"] };
-    const next = chooseTalent(PROGRESSION, m, "skill-focus-energy", ["fire"]);
-    expect(next.knownMoves).toContain("focus-energy");
-    expect(next.activeMoves).toEqual(["ember", "focus-energy"]);
+  it("skill masteries teach a new move and activate it when there is room", () => {
+    const m = { ...charmander(8, ["rally", "flame-body"]), activeMoves: ["ember"] };
+    const next = chooseTalent(CONTENT, PROGRESSION, m, "skill-focus-energy");
+    expect(next.knownMoves).toContain("focus-energy--fire");
+    // A Fire Pokémon learns the Fire version of the skill (Sunny Day), named after it.
+    expect(talentFor(CONTENT, PROGRESSION, "skill-focus-energy", ["fire"]).name).toBe("Sunny Day");
+    expect(talentFor(CONTENT, PROGRESSION, "skill-focus-energy", ["normal"]).name).toBe("Focus Energy");
+    expect(next.activeMoves).toEqual(["ember", "focus-energy--fire"]);
+  });
+
+  it("a reset forgets the role, masteries and the moves they taught", () => {
+    const m = chooseTalent(CONTENT, PROGRESSION, { ...charmander(8, ["rally", "flame-body"]), activeMoves: ["ember"] }, "skill-focus-energy");
+    const r = resetMasteries(CONTENT, m);
+    expect(r.role).toBeNull();
+    expect(r.talents).toEqual([]);
+    expect(r.knownMoves).not.toContain("focus-energy--fire");
+    expect(r.activeMoves).toEqual(["ember"]);
+    expect(pendingChoice(CONTENT, PROGRESSION, r)).toBe("role");
   });
 
   it("Protect blocks all damage until the user's next turn ends", () => {
@@ -242,18 +307,37 @@ describe("talent trees", () => {
     expect(r.events).toContainEqual(expect.objectContaining({ type: "damaged", unitId: "p", amount: 0 }));
   });
 
-  it("every tree references valid talents and prerequisites in earlier rows", () => {
-    for (const role of Object.values(PROGRESSION.roles)) {
-      for (const n of role.tree) {
-        if (n.talent !== "@type") expect(PROGRESSION.talents, `${role.id}: ${n.talent}`).toHaveProperty(n.talent);
-        for (const r of n.requires ?? []) {
-          const parent = role.tree.find((p) => p.talent === r);
-          expect(parent, `${role.id}: ${n.talent} requires ${r}`).toBeDefined();
-          expect(parent!.level).toBeLessThan(n.level);
-        }
-      }
-    }
+  it("every tree references valid masteries; every type has its own tree; rows stay small", () => {
+    for (const role of [...Object.values(PROGRESSION.roles), ...Object.values(PROGRESSION.typeTrees)])
+      for (const n of role.tree) if (n.talent !== "@type") expect(PROGRESSION.talents, `${role.id}: ${n.talent}`).toHaveProperty(n.talent);
+    for (const sp of Object.values(CONTENT.species))
+      for (const role of sp.roles ?? []) for (const row of masteryGrid(CONTENT, PROGRESSION, sp.id, role)) expect(row.options.length, `${sp.id}/${role} Lv ${row.level}`).toBeLessThanOrEqual(4);
     for (const t of Object.values(PROGRESSION.talents)) if (t.grantsMove) expect(CONTENT.moves, t.id).toHaveProperty(t.grantsMove);
-    for (const id of Object.keys(CONTENT.types)) expect(Object.values(PROGRESSION.talents).some((t) => t.requiresType === id), id).toBe(true);
+    for (const id of Object.keys(CONTENT.types)) {
+      const tree = PROGRESSION.typeTrees[id]?.tree ?? [];
+      expect(tree.length, id).toBeGreaterThanOrEqual(5);
+      for (const n of tree) expect(PROGRESSION.talents[n.talent]?.requiresType, n.talent).toBe(id);
+    }
+    // A mastery lives in at most one tree, so points are counted per tree.
+    const all = [...Object.values(PROGRESSION.roles), ...Object.values(PROGRESSION.typeTrees)].flatMap((r) => r.tree.map((n) => `${r.id}:${n.talent}`));
+    const typeIds = Object.values(PROGRESSION.typeTrees).flatMap((r) => r.tree.map((n) => n.talent));
+    const roleIds = Object.values(PROGRESSION.roles).flatMap((r) => r.tree.map((n) => n.talent));
+    expect(typeIds.filter((t) => roleIds.includes(t))).toEqual([]);
+    expect(new Set(typeIds).size).toBe(typeIds.length);
+    // Names are unique too, so two nodes of a tree never read the same.
+    const names = Object.values(PROGRESSION.talents).map((t) => t.name);
+    expect(names.filter((n, i) => names.indexOf(n) !== i)).toEqual([]);
+    expect(all.length).toBeGreaterThan(0);
+  });
+});
+
+describe("level-gap XP", () => {
+  it("gives less above the foes' level and more below it, within bounds", async () => {
+    const { scaledXp } = await import("../../src/core/progression");
+    expect(scaledXp(100, 10, [10, 10])).toBe(100);
+    expect(scaledXp(100, 12, [10])).toBe(40);
+    expect(scaledXp(100, 20, [10])).toBe(10);
+    expect(scaledXp(100, 7, [10])).toBe(130);
+    expect(scaledXp(100, 1, [10])).toBe(150);
   });
 });

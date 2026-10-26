@@ -1,178 +1,129 @@
 {
  "id": "route-2",
- "name": "Route 2 & Viridian Forest",
+ "name": "Route 2",
+ "ai": "tutorial",
+ "deploySlots": 3,
  "rows": [
-  "##########.#############",
-  "#\"\"\"\"\"..........^^^^^^^#",
-  "#\"\"\"\"\"..........^^^cccc#",
-  "#\"\"\"\"\".\"\"\"\"\"\"\"\"\"^^^cccc#",
-  "#......\"\"\"\"\"\"\"\"\"^^^cccc#",
-  "#.....#\"\"\"\"\"\"\"\"\"^^^^^^^#",
-  "#.....#\"\"\"\"\"\"\"\"\"^^^^^^^#",
-  "#......\"\"..\"\"\"\"\".......#",
-  "#......\"\"..\"\"\"\"\".......#",
-  "#......\"\"\"\"\"\"\"\"\"#......#",
-  "#......\"\"\"\"\"\"\"\"\".~~~~~.#",
-  "#TTTTT.\"\"\"\"\"\"\"\"\".~~~~~.#",
-  "#TTTTT.\"\"\"\"\"\"\"\"\".~~~~~.#",
-  "#TTTTT.....##..##~~~~~.#",
-  "#TTTTT.................#",
-  "########################"
+  "############.###########",
+  "#............#....\"\"\"\".#",
+  "#.rrrrrrr....#.........#",
+  "#.rrrrrrr....#.rrrrrrr.#",
+  "#.rrrrrrr....#.rrrrrrr.#",
+  "#.rrrrrrr.##...rrrrrrr.#",
+  "#.rrrrrrr.##...rrrrrrr.#",
+  "#.........##...rrrrrrr.#",
+  "###.......##...........#",
+  "#..rrrrrrr##.........###",
+  "#..rrrrrrr##...rrrrrr..#",
+  "#..rrrrrrr.....rrrrrr..#",
+  "#..rrrrrrr.....rrrrrr..#",
+  "#..rrrrrrr.....rrrrrr..#",
+  "#......................#",
+  "############.###########"
  ],
  "start": {
-  "x": 3,
-  "y": 13
+  "x": 12,
+  "y": 14
  },
- "spawnZones": [
+ "areaNames": {
+  "route": "Route 2",
+  "kanto-grass": "Route 2 grass",
+  "forest": "Route 2 copse"
+ },
+ "exits": [
   {
-   "biome": "route",
-   "count": 2,
-   "points": [
-    {
-     "x": 6,
-     "y": 10
-    },
-    {
-     "x": 7,
-     "y": 13
-    },
-    {
-     "x": 3,
-     "y": 8
-    },
-    {
-     "x": 4,
-     "y": 6
-    },
-    {
-     "x": 6,
-     "y": 2
-    }
-   ],
-   "levels": {
-    "min": 1,
-    "max": 2
+   "name": "Viridian City",
+   "pos": {
+    "x": 12,
+    "y": 15
+   },
+   "to": "viridian-city",
+   "arrive": {
+    "x": 12,
+    "y": 1
    }
   },
   {
-   "biome": "forest",
+   "name": "Viridian Forest",
+   "pos": {
+    "x": 12,
+    "y": 0
+   },
+   "to": "viridian-forest",
+   "arrive": {
+    "x": 12,
+    "y": 14
+   }
+  }
+ ],
+ "spawnZones": [
+  {
+   "biome": "kanto-grass",
    "count": 3,
+   "levels": {
+    "min": 2,
+    "max": 4
+   },
    "points": [
     {
-     "x": 8,
-     "y": 4
-    },
-    {
-     "x": 12,
-     "y": 5
-    },
-    {
-     "x": 14,
-     "y": 9
-    },
-    {
-     "x": 11,
-     "y": 11
-    },
-    {
-     "x": 13,
+     "x": 3,
      "y": 3
     },
     {
-     "x": 8,
-     "y": 11
-    }
-   ],
-   "levels": {
-    "min": 1,
-    "max": 3
-   }
-  },
-  {
-   "biome": "mountain",
-   "count": 2,
-   "points": [
-    {
-     "x": 17,
-     "y": 2
-    },
-    {
-     "x": 18,
+     "x": 7,
      "y": 5
-    },
-    {
-     "x": 21,
-     "y": 6
     },
     {
      "x": 16,
      "y": 4
-    }
-   ],
-   "levels": {
-    "min": 2,
-    "max": 3
-   }
-  },
-  {
-   "biome": "cave",
-   "count": 1,
-   "points": [
+    },
     {
      "x": 20,
-     "y": 3
+     "y": 6
     },
     {
-     "x": 21,
-     "y": 2
+     "x": 4,
+     "y": 10
     },
     {
-     "x": 22,
-     "y": 4
+     "x": 8,
+     "y": 12
+    },
+    {
+     "x": 16,
+     "y": 11
+    },
+    {
+     "x": 19,
+     "y": 13
     }
-   ],
+   ]
+  },
+  {
+   "biome": "forest",
+   "count": 1,
    "levels": {
     "min": 3,
-    "max": 3
-   }
+    "max": 4
+   },
+   "points": [
+    {
+     "x": 18,
+     "y": 1
+    },
+    {
+     "x": 20,
+     "y": 1
+    }
+   ]
   }
  ],
  "pickups": [
   {
-   "id": "grove-balls",
-   "pos": {
-    "x": 2,
-    "y": 2
-   },
-   "balls": {
-    "poke-ball": 3
-   }
-  },
-  {
-   "id": "forest-great",
-   "pos": {
-    "x": 14,
-    "y": 11
-   },
-   "balls": {
-    "great-ball": 2
-   }
-  },
-  {
-   "id": "cave-ultra",
-   "pos": {
-    "x": 22,
-    "y": 2
-   },
-   "balls": {
-    "ultra-ball": 1
-   }
-  },
-  {
    "id": "r2-berries",
    "pos": {
-    "x": 5,
-    "y": 8
+    "x": 1,
+    "y": 13
    },
    "items": {
     "oran-berry": 2,
@@ -180,58 +131,56 @@
    }
   },
   {
-   "id": "r2-forest-cache",
+   "id": "r2-copse",
    "pos": {
-    "x": 10,
-    "y": 8
+    "x": 21,
+    "y": 1
    },
    "items": {
-    "miracle-seed": 1,
-    "potion": 1
+    "miracle-seed": 1
    },
    "once": true
   },
   {
-   "id": "r2-ridge-herb",
-   "pos": {
-    "x": 19,
-    "y": 7
-   },
-   "items": {
-    "revival-herb": 1,
-    "rawst-berry": 2
-   }
-  },
-  {
-   "id": "r2-lakeside",
+   "id": "r2-balls",
    "pos": {
     "x": 22,
-    "y": 13
+    "y": 5
    },
-   "items": {
-    "sharp-beak": 1
-   },
-   "once": true
+   "balls": {
+    "poke-ball": 2
+   }
   }
  ],
- "areaNames": {
-  "town": "Viridian City",
-  "route": "Route 2",
-  "forest": "Viridian Forest",
-  "mountain": "Rocky ridge",
-  "cave": "Diglett hollow"
- },
- "exits": [
+ "npcs": [
   {
-   "name": "Pewter City",
+   "id": "route2-aide",
+   "name": "Oak's Aide",
+   "kind": "gift",
    "pos": {
-    "x": 10,
-    "y": 0
+    "x": 14,
+    "y": 8
    },
-   "to": "route-3",
-   "arrive": {
-    "x": 4,
-    "y": 14
+   "requires": {
+    "flags": [
+     "npc:brock"
+    ]
+   },
+   "lockedText": [
+    "I'm one of Professor Oak's aides.",
+    "Beat Brock in Pewter City and I'll have something for you."
+   ],
+   "text": [
+    "You beat Brock? The professor will be thrilled!",
+    "Take HM05 Flash. With the Boulder Badge it lights up dark caves."
+   ],
+   "afterText": [
+    "Flash will help you through Rock Tunnel later on."
+   ],
+   "reward": {
+    "keyItems": [
+     "hm-flash"
+    ]
    }
   }
  ]

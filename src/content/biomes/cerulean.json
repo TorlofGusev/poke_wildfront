@@ -1,0 +1,670 @@
+{
+ "cerulean-route4": {
+  "id": "cerulean-route4",
+  "name": "Route 4",
+  "char": "A",
+  "travelCost": 1,
+  "encounters": {
+   "groupSize": {
+    "min": 2,
+    "max": 3
+   },
+   "entries": [
+    {
+     "speciesId": "spearow",
+     "weight": 4
+    },
+    {
+     "speciesId": "rattata",
+     "weight": 4
+    },
+    {
+     "speciesId": "ekans",
+     "weight": 3
+    },
+    {
+     "speciesId": "sandshrew",
+     "weight": 3
+    },
+    {
+     "speciesId": "mankey",
+     "weight": 1,
+     "maxPerGroup": 1
+    }
+   ],
+   "levels": {
+    "min": 12,
+    "max": 13
+   }
+  },
+  "arena": {
+   "mapRows": [
+    "................",
+    "..\"\"......##....",
+    "..\"\"............",
+    "......#.........",
+    "......#...\"\"....",
+    "..........\"\"....",
+    "...##...........",
+    "..........mm....",
+    "......\"\"..mm....",
+    "................"
+   ],
+   "deploymentZone": [
+    {
+     "x": 0,
+     "y": 1
+    },
+    {
+     "x": 1,
+     "y": 1
+    },
+    {
+     "x": 0,
+     "y": 2
+    },
+    {
+     "x": 1,
+     "y": 2
+    },
+    {
+     "x": 0,
+     "y": 3
+    },
+    {
+     "x": 1,
+     "y": 3
+    },
+    {
+     "x": 0,
+     "y": 4
+    },
+    {
+     "x": 1,
+     "y": 4
+    },
+    {
+     "x": 0,
+     "y": 5
+    },
+    {
+     "x": 1,
+     "y": 5
+    },
+    {
+     "x": 0,
+     "y": 6
+    },
+    {
+     "x": 1,
+     "y": 6
+    },
+    {
+     "x": 0,
+     "y": 7
+    },
+    {
+     "x": 1,
+     "y": 7
+    },
+    {
+     "x": 0,
+     "y": 8
+    },
+    {
+     "x": 1,
+     "y": 8
+    }
+   ],
+   "enemySpawns": [
+    {
+     "x": 14,
+     "y": 1
+    },
+    {
+     "x": 14,
+     "y": 5
+    },
+    {
+     "x": 15,
+     "y": 8
+    },
+    {
+     "x": 13,
+     "y": 3
+    },
+    {
+     "x": 15,
+     "y": 6
+    }
+   ]
+  },
+  "forage": {
+   "oran-berry": 2,
+   "cheri-berry": 1
+  },
+  "loot": [
+   {
+    "item": "potion",
+    "chance": 0.12
+   },
+   {
+    "item": "oran-berry",
+    "chance": 0.15
+   },
+   {
+    "item": "super-potion",
+    "chance": 0.05
+   }
+  ]
+ },
+ "cerulean-route24": {
+  "id": "cerulean-route24",
+  "name": "Routes 24 & 25",
+  "char": "B",
+  "travelCost": 2,
+  "encounters": {
+   "groupSize": {
+    "min": 2,
+    "max": 4
+   },
+   "entries": [
+    {
+     "speciesId": "oddish",
+     "weight": 3
+    },
+    {
+     "speciesId": "bellsprout",
+     "weight": 3
+    },
+    {
+     "speciesId": "venonat",
+     "weight": 3
+    },
+    {
+     "speciesId": "pidgey",
+     "weight": 3
+    },
+    {
+     "speciesId": "metapod",
+     "weight": 2,
+     "maxPerGroup": 1
+    },
+    {
+     "speciesId": "kakuna",
+     "weight": 2,
+     "maxPerGroup": 1
+    },
+    {
+     "speciesId": "abra",
+     "weight": 1,
+     "maxPerGroup": 1
+    }
+   ],
+   "levels": {
+    "min": 13,
+    "max": 15
+   }
+  },
+  "arena": {
+   "mapRows": [
+    "..\"\"\"\"..........",
+    "..\"\"\"\"....##....",
+    "........\"\"\"\"....",
+    "...##...\"\"\"\"....",
+    "...##...........",
+    "..........##....",
+    "..\"\"............",
+    "..\"\"....\"\"\"\"....",
+    "........\"\"\"\"....",
+    "................"
+   ],
+   "deploymentZone": [
+    {
+     "x": 0,
+     "y": 1
+    },
+    {
+     "x": 1,
+     "y": 1
+    },
+    {
+     "x": 0,
+     "y": 2
+    },
+    {
+     "x": 1,
+     "y": 2
+    },
+    {
+     "x": 0,
+     "y": 3
+    },
+    {
+     "x": 1,
+     "y": 3
+    },
+    {
+     "x": 0,
+     "y": 4
+    },
+    {
+     "x": 1,
+     "y": 4
+    },
+    {
+     "x": 0,
+     "y": 5
+    },
+    {
+     "x": 1,
+     "y": 5
+    },
+    {
+     "x": 0,
+     "y": 6
+    },
+    {
+     "x": 1,
+     "y": 6
+    },
+    {
+     "x": 0,
+     "y": 7
+    },
+    {
+     "x": 1,
+     "y": 7
+    },
+    {
+     "x": 0,
+     "y": 8
+    },
+    {
+     "x": 1,
+     "y": 8
+    }
+   ],
+   "enemySpawns": [
+    {
+     "x": 14,
+     "y": 1
+    },
+    {
+     "x": 14,
+     "y": 5
+    },
+    {
+     "x": 15,
+     "y": 8
+    },
+    {
+     "x": 13,
+     "y": 3
+    },
+    {
+     "x": 15,
+     "y": 6
+    }
+   ]
+  },
+  "forage": {
+   "pecha-berry": 2,
+   "oran-berry": 1
+  },
+  "loot": [
+   {
+    "item": "potion",
+    "chance": 0.12
+   },
+   {
+    "item": "miracle-seed",
+    "chance": 0.03
+   },
+   {
+    "item": "super-potion",
+    "chance": 0.06
+   }
+  ]
+ },
+ "cerulean-water": {
+  "id": "cerulean-water",
+  "name": "Cerulean shore",
+  "char": "C",
+  "travelCost": 2,
+  "encounters": {
+   "groupSize": {
+    "min": 2,
+    "max": 3
+   },
+   "entries": [
+    {
+     "speciesId": "goldeen",
+     "weight": 4
+    },
+    {
+     "speciesId": "psyduck",
+     "weight": 3
+    },
+    {
+     "speciesId": "poliwag",
+     "weight": 3
+    },
+    {
+     "speciesId": "magikarp",
+     "weight": 3
+    },
+    {
+     "speciesId": "slowpoke",
+     "weight": 1,
+     "maxPerGroup": 1
+    }
+   ],
+   "levels": {
+    "min": 13,
+    "max": 16
+   }
+  },
+  "arena": {
+   "mapRows": [
+    "................",
+    "......~~~~......",
+    "......~~~~......",
+    "..##..........~~",
+    "..............~~",
+    "......~~~~......",
+    "......~~~~......",
+    "...........##...",
+    "..mm............",
+    "................"
+   ],
+   "deploymentZone": [
+    {
+     "x": 0,
+     "y": 1
+    },
+    {
+     "x": 1,
+     "y": 1
+    },
+    {
+     "x": 0,
+     "y": 2
+    },
+    {
+     "x": 1,
+     "y": 2
+    },
+    {
+     "x": 0,
+     "y": 3
+    },
+    {
+     "x": 1,
+     "y": 3
+    },
+    {
+     "x": 0,
+     "y": 4
+    },
+    {
+     "x": 1,
+     "y": 4
+    },
+    {
+     "x": 0,
+     "y": 5
+    },
+    {
+     "x": 1,
+     "y": 5
+    },
+    {
+     "x": 0,
+     "y": 6
+    },
+    {
+     "x": 1,
+     "y": 6
+    },
+    {
+     "x": 0,
+     "y": 7
+    },
+    {
+     "x": 1,
+     "y": 7
+    },
+    {
+     "x": 0,
+     "y": 8
+    },
+    {
+     "x": 1,
+     "y": 8
+    }
+   ],
+   "enemySpawns": [
+    {
+     "x": 14,
+     "y": 1
+    },
+    {
+     "x": 14,
+     "y": 5
+    },
+    {
+     "x": 15,
+     "y": 8
+    },
+    {
+     "x": 13,
+     "y": 3
+    },
+    {
+     "x": 15,
+     "y": 6
+    }
+   ]
+  },
+  "forage": {
+   "oran-berry": 1,
+   "rawst-berry": 1
+  },
+  "loot": [
+   {
+    "item": "mystic-water",
+    "chance": 0.03
+   },
+   {
+    "item": "super-potion",
+    "chance": 0.08
+   },
+   {
+    "item": "oran-berry",
+    "chance": 0.15
+   }
+  ]
+ },
+ "cerulean-cave": {
+  "id": "cerulean-cave",
+  "name": "Cerulean Cave",
+  "char": "D",
+  "travelCost": 3,
+  "encounters": {
+   "groupSize": {
+    "min": 3,
+    "max": 4
+   },
+   "entries": [
+    {
+     "speciesId": "kadabra",
+     "weight": 3
+    },
+    {
+     "speciesId": "electrode",
+     "weight": 3
+    },
+    {
+     "speciesId": "rhydon",
+     "weight": 3
+    },
+    {
+     "speciesId": "ditto",
+     "weight": 3
+    },
+    {
+     "speciesId": "chansey",
+     "weight": 2,
+     "maxPerGroup": 1
+    },
+    {
+     "speciesId": "golbat",
+     "weight": 3
+    },
+    {
+     "speciesId": "parasect",
+     "weight": 2
+    },
+    {
+     "speciesId": "mewtwo",
+     "weight": 0.2,
+     "maxPerGroup": 1
+    },
+    {
+     "speciesId": "mew",
+     "weight": 0.1,
+     "maxPerGroup": 1
+    }
+   ],
+   "levels": {
+    "min": 28,
+    "max": 30
+   }
+  },
+  "arena": {
+   "mapRows": [
+    "....##....##....",
+    "................",
+    "..#...~~...#....",
+    "..#...~~...#....",
+    "................",
+    "......##..mm....",
+    "..mm..##........",
+    "..........#..#..",
+    "....#...........",
+    "..##.....##....."
+   ],
+   "deploymentZone": [
+    {
+     "x": 0,
+     "y": 1
+    },
+    {
+     "x": 1,
+     "y": 1
+    },
+    {
+     "x": 0,
+     "y": 2
+    },
+    {
+     "x": 1,
+     "y": 2
+    },
+    {
+     "x": 0,
+     "y": 3
+    },
+    {
+     "x": 1,
+     "y": 3
+    },
+    {
+     "x": 0,
+     "y": 4
+    },
+    {
+     "x": 1,
+     "y": 4
+    },
+    {
+     "x": 0,
+     "y": 5
+    },
+    {
+     "x": 1,
+     "y": 5
+    },
+    {
+     "x": 0,
+     "y": 6
+    },
+    {
+     "x": 1,
+     "y": 6
+    },
+    {
+     "x": 0,
+     "y": 7
+    },
+    {
+     "x": 1,
+     "y": 7
+    },
+    {
+     "x": 0,
+     "y": 8
+    },
+    {
+     "x": 1,
+     "y": 8
+    }
+   ],
+   "enemySpawns": [
+    {
+     "x": 14,
+     "y": 1
+    },
+    {
+     "x": 14,
+     "y": 5
+    },
+    {
+     "x": 15,
+     "y": 8
+    },
+    {
+     "x": 13,
+     "y": 3
+    },
+    {
+     "x": 15,
+     "y": 6
+    }
+   ]
+  },
+  "forage": {
+   "pecha-berry": 1,
+   "cheri-berry": 1
+  },
+  "loot": [
+   {
+    "item": "leftovers",
+    "chance": 0.05
+   },
+   {
+    "item": "quick-claw",
+    "chance": 0.05
+   },
+   {
+    "item": "revival-herb",
+    "chance": 0.1
+   },
+   {
+    "item": "super-potion",
+    "chance": 0.15
+   }
+  ]
+ }
+}

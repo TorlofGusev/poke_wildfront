@@ -1,0 +1,244 @@
+{
+ "id": "viridian-forest",
+ "name": "Viridian Forest",
+ "ai": "tutorial",
+ "deploySlots": 3,
+ "rows": [
+  "###########p############",
+  "#pppppppppppp#ppppppppp#",
+  "#pp#######ppp#ppppppppp#",
+  "#pp#######ppp#pp######p#",
+  "#pppppppppppp#pp######p#",
+  "#pppppppppppp#ppppppppp#",
+  "#p#########pp#ppppppppp#",
+  "#pppppppppppppp#########",
+  "#pppppppppppppppppppppp#",
+  "#ppp#pp########pppppppp#",
+  "#ppp#pp########pp#ppppp#",
+  "#ppp#pppppppppppp#ppppp#",
+  "#ppp#ppp#######pp#p#####",
+  "#ppp#ppp#######pp#ppppp#",
+  "#pppppppppppppppppppppp#",
+  "############p###########"
+ ],
+ "start": {
+  "x": 12,
+  "y": 14
+ },
+ "areaNames": {
+  "viridian-forest": "Viridian Forest"
+ },
+ "exits": [
+  {
+   "name": "Route 2",
+   "pos": {
+    "x": 12,
+    "y": 15
+   },
+   "to": "route-2",
+   "arrive": {
+    "x": 12,
+    "y": 1
+   }
+  },
+  {
+   "name": "Pewter City",
+   "pos": {
+    "x": 11,
+    "y": 0
+   },
+   "to": "pewter-city",
+   "arrive": {
+    "x": 12,
+    "y": 14
+   }
+  }
+ ],
+ "spawnZones": [
+  {
+   "biome": "viridian-forest",
+   "count": 4,
+   "levels": {
+    "min": 3,
+    "max": 4
+   },
+   "points": [
+    {
+     "x": 2,
+     "y": 3
+    },
+    {
+     "x": 10,
+     "y": 4
+    },
+    {
+     "x": 20,
+     "y": 2
+    },
+    {
+     "x": 18,
+     "y": 5
+    },
+    {
+     "x": 6,
+     "y": 8
+    },
+    {
+     "x": 20,
+     "y": 9
+    },
+    {
+     "x": 2,
+     "y": 12
+    },
+    {
+     "x": 16,
+     "y": 13
+    },
+    {
+     "x": 21,
+     "y": 14
+    },
+    {
+     "x": 6,
+     "y": 14
+    }
+   ]
+  }
+ ],
+ "pickups": [
+  {
+   "id": "vf-balls",
+   "pos": {
+    "x": 1,
+    "y": 1
+   },
+   "balls": {
+    "poke-ball": 3
+   }
+  },
+  {
+   "id": "vf-cache",
+   "pos": {
+    "x": 22,
+    "y": 13
+   },
+   "items": {
+    "miracle-seed": 1,
+    "potion": 1
+   },
+   "once": true
+  },
+  {
+   "id": "vf-berries",
+   "pos": {
+    "x": 5,
+    "y": 11
+   },
+   "items": {
+    "oran-berry": 2,
+    "pecha-berry": 2
+   }
+  },
+  {
+   "id": "vf-potion",
+   "pos": {
+    "x": 16,
+    "y": 1
+   },
+   "items": {
+    "potion": 1
+   }
+  }
+ ],
+ "npcs": [
+  {
+   "id": "bugcatcher-rick",
+   "name": "Bug Catcher Rick",
+   "kind": "trainer",
+   "pos": {
+    "x": 15,
+    "y": 11
+   },
+   "text": [
+    "Hey! You have Pokémon! Come on, let's battle!"
+   ],
+   "afterText": [
+    "No! My bugs got squished!"
+   ],
+   "team": [
+    {
+     "species": "weedle",
+     "level": 4
+    },
+    {
+     "species": "caterpie",
+     "level": 4
+    }
+   ],
+   "reward": {
+    "money": 80
+   }
+  },
+  {
+   "id": "bugcatcher-doug",
+   "name": "Bug Catcher Doug",
+   "kind": "trainer",
+   "pos": {
+    "x": 7,
+    "y": 7
+   },
+   "text": [
+    "I caught these in the tall grass! Watch out for Poison Sting!"
+   ],
+   "afterText": [
+    "Kakuna just sat there..."
+   ],
+   "team": [
+    {
+     "species": "weedle",
+     "level": 4
+    },
+    {
+     "species": "kakuna",
+     "level": 4
+    },
+    {
+     "species": "weedle",
+     "level": 3
+    }
+   ],
+   "reward": {
+    "money": 90
+   }
+  },
+  {
+   "id": "bugcatcher-sammy",
+   "name": "Bug Catcher Sammy",
+   "kind": "trainer",
+   "pos": {
+    "x": 14,
+    "y": 2
+   },
+   "text": [
+    "The forest is my home turf. You won't get out that easy!"
+   ],
+   "afterText": [
+    "Go on, Pewter is just north."
+   ],
+   "team": [
+    {
+     "species": "metapod",
+     "level": 5
+    },
+    {
+     "species": "weedle",
+     "level": 5
+    }
+   ],
+   "reward": {
+    "money": 100
+   }
+  }
+ ]
+}

@@ -1,0 +1,254 @@
+{
+ "id": "mt-moon-1f",
+ "name": "Mt. Moon 1F",
+ "ai": "normal",
+ "deploySlots": 4,
+ "rows": [
+  "########################",
+  "#MMMMM###MMMMMMMMoooooo#",
+  "#MMMMM###MMMMMMMMoooooo#",
+  "#MM##MMMMMM##MMMMoooooo#",
+  "#MM##MMMMMM##MMMMoooooo#",
+  "#MMMMMM##MMMMMMMMMM##MM#",
+  "#MMMMMM##MMMMM##MMMMMMM#",
+  "#MM##MMMMMMMMM##MMMMMMM#",
+  "MMM##MMMMMMMMMMMMMMMMMM#",
+  "#MMMMMMMM###MMMMMMM~~MM#",
+  "#MMMMMMMM###MMMMMMM~~MM#",
+  "#M###MMMMMMMMMM##MMMMMM#",
+  "#MMMMMMMMMMMMMM##MMMMMMM",
+  "#MMMM##MMMMMMMMMMMMMMMM#",
+  "#MMMMMMMMMMMMMMMMMMMMMM#",
+  "########################"
+ ],
+ "start": {
+  "x": 1,
+  "y": 8
+ },
+ "areaNames": {
+  "moon-cave": "Mt. Moon 1F",
+  "moon-crater": "Clefairy hollow"
+ },
+ "exits": [
+  {
+   "name": "Route 3",
+   "pos": {
+    "x": 0,
+    "y": 8
+   },
+   "to": "route-3",
+   "arrive": {
+    "x": 22,
+    "y": 3
+   }
+  },
+  {
+   "name": "Mt. Moon B2F",
+   "pos": {
+    "x": 23,
+    "y": 12
+   },
+   "to": "mt-moon-b2f",
+   "arrive": {
+    "x": 1,
+    "y": 12
+   }
+  }
+ ],
+ "spawnZones": [
+  {
+   "biome": "moon-cave",
+   "count": 4,
+   "levels": {
+    "min": 8,
+    "max": 10
+   },
+   "points": [
+    {
+     "x": 3,
+     "y": 2
+    },
+    {
+     "x": 10,
+     "y": 2
+    },
+    {
+     "x": 2,
+     "y": 6
+    },
+    {
+     "x": 12,
+     "y": 6
+    },
+    {
+     "x": 6,
+     "y": 10
+    },
+    {
+     "x": 13,
+     "y": 9
+    },
+    {
+     "x": 9,
+     "y": 13
+    },
+    {
+     "x": 18,
+     "y": 13
+    },
+    {
+     "x": 21,
+     "y": 7
+    }
+   ]
+  },
+  {
+   "biome": "moon-crater",
+   "count": 2,
+   "levels": {
+    "min": 9,
+    "max": 11
+   },
+   "points": [
+    {
+     "x": 18,
+     "y": 1
+    },
+    {
+     "x": 22,
+     "y": 1
+    },
+    {
+     "x": 21,
+     "y": 3
+    },
+    {
+     "x": 18,
+     "y": 3
+    }
+   ]
+  }
+ ],
+ "pickups": [
+  {
+   "id": "mm1-balls",
+   "pos": {
+    "x": 1,
+    "y": 1
+   },
+   "balls": {
+    "great-ball": 2
+   }
+  },
+  {
+   "id": "mm1-hollow",
+   "pos": {
+    "x": 22,
+    "y": 2
+   },
+   "items": {
+    "oran-berry": 2
+   },
+   "once": true,
+   "balls": {
+    "poke-ball": 1
+   }
+  },
+  {
+   "id": "mm1-potion",
+   "pos": {
+    "x": 13,
+    "y": 14
+   },
+   "items": {
+    "super-potion": 1
+   }
+  },
+  {
+   "id": "mm1-stone",
+   "pos": {
+    "x": 1,
+    "y": 14
+   },
+   "items": {
+    "hard-stone": 1
+   },
+   "once": true
+  }
+ ],
+ "npcs": [
+  {
+   "id": "rocket-mtmoon-1",
+   "name": "Rocket Grunt",
+   "kind": "rocket",
+   "pos": {
+    "x": 12,
+    "y": 8
+   },
+   "text": [
+    "Team Rocket owns these caves! Beat it, kid!"
+   ],
+   "afterText": [
+    "The boss will hear about this..."
+   ],
+   "team": [
+    {
+     "species": "rattata",
+     "level": 10
+    },
+    {
+     "species": "zubat",
+     "level": 10
+    }
+   ],
+   "reward": {
+    "money": 300
+   }
+  },
+  {
+   "id": "mtmoon-hiker",
+   "name": "Hiker Marcos",
+   "kind": "trainer",
+   "pos": {
+    "x": 17,
+    "y": 7
+   },
+   "text": [
+    "Whoa, a trainer down here? Let's rumble!"
+   ],
+   "afterText": [
+    "Those Rockets are digging up fossils. Stop them!"
+   ],
+   "team": [
+    {
+     "species": "geodude",
+     "level": 10
+    },
+    {
+     "species": "geodude",
+     "level": 10
+    },
+    {
+     "species": "onix",
+     "level": 11
+    }
+   ],
+   "reward": {
+    "money": 330
+   }
+  },
+  {
+   "id": "mtmoon-clefairy-fan",
+   "name": "Lass Iris",
+   "kind": "talk",
+   "pos": {
+    "x": 16,
+    "y": 2
+   },
+   "text": [
+    "Shh! Clefairy dance in this hollow when the moon is full.",
+    "Please don't scare them off."
+   ]
+  }
+ ]
+}

@@ -1,0 +1,209 @@
+{
+ "id": "route-6",
+ "name": "Route 6",
+ "ai": "normal",
+ "deploySlots": 5,
+ "rows": [
+  "###########E############",
+  "#EEEEEEEEEEEEEEEEEEEEEE#",
+  "####EEEEEEEEEEEEEEEEEEE#",
+  "EEEEEEEEEEEEEEEEEEEEEEE#",
+  "####EEEEEEEEEEEEEEEEEEE#",
+  "#EEEEEEEEEEEEEEEEEEEEEE#",
+  "#EEEEEEEEEEEEExxxxxxEEE#",
+  "#EEEEEEEEEEEEExxxxxxEEE#",
+  "#EEEEEEEEEEEEExxxxxxEEE#",
+  "#EEEEEEEEEEEEExxxxxxEEE#",
+  "#EEEEE###EEEEEEEEEEEEEE#",
+  "#EEEEE###EEEEEEEEEEEEEE#",
+  "#EEEEEEEEEEEEEEEEEEEEEE#",
+  "#EEEEEEEEEEEEEEEEEEEEEE#",
+  "#EEEEEEEEEEEEEEEEEEEEEE#",
+  "###########E############"
+ ],
+ "start": {
+  "x": 11,
+  "y": 14
+ },
+ "areaNames": {
+  "vermilion-route5": "Route 6",
+  "kanto-shallows": "Route 6 pond"
+ },
+ "exits": [
+  {
+   "name": "Saffron City",
+   "pos": {
+    "x": 11,
+    "y": 0
+   },
+   "to": "saffron-city",
+   "arrive": {
+    "x": 12,
+    "y": 14
+   }
+  },
+  {
+   "name": "Vermilion City",
+   "pos": {
+    "x": 11,
+    "y": 15
+   },
+   "to": "vermilion-city",
+   "arrive": {
+    "x": 11,
+    "y": 1
+   }
+  },
+  {
+   "name": "Underground Path",
+   "pos": {
+    "x": 0,
+    "y": 3
+   },
+   "to": "route-5",
+   "arrive": {
+    "x": 1,
+    "y": 12
+   }
+  }
+ ],
+ "spawnZones": [
+  {
+   "biome": "vermilion-route5",
+   "count": 3,
+   "levels": {
+    "min": 14,
+    "max": 16
+   },
+   "points": [
+    {
+     "x": 5,
+     "y": 2
+    },
+    {
+     "x": 9,
+     "y": 6
+    },
+    {
+     "x": 20,
+     "y": 2
+    },
+    {
+     "x": 3,
+     "y": 12
+    },
+    {
+     "x": 12,
+     "y": 12
+    },
+    {
+     "x": 20,
+     "y": 12
+    }
+   ]
+  },
+  {
+   "biome": "kanto-shallows",
+   "count": 1,
+   "levels": {
+    "min": 14,
+    "max": 16
+   },
+   "points": [
+    {
+     "x": 15,
+     "y": 7
+    },
+    {
+     "x": 18,
+     "y": 8
+    }
+   ]
+  }
+ ],
+ "pickups": [
+  {
+   "id": "r6-berries",
+   "pos": {
+    "x": 4,
+    "y": 7
+   },
+   "items": {
+    "pecha-berry": 2,
+    "oran-berry": 1
+   }
+  },
+  {
+   "id": "r6-pond",
+   "pos": {
+    "x": 20,
+    "y": 9
+   },
+   "items": {
+    "revival-herb": 1
+   }
+  }
+ ],
+ "npcs": [
+  {
+   "id": "r6-bugcatcher",
+   "name": "Bug Catcher Keigo",
+   "kind": "trainer",
+   "pos": {
+    "x": 8,
+    "y": 4
+   },
+   "text": [
+    "My bugs have grown up!"
+   ],
+   "afterText": [
+    "Bugged out..."
+   ],
+   "team": [
+    {
+     "species": "weedle",
+     "level": 15
+    },
+    {
+     "species": "caterpie",
+     "level": 15
+    },
+    {
+     "species": "venonat",
+     "level": 15
+    }
+   ],
+   "reward": {
+    "money": 300
+   }
+  },
+  {
+   "id": "r6-jrtrainer",
+   "name": "Jr. Trainer Ricky",
+   "kind": "trainer",
+   "pos": {
+    "x": 13,
+    "y": 11
+   },
+   "text": [
+    "Vermilion is just south. Battle me first!"
+   ],
+   "afterText": [
+    "Good luck against Lt. Surge."
+   ],
+   "team": [
+    {
+     "species": "squirtle",
+     "level": 15
+    },
+    {
+     "species": "pidgey",
+     "level": 15
+    }
+   ],
+   "reward": {
+    "money": 300
+   }
+  }
+ ]
+}

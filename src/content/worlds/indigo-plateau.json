@@ -1,0 +1,461 @@
+{
+ "id": "indigo-plateau",
+ "name": "Indigo Plateau",
+ "ai": "normal",
+ "deploySlots": 5,
+ "rows": [
+  "########################",
+  "#######5555555555#######",
+  "#######5555555555#######",
+  "#######5555555555#######",
+  "#######5555555555#######",
+  "#######5555555555#######",
+  "#######5555555555#######",
+  "#######5555555555#######",
+  "#######5555555555#######",
+  "###########5############",
+  "#TTTTTTTTTTTTTTTTTTTTTT#",
+  "#TT##TTTTTTTTTTTTTT##TT#",
+  "#TT##TTTTTTTTTTTTTT##TT#",
+  "#TTTTTTTTTTTTTTTTTTTTTT#",
+  "#TTTTTTTTTTTTTTTTTTTTTT#",
+  "###########T############"
+ ],
+ "start": {
+  "x": 11,
+  "y": 14
+ },
+ "areaNames": {
+  "town": "Indigo Plateau",
+  "indigo-hall": "Pokémon League"
+ },
+ "exits": [
+  {
+   "name": "Victory Road",
+   "pos": {
+    "x": 11,
+    "y": 15
+   },
+   "to": "victory-road",
+   "arrive": {
+    "x": 20,
+    "y": 1
+   }
+  }
+ ],
+ "spawnZones": [],
+ "pickups": [],
+ "npcs": [
+  {
+   "id": "lorelei",
+   "name": "Lorelei",
+   "kind": "elite",
+   "pos": {
+    "x": 8,
+    "y": 7
+   },
+   "arena": "indigo-hall",
+   "group": "e4",
+   "text": [
+    "Welcome to the Pokémon League. I am Lorelei of the Elite Four.",
+    "Your Pokémon will be at my mercy when they are frozen solid!"
+   ],
+   "afterText": [
+    "Go on. Bruno awaits."
+   ],
+   "team": [
+    {
+     "species": "dewgong",
+     "level": 29,
+     "heldItem": "leftovers"
+    },
+    {
+     "species": "cloyster",
+     "level": 29,
+     "heldItem": "quick-claw"
+    },
+    {
+     "species": "slowbro",
+     "level": 29,
+     "heldItem": "mystic-water"
+    },
+    {
+     "species": "jynx",
+     "level": 30,
+     "heldItem": "quick-claw"
+    },
+    {
+     "species": "lapras",
+     "level": 30,
+     "heldItem": "mystic-water"
+    }
+   ],
+   "reward": {
+    "money": 3000
+   }
+  },
+  {
+   "id": "bruno",
+   "name": "Bruno",
+   "kind": "elite",
+   "pos": {
+    "x": 15,
+    "y": 7
+   },
+   "arena": "indigo-hall",
+   "group": "e4",
+   "requires": {
+    "flags": [
+     "npc:lorelei"
+    ]
+   },
+   "lockedText": [
+    "Face Lorelei first."
+   ],
+   "text": [
+    "I am Bruno of the Elite Four!",
+    "Through rigorous training, people and Pokémon become stronger!"
+   ],
+   "afterText": [
+    "My job is done. Agatha is next."
+   ],
+   "team": [
+    {
+     "species": "onix",
+     "level": 29,
+     "heldItem": "hard-stone"
+    },
+    {
+     "species": "hitmonchan",
+     "level": 29,
+     "heldItem": "muscle-band"
+    },
+    {
+     "species": "hitmonlee",
+     "level": 29,
+     "heldItem": "muscle-band"
+    },
+    {
+     "species": "onix",
+     "level": 29,
+     "heldItem": "hard-stone"
+    },
+    {
+     "species": "machamp",
+     "level": 30,
+     "heldItem": "muscle-band"
+    }
+   ],
+   "reward": {
+    "money": 3000
+   }
+  },
+  {
+   "id": "agatha",
+   "name": "Agatha",
+   "kind": "elite",
+   "pos": {
+    "x": 8,
+    "y": 3
+   },
+   "arena": "indigo-hall",
+   "group": "e4",
+   "requires": {
+    "flags": [
+     "npc:bruno"
+    ]
+   },
+   "lockedText": [
+    "Bruno is waiting for you first."
+   ],
+   "text": [
+    "I am Agatha of the Elite Four.",
+    "Oak's taken a lot of interest in you. I'll show you how a real trainer fights!"
+   ],
+   "afterText": [
+    "Lance is the last of us. Go!"
+   ],
+   "team": [
+    {
+     "species": "gengar",
+     "level": 29,
+     "heldItem": "quick-claw"
+    },
+    {
+     "species": "golbat",
+     "level": 29,
+     "heldItem": "sharp-beak"
+    },
+    {
+     "species": "haunter",
+     "level": 29,
+     "heldItem": "leftovers"
+    },
+    {
+     "species": "arbok",
+     "level": 29,
+     "heldItem": "quick-claw"
+    },
+    {
+     "species": "gengar",
+     "level": 30,
+     "heldItem": "leftovers"
+    }
+   ],
+   "reward": {
+    "money": 3000
+   }
+  },
+  {
+   "id": "lance",
+   "name": "Lance",
+   "kind": "elite",
+   "pos": {
+    "x": 15,
+    "y": 3
+   },
+   "arena": "indigo-hall",
+   "group": "e4",
+   "requires": {
+    "flags": [
+     "npc:agatha"
+    ]
+   },
+   "lockedText": [
+    "Agatha comes first."
+   ],
+   "text": [
+    "I am Lance, the dragon trainer.",
+    "Dragons are mystical Pokémon. They're hard to catch and raise, but their powers are superior!"
+   ],
+   "afterText": [
+    "The Champion awaits. You know who it is..."
+   ],
+   "team": [
+    {
+     "species": "gyarados",
+     "level": 29,
+     "heldItem": "mystic-water"
+    },
+    {
+     "species": "dragonair",
+     "level": 29,
+     "heldItem": "leftovers"
+    },
+    {
+     "species": "dragonair",
+     "level": 29,
+     "heldItem": "quick-claw"
+    },
+    {
+     "species": "aerodactyl",
+     "level": 30,
+     "heldItem": "sharp-beak"
+    },
+    {
+     "species": "dragonite",
+     "level": 30,
+     "heldItem": "leftovers"
+    }
+   ],
+   "reward": {
+    "money": 3500
+   }
+  },
+  {
+   "id": "champion",
+   "name": "Champion (Rival)",
+   "kind": "champion",
+   "pos": {
+    "x": 12,
+    "y": 1
+   },
+   "arena": "indigo-hall",
+   "group": "e4",
+   "requires": {
+    "flags": [
+     "npc:lance"
+    ]
+   },
+   "lockedText": [
+    "Beat Lance first."
+   ],
+   "text": [
+    "Hey! I was looking forward to seeing you here.",
+    "I'm the Pokémon League Champion now! Let's go!"
+   ],
+   "afterText": [
+    "You beat me... You are the new Pokémon League Champion!"
+   ],
+   "team": [
+    {
+     "species": "charizard",
+     "level": 30,
+     "heldItem": "charcoal"
+    },
+    {
+     "species": "pidgeot",
+     "level": 30,
+     "heldItem": "sharp-beak"
+    },
+    {
+     "species": "alakazam",
+     "level": 30,
+     "heldItem": "quick-claw"
+    },
+    {
+     "species": "rhydon",
+     "level": 30,
+     "heldItem": "hard-stone"
+    },
+    {
+     "species": "gyarados",
+     "level": 30,
+     "heldItem": "leftovers"
+    }
+   ],
+   "teamByStarter": {
+    "bulbasaur": [
+     {
+      "species": "charizard",
+      "level": 30,
+      "heldItem": "charcoal"
+     },
+     {
+      "species": "pidgeot",
+      "level": 30,
+      "heldItem": "sharp-beak"
+     },
+     {
+      "species": "alakazam",
+      "level": 30,
+      "heldItem": "quick-claw"
+     },
+     {
+      "species": "rhydon",
+      "level": 30,
+      "heldItem": "hard-stone"
+     },
+     {
+      "species": "gyarados",
+      "level": 30,
+      "heldItem": "leftovers"
+     }
+    ],
+    "charmander": [
+     {
+      "species": "blastoise",
+      "level": 30,
+      "heldItem": "mystic-water"
+     },
+     {
+      "species": "pidgeot",
+      "level": 30,
+      "heldItem": "sharp-beak"
+     },
+     {
+      "species": "alakazam",
+      "level": 30,
+      "heldItem": "quick-claw"
+     },
+     {
+      "species": "rhydon",
+      "level": 30,
+      "heldItem": "hard-stone"
+     },
+     {
+      "species": "exeggutor",
+      "level": 30,
+      "heldItem": "miracle-seed"
+     }
+    ],
+    "squirtle": [
+     {
+      "species": "venusaur",
+      "level": 30,
+      "heldItem": "miracle-seed"
+     },
+     {
+      "species": "pidgeot",
+      "level": 30,
+      "heldItem": "sharp-beak"
+     },
+     {
+      "species": "alakazam",
+      "level": 30,
+      "heldItem": "quick-claw"
+     },
+     {
+      "species": "rhydon",
+      "level": 30,
+      "heldItem": "hard-stone"
+     },
+     {
+      "species": "arcanine",
+      "level": 30,
+      "heldItem": "charcoal"
+     }
+    ],
+    "pikachu": [
+     {
+      "species": "vaporeon",
+      "level": 30,
+      "heldItem": "mystic-water"
+     },
+     {
+      "species": "pidgeot",
+      "level": 30,
+      "heldItem": "sharp-beak"
+     },
+     {
+      "species": "alakazam",
+      "level": 30,
+      "heldItem": "quick-claw"
+     },
+     {
+      "species": "rhydon",
+      "level": 30,
+      "heldItem": "hard-stone"
+     },
+     {
+      "species": "arcanine",
+      "level": 30,
+      "heldItem": "charcoal"
+     }
+    ]
+   },
+   "reward": {
+    "money": 5000,
+    "flags": [
+     "champion"
+    ]
+   }
+  },
+  {
+   "id": "indigo-guide",
+   "name": "Guide",
+   "kind": "talk",
+   "pos": {
+    "x": 13,
+    "y": 10
+   },
+   "text": [
+    "Beyond this gate the Elite Four await.",
+    "Lose to any of them and you start over!"
+   ]
+  }
+ ],
+ "obstacles": [
+  {
+   "pos": {
+    "x": 11,
+    "y": 9
+   },
+   "kind": "guard",
+   "opensIf": {
+    "badges": 8
+   },
+   "text": "Only trainers with all 8 badges may enter the Pokémon League."
+  }
+ ]
+}

@@ -1,0 +1,447 @@
+{
+ "id": "route-24",
+ "name": "Route 24",
+ "ai": "normal",
+ "deploySlots": 5,
+ "rows": [
+  "########################",
+  "#BBBBBBBBBBBBBBBBBBBBBB#",
+  "#BB###BBBBBBBBBBBBBBBBBB",
+  "#BBBBBBBBBBBBBBBBBBBBBB#",
+  "#BBBBBBBBBBBBBBBBBBBBBB#",
+  "#~~~~~~~~~...~~~~~~~~~~#",
+  "#~~~~~~~~~...~~~~~~~~~~#",
+  "#~~~~~~~~~...~~~~~~~~~~#",
+  "#~~~~~~~~~...~~~~~~~~~~#",
+  "#~~~~~~~~~...~~~~~~~~~~#",
+  "#~~~~~~~~~...~~~~~~~~~~#",
+  "#~~~~~~~~~...~~~~~~~~~~#",
+  "#xxxxBBBBBBBBBBBBBBBBBB#",
+  "#xxxxBBBBBBBBBBBB###BBB#",
+  "#BBBBBBBBBBBBBBBBBBBBBB#",
+  "###########B############"
+ ],
+ "start": {
+  "x": 11,
+  "y": 14
+ },
+ "areaNames": {
+  "cerulean-route24": "Route 24",
+  "route": "Nugget Bridge",
+  "kanto-shallows": "Route 24 riverbank"
+ },
+ "exits": [
+  {
+   "name": "Cerulean City",
+   "pos": {
+    "x": 11,
+    "y": 15
+   },
+   "to": "cerulean-city",
+   "arrive": {
+    "x": 11,
+    "y": 1
+   }
+  },
+  {
+   "name": "Route 25",
+   "pos": {
+    "x": 23,
+    "y": 2
+   },
+   "to": "route-25",
+   "arrive": {
+    "x": 1,
+    "y": 9
+   }
+  }
+ ],
+ "spawnZones": [
+  {
+   "biome": "cerulean-route24",
+   "count": 3,
+   "levels": {
+    "min": 12,
+    "max": 14
+   },
+   "points": [
+    {
+     "x": 2,
+     "y": 1
+    },
+    {
+     "x": 7,
+     "y": 3
+    },
+    {
+     "x": 15,
+     "y": 1
+    },
+    {
+     "x": 19,
+     "y": 4
+    },
+    {
+     "x": 7,
+     "y": 13
+    },
+    {
+     "x": 14,
+     "y": 14
+    },
+    {
+     "x": 21,
+     "y": 12
+    }
+   ]
+  },
+  {
+   "biome": "kanto-shallows",
+   "count": 1,
+   "levels": {
+    "min": 12,
+    "max": 14
+   },
+   "points": [
+    {
+     "x": 1,
+     "y": 12
+    },
+    {
+     "x": 3,
+     "y": 13
+    }
+   ]
+  }
+ ],
+ "pickups": [
+  {
+   "id": "r24-berries",
+   "pos": {
+    "x": 20,
+    "y": 1
+   },
+   "items": {
+    "oran-berry": 2,
+    "cheri-berry": 1
+   }
+  },
+  {
+   "id": "r24-nugget",
+   "pos": {
+    "x": 1,
+    "y": 1
+   },
+   "balls": {
+    "great-ball": 2
+   },
+   "once": true
+  },
+  {
+   "id": "r24-potion",
+   "pos": {
+    "x": 5,
+    "y": 14
+   },
+   "items": {
+    "super-potion": 1
+   }
+  }
+ ],
+ "npcs": [
+  {
+   "id": "nugget-1",
+   "name": "Bug Catcher Cale",
+   "kind": "trainer",
+   "pos": {
+    "x": 10,
+    "y": 10
+   },
+   "text": [
+    "Nugget Bridge challenge! Beat all five of us!"
+   ],
+   "afterText": [
+    "Keep going!"
+   ],
+   "team": [
+    {
+     "species": "caterpie",
+     "level": 12
+    },
+    {
+     "species": "weedle",
+     "level": 12
+    },
+    {
+     "species": "metapod",
+     "level": 12
+    }
+   ],
+   "reward": {
+    "money": 240
+   }
+  },
+  {
+   "id": "nugget-2",
+   "name": "Lass Ali",
+   "kind": "trainer",
+   "pos": {
+    "x": 12,
+    "y": 9
+   },
+   "text": [
+    "Nugget Bridge challenge! Beat all five of us!"
+   ],
+   "afterText": [
+    "Keep going!"
+   ],
+   "team": [
+    {
+     "species": "pidgey",
+     "level": 12
+    },
+    {
+     "species": "oddish",
+     "level": 13
+    }
+   ],
+   "reward": {
+    "money": 260
+   }
+  },
+  {
+   "id": "nugget-3",
+   "name": "Youngster Timmy",
+   "kind": "trainer",
+   "pos": {
+    "x": 10,
+    "y": 8
+   },
+   "text": [
+    "Nugget Bridge challenge! Beat all five of us!"
+   ],
+   "afterText": [
+    "Keep going!"
+   ],
+   "team": [
+    {
+     "species": "sandshrew",
+     "level": 13
+    },
+    {
+     "species": "ekans",
+     "level": 13
+    }
+   ],
+   "reward": {
+    "money": 260
+   }
+  },
+  {
+   "id": "nugget-4",
+   "name": "Lass Reli",
+   "kind": "trainer",
+   "pos": {
+    "x": 12,
+    "y": 7
+   },
+   "text": [
+    "Nugget Bridge challenge! Beat all five of us!"
+   ],
+   "afterText": [
+    "Keep going!"
+   ],
+   "team": [
+    {
+     "species": "nidoran-m",
+     "level": 13
+    },
+    {
+     "species": "nidoran-f",
+     "level": 13
+    }
+   ],
+   "reward": {
+    "money": 280
+   }
+  },
+  {
+   "id": "nugget-5",
+   "name": "Camper Ethan",
+   "kind": "trainer",
+   "pos": {
+    "x": 10,
+    "y": 6
+   },
+   "text": [
+    "Nugget Bridge challenge! Beat all five of us!"
+   ],
+   "afterText": [
+    "Keep going!"
+   ],
+   "team": [
+    {
+     "species": "mankey",
+     "level": 14
+    }
+   ],
+   "reward": {
+    "money": 300
+   }
+  },
+  {
+   "id": "nugget-rocket",
+   "name": "Rocket Recruiter",
+   "kind": "rocket",
+   "pos": {
+    "x": 12,
+    "y": 4
+   },
+   "text": [
+    "Congrats on the Nugget Bridge! Want to join Team Rocket?",
+    "No? Then I'll make you!"
+   ],
+   "afterText": [
+    "Arrgh... keep the nugget."
+   ],
+   "team": [
+    {
+     "species": "ekans",
+     "level": 14
+    },
+    {
+     "species": "zubat",
+     "level": 14
+    }
+   ],
+   "reward": {
+    "money": 1500
+   }
+  },
+  {
+   "id": "rival-cerulean",
+   "name": "Rival",
+   "kind": "rival",
+   "pos": {
+    "x": 12,
+    "y": 12
+   },
+   "arena": "cerulean-route24",
+   "text": [
+    "Yo! Heading north to see Bill? Let's see if you got any stronger!"
+   ],
+   "afterText": [
+    "Hmph. Bill showed me his rare Pokémon. Go see him yourself."
+   ],
+   "teamByStarter": {
+    "bulbasaur": [
+     {
+      "species": "pidgeotto",
+      "level": 14
+     },
+     {
+      "species": "abra",
+      "level": 13
+     },
+     {
+      "species": "rattata",
+      "level": 13
+     },
+     {
+      "species": "charmeleon",
+      "level": 15
+     }
+    ],
+    "charmander": [
+     {
+      "species": "pidgeotto",
+      "level": 14
+     },
+     {
+      "species": "abra",
+      "level": 13
+     },
+     {
+      "species": "rattata",
+      "level": 13
+     },
+     {
+      "species": "wartortle",
+      "level": 15
+     }
+    ],
+    "squirtle": [
+     {
+      "species": "pidgeotto",
+      "level": 14
+     },
+     {
+      "species": "abra",
+      "level": 13
+     },
+     {
+      "species": "rattata",
+      "level": 13
+     },
+     {
+      "species": "ivysaur",
+      "level": 15
+     }
+    ],
+    "pikachu": [
+     {
+      "species": "pidgeotto",
+      "level": 14
+     },
+     {
+      "species": "abra",
+      "level": 13
+     },
+     {
+      "species": "rattata",
+      "level": 13
+     },
+     {
+      "species": "eevee",
+      "level": 15
+     }
+    ]
+   },
+   "reward": {
+    "money": 1000
+   }
+  },
+  {
+   "id": "route24-charmander",
+   "name": "Camper",
+   "kind": "gift",
+   "requires": {
+    "flags": [
+     "npc:rival-cerulean"
+    ]
+   },
+   "lockedText": [
+    "My trainer left this Charmander here...",
+    "Show me you can win on this bridge first."
+   ],
+   "text": [
+    "You beat the Nugget Bridge. Charmander deserves a trainer like you."
+   ],
+   "afterText": [
+    "Take good care of Charmander!"
+   ],
+   "reward": {
+    "pokemon": [
+     {
+      "species": "charmander",
+      "level": 13
+     }
+    ]
+   },
+   "pos": {
+    "x": 11,
+    "y": 11
+   }
+  }
+ ]
+}

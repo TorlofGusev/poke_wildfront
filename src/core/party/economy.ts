@@ -1,6 +1,6 @@
 import type { BattleContent } from "../battle/content";
 import type { StatName } from "../battle/species";
-import { spendPoints, type ProgressionContent } from "../progression";
+import { resetMasteries, respecCost, spendPoints, type ProgressionContent } from "../progression";
 import { memberMaxHp, type GameState, type PartyMember } from "./roster";
 
 const count = (bag: Readonly<Record<string, number>>, id: string) => bag[id] ?? 0;
@@ -18,6 +18,27 @@ export function buy(content: BattleContent, prog: ProgressionContent, game: Game
     ? { ...game.inventory, balls: { ...game.inventory.balls, [id]: count(game.inventory.balls, id) + qty } }
     : { ...game.inventory, items: { ...game.inventory.items, [id]: count(game.inventory.items, id) + qty } };
   return { ...game, money: game.money - total, inventory };
+}
+
+/** Fraction of the Poké Mart price paid for items sold back. */
+export const SELL_RATE = 0.5;
+
+export function sellPrice(content: BattleContent, prog: ProgressionContent, id: string): number {
+  const price = content.balls[id]?.price ?? prog.items[id]?.price;
+  if (price === undefined) throw new Error(`${id} cannot be sold`);
+  return Math.floor(price * SELL_RATE);
+}
+
+/** Sells `qty` of a ball or item from the bag at the Poké Mart for half its price. */
+export function sell(content: BattleContent, prog: ProgressionContent, game: GameState, id: string, qty = 1): GameState {
+  if (!Number.isInteger(qty) || qty < 1) throw new Error("quantity must be a positive whole number");
+  const isBall = !!content.balls[id];
+  const bag = isBall ? game.inventory.balls : game.inventory.items;
+  if (count(bag, id) < qty) throw new Error(`not enough in the bag (have ${count(bag, id)})`);
+  const total = sellPrice(content, prog, id) * qty;
+  const next = { ...bag, [id]: count(bag, id) - qty };
+  const inventory = isBall ? { ...game.inventory, balls: next } : { ...game.inventory, items: next };
+  return { ...game, money: game.money + total, inventory };
 }
 
 function updateMember(game: GameState, uid: string, f: (m: PartyMember) => PartyMember): GameState {
@@ -95,4 +116,14 @@ export function allocatePoint(prog: ProgressionContent, game: GameState, uid: st
   const amount = 1 + (useCandy ? prog.rules.candyBonus : 0);
   const next = updateMember(game, uid, (m) => spendPoints(m, stat, amount, 1));
   return { ...next, inventory: { ...next.inventory, items } };
+}
+
+/** Forgets a member's role and masteries for Pokédollars, so they can be chosen again. */
+export function respecMember(content: BattleContent, prog: ProgressionContent, game: GameState, uid: string): GameState {
+  const member = findMember(game, uid);
+  if (!member) throw new Error(`${uid} is not in party or storage`);
+  if (member.role === null) throw new Error("nothing to reset");
+  const cost = respecCost(prog, member);
+  if (game.money < cost) throw new Error(`not enough money (need ₽${cost}, have ₽${game.money})`);
+  return { ...updateMember(game, uid, (m) => resetMasteries(content, m)), money: game.money - cost };
 }

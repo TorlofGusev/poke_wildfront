@@ -5,6 +5,11 @@
 export interface UnitModifiers {
   /** Added to movement points (fatigue −1, Quick Claw +1). */
   readonly moveBonus: number;
+  /** Extra max range on moves that already reach 2+ tiles (Sharpshooter). */
+  readonly rangeBonus: number;
+  /** Damage multipliers against targets 3+ tiles away, and adjacent targets. */
+  readonly farDamage: number;
+  readonly closeDamage: number;
   /** Multiplies all damage this unit deals. */
   readonly damageDealt: number;
   /** Multiplies all damage this unit receives. */
@@ -40,14 +45,69 @@ export interface UnitModifiers {
   readonly bondOnFaint: number;
   /** Its bond moves cost this much less (minimum 1). */
   readonly bondCostReduction: number;
+  /** Status its damaging hits on adjacent foes inflict (Flame Body, Toxic Barbs). */
+  readonly contactStatus: { readonly status: string; readonly duration: number } | null;
+  /** Fraction of its max HP healed when it knocks out a foe. */
+  readonly koHeal: number;
+  /** Damage dealt back to a foe that hits it from an adjacent tile. */
+  readonly thorns: number;
+  /** Damage multiplier against foes engaged with one of its allies (flanking a pinned foe). */
+  readonly vsEngagedDamage: number;
+  /** Team Bond gained when this unit lands a combo (once per action). */
+  readonly comboBond: number;
+  /** Damage multiplier against foes carrying a status an ally applied. */
+  readonly vsSetupDamage: number;
+  /** Steps away from engaged foes without free attacks. */
+  readonly disengage: boolean;
   /** Status ids this unit cannot receive ("*" = all). */
   readonly statusImmune: readonly string[];
+  /** Damage multiplier foes engaged with this unit take from its allies (Mean Look). */
+  readonly pinDamage: number;
+  /** Damage multiplier of its free strikes on foes breaking away (Pursuit). */
+  readonly strikeDamage: number;
+  /** Damage multiplier against foes standing on mud (Sand Force). */
+  readonly vsMudDamage: number;
+  /** Damage multiplier while 2+ foes stand next to it (Defiant). */
+  readonly surroundedDamage: number;
+  /** Damage multiplier while it carries any status (Guts). */
+  readonly statusedDamage: number;
+  /** Multiplies damage it receives while at full HP (Multiscale). */
+  readonly fullHpDamageTaken: number;
+  /** Attack gained (this battle, max +3) when it knocks out a foe (Moxie). */
+  readonly koAttackBoost: number;
+  /** Movement regained when it knocks out a foe on its turn (Speed Boost). */
+  readonly koMove: number;
+  /** Extra fraction of max HP healed per turn while engaged (Ingrain). */
+  readonly healWhileEngaged: number;
+  /** Team Bond gained when its free strike hits a foe breaking away. */
+  readonly bondOnStrike: number;
+  /** Extra damage per consecutive hit on the same foe, up to 3 stacks (Fury Cutter). */
+  readonly furyCutter: number;
+  /** Movement bonus while it carries any status (Quick Feet). */
+  readonly statusedMove: number;
+  /** Cooldown reduction of its non-damaging special moves, minimum 1 (Prankster). */
+  readonly statusCooldownReduction: number;
+  /** Knocking out a foe on its turn lets it use its basic attack again. */
+  readonly koRefreshBasic: boolean;
+  /** Knocking out a foe resets its special move cooldowns (Mind Reader). */
+  readonly koResetCooldowns: boolean;
+  /** When a foe carrying a status it applied faints, adjacent foes catch that status. */
+  readonly statusSpreadOnKo: boolean;
+  /** Sheds statuses foes put on it at the start of its turn (Hydration). */
+  readonly shedStatuses: boolean;
+  /** Survives one knockout blow per battle at 1 HP. */
+  readonly sturdy: boolean;
+  /** Foes engaged with it always draw its free strike when stepping away, even with disengage. */
+  readonly noEscape: boolean;
+  /** Damage multipliers against foes carrying a given status, e.g. Merciless { poison: 1.25 }. */
+  readonly vsStatusIdDamage: Readonly<Record<string, number>>;
 }
 
 export const NO_MODIFIERS: UnitModifiers = {
-  moveBonus: 0, damageDealt: 1, damageTaken: 1, typeDamage: {}, vsStatusDamage: 1, fullHpTargetDamage: 1,
+  moveBonus: 0, rangeBonus: 0, farDamage: 1, closeDamage: 1, damageDealt: 1, damageTaken: 1, typeDamage: {}, vsStatusDamage: 1, fullHpTargetDamage: 1,
   lowHpDamage: 1, healPerTurn: 0, statusDurationBonus: 0, impactBonus: 0,
-  flankBonus: 0, swarmBonus: 0, drainBonus: 0, pushBonus: 0, pullBonus: 0, lowHpTypeDamage: {}, bondOnKo: 0, bondOnFaint: 0, bondCostReduction: 0, statusImmune: [],
+  flankBonus: 0, swarmBonus: 0, drainBonus: 0, pushBonus: 0, pullBonus: 0, lowHpTypeDamage: {}, bondOnKo: 0, bondOnFaint: 0, bondCostReduction: 0, contactStatus: null, koHeal: 0, thorns: 0, vsEngagedDamage: 1, vsSetupDamage: 1, comboBond: 0, disengage: false, statusImmune: [],
+  pinDamage: 1, strikeDamage: 1, vsMudDamage: 1, surroundedDamage: 1, statusedDamage: 1, fullHpDamageTaken: 1, koAttackBoost: 0, koMove: 0, healWhileEngaged: 0, bondOnStrike: 0, furyCutter: 0, statusedMove: 0, statusCooldownReduction: 0, koRefreshBasic: false, koResetCooldowns: false, statusSpreadOnKo: false, shedStatuses: false, sturdy: false, noEscape: false, vsStatusIdDamage: {},
 };
 
 export function combineModifiers(...parts: readonly Partial<UnitModifiers>[]): UnitModifiers {
@@ -55,9 +115,14 @@ export function combineModifiers(...parts: readonly Partial<UnitModifiers>[]): U
     const typeDamage: Record<string, number> = { ...acc.typeDamage };
     for (const [t, m] of Object.entries(p.typeDamage ?? {})) typeDamage[t] = (typeDamage[t] ?? 1) * m;
     const lowHpTypeDamage: Record<string, number> = { ...acc.lowHpTypeDamage };
+    const vsStatusIdDamage: Record<string, number> = { ...acc.vsStatusIdDamage };
+    for (const [t, m] of Object.entries(p.vsStatusIdDamage ?? {})) vsStatusIdDamage[t] = (vsStatusIdDamage[t] ?? 1) * m;
     for (const [t, m] of Object.entries(p.lowHpTypeDamage ?? {})) lowHpTypeDamage[t] = (lowHpTypeDamage[t] ?? 1) * m;
     return {
       moveBonus: acc.moveBonus + (p.moveBonus ?? 0),
+      rangeBonus: acc.rangeBonus + (p.rangeBonus ?? 0),
+      farDamage: acc.farDamage * (p.farDamage ?? 1),
+      closeDamage: acc.closeDamage * (p.closeDamage ?? 1),
       damageDealt: acc.damageDealt * (p.damageDealt ?? 1),
       damageTaken: acc.damageTaken * (p.damageTaken ?? 1),
       typeDamage,
@@ -76,7 +141,34 @@ export function combineModifiers(...parts: readonly Partial<UnitModifiers>[]): U
       bondOnKo: acc.bondOnKo + (p.bondOnKo ?? 0),
       bondOnFaint: acc.bondOnFaint + (p.bondOnFaint ?? 0),
       bondCostReduction: acc.bondCostReduction + (p.bondCostReduction ?? 0),
+      contactStatus: p.contactStatus ?? acc.contactStatus,
+      koHeal: acc.koHeal + (p.koHeal ?? 0),
+      thorns: acc.thorns + (p.thorns ?? 0),
+      vsEngagedDamage: acc.vsEngagedDamage * (p.vsEngagedDamage ?? 1),
+      vsSetupDamage: acc.vsSetupDamage * (p.vsSetupDamage ?? 1),
+      comboBond: acc.comboBond + (p.comboBond ?? 0),
+      disengage: acc.disengage || (p.disengage ?? false),
       statusImmune: [...new Set([...acc.statusImmune, ...(p.statusImmune ?? [])])],
+      pinDamage: acc.pinDamage * (p.pinDamage ?? 1),
+      strikeDamage: acc.strikeDamage * (p.strikeDamage ?? 1),
+      vsMudDamage: acc.vsMudDamage * (p.vsMudDamage ?? 1),
+      surroundedDamage: acc.surroundedDamage * (p.surroundedDamage ?? 1),
+      statusedDamage: acc.statusedDamage * (p.statusedDamage ?? 1),
+      fullHpDamageTaken: acc.fullHpDamageTaken * (p.fullHpDamageTaken ?? 1),
+      koAttackBoost: acc.koAttackBoost + (p.koAttackBoost ?? 0),
+      koMove: acc.koMove + (p.koMove ?? 0),
+      healWhileEngaged: acc.healWhileEngaged + (p.healWhileEngaged ?? 0),
+      bondOnStrike: acc.bondOnStrike + (p.bondOnStrike ?? 0),
+      furyCutter: acc.furyCutter + (p.furyCutter ?? 0),
+      statusedMove: acc.statusedMove + (p.statusedMove ?? 0),
+      statusCooldownReduction: acc.statusCooldownReduction + (p.statusCooldownReduction ?? 0),
+      koRefreshBasic: acc.koRefreshBasic || (p.koRefreshBasic ?? false),
+      koResetCooldowns: acc.koResetCooldowns || (p.koResetCooldowns ?? false),
+      statusSpreadOnKo: acc.statusSpreadOnKo || (p.statusSpreadOnKo ?? false),
+      shedStatuses: acc.shedStatuses || (p.shedStatuses ?? false),
+      sturdy: acc.sturdy || (p.sturdy ?? false),
+      noEscape: acc.noEscape || (p.noEscape ?? false),
+      vsStatusIdDamage,
     };
   }, NO_MODIFIERS);
 }

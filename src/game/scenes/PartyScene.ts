@@ -1,8 +1,9 @@
 import Phaser from "phaser";
+import { playMusic } from "../music";
 import { CAMP, CONTENT, MEALS, PROGRESSION, WORLD_CONTENT } from "../../content";
 import { canCook, KNOCKOUTS_TO_DEATH, MAX_PARTY_SIZE, memberMaxHp, rest, type MealDef, type PartyMember } from "../../core/party";
 import { describeModifiers } from "../ui/describeEffects";
-import { pendingChoice } from "../../core/progression";
+import { pendingChoice, xpToNext } from "../../core/progression";
 import { currentWorld, session } from "../session";
 import { portraitKey } from "../sprites";
 import { Button } from "../ui/Button";
@@ -10,8 +11,10 @@ import { tag } from "../ui/markup";
 import { RichText } from "../ui/RichText";
 import { COLORS, FONT, TYPE_COLORS, px } from "../ui/theme";
 
-const CARD_W = 300;
-const CARD_H = 124;
+/** Five compact cards per row: the full party of 10 fits in two rows. */
+const CARD_COLS = 5;
+const CARD_W = 178;
+const CARD_H = 150;
 
 /** Camp: party overview (what needs attention) and the choice to rest. Details open per Pokémon. */
 export class PartyScene extends Phaser.Scene {
@@ -65,6 +68,7 @@ export class PartyScene extends Phaser.Scene {
   }
 
   create(): void {
+    playMusic(this, "overworld");
     const { roster, money, inventory, world } = session.game;
     this.add.text(16, 14, "Camp", { fontFamily: FONT, fontSize: "20px", color: "#f5d76e" });
     new RichText(this, 100, 19, 400, 14).setMarkup(`${tag("num", `₽${money}`)}   Candy ${tag("num", inventory.items.candy ?? 0)}   Fatigue ${tag("num", world.fatigue)}`);
@@ -82,10 +86,10 @@ export class PartyScene extends Phaser.Scene {
       return;
     }
 
-    this.add.text(16, 64, `Party ${roster.party.length}/${MAX_PARTY_SIZE} · tap a Pokémon for level-ups, moves and equipment`, {
+    this.add.text(16, 64, `Party ${roster.party.length}/${MAX_PARTY_SIZE} · tap a Pokémon for stats, masteries, moves and equipment`, {
       fontFamily: FONT, fontSize: px(12), color: COLORS.dim,
     });
-    roster.party.forEach((m, i) => this.card(16 + (i % 3) * (CARD_W + 14), 84 + Math.floor(i / 3) * (CARD_H + 8), m));
+    roster.party.forEach((m, i) => this.card(16 + (i % CARD_COLS) * (CARD_W + 10), 84 + Math.floor(i / CARD_COLS) * (CARD_H + 8), m));
 
     const sy = 84 + 2 * (CARD_H + 8) + 4;
     this.add.text(16, sy, `Storage (${roster.storage.length})`, { fontFamily: FONT, fontSize: px(12), color: COLORS.dim });
@@ -108,25 +112,29 @@ export class PartyScene extends Phaser.Scene {
   /** A party card: portrait, name, level, types, role, held item, HP bar, knockouts and what is waiting. */
   private card(x: number, y: number, m: PartyMember): void {
     const s = CONTENT.species[m.speciesId]!;
-    const pending = pendingChoice(PROGRESSION, m);
-    const waiting = [pending === "role" ? "choose a role" : pending === "talent" ? "learn a talent" : "", m.unspentPoints ? `${m.unspentPoints} stat point${m.unspentPoints > 1 ? "s" : ""}` : ""].filter(Boolean);
+    const pending = pendingChoice(CONTENT, PROGRESSION, m);
+    const waiting = [pending === "role" ? "choose role & mastery type" : pending === "talent" ? "learn a mastery" : "", m.unspentPoints ? `${m.unspentPoints} stat point${m.unspentPoints > 1 ? "s" : ""}` : ""].filter(Boolean);
     const bg = this.add.rectangle(x, y, CARD_W, CARD_H, 0x1c2130).setOrigin(0)
       .setStrokeStyle(waiting.length ? 2 : 1, waiting.length ? 0xf5d76e : m.knockouts === 2 ? 0xd0021b : 0x3a4560);
     bg.setInteractive({ useHandCursor: true }).on("pointerdown", () => this.open(m));
-    this.portrait(x + 8, y + 8, 48, m.speciesId);
+    this.portrait(x + 6, y + 6, 40, m.speciesId);
 
     const max = memberMaxHp(CONTENT, PROGRESSION, m);
     const frac = m.hp / max;
-    const role = m.role ? PROGRESSION.roles[m.role]!.name : "no role";
+    const role = m.role ? PROGRESSION.roles[m.role]!.name : "no role yet";
     const held = m.heldItem ? PROGRESSION.items[m.heldItem]!.name : "no item";
     const pips = "●".repeat(m.knockouts) + "○".repeat(KNOCKOUTS_TO_DEATH - m.knockouts);
     // Text first; the HP bar goes below however tall the text turned out (fonts are larger on phones).
-    const textH = new RichText(this, x + 64, y + 6, CARD_W - 70, 12).setMarkup([
-      `${tag("title", s.name)} Lv ${tag("num", m.level)}`,
-      `${s.types.map((t) => tag(t, t)).join("/")}`,
-      `${tag("dim", `${role} · ${held}`)}`,
+    new RichText(this, x + 52, y + 6, CARD_W - 58, 12).setMarkup([
+      tag("title", s.name),
+      `Lv ${tag("num", m.level)} ${tag("dim", `XP ${m.xp}/${xpToNext(PROGRESSION, m.level)}`)}`,
     ].join("\n"));
-    const barY = y + Math.max(60, textH + 12);
+    const textH = new RichText(this, x + 6, y + 50, CARD_W - 12, 11).setMarkup([
+      s.types.map((t) => tag(t, t)).join("/"),
+      tag("dim", role),
+      tag("dim", held),
+    ].join("\n"));
+    const barY = y + 50 + textH + 8;
     this.add.rectangle(x + 8, barY, CARD_W - 16, 6, 0x000000).setOrigin(0, 0.5);
     this.add.rectangle(x + 8, barY, (CARD_W - 16) * frac, 6, frac > 0.5 ? 0x7ed321 : frac > 0.25 ? 0xf5a623 : 0xd0021b).setOrigin(0, 0.5);
     new RichText(this, x + 8, barY + 8, CARD_W - 16, 12).setMarkup(

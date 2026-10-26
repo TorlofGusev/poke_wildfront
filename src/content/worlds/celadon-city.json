@@ -1,0 +1,322 @@
+{
+ "id": "celadon-city",
+ "name": "Celadon City",
+ "ai": "normal",
+ "deploySlots": 5,
+ "rows": [
+  "########################",
+  "#TTTTTTTT#######TTTTTTT#",
+  "#TTTTTTTT#TTTTT#TTTTTTT#",
+  "#TT~~TTTT#TTTTT#TTTTTTT#",
+  "#TT~~TTTT#TTTTT#TTTTTTT#",
+  "#TTTTTTTT##TTT##TTTTTTT#",
+  "TTTTTTTTTTTTTTTTTTTTTTTT",
+  "#TTTTTTTTTTTTTTTTTTTTTT#",
+  "#TTTTTTTTTTTTTTTTTTTTTT#",
+  "#TT##TTTTTTTT#########T#",
+  "#TTTTTTTTTTTT#SSSSSSS#T#",
+  "#TTTTTTTTTTTT#SSSSSSS#T#",
+  "#TT~~~TTTTTTT#SSSSSSS#T#",
+  "#TT~~~TTTTTTTTSSSSSSS#T#",
+  "#TTTTTTTTTTTT#SSSSSSS#T#",
+  "##################S#####"
+ ],
+ "start": {
+  "x": 12,
+  "y": 7
+ },
+ "areaNames": {
+  "town": "Celadon City",
+  "celadon-park": "Game Corner"
+ },
+ "exits": [
+  {
+   "name": "Route 7",
+   "pos": {
+    "x": 23,
+    "y": 6
+   },
+   "to": "route-7",
+   "arrive": {
+    "x": 1,
+    "y": 4
+   }
+  },
+  {
+   "name": "Route 16",
+   "pos": {
+    "x": 0,
+    "y": 6
+   },
+   "to": "route-16",
+   "arrive": {
+    "x": 22,
+    "y": 4
+   }
+  },
+  {
+   "name": "Rocket Hideout",
+   "pos": {
+    "x": 18,
+    "y": 15
+   },
+   "to": "rocket-hideout",
+   "arrive": {
+    "x": 7,
+    "y": 1
+   }
+  }
+ ],
+ "spawnZones": [],
+ "pickups": [
+  {
+   "id": "cc-gamecorner",
+   "pos": {
+    "x": 15,
+    "y": 14
+   },
+   "items": {
+    "quick-claw": 1
+   },
+   "once": true
+  },
+  {
+   "id": "cc-store",
+   "pos": {
+    "x": 22,
+    "y": 12
+   },
+   "items": {
+    "super-potion": 2
+   },
+   "balls": {
+    "great-ball": 1
+   }
+  }
+ ],
+ "npcs": [
+  {
+   "id": "lass-celadon-gym",
+   "name": "Lass",
+   "kind": "trainer",
+   "pos": {
+    "x": 10,
+    "y": 4
+   },
+   "arena": "forest",
+   "text": [
+    "Erika's garden is no place for rough types!"
+   ],
+   "afterText": [
+    "My flowers wilted..."
+   ],
+   "team": [
+    {
+     "species": "oddish",
+     "level": 18
+    },
+    {
+     "species": "bellsprout",
+     "level": 18
+    },
+    {
+     "species": "gloom",
+     "level": 19
+    }
+   ],
+   "reward": {
+    "money": 500
+   }
+  },
+  {
+   "id": "beauty-celadon-gym",
+   "name": "Beauty",
+   "kind": "trainer",
+   "pos": {
+    "x": 14,
+    "y": 4
+   },
+   "arena": "forest",
+   "text": [
+    "Grass Pokémon are elegant, don't you agree?"
+   ],
+   "afterText": [
+    "How unrefined of you to win."
+   ],
+   "team": [
+    {
+     "species": "weepinbell",
+     "level": 19
+    },
+    {
+     "species": "gloom",
+     "level": 19
+    }
+   ],
+   "reward": {
+    "money": 700
+   }
+  },
+  {
+   "id": "erika",
+   "name": "Gym Leader Erika",
+   "kind": "leader",
+   "pos": {
+    "x": 12,
+    "y": 2
+   },
+   "arena": "forest",
+   "text": [
+    "Oh, hello. I was dozing among the flowers.",
+    "I am Erika. I shall not lose."
+   ],
+   "afterText": [
+    "You are strong. Take the Rainbow Badge with pride."
+   ],
+   "team": [
+    {
+     "species": "victreebel",
+     "level": 21,
+     "heldItem": "miracle-seed"
+    },
+    {
+     "species": "tangela",
+     "level": 20
+    },
+    {
+     "species": "vileplume",
+     "level": 22,
+     "heldItem": "leftovers"
+    }
+   ],
+   "reward": {
+    "badge": "rainbow",
+    "money": 2200
+   }
+  },
+  {
+   "id": "tea-lady",
+   "name": "Old Lady",
+   "kind": "gift",
+   "pos": {
+    "x": 5,
+    "y": 7
+   },
+   "text": [
+    "Nothing beats a cup of tea on a long walk.",
+    "Here, take some with you."
+   ],
+   "afterText": [
+    "Share that tea with someone thirsty."
+   ],
+   "reward": {
+    "keyItems": [
+     "tea"
+    ]
+   }
+  },
+  {
+   "id": "celadon-eevee",
+   "name": "Mansion Resident",
+   "kind": "gift",
+   "pos": {
+    "x": 20,
+    "y": 2
+   },
+   "text": [
+    "I found this Eevee on the roof. It wants to travel.",
+    "Will you take care of it?"
+   ],
+   "afterText": [
+    "Eevee looks happy with you."
+   ],
+   "reward": {
+    "pokemon": [
+     {
+      "species": "eevee",
+      "level": 20
+     }
+    ]
+   }
+  },
+  {
+   "id": "rocket-gamecorner",
+   "name": "Rocket Grunt",
+   "kind": "rocket",
+   "pos": {
+    "x": 20,
+    "y": 10
+   },
+   "arena": "celadon-park",
+   "text": [
+    "Hey! Don't look at that poster!"
+   ],
+   "afterText": [
+    "Fine, go downstairs. The Boss will crush you."
+   ],
+   "team": [
+    {
+     "species": "raticate",
+     "level": 20
+    },
+    {
+     "species": "ekans",
+     "level": 20
+    }
+   ],
+   "reward": {
+    "money": 600
+   }
+  },
+  {
+   "id": "game-corner-prize",
+   "name": "Prize Clerk",
+   "kind": "gift",
+   "text": [
+    "Game Corner prizes! Pick one."
+   ],
+   "afterText": [
+    "Come back soon!"
+   ],
+   "choices": [
+    {
+     "label": "Porygon",
+     "reward": {
+      "pokemon": [
+       {
+        "species": "porygon",
+        "level": 20
+       }
+      ]
+     }
+    },
+    {
+     "label": "Jolteon",
+     "reward": {
+      "pokemon": [
+       {
+        "species": "jolteon",
+        "level": 20
+       }
+      ]
+     }
+    },
+    {
+     "label": "Flareon",
+     "reward": {
+      "pokemon": [
+       {
+        "species": "flareon",
+        "level": 20
+       }
+      ]
+     }
+    }
+   ],
+   "pos": {
+    "x": 16,
+    "y": 11
+   }
+  }
+ ]
+}

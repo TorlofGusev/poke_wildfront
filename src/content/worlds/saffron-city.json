@@ -1,0 +1,286 @@
+{
+ "id": "saffron-city",
+ "name": "Saffron City",
+ "ai": "normal",
+ "deploySlots": 5,
+ "rows": [
+  "#####T######T#####T#####",
+  "#TTTTTTTTT##T##TTTTTTTT#",
+  "#TTTTTTTTT##T##TTTTTTTT#",
+  "#TTTTTTTTTTTTTTTTTTTTTT#",
+  "#TTTTTTTTTTTTTTTTTTTTTT#",
+  "#TT~~TTTTTTTTTTTTTT~~TT#",
+  "#TTTTTTTTTTTTTTTTTTTTTT#",
+  "###TTTTTTTTTTTTTTTTTT###",
+  "TTTTTTTTTTTTTTTTTTTTTTTT",
+  "###TTTTTTTTTTTTTTTTTT###",
+  "#TTTTTTTTTTTTTT###T#####",
+  "#TTTTTTTTTTTTTT#TTTTT###",
+  "#TTTTTTTTTTTTTT#TTTTT###",
+  "#TTTTTTTTT##T###TTTTT###",
+  "#TTTTTTTTT##T###########",
+  "############T###########"
+ ],
+ "start": {
+  "x": 12,
+  "y": 6
+ },
+ "areaNames": {
+  "town": "Saffron City"
+ },
+ "exits": [
+  {
+   "name": "Route 5",
+   "pos": {
+    "x": 12,
+    "y": 0
+   },
+   "to": "route-5",
+   "arrive": {
+    "x": 11,
+    "y": 14
+   }
+  },
+  {
+   "name": "Route 6",
+   "pos": {
+    "x": 12,
+    "y": 15
+   },
+   "to": "route-6",
+   "arrive": {
+    "x": 11,
+    "y": 1
+   }
+  },
+  {
+   "name": "Route 7",
+   "pos": {
+    "x": 0,
+    "y": 8
+   },
+   "to": "route-7",
+   "arrive": {
+    "x": 14,
+    "y": 4
+   }
+  },
+  {
+   "name": "Route 8",
+   "pos": {
+    "x": 23,
+    "y": 8
+   },
+   "to": "route-8",
+   "arrive": {
+    "x": 1,
+    "y": 3
+   }
+  },
+  {
+   "name": "Silph Co.",
+   "pos": {
+    "x": 5,
+    "y": 0
+   },
+   "to": "silph-co",
+   "arrive": {
+    "x": 7,
+    "y": 10
+   }
+  },
+  {
+   "name": "Fighting Dojo",
+   "pos": {
+    "x": 18,
+    "y": 0
+   },
+   "to": "fighting-dojo",
+   "arrive": {
+    "x": 6,
+    "y": 6
+   }
+  }
+ ],
+ "spawnZones": [],
+ "pickups": [
+  {
+   "id": "sc-alley",
+   "pos": {
+    "x": 20,
+    "y": 6
+   },
+   "items": {
+    "super-potion": 2,
+    "pecha-berry": 1
+   }
+  }
+ ],
+ "obstacles": [
+  {
+   "pos": {
+    "x": 12,
+    "y": 2
+   },
+   "kind": "guard",
+   "opensIf": {
+    "keyItems": [
+     "tea"
+    ]
+   },
+   "text": "\"I'm on duty and so thirsty... I can't let you through.\""
+  },
+  {
+   "pos": {
+    "x": 12,
+    "y": 13
+   },
+   "kind": "guard",
+   "opensIf": {
+    "keyItems": [
+     "tea"
+    ]
+   },
+   "text": "\"I'm on duty and so thirsty... I can't let you through.\""
+  },
+  {
+   "pos": {
+    "x": 2,
+    "y": 8
+   },
+   "kind": "guard",
+   "opensIf": {
+    "keyItems": [
+     "tea"
+    ]
+   },
+   "text": "\"I'm on duty and so thirsty... I can't let you through.\""
+  },
+  {
+   "pos": {
+    "x": 21,
+    "y": 8
+   },
+   "kind": "guard",
+   "opensIf": {
+    "keyItems": [
+     "tea"
+    ]
+   },
+   "text": "\"I'm on duty and so thirsty... I can't let you through.\""
+  }
+ ],
+ "npcs": [
+  {
+   "id": "psychic-saffron-gym-1",
+   "name": "Psychic",
+   "kind": "trainer",
+   "pos": {
+    "x": 16,
+    "y": 12
+   },
+   "arena": "silph-office",
+   "text": [
+    "I saw you coming in a vision."
+   ],
+   "afterText": [
+    "I didn't foresee that..."
+   ],
+   "team": [
+    {
+     "species": "slowpoke",
+     "level": 21
+    },
+    {
+     "species": "drowzee",
+     "level": 22
+    },
+    {
+     "species": "kadabra",
+     "level": 22
+    }
+   ],
+   "reward": {
+    "money": 700
+   }
+  },
+  {
+   "id": "channeler-saffron-gym",
+   "name": "Channeler",
+   "kind": "trainer",
+   "pos": {
+    "x": 20,
+    "y": 12
+   },
+   "arena": "silph-office",
+   "text": [
+    "Sabrina's power is beyond yours."
+   ],
+   "afterText": [
+    "Your will is strong."
+   ],
+   "team": [
+    {
+     "species": "hypno",
+     "level": 23
+    },
+    {
+     "species": "drowzee",
+     "level": 22
+    }
+   ],
+   "reward": {
+    "money": 700
+   }
+  },
+  {
+   "id": "sabrina",
+   "name": "Gym Leader Sabrina",
+   "kind": "leader",
+   "pos": {
+    "x": 18,
+    "y": 13
+   },
+   "arena": "silph-office",
+   "requires": {
+    "flags": [
+     "npc:giovanni-silph"
+    ]
+   },
+   "lockedText": [
+    "The gym is sealed. Team Rocket has taken over Silph Co.!"
+   ],
+   "text": [
+    "I knew you would come. I had a vision of it.",
+    "I dislike fighting, but I will show you my powers."
+   ],
+   "afterText": [
+    "The Marsh Badge is yours. I foresaw it... perhaps."
+   ],
+   "team": [
+    {
+     "species": "kadabra",
+     "level": 25
+    },
+    {
+     "species": "mr-mime",
+     "level": 25,
+     "heldItem": "leftovers"
+    },
+    {
+     "species": "venomoth",
+     "level": 24
+    },
+    {
+     "species": "alakazam",
+     "level": 26,
+     "heldItem": "quick-claw"
+    }
+   ],
+   "reward": {
+    "badge": "marsh",
+    "money": 2600
+   }
+  }
+ ]
+}

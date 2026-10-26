@@ -1,0 +1,16 @@
+{
+ "hm-cut": {"id": "hm-cut", "name": "HM01 Cut", "description": "Cuts down small trees. Needs the Cascade Badge."},
+ "hm-flash": {"id": "hm-flash", "name": "HM05 Flash", "description": "Lights up dark caves. Needs the Boulder Badge."},
+ "hm-surf": {"id": "hm-surf", "name": "HM03 Surf", "description": "Crosses water. Needs the Soul Badge."},
+ "hm-strength": {"id": "hm-strength", "name": "HM04 Strength", "description": "Moves boulders. Needs the Rainbow Badge."},
+ "ss-ticket": {"id": "ss-ticket", "name": "S.S. Ticket", "description": "A ticket for the S.S. Anne, docked in Vermilion."},
+ "poke-flute": {"id": "poke-flute", "name": "Poké Flute", "description": "Its tune wakes sleeping Pokémon."},
+ "silph-scope": {"id": "silph-scope", "name": "Silph Scope", "description": "Reveals the true form of ghosts."},
+ "tea": {"id": "tea", "name": "Tea", "description": "A thirsty guard would love this."},
+ "card-key": {"id": "card-key", "name": "Card Key", "description": "Opens the doors of Silph Co."},
+ "lift-key": {"id": "lift-key", "name": "Lift Key", "description": "Runs the Rocket Hideout's elevator."},
+ "helix-fossil": {"id": "helix-fossil", "name": "Helix Fossil", "description": "A fossil of an ancient sea Pokémon. The Cinnabar Lab can revive it."},
+ "dome-fossil": {"id": "dome-fossil", "name": "Dome Fossil", "description": "A fossil of an ancient sea Pokémon. The Cinnabar Lab can revive it."},
+ "old-amber": {"id": "old-amber", "name": "Old Amber", "description": "Amber with ancient DNA inside. The Cinnabar Lab can revive it."},
+ "secret-key": {"id": "secret-key", "name": "Secret Key", "description": "Opens the Cinnabar Gym."}
+}

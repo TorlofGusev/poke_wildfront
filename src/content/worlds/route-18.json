@@ -1,0 +1,192 @@
+{
+ "id": "route-18",
+ "name": "Route 18",
+ "ai": "normal",
+ "deploySlots": 5,
+ "rows": [
+  "##0#####################",
+  "#0000000000000000000000#",
+  "#00##000000\"\"00000##000#",
+  "#0000000000000000000000#",
+  "#000000##00000000000000#",
+  "#00000000000000000000000",
+  "#00\"\"0000000##000000000#",
+  "########################"
+ ],
+ "start": {
+  "x": 2,
+  "y": 1
+ },
+ "areaNames": {
+  "cycling-road": "Route 18"
+ },
+ "exits": [
+  {
+   "name": "Cycling Road",
+   "pos": {
+    "x": 2,
+    "y": 0
+   },
+   "to": "route-17",
+   "arrive": {
+    "x": 10,
+    "y": 14
+   }
+  },
+  {
+   "name": "Fuchsia City",
+   "pos": {
+    "x": 23,
+    "y": 5
+   },
+   "to": "fuchsia-city",
+   "arrive": {
+    "x": 1,
+    "y": 4
+   }
+  }
+ ],
+ "spawnZones": [
+  {
+   "biome": "cycling-road",
+   "count": 3,
+   "levels": {
+    "min": 24,
+    "max": 25
+   },
+   "points": [
+    {
+     "x": 6,
+     "y": 1
+    },
+    {
+     "x": 14,
+     "y": 3
+    },
+    {
+     "x": 20,
+     "y": 1
+    },
+    {
+     "x": 5,
+     "y": 6
+    },
+    {
+     "x": 17,
+     "y": 6
+    },
+    {
+     "x": 10,
+     "y": 4
+    }
+   ]
+  }
+ ],
+ "pickups": [
+  {
+   "id": "r18-supplies",
+   "pos": {
+    "x": 21,
+    "y": 6
+   },
+   "items": {
+    "super-potion": 1,
+    "oran-berry": 2
+   },
+   "balls": {
+    "great-ball": 1
+   }
+  }
+ ],
+ "npcs": [
+  {
+   "id": "biker-route18-1",
+   "name": "Biker",
+   "kind": "trainer",
+   "pos": {
+    "x": 10,
+    "y": 1
+   },
+   "arena": "cycling-road",
+   "text": [
+    "Last stretch before Fuchsia! Let's race!"
+   ],
+   "afterText": [
+    "You're too fast..."
+   ],
+   "team": [
+    {
+     "species": "koffing",
+     "level": 24
+    },
+    {
+     "species": "grimer",
+     "level": 24
+    },
+    {
+     "species": "weezing",
+     "level": 24
+    }
+   ],
+   "reward": {
+    "money": 750
+   }
+  },
+  {
+   "id": "bird-keeper-route18",
+   "name": "Bird Keeper",
+   "kind": "trainer",
+   "pos": {
+    "x": 16,
+    "y": 4
+   },
+   "arena": "cycling-road",
+   "text": [
+    "My birds rule these skies!"
+   ],
+   "afterText": [
+    "Grounded..."
+   ],
+   "team": [
+    {
+     "species": "spearow",
+     "level": 24
+    },
+    {
+     "species": "fearow",
+     "level": 25
+    },
+    {
+     "species": "doduo",
+     "level": 24
+    }
+   ],
+   "reward": {
+    "money": 750
+   }
+  },
+  {
+   "id": "route18-trade",
+   "name": "Traveller",
+   "kind": "gift",
+   "text": [
+    "I caught too many. Take this Lickitung!"
+   ],
+   "afterText": [
+    "Lickitung likes you."
+   ],
+   "reward": {
+    "pokemon": [
+     {
+      "species": "lickitung",
+      "level": 22
+     }
+    ]
+   },
+   "pos": {
+    "x": 5,
+    "y": 1
+   }
+  }
+ ]
+}

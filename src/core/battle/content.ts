@@ -6,6 +6,10 @@ export interface BaseStats {
   readonly hp: number;
   readonly attack: number;
   readonly defense: number;
+  /** Power of special moves (see BattleRules.specialTypes). */
+  readonly spAttack: number;
+  /** Defense against special moves. */
+  readonly spDefense: number;
   readonly speed: number;
 }
 
@@ -45,7 +49,13 @@ export type MoveEffect =
   | { readonly kind: "push"; readonly distance: number }
   | { readonly kind: "pull"; readonly distance: number }
   | { readonly kind: "status"; readonly status: string; readonly duration: number }
-  | { readonly kind: "heal"; readonly amount: number };
+  | { readonly kind: "heal"; readonly amount: number }
+  /** Engages the (adjacent) target, taking it over from any other engagement (Block). */
+  | { readonly kind: "engage" }
+  /** Ends the user's engagement without a free attack (U-turn, Teleport). */
+  | { readonly kind: "disengage" }
+  /** The team gains Bond when the move lands a combo or knocks a foe out (once per use). */
+  | { readonly kind: "bond"; readonly amount: number; readonly when: "combo" | "knockout" };
 
 export interface MoveDef {
   readonly id: string;
@@ -59,6 +69,8 @@ export interface MoveDef {
   readonly shape: TargetShape;
   /** Which units the move affects. */
   readonly affects: "enemies" | "allies";
+  /** Physical (Attack vs Defense) or special (Sp. Atk vs Sp. Def); defaults by type, see BattleRules.specialTypes. */
+  readonly category?: "physical" | "special";
   /** Turns before a special can be used again (special moves only). */
   readonly cooldown?: number;
   /** Team Bond points spent (bond moves only). */
@@ -87,13 +99,19 @@ export interface StatusDef {
 
 /**
  * Combat formulas (see docs/design/identity-and-stats-proposal.md):
- * - Max HP = hpBase + hpPerPoint × HP
- * - Damage = max(1, round(power × (statOffset + Atk) / (statOffset + Def) × multipliers / damageDivisor))
+ * - Max HP = hpBase + hpPerPoint × HP + (level − 1) × (hpPerLevel + hpPerLevelPerDefense × species base Def)
+ * - Damage = max(1, round(power × (statOffset + Atk) / (statOffset + Def) × multipliers / damageDivisor)),
+ *   with Sp. Atk / Sp. Def for special moves
  * - Movement = min(moveMax, moveBase + ⌊Speed / speedPerMove⌋)
  */
 export interface BattleRules {
   readonly hpBase: number;
   readonly hpPerPoint: number;
+  /** Max HP gained per level above 1, plus a share of Defense (the Pokémon's constitution). */
+  readonly hpPerLevel: number;
+  readonly hpPerLevelPerDefense: number;
+  /** Moves of these types are special unless the move sets its own category (the classic type split). */
+  readonly specialTypes: readonly PokemonType[];
   readonly statOffset: number;
   readonly damageDivisor: number;
   readonly moveBase: number;
@@ -101,6 +119,15 @@ export interface BattleRules {
   readonly moveMax: number;
   /** Damage taken when pushed into an obstacle or another unit. */
   readonly impactDamage: number;
+  /**
+   * Engagement (Wartales-style), always one on one: a damaging melee hit (range 1) on an adjacent foe
+   * engages the two, if neither is engaged yet. Engaged units may only attack each other, in melee;
+   * one whose basic attack is ranged uses Struggle (`fallbackPower` × its basic attack's power).
+   * Stepping away draws one free attack from the partner and ends the engagement.
+   */
+  /** Most extra turns masteries may add to a status (freeze and paralysis never get any). */
+  readonly statusBonusCap: number;
+  readonly engagement: { readonly fallbackPower: number };
   /** Team Bond: default start and cap per side, and the gain per knockout. */
   readonly bond: { readonly start: number; readonly max: number; readonly perKnockout: number };
 }

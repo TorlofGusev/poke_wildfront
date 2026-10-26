@@ -1,0 +1,251 @@
+{
+ "id": "mt-moon-b2f",
+ "name": "Mt. Moon B2F",
+ "ai": "normal",
+ "deploySlots": 4,
+ "rows": [
+  "########################",
+  "#MMM##MMMMMMMMMMMMMMMMM#",
+  "#MMM##MMM#####MM####MMM#",
+  "#MMM##MMM#####MM####MMM#",
+  "#MMMMMMMMMMMMMMMMMMMMMMM",
+  "#MMMMMMMMMMMMMMMMMMMMMM#",
+  "#M#####MM##MMMMllllllll#",
+  "#M#####MM##MMMMllllllll#",
+  "#MMMMMMMM##MM#Mlll~~lll#",
+  "#MMMMMMMM##MM#Mlll~~lll#",
+  "#MM####MM##MM#Mllllllll#",
+  "#MMMMMMMMMMMM#MMMMMMMMM#",
+  "MMMMMMMMMMMMM#MMM#####M#",
+  "#MMMMMMMMMMMM#MMMMMMMMM#",
+  "#MMMMMMMMMMMMMMMMMMMMMM#",
+  "########################"
+ ],
+ "start": {
+  "x": 1,
+  "y": 12
+ },
+ "areaNames": {
+  "moon-cave": "Mt. Moon B2F",
+  "moon-lake": "Moonlit spring"
+ },
+ "exits": [
+  {
+   "name": "Mt. Moon 1F",
+   "pos": {
+    "x": 0,
+    "y": 12
+   },
+   "to": "mt-moon-1f",
+   "arrive": {
+    "x": 22,
+    "y": 12
+   }
+  },
+  {
+   "name": "Route 4",
+   "pos": {
+    "x": 23,
+    "y": 4
+   },
+   "to": "route-4",
+   "arrive": {
+    "x": 1,
+    "y": 6
+   }
+  }
+ ],
+ "spawnZones": [
+  {
+   "biome": "moon-cave",
+   "count": 3,
+   "levels": {
+    "min": 10,
+    "max": 12
+   },
+   "points": [
+    {
+     "x": 2,
+     "y": 2
+    },
+    {
+     "x": 7,
+     "y": 1
+    },
+    {
+     "x": 7,
+     "y": 4
+    },
+    {
+     "x": 3,
+     "y": 8
+    },
+    {
+     "x": 11,
+     "y": 12
+    },
+    {
+     "x": 6,
+     "y": 13
+    },
+    {
+     "x": 14,
+     "y": 1
+    },
+    {
+     "x": 11,
+     "y": 5
+    }
+   ]
+  },
+  {
+   "biome": "moon-lake",
+   "count": 2,
+   "levels": {
+    "min": 10,
+    "max": 12
+   },
+   "points": [
+    {
+     "x": 16,
+     "y": 7
+    },
+    {
+     "x": 21,
+     "y": 6
+    },
+    {
+     "x": 16,
+     "y": 10
+    },
+    {
+     "x": 21,
+     "y": 10
+    },
+    {
+     "x": 20,
+     "y": 8
+    }
+   ]
+  }
+ ],
+ "pickups": [
+  {
+   "id": "mm2-balls",
+   "pos": {
+    "x": 1,
+    "y": 1
+   },
+   "balls": {
+    "great-ball": 2
+   }
+  },
+  {
+   "id": "mm2-spring",
+   "pos": {
+    "x": 22,
+    "y": 7
+   },
+   "items": {
+    "mystic-water": 1
+   },
+   "once": true
+  },
+  {
+   "id": "mm2-herb",
+   "pos": {
+    "x": 12,
+    "y": 13
+   },
+   "items": {
+    "revival-herb": 1,
+    "super-potion": 1
+   }
+  }
+ ],
+ "npcs": [
+  {
+   "id": "rocket-mtmoon-2",
+   "name": "Rocket Grunt",
+   "kind": "rocket",
+   "pos": {
+    "x": 8,
+    "y": 8
+   },
+   "text": [
+    "We're after the fossils! You can't have them!"
+   ],
+   "afterText": [
+    "Our leader's guarding the fossils further in."
+   ],
+   "team": [
+    {
+     "species": "sandshrew",
+     "level": 11
+    },
+    {
+     "species": "rattata",
+     "level": 11
+    },
+    {
+     "species": "zubat",
+     "level": 11
+    }
+   ],
+   "reward": {
+    "money": 330
+   }
+  },
+  {
+   "id": "rocket-mtmoon",
+   "name": "Rocket Executive",
+   "kind": "rocket",
+   "pos": {
+    "x": 21,
+    "y": 3
+   },
+   "text": [
+    "These fossils will fetch a fortune for Team Rocket!",
+    "Hand them over? Never! Prepare to be crushed!"
+   ],
+   "afterText": [
+    "Tch. Take your fossil and get lost!"
+   ],
+   "team": [
+    {
+     "species": "raticate",
+     "level": 12
+    },
+    {
+     "species": "ekans",
+     "level": 11
+    },
+    {
+     "species": "zubat",
+     "level": 11
+    }
+   ],
+   "reward": {
+    "money": 600
+   },
+   "choices": [
+    {
+     "label": "Helix Fossil",
+     "reward": {
+      "keyItems": [
+       "helix-fossil"
+      ]
+     }
+    },
+    {
+     "label": "Dome Fossil",
+     "reward": {
+      "keyItems": [
+       "dome-fossil"
+      ]
+     }
+    }
+   ]
+  }
+ ]
+}

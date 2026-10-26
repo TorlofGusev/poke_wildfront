@@ -1,0 +1,222 @@
+{
+ "id": "route-19",
+ "name": "Route 19",
+ "ai": "normal",
+ "deploySlots": 5,
+ "rows": [
+  "#####.######",
+  "#.........~#",
+  "#..~~...~~~#",
+  "#~~~~.~~~~~#",
+  "#~~~~.~~~~~#",
+  "#~aaa.aa~~~#",
+  "#~aaaaaaa~~#",
+  "#~~~aa~~aa~#",
+  "#~~~~~~~aa~#",
+  "#~~aaaaaaa~#",
+  "#~aaa~~~~~~#",
+  "#~aa~~~aa~~#",
+  "#aaa~~~aaa~#",
+  "aaaa~~~~a~~#",
+  "#a~~~~~~~~~#",
+  "############"
+ ],
+ "start": {
+  "x": 5,
+  "y": 1
+ },
+ "areaNames": {
+  "cinnabar-sea": "Route 19",
+  "route": "Fuchsia beach"
+ },
+ "exits": [
+  {
+   "name": "Fuchsia City",
+   "pos": {
+    "x": 5,
+    "y": 0
+   },
+   "to": "fuchsia-city",
+   "arrive": {
+    "x": 11,
+    "y": 10
+   }
+  },
+  {
+   "name": "Route 20",
+   "pos": {
+    "x": 0,
+    "y": 13
+   },
+   "to": "route-20",
+   "arrive": {
+    "x": 22,
+    "y": 6
+   }
+  }
+ ],
+ "spawnZones": [
+  {
+   "biome": "cinnabar-sea",
+   "count": 3,
+   "points": [
+    {
+     "x": 3,
+     "y": 5
+    },
+    {
+     "x": 7,
+     "y": 5
+    },
+    {
+     "x": 4,
+     "y": 6
+    },
+    {
+     "x": 6,
+     "y": 6
+    },
+    {
+     "x": 8,
+     "y": 6
+    },
+    {
+     "x": 5,
+     "y": 7
+    },
+    {
+     "x": 9,
+     "y": 7
+    },
+    {
+     "x": 8,
+     "y": 8
+    },
+    {
+     "x": 3,
+     "y": 9
+    },
+    {
+     "x": 5,
+     "y": 9
+    },
+    {
+     "x": 7,
+     "y": 9
+    },
+    {
+     "x": 9,
+     "y": 9
+    },
+    {
+     "x": 2,
+     "y": 10
+    },
+    {
+     "x": 4,
+     "y": 10
+    },
+    {
+     "x": 3,
+     "y": 11
+    },
+    {
+     "x": 7,
+     "y": 11
+    },
+    {
+     "x": 2,
+     "y": 12
+    },
+    {
+     "x": 8,
+     "y": 12
+    },
+    {
+     "x": 1,
+     "y": 13
+    },
+    {
+     "x": 3,
+     "y": 13
+    }
+   ],
+   "levels": {
+    "min": 24,
+    "max": 26
+   }
+  }
+ ],
+ "pickups": [
+  {
+   "id": "r19-beach",
+   "pos": {
+    "x": 9,
+    "y": 1
+   },
+   "items": {
+    "oran-berry": 2,
+    "rawst-berry": 1
+   }
+  },
+  {
+   "id": "r19-water",
+   "pos": {
+    "x": 2,
+    "y": 12
+   },
+   "items": {
+    "mystic-water": 1
+   },
+   "once": true
+  }
+ ],
+ "npcs": [
+  {
+   "id": "swimmer-route19",
+   "name": "Swimmer Luis",
+   "kind": "trainer",
+   "pos": {
+    "x": 2,
+    "y": 6
+   },
+   "arena": "cinnabar-sea",
+   "text": [
+    "The current is great today!"
+   ],
+   "afterText": [
+    "I'll swim it off."
+   ],
+   "team": [
+    {
+     "species": "horsea",
+     "level": 24
+    },
+    {
+     "species": "tentacool",
+     "level": 24
+    },
+    {
+     "species": "seadra",
+     "level": 25
+    }
+   ],
+   "reward": {
+    "money": 800
+   }
+  }
+ ],
+ "obstacles": [
+  {
+   "pos": {
+    "x": 5,
+    "y": 3
+   },
+   "kind": "rock",
+   "opensIf": {
+    "fieldMove": "surf"
+   },
+   "text": "Waves crash over this sandbar. You need Surf to get past."
+  }
+ ]
+}

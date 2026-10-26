@@ -1,0 +1,283 @@
+{
+ "id": "route-23",
+ "name": "Route 23",
+ "ai": "normal",
+ "deploySlots": 5,
+ "rows": [
+  "##########.#",
+  "#hhhhhhhhhh#",
+  "##.#########",
+  "#hhhhhhhhhh#",
+  "#########.##",
+  "#hhhhhhhhhh#",
+  "###.########",
+  "#hhhhhhhhhh#",
+  "########.###",
+  "#hhhhhhhhhh#",
+  "##.#########",
+  "#hhhhhhhhhh#",
+  "##########.#",
+  "#hhh#hhh.hh#",
+  "#hhh.hhh#hh#",
+  "##.#########"
+ ],
+ "start": {
+  "x": 2,
+  "y": 14
+ },
+ "areaNames": {
+  "indigo-route23": "Route 23"
+ },
+ "exits": [
+  {
+   "name": "Route 22",
+   "pos": {
+    "x": 2,
+    "y": 15
+   },
+   "to": "route-22",
+   "arrive": {
+    "x": 3,
+    "y": 1
+   }
+  },
+  {
+   "name": "Victory Road",
+   "pos": {
+    "x": 10,
+    "y": 0
+   },
+   "to": "victory-road",
+   "arrive": {
+    "x": 3,
+    "y": 14
+   },
+   "requires": {
+    "badges": 8
+   },
+   "lockedText": "Only trainers with all 8 badges may enter Victory Road."
+  }
+ ],
+ "spawnZones": [
+  {
+   "biome": "indigo-route23",
+   "count": 4,
+   "points": [
+    {
+     "x": 3,
+     "y": 1
+    },
+    {
+     "x": 6,
+     "y": 1
+    },
+    {
+     "x": 9,
+     "y": 1
+    },
+    {
+     "x": 3,
+     "y": 3
+    },
+    {
+     "x": 6,
+     "y": 3
+    },
+    {
+     "x": 9,
+     "y": 3
+    },
+    {
+     "x": 3,
+     "y": 5
+    },
+    {
+     "x": 6,
+     "y": 5
+    },
+    {
+     "x": 9,
+     "y": 5
+    },
+    {
+     "x": 3,
+     "y": 7
+    },
+    {
+     "x": 6,
+     "y": 7
+    },
+    {
+     "x": 9,
+     "y": 7
+    },
+    {
+     "x": 3,
+     "y": 9
+    },
+    {
+     "x": 6,
+     "y": 9
+    },
+    {
+     "x": 9,
+     "y": 9
+    },
+    {
+     "x": 3,
+     "y": 11
+    },
+    {
+     "x": 6,
+     "y": 11
+    },
+    {
+     "x": 9,
+     "y": 11
+    },
+    {
+     "x": 3,
+     "y": 13
+    },
+    {
+     "x": 6,
+     "y": 13
+    },
+    {
+     "x": 9,
+     "y": 13
+    },
+    {
+     "x": 3,
+     "y": 14
+    },
+    {
+     "x": 6,
+     "y": 14
+    },
+    {
+     "x": 9,
+     "y": 14
+    }
+   ],
+   "levels": {
+    "min": 27,
+    "max": 28
+   }
+  }
+ ],
+ "pickups": [
+  {
+   "id": "r23-potion",
+   "pos": {
+    "x": 6,
+    "y": 9
+   },
+   "items": {
+    "super-potion": 2
+   }
+  },
+  {
+   "id": "r23-muscle",
+   "pos": {
+    "x": 1,
+    "y": 1
+   },
+   "items": {
+    "muscle-band": 1
+   },
+   "once": true
+  }
+ ],
+ "npcs": [],
+ "obstacles": [
+  {
+   "pos": {
+    "x": 4,
+    "y": 14
+   },
+   "kind": "guard",
+   "opensIf": {
+    "badges": 1
+   },
+   "text": "Only trainers with 1 badge may pass."
+  },
+  {
+   "pos": {
+    "x": 8,
+    "y": 13
+   },
+   "kind": "guard",
+   "opensIf": {
+    "badges": 2
+   },
+   "text": "Only trainers with 2 badges may pass."
+  },
+  {
+   "pos": {
+    "x": 10,
+    "y": 12
+   },
+   "kind": "guard",
+   "opensIf": {
+    "badges": 3
+   },
+   "text": "Only trainers with 3 badges may pass."
+  },
+  {
+   "pos": {
+    "x": 2,
+    "y": 10
+   },
+   "kind": "guard",
+   "opensIf": {
+    "badges": 4
+   },
+   "text": "Only trainers with 4 badges may pass."
+  },
+  {
+   "pos": {
+    "x": 8,
+    "y": 8
+   },
+   "kind": "guard",
+   "opensIf": {
+    "badges": 5
+   },
+   "text": "Only trainers with 5 badges may pass."
+  },
+  {
+   "pos": {
+    "x": 3,
+    "y": 6
+   },
+   "kind": "guard",
+   "opensIf": {
+    "badges": 6
+   },
+   "text": "Only trainers with 6 badges may pass."
+  },
+  {
+   "pos": {
+    "x": 9,
+    "y": 4
+   },
+   "kind": "guard",
+   "opensIf": {
+    "badges": 7
+   },
+   "text": "Only trainers with 7 badges may pass."
+  },
+  {
+   "pos": {
+    "x": 2,
+    "y": 2
+   },
+   "kind": "guard",
+   "opensIf": {
+    "badges": 8
+   },
+   "text": "Only trainers with 8 badges may pass."
+  }
+ ]
+}

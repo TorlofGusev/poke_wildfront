@@ -1,0 +1,340 @@
+{
+ "id": "route-20",
+ "name": "Route 20",
+ "ai": "normal",
+ "deploySlots": 5,
+ "rows": [
+  "#########.####.#########",
+  "#~~~~~~~a.##..a~~~~~~~~#",
+  "#~aaa~~~aa##.aa~~~aaa~~#",
+  "#~aaaa~~~a##aa~~aaaaa~~#",
+  "#~~aa~~~aa##a~~~~~aa~~~#",
+  "#~~~aa~aaa##aa~~~~~aa~~#",
+  "aaaaaaaaa~##~aaaaaaaaaaa",
+  "#~~~~~~aa~##~aa~~~~~~~~#",
+  "#~aa~~~aaa##aaa~~aa~~~~#",
+  "#~aaa~aaaa..aaaaaaaa~~~#",
+  "#~~a~~~aa~##~~~~~aa~~~~#",
+  "########################"
+ ],
+ "start": {
+  "x": 22,
+  "y": 6
+ },
+ "areaNames": {
+  "cinnabar-sea": "Route 20",
+  "route": "Seafoam shore"
+ },
+ "exits": [
+  {
+   "name": "Route 19",
+   "pos": {
+    "x": 23,
+    "y": 6
+   },
+   "to": "route-19",
+   "arrive": {
+    "x": 1,
+    "y": 13
+   }
+  },
+  {
+   "name": "Seafoam Islands",
+   "pos": {
+    "x": 14,
+    "y": 0
+   },
+   "to": "seafoam-islands",
+   "arrive": {
+    "x": 20,
+    "y": 14
+   }
+  },
+  {
+   "name": "Seafoam Islands",
+   "pos": {
+    "x": 9,
+    "y": 0
+   },
+   "to": "seafoam-islands",
+   "arrive": {
+    "x": 3,
+    "y": 14
+   }
+  },
+  {
+   "name": "Cinnabar Island",
+   "pos": {
+    "x": 0,
+    "y": 6
+   },
+   "to": "cinnabar-island",
+   "arrive": {
+    "x": 14,
+    "y": 3
+   }
+  }
+ ],
+ "spawnZones": [
+  {
+   "biome": "cinnabar-sea",
+   "count": 4,
+   "points": [
+    {
+     "x": 2,
+     "y": 2
+    },
+    {
+     "x": 4,
+     "y": 2
+    },
+    {
+     "x": 8,
+     "y": 2
+    },
+    {
+     "x": 14,
+     "y": 2
+    },
+    {
+     "x": 18,
+     "y": 2
+    },
+    {
+     "x": 20,
+     "y": 2
+    },
+    {
+     "x": 3,
+     "y": 3
+    },
+    {
+     "x": 5,
+     "y": 3
+    },
+    {
+     "x": 9,
+     "y": 3
+    },
+    {
+     "x": 13,
+     "y": 3
+    },
+    {
+     "x": 17,
+     "y": 3
+    },
+    {
+     "x": 19,
+     "y": 3
+    },
+    {
+     "x": 4,
+     "y": 4
+    },
+    {
+     "x": 8,
+     "y": 4
+    },
+    {
+     "x": 12,
+     "y": 4
+    },
+    {
+     "x": 18,
+     "y": 4
+    },
+    {
+     "x": 5,
+     "y": 5
+    },
+    {
+     "x": 7,
+     "y": 5
+    },
+    {
+     "x": 9,
+     "y": 5
+    },
+    {
+     "x": 13,
+     "y": 5
+    },
+    {
+     "x": 19,
+     "y": 5
+    },
+    {
+     "x": 2,
+     "y": 6
+    },
+    {
+     "x": 4,
+     "y": 6
+    },
+    {
+     "x": 6,
+     "y": 6
+    },
+    {
+     "x": 8,
+     "y": 6
+    },
+    {
+     "x": 14,
+     "y": 6
+    },
+    {
+     "x": 16,
+     "y": 6
+    },
+    {
+     "x": 18,
+     "y": 6
+    },
+    {
+     "x": 20,
+     "y": 6
+    },
+    {
+     "x": 22,
+     "y": 6
+    },
+    {
+     "x": 7,
+     "y": 7
+    },
+    {
+     "x": 13,
+     "y": 7
+    },
+    {
+     "x": 2,
+     "y": 8
+    },
+    {
+     "x": 8,
+     "y": 8
+    },
+    {
+     "x": 12,
+     "y": 8
+    },
+    {
+     "x": 14,
+     "y": 8
+    },
+    {
+     "x": 18,
+     "y": 8
+    },
+    {
+     "x": 3,
+     "y": 9
+    },
+    {
+     "x": 7,
+     "y": 9
+    },
+    {
+     "x": 9,
+     "y": 9
+    },
+    {
+     "x": 13,
+     "y": 9
+    },
+    {
+     "x": 15,
+     "y": 9
+    },
+    {
+     "x": 19,
+     "y": 9
+    },
+    {
+     "x": 8,
+     "y": 10
+    },
+    {
+     "x": 18,
+     "y": 10
+    }
+   ],
+   "levels": {
+    "min": 24,
+    "max": 26
+   }
+  }
+ ],
+ "pickups": [
+  {
+   "id": "r20-east",
+   "pos": {
+    "x": 19,
+    "y": 3
+   },
+   "items": {
+    "super-potion": 1
+   }
+  },
+  {
+   "id": "r20-west",
+   "pos": {
+    "x": 3,
+    "y": 3
+   },
+   "balls": {
+    "great-ball": 2
+   }
+  }
+ ],
+ "npcs": [
+  {
+   "id": "swimmer-route20",
+   "name": "Swimmer Darrin",
+   "kind": "trainer",
+   "pos": {
+    "x": 17,
+    "y": 9
+   },
+   "arena": "cinnabar-sea",
+   "text": [
+    "Seafoam's caves are freezing!"
+   ],
+   "afterText": [
+    "Brr, I'm out."
+   ],
+   "team": [
+    {
+     "species": "shellder",
+     "level": 25
+    },
+    {
+     "species": "staryu",
+     "level": 25
+    },
+    {
+     "species": "starmie",
+     "level": 26
+    }
+   ],
+   "reward": {
+    "money": 850
+   }
+  }
+ ],
+ "obstacles": [
+  {
+   "pos": {
+    "x": 10,
+    "y": 9
+   },
+   "kind": "boulder",
+   "opensIf": {
+    "fieldMove": "strength"
+   },
+   "text": "A boulder wedged between the Seafoam rocks. Strength could move it."
+  }
+ ]
+}

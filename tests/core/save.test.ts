@@ -34,8 +34,8 @@ describe("save/load", () => {
     expect(() => loadSaveFile(content, "{}")).toThrow(/no version/);
     expect(() => loadSaveFile(content, JSON.stringify({ version: 99 }))).toThrow(/another prototype version/);
     const bad = (patch: Partial<GameState["roster"]>) => roundTrip({ ...game, roster: { ...game.roster, ...patch } });
-    const seven = Array.from({ length: 7 }, (_, i) => pm(`x${i}`, "fast", 0, 1));
-    expect(() => bad({ party: seven })).toThrow(/max 6/);
+    const tooMany = Array.from({ length: 11 }, (_, i) => pm(`x${i}`, "fast", 0, 1));
+    expect(() => bad({ party: tooMany })).toThrow(/max 10/);
     expect(() => bad({ party: [pm("pk1", "fast", 3, 1)] })).toThrow(/not fallen/);
     expect(() => bad({ fallen: [pm("pk3", "mid", 1, 0)] })).toThrow(/fallen without/);
     expect(() => bad({ storage: [pm("pk1", "slow", 0, 1)] })).toThrow(/duplicate/);

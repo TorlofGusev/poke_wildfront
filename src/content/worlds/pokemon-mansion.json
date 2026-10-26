@@ -1,0 +1,258 @@
+{
+ "id": "pokemon-mansion",
+ "name": "Pokémon Mansion",
+ "ai": "normal",
+ "deploySlots": 5,
+ "rows": [
+  "################",
+  "#ddd#ddddd#dddd#",
+  "#ddd#d##dd#dd#d#",
+  "#d#dd#ddd##dd#d#",
+  "#d#ddddddddd##d#",
+  "#d####dd#dddddd#",
+  "#dddd#dd#d####d#",
+  "##dd##dd#dddddd#",
+  "#ddddddd##d##dd#",
+  "#dd##ddddddd#dd#",
+  "#ddd#dddddddddd#",
+  "#######d########"
+ ],
+ "start": {
+  "x": 7,
+  "y": 10
+ },
+ "areaNames": {
+  "cinnabar-mansion": "Pokémon Mansion"
+ },
+ "exits": [
+  {
+   "name": "Cinnabar Island",
+   "pos": {
+    "x": 7,
+    "y": 11
+   },
+   "to": "cinnabar-island",
+   "arrive": {
+    "x": 1,
+    "y": 3
+   }
+  }
+ ],
+ "spawnZones": [
+  {
+   "biome": "cinnabar-mansion",
+   "count": 4,
+   "points": [
+    {
+     "x": 3,
+     "y": 1
+    },
+    {
+     "x": 6,
+     "y": 1
+    },
+    {
+     "x": 9,
+     "y": 1
+    },
+    {
+     "x": 12,
+     "y": 1
+    },
+    {
+     "x": 3,
+     "y": 2
+    },
+    {
+     "x": 9,
+     "y": 2
+    },
+    {
+     "x": 12,
+     "y": 2
+    },
+    {
+     "x": 3,
+     "y": 3
+    },
+    {
+     "x": 6,
+     "y": 3
+    },
+    {
+     "x": 12,
+     "y": 3
+    },
+    {
+     "x": 3,
+     "y": 4
+    },
+    {
+     "x": 6,
+     "y": 4
+    },
+    {
+     "x": 9,
+     "y": 4
+    },
+    {
+     "x": 6,
+     "y": 5
+    },
+    {
+     "x": 9,
+     "y": 5
+    },
+    {
+     "x": 12,
+     "y": 5
+    },
+    {
+     "x": 3,
+     "y": 6
+    },
+    {
+     "x": 6,
+     "y": 6
+    },
+    {
+     "x": 9,
+     "y": 6
+    },
+    {
+     "x": 3,
+     "y": 7
+    },
+    {
+     "x": 6,
+     "y": 7
+    },
+    {
+     "x": 9,
+     "y": 7
+    },
+    {
+     "x": 12,
+     "y": 7
+    },
+    {
+     "x": 3,
+     "y": 8
+    },
+    {
+     "x": 6,
+     "y": 8
+    },
+    {
+     "x": 6,
+     "y": 9
+    },
+    {
+     "x": 9,
+     "y": 9
+    },
+    {
+     "x": 3,
+     "y": 10
+    },
+    {
+     "x": 6,
+     "y": 10
+    },
+    {
+     "x": 9,
+     "y": 10
+    },
+    {
+     "x": 12,
+     "y": 10
+    }
+   ],
+   "levels": {
+    "min": 25,
+    "max": 27
+   }
+  }
+ ],
+ "pickups": [
+  {
+   "id": "mansion-charcoal",
+   "pos": {
+    "x": 14,
+    "y": 1
+   },
+   "items": {
+    "charcoal": 1
+   },
+   "once": true
+  },
+  {
+   "id": "mansion-potion",
+   "pos": {
+    "x": 10,
+    "y": 9
+   },
+   "items": {
+    "super-potion": 1,
+    "rawst-berry": 2
+   }
+  }
+ ],
+ "npcs": [
+  {
+   "id": "scientist-mansion",
+   "name": "Scientist Ted",
+   "kind": "trainer",
+   "pos": {
+    "x": 10,
+    "y": 4
+   },
+   "arena": "cinnabar-mansion",
+   "text": [
+    "This mansion is off limits!"
+   ],
+   "afterText": [
+    "The diary upstairs tells of Mew..."
+   ],
+   "team": [
+    {
+     "species": "magnemite",
+     "level": 25
+    },
+    {
+     "species": "magneton",
+     "level": 26
+    },
+    {
+     "species": "electrode",
+     "level": 25
+    }
+   ],
+   "reward": {
+    "money": 900
+   }
+  },
+  {
+   "id": "mansion-secret-key",
+   "name": "Old Statue",
+   "kind": "gift",
+   "pos": {
+    "x": 1,
+    "y": 1
+   },
+   "text": [
+    "A dusty Pokémon statue. Something glints under it.",
+    "You found the Secret Key!"
+   ],
+   "afterText": [
+    "Just a dusty old statue now."
+   ],
+   "reward": {
+    "keyItems": [
+     "secret-key"
+    ]
+   }
+  }
+ ],
+ "obstacles": []
+}

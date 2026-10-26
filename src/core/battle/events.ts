@@ -7,7 +7,13 @@ export type BattleEvent =
   | { type: "turnStarted"; unitId: string; movePoints: number }
   | { type: "moved"; unitId: string; path: Point[]; cost: number }
   | { type: "moveUsed"; unitId: string; moveId: string; target: Point; affected: string[] }
-  | { type: "damaged"; unitId: string; amount: number; hp: number; source: "move" | "status" | "impact"; effectiveness?: number }
+  /** A unit strikes its engaged partner stepping away from it (followed by that strike's moveUsed and damage). */
+  | { type: "engagementStrike"; unitId: string; targetId: string }
+  | { type: "engaged"; unitId: string; targetId: string }
+  /** A hit exploited an ally's setup (engagement or status): the team gains Bond. */
+  | { type: "combo"; unitId: string; targetId: string; setup: "engaged" | "status" }
+  | { type: "disengaged"; unitId: string; targetId: string }
+  | { type: "damaged"; unitId: string; amount: number; hp: number; source: "move" | "status" | "impact" | "thorns"; effectiveness?: number }
   | { type: "healed"; unitId: string; amount: number; hp: number }
   | { type: "displaced"; unitId: string; from: Point; to: Point; blocked: boolean }
   | { type: "statusApplied"; unitId: string; status: string; duration: number }
@@ -17,6 +23,6 @@ export type BattleEvent =
   | { type: "captured"; unitId: string }
   | { type: "terrainChanged"; pos: Point; terrain: string }
   | { type: "abilityTriggered"; unitId: string; ability: string }
-  | { type: "bondChanged"; side: "player" | "enemy"; amount: number; total: number; reason: "spent" | "knockout" | "fainted" }
+  | { type: "bondChanged"; side: "player" | "enemy"; amount: number; total: number; reason: "spent" | "knockout" | "fainted" | "combo" }
   | { type: "turnEnded"; unitId: string }
   | { type: "battleEnded"; outcome: Exclude<BattleOutcome, "ongoing"> };

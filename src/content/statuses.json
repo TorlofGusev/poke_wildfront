@@ -55,5 +55,10 @@
   "id": "exposed",
   "name": "Exposed",
   "damageTaken": 1.25
+ },
+ "marked": {
+  "id": "marked",
+  "name": "Marked",
+  "damageTaken": 1.15
  }
 }

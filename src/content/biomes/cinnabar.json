@@ -1,0 +1,849 @@
+{
+ "cinnabar-sea": {
+  "id": "cinnabar-sea",
+  "name": "Sea Routes 19–20",
+  "char": "a",
+  "travelCost": 2,
+  "encounters": {
+   "groupSize": {
+    "min": 3,
+    "max": 4
+   },
+   "entries": [
+    {
+     "speciesId": "tentacool",
+     "weight": 4
+    },
+    {
+     "speciesId": "tentacruel",
+     "weight": 2
+    },
+    {
+     "speciesId": "horsea",
+     "weight": 3
+    },
+    {
+     "speciesId": "shellder",
+     "weight": 2
+    },
+    {
+     "speciesId": "staryu",
+     "weight": 2
+    },
+    {
+     "speciesId": "goldeen",
+     "weight": 2
+    },
+    {
+     "speciesId": "seaking",
+     "weight": 1
+    },
+    {
+     "speciesId": "magikarp",
+     "weight": 3
+    },
+    {
+     "speciesId": "gyarados",
+     "weight": 0.4,
+     "maxPerGroup": 1
+    },
+    {
+     "speciesId": "lapras",
+     "weight": 0.2,
+     "maxPerGroup": 1
+    }
+   ],
+   "levels": {
+    "min": 23,
+    "max": 25
+   }
+  },
+  "arena": {
+   "mapRows": [
+    "~~~~..~~~~..~~~.",
+    "..~...~~....~~..",
+    ".....~~~~.......",
+    ".....~~~~...~~..",
+    "............~~..",
+    ".....~~..~~.....",
+    ".....~~..~~...~~",
+    "............~...",
+    "......~~~~......",
+    "~~~...~~~~...~~~"
+   ],
+   "deploymentZone": [
+    {
+     "x": 0,
+     "y": 1
+    },
+    {
+     "x": 1,
+     "y": 1
+    },
+    {
+     "x": 0,
+     "y": 2
+    },
+    {
+     "x": 1,
+     "y": 2
+    },
+    {
+     "x": 0,
+     "y": 3
+    },
+    {
+     "x": 1,
+     "y": 3
+    },
+    {
+     "x": 0,
+     "y": 4
+    },
+    {
+     "x": 1,
+     "y": 4
+    },
+    {
+     "x": 0,
+     "y": 5
+    },
+    {
+     "x": 1,
+     "y": 5
+    },
+    {
+     "x": 0,
+     "y": 6
+    },
+    {
+     "x": 1,
+     "y": 6
+    },
+    {
+     "x": 0,
+     "y": 7
+    },
+    {
+     "x": 1,
+     "y": 7
+    },
+    {
+     "x": 0,
+     "y": 8
+    },
+    {
+     "x": 1,
+     "y": 8
+    }
+   ],
+   "enemySpawns": [
+    {
+     "x": 14,
+     "y": 1
+    },
+    {
+     "x": 14,
+     "y": 4
+    },
+    {
+     "x": 13,
+     "y": 8
+    },
+    {
+     "x": 15,
+     "y": 2
+    },
+    {
+     "x": 13,
+     "y": 5
+    }
+   ]
+  },
+  "forage": {
+   "oran-berry": 1
+  },
+  "loot": [
+   {
+    "item": "mystic-water",
+    "chance": 0.05
+   },
+   {
+    "item": "super-potion",
+    "chance": 0.15
+   }
+  ]
+ },
+ "cinnabar-seafoam": {
+  "id": "cinnabar-seafoam",
+  "name": "Seafoam Islands",
+  "char": "b",
+  "travelCost": 2,
+  "encounters": {
+   "groupSize": {
+    "min": 3,
+    "max": 4
+   },
+   "entries": [
+    {
+     "speciesId": "seel",
+     "weight": 3
+    },
+    {
+     "speciesId": "dewgong",
+     "weight": 2
+    },
+    {
+     "speciesId": "psyduck",
+     "weight": 2
+    },
+    {
+     "speciesId": "golduck",
+     "weight": 2
+    },
+    {
+     "speciesId": "slowpoke",
+     "weight": 2
+    },
+    {
+     "speciesId": "slowbro",
+     "weight": 1
+    },
+    {
+     "speciesId": "shellder",
+     "weight": 2
+    },
+    {
+     "speciesId": "zubat",
+     "weight": 2
+    },
+    {
+     "speciesId": "golbat",
+     "weight": 2
+    },
+    {
+     "speciesId": "jynx",
+     "weight": 1,
+     "maxPerGroup": 1
+    },
+    {
+     "speciesId": "articuno",
+     "weight": 0.05,
+     "maxPerGroup": 1
+    }
+   ],
+   "levels": {
+    "min": 24,
+    "max": 27
+   }
+  },
+  "arena": {
+   "mapRows": [
+    "################",
+    "........~~.....#",
+    "..##....~~..#...",
+    ".....#......~~..",
+    "..~~.....##.....",
+    "..~~..#.........",
+    "........~~..#...",
+    "..#.....~~......",
+    ".....##.........",
+    "################"
+   ],
+   "deploymentZone": [
+    {
+     "x": 0,
+     "y": 1
+    },
+    {
+     "x": 1,
+     "y": 1
+    },
+    {
+     "x": 0,
+     "y": 2
+    },
+    {
+     "x": 1,
+     "y": 2
+    },
+    {
+     "x": 0,
+     "y": 3
+    },
+    {
+     "x": 1,
+     "y": 3
+    },
+    {
+     "x": 0,
+     "y": 4
+    },
+    {
+     "x": 1,
+     "y": 4
+    },
+    {
+     "x": 0,
+     "y": 5
+    },
+    {
+     "x": 1,
+     "y": 5
+    },
+    {
+     "x": 0,
+     "y": 6
+    },
+    {
+     "x": 1,
+     "y": 6
+    },
+    {
+     "x": 0,
+     "y": 7
+    },
+    {
+     "x": 1,
+     "y": 7
+    },
+    {
+     "x": 0,
+     "y": 8
+    },
+    {
+     "x": 1,
+     "y": 8
+    }
+   ],
+   "enemySpawns": [
+    {
+     "x": 14,
+     "y": 1
+    },
+    {
+     "x": 14,
+     "y": 4
+    },
+    {
+     "x": 15,
+     "y": 6
+    },
+    {
+     "x": 13,
+     "y": 8
+    },
+    {
+     "x": 15,
+     "y": 2
+    }
+   ]
+  },
+  "forage": {
+   "rawst-berry": 2
+  },
+  "loot": [
+   {
+    "item": "mystic-water",
+    "chance": 0.05
+   },
+   {
+    "item": "super-potion",
+    "chance": 0.15
+   }
+  ]
+ },
+ "cinnabar-mansion": {
+  "id": "cinnabar-mansion",
+  "name": "Pokémon Mansion",
+  "char": "d",
+  "travelCost": 2,
+  "encounters": {
+   "groupSize": {
+    "min": 3,
+    "max": 4
+   },
+   "entries": [
+    {
+     "speciesId": "grimer",
+     "weight": 2
+    },
+    {
+     "speciesId": "muk",
+     "weight": 1
+    },
+    {
+     "speciesId": "koffing",
+     "weight": 3
+    },
+    {
+     "speciesId": "weezing",
+     "weight": 1
+    },
+    {
+     "speciesId": "ponyta",
+     "weight": 2
+    },
+    {
+     "speciesId": "rapidash",
+     "weight": 1
+    },
+    {
+     "speciesId": "growlithe",
+     "weight": 2
+    },
+    {
+     "speciesId": "vulpix",
+     "weight": 2
+    },
+    {
+     "speciesId": "magmar",
+     "weight": 1,
+     "maxPerGroup": 1
+    },
+    {
+     "speciesId": "ditto",
+     "weight": 1,
+     "maxPerGroup": 1
+    }
+   ],
+   "levels": {
+    "min": 24,
+    "max": 27
+   }
+  },
+  "arena": {
+   "mapRows": [
+    "################",
+    ".....#.....#....",
+    "..........#.....",
+    ".....#..........",
+    "..###.###.###.#.",
+    "................",
+    ".....#.....#....",
+    "..........#.....",
+    ".....#..........",
+    "################"
+   ],
+   "deploymentZone": [
+    {
+     "x": 0,
+     "y": 1
+    },
+    {
+     "x": 1,
+     "y": 1
+    },
+    {
+     "x": 0,
+     "y": 2
+    },
+    {
+     "x": 1,
+     "y": 2
+    },
+    {
+     "x": 0,
+     "y": 3
+    },
+    {
+     "x": 1,
+     "y": 3
+    },
+    {
+     "x": 0,
+     "y": 4
+    },
+    {
+     "x": 1,
+     "y": 4
+    },
+    {
+     "x": 0,
+     "y": 5
+    },
+    {
+     "x": 1,
+     "y": 5
+    },
+    {
+     "x": 0,
+     "y": 6
+    },
+    {
+     "x": 1,
+     "y": 6
+    },
+    {
+     "x": 0,
+     "y": 7
+    },
+    {
+     "x": 1,
+     "y": 7
+    },
+    {
+     "x": 0,
+     "y": 8
+    },
+    {
+     "x": 1,
+     "y": 8
+    }
+   ],
+   "enemySpawns": [
+    {
+     "x": 14,
+     "y": 1
+    },
+    {
+     "x": 15,
+     "y": 6
+    },
+    {
+     "x": 13,
+     "y": 8
+    },
+    {
+     "x": 15,
+     "y": 2
+    },
+    {
+     "x": 13,
+     "y": 5
+    }
+   ]
+  },
+  "forage": {
+   "rawst-berry": 2
+  },
+  "loot": [
+   {
+    "item": "charcoal",
+    "chance": 0.05
+   },
+   {
+    "item": "super-potion",
+    "chance": 0.15
+   }
+  ]
+ },
+ "cinnabar-lab": {
+  "id": "cinnabar-lab",
+  "name": "Cinnabar Lab ruins",
+  "char": "e",
+  "travelCost": 2,
+  "encounters": {
+   "groupSize": {
+    "min": 2,
+    "max": 3
+   },
+   "entries": [
+    {
+     "speciesId": "koffing",
+     "weight": 2
+    },
+    {
+     "speciesId": "grimer",
+     "weight": 2
+    },
+    {
+     "speciesId": "magnemite",
+     "weight": 2
+    },
+    {
+     "speciesId": "omanyte",
+     "weight": 0.5,
+     "maxPerGroup": 1
+    },
+    {
+     "speciesId": "kabuto",
+     "weight": 0.5,
+     "maxPerGroup": 1
+    },
+    {
+     "speciesId": "aerodactyl",
+     "weight": 0.2,
+     "maxPerGroup": 1
+    }
+   ],
+   "levels": {
+    "min": 25,
+    "max": 27
+   }
+  },
+  "arena": {
+   "mapRows": [
+    "................",
+    "..##......##....",
+    "..#........#....",
+    "......##........",
+    "................",
+    ".....##..##.....",
+    "..#.........#...",
+    "..##......##....",
+    "................",
+    "................"
+   ],
+   "deploymentZone": [
+    {
+     "x": 0,
+     "y": 1
+    },
+    {
+     "x": 1,
+     "y": 1
+    },
+    {
+     "x": 0,
+     "y": 2
+    },
+    {
+     "x": 1,
+     "y": 2
+    },
+    {
+     "x": 0,
+     "y": 3
+    },
+    {
+     "x": 1,
+     "y": 3
+    },
+    {
+     "x": 0,
+     "y": 4
+    },
+    {
+     "x": 1,
+     "y": 4
+    },
+    {
+     "x": 0,
+     "y": 5
+    },
+    {
+     "x": 1,
+     "y": 5
+    },
+    {
+     "x": 0,
+     "y": 6
+    },
+    {
+     "x": 1,
+     "y": 6
+    },
+    {
+     "x": 0,
+     "y": 7
+    },
+    {
+     "x": 1,
+     "y": 7
+    },
+    {
+     "x": 0,
+     "y": 8
+    },
+    {
+     "x": 1,
+     "y": 8
+    }
+   ],
+   "enemySpawns": [
+    {
+     "x": 14,
+     "y": 1
+    },
+    {
+     "x": 14,
+     "y": 4
+    },
+    {
+     "x": 15,
+     "y": 6
+    },
+    {
+     "x": 13,
+     "y": 8
+    },
+    {
+     "x": 15,
+     "y": 2
+    }
+   ]
+  },
+  "forage": {
+   "oran-berry": 1
+  },
+  "loot": [
+   {
+    "item": "hard-stone",
+    "chance": 0.06
+   },
+   {
+    "item": "super-potion",
+    "chance": 0.15
+   }
+  ]
+ },
+ "cinnabar-route21": {
+  "id": "cinnabar-route21",
+  "name": "Route 21",
+  "char": "f",
+  "travelCost": 1,
+  "encounters": {
+   "groupSize": {
+    "min": 3,
+    "max": 4
+   },
+   "entries": [
+    {
+     "speciesId": "tangela",
+     "weight": 3
+    },
+    {
+     "speciesId": "pidgey",
+     "weight": 2
+    },
+    {
+     "speciesId": "pidgeotto",
+     "weight": 3
+    },
+    {
+     "speciesId": "rattata",
+     "weight": 2
+    },
+    {
+     "speciesId": "raticate",
+     "weight": 2
+    },
+    {
+     "speciesId": "tentacool",
+     "weight": 2
+    }
+   ],
+   "levels": {
+    "min": 23,
+    "max": 26
+   }
+  },
+  "arena": {
+   "mapRows": [
+    "..\"\"~~..\"\"......",
+    "..\"\".~~..\"\"..\"\"~",
+    "......~~.......~",
+    "..\"\"\"...~~......",
+    "..\"\"\"...~~..\"\"..",
+    "......\"\"....\"\"..",
+    "..~~..\"\"........",
+    "..~~.....\"\"..~~.",
+    ".........\"\"..~~.",
+    "..\"\"............"
+   ],
+   "deploymentZone": [
+    {
+     "x": 0,
+     "y": 1
+    },
+    {
+     "x": 1,
+     "y": 1
+    },
+    {
+     "x": 0,
+     "y": 2
+    },
+    {
+     "x": 1,
+     "y": 2
+    },
+    {
+     "x": 0,
+     "y": 3
+    },
+    {
+     "x": 1,
+     "y": 3
+    },
+    {
+     "x": 0,
+     "y": 4
+    },
+    {
+     "x": 1,
+     "y": 4
+    },
+    {
+     "x": 0,
+     "y": 5
+    },
+    {
+     "x": 1,
+     "y": 5
+    },
+    {
+     "x": 0,
+     "y": 6
+    },
+    {
+     "x": 1,
+     "y": 6
+    },
+    {
+     "x": 0,
+     "y": 7
+    },
+    {
+     "x": 1,
+     "y": 7
+    },
+    {
+     "x": 0,
+     "y": 8
+    },
+    {
+     "x": 1,
+     "y": 8
+    }
+   ],
+   "enemySpawns": [
+    {
+     "x": 14,
+     "y": 1
+    },
+    {
+     "x": 14,
+     "y": 4
+    },
+    {
+     "x": 15,
+     "y": 6
+    },
+    {
+     "x": 13,
+     "y": 5
+    },
+    {
+     "x": 15,
+     "y": 3
+    }
+   ]
+  },
+  "forage": {
+   "oran-berry": 2,
+   "cheri-berry": 1
+  },
+  "loot": [
+   {
+    "item": "miracle-seed",
+    "chance": 0.04
+   },
+   {
+    "item": "super-potion",
+    "chance": 0.15
+   }
+  ]
+ }
+}

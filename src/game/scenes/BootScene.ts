@@ -1,4 +1,5 @@
 import Phaser from "phaser";
+import { preloadCries } from "../audio";
 import { createSpriteAnims, preloadSprites } from "../sprites";
 import { FONT } from "../ui/theme";
 
@@ -8,7 +9,7 @@ const TIPS = [
   "Capture needs the target below half HP, and the ball is always used up.",
   "Push foes into rocks or other Pokémon for extra damage.",
   "Tall grass hides a Pokémon from attacks unless you stand next to it.",
-  "Choose a role at level 5, then a talent at every level.",
+  "Choose a role at level 3, then a mastery every other level.",
 ];
 
 /** Loads the Pokémon sprites with a progress bar, then shows the title screen. */
@@ -37,6 +38,7 @@ export class BootScene extends Phaser.Scene {
       label.setText(`Loading Pokémon… ${Math.round(p * 100)}%`);
     });
     preloadSprites(this);
+    preloadCries(this);
   }
 
   create(): void {

@@ -1,0 +1,230 @@
+{
+ "id": "fuchsia-city",
+ "name": "Fuchsia City",
+ "ai": "normal",
+ "deploySlots": 5,
+ "rows": [
+  "##########T#############",
+  "#TTTTTTTTTTTTTTTTTTTTTT#",
+  "#TTTTTTTTTTTTTTT######T#",
+  "#TTTTTTTTTTTTTTT#TTTT#T#",
+  "TTTTTTTTTTTTTTTT#TTTT#TT",
+  "#TTT~~~TTTTTTTTT#TTTT#T#",
+  "#TTT~~~TTTTTTTTT##T###T#",
+  "#TTTTTTTTTTTTTTTTTTTTTT#",
+  "#TTTTTTTTTTTTTTTTTTTTTT#",
+  "#~~~~~~~~TTTT~~~~~~~~~~#",
+  "#~~~~~~~~~TT~~~~~~~~~~~#",
+  "###########T############"
+ ],
+ "start": {
+  "x": 11,
+  "y": 7
+ },
+ "areaNames": {
+  "town": "Fuchsia City"
+ },
+ "exits": [
+  {
+   "name": "Safari Zone",
+   "pos": {
+    "x": 10,
+    "y": 0
+   },
+   "to": "safari-zone",
+   "arrive": {
+    "x": 12,
+    "y": 14
+   }
+  },
+  {
+   "name": "Route 18",
+   "pos": {
+    "x": 0,
+    "y": 4
+   },
+   "to": "route-18",
+   "arrive": {
+    "x": 22,
+    "y": 5
+   }
+  },
+  {
+   "name": "Route 15",
+   "pos": {
+    "x": 23,
+    "y": 4
+   },
+   "to": "route-15",
+   "arrive": {
+    "x": 1,
+    "y": 4
+   }
+  },
+  {
+   "name": "Route 19",
+   "pos": {
+    "x": 11,
+    "y": 11
+   },
+   "to": "route-19",
+   "arrive": {
+    "x": 5,
+    "y": 1
+   },
+   "requires": {
+    "fieldMove": "surf"
+   },
+   "lockedText": "The sea stretches south. You need Surf to cross it."
+  }
+ ],
+ "spawnZones": [],
+ "pickups": [],
+ "npcs": [
+  {
+   "id": "juggler-fuchsia1",
+   "name": "Juggler Kirk",
+   "kind": "trainer",
+   "pos": {
+    "x": 20,
+    "y": 5
+   },
+   "arena": "fuchsia-gym",
+   "text": [
+    "Koga's gym is full of tricks!"
+   ],
+   "afterText": [
+    "The walls are invisible, you know."
+   ],
+   "team": [
+    {
+     "species": "drowzee",
+     "level": 22
+    },
+    {
+     "species": "kadabra",
+     "level": 22
+    }
+   ],
+   "reward": {
+    "money": 900
+   }
+  },
+  {
+   "id": "tamer-fuchsia2",
+   "name": "Tamer Phil",
+   "kind": "trainer",
+   "pos": {
+    "x": 17,
+    "y": 4
+   },
+   "arena": "fuchsia-gym",
+   "text": [
+    "Poison and patience, that's ninja style!"
+   ],
+   "afterText": [
+    "Koga will not be so easy."
+   ],
+   "team": [
+    {
+     "species": "arbok",
+     "level": 23
+    },
+    {
+     "species": "venomoth",
+     "level": 22
+    }
+   ],
+   "reward": {
+    "money": 900
+   }
+  },
+  {
+   "id": "koga",
+   "name": "Koga",
+   "kind": "leader",
+   "pos": {
+    "x": 18,
+    "y": 3
+   },
+   "arena": "fuchsia-gym",
+   "text": [
+    "Fwahahaha! A mere child dares to challenge me?",
+    "Despair to the creeping horror of poison!"
+   ],
+   "afterText": [
+    "The Soul Badge lets you Surf outside battle.",
+    "Strive on, young one."
+   ],
+   "team": [
+    {
+     "species": "koffing",
+     "level": 24,
+     "heldItem": "quick-claw"
+    },
+    {
+     "species": "muk",
+     "level": 24,
+     "heldItem": "leftovers"
+    },
+    {
+     "species": "koffing",
+     "level": 24
+    },
+    {
+     "species": "weezing",
+     "level": 26,
+     "heldItem": "leftovers"
+    }
+   ],
+   "reward": {
+    "money": 2600,
+    "badge": "soul"
+   }
+  },
+  {
+   "id": "warden",
+   "name": "Safari Warden",
+   "kind": "gift",
+   "pos": {
+    "x": 14,
+    "y": 1
+   },
+   "requires": {
+    "flags": [
+     "npc:koga"
+    ]
+   },
+   "lockedText": [
+    "I lost my gold teeth in the Safari Zone...",
+    "Come back when you've earned Koga's badge."
+   ],
+   "text": [
+    "You beat Koga? Splendid!",
+    "Take this HM. Strength moves big boulders."
+   ],
+   "afterText": [
+    "Strength needs the Rainbow Badge to use."
+   ],
+   "reward": {
+    "keyItems": [
+     "hm-strength"
+    ]
+   }
+  },
+  {
+   "id": "fuchsia-fisher",
+   "name": "Fisherman",
+   "kind": "talk",
+   "pos": {
+    "x": 9,
+    "y": 8
+   },
+   "text": [
+    "Cinnabar Island lies far south.",
+    "Only a Surfing Pokémon can get you there."
+   ]
+  }
+ ],
+ "obstacles": []
+}

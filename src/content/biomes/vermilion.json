@@ -1,0 +1,630 @@
+{
+ "vermilion-route5": {
+  "id": "vermilion-route5",
+  "name": "Routes 5 & 6",
+  "char": "E",
+  "travelCost": 1,
+  "encounters": {
+   "groupSize": {
+    "min": 2,
+    "max": 3
+   },
+   "entries": [
+    {
+     "speciesId": "pidgey",
+     "weight": 4
+    },
+    {
+     "speciesId": "oddish",
+     "weight": 3
+    },
+    {
+     "speciesId": "bellsprout",
+     "weight": 3
+    },
+    {
+     "speciesId": "meowth",
+     "weight": 3
+    },
+    {
+     "speciesId": "mankey",
+     "weight": 3
+    },
+    {
+     "speciesId": "psyduck",
+     "weight": 1,
+     "maxPerGroup": 1
+    }
+   ],
+   "levels": {
+    "min": 14,
+    "max": 16
+   }
+  },
+  "arena": {
+   "mapRows": [
+    "................",
+    "..\"\"............",
+    "..\"\"....##..\"\"..",
+    "........##......",
+    "...........#....",
+    "....\"\"..........",
+    "....\"\"....##....",
+    "................",
+    "..#.......\"\"....",
+    "................"
+   ],
+   "deploymentZone": [
+    {
+     "x": 0,
+     "y": 1
+    },
+    {
+     "x": 1,
+     "y": 1
+    },
+    {
+     "x": 0,
+     "y": 2
+    },
+    {
+     "x": 1,
+     "y": 2
+    },
+    {
+     "x": 0,
+     "y": 3
+    },
+    {
+     "x": 1,
+     "y": 3
+    },
+    {
+     "x": 0,
+     "y": 4
+    },
+    {
+     "x": 1,
+     "y": 4
+    },
+    {
+     "x": 0,
+     "y": 5
+    },
+    {
+     "x": 1,
+     "y": 5
+    },
+    {
+     "x": 0,
+     "y": 6
+    },
+    {
+     "x": 1,
+     "y": 6
+    },
+    {
+     "x": 0,
+     "y": 7
+    },
+    {
+     "x": 1,
+     "y": 7
+    },
+    {
+     "x": 0,
+     "y": 8
+    },
+    {
+     "x": 1,
+     "y": 8
+    }
+   ],
+   "enemySpawns": [
+    {
+     "x": 14,
+     "y": 1
+    },
+    {
+     "x": 14,
+     "y": 5
+    },
+    {
+     "x": 15,
+     "y": 8
+    },
+    {
+     "x": 13,
+     "y": 3
+    },
+    {
+     "x": 15,
+     "y": 6
+    }
+   ]
+  },
+  "forage": {
+   "oran-berry": 2,
+   "pecha-berry": 1
+  },
+  "loot": [
+   {
+    "item": "potion",
+    "chance": 0.12
+   },
+   {
+    "item": "oran-berry",
+    "chance": 0.15
+   },
+   {
+    "item": "super-potion",
+    "chance": 0.05
+   }
+  ]
+ },
+ "vermilion-coast": {
+  "id": "vermilion-coast",
+  "name": "Vermilion coast",
+  "char": "F",
+  "travelCost": 2,
+  "encounters": {
+   "groupSize": {
+    "min": 2,
+    "max": 3
+   },
+   "entries": [
+    {
+     "speciesId": "tentacool",
+     "weight": 4
+    },
+    {
+     "speciesId": "shellder",
+     "weight": 3
+    },
+    {
+     "speciesId": "krabby",
+     "weight": 4
+    },
+    {
+     "speciesId": "magikarp",
+     "weight": 3
+    },
+    {
+     "speciesId": "horsea",
+     "weight": 1,
+     "maxPerGroup": 1
+    }
+   ],
+   "levels": {
+    "min": 15,
+    "max": 17
+   }
+  },
+  "arena": {
+   "mapRows": [
+    "......~~~~......",
+    "........~~......",
+    "........~~......",
+    "................",
+    "....mm......~~..",
+    "....mm......~~..",
+    "................",
+    "..........##....",
+    "......~~........",
+    "....~~~~~~......"
+   ],
+   "deploymentZone": [
+    {
+     "x": 0,
+     "y": 1
+    },
+    {
+     "x": 1,
+     "y": 1
+    },
+    {
+     "x": 0,
+     "y": 2
+    },
+    {
+     "x": 1,
+     "y": 2
+    },
+    {
+     "x": 0,
+     "y": 3
+    },
+    {
+     "x": 1,
+     "y": 3
+    },
+    {
+     "x": 0,
+     "y": 4
+    },
+    {
+     "x": 1,
+     "y": 4
+    },
+    {
+     "x": 0,
+     "y": 5
+    },
+    {
+     "x": 1,
+     "y": 5
+    },
+    {
+     "x": 0,
+     "y": 6
+    },
+    {
+     "x": 1,
+     "y": 6
+    },
+    {
+     "x": 0,
+     "y": 7
+    },
+    {
+     "x": 1,
+     "y": 7
+    },
+    {
+     "x": 0,
+     "y": 8
+    },
+    {
+     "x": 1,
+     "y": 8
+    }
+   ],
+   "enemySpawns": [
+    {
+     "x": 14,
+     "y": 1
+    },
+    {
+     "x": 14,
+     "y": 5
+    },
+    {
+     "x": 15,
+     "y": 8
+    },
+    {
+     "x": 13,
+     "y": 3
+    },
+    {
+     "x": 15,
+     "y": 6
+    }
+   ]
+  },
+  "forage": {
+   "oran-berry": 1,
+   "rawst-berry": 1
+  },
+  "loot": [
+   {
+    "item": "mystic-water",
+    "chance": 0.03
+   },
+   {
+    "item": "super-potion",
+    "chance": 0.08
+   },
+   {
+    "item": "oran-berry",
+    "chance": 0.15
+   }
+  ]
+ },
+ "vermilion-digletts": {
+  "id": "vermilion-digletts",
+  "name": "Diglett's Cave",
+  "char": "G",
+  "travelCost": 2,
+  "encounters": {
+   "groupSize": {
+    "min": 3,
+    "max": 4
+   },
+   "entries": [
+    {
+     "speciesId": "diglett",
+     "weight": 6
+    },
+    {
+     "speciesId": "dugtrio",
+     "weight": 1,
+     "maxPerGroup": 1
+    }
+   ],
+   "levels": {
+    "min": 15,
+    "max": 18
+   }
+  },
+  "arena": {
+   "mapRows": [
+    "....##..........",
+    "................",
+    "..mm....##......",
+    "..mm....##..mm..",
+    "............mm..",
+    "......#.........",
+    "..#...#.....#...",
+    "........mm......",
+    "........mm......",
+    "...##.......##.."
+   ],
+   "deploymentZone": [
+    {
+     "x": 0,
+     "y": 1
+    },
+    {
+     "x": 1,
+     "y": 1
+    },
+    {
+     "x": 0,
+     "y": 2
+    },
+    {
+     "x": 1,
+     "y": 2
+    },
+    {
+     "x": 0,
+     "y": 3
+    },
+    {
+     "x": 1,
+     "y": 3
+    },
+    {
+     "x": 0,
+     "y": 4
+    },
+    {
+     "x": 1,
+     "y": 4
+    },
+    {
+     "x": 0,
+     "y": 5
+    },
+    {
+     "x": 1,
+     "y": 5
+    },
+    {
+     "x": 0,
+     "y": 6
+    },
+    {
+     "x": 1,
+     "y": 6
+    },
+    {
+     "x": 0,
+     "y": 7
+    },
+    {
+     "x": 1,
+     "y": 7
+    },
+    {
+     "x": 0,
+     "y": 8
+    },
+    {
+     "x": 1,
+     "y": 8
+    }
+   ],
+   "enemySpawns": [
+    {
+     "x": 14,
+     "y": 1
+    },
+    {
+     "x": 14,
+     "y": 5
+    },
+    {
+     "x": 15,
+     "y": 8
+    },
+    {
+     "x": 13,
+     "y": 3
+    },
+    {
+     "x": 15,
+     "y": 6
+    }
+   ]
+  },
+  "forage": {
+   "cheri-berry": 1,
+   "pecha-berry": 1
+  },
+  "loot": [
+   {
+    "item": "hard-stone",
+    "chance": 0.05
+   },
+   {
+    "item": "revival-herb",
+    "chance": 0.06
+   },
+   {
+    "item": "super-potion",
+    "chance": 0.1
+   }
+  ]
+ },
+ "vermilion-route11": {
+  "id": "vermilion-route11",
+  "name": "Route 11",
+  "char": "H",
+  "travelCost": 1,
+  "encounters": {
+   "groupSize": {
+    "min": 2,
+    "max": 3
+   },
+   "entries": [
+    {
+     "speciesId": "ekans",
+     "weight": 3
+    },
+    {
+     "speciesId": "sandshrew",
+     "weight": 3
+    },
+    {
+     "speciesId": "spearow",
+     "weight": 4
+    },
+    {
+     "speciesId": "drowzee",
+     "weight": 3
+    },
+    {
+     "speciesId": "raticate",
+     "weight": 1,
+     "maxPerGroup": 1
+    }
+   ],
+   "levels": {
+    "min": 16,
+    "max": 18
+   }
+  },
+  "arena": {
+   "mapRows": [
+    "................",
+    "...\"\"\"..........",
+    "...\"\"\".....#....",
+    "...........#....",
+    "........\"\"......",
+    "..##....\"\"......",
+    "..........\"\"\"...",
+    "......#...\"\"\"...",
+    "................",
+    "..\"\"......##...."
+   ],
+   "deploymentZone": [
+    {
+     "x": 0,
+     "y": 1
+    },
+    {
+     "x": 1,
+     "y": 1
+    },
+    {
+     "x": 0,
+     "y": 2
+    },
+    {
+     "x": 1,
+     "y": 2
+    },
+    {
+     "x": 0,
+     "y": 3
+    },
+    {
+     "x": 1,
+     "y": 3
+    },
+    {
+     "x": 0,
+     "y": 4
+    },
+    {
+     "x": 1,
+     "y": 4
+    },
+    {
+     "x": 0,
+     "y": 5
+    },
+    {
+     "x": 1,
+     "y": 5
+    },
+    {
+     "x": 0,
+     "y": 6
+    },
+    {
+     "x": 1,
+     "y": 6
+    },
+    {
+     "x": 0,
+     "y": 7
+    },
+    {
+     "x": 1,
+     "y": 7
+    },
+    {
+     "x": 0,
+     "y": 8
+    },
+    {
+     "x": 1,
+     "y": 8
+    }
+   ],
+   "enemySpawns": [
+    {
+     "x": 14,
+     "y": 1
+    },
+    {
+     "x": 14,
+     "y": 5
+    },
+    {
+     "x": 15,
+     "y": 8
+    },
+    {
+     "x": 13,
+     "y": 3
+    },
+    {
+     "x": 15,
+     "y": 6
+    }
+   ]
+  },
+  "forage": {
+   "oran-berry": 2,
+   "cheri-berry": 1
+  },
+  "loot": [
+   {
+    "item": "potion",
+    "chance": 0.1
+   },
+   {
+    "item": "super-potion",
+    "chance": 0.07
+   },
+   {
+    "item": "sharp-beak",
+    "chance": 0.03
+   }
+  ]
+ }
+}

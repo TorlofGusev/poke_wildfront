@@ -1,4 +1,5 @@
 import Phaser from "phaser";
+import { playMusic } from "../music";
 import { CONTENT, PROGRESSION } from "../../content";
 import { session } from "../session";
 import { Button } from "../ui/Button";
@@ -20,6 +21,7 @@ export class InventoryScene extends Phaser.Scene {
   }
 
   create(): void {
+    playMusic(this, "overworld");
     const { inventory, money, roster } = session.game;
     this.add.text(16, 14, "Bag", { fontFamily: FONT, fontSize: "20px", color: "#f5d76e" });
     new RichText(this, 90, 19, 400, 14).setMarkup(`${tag("num", `₽${money}`)}`);

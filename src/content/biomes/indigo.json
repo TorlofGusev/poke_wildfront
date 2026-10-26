@@ -1,0 +1,492 @@
+{
+ "indigo-route22": {
+  "id": "indigo-route22",
+  "name": "Route 22",
+  "char": "g",
+  "travelCost": 1,
+  "encounters": {
+   "groupSize": {
+    "min": 3,
+    "max": 4
+   },
+   "entries": [
+    {
+     "speciesId": "rattata",
+     "weight": 3
+    },
+    {
+     "speciesId": "raticate",
+     "weight": 2
+    },
+    {
+     "speciesId": "spearow",
+     "weight": 3
+    },
+    {
+     "speciesId": "fearow",
+     "weight": 1
+    },
+    {
+     "speciesId": "mankey",
+     "weight": 3
+    },
+    {
+     "speciesId": "primeape",
+     "weight": 1
+    },
+    {
+     "speciesId": "nidoran-f",
+     "weight": 2
+    },
+    {
+     "speciesId": "nidoran-m",
+     "weight": 2
+    }
+   ],
+   "levels": {
+    "min": 26,
+    "max": 27
+   }
+  },
+  "arena": {
+   "mapRows": [
+    "................",
+    "..\"\"\"......\"\"...",
+    "..\"\"\".......\"\"..",
+    ".......##.......",
+    "...\"\"......\"\"\"\".",
+    "...\"\"...........",
+    "........##......",
+    "..\"\"......\"\"\"...",
+    "..\"\"............",
+    "................"
+   ],
+   "deploymentZone": [
+    {
+     "x": 0,
+     "y": 1
+    },
+    {
+     "x": 1,
+     "y": 1
+    },
+    {
+     "x": 0,
+     "y": 2
+    },
+    {
+     "x": 1,
+     "y": 2
+    },
+    {
+     "x": 0,
+     "y": 3
+    },
+    {
+     "x": 1,
+     "y": 3
+    },
+    {
+     "x": 0,
+     "y": 4
+    },
+    {
+     "x": 1,
+     "y": 4
+    },
+    {
+     "x": 0,
+     "y": 5
+    },
+    {
+     "x": 1,
+     "y": 5
+    },
+    {
+     "x": 0,
+     "y": 6
+    },
+    {
+     "x": 1,
+     "y": 6
+    },
+    {
+     "x": 0,
+     "y": 7
+    },
+    {
+     "x": 1,
+     "y": 7
+    },
+    {
+     "x": 0,
+     "y": 8
+    },
+    {
+     "x": 1,
+     "y": 8
+    }
+   ],
+   "enemySpawns": [
+    {
+     "x": 14,
+     "y": 1
+    },
+    {
+     "x": 14,
+     "y": 4
+    },
+    {
+     "x": 15,
+     "y": 6
+    },
+    {
+     "x": 13,
+     "y": 8
+    },
+    {
+     "x": 15,
+     "y": 2
+    }
+   ]
+  },
+  "forage": {
+   "oran-berry": 2
+  },
+  "loot": [
+   {
+    "item": "super-potion",
+    "chance": 0.15
+   }
+  ]
+ },
+ "indigo-route23": {
+  "id": "indigo-route23",
+  "name": "Route 23",
+  "char": "h",
+  "travelCost": 2,
+  "encounters": {
+   "groupSize": {
+    "min": 3,
+    "max": 4
+   },
+   "entries": [
+    {
+     "speciesId": "fearow",
+     "weight": 3
+    },
+    {
+     "speciesId": "arbok",
+     "weight": 2
+    },
+    {
+     "speciesId": "sandslash",
+     "weight": 2
+    },
+    {
+     "speciesId": "spearow",
+     "weight": 2
+    },
+    {
+     "speciesId": "ekans",
+     "weight": 2
+    },
+    {
+     "speciesId": "sandshrew",
+     "weight": 2
+    },
+    {
+     "speciesId": "ditto",
+     "weight": 1,
+     "maxPerGroup": 1
+    }
+   ],
+   "levels": {
+    "min": 27,
+    "max": 28
+   }
+  },
+  "arena": {
+   "mapRows": [
+    "......~~........",
+    "..\"\".~~...##....",
+    "..\"\"..~~........",
+    ".......~~..\"\"...",
+    "..##....~~.\"\"...",
+    "..........~~....",
+    "..\"\"..##...~~...",
+    "..\"\".........~~.",
+    ".........##.....",
+    "................"
+   ],
+   "deploymentZone": [
+    {
+     "x": 0,
+     "y": 1
+    },
+    {
+     "x": 1,
+     "y": 1
+    },
+    {
+     "x": 0,
+     "y": 2
+    },
+    {
+     "x": 1,
+     "y": 2
+    },
+    {
+     "x": 0,
+     "y": 3
+    },
+    {
+     "x": 1,
+     "y": 3
+    },
+    {
+     "x": 0,
+     "y": 4
+    },
+    {
+     "x": 1,
+     "y": 4
+    },
+    {
+     "x": 0,
+     "y": 5
+    },
+    {
+     "x": 1,
+     "y": 5
+    },
+    {
+     "x": 0,
+     "y": 6
+    },
+    {
+     "x": 1,
+     "y": 6
+    },
+    {
+     "x": 0,
+     "y": 7
+    },
+    {
+     "x": 1,
+     "y": 7
+    },
+    {
+     "x": 0,
+     "y": 8
+    },
+    {
+     "x": 1,
+     "y": 8
+    }
+   ],
+   "enemySpawns": [
+    {
+     "x": 14,
+     "y": 1
+    },
+    {
+     "x": 14,
+     "y": 4
+    },
+    {
+     "x": 15,
+     "y": 6
+    },
+    {
+     "x": 13,
+     "y": 8
+    },
+    {
+     "x": 15,
+     "y": 2
+    }
+   ]
+  },
+  "forage": {
+   "oran-berry": 1,
+   "pecha-berry": 1
+  },
+  "loot": [
+   {
+    "item": "sharp-beak",
+    "chance": 0.04
+   },
+   {
+    "item": "super-potion",
+    "chance": 0.15
+   }
+  ]
+ },
+ "indigo-victory": {
+  "id": "indigo-victory",
+  "name": "Victory Road",
+  "char": "i",
+  "travelCost": 2,
+  "encounters": {
+   "groupSize": {
+    "min": 3,
+    "max": 5
+   },
+   "entries": [
+    {
+     "speciesId": "machoke",
+     "weight": 3
+    },
+    {
+     "speciesId": "onix",
+     "weight": 2
+    },
+    {
+     "speciesId": "graveler",
+     "weight": 3
+    },
+    {
+     "speciesId": "marowak",
+     "weight": 2
+    },
+    {
+     "speciesId": "golbat",
+     "weight": 3
+    },
+    {
+     "speciesId": "venomoth",
+     "weight": 2
+    },
+    {
+     "speciesId": "moltres",
+     "weight": 0.05,
+     "maxPerGroup": 1
+    }
+   ],
+   "levels": {
+    "min": 28,
+    "max": 30
+   }
+  },
+  "arena": {
+   "mapRows": [
+    "################",
+    "....mm..#....mm.",
+    "..#.mm..#..#....",
+    "..#.....mmm.#...",
+    ".....##.mm......",
+    "..mm....##..mm..",
+    "..mm.#.......#..",
+    "......#mm..#....",
+    "..##...mm.......",
+    "################"
+   ],
+   "deploymentZone": [
+    {
+     "x": 0,
+     "y": 1
+    },
+    {
+     "x": 1,
+     "y": 1
+    },
+    {
+     "x": 0,
+     "y": 2
+    },
+    {
+     "x": 1,
+     "y": 2
+    },
+    {
+     "x": 0,
+     "y": 3
+    },
+    {
+     "x": 1,
+     "y": 3
+    },
+    {
+     "x": 0,
+     "y": 4
+    },
+    {
+     "x": 1,
+     "y": 4
+    },
+    {
+     "x": 0,
+     "y": 5
+    },
+    {
+     "x": 1,
+     "y": 5
+    },
+    {
+     "x": 0,
+     "y": 6
+    },
+    {
+     "x": 1,
+     "y": 6
+    },
+    {
+     "x": 0,
+     "y": 7
+    },
+    {
+     "x": 1,
+     "y": 7
+    },
+    {
+     "x": 0,
+     "y": 8
+    },
+    {
+     "x": 1,
+     "y": 8
+    }
+   ],
+   "enemySpawns": [
+    {
+     "x": 14,
+     "y": 1
+    },
+    {
+     "x": 14,
+     "y": 4
+    },
+    {
+     "x": 15,
+     "y": 6
+    },
+    {
+     "x": 13,
+     "y": 8
+    },
+    {
+     "x": 15,
+     "y": 2
+    }
+   ]
+  },
+  "forage": {
+   "rawst-berry": 2
+  },
+  "loot": [
+   {
+    "item": "hard-stone",
+    "chance": 0.06
+   },
+   {
+    "item": "muscle-band",
+    "chance": 0.03
+   },
+   {
+    "item": "super-potion",
+    "chance": 0.15
+   }
+  ]
+ }
+}

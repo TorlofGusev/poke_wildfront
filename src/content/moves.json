@@ -1,55 +1,2710 @@
 {
-  "tackle": {"id": "tackle", "name": "Tackle", "type": "normal", "kind": "basic", "power": 40, "range": {"min": 1, "max": 1}, "requiresLineOfSight": false, "shape": {"kind": "single"}, "affects": "enemies"},
-  "scratch": {"id": "scratch", "name": "Scratch", "type": "normal", "kind": "basic", "power": 40, "range": {"min": 1, "max": 1}, "requiresLineOfSight": false, "shape": {"kind": "single"}, "affects": "enemies"},
-  "karate-chop": {"id": "karate-chop", "name": "Karate Chop", "type": "fighting", "kind": "basic", "power": 45, "range": {"min": 1, "max": 1}, "requiresLineOfSight": false, "shape": {"kind": "single"}, "affects": "enemies"},
-  "vine-whip": {"id": "vine-whip", "name": "Vine Whip", "type": "grass", "kind": "basic", "power": 35, "range": {"min": 1, "max": 2}, "requiresLineOfSight": true, "shape": {"kind": "single"}, "affects": "enemies"},
-  "absorb": {"id": "absorb", "name": "Absorb", "type": "grass", "kind": "basic", "power": 30, "range": {"min": 1, "max": 2}, "requiresLineOfSight": true, "shape": {"kind": "single"}, "affects": "enemies"},
-  "ember": {"id": "ember", "name": "Ember", "type": "fire", "kind": "basic", "power": 35, "range": {"min": 2, "max": 4}, "requiresLineOfSight": true, "shape": {"kind": "single"}, "affects": "enemies"},
-  "water-gun": {"id": "water-gun", "name": "Water Gun", "type": "water", "kind": "basic", "power": 35, "range": {"min": 1, "max": 3}, "requiresLineOfSight": true, "shape": {"kind": "single"}, "affects": "enemies"},
-  "thunder-shock": {"id": "thunder-shock", "name": "Thunder Shock", "type": "electric", "kind": "basic", "power": 35, "range": {"min": 1, "max": 3}, "requiresLineOfSight": true, "shape": {"kind": "single"}, "affects": "enemies"},
-  "gust": {"id": "gust", "name": "Gust", "type": "flying", "kind": "basic", "power": 40, "range": {"min": 1, "max": 2}, "requiresLineOfSight": true, "shape": {"kind": "single"}, "affects": "enemies", "effects": [{"kind": "push", "distance": 1}]},
-  "poison-sting": {"id": "poison-sting", "name": "Poison Sting", "type": "poison", "kind": "basic", "power": 15, "range": {"min": 1, "max": 2}, "requiresLineOfSight": true, "shape": {"kind": "single"}, "affects": "enemies", "effects": [{"kind": "status", "status": "poison", "duration": 2}]},
-  "poison-powder": {"id": "poison-powder", "name": "Poison Powder", "type": "poison", "kind": "special", "cooldown": 3, "power": 0, "range": {"min": 1, "max": 3}, "requiresLineOfSight": true, "shape": {"kind": "burst", "radius": 1}, "affects": "enemies", "effects": [{"kind": "status", "status": "poison", "duration": 3}]},
-  "flamethrower": {"id": "flamethrower", "name": "Flamethrower", "type": "fire", "kind": "special", "cooldown": 3, "power": 45, "range": {"min": 1, "max": 3}, "requiresLineOfSight": false, "shape": {"kind": "line", "length": 3}, "affects": "enemies"},
-  "bubble": {"id": "bubble", "name": "Bubble", "type": "water", "kind": "special", "cooldown": 3, "power": 25, "range": {"min": 2, "max": 4}, "requiresLineOfSight": true, "shape": {"kind": "burst", "radius": 1}, "affects": "enemies", "effects": [{"kind": "status", "status": "slow", "duration": 1}]},
-  "thunder-wave": {"id": "thunder-wave", "name": "Thunder Wave", "type": "electric", "kind": "special", "cooldown": 3, "power": 0, "range": {"min": 1, "max": 3}, "requiresLineOfSight": true, "shape": {"kind": "single"}, "affects": "enemies", "effects": [{"kind": "status", "status": "slow", "duration": 2}]},
-  "rollout": {"id": "rollout", "name": "Rollout", "type": "rock", "kind": "special", "cooldown": 2, "power": 30, "range": {"min": 1, "max": 1}, "requiresLineOfSight": false, "shape": {"kind": "single"}, "affects": "enemies", "effects": [{"kind": "push", "distance": 2}]},
-  "rock-throw": {"id": "rock-throw", "name": "Rock Throw", "type": "rock", "kind": "special", "cooldown": 2, "power": 45, "range": {"min": 2, "max": 3}, "requiresLineOfSight": true, "shape": {"kind": "single"}, "affects": "enemies"},
-  "whirlwind": {"id": "whirlwind", "name": "Whirlwind", "type": "normal", "kind": "special", "cooldown": 2, "power": 20, "range": {"min": 1, "max": 2}, "requiresLineOfSight": true, "shape": {"kind": "single"}, "affects": "enemies", "effects": [{"kind": "push", "distance": 3}]},
-  "quick-attack": {"id": "quick-attack", "name": "Quick Attack", "type": "normal", "kind": "special", "cooldown": 2, "power": 45, "range": {"min": 1, "max": 1}, "requiresLineOfSight": false, "shape": {"kind": "single"}, "affects": "enemies"},
-  "supersonic": {"id": "supersonic", "name": "Supersonic", "type": "normal", "kind": "special", "cooldown": 3, "power": 0, "range": {"min": 1, "max": 3}, "requiresLineOfSight": true, "shape": {"kind": "single"}, "affects": "enemies", "effects": [{"kind": "status", "status": "slow", "duration": 2}]},
-  "low-kick": {"id": "low-kick", "name": "Low Kick", "type": "fighting", "kind": "special", "cooldown": 2, "power": 40, "range": {"min": 1, "max": 1}, "requiresLineOfSight": false, "shape": {"kind": "single"}, "affects": "enemies", "effects": [{"kind": "push", "distance": 1}]},
-  "solar-beam": {"id": "solar-beam", "name": "Solar Beam", "type": "grass", "kind": "bond", "power": 70, "range": {"min": 1, "max": 4}, "requiresLineOfSight": false, "shape": {"kind": "line", "length": 4}, "affects": "enemies", "bondCost": 3},
-  "hydro-pump": {"id": "hydro-pump", "name": "Hydro Pump", "type": "water", "kind": "bond", "power": 60, "range": {"min": 1, "max": 1}, "requiresLineOfSight": false, "shape": {"kind": "single"}, "affects": "enemies", "effects": [{"kind": "push", "distance": 3}], "bondCost": 2},
-  "thunder": {"id": "thunder", "name": "Thunder", "type": "electric", "kind": "bond", "power": 60, "range": {"min": 2, "max": 4}, "requiresLineOfSight": true, "shape": {"kind": "burst", "radius": 1}, "affects": "enemies", "bondCost": 3},
-  "bug-bite": {"id": "bug-bite", "name": "Bug Bite", "type": "bug", "kind": "basic", "power": 40, "range": {"min": 1, "max": 1}, "requiresLineOfSight": false, "shape": {"kind": "single"}, "affects": "enemies"},
-  "peck": {"id": "peck", "name": "Peck", "type": "flying", "kind": "basic", "power": 35, "range": {"min": 1, "max": 1}, "requiresLineOfSight": false, "shape": {"kind": "single"}, "affects": "enemies"},
-  "mud-slap": {"id": "mud-slap", "name": "Mud-Slap", "type": "ground", "kind": "basic", "power": 20, "range": {"min": 1, "max": 2}, "requiresLineOfSight": true, "shape": {"kind": "single"}, "affects": "enemies", "effects": [{"kind": "status", "status": "slow", "duration": 1}]},
-  "string-shot": {"id": "string-shot", "name": "String Shot", "type": "bug", "kind": "special", "cooldown": 2, "power": 0, "range": {"min": 1, "max": 3}, "requiresLineOfSight": true, "shape": {"kind": "single"}, "affects": "enemies", "effects": [{"kind": "status", "status": "slow", "duration": 2}]},
-  "fury-attack": {"id": "fury-attack", "name": "Fury Attack", "type": "normal", "kind": "special", "cooldown": 2, "power": 55, "range": {"min": 1, "max": 1}, "requiresLineOfSight": false, "shape": {"kind": "single"}, "affects": "enemies"},
-  "razor-leaf": {"id": "razor-leaf", "name": "Razor Leaf", "type": "grass", "kind": "special", "power": 45, "range": {"min": 1, "max": 3}, "requiresLineOfSight": false, "shape": {"kind": "line", "length": 3}, "affects": "enemies", "cooldown": 2},
-  "stun-spore": {"id": "stun-spore", "name": "Stun Spore", "type": "grass", "kind": "special", "power": 0, "range": {"min": 1, "max": 3}, "requiresLineOfSight": true, "shape": {"kind": "burst", "radius": 1}, "affects": "enemies", "cooldown": 3, "effects": [{"kind": "status", "status": "slow", "duration": 2}]},
-  "bite": {"id": "bite", "name": "Bite", "type": "normal", "kind": "basic", "power": 45, "range": {"min": 1, "max": 1}, "requiresLineOfSight": false, "shape": {"kind": "single"}, "affects": "enemies"},
-  "hyper-fang": {"id": "hyper-fang", "name": "Hyper Fang", "type": "normal", "kind": "special", "power": 70, "range": {"min": 1, "max": 1}, "requiresLineOfSight": false, "shape": {"kind": "single"}, "affects": "enemies", "cooldown": 3},
-  "wing-attack": {"id": "wing-attack", "name": "Wing Attack", "type": "flying", "kind": "basic", "power": 40, "range": {"min": 1, "max": 2}, "requiresLineOfSight": true, "shape": {"kind": "single"}, "affects": "enemies"},
-  "drill-peck": {"id": "drill-peck", "name": "Drill Peck", "type": "flying", "kind": "special", "power": 65, "range": {"min": 1, "max": 1}, "requiresLineOfSight": false, "shape": {"kind": "single"}, "affects": "enemies", "cooldown": 2},
-  "confusion": {"id": "confusion", "name": "Confusion", "type": "psychic", "kind": "basic", "power": 40, "range": {"min": 1, "max": 3}, "requiresLineOfSight": true, "shape": {"kind": "single"}, "affects": "enemies"},
-  "twineedle": {"id": "twineedle", "name": "Twineedle", "type": "bug", "kind": "special", "power": 45, "range": {"min": 1, "max": 2}, "requiresLineOfSight": false, "shape": {"kind": "line", "length": 2}, "affects": "enemies", "cooldown": 2, "effects": [{"kind": "status", "status": "poison", "duration": 2}]},
-  "dig": {"id": "dig", "name": "Dig", "type": "ground", "kind": "special", "power": 50, "range": {"min": 1, "max": 3}, "requiresLineOfSight": false, "shape": {"kind": "single"}, "affects": "enemies", "cooldown": 3},
-  "earthquake": {"id": "earthquake", "name": "Earthquake", "type": "ground", "kind": "ultimate", "power": 60, "range": {"min": 0, "max": 0}, "requiresLineOfSight": false, "shape": {"kind": "burst", "radius": 2}, "affects": "enemies"},
-  "rock-slide": {"id": "rock-slide", "name": "Rock Slide", "type": "rock", "kind": "special", "power": 45, "range": {"min": 2, "max": 4}, "requiresLineOfSight": true, "shape": {"kind": "burst", "radius": 1}, "affects": "enemies", "cooldown": 3},
-  "cross-chop": {"id": "cross-chop", "name": "Cross Chop", "type": "fighting", "kind": "special", "power": 70, "range": {"min": 1, "max": 1}, "requiresLineOfSight": false, "shape": {"kind": "single"}, "affects": "enemies", "cooldown": 3},
-  "acid": {"id": "acid", "name": "Acid", "type": "poison", "kind": "basic", "power": 35, "range": {"min": 1, "max": 2}, "requiresLineOfSight": true, "shape": {"kind": "single"}, "affects": "enemies"},
-  "thunderbolt": {"id": "thunderbolt", "name": "Thunderbolt", "type": "electric", "kind": "special", "power": 55, "range": {"min": 1, "max": 3}, "requiresLineOfSight": true, "shape": {"kind": "single"}, "affects": "enemies", "cooldown": 2},
-  "water-pulse": {"id": "water-pulse", "name": "Water Pulse", "type": "water", "kind": "special", "power": 50, "range": {"min": 1, "max": 4}, "requiresLineOfSight": true, "shape": {"kind": "single"}, "affects": "enemies", "cooldown": 2, "effects": [{"kind": "status", "status": "slow", "duration": 1}]},
-  "fire-blast": {"id": "fire-blast", "name": "Fire Blast", "type": "fire", "kind": "bond", "power": 70, "range": {"min": 2, "max": 4}, "requiresLineOfSight": true, "shape": {"kind": "burst", "radius": 1}, "affects": "enemies", "bondCost": 3},
-  "protect": {"id": "protect", "name": "Protect", "type": "normal", "kind": "special", "cooldown": 3, "power": 0, "range": {"min": 0, "max": 0}, "requiresLineOfSight": false, "shape": {"kind": "single"}, "affects": "allies", "effects": [{"kind": "status", "status": "protected", "duration": 2}]},
-  "iron-defense": {"id": "iron-defense", "name": "Iron Defense", "type": "normal", "kind": "special", "cooldown": 4, "power": 0, "range": {"min": 0, "max": 0}, "requiresLineOfSight": false, "shape": {"kind": "single"}, "affects": "allies", "effects": [{"kind": "status", "status": "fortified", "duration": 3}]},
-  "focus-energy": {"id": "focus-energy", "name": "Focus Energy", "type": "normal", "kind": "special", "cooldown": 4, "power": 0, "range": {"min": 0, "max": 0}, "requiresLineOfSight": false, "shape": {"kind": "single"}, "affects": "allies", "effects": [{"kind": "status", "status": "focused", "duration": 2}]},
-  "agility": {"id": "agility", "name": "Agility", "type": "normal", "kind": "special", "cooldown": 3, "power": 0, "range": {"min": 0, "max": 0}, "requiresLineOfSight": false, "shape": {"kind": "single"}, "affects": "allies", "effects": [{"kind": "status", "status": "hasted", "duration": 2}]},
-  "mega-punch": {"id": "mega-punch", "name": "Mega Punch", "type": "normal", "kind": "special", "cooldown": 2, "power": 65, "range": {"min": 1, "max": 1}, "requiresLineOfSight": false, "shape": {"kind": "single"}, "affects": "enemies"},
-  "leer": {"id": "leer", "name": "Leer", "type": "normal", "kind": "special", "cooldown": 3, "power": 0, "range": {"min": 1, "max": 3}, "requiresLineOfSight": true, "shape": {"kind": "burst", "radius": 1}, "affects": "enemies", "effects": [{"kind": "status", "status": "exposed", "duration": 2}]},
-  "glare": {"id": "glare", "name": "Glare", "type": "normal", "kind": "special", "cooldown": 3, "power": 0, "range": {"min": 1, "max": 3}, "requiresLineOfSight": true, "shape": {"kind": "single"}, "affects": "enemies", "effects": [{"kind": "status", "status": "paralysis", "duration": 1}]},
-  "feint-attack": {"id": "feint-attack", "name": "Feint Attack", "type": "normal", "kind": "special", "cooldown": 2, "power": 45, "range": {"min": 1, "max": 2}, "requiresLineOfSight": false, "shape": {"kind": "single"}, "affects": "enemies"},
-  "rage": {"id": "rage", "name": "Rage", "type": "normal", "kind": "bond", "bondCost": 1, "power": 50, "range": {"min": 1, "max": 1}, "requiresLineOfSight": false, "shape": {"kind": "single"}, "affects": "enemies"}
+ "tackle": {
+  "id": "tackle",
+  "name": "Tackle",
+  "type": "normal",
+  "kind": "basic",
+  "power": 40,
+  "range": {
+   "min": 1,
+   "max": 1
+  },
+  "requiresLineOfSight": false,
+  "shape": {
+   "kind": "single"
+  },
+  "affects": "enemies"
+ },
+ "scratch": {
+  "id": "scratch",
+  "name": "Scratch",
+  "type": "normal",
+  "kind": "basic",
+  "power": 40,
+  "range": {
+   "min": 1,
+   "max": 1
+  },
+  "requiresLineOfSight": false,
+  "shape": {
+   "kind": "single"
+  },
+  "affects": "enemies"
+ },
+ "karate-chop": {
+  "id": "karate-chop",
+  "name": "Karate Chop",
+  "type": "fighting",
+  "kind": "basic",
+  "power": 45,
+  "range": {
+   "min": 1,
+   "max": 1
+  },
+  "requiresLineOfSight": false,
+  "shape": {
+   "kind": "single"
+  },
+  "affects": "enemies"
+ },
+ "vine-whip": {
+  "id": "vine-whip",
+  "name": "Vine Whip",
+  "type": "grass",
+  "kind": "basic",
+  "power": 35,
+  "range": {
+   "min": 1,
+   "max": 2
+  },
+  "requiresLineOfSight": true,
+  "shape": {
+   "kind": "single"
+  },
+  "affects": "enemies"
+ },
+ "absorb": {
+  "id": "absorb",
+  "name": "Absorb",
+  "type": "grass",
+  "kind": "basic",
+  "power": 30,
+  "range": {
+   "min": 1,
+   "max": 2
+  },
+  "requiresLineOfSight": true,
+  "shape": {
+   "kind": "single"
+  },
+  "affects": "enemies"
+ },
+ "ember": {
+  "id": "ember",
+  "name": "Ember",
+  "type": "fire",
+  "kind": "basic",
+  "power": 35,
+  "range": {
+   "min": 2,
+   "max": 4
+  },
+  "requiresLineOfSight": true,
+  "shape": {
+   "kind": "single"
+  },
+  "affects": "enemies"
+ },
+ "water-gun": {
+  "id": "water-gun",
+  "name": "Water Gun",
+  "type": "water",
+  "kind": "basic",
+  "power": 35,
+  "range": {
+   "min": 1,
+   "max": 3
+  },
+  "requiresLineOfSight": true,
+  "shape": {
+   "kind": "single"
+  },
+  "affects": "enemies"
+ },
+ "thunder-shock": {
+  "id": "thunder-shock",
+  "name": "Thunder Shock",
+  "type": "electric",
+  "kind": "basic",
+  "power": 35,
+  "range": {
+   "min": 1,
+   "max": 3
+  },
+  "requiresLineOfSight": true,
+  "shape": {
+   "kind": "single"
+  },
+  "affects": "enemies"
+ },
+ "gust": {
+  "id": "gust",
+  "name": "Gust",
+  "type": "flying",
+  "kind": "basic",
+  "power": 40,
+  "range": {
+   "min": 1,
+   "max": 2
+  },
+  "requiresLineOfSight": true,
+  "shape": {
+   "kind": "single"
+  },
+  "affects": "enemies",
+  "effects": [
+   {
+    "kind": "push",
+    "distance": 1
+   }
+  ]
+ },
+ "poison-sting": {
+  "id": "poison-sting",
+  "name": "Poison Sting",
+  "type": "poison",
+  "kind": "basic",
+  "power": 15,
+  "range": {
+   "min": 1,
+   "max": 2
+  },
+  "requiresLineOfSight": true,
+  "shape": {
+   "kind": "single"
+  },
+  "affects": "enemies",
+  "effects": [
+   {
+    "kind": "status",
+    "status": "poison",
+    "duration": 2
+   }
+  ]
+ },
+ "poison-powder": {
+  "id": "poison-powder",
+  "name": "Poison Powder",
+  "type": "poison",
+  "kind": "special",
+  "cooldown": 3,
+  "power": 0,
+  "range": {
+   "min": 1,
+   "max": 3
+  },
+  "requiresLineOfSight": true,
+  "shape": {
+   "kind": "burst",
+   "radius": 1
+  },
+  "affects": "enemies",
+  "effects": [
+   {
+    "kind": "status",
+    "status": "poison",
+    "duration": 3
+   }
+  ]
+ },
+ "flamethrower": {
+  "id": "flamethrower",
+  "name": "Flamethrower",
+  "type": "fire",
+  "kind": "special",
+  "cooldown": 3,
+  "power": 45,
+  "range": {
+   "min": 1,
+   "max": 3
+  },
+  "requiresLineOfSight": false,
+  "shape": {
+   "kind": "line",
+   "length": 3
+  },
+  "affects": "enemies"
+ },
+ "bubble": {
+  "id": "bubble",
+  "name": "Bubble",
+  "type": "water",
+  "kind": "special",
+  "cooldown": 3,
+  "power": 25,
+  "range": {
+   "min": 2,
+   "max": 4
+  },
+  "requiresLineOfSight": true,
+  "shape": {
+   "kind": "burst",
+   "radius": 1
+  },
+  "affects": "enemies",
+  "effects": [
+   {
+    "kind": "status",
+    "status": "slow",
+    "duration": 1
+   }
+  ]
+ },
+ "thunder-wave": {
+  "id": "thunder-wave",
+  "name": "Thunder Wave",
+  "type": "electric",
+  "kind": "special",
+  "cooldown": 3,
+  "power": 0,
+  "range": {
+   "min": 1,
+   "max": 3
+  },
+  "requiresLineOfSight": true,
+  "shape": {
+   "kind": "single"
+  },
+  "affects": "enemies",
+  "effects": [
+   {
+    "kind": "status",
+    "status": "slow",
+    "duration": 2
+   }
+  ]
+ },
+ "rollout": {
+  "id": "rollout",
+  "name": "Rollout",
+  "type": "rock",
+  "kind": "special",
+  "cooldown": 2,
+  "power": 30,
+  "range": {
+   "min": 1,
+   "max": 1
+  },
+  "requiresLineOfSight": false,
+  "shape": {
+   "kind": "single"
+  },
+  "affects": "enemies",
+  "effects": [
+   {
+    "kind": "push",
+    "distance": 2
+   }
+  ]
+ },
+ "rock-throw": {
+  "id": "rock-throw",
+  "name": "Rock Throw",
+  "type": "rock",
+  "kind": "special",
+  "cooldown": 2,
+  "power": 45,
+  "range": {
+   "min": 2,
+   "max": 3
+  },
+  "requiresLineOfSight": true,
+  "shape": {
+   "kind": "single"
+  },
+  "affects": "enemies"
+ },
+ "whirlwind": {
+  "id": "whirlwind",
+  "name": "Whirlwind",
+  "type": "normal",
+  "kind": "special",
+  "cooldown": 2,
+  "power": 20,
+  "range": {
+   "min": 1,
+   "max": 2
+  },
+  "requiresLineOfSight": true,
+  "shape": {
+   "kind": "single"
+  },
+  "affects": "enemies",
+  "effects": [
+   {
+    "kind": "push",
+    "distance": 2
+   }
+  ]
+ },
+ "quick-attack": {
+  "id": "quick-attack",
+  "name": "Quick Attack",
+  "type": "normal",
+  "kind": "special",
+  "cooldown": 2,
+  "power": 45,
+  "range": {
+   "min": 1,
+   "max": 1
+  },
+  "requiresLineOfSight": false,
+  "shape": {
+   "kind": "single"
+  },
+  "affects": "enemies"
+ },
+ "supersonic": {
+  "id": "supersonic",
+  "name": "Supersonic",
+  "type": "normal",
+  "kind": "special",
+  "cooldown": 3,
+  "power": 0,
+  "range": {
+   "min": 1,
+   "max": 3
+  },
+  "requiresLineOfSight": true,
+  "shape": {
+   "kind": "single"
+  },
+  "affects": "enemies",
+  "effects": [
+   {
+    "kind": "status",
+    "status": "slow",
+    "duration": 2
+   }
+  ]
+ },
+ "low-kick": {
+  "id": "low-kick",
+  "name": "Low Kick",
+  "type": "fighting",
+  "kind": "special",
+  "cooldown": 2,
+  "power": 40,
+  "range": {
+   "min": 1,
+   "max": 1
+  },
+  "requiresLineOfSight": false,
+  "shape": {
+   "kind": "single"
+  },
+  "affects": "enemies",
+  "effects": [
+   {
+    "kind": "push",
+    "distance": 1
+   }
+  ]
+ },
+ "solar-beam": {
+  "id": "solar-beam",
+  "name": "Solar Beam",
+  "type": "grass",
+  "kind": "bond",
+  "power": 70,
+  "range": {
+   "min": 1,
+   "max": 4
+  },
+  "requiresLineOfSight": false,
+  "shape": {
+   "kind": "line",
+   "length": 4
+  },
+  "affects": "enemies",
+  "bondCost": 3
+ },
+ "hydro-pump": {
+  "id": "hydro-pump",
+  "name": "Hydro Pump",
+  "type": "water",
+  "kind": "bond",
+  "power": 60,
+  "range": {
+   "min": 1,
+   "max": 1
+  },
+  "requiresLineOfSight": false,
+  "shape": {
+   "kind": "single"
+  },
+  "affects": "enemies",
+  "effects": [
+   {
+    "kind": "push",
+    "distance": 3
+   }
+  ],
+  "bondCost": 2
+ },
+ "thunder": {
+  "id": "thunder",
+  "name": "Thunder",
+  "type": "electric",
+  "kind": "bond",
+  "power": 60,
+  "range": {
+   "min": 2,
+   "max": 4
+  },
+  "requiresLineOfSight": true,
+  "shape": {
+   "kind": "burst",
+   "radius": 1
+  },
+  "affects": "enemies",
+  "bondCost": 3
+ },
+ "bug-bite": {
+  "id": "bug-bite",
+  "name": "Bug Bite",
+  "type": "bug",
+  "kind": "basic",
+  "power": 40,
+  "range": {
+   "min": 1,
+   "max": 1
+  },
+  "requiresLineOfSight": false,
+  "shape": {
+   "kind": "single"
+  },
+  "affects": "enemies"
+ },
+ "peck": {
+  "id": "peck",
+  "name": "Peck",
+  "type": "flying",
+  "kind": "basic",
+  "power": 35,
+  "range": {
+   "min": 1,
+   "max": 1
+  },
+  "requiresLineOfSight": false,
+  "shape": {
+   "kind": "single"
+  },
+  "affects": "enemies"
+ },
+ "mud-slap": {
+  "id": "mud-slap",
+  "name": "Mud-Slap",
+  "type": "ground",
+  "kind": "basic",
+  "power": 20,
+  "range": {
+   "min": 1,
+   "max": 2
+  },
+  "requiresLineOfSight": true,
+  "shape": {
+   "kind": "single"
+  },
+  "affects": "enemies",
+  "effects": [
+   {
+    "kind": "status",
+    "status": "slow",
+    "duration": 1
+   }
+  ]
+ },
+ "string-shot": {
+  "id": "string-shot",
+  "name": "String Shot",
+  "type": "bug",
+  "kind": "special",
+  "cooldown": 2,
+  "power": 0,
+  "range": {
+   "min": 1,
+   "max": 3
+  },
+  "requiresLineOfSight": true,
+  "shape": {
+   "kind": "single"
+  },
+  "affects": "enemies",
+  "effects": [
+   {
+    "kind": "status",
+    "status": "slow",
+    "duration": 2
+   }
+  ]
+ },
+ "fury-attack": {
+  "id": "fury-attack",
+  "name": "Fury Attack",
+  "type": "normal",
+  "kind": "special",
+  "cooldown": 2,
+  "power": 55,
+  "range": {
+   "min": 1,
+   "max": 1
+  },
+  "requiresLineOfSight": false,
+  "shape": {
+   "kind": "single"
+  },
+  "affects": "enemies"
+ },
+ "razor-leaf": {
+  "id": "razor-leaf",
+  "name": "Razor Leaf",
+  "type": "grass",
+  "kind": "special",
+  "power": 45,
+  "range": {
+   "min": 1,
+   "max": 3
+  },
+  "requiresLineOfSight": false,
+  "shape": {
+   "kind": "line",
+   "length": 3
+  },
+  "affects": "enemies",
+  "cooldown": 2
+ },
+ "stun-spore": {
+  "id": "stun-spore",
+  "name": "Stun Spore",
+  "type": "grass",
+  "kind": "special",
+  "power": 0,
+  "range": {
+   "min": 1,
+   "max": 3
+  },
+  "requiresLineOfSight": true,
+  "shape": {
+   "kind": "burst",
+   "radius": 1
+  },
+  "affects": "enemies",
+  "cooldown": 3,
+  "effects": [
+   {
+    "kind": "status",
+    "status": "slow",
+    "duration": 2
+   }
+  ]
+ },
+ "bite": {
+  "id": "bite",
+  "name": "Bite",
+  "type": "normal",
+  "kind": "basic",
+  "power": 45,
+  "range": {
+   "min": 1,
+   "max": 1
+  },
+  "requiresLineOfSight": false,
+  "shape": {
+   "kind": "single"
+  },
+  "affects": "enemies"
+ },
+ "hyper-fang": {
+  "id": "hyper-fang",
+  "name": "Hyper Fang",
+  "type": "normal",
+  "kind": "special",
+  "power": 70,
+  "range": {
+   "min": 1,
+   "max": 1
+  },
+  "requiresLineOfSight": false,
+  "shape": {
+   "kind": "single"
+  },
+  "affects": "enemies",
+  "cooldown": 3,
+  "effects": [
+   {
+    "kind": "bond",
+    "amount": 1,
+    "when": "knockout"
+   }
+  ]
+ },
+ "wing-attack": {
+  "id": "wing-attack",
+  "name": "Wing Attack",
+  "type": "flying",
+  "kind": "basic",
+  "power": 40,
+  "range": {
+   "min": 1,
+   "max": 2
+  },
+  "requiresLineOfSight": true,
+  "shape": {
+   "kind": "single"
+  },
+  "affects": "enemies"
+ },
+ "drill-peck": {
+  "id": "drill-peck",
+  "name": "Drill Peck",
+  "type": "flying",
+  "kind": "special",
+  "power": 65,
+  "range": {
+   "min": 1,
+   "max": 1
+  },
+  "requiresLineOfSight": false,
+  "shape": {
+   "kind": "single"
+  },
+  "affects": "enemies",
+  "cooldown": 2
+ },
+ "confusion": {
+  "id": "confusion",
+  "name": "Confusion",
+  "type": "psychic",
+  "kind": "basic",
+  "power": 40,
+  "range": {
+   "min": 1,
+   "max": 3
+  },
+  "requiresLineOfSight": true,
+  "shape": {
+   "kind": "single"
+  },
+  "affects": "enemies"
+ },
+ "twineedle": {
+  "id": "twineedle",
+  "name": "Twineedle",
+  "type": "bug",
+  "kind": "special",
+  "power": 45,
+  "range": {
+   "min": 1,
+   "max": 2
+  },
+  "requiresLineOfSight": false,
+  "shape": {
+   "kind": "line",
+   "length": 2
+  },
+  "affects": "enemies",
+  "cooldown": 2,
+  "effects": [
+   {
+    "kind": "status",
+    "status": "poison",
+    "duration": 2
+   }
+  ]
+ },
+ "dig": {
+  "id": "dig",
+  "name": "Dig",
+  "type": "ground",
+  "kind": "special",
+  "power": 50,
+  "range": {
+   "min": 1,
+   "max": 3
+  },
+  "requiresLineOfSight": false,
+  "shape": {
+   "kind": "single"
+  },
+  "affects": "enemies",
+  "cooldown": 3
+ },
+ "earthquake": {
+  "id": "earthquake",
+  "name": "Earthquake",
+  "type": "ground",
+  "kind": "ultimate",
+  "power": 60,
+  "range": {
+   "min": 0,
+   "max": 0
+  },
+  "requiresLineOfSight": false,
+  "shape": {
+   "kind": "burst",
+   "radius": 2
+  },
+  "affects": "enemies"
+ },
+ "rock-slide": {
+  "id": "rock-slide",
+  "name": "Rock Slide",
+  "type": "rock",
+  "kind": "special",
+  "power": 45,
+  "range": {
+   "min": 2,
+   "max": 4
+  },
+  "requiresLineOfSight": true,
+  "shape": {
+   "kind": "burst",
+   "radius": 1
+  },
+  "affects": "enemies",
+  "cooldown": 3
+ },
+ "cross-chop": {
+  "id": "cross-chop",
+  "name": "Cross Chop",
+  "type": "fighting",
+  "kind": "special",
+  "power": 70,
+  "range": {
+   "min": 1,
+   "max": 1
+  },
+  "requiresLineOfSight": false,
+  "shape": {
+   "kind": "single"
+  },
+  "affects": "enemies",
+  "cooldown": 3
+ },
+ "acid": {
+  "id": "acid",
+  "name": "Acid",
+  "type": "poison",
+  "kind": "basic",
+  "power": 35,
+  "range": {
+   "min": 1,
+   "max": 2
+  },
+  "requiresLineOfSight": true,
+  "shape": {
+   "kind": "single"
+  },
+  "affects": "enemies"
+ },
+ "thunderbolt": {
+  "id": "thunderbolt",
+  "name": "Thunderbolt",
+  "type": "electric",
+  "kind": "special",
+  "power": 55,
+  "range": {
+   "min": 1,
+   "max": 3
+  },
+  "requiresLineOfSight": true,
+  "shape": {
+   "kind": "single"
+  },
+  "affects": "enemies",
+  "cooldown": 2
+ },
+ "water-pulse": {
+  "id": "water-pulse",
+  "name": "Water Pulse",
+  "type": "water",
+  "kind": "special",
+  "power": 50,
+  "range": {
+   "min": 1,
+   "max": 4
+  },
+  "requiresLineOfSight": true,
+  "shape": {
+   "kind": "single"
+  },
+  "affects": "enemies",
+  "cooldown": 2,
+  "effects": [
+   {
+    "kind": "status",
+    "status": "slow",
+    "duration": 1
+   }
+  ]
+ },
+ "fire-blast": {
+  "id": "fire-blast",
+  "name": "Fire Blast",
+  "type": "fire",
+  "kind": "bond",
+  "power": 70,
+  "range": {
+   "min": 2,
+   "max": 4
+  },
+  "requiresLineOfSight": true,
+  "shape": {
+   "kind": "burst",
+   "radius": 1
+  },
+  "affects": "enemies",
+  "bondCost": 3
+ },
+ "protect": {
+  "id": "protect",
+  "name": "Protect",
+  "type": "normal",
+  "kind": "special",
+  "cooldown": 3,
+  "power": 0,
+  "range": {
+   "min": 0,
+   "max": 0
+  },
+  "requiresLineOfSight": false,
+  "shape": {
+   "kind": "single"
+  },
+  "affects": "allies",
+  "effects": [
+   {
+    "kind": "status",
+    "status": "protected",
+    "duration": 2
+   }
+  ]
+ },
+ "iron-defense": {
+  "id": "iron-defense",
+  "name": "Harden",
+  "type": "normal",
+  "kind": "special",
+  "cooldown": 3,
+  "power": 0,
+  "range": {
+   "min": 0,
+   "max": 0
+  },
+  "requiresLineOfSight": false,
+  "shape": {
+   "kind": "single"
+  },
+  "affects": "allies",
+  "effects": [
+   {
+    "kind": "status",
+    "status": "fortified",
+    "duration": 3
+   }
+  ]
+ },
+ "focus-energy": {
+  "id": "focus-energy",
+  "name": "Focus Energy",
+  "type": "normal",
+  "kind": "special",
+  "cooldown": 4,
+  "power": 0,
+  "range": {
+   "min": 0,
+   "max": 0
+  },
+  "requiresLineOfSight": false,
+  "shape": {
+   "kind": "single"
+  },
+  "affects": "allies",
+  "effects": [
+   {
+    "kind": "status",
+    "status": "focused",
+    "duration": 2
+   }
+  ]
+ },
+ "agility": {
+  "id": "agility",
+  "name": "Agility",
+  "type": "normal",
+  "kind": "special",
+  "cooldown": 3,
+  "power": 0,
+  "range": {
+   "min": 0,
+   "max": 0
+  },
+  "requiresLineOfSight": false,
+  "shape": {
+   "kind": "single"
+  },
+  "affects": "allies",
+  "effects": [
+   {
+    "kind": "status",
+    "status": "hasted",
+    "duration": 2
+   }
+  ]
+ },
+ "mega-punch": {
+  "id": "mega-punch",
+  "name": "Mega Punch",
+  "type": "normal",
+  "kind": "special",
+  "cooldown": 2,
+  "power": 65,
+  "range": {
+   "min": 1,
+   "max": 1
+  },
+  "requiresLineOfSight": false,
+  "shape": {
+   "kind": "single"
+  },
+  "affects": "enemies"
+ },
+ "leer": {
+  "id": "leer",
+  "name": "Leer",
+  "type": "normal",
+  "kind": "special",
+  "cooldown": 3,
+  "power": 0,
+  "range": {
+   "min": 1,
+   "max": 3
+  },
+  "requiresLineOfSight": true,
+  "shape": {
+   "kind": "burst",
+   "radius": 1
+  },
+  "affects": "enemies",
+  "effects": [
+   {
+    "kind": "status",
+    "status": "exposed",
+    "duration": 2
+   }
+  ]
+ },
+ "glare": {
+  "id": "glare",
+  "name": "Glare",
+  "type": "normal",
+  "kind": "special",
+  "cooldown": 3,
+  "power": 0,
+  "range": {
+   "min": 1,
+   "max": 3
+  },
+  "requiresLineOfSight": true,
+  "shape": {
+   "kind": "single"
+  },
+  "affects": "enemies",
+  "effects": [
+   {
+    "kind": "status",
+    "status": "paralysis",
+    "duration": 1
+   }
+  ]
+ },
+ "feint-attack": {
+  "id": "feint-attack",
+  "name": "Sonic Boom",
+  "type": "normal",
+  "kind": "special",
+  "cooldown": 2,
+  "power": 45,
+  "range": {
+   "min": 1,
+   "max": 2
+  },
+  "requiresLineOfSight": false,
+  "shape": {
+   "kind": "single"
+  },
+  "affects": "enemies",
+  "effects": [
+   {
+    "kind": "bond",
+    "amount": 1,
+    "when": "combo"
+   }
+  ]
+ },
+ "rage": {
+  "id": "rage",
+  "name": "Rage",
+  "type": "normal",
+  "kind": "bond",
+  "bondCost": 1,
+  "power": 50,
+  "range": {
+   "min": 1,
+   "max": 1
+  },
+  "requiresLineOfSight": false,
+  "shape": {
+   "kind": "single"
+  },
+  "affects": "enemies"
+ },
+ "swift": {
+  "id": "swift",
+  "name": "Swift",
+  "type": "normal",
+  "kind": "special",
+  "cooldown": 3,
+  "power": 45,
+  "range": {
+   "min": 2,
+   "max": 5
+  },
+  "requiresLineOfSight": false,
+  "shape": {
+   "kind": "single"
+  },
+  "affects": "enemies"
+ },
+ "body-slam": {
+  "id": "body-slam",
+  "name": "Body Slam",
+  "type": "normal",
+  "kind": "special",
+  "cooldown": 3,
+  "power": 70,
+  "range": {
+   "min": 1,
+   "max": 1
+  },
+  "requiresLineOfSight": true,
+  "shape": {
+   "kind": "single"
+  },
+  "affects": "enemies",
+  "effects": [
+   {
+    "kind": "status",
+    "status": "paralysis",
+    "duration": 1
+   }
+  ]
+ },
+ "fire-spin": {
+  "id": "fire-spin",
+  "name": "Fire Spin",
+  "type": "fire",
+  "kind": "special",
+  "cooldown": 3,
+  "power": 35,
+  "range": {
+   "min": 1,
+   "max": 3
+  },
+  "requiresLineOfSight": true,
+  "shape": {
+   "kind": "burst",
+   "radius": 1
+  },
+  "affects": "enemies"
+ },
+ "surf": {
+  "id": "surf",
+  "name": "Surf",
+  "type": "water",
+  "kind": "special",
+  "cooldown": 3,
+  "power": 55,
+  "range": {
+   "min": 1,
+   "max": 1
+  },
+  "requiresLineOfSight": true,
+  "shape": {
+   "kind": "line",
+   "length": 3
+  },
+  "affects": "enemies"
+ },
+ "giga-drain": {
+  "id": "giga-drain",
+  "name": "Giga Drain",
+  "type": "grass",
+  "kind": "special",
+  "cooldown": 3,
+  "power": 60,
+  "range": {
+   "min": 1,
+   "max": 2
+  },
+  "requiresLineOfSight": true,
+  "shape": {
+   "kind": "single"
+  },
+  "affects": "enemies"
+ },
+ "discharge": {
+  "id": "discharge",
+  "name": "Discharge",
+  "type": "electric",
+  "kind": "special",
+  "cooldown": 3,
+  "power": 45,
+  "range": {
+   "min": 0,
+   "max": 0
+  },
+  "requiresLineOfSight": false,
+  "shape": {
+   "kind": "burst",
+   "radius": 1
+  },
+  "affects": "enemies"
+ },
+ "ice-beam": {
+  "id": "ice-beam",
+  "name": "Ice Beam",
+  "type": "ice",
+  "kind": "special",
+  "cooldown": 3,
+  "power": 60,
+  "range": {
+   "min": 1,
+   "max": 1
+  },
+  "requiresLineOfSight": true,
+  "shape": {
+   "kind": "line",
+   "length": 4
+  },
+  "affects": "enemies"
+ },
+ "close-combat": {
+  "id": "close-combat",
+  "name": "Close Combat",
+  "type": "fighting",
+  "kind": "special",
+  "cooldown": 4,
+  "power": 95,
+  "range": {
+   "min": 1,
+   "max": 1
+  },
+  "requiresLineOfSight": true,
+  "shape": {
+   "kind": "single"
+  },
+  "affects": "enemies"
+ },
+ "toxic": {
+  "id": "toxic",
+  "name": "Toxic",
+  "type": "poison",
+  "kind": "special",
+  "cooldown": 3,
+  "power": 0,
+  "range": {
+   "min": 1,
+   "max": 3
+  },
+  "requiresLineOfSight": true,
+  "shape": {
+   "kind": "single"
+  },
+  "affects": "enemies",
+  "effects": [
+   {
+    "kind": "status",
+    "status": "poison",
+    "duration": 4
+   }
+  ]
+ },
+ "bulldoze": {
+  "id": "bulldoze",
+  "name": "Bulldoze",
+  "type": "ground",
+  "kind": "special",
+  "cooldown": 3,
+  "power": 40,
+  "range": {
+   "min": 0,
+   "max": 0
+  },
+  "requiresLineOfSight": false,
+  "shape": {
+   "kind": "burst",
+   "radius": 1
+  },
+  "affects": "enemies",
+  "effects": [
+   {
+    "kind": "status",
+    "status": "slow",
+    "duration": 2
+   }
+  ]
+ },
+ "aerial-ace": {
+  "id": "aerial-ace",
+  "name": "Aerial Ace",
+  "type": "flying",
+  "kind": "special",
+  "cooldown": 2,
+  "power": 60,
+  "range": {
+   "min": 1,
+   "max": 2
+  },
+  "requiresLineOfSight": false,
+  "shape": {
+   "kind": "single"
+  },
+  "affects": "enemies"
+ },
+ "psybeam": {
+  "id": "psybeam",
+  "name": "Psybeam",
+  "type": "psychic",
+  "kind": "special",
+  "cooldown": 3,
+  "power": 55,
+  "range": {
+   "min": 1,
+   "max": 1
+  },
+  "requiresLineOfSight": true,
+  "shape": {
+   "kind": "line",
+   "length": 3
+  },
+  "affects": "enemies"
+ },
+ "pin-missile": {
+  "id": "pin-missile",
+  "name": "Pin Missile",
+  "type": "bug",
+  "kind": "special",
+  "cooldown": 2,
+  "power": 45,
+  "range": {
+   "min": 1,
+   "max": 3
+  },
+  "requiresLineOfSight": true,
+  "shape": {
+   "kind": "single"
+  },
+  "affects": "enemies"
+ },
+ "ancient-power": {
+  "id": "ancient-power",
+  "name": "Ancient Power",
+  "type": "rock",
+  "kind": "special",
+  "cooldown": 3,
+  "power": 55,
+  "range": {
+   "min": 1,
+   "max": 3
+  },
+  "requiresLineOfSight": true,
+  "shape": {
+   "kind": "single"
+  },
+  "affects": "enemies"
+ },
+ "shadow-ball": {
+  "id": "shadow-ball",
+  "name": "Shadow Ball",
+  "type": "ghost",
+  "kind": "special",
+  "cooldown": 3,
+  "power": 65,
+  "range": {
+   "min": 1,
+   "max": 3
+  },
+  "requiresLineOfSight": true,
+  "shape": {
+   "kind": "single"
+  },
+  "affects": "enemies"
+ },
+ "dragon-rage": {
+  "id": "dragon-rage",
+  "name": "Dragon Rage",
+  "type": "dragon",
+  "kind": "special",
+  "cooldown": 3,
+  "power": 60,
+  "range": {
+   "min": 1,
+   "max": 3
+  },
+  "requiresLineOfSight": true,
+  "shape": {
+   "kind": "single"
+  },
+  "affects": "enemies"
+ },
+ "struggle": {
+  "id": "struggle",
+  "name": "Struggle",
+  "type": "normal",
+  "kind": "basic",
+  "power": 0,
+  "range": {
+   "min": 1,
+   "max": 1
+  },
+  "requiresLineOfSight": false,
+  "shape": {
+   "kind": "single"
+  },
+  "affects": "enemies"
+ },
+ "block": {
+  "id": "block",
+  "name": "Block",
+  "type": "normal",
+  "kind": "special",
+  "cooldown": 2,
+  "power": 0,
+  "range": {
+   "min": 1,
+   "max": 1
+  },
+  "requiresLineOfSight": false,
+  "shape": {
+   "kind": "single"
+  },
+  "affects": "enemies",
+  "effects": [
+   {
+    "kind": "engage"
+   }
+  ]
+ },
+ "u-turn": {
+  "id": "u-turn",
+  "name": "Rapid Spin",
+  "type": "normal",
+  "kind": "special",
+  "cooldown": 3,
+  "power": 45,
+  "range": {
+   "min": 1,
+   "max": 1
+  },
+  "requiresLineOfSight": false,
+  "shape": {
+   "kind": "single"
+  },
+  "affects": "enemies",
+  "effects": [
+   {
+    "kind": "disengage"
+   }
+  ]
+ },
+ "teleport": {
+  "id": "teleport",
+  "name": "Fall Back",
+  "type": "normal",
+  "kind": "special",
+  "cooldown": 3,
+  "power": 0,
+  "range": {
+   "min": 0,
+   "max": 0
+  },
+  "requiresLineOfSight": false,
+  "shape": {
+   "kind": "single"
+  },
+  "affects": "allies",
+  "effects": [
+   {
+    "kind": "disengage"
+   }
+  ]
+ },
+ "lock-on": {
+  "id": "lock-on",
+  "name": "Lock-On",
+  "type": "normal",
+  "kind": "special",
+  "cooldown": 2,
+  "power": 0,
+  "range": {
+   "min": 1,
+   "max": 5
+  },
+  "requiresLineOfSight": true,
+  "shape": {
+   "kind": "single"
+  },
+  "affects": "enemies",
+  "effects": [
+   {
+    "kind": "status",
+    "status": "marked",
+    "duration": 2
+   }
+  ]
+ },
+ "pound": {
+  "id": "pound",
+  "name": "Pound",
+  "type": "normal",
+  "kind": "basic",
+  "power": 40,
+  "range": {
+   "min": 1,
+   "max": 1
+  },
+  "requiresLineOfSight": false,
+  "shape": {
+   "kind": "single"
+  },
+  "affects": "enemies"
+ },
+ "headbutt": {
+  "id": "headbutt",
+  "name": "Headbutt",
+  "type": "normal",
+  "kind": "basic",
+  "power": 45,
+  "range": {
+   "min": 1,
+   "max": 1
+  },
+  "requiresLineOfSight": false,
+  "shape": {
+   "kind": "single"
+  },
+  "affects": "enemies"
+ },
+ "wrap": {
+  "id": "wrap",
+  "name": "Wrap",
+  "type": "normal",
+  "kind": "basic",
+  "power": 35,
+  "range": {
+   "min": 1,
+   "max": 1
+  },
+  "requiresLineOfSight": false,
+  "shape": {
+   "kind": "single"
+  },
+  "affects": "enemies"
+ },
+ "lick": {
+  "id": "lick",
+  "name": "Lick",
+  "type": "ghost",
+  "kind": "basic",
+  "power": 30,
+  "range": {
+   "min": 1,
+   "max": 1
+  },
+  "requiresLineOfSight": false,
+  "shape": {
+   "kind": "single"
+  },
+  "affects": "enemies"
+ },
+ "night-shade": {
+  "id": "night-shade",
+  "name": "Night Shade",
+  "type": "ghost",
+  "kind": "basic",
+  "power": 30,
+  "range": {
+   "min": 1,
+   "max": 3
+  },
+  "requiresLineOfSight": true,
+  "shape": {
+   "kind": "single"
+  },
+  "affects": "enemies"
+ },
+ "leech-life": {
+  "id": "leech-life",
+  "name": "Leech Life",
+  "type": "bug",
+  "kind": "basic",
+  "power": 35,
+  "range": {
+   "min": 1,
+   "max": 1
+  },
+  "requiresLineOfSight": false,
+  "shape": {
+   "kind": "single"
+  },
+  "affects": "enemies"
+ },
+ "aurora-beam": {
+  "id": "aurora-beam",
+  "name": "Aurora Beam",
+  "type": "ice",
+  "kind": "special",
+  "cooldown": 3,
+  "power": 45,
+  "range": {
+   "min": 1,
+   "max": 3
+  },
+  "requiresLineOfSight": true,
+  "shape": {
+   "kind": "single"
+  },
+  "affects": "enemies"
+ },
+ "sing": {
+  "id": "sing",
+  "name": "Sing",
+  "type": "normal",
+  "kind": "special",
+  "cooldown": 4,
+  "power": 0,
+  "range": {
+   "min": 1,
+   "max": 2
+  },
+  "requiresLineOfSight": true,
+  "shape": {
+   "kind": "single"
+  },
+  "affects": "enemies",
+  "effects": [
+   {
+    "kind": "status",
+    "status": "freeze",
+    "duration": 1
+   }
+  ]
+ },
+ "hypnosis": {
+  "id": "hypnosis",
+  "name": "Hypnosis",
+  "type": "psychic",
+  "kind": "special",
+  "cooldown": 4,
+  "power": 0,
+  "range": {
+   "min": 1,
+   "max": 3
+  },
+  "requiresLineOfSight": true,
+  "shape": {
+   "kind": "single"
+  },
+  "affects": "enemies",
+  "effects": [
+   {
+    "kind": "status",
+    "status": "freeze",
+    "duration": 1
+   }
+  ]
+ },
+ "spore": {
+  "id": "spore",
+  "name": "Spore",
+  "type": "grass",
+  "kind": "special",
+  "cooldown": 4,
+  "power": 0,
+  "range": {
+   "min": 1,
+   "max": 1
+  },
+  "requiresLineOfSight": false,
+  "shape": {
+   "kind": "single"
+  },
+  "affects": "enemies",
+  "effects": [
+   {
+    "kind": "status",
+    "status": "freeze",
+    "duration": 1
+   }
+  ]
+ },
+ "moonlight": {
+  "id": "moonlight",
+  "name": "Moonlight",
+  "type": "normal",
+  "kind": "special",
+  "cooldown": 3,
+  "power": 0,
+  "range": {
+   "min": 0,
+   "max": 2
+  },
+  "requiresLineOfSight": false,
+  "shape": {
+   "kind": "single"
+  },
+  "affects": "allies",
+  "effects": [
+   {
+    "kind": "heal",
+    "amount": 25
+   }
+  ]
+ },
+ "psychic": {
+  "id": "psychic",
+  "name": "Psychic",
+  "type": "psychic",
+  "kind": "special",
+  "cooldown": 3,
+  "power": 70,
+  "range": {
+   "min": 1,
+   "max": 3
+  },
+  "requiresLineOfSight": true,
+  "shape": {
+   "kind": "single"
+  },
+  "affects": "enemies"
+ },
+ "dream-eater": {
+  "id": "dream-eater",
+  "name": "Dream Eater",
+  "type": "psychic",
+  "kind": "bond",
+  "power": 90,
+  "range": {
+   "min": 1,
+   "max": 3
+  },
+  "requiresLineOfSight": true,
+  "shape": {
+   "kind": "single"
+  },
+  "affects": "enemies",
+  "bondCost": 2
+ },
+ "hyper-beam": {
+  "id": "hyper-beam",
+  "name": "Hyper Beam",
+  "type": "normal",
+  "kind": "bond",
+  "power": 90,
+  "range": {
+   "min": 1,
+   "max": 4
+  },
+  "requiresLineOfSight": true,
+  "shape": {
+   "kind": "line",
+   "length": 4
+  },
+  "affects": "enemies",
+  "bondCost": 3
+ },
+ "blizzard": {
+  "id": "blizzard",
+  "name": "Blizzard",
+  "type": "ice",
+  "kind": "bond",
+  "power": 60,
+  "range": {
+   "min": 2,
+   "max": 4
+  },
+  "requiresLineOfSight": true,
+  "shape": {
+   "kind": "burst",
+   "radius": 1
+  },
+  "affects": "enemies",
+  "bondCost": 3
+ },
+ "petal-dance": {
+  "id": "petal-dance",
+  "name": "Petal Dance",
+  "type": "grass",
+  "kind": "special",
+  "cooldown": 3,
+  "power": 70,
+  "range": {
+   "min": 1,
+   "max": 1
+  },
+  "requiresLineOfSight": false,
+  "shape": {
+   "kind": "single"
+  },
+  "affects": "enemies"
+ },
+ "skull-bash": {
+  "id": "skull-bash",
+  "name": "Skull Bash",
+  "type": "normal",
+  "kind": "special",
+  "cooldown": 4,
+  "power": 80,
+  "range": {
+   "min": 1,
+   "max": 1
+  },
+  "requiresLineOfSight": false,
+  "shape": {
+   "kind": "single"
+  },
+  "affects": "enemies"
+ },
+ "thunder-punch": {
+  "id": "thunder-punch",
+  "name": "Thunder Punch",
+  "type": "electric",
+  "kind": "special",
+  "cooldown": 2,
+  "power": 60,
+  "range": {
+   "min": 1,
+   "max": 1
+  },
+  "requiresLineOfSight": false,
+  "shape": {
+   "kind": "single"
+  },
+  "affects": "enemies"
+ },
+ "double-kick": {
+  "id": "double-kick",
+  "name": "Double Kick",
+  "type": "fighting",
+  "kind": "basic",
+  "power": 40,
+  "range": {
+   "min": 1,
+   "max": 1
+  },
+  "requiresLineOfSight": false,
+  "shape": {
+   "kind": "single"
+  },
+  "affects": "enemies"
+ },
+ "horn-attack": {
+  "id": "horn-attack",
+  "name": "Horn Attack",
+  "type": "normal",
+  "kind": "basic",
+  "power": 45,
+  "range": {
+   "min": 1,
+   "max": 1
+  },
+  "requiresLineOfSight": false,
+  "shape": {
+   "kind": "single"
+  },
+  "affects": "enemies"
+ },
+ "clamp": {
+  "id": "clamp",
+  "name": "Clamp",
+  "type": "water",
+  "kind": "basic",
+  "power": 40,
+  "range": {
+   "min": 1,
+   "max": 1
+  },
+  "requiresLineOfSight": false,
+  "shape": {
+   "kind": "single"
+  },
+  "affects": "enemies"
+ },
+ "bone-club": {
+  "id": "bone-club",
+  "name": "Bone Club",
+  "type": "ground",
+  "kind": "basic",
+  "power": 40,
+  "range": {
+   "min": 1,
+   "max": 1
+  },
+  "requiresLineOfSight": false,
+  "shape": {
+   "kind": "single"
+  },
+  "affects": "enemies"
+ },
+ "smog": {
+  "id": "smog",
+  "name": "Smog",
+  "type": "poison",
+  "kind": "basic",
+  "power": 20,
+  "range": {
+   "min": 1,
+   "max": 2
+  },
+  "requiresLineOfSight": true,
+  "shape": {
+   "kind": "single"
+  },
+  "affects": "enemies",
+  "effects": [
+   {
+    "kind": "status",
+    "status": "poison",
+    "duration": 2
+   }
+  ]
+ },
+ "comet-punch": {
+  "id": "comet-punch",
+  "name": "Comet Punch",
+  "type": "normal",
+  "kind": "basic",
+  "power": 40,
+  "range": {
+   "min": 1,
+   "max": 1
+  },
+  "requiresLineOfSight": false,
+  "shape": {
+   "kind": "single"
+  },
+  "affects": "enemies"
+ },
+ "vice-grip": {
+  "id": "vice-grip",
+  "name": "Vice Grip",
+  "type": "normal",
+  "kind": "basic",
+  "power": 45,
+  "range": {
+   "min": 1,
+   "max": 1
+  },
+  "requiresLineOfSight": false,
+  "shape": {
+   "kind": "single"
+  },
+  "affects": "enemies"
+ },
+ "cut": {
+  "id": "cut",
+  "name": "Cut",
+  "type": "normal",
+  "kind": "basic",
+  "power": 40,
+  "range": {
+   "min": 1,
+   "max": 1
+  },
+  "requiresLineOfSight": false,
+  "shape": {
+   "kind": "single"
+  },
+  "affects": "enemies"
+ },
+ "pay-day": {
+  "id": "pay-day",
+  "name": "Pay Day",
+  "type": "normal",
+  "kind": "basic",
+  "power": 35,
+  "range": {
+   "min": 1,
+   "max": 2
+  },
+  "requiresLineOfSight": true,
+  "shape": {
+   "kind": "single"
+  },
+  "affects": "enemies"
+ },
+ "constrict": {
+  "id": "constrict",
+  "name": "Constrict",
+  "type": "normal",
+  "kind": "basic",
+  "power": 30,
+  "range": {
+   "min": 1,
+   "max": 1
+  },
+  "requiresLineOfSight": false,
+  "shape": {
+   "kind": "single"
+  },
+  "affects": "enemies",
+  "effects": [
+   {
+    "kind": "status",
+    "status": "slow",
+    "duration": 1
+   }
+  ]
+ },
+ "fire-punch": {
+  "id": "fire-punch",
+  "name": "Fire Punch",
+  "type": "fire",
+  "kind": "special",
+  "cooldown": 2,
+  "power": 60,
+  "range": {
+   "min": 1,
+   "max": 1
+  },
+  "requiresLineOfSight": false,
+  "shape": {
+   "kind": "single"
+  },
+  "affects": "enemies"
+ },
+ "ice-punch": {
+  "id": "ice-punch",
+  "name": "Ice Punch",
+  "type": "ice",
+  "kind": "special",
+  "cooldown": 2,
+  "power": 55,
+  "range": {
+   "min": 1,
+   "max": 1
+  },
+  "requiresLineOfSight": false,
+  "shape": {
+   "kind": "single"
+  },
+  "affects": "enemies",
+  "effects": [
+   {
+    "kind": "status",
+    "status": "slow",
+    "duration": 1
+   }
+  ]
+ },
+ "jump-kick": {
+  "id": "jump-kick",
+  "name": "Jump Kick",
+  "type": "fighting",
+  "kind": "special",
+  "cooldown": 2,
+  "power": 60,
+  "range": {
+   "min": 1,
+   "max": 2
+  },
+  "requiresLineOfSight": false,
+  "shape": {
+   "kind": "single"
+  },
+  "affects": "enemies"
+ },
+ "hi-jump-kick": {
+  "id": "hi-jump-kick",
+  "name": "Hi Jump Kick",
+  "type": "fighting",
+  "kind": "special",
+  "cooldown": 3,
+  "power": 75,
+  "range": {
+   "min": 1,
+   "max": 2
+  },
+  "requiresLineOfSight": false,
+  "shape": {
+   "kind": "single"
+  },
+  "affects": "enemies"
+ },
+ "stomp": {
+  "id": "stomp",
+  "name": "Stomp",
+  "type": "normal",
+  "kind": "special",
+  "cooldown": 2,
+  "power": 50,
+  "range": {
+   "min": 1,
+   "max": 1
+  },
+  "requiresLineOfSight": false,
+  "shape": {
+   "kind": "single"
+  },
+  "affects": "enemies",
+  "effects": [
+   {
+    "kind": "status",
+    "status": "slow",
+    "duration": 1
+   }
+  ]
+ },
+ "slam": {
+  "id": "slam",
+  "name": "Slam",
+  "type": "normal",
+  "kind": "special",
+  "cooldown": 2,
+  "power": 55,
+  "range": {
+   "min": 1,
+   "max": 1
+  },
+  "requiresLineOfSight": false,
+  "shape": {
+   "kind": "single"
+  },
+  "affects": "enemies"
+ },
+ "take-down": {
+  "id": "take-down",
+  "name": "Take Down",
+  "type": "normal",
+  "kind": "special",
+  "cooldown": 3,
+  "power": 65,
+  "range": {
+   "min": 1,
+   "max": 1
+  },
+  "requiresLineOfSight": false,
+  "shape": {
+   "kind": "single"
+  },
+  "affects": "enemies",
+  "effects": [
+   {
+    "kind": "push",
+    "distance": 1
+   }
+  ]
+ },
+ "thrash": {
+  "id": "thrash",
+  "name": "Thrash",
+  "type": "normal",
+  "kind": "special",
+  "cooldown": 3,
+  "power": 70,
+  "range": {
+   "min": 1,
+   "max": 1
+  },
+  "requiresLineOfSight": false,
+  "shape": {
+   "kind": "single"
+  },
+  "affects": "enemies"
+ },
+ "mega-kick": {
+  "id": "mega-kick",
+  "name": "Mega Kick",
+  "type": "normal",
+  "kind": "special",
+  "cooldown": 3,
+  "power": 75,
+  "range": {
+   "min": 1,
+   "max": 1
+  },
+  "requiresLineOfSight": false,
+  "shape": {
+   "kind": "single"
+  },
+  "affects": "enemies"
+ },
+ "strength": {
+  "id": "strength",
+  "name": "Strength",
+  "type": "normal",
+  "kind": "special",
+  "cooldown": 3,
+  "power": 60,
+  "range": {
+   "min": 1,
+   "max": 1
+  },
+  "requiresLineOfSight": false,
+  "shape": {
+   "kind": "single"
+  },
+  "affects": "enemies",
+  "effects": [
+   {
+    "kind": "push",
+    "distance": 1
+   }
+  ]
+ },
+ "slash": {
+  "id": "slash",
+  "name": "Slash",
+  "type": "normal",
+  "kind": "special",
+  "cooldown": 2,
+  "power": 60,
+  "range": {
+   "min": 1,
+   "max": 1
+  },
+  "requiresLineOfSight": false,
+  "shape": {
+   "kind": "single"
+  },
+  "affects": "enemies"
+ },
+ "fury-swipes": {
+  "id": "fury-swipes",
+  "name": "Fury Swipes",
+  "type": "normal",
+  "kind": "special",
+  "cooldown": 2,
+  "power": 50,
+  "range": {
+   "min": 1,
+   "max": 1
+  },
+  "requiresLineOfSight": false,
+  "shape": {
+   "kind": "single"
+  },
+  "affects": "enemies"
+ },
+ "double-slap": {
+  "id": "double-slap",
+  "name": "Double Slap",
+  "type": "normal",
+  "kind": "special",
+  "cooldown": 2,
+  "power": 50,
+  "range": {
+   "min": 1,
+   "max": 1
+  },
+  "requiresLineOfSight": false,
+  "shape": {
+   "kind": "single"
+  },
+  "affects": "enemies"
+ },
+ "egg-bomb": {
+  "id": "egg-bomb",
+  "name": "Egg Bomb",
+  "type": "normal",
+  "kind": "special",
+  "cooldown": 3,
+  "power": 55,
+  "range": {
+   "min": 2,
+   "max": 4
+  },
+  "requiresLineOfSight": true,
+  "shape": {
+   "kind": "single"
+  },
+  "affects": "enemies"
+ },
+ "spike-cannon": {
+  "id": "spike-cannon",
+  "name": "Spike Cannon",
+  "type": "normal",
+  "kind": "special",
+  "cooldown": 2,
+  "power": 45,
+  "range": {
+   "min": 1,
+   "max": 3
+  },
+  "requiresLineOfSight": true,
+  "shape": {
+   "kind": "single"
+  },
+  "affects": "enemies"
+ },
+ "tri-attack": {
+  "id": "tri-attack",
+  "name": "Tri Attack",
+  "type": "normal",
+  "kind": "special",
+  "cooldown": 3,
+  "power": 60,
+  "range": {
+   "min": 1,
+   "max": 3
+  },
+  "requiresLineOfSight": true,
+  "shape": {
+   "kind": "single"
+  },
+  "affects": "enemies",
+  "effects": [
+   {
+    "kind": "status",
+    "status": "burn",
+    "duration": 1
+   }
+  ]
+ },
+ "bubble-beam": {
+  "id": "bubble-beam",
+  "name": "Bubble Beam",
+  "type": "water",
+  "kind": "special",
+  "cooldown": 2,
+  "power": 50,
+  "range": {
+   "min": 1,
+   "max": 3
+  },
+  "requiresLineOfSight": true,
+  "shape": {
+   "kind": "single"
+  },
+  "affects": "enemies",
+  "effects": [
+   {
+    "kind": "status",
+    "status": "slow",
+    "duration": 1
+   }
+  ]
+ },
+ "crabhammer": {
+  "id": "crabhammer",
+  "name": "Crabhammer",
+  "type": "water",
+  "kind": "special",
+  "cooldown": 2,
+  "power": 65,
+  "range": {
+   "min": 1,
+   "max": 1
+  },
+  "requiresLineOfSight": false,
+  "shape": {
+   "kind": "single"
+  },
+  "affects": "enemies"
+ },
+ "waterfall": {
+  "id": "waterfall",
+  "name": "Waterfall",
+  "type": "water",
+  "kind": "special",
+  "cooldown": 2,
+  "power": 60,
+  "range": {
+   "min": 1,
+   "max": 1
+  },
+  "requiresLineOfSight": false,
+  "shape": {
+   "kind": "single"
+  },
+  "affects": "enemies",
+  "effects": [
+   {
+    "kind": "push",
+    "distance": 1
+   }
+  ]
+ },
+ "sludge": {
+  "id": "sludge",
+  "name": "Sludge",
+  "type": "poison",
+  "kind": "special",
+  "cooldown": 2,
+  "power": 50,
+  "range": {
+   "min": 1,
+   "max": 3
+  },
+  "requiresLineOfSight": true,
+  "shape": {
+   "kind": "single"
+  },
+  "affects": "enemies",
+  "effects": [
+   {
+    "kind": "status",
+    "status": "poison",
+    "duration": 2
+   }
+  ]
+ },
+ "poison-gas": {
+  "id": "poison-gas",
+  "name": "Poison Gas",
+  "type": "poison",
+  "kind": "special",
+  "cooldown": 3,
+  "power": 0,
+  "range": {
+   "min": 1,
+   "max": 3
+  },
+  "requiresLineOfSight": true,
+  "shape": {
+   "kind": "burst",
+   "radius": 1
+  },
+  "affects": "enemies",
+  "effects": [
+   {
+    "kind": "status",
+    "status": "poison",
+    "duration": 2
+   }
+  ]
+ },
+ "bonemerang": {
+  "id": "bonemerang",
+  "name": "Bonemerang",
+  "type": "ground",
+  "kind": "special",
+  "cooldown": 2,
+  "power": 55,
+  "range": {
+   "min": 1,
+   "max": 3
+  },
+  "requiresLineOfSight": true,
+  "shape": {
+   "kind": "single"
+  },
+  "affects": "enemies"
+ },
+ "sand-attack": {
+  "id": "sand-attack",
+  "name": "Sand Attack",
+  "type": "ground",
+  "kind": "special",
+  "cooldown": 3,
+  "power": 0,
+  "range": {
+   "min": 1,
+   "max": 2
+  },
+  "requiresLineOfSight": true,
+  "shape": {
+   "kind": "single"
+  },
+  "affects": "enemies",
+  "effects": [
+   {
+    "kind": "status",
+    "status": "slow",
+    "duration": 2
+   }
+  ]
+ },
+ "fly": {
+  "id": "fly",
+  "name": "Fly",
+  "type": "flying",
+  "kind": "special",
+  "cooldown": 3,
+  "power": 60,
+  "range": {
+   "min": 1,
+   "max": 3
+  },
+  "requiresLineOfSight": false,
+  "shape": {
+   "kind": "single"
+  },
+  "affects": "enemies"
+ },
+ "sleep-powder": {
+  "id": "sleep-powder",
+  "name": "Sleep Powder",
+  "type": "grass",
+  "kind": "special",
+  "cooldown": 4,
+  "power": 0,
+  "range": {
+   "min": 1,
+   "max": 2
+  },
+  "requiresLineOfSight": true,
+  "shape": {
+   "kind": "single"
+  },
+  "affects": "enemies",
+  "effects": [
+   {
+    "kind": "status",
+    "status": "freeze",
+    "duration": 1
+   }
+  ]
+ },
+ "lovely-kiss": {
+  "id": "lovely-kiss",
+  "name": "Lovely Kiss",
+  "type": "normal",
+  "kind": "special",
+  "cooldown": 4,
+  "power": 0,
+  "range": {
+   "min": 1,
+   "max": 1
+  },
+  "requiresLineOfSight": false,
+  "shape": {
+   "kind": "single"
+  },
+  "affects": "enemies",
+  "effects": [
+   {
+    "kind": "status",
+    "status": "freeze",
+    "duration": 1
+   }
+  ]
+ },
+ "tail-whip": {
+  "id": "tail-whip",
+  "name": "Tail Whip",
+  "type": "normal",
+  "kind": "special",
+  "cooldown": 3,
+  "power": 0,
+  "range": {
+   "min": 1,
+   "max": 2
+  },
+  "requiresLineOfSight": true,
+  "shape": {
+   "kind": "burst",
+   "radius": 1
+  },
+  "affects": "enemies",
+  "effects": [
+   {
+    "kind": "status",
+    "status": "exposed",
+    "duration": 2
+   }
+  ]
+ },
+ "withdraw": {
+  "id": "withdraw",
+  "name": "Withdraw",
+  "type": "water",
+  "kind": "special",
+  "cooldown": 4,
+  "power": 0,
+  "range": {
+   "min": 0,
+   "max": 0
+  },
+  "requiresLineOfSight": false,
+  "shape": {
+   "kind": "single"
+  },
+  "affects": "allies",
+  "effects": [
+   {
+    "kind": "status",
+    "status": "fortified",
+    "duration": 3
+   }
+  ]
+ },
+ "defense-curl": {
+  "id": "defense-curl",
+  "name": "Defense Curl",
+  "type": "normal",
+  "kind": "special",
+  "cooldown": 4,
+  "power": 0,
+  "range": {
+   "min": 0,
+   "max": 0
+  },
+  "requiresLineOfSight": false,
+  "shape": {
+   "kind": "single"
+  },
+  "affects": "allies",
+  "effects": [
+   {
+    "kind": "status",
+    "status": "fortified",
+    "duration": 2
+   }
+  ]
+ },
+ "meditate": {
+  "id": "meditate",
+  "name": "Meditate",
+  "type": "psychic",
+  "kind": "special",
+  "cooldown": 4,
+  "power": 0,
+  "range": {
+   "min": 0,
+   "max": 0
+  },
+  "requiresLineOfSight": false,
+  "shape": {
+   "kind": "single"
+  },
+  "affects": "allies",
+  "effects": [
+   {
+    "kind": "status",
+    "status": "focused",
+    "duration": 2
+   }
+  ]
+ },
+ "splash": {
+  "id": "splash",
+  "name": "Splash",
+  "type": "water",
+  "kind": "special",
+  "cooldown": 3,
+  "power": 0,
+  "range": {
+   "min": 0,
+   "max": 0
+  },
+  "requiresLineOfSight": false,
+  "shape": {
+   "kind": "single"
+  },
+  "affects": "allies",
+  "effects": [
+   {
+    "kind": "status",
+    "status": "hasted",
+    "duration": 1
+   }
+  ]
+ },
+ "softboiled": {
+  "id": "softboiled",
+  "name": "Softboiled",
+  "type": "normal",
+  "kind": "special",
+  "cooldown": 3,
+  "power": 0,
+  "range": {
+   "min": 0,
+   "max": 1
+  },
+  "requiresLineOfSight": false,
+  "shape": {
+   "kind": "single"
+  },
+  "affects": "allies",
+  "effects": [
+   {
+    "kind": "heal",
+    "amount": 30
+   }
+  ]
+ },
+ "recover": {
+  "id": "recover",
+  "name": "Recover",
+  "type": "normal",
+  "kind": "special",
+  "cooldown": 4,
+  "power": 0,
+  "range": {
+   "min": 0,
+   "max": 0
+  },
+  "requiresLineOfSight": false,
+  "shape": {
+   "kind": "single"
+  },
+  "affects": "allies",
+  "effects": [
+   {
+    "kind": "heal",
+    "amount": 35
+   }
+  ]
+ },
+ "rest": {
+  "id": "rest",
+  "name": "Rest",
+  "type": "psychic",
+  "kind": "special",
+  "cooldown": 4,
+  "power": 0,
+  "range": {
+   "min": 0,
+   "max": 0
+  },
+  "requiresLineOfSight": false,
+  "shape": {
+   "kind": "single"
+  },
+  "affects": "allies",
+  "effects": [
+   {
+    "kind": "heal",
+    "amount": 40
+   }
+  ]
+ },
+ "double-edge": {
+  "id": "double-edge",
+  "name": "Double-Edge",
+  "type": "normal",
+  "kind": "bond",
+  "power": 85,
+  "range": {
+   "min": 1,
+   "max": 1
+  },
+  "requiresLineOfSight": false,
+  "shape": {
+   "kind": "single"
+  },
+  "affects": "enemies",
+  "bondCost": 2
+ },
+ "self-destruct": {
+  "id": "self-destruct",
+  "name": "Self-Destruct",
+  "type": "normal",
+  "kind": "bond",
+  "power": 80,
+  "range": {
+   "min": 0,
+   "max": 0
+  },
+  "requiresLineOfSight": false,
+  "shape": {
+   "kind": "burst",
+   "radius": 1
+  },
+  "affects": "enemies",
+  "bondCost": 2
+ }
 }

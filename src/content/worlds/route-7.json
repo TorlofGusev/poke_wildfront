@@ -1,0 +1,136 @@
+{
+ "id": "route-7",
+ "name": "Route 7",
+ "ai": "normal",
+ "deploySlots": 5,
+ "rows": [
+  "################",
+  "#yyy\"\"yyyyy\"\"yy#",
+  "#yy##yyyyyyyyyy#",
+  "#yyyyyy\"\"yy##yy#",
+  "yyyyyyyyyyyyyyyy",
+  "#y\"\"yyyy##yyy\"\"#",
+  "#yyyy##yyyyyyyy#",
+  "########y#######"
+ ],
+ "start": {
+  "x": 1,
+  "y": 4
+ },
+ "areaNames": {
+  "kanto-route7-8": "Route 7"
+ },
+ "exits": [
+  {
+   "name": "Celadon City",
+   "pos": {
+    "x": 0,
+    "y": 4
+   },
+   "to": "celadon-city",
+   "arrive": {
+    "x": 22,
+    "y": 6
+   }
+  },
+  {
+   "name": "Saffron City",
+   "pos": {
+    "x": 15,
+    "y": 4
+   },
+   "to": "saffron-city",
+   "arrive": {
+    "x": 1,
+    "y": 8
+   }
+  },
+  {
+   "name": "Underground Path",
+   "pos": {
+    "x": 8,
+    "y": 7
+   },
+   "to": "route-8",
+   "arrive": {
+    "x": 11,
+    "y": 8
+   }
+  }
+ ],
+ "spawnZones": [
+  {
+   "biome": "kanto-route7-8",
+   "count": 2,
+   "levels": {
+    "min": 19,
+    "max": 21
+   },
+   "points": [
+    {
+     "x": 2,
+     "y": 1
+    },
+    {
+     "x": 9,
+     "y": 2
+    },
+    {
+     "x": 13,
+     "y": 1
+    },
+    {
+     "x": 7,
+     "y": 6
+    },
+    {
+     "x": 12,
+     "y": 6
+    },
+    {
+     "x": 3,
+     "y": 3
+    }
+   ]
+  }
+ ],
+ "pickups": [
+  {
+   "id": "r7-berries",
+   "pos": {
+    "x": 14,
+    "y": 6
+   },
+   "items": {
+    "pecha-berry": 2,
+    "super-potion": 1
+   }
+  }
+ ],
+ "npcs": [
+  {
+   "id": "route7-mime",
+   "name": "Mime Fan",
+   "kind": "gift",
+   "text": [
+    "My Mr. Mime wants to see the world.",
+    "Take it along!"
+   ],
+   "afterText": [
+    "Mr. Mime waves at you."
+   ],
+   "reward": {
+    "pokemon": [
+     {
+      "species": "mr-mime",
+      "level": 20
+     }
+    ]
+   },
+   "pos": {
+    "x": 2,
+    "y": 2
+   }
+  }
+ ]
+}

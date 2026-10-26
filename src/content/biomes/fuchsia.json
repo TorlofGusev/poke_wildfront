@@ -1,0 +1,704 @@
+{
+ "fuchsia-route": {
+  "id": "fuchsia-route",
+  "name": "Routes 12–15",
+  "char": "W",
+  "travelCost": 1,
+  "encounters": {
+   "groupSize": {
+    "min": 3,
+    "max": 4
+   },
+   "entries": [
+    {
+     "speciesId": "oddish",
+     "weight": 3
+    },
+    {
+     "speciesId": "gloom",
+     "weight": 2
+    },
+    {
+     "speciesId": "bellsprout",
+     "weight": 3
+    },
+    {
+     "speciesId": "weepinbell",
+     "weight": 2
+    },
+    {
+     "speciesId": "venonat",
+     "weight": 3
+    },
+    {
+     "speciesId": "pidgey",
+     "weight": 2
+    },
+    {
+     "speciesId": "pidgeotto",
+     "weight": 2
+    },
+    {
+     "speciesId": "ditto",
+     "weight": 1,
+     "maxPerGroup": 1
+    },
+    {
+     "speciesId": "snorlax",
+     "weight": 0.3,
+     "maxPerGroup": 1
+    },
+    {
+     "speciesId": "farfetchd",
+     "weight": 0.5,
+     "maxPerGroup": 1
+    }
+   ],
+   "levels": {
+    "min": 20,
+    "max": 22
+   }
+  },
+  "arena": {
+   "mapRows": [
+    "................",
+    "..\"\"\"......#....",
+    "..\"\"\".....##..\"\"",
+    "........\"\"\".....",
+    "...##....\"\"\"....",
+    "..........#.....",
+    "....\"\"\".........",
+    "....\"\"\".....##..",
+    ".........\"\".....",
+    "................"
+   ],
+   "deploymentZone": [
+    {
+     "x": 0,
+     "y": 1
+    },
+    {
+     "x": 1,
+     "y": 1
+    },
+    {
+     "x": 0,
+     "y": 2
+    },
+    {
+     "x": 1,
+     "y": 2
+    },
+    {
+     "x": 0,
+     "y": 3
+    },
+    {
+     "x": 1,
+     "y": 3
+    },
+    {
+     "x": 0,
+     "y": 4
+    },
+    {
+     "x": 1,
+     "y": 4
+    },
+    {
+     "x": 0,
+     "y": 5
+    },
+    {
+     "x": 1,
+     "y": 5
+    },
+    {
+     "x": 0,
+     "y": 6
+    },
+    {
+     "x": 1,
+     "y": 6
+    },
+    {
+     "x": 0,
+     "y": 7
+    },
+    {
+     "x": 1,
+     "y": 7
+    },
+    {
+     "x": 0,
+     "y": 8
+    },
+    {
+     "x": 1,
+     "y": 8
+    }
+   ],
+   "enemySpawns": [
+    {
+     "x": 14,
+     "y": 1
+    },
+    {
+     "x": 14,
+     "y": 4
+    },
+    {
+     "x": 15,
+     "y": 6
+    },
+    {
+     "x": 13,
+     "y": 8
+    },
+    {
+     "x": 15,
+     "y": 2
+    }
+   ]
+  },
+  "forage": {
+   "oran-berry": 2,
+   "pecha-berry": 1
+  },
+  "loot": [
+   {
+    "item": "super-potion",
+    "chance": 0.15
+   },
+   {
+    "item": "miracle-seed",
+    "chance": 0.04
+   }
+  ]
+ },
+ "fuchsia-cycling": {
+  "id": "fuchsia-cycling",
+  "name": "Cycling Road",
+  "char": "X",
+  "travelCost": 1,
+  "encounters": {
+   "groupSize": {
+    "min": 3,
+    "max": 4
+   },
+   "entries": [
+    {
+     "speciesId": "doduo",
+     "weight": 4
+    },
+    {
+     "speciesId": "spearow",
+     "weight": 3
+    },
+    {
+     "speciesId": "fearow",
+     "weight": 2
+    },
+    {
+     "speciesId": "rattata",
+     "weight": 2
+    },
+    {
+     "speciesId": "raticate",
+     "weight": 2
+    },
+    {
+     "speciesId": "grimer",
+     "weight": 2
+    },
+    {
+     "speciesId": "snorlax",
+     "weight": 0.3,
+     "maxPerGroup": 1
+    },
+    {
+     "speciesId": "lickitung",
+     "weight": 0.5,
+     "maxPerGroup": 1
+    }
+   ],
+   "levels": {
+    "min": 21,
+    "max": 23
+   }
+  },
+  "arena": {
+   "mapRows": [
+    "....#......#....",
+    "................",
+    "..#.....#.......",
+    "........#....#..",
+    ".....#..........",
+    "................",
+    "..#.....#.......",
+    "........#....#..",
+    ".....#..........",
+    "....#......#...."
+   ],
+   "deploymentZone": [
+    {
+     "x": 0,
+     "y": 1
+    },
+    {
+     "x": 1,
+     "y": 1
+    },
+    {
+     "x": 0,
+     "y": 2
+    },
+    {
+     "x": 1,
+     "y": 2
+    },
+    {
+     "x": 0,
+     "y": 3
+    },
+    {
+     "x": 1,
+     "y": 3
+    },
+    {
+     "x": 0,
+     "y": 4
+    },
+    {
+     "x": 1,
+     "y": 4
+    },
+    {
+     "x": 0,
+     "y": 5
+    },
+    {
+     "x": 1,
+     "y": 5
+    },
+    {
+     "x": 0,
+     "y": 6
+    },
+    {
+     "x": 1,
+     "y": 6
+    },
+    {
+     "x": 0,
+     "y": 7
+    },
+    {
+     "x": 1,
+     "y": 7
+    },
+    {
+     "x": 0,
+     "y": 8
+    },
+    {
+     "x": 1,
+     "y": 8
+    }
+   ],
+   "enemySpawns": [
+    {
+     "x": 14,
+     "y": 1
+    },
+    {
+     "x": 14,
+     "y": 4
+    },
+    {
+     "x": 15,
+     "y": 6
+    },
+    {
+     "x": 13,
+     "y": 8
+    },
+    {
+     "x": 15,
+     "y": 2
+    }
+   ]
+  },
+  "forage": {
+   "oran-berry": 2
+  },
+  "loot": [
+   {
+    "item": "super-potion",
+    "chance": 0.15
+   },
+   {
+    "item": "sharp-beak",
+    "chance": 0.04
+   }
+  ]
+ },
+ "fuchsia-safari": {
+  "id": "fuchsia-safari",
+  "name": "Safari Zone",
+  "char": "Y",
+  "travelCost": 2,
+  "encounters": {
+   "groupSize": {
+    "min": 3,
+    "max": 5
+   },
+   "entries": [
+    {
+     "speciesId": "nidoran-f",
+     "weight": 3
+    },
+    {
+     "speciesId": "nidoran-m",
+     "weight": 3
+    },
+    {
+     "speciesId": "nidorina",
+     "weight": 2
+    },
+    {
+     "speciesId": "nidorino",
+     "weight": 2
+    },
+    {
+     "speciesId": "exeggcute",
+     "weight": 3
+    },
+    {
+     "speciesId": "rhyhorn",
+     "weight": 2
+    },
+    {
+     "speciesId": "paras",
+     "weight": 2
+    },
+    {
+     "speciesId": "parasect",
+     "weight": 1
+    },
+    {
+     "speciesId": "venonat",
+     "weight": 2
+    },
+    {
+     "speciesId": "doduo",
+     "weight": 2
+    },
+    {
+     "speciesId": "kangaskhan",
+     "weight": 0.5,
+     "maxPerGroup": 1
+    },
+    {
+     "speciesId": "scyther",
+     "weight": 0.5,
+     "maxPerGroup": 1
+    },
+    {
+     "speciesId": "pinsir",
+     "weight": 0.5,
+     "maxPerGroup": 1
+    },
+    {
+     "speciesId": "tauros",
+     "weight": 0.5,
+     "maxPerGroup": 1
+    },
+    {
+     "speciesId": "chansey",
+     "weight": 0.2,
+     "maxPerGroup": 1
+    }
+   ],
+   "levels": {
+    "min": 22,
+    "max": 25
+   }
+  },
+  "arena": {
+   "mapRows": [
+    "\"\"\"\"..\"\"\"\"..\"\"\"\"",
+    "..\"\"\"\"..\"\"\"\"..\"\"",
+    "..\"\"..\"\"\"\"\"\"..\"\"",
+    "..\"\"\"\"..\"\"..\"\"\"\"",
+    "..\"\"\"\"\"\"..\"\"\"\"..",
+    "..\"\"\"\"\"\"\"\"..\"\"\"\"",
+    "..\"\"\"\"..\"\"..\"\"\"\"",
+    "..\"\"..\"\"\"\"\"\"..\"\"",
+    "..\"\"\"\"..\"\"\"\"..\"\"",
+    "\"\"\"\"..\"\"\"\"..\"\"\"\""
+   ],
+   "deploymentZone": [
+    {
+     "x": 0,
+     "y": 1
+    },
+    {
+     "x": 1,
+     "y": 1
+    },
+    {
+     "x": 0,
+     "y": 2
+    },
+    {
+     "x": 1,
+     "y": 2
+    },
+    {
+     "x": 0,
+     "y": 3
+    },
+    {
+     "x": 1,
+     "y": 3
+    },
+    {
+     "x": 0,
+     "y": 4
+    },
+    {
+     "x": 1,
+     "y": 4
+    },
+    {
+     "x": 0,
+     "y": 5
+    },
+    {
+     "x": 1,
+     "y": 5
+    },
+    {
+     "x": 0,
+     "y": 6
+    },
+    {
+     "x": 1,
+     "y": 6
+    },
+    {
+     "x": 0,
+     "y": 7
+    },
+    {
+     "x": 1,
+     "y": 7
+    },
+    {
+     "x": 0,
+     "y": 8
+    },
+    {
+     "x": 1,
+     "y": 8
+    }
+   ],
+   "enemySpawns": [
+    {
+     "x": 14,
+     "y": 1
+    },
+    {
+     "x": 14,
+     "y": 4
+    },
+    {
+     "x": 15,
+     "y": 6
+    },
+    {
+     "x": 13,
+     "y": 8
+    },
+    {
+     "x": 15,
+     "y": 2
+    }
+   ]
+  },
+  "forage": {
+   "oran-berry": 2,
+   "cheri-berry": 2
+  },
+  "loot": [
+   {
+    "item": "super-potion",
+    "chance": 0.15
+   },
+   {
+    "item": "leftovers",
+    "chance": 0.02
+   }
+  ]
+ },
+ "fuchsia-safari-pond": {
+  "id": "fuchsia-safari-pond",
+  "name": "Safari Zone lake",
+  "char": "Z",
+  "travelCost": 2,
+  "encounters": {
+   "groupSize": {
+    "min": 2,
+    "max": 4
+   },
+   "entries": [
+    {
+     "speciesId": "psyduck",
+     "weight": 3
+    },
+    {
+     "speciesId": "slowpoke",
+     "weight": 3
+    },
+    {
+     "speciesId": "magikarp",
+     "weight": 3
+    },
+    {
+     "speciesId": "poliwag",
+     "weight": 2
+    },
+    {
+     "speciesId": "dratini",
+     "weight": 0.5,
+     "maxPerGroup": 1
+    },
+    {
+     "speciesId": "dragonair",
+     "weight": 0.15,
+     "maxPerGroup": 1
+    }
+   ],
+   "levels": {
+    "min": 23,
+    "max": 25
+   }
+  },
+  "arena": {
+   "mapRows": [
+    "......~~~~......",
+    ".....~~~~~~.....",
+    "....~~~..~~~....",
+    "..~~~......~~...",
+    "..~~...\"\"...~~..",
+    "..~~...\"\"...~~..",
+    "..~~~......~~...",
+    "....~~~..~~~....",
+    ".....~~~~~~.....",
+    "......~~~~......"
+   ],
+   "deploymentZone": [
+    {
+     "x": 0,
+     "y": 1
+    },
+    {
+     "x": 1,
+     "y": 1
+    },
+    {
+     "x": 0,
+     "y": 2
+    },
+    {
+     "x": 1,
+     "y": 2
+    },
+    {
+     "x": 0,
+     "y": 3
+    },
+    {
+     "x": 1,
+     "y": 3
+    },
+    {
+     "x": 0,
+     "y": 4
+    },
+    {
+     "x": 1,
+     "y": 4
+    },
+    {
+     "x": 0,
+     "y": 5
+    },
+    {
+     "x": 1,
+     "y": 5
+    },
+    {
+     "x": 0,
+     "y": 6
+    },
+    {
+     "x": 1,
+     "y": 6
+    },
+    {
+     "x": 0,
+     "y": 7
+    },
+    {
+     "x": 1,
+     "y": 7
+    },
+    {
+     "x": 0,
+     "y": 8
+    },
+    {
+     "x": 1,
+     "y": 8
+    }
+   ],
+   "enemySpawns": [
+    {
+     "x": 14,
+     "y": 1
+    },
+    {
+     "x": 14,
+     "y": 4
+    },
+    {
+     "x": 15,
+     "y": 6
+    },
+    {
+     "x": 13,
+     "y": 8
+    },
+    {
+     "x": 15,
+     "y": 2
+    }
+   ]
+  },
+  "forage": {
+   "oran-berry": 2
+  },
+  "loot": [
+   {
+    "item": "mystic-water",
+    "chance": 0.05
+   },
+   {
+    "item": "super-potion",
+    "chance": 0.15
+   }
+  ]
+ }
+}

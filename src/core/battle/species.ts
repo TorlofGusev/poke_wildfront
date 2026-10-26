@@ -1,7 +1,7 @@
 import type { BaseStats } from "./content";
 
 export type StatName = keyof BaseStats;
-export const STAT_NAMES: readonly StatName[] = ["hp", "attack", "defense", "speed"];
+export const STAT_NAMES: readonly StatName[] = ["hp", "attack", "defense", "spAttack", "spDefense", "speed"];
 
 export interface TypeProfile {
   /** Level-1 stats of a Pokémon of this type (the type's playstyle). */

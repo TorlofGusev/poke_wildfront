@@ -5,6 +5,7 @@ import {
   IllegalActionError,
   movementPoints,
   unitById,
+  switchTargets,
   validTargets,
   type BattleAction,
   type BattleState,
@@ -35,8 +36,8 @@ describe("battle setup and initiative", () => {
       u("e-mid", "mid", "enemy", 6, 1),
       u("p-fast", "fast", "player", 0, 1),
     ]);
-    expect(events[0]).toEqual({ type: "roundStarted", round: 1, order: ["p-fast", "p-mid", "e-mid", "e-slow"] });
-    expect(state.turn).toEqual({ unitId: "p-fast", movePointsLeft: 5, actionUsed: false, basicUsed: false });
+    expect(events[0]).toEqual({ type: "roundStarted", round: 1, order: ["p-fast", "e-mid", "p-mid", "e-slow"] });
+    expect(state.turn).toEqual({ unitId: "p-fast", movePointsLeft: 5, actionUsed: false, basicUsed: false, fresh: true });
   });
 
   it("rejects invalid placements", () => {
@@ -75,8 +76,8 @@ describe("turn economy", () => {
     let { state } = battle([u("a", "fast", "player", 0, 0), u("b", "slow", "enemy", 1, 0)]);
     state = act(state, { type: "useMove", unitId: "a", moveId: "tackle", target: { x: 1, y: 0 } }).state;
     expect(() => act(state, { type: "useMove", unitId: "a", moveId: "tackle", target: { x: 1, y: 0 } })).toThrow(/basic attack already used/);
-    state = act(state, { type: "useMove", unitId: "a", moveId: "zap", target: { x: 1, y: 0 } }).state;
-    expect(() => act(state, { type: "useMove", unitId: "a", moveId: "shove", target: { x: 1, y: 0 } })).toThrow(/action already used/);
+    state = act(state, { type: "useMove", unitId: "a", moveId: "shove", target: { x: 1, y: 0 } }).state;
+    expect(() => act(state, { type: "useMove", unitId: "a", moveId: "zap", target: { x: 1, y: 0 } })).toThrow(/action already used/);
   });
 
   it("rejects actions from units whose turn it is not", () => {
@@ -208,7 +209,7 @@ describe("statuses and healing", () => {
     expect(r.state.turn).toMatchObject({ unitId: "e", movePointsLeft: 1 });
     const r2 = act(r.state, { type: "endTurn", unitId: "e" });
     expect(r2.events).toContainEqual({ type: "statusExpired", unitId: "e", status: "slow" });
-    expect(unitById(r2.state, "e").statuses).toEqual([{ id: "poison", turnsLeft: 2 }]);
+    expect(unitById(r2.state, "e").statuses).toMatchObject([{ id: "poison", turnsLeft: 2 }]);
   });
 
   it("poison can knock out a unit at the start of its turn", () => {
@@ -235,5 +236,19 @@ describe("player modifiers (fatigue)", () => {
     const r = act(state, { type: "useMove", unitId: "p", moveId: "tackle", target: { x: 1, y: 0 } });
     // tackle normal 40 vs grass: 40 * 1 * 0.5 / 4 = 5
     expect(r.events).toContainEqual({ type: "damaged", unitId: "e", amount: 5, hp: 35, source: "move", effectiveness: 1 });
+  });
+});
+
+describe("free choice of the acting unit", () => {
+  it("the player hands a fresh turn to another unit; it acts later in that unit's place", () => {
+    const { state } = battle([u("p-fast", "fast", "player", 0, 0), u("p-mid", "mid", "player", 0, 1), u("e-mid", "mid", "enemy", 6, 1)]);
+    expect(switchTargets(state)).toEqual(["p-mid"]);
+    const r = applyAction(state, content, { type: "switchUnit", unitId: "p-fast", to: "p-mid" });
+    expect(r.state.turn?.unitId).toBe("p-mid");
+    expect(r.state.queue).toEqual(["p-mid", "e-mid", "p-fast"]);
+    // Once it has done something, the turn is its own.
+    const moved = applyAction(r.state, content, { type: "move", unitId: "p-mid", to: { x: 1, y: 1 } }).state;
+    expect(switchTargets(moved)).toEqual([]);
+    expect(() => applyAction(moved, content, { type: "switchUnit", unitId: "p-mid", to: "p-fast" })).toThrow();
   });
 });

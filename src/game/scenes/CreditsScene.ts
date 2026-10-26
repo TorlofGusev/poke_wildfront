@@ -1,4 +1,5 @@
 import Phaser from "phaser";
+import { playMusic } from "../music";
 import credits from "../../../CREDITS.md?raw";
 import { DISCLAIMER } from "../../core/version";
 import { Button } from "../ui/Button";
@@ -11,6 +12,7 @@ export class CreditsScene extends Phaser.Scene {
   }
 
   create(): void {
+    playMusic(this, "title");
     const { width, height } = this.scale;
     // Markdown table rows → "Artist — Pokémon" lines; prose lines are kept as they are.
     const lines = credits.split("\n").slice(1).flatMap((l) => {

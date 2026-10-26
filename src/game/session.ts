@@ -71,7 +71,8 @@ class Session {
   }
 
   start(team: readonly string[]): void {
-    this.update(newGame(team));
+    // A single chosen starter is remembered: the rival picks its counter.
+    this.update({ ...newGame(team), ...(team.length === 1 && { starter: team[0] }) });
   }
 
   partyCandidates(): DeployCandidate[] {

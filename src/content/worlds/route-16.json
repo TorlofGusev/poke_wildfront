@@ -1,0 +1,199 @@
+{
+ "id": "route-16",
+ "name": "Route 16",
+ "ai": "normal",
+ "deploySlots": 5,
+ "rows": [
+  "########################",
+  "#00000000000#0000000000#",
+  "#00##00\"\"000#000##00000#",
+  "#000000000\"\"#0000000000#",
+  "#00000000000000000000000",
+  "#0\"\"00000000#000000\"\"00#",
+  "#00000##0000#0000000000#",
+  "#000000000\"\"#000##00000#",
+  "#00000000000#0000000000#",
+  "#0######################"
+ ],
+ "start": {
+  "x": 22,
+  "y": 4
+ },
+ "areaNames": {
+  "cycling-road": "Route 16"
+ },
+ "exits": [
+  {
+   "name": "Celadon City",
+   "pos": {
+    "x": 23,
+    "y": 4
+   },
+   "to": "celadon-city",
+   "arrive": {
+    "x": 1,
+    "y": 6
+   }
+  },
+  {
+   "name": "Route 17",
+   "pos": {
+    "x": 1,
+    "y": 9
+   },
+   "to": "route-17",
+   "arrive": {
+    "x": 1,
+    "y": 1
+   }
+  }
+ ],
+ "spawnZones": [
+  {
+   "biome": "cycling-road",
+   "count": 2,
+   "levels": {
+    "min": 22,
+    "max": 23
+   },
+   "points": [
+    {
+     "x": 14,
+     "y": 1
+    },
+    {
+     "x": 21,
+     "y": 2
+    },
+    {
+     "x": 15,
+     "y": 6
+    },
+    {
+     "x": 20,
+     "y": 8
+    },
+    {
+     "x": 14,
+     "y": 8
+    }
+   ]
+  },
+  {
+   "biome": "cycling-road",
+   "count": 2,
+   "levels": {
+    "min": 22,
+    "max": 23
+   },
+   "points": [
+    {
+     "x": 2,
+     "y": 1
+    },
+    {
+     "x": 9,
+     "y": 1
+    },
+    {
+     "x": 3,
+     "y": 6
+    },
+    {
+     "x": 8,
+     "y": 8
+    },
+    {
+     "x": 5,
+     "y": 3
+    }
+   ]
+  }
+ ],
+ "pickups": [
+  {
+   "id": "r16-berries",
+   "pos": {
+    "x": 22,
+    "y": 8
+   },
+   "items": {
+    "cheri-berry": 2,
+    "super-potion": 1
+   }
+  },
+  {
+   "id": "r16-beak",
+   "pos": {
+    "x": 1,
+    "y": 1
+   },
+   "items": {
+    "sharp-beak": 1
+   },
+   "once": true
+  }
+ ],
+ "npcs": [
+  {
+   "id": "biker-route16",
+   "name": "Biker",
+   "kind": "trainer",
+   "pos": {
+    "x": 19,
+    "y": 2
+   },
+   "arena": "cycling-road",
+   "text": [
+    "Outta my way, kid!"
+   ],
+   "afterText": [
+    "My ride got wrecked..."
+   ],
+   "team": [
+    {
+     "species": "koffing",
+     "level": 22
+    },
+    {
+     "species": "grimer",
+     "level": 22
+    }
+   ],
+   "reward": {
+    "money": 600
+   }
+  },
+  {
+   "id": "snorlax-route16",
+   "name": "Snorlax",
+   "kind": "wild",
+   "pos": {
+    "x": 12,
+    "y": 4
+   },
+   "arena": "cycling-road",
+   "capture": true,
+   "requires": {
+    "keyItems": [
+     "poke-flute"
+    ]
+   },
+   "lockedText": [
+    "A huge Pokémon is sleeping in the road. It won't budge."
+   ],
+   "text": [
+    "The Poké Flute's tune wakes Snorlax! It attacks in a bad mood!"
+   ],
+   "afterText": [
+    "The road is clear now."
+   ],
+   "team": [
+    {
+     "species": "snorlax",
+     "level": 26
+    }
+   ]
+  }
+ ]
+}

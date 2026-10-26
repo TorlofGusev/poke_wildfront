@@ -127,5 +127,210 @@
   "mods": {
    "moveBonus": 1
   }
+ },
+ "levitate": {
+  "id": "levitate",
+  "name": "Levitate",
+  "description": "Floats above the ground: Slow never applies.",
+  "mods": {
+   "statusImmune": [
+    "slow"
+   ]
+  }
+ },
+ "cute-charm": {
+  "id": "cute-charm",
+  "name": "Cute Charm",
+  "description": "Pokémon that hit it in melee are charmed: Slow for 1 turn.",
+  "contactStatus": {
+   "status": "slow",
+   "duration": 1
+  }
+ },
+ "thick-fat": {
+  "id": "thick-fat",
+  "name": "Thick Fat",
+  "description": "Takes 10% less damage.",
+  "mods": {
+   "damageTaken": 0.9
+  }
+ },
+ "swift-swim": {
+  "id": "swift-swim",
+  "name": "Swift Swim",
+  "description": "+1 movement.",
+  "mods": {
+   "moveBonus": 1
+  }
+ },
+ "shell-armor": {
+  "id": "shell-armor",
+  "name": "Shell Armor",
+  "description": "Takes 10% less damage.",
+  "mods": {
+   "damageTaken": 0.9
+  }
+ },
+ "battle-armor": {
+  "id": "battle-armor",
+  "name": "Battle Armor",
+  "description": "Takes 10% less damage.",
+  "mods": {
+   "damageTaken": 0.9
+  }
+ },
+ "flame-body": {
+  "id": "flame-body",
+  "name": "Flame Body",
+  "description": "Pokémon that hit it in melee become Burned.",
+  "contactStatus": {
+   "status": "burn",
+   "duration": 1
+  }
+ },
+ "guts": {
+  "id": "guts",
+  "name": "Guts",
+  "description": "+30% damage while it carries a status.",
+  "mods": {
+   "statusedDamage": 1.3
+  }
+ },
+ "flash-fire": {
+  "id": "flash-fire",
+  "name": "Flash Fire",
+  "description": "+15% Fire damage.",
+  "mods": {
+   "typeDamage": {
+    "fire": 1.15
+   }
+  }
+ },
+ "pressure": {
+  "id": "pressure",
+  "name": "Pressure",
+  "description": "Statuses it inflicts last 1 turn longer.",
+  "mods": {
+   "statusDurationBonus": 1
+  }
+ },
+ "oblivious": {
+  "id": "oblivious",
+  "name": "Oblivious",
+  "description": "Can't be charmed: Slow never applies.",
+  "mods": {
+   "statusImmune": [
+    "slow"
+   ]
+  }
+ },
+ "clear-body": {
+  "id": "clear-body",
+  "name": "Clear Body",
+  "description": "Immune to Exposed.",
+  "mods": {
+   "statusImmune": [
+    "exposed"
+   ]
+  }
+ },
+ "hyper-cutter": {
+  "id": "hyper-cutter",
+  "name": "Hyper Cutter",
+  "description": "Immune to Exposed.",
+  "mods": {
+   "statusImmune": [
+    "exposed"
+   ]
+  }
+ },
+ "insomnia": {
+  "id": "insomnia",
+  "name": "Insomnia",
+  "description": "Can't be put to sleep: immune to Freeze.",
+  "mods": {
+   "statusImmune": [
+    "freeze"
+   ]
+  }
+ },
+ "natural-cure": {
+  "id": "natural-cure",
+  "name": "Natural Cure",
+  "description": "Immune to Poison and Burn.",
+  "mods": {
+   "statusImmune": [
+    "poison",
+    "burn"
+   ]
+  }
+ },
+ "water-absorb": {
+  "id": "water-absorb",
+  "name": "Water Absorb",
+  "description": "Heals 5% of max HP at the start of each of its turns.",
+  "mods": {
+   "healPerTurn": 0.05
+  }
+ },
+ "sniper": {
+  "id": "sniper",
+  "name": "Sniper",
+  "description": "+15% damage against targets 3+ tiles away.",
+  "mods": {
+   "farDamage": 1.15
+  }
+ },
+ "sand-veil": {
+  "id": "sand-veil",
+  "name": "Sand Veil",
+  "description": "Takes 20% less damage while at full HP.",
+  "mods": {
+   "fullHpDamageTaken": 0.8
+  }
+ },
+ "compound-eyes": {
+  "id": "compound-eyes",
+  "name": "Compound Eyes",
+  "description": "+1 max range on moves that reach 2+ tiles.",
+  "mods": {
+   "rangeBonus": 1
+  }
+ },
+ "limber": {
+  "id": "limber",
+  "name": "Limber",
+  "description": "Immune to Paralysis.",
+  "mods": {
+   "statusImmune": [
+    "paralysis"
+   ]
+  }
+ },
+ "shed-skin": {
+  "id": "shed-skin",
+  "name": "Shed Skin",
+  "description": "Immune to Poison.",
+  "mods": {
+   "statusImmune": [
+    "poison"
+   ]
+  }
+ },
+ "moxie": {
+  "id": "moxie",
+  "name": "Moxie",
+  "description": "+1 Attack each time it knocks out a foe (max +3, this battle).",
+  "mods": {
+   "koAttackBoost": 1
+  }
+ },
+ "download": {
+  "id": "download",
+  "name": "Download",
+  "description": "+10% damage dealt.",
+  "mods": {
+   "damageDealt": 1.1
+  }
  }
 }

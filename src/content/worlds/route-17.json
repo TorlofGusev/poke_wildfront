@@ -1,0 +1,217 @@
+{
+ "id": "route-17",
+ "name": "Cycling Road",
+ "ai": "normal",
+ "deploySlots": 5,
+ "rows": [
+  "#0##########",
+  "#0000000000#",
+  "#00##000000#",
+  "#0000000##0#",
+  "#000000000\"#",
+  "#0##0000000#",
+  "#0000000000#",
+  "#000000##00#",
+  "#0000000000#",
+  "#\"\"00000000#",
+  "#00000##000#",
+  "#0000000000#",
+  "#000##00000#",
+  "#0000000000#",
+  "#0000000000#",
+  "##########0#"
+ ],
+ "start": {
+  "x": 1,
+  "y": 1
+ },
+ "areaNames": {
+  "cycling-road": "Cycling Road"
+ },
+ "exits": [
+  {
+   "name": "Route 16",
+   "pos": {
+    "x": 1,
+    "y": 0
+   },
+   "to": "route-16",
+   "arrive": {
+    "x": 1,
+    "y": 8
+   }
+  },
+  {
+   "name": "Route 18",
+   "pos": {
+    "x": 10,
+    "y": 15
+   },
+   "to": "route-18",
+   "arrive": {
+    "x": 2,
+    "y": 1
+   }
+  }
+ ],
+ "spawnZones": [
+  {
+   "biome": "cycling-road",
+   "count": 3,
+   "levels": {
+    "min": 23,
+    "max": 24
+   },
+   "points": [
+    {
+     "x": 9,
+     "y": 2
+    },
+    {
+     "x": 3,
+     "y": 4
+    },
+    {
+     "x": 8,
+     "y": 6
+    },
+    {
+     "x": 2,
+     "y": 8
+    },
+    {
+     "x": 9,
+     "y": 9
+    },
+    {
+     "x": 4,
+     "y": 11
+    },
+    {
+     "x": 8,
+     "y": 13
+    },
+    {
+     "x": 2,
+     "y": 14
+    }
+   ]
+  }
+ ],
+ "pickups": [
+  {
+   "id": "r17-supplies",
+   "pos": {
+    "x": 10,
+    "y": 4
+   },
+   "items": {
+    "super-potion": 2
+   }
+  },
+  {
+   "id": "r17-claw",
+   "pos": {
+    "x": 1,
+    "y": 13
+   },
+   "items": {
+    "quick-claw": 1
+   },
+   "once": true
+  }
+ ],
+ "npcs": [
+  {
+   "id": "biker-route17-1",
+   "name": "Biker",
+   "kind": "trainer",
+   "pos": {
+    "x": 6,
+    "y": 4
+   },
+   "arena": "cycling-road",
+   "text": [
+    "This is our road! Pay the toll!"
+   ],
+   "afterText": [
+    "Tch, go on then."
+   ],
+   "team": [
+    {
+     "species": "grimer",
+     "level": 23
+    },
+    {
+     "species": "muk",
+     "level": 23
+    }
+   ],
+   "reward": {
+    "money": 650
+   }
+  },
+  {
+   "id": "biker-route17-2",
+   "name": "Biker",
+   "kind": "trainer",
+   "pos": {
+    "x": 4,
+    "y": 8
+   },
+   "arena": "cycling-road",
+   "text": [
+    "Vroom vroom! Battle time!"
+   ],
+   "afterText": [
+    "Ran out of gas..."
+   ],
+   "team": [
+    {
+     "species": "koffing",
+     "level": 23
+    },
+    {
+     "species": "weezing",
+     "level": 24
+    }
+   ],
+   "reward": {
+    "money": 700
+   }
+  },
+  {
+   "id": "cue-ball-route17",
+   "name": "Cue Ball",
+   "kind": "trainer",
+   "pos": {
+    "x": 8,
+    "y": 12
+   },
+   "arena": "cycling-road",
+   "text": [
+    "Don't stare at my head!"
+   ],
+   "afterText": [
+    "Lost my shine..."
+   ],
+   "team": [
+    {
+     "species": "machop",
+     "level": 23
+    },
+    {
+     "species": "mankey",
+     "level": 23
+    },
+    {
+     "species": "machoke",
+     "level": 24
+    }
+   ],
+   "reward": {
+    "money": 700
+   }
+  }
+ ]
+}

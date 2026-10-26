@@ -1,0 +1,288 @@
+{
+ "id": "cinnabar-island",
+ "name": "Cinnabar Island",
+ "ai": "normal",
+ "deploySlots": 5,
+ "rows": [
+  "#####T##########",
+  "#TTTTTTTTT~~~~~#",
+  "#T#####TTTTT~~~#",
+  "TT#TTT#TTTTTTTTT",
+  "#T#TTT#T######T#",
+  "#T##T##T#TTTT#T#",
+  "#TTTTTTT#TTTT#T#",
+  "#TTTTTTT##T###T#",
+  "#TTTTTTTTTTTTTT#",
+  "#~~TTTTTTTTTT~~#",
+  "#~~~~TTTTTT~~~~#",
+  "################"
+ ],
+ "start": {
+  "x": 10,
+  "y": 8
+ },
+ "areaNames": {
+  "town": "Cinnabar Island"
+ },
+ "exits": [
+  {
+   "name": "Route 21",
+   "pos": {
+    "x": 5,
+    "y": 0
+   },
+   "to": "route-21",
+   "arrive": {
+    "x": 5,
+    "y": 14
+   }
+  },
+  {
+   "name": "Pokémon Mansion",
+   "pos": {
+    "x": 0,
+    "y": 3
+   },
+   "to": "pokemon-mansion",
+   "arrive": {
+    "x": 7,
+    "y": 10
+   }
+  },
+  {
+   "name": "Route 20",
+   "pos": {
+    "x": 15,
+    "y": 3
+   },
+   "to": "route-20",
+   "arrive": {
+    "x": 1,
+    "y": 6
+   }
+  }
+ ],
+ "spawnZones": [],
+ "pickups": [],
+ "npcs": [
+  {
+   "id": "burglar-cinnabar",
+   "name": "Burglar Quinn",
+   "kind": "trainer",
+   "pos": {
+    "x": 9,
+    "y": 6
+   },
+   "arena": "cinnabar-gym",
+   "text": [
+    "I came for the heat, I stayed for Blaine!"
+   ],
+   "afterText": [
+    "Too hot for me."
+   ],
+   "team": [
+    {
+     "species": "growlithe",
+     "level": 24
+    },
+    {
+     "species": "vulpix",
+     "level": 24
+    },
+    {
+     "species": "ponyta",
+     "level": 25
+    }
+   ],
+   "reward": {
+    "money": 1000
+   }
+  },
+  {
+   "id": "supernerd-cinnabar",
+   "name": "Super Nerd Erik",
+   "kind": "trainer",
+   "pos": {
+    "x": 12,
+    "y": 6
+   },
+   "arena": "cinnabar-gym",
+   "text": [
+    "Quiz time! Fire beats grass. Now battle!"
+   ],
+   "afterText": [
+    "Correct answer: you win."
+   ],
+   "team": [
+    {
+     "species": "ninetales",
+     "level": 25
+    },
+    {
+     "species": "magmar",
+     "level": 24
+    }
+   ],
+   "reward": {
+    "money": 1000
+   }
+  },
+  {
+   "id": "blaine",
+   "name": "Blaine",
+   "kind": "leader",
+   "pos": {
+    "x": 11,
+    "y": 5
+   },
+   "arena": "cinnabar-gym",
+   "requires": {
+    "keyItems": [
+     "secret-key"
+    ]
+   },
+   "lockedText": [
+    "The gym door is locked.",
+    "The key must be somewhere in the old mansion."
+   ],
+   "text": [
+    "Hah! I am Blaine, the hotheaded quiz master!",
+    "My fire Pokémon will burn you to a crisp!"
+   ],
+   "afterText": [
+    "I have burned out. You've earned the Volcano Badge!"
+   ],
+   "team": [
+    {
+     "species": "growlithe",
+     "level": 26
+    },
+    {
+     "species": "ponyta",
+     "level": 26,
+     "heldItem": "quick-claw"
+    },
+    {
+     "species": "rapidash",
+     "level": 27,
+     "heldItem": "charcoal"
+    },
+    {
+     "species": "arcanine",
+     "level": 28,
+     "heldItem": "charcoal"
+    }
+   ],
+   "reward": {
+    "money": 2800,
+    "badge": "volcano"
+   }
+  },
+  {
+   "id": "lab-helix",
+   "name": "Lab Scientist",
+   "kind": "gift",
+   "pos": {
+    "x": 3,
+    "y": 3
+   },
+   "requires": {
+    "keyItems": [
+     "helix-fossil"
+    ]
+   },
+   "lockedText": [
+    "We revive Pokémon from Helix Fossils."
+   ],
+   "text": [
+    "A Helix Fossil! Let me revive it...",
+    "It's Omanyte! Take good care of it."
+   ],
+   "afterText": [
+    "Omanyte is doing well, I hope?"
+   ],
+   "reward": {
+    "pokemon": [
+     {
+      "species": "omanyte",
+      "level": 20
+     }
+    ],
+    "takesKeyItems": [
+     "helix-fossil"
+    ]
+   }
+  },
+  {
+   "id": "lab-dome",
+   "name": "Lab Scientist",
+   "kind": "gift",
+   "pos": {
+    "x": 4,
+    "y": 3
+   },
+   "requires": {
+    "keyItems": [
+     "dome-fossil"
+    ]
+   },
+   "lockedText": [
+    "We revive Pokémon from Dome Fossils."
+   ],
+   "text": [
+    "A Dome Fossil! Let me revive it...",
+    "It's Kabuto! Take good care of it."
+   ],
+   "afterText": [
+    "Kabuto is doing well, I hope?"
+   ],
+   "reward": {
+    "pokemon": [
+     {
+      "species": "kabuto",
+      "level": 20
+     }
+    ],
+    "takesKeyItems": [
+     "dome-fossil"
+    ]
+   }
+  },
+  {
+   "id": "lab-amber",
+   "name": "Lab Scientist",
+   "kind": "gift",
+   "pos": {
+    "x": 5,
+    "y": 3
+   },
+   "requires": {
+    "keyItems": [
+     "old-amber"
+    ]
+   },
+   "lockedText": [
+    "Old Amber holds ancient DNA. We can revive it."
+   ],
+   "text": [
+    "Old Amber! Let me revive it...",
+    "It's Aerodactyl! Take good care of it."
+   ],
+   "afterText": [
+    "Aerodactyl is doing well, I hope?"
+   ],
+   "reward": {
+    "pokemon": [
+     {
+      "species": "aerodactyl",
+      "level": 20
+     }
+    ],
+    "takesKeyItems": [
+     "old-amber"
+    ]
+   }
+  }
+ ],
+ "obstacles": []
+}

@@ -2,7 +2,7 @@ import { gridOf, unitAt, unitById } from "../battle/battle";
 import type { BattleContent } from "../battle/content";
 import type { BattleState, BattleUnit } from "../battle/state";
 import { hasLineOfSight } from "../grid/lineOfSight";
-import { manhattan, type Point } from "../grid/types";
+import { gridDistance, type Point } from "../grid/types";
 
 /** Success probability of one throw; see docs/design/phase3-capture-and-death.md. */
 export function captureChance(content: BattleContent, target: BattleUnit, ballId: string): number {
@@ -42,7 +42,7 @@ export function captureUnavailableReason(
   if (!isCapturable(content, victim)) return `target must be below ${Math.round(content.capture.hpThreshold * 100)}% HP`;
   const user = unitById(state, unitId);
   const grid = gridOf(state);
-  const dist = manhattan(user.pos, target);
+  const dist = gridDistance(user.pos, target);
   const { min, max } = content.capture.throwRange;
   if (dist < min || dist > max) return `out of throwing range (${min}–${max})`;
   if (!hasLineOfSight(grid, user.pos, target)) return "no line of sight";

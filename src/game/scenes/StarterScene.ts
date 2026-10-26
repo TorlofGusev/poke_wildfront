@@ -1,9 +1,12 @@
 import Phaser from "phaser";
+import { playMusic } from "../music";
+import { playCry } from "../audio";
 import { CONTENT, PROGRESSION } from "../../content";
 import { PLAYTEST_TEAM, session, STARTERS } from "../session";
 import { portraitKey } from "../sprites";
 import { Button } from "../ui/Button";
 import { tag } from "../ui/markup";
+import { statLine } from "../ui/describeEffects";
 import { RichText } from "../ui/RichText";
 import { FONT, px } from "../ui/theme";
 
@@ -14,6 +17,7 @@ export class StarterScene extends Phaser.Scene {
   }
 
   create(): void {
+    playMusic(this, "title");
     const { width } = this.scale;
     this.add.text(width / 2, 28, "Choose your first Pokémon", { fontFamily: FONT, fontSize: "24px", color: "#f5d76e" }).setOrigin(0.5);
     this.add.text(width / 2, 58, "Build the rest of your team by catching wild Pokémon.", { fontFamily: FONT, fontSize: px(13), color: "#8a93a6" }).setOrigin(0.5);
@@ -30,7 +34,7 @@ export class StarterScene extends Phaser.Scene {
       const roles = (s.roles ?? []).map((r) => PROGRESSION.roles[r]!.name).join(" or ");
       new RichText(this, x + 10, y + 98, cardW - 20, 11).setMarkup([
         `${tag("title", s.name)}  ${s.types.map((t) => tag(t, t)).join("/")}`,
-        `HP ${s.stats.hp}  Atk ${s.stats.attack}  Def ${s.stats.defense}  Spe ${s.stats.speed}`,
+        `HP ${s.stats.hp}  ${statLine(s.stats)}`,
         "",
         ...s.types.map((t) => tag("dim", CONTENT.types[t]?.summary ?? "")),
         "",
@@ -39,6 +43,7 @@ export class StarterScene extends Phaser.Scene {
         s.evolution ? tag("dim", `Evolves at Lv ${s.evolution.level}`) : "",
       ].filter((l, idx, arr) => l !== "" || arr[idx - 1] !== "").join("\n"));
       new Button(this, x + 12, y + 322, cardW - 24, 30, `Choose ${s.name}`, () => {
+        playCry(this, id);
         session.start([id]);
         this.scene.start("Overworld", {});
       }).setHighlighted(true);

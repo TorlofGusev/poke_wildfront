@@ -1,0 +1,189 @@
+{
+ "id": "route-4",
+ "name": "Route 4",
+ "ai": "normal",
+ "deploySlots": 4,
+ "rows": [
+  "########################",
+  "#^^^...................#",
+  "#^^^..###....sssssss.###",
+  "#^^^..###....sssssss.###",
+  "#^^^.........sssssss.###",
+  "#............sssssss.###",
+  ".......................#",
+  "#..........##..........#",
+  "#^^........##...........",
+  "#^^.sssssss............#",
+  "#^^.sssssss...sssssss..#",
+  "#^^.sssssss...sssssss.##",
+  "#^^.sssssss.~.sssssss.##",
+  "#^^.sssssss.~.sssssss.##",
+  "#^^.........~.........##",
+  "########################"
+ ],
+ "start": {
+  "x": 1,
+  "y": 6
+ },
+ "areaNames": {
+  "route": "Route 4",
+  "route4-grass": "Route 4 grass",
+  "mountain": "Mt. Moon slope"
+ },
+ "exits": [
+  {
+   "name": "Mt. Moon",
+   "pos": {
+    "x": 0,
+    "y": 6
+   },
+   "to": "mt-moon-b2f",
+   "arrive": {
+    "x": 22,
+    "y": 4
+   }
+  },
+  {
+   "name": "Cerulean City",
+   "pos": {
+    "x": 23,
+    "y": 8
+   },
+   "to": "cerulean-city",
+   "arrive": {
+    "x": 1,
+    "y": 7
+   }
+  }
+ ],
+ "spawnZones": [
+  {
+   "biome": "route4-grass",
+   "count": 3,
+   "levels": {
+    "min": 11,
+    "max": 13
+   },
+   "points": [
+    {
+     "x": 5,
+     "y": 10
+    },
+    {
+     "x": 9,
+     "y": 12
+    },
+    {
+     "x": 14,
+     "y": 3
+    },
+    {
+     "x": 18,
+     "y": 4
+    },
+    {
+     "x": 15,
+     "y": 11
+    },
+    {
+     "x": 19,
+     "y": 13
+    },
+    {
+     "x": 7,
+     "y": 13
+    }
+   ]
+  },
+  {
+   "biome": "mountain",
+   "count": 1,
+   "levels": {
+    "min": 11,
+    "max": 13
+   },
+   "points": [
+    {
+     "x": 2,
+     "y": 2
+    },
+    {
+     "x": 1,
+     "y": 10
+    },
+    {
+     "x": 2,
+     "y": 13
+    }
+   ]
+  }
+ ],
+ "pickups": [
+  {
+   "id": "r4-berries",
+   "pos": {
+    "x": 21,
+    "y": 14
+   },
+   "items": {
+    "oran-berry": 2,
+    "rawst-berry": 1
+   }
+  },
+  {
+   "id": "r4-claw",
+   "pos": {
+    "x": 3,
+    "y": 1
+   },
+   "items": {
+    "quick-claw": 1
+   },
+   "once": true
+  },
+  {
+   "id": "r4-balls",
+   "pos": {
+    "x": 16,
+    "y": 7
+   },
+   "balls": {
+    "great-ball": 2
+   }
+  }
+ ],
+ "npcs": [
+  {
+   "id": "r4-lass",
+   "name": "Lass Crissy",
+   "kind": "trainer",
+   "pos": {
+    "x": 10,
+    "y": 6
+   },
+   "text": [
+    "Cerulean is just ahead! But first, me!"
+   ],
+   "afterText": [
+    "Misty is way tougher than me."
+   ],
+   "team": [
+    {
+     "species": "paras",
+     "level": 12
+    },
+    {
+     "species": "paras",
+     "level": 12
+    },
+    {
+     "species": "parasect",
+     "level": 13
+    }
+   ],
+   "reward": {
+    "money": 260
+   }
+  }
+ ]
+}

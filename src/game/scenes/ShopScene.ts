@@ -1,6 +1,8 @@
 import Phaser from "phaser";
+import { playMusic } from "../music";
+import { sfx } from "../audio";
 import { CONTENT, PROGRESSION } from "../../content";
-import { buy } from "../../core/party";
+import { buy, sell, sellPrice } from "../../core/party";
 import { session } from "../session";
 import { Button } from "../ui/Button";
 import { tag } from "../ui/markup";
@@ -21,7 +23,7 @@ const TABS = ["Balls", "Healing", "Food", "Held items", "Candy"];
 const LIST_TOP = 86;
 const LIST_BOTTOM = 480;
 
-/** Poké Mart: buy balls, potions and held items with Pokédollars. */
+/** Poké Mart: buy balls, potions and held items with Pokédollars, or sell them back for half. */
 export class ShopScene extends Phaser.Scene {
   private root!: Phaser.GameObjects.Container;
   private message = "";
@@ -33,6 +35,7 @@ export class ShopScene extends Phaser.Scene {
   }
 
   create(): void {
+    playMusic(this, "overworld");
     this.message = "";
     this.scroll = 0;
     this.root = this.add.container(0, 0);
@@ -79,25 +82,29 @@ export class ShopScene extends Phaser.Scene {
       const x = 16 + col * 468;
       const y = LIST_TOP + row * 62;
       list.add(this.add.rectangle(x, y, 460, 56, 0x1c2130).setOrigin(0).setStrokeStyle(1, 0x3a4560));
-      const info = new RichText(this, x + 10, y + 6, 340, 13);
+      const info = new RichText(this, x + 10, y + 6, 330, 13);
       list.add(info);
       info.setMarkup(`${tag("title", w.name)}  ${tag("num", `₽${w.price}`)}  ${tag("dim", `own ${w.owned}`)}\n${tag("dim", w.description)}`);
-      const affordable = session.game.money >= w.price;
-      list.add(new Button(this, x + 370, y + 14, 80, 28, "Buy", () => {
+      const trade = (verb: string, f: () => typeof session.game) => {
         try {
-          session.update(buy(CONTENT, PROGRESSION, session.game, w.id));
-          this.message = tag("good", `Bought ${w.name}.`);
+          session.update(f());
+          sfx(this, "buy");
+          this.message = tag("good", `${verb} ${w.name}.`);
         } catch (e) {
-          this.message = tag("bad", e instanceof Error ? e.message : "Cannot buy that.");
+          this.message = tag("bad", e instanceof Error ? e.message : "Cannot do that.");
         }
         this.render();
-      }).setEnabled(affordable));
+      };
+      list.add(new Button(this, x + 350, y + 4, 100, 24, "Buy", () => trade("Bought", () => buy(CONTENT, PROGRESSION, session.game, w.id)))
+        .setEnabled(session.game.money >= w.price));
+      list.add(new Button(this, x + 350, y + 30, 100, 22, `Sell ₽${sellPrice(CONTENT, PROGRESSION, w.id)}`, () =>
+        trade("Sold", () => sell(CONTENT, PROGRESSION, session.game, w.id))).setEnabled(w.owned > 0));
     });
     if (maxScroll > 0) {
       add(new Button(this, 900, LIST_TOP, 44, 28, "▲", () => this.scrollBy(-124)).setEnabled(this.scroll > 0));
       add(new Button(this, 900, LIST_BOTTOM - 28, 44, 28, "▼", () => this.scrollBy(124)).setEnabled(this.scroll < maxScroll));
     }
     if (this.message) add(new RichText(this, 16, 512, 900, 13)).setMarkup(this.message);
-    add(this.add.text(16, 490, "Held items are given to Pokémon in the Party screen. Potions are used there too.", { fontFamily: FONT, fontSize: px(11), color: COLORS.dim }));
+    add(this.add.text(16, 490, "Items sell for half their price. Held items are given to Pokémon in the Party screen; potions are used there too.", { fontFamily: FONT, fontSize: px(11), color: COLORS.dim }));
   }
 }

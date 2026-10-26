@@ -1,9 +1,11 @@
-export const TILE = 36;
+export const TILE = 40;
 /** Unit graphics are drawn for 48 px tiles and scaled to the board. */
 export const UNIT_SCALE = TILE / 48;
-export const BOARD_X = 16;
+export const BOARD_X = 12;
 export const BOARD_Y = 72;
-export const PANEL_X = 616;
+export const PANEL_X = 664;
+/** Side panel width: the rest of the 960 px screen after the board. */
+export const PANEL_W = 960 - PANEL_X - 8;
 
 export const FONT = "monospace";
 
@@ -14,8 +16,13 @@ export const COLORS = {
   water: 0x2d5a8c,
   wall: 0x24262b,
   gridLine: 0x000000,
-  zone: 0x4a90e2,
-  reach: 0x4a90e2,
+  zone: 0x7fd4ff,
+  /** Movement range: teal, distinct from the blue deployment zone. */
+  reach: 0x2ec4a6,
+  /** Line joining two engaged Pokémon. */
+  engage: 0xff8c42,
+  /** Corner mark on a foe the active Pokémon would combo. */
+  combo: 0xffd23f,
   target: 0xe2574a,
   area: 0xf5a623,
   areaAim: 0x9b6bff,

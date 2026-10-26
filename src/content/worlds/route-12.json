@@ -1,0 +1,232 @@
+{
+ "id": "route-12",
+ "name": "Route 12",
+ "ai": "normal",
+ "deploySlots": 5,
+ "rows": [
+  "#####.######",
+  "#~~~.....~~#",
+  "#~~~..8..~~#",
+  "......88.~~#",
+  "#~~~.....~~#",
+  "#####.######",
+  "#~~~....8~~#",
+  "#~~~.88.8~~#",
+  "#~~...8...~#",
+  "#~~.888...~#",
+  "#~~~..8..~~#",
+  "#~~~.....~~#",
+  "#~~~..88..~#",
+  "#~~~..8...~#",
+  "#~~~......~#",
+  "######.#####"
+ ],
+ "start": {
+  "x": 5,
+  "y": 2
+ },
+ "areaNames": {
+  "kanto-south-route": "Route 12"
+ },
+ "exits": [
+  {
+   "name": "Lavender Town",
+   "pos": {
+    "x": 5,
+    "y": 0
+   },
+   "to": "lavender-town",
+   "arrive": {
+    "x": 11,
+    "y": 12
+   }
+  },
+  {
+   "name": "Route 11",
+   "pos": {
+    "x": 0,
+    "y": 3
+   },
+   "to": "route-11",
+   "arrive": {
+    "x": 22,
+    "y": 5
+   }
+  },
+  {
+   "name": "Route 13",
+   "pos": {
+    "x": 6,
+    "y": 15
+   },
+   "to": "route-13",
+   "arrive": {
+    "x": 22,
+    "y": 2
+   }
+  }
+ ],
+ "spawnZones": [
+  {
+   "biome": "kanto-south-route",
+   "count": 3,
+   "points": [
+    {
+     "x": 6,
+     "y": 2
+    },
+    {
+     "x": 6,
+     "y": 3
+    },
+    {
+     "x": 7,
+     "y": 3
+    },
+    {
+     "x": 8,
+     "y": 6
+    },
+    {
+     "x": 5,
+     "y": 7
+    },
+    {
+     "x": 6,
+     "y": 7
+    },
+    {
+     "x": 8,
+     "y": 7
+    },
+    {
+     "x": 6,
+     "y": 8
+    },
+    {
+     "x": 4,
+     "y": 9
+    },
+    {
+     "x": 5,
+     "y": 9
+    },
+    {
+     "x": 6,
+     "y": 9
+    },
+    {
+     "x": 6,
+     "y": 10
+    },
+    {
+     "x": 6,
+     "y": 12
+    },
+    {
+     "x": 7,
+     "y": 12
+    },
+    {
+     "x": 6,
+     "y": 13
+    }
+   ],
+   "levels": {
+    "min": 21,
+    "max": 23
+   }
+  }
+ ],
+ "pickups": [
+  {
+   "id": "r12-berries",
+   "pos": {
+    "x": 4,
+    "y": 11
+   },
+   "items": {
+    "oran-berry": 2,
+    "pecha-berry": 1
+   }
+  },
+  {
+   "id": "r12-leftovers",
+   "pos": {
+    "x": 9,
+    "y": 14
+   },
+   "items": {
+    "leftovers": 1
+   },
+   "once": true
+  }
+ ],
+ "npcs": [
+  {
+   "id": "snorlax-route12",
+   "name": "Snorlax",
+   "kind": "wild",
+   "pos": {
+    "x": 5,
+    "y": 5
+   },
+   "capture": true,
+   "arena": "kanto-south-route",
+   "requires": {
+    "keyItems": [
+     "poke-flute"
+    ]
+   },
+   "lockedText": [
+    "A sleeping Snorlax blocks the road.",
+    "Maybe a soothing tune would wake it."
+   ],
+   "text": [
+    "You play the Poké Flute...",
+    "Snorlax wakes up in a bad mood!"
+   ],
+   "team": [
+    {
+     "species": "snorlax",
+     "level": 26,
+     "heldItem": "leftovers"
+    }
+   ]
+  },
+  {
+   "id": "fisher-route12",
+   "name": "Fisherman Ned",
+   "kind": "trainer",
+   "pos": {
+    "x": 4,
+    "y": 13
+   },
+   "arena": "kanto-south-route",
+   "text": [
+    "The fish bite best down here!"
+   ],
+   "afterText": [
+    "Even my Goldeen gave up."
+   ],
+   "team": [
+    {
+     "species": "goldeen",
+     "level": 22
+    },
+    {
+     "species": "poliwhirl",
+     "level": 22
+    },
+    {
+     "species": "seaking",
+     "level": 23
+    }
+   ],
+   "reward": {
+    "money": 700
+   }
+  }
+ ],
+ "obstacles": []
+}

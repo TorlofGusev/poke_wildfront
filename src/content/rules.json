@@ -1,6 +1,17 @@
 {
  "hpBase": 30,
  "hpPerPoint": 6,
+ "hpPerLevel": 1.5,
+ "hpPerLevelPerDefense": 0.15,
+ "specialTypes": [
+  "fire",
+  "water",
+  "grass",
+  "electric",
+  "ice",
+  "psychic",
+  "dragon"
+ ],
  "statOffset": 6,
  "damageDivisor": 4,
  "moveBase": 2,
@@ -11,5 +22,9 @@
   "start": 2,
   "max": 6,
   "perKnockout": 1
+ },
+ "statusBonusCap": 2,
+ "engagement": {
+  "fallbackPower": 0.5
  }
 }

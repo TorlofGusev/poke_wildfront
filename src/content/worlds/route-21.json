@@ -1,0 +1,267 @@
+{
+ "id": "route-21",
+ "name": "Route 21",
+ "ai": "normal",
+ "deploySlots": 5,
+ "rows": [
+  "#####.######",
+  "#ff.....ff~#",
+  "#fff.ffff~~#",
+  "#~~~~.~~~~~#",
+  "#~aa~.~~aa~#",
+  "#~aaa.aaaa~#",
+  "#~~aa.aaa~~#",
+  "#~~~~a~~~~~#",
+  "#~~fffff~~~#",
+  "#~ffffffff~#",
+  "#~fff~~fff~#",
+  "#~~ff~~ff~~#",
+  "#~~~fff~~~~#",
+  "#~~~.ff.~~~#",
+  "#~~...f..~~#",
+  "#####.######"
+ ],
+ "start": {
+  "x": 5,
+  "y": 1
+ },
+ "areaNames": {
+  "cinnabar-route21": "Route 21",
+  "cinnabar-sea": "Route 21 waters"
+ },
+ "exits": [
+  {
+   "name": "Pallet Town",
+   "pos": {
+    "x": 5,
+    "y": 0
+   },
+   "to": "pallet-town",
+   "arrive": {
+    "x": 20,
+    "y": 14
+   }
+  },
+  {
+   "name": "Cinnabar Island",
+   "pos": {
+    "x": 5,
+    "y": 15
+   },
+   "to": "cinnabar-island",
+   "arrive": {
+    "x": 5,
+    "y": 1
+   }
+  }
+ ],
+ "spawnZones": [
+  {
+   "biome": "cinnabar-route21",
+   "count": 3,
+   "points": [
+    {
+     "x": 1,
+     "y": 1
+    },
+    {
+     "x": 9,
+     "y": 1
+    },
+    {
+     "x": 2,
+     "y": 2
+    },
+    {
+     "x": 6,
+     "y": 2
+    },
+    {
+     "x": 8,
+     "y": 2
+    },
+    {
+     "x": 4,
+     "y": 8
+    },
+    {
+     "x": 6,
+     "y": 8
+    },
+    {
+     "x": 3,
+     "y": 9
+    },
+    {
+     "x": 5,
+     "y": 9
+    },
+    {
+     "x": 7,
+     "y": 9
+    },
+    {
+     "x": 9,
+     "y": 9
+    },
+    {
+     "x": 2,
+     "y": 10
+    },
+    {
+     "x": 4,
+     "y": 10
+    },
+    {
+     "x": 8,
+     "y": 10
+    },
+    {
+     "x": 3,
+     "y": 11
+    },
+    {
+     "x": 7,
+     "y": 11
+    },
+    {
+     "x": 4,
+     "y": 12
+    },
+    {
+     "x": 6,
+     "y": 12
+    },
+    {
+     "x": 5,
+     "y": 13
+    },
+    {
+     "x": 6,
+     "y": 14
+    }
+   ],
+   "levels": {
+    "min": 24,
+    "max": 26
+   }
+  },
+  {
+   "biome": "cinnabar-sea",
+   "count": 2,
+   "points": [
+    {
+     "x": 2,
+     "y": 4
+    },
+    {
+     "x": 8,
+     "y": 4
+    },
+    {
+     "x": 3,
+     "y": 5
+    },
+    {
+     "x": 7,
+     "y": 5
+    },
+    {
+     "x": 9,
+     "y": 5
+    },
+    {
+     "x": 4,
+     "y": 6
+    },
+    {
+     "x": 6,
+     "y": 6
+    },
+    {
+     "x": 8,
+     "y": 6
+    },
+    {
+     "x": 5,
+     "y": 7
+    }
+   ],
+   "levels": {
+    "min": 24,
+    "max": 26
+   }
+  }
+ ],
+ "pickups": [
+  {
+   "id": "r21-seed",
+   "pos": {
+    "x": 9,
+    "y": 9
+   },
+   "items": {
+    "miracle-seed": 1
+   },
+   "once": true
+  },
+  {
+   "id": "r21-berries",
+   "pos": {
+    "x": 3,
+    "y": 2
+   },
+   "items": {
+    "oran-berry": 2
+   }
+  }
+ ],
+ "npcs": [
+  {
+   "id": "fisher-route21",
+   "name": "Fisherman Wade",
+   "kind": "trainer",
+   "pos": {
+    "x": 2,
+    "y": 9
+   },
+   "arena": "cinnabar-route21",
+   "text": [
+    "Shh! You'll scare the fish!"
+   ],
+   "afterText": [
+    "They're all gone now..."
+   ],
+   "team": [
+    {
+     "species": "seaking",
+     "level": 25
+    },
+    {
+     "species": "tentacruel",
+     "level": 25
+    },
+    {
+     "species": "shellder",
+     "level": 24
+    }
+   ],
+   "reward": {
+    "money": 850
+   }
+  }
+ ],
+ "obstacles": [
+  {
+   "pos": {
+    "x": 5,
+    "y": 3
+   },
+   "kind": "rock",
+   "opensIf": {
+    "fieldMove": "surf"
+   },
+   "text": "Waves crash over this sandbar. You need Surf to get past."
+  }
+ ]
+}

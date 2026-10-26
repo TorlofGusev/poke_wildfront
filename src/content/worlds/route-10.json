@@ -1,0 +1,209 @@
+{
+ "id": "route-10",
+ "name": "Route 10",
+ "ai": "normal",
+ "deploySlots": 5,
+ "rows": [
+  "###K####################",
+  "#KKKKKKKKKKKKKKKKKKKKKK#",
+  "#KKKKKKKKKKKKKKKKKKKKKKK",
+  "#KKKKKKKKKKKKKKKKKKKKKK#",
+  "#KKKKKKK###KKKKKKKKKKKK#",
+  "#KKKKKKK###KKKK~~~~~~~~#",
+  "#KKKKKKK###KKKK~~~~~~~~#",
+  "#KKKKKKKKKKKKKK~~~~~~~~#",
+  "#KKKKKKKKKKKKKK~~~~~~~~#",
+  "#KKxxxxKKKKKKKK~~~~~~~~#",
+  "#KKxxxxKKKKKKKK~~~~~~~~#",
+  "#KKxxxxKKKKKKKK~~~~~~~~#",
+  "#KKKKKKKKKKKKKK~~~~~~~~#",
+  "#KKKKKKKKKKKKKKxxxKKKKK#",
+  "#KKKKKKKKKKKKKKxxxKKKKK#",
+  "###########K############"
+ ],
+ "start": {
+  "x": 3,
+  "y": 1
+ },
+ "areaNames": {
+  "rock-tunnel-route": "Route 10",
+  "kanto-shallows": "Route 10 river"
+ },
+ "exits": [
+  {
+   "name": "Rock Tunnel",
+   "pos": {
+    "x": 3,
+    "y": 0
+   },
+   "to": "rock-tunnel",
+   "arrive": {
+    "x": 20,
+    "y": 14
+   },
+   "requires": {
+    "fieldMove": "flash"
+   },
+   "lockedText": "It's pitch black inside. You need Flash to go in."
+  },
+  {
+   "name": "Lavender Town",
+   "pos": {
+    "x": 11,
+    "y": 15
+   },
+   "to": "lavender-town",
+   "arrive": {
+    "x": 11,
+    "y": 1
+   }
+  },
+  {
+   "name": "Power Plant",
+   "pos": {
+    "x": 23,
+    "y": 2
+   },
+   "to": "power-plant",
+   "arrive": {
+    "x": 1,
+    "y": 3
+   }
+  }
+ ],
+ "spawnZones": [
+  {
+   "biome": "rock-tunnel-route",
+   "count": 3,
+   "levels": {
+    "min": 16,
+    "max": 19
+   },
+   "points": [
+    {
+     "x": 6,
+     "y": 2
+    },
+    {
+     "x": 12,
+     "y": 2
+    },
+    {
+     "x": 2,
+     "y": 6
+    },
+    {
+     "x": 12,
+     "y": 9
+    },
+    {
+     "x": 7,
+     "y": 13
+    },
+    {
+     "x": 20,
+     "y": 2
+    }
+   ]
+  },
+  {
+   "biome": "kanto-shallows",
+   "count": 1,
+   "levels": {
+    "min": 16,
+    "max": 19
+   },
+   "points": [
+    {
+     "x": 4,
+     "y": 10
+    },
+    {
+     "x": 16,
+     "y": 13
+    }
+   ]
+  }
+ ],
+ "pickups": [
+  {
+   "id": "r10-berries",
+   "pos": {
+    "x": 13,
+    "y": 13
+   },
+   "items": {
+    "oran-berry": 2,
+    "cheri-berry": 1
+   }
+  },
+  {
+   "id": "r10-potion",
+   "pos": {
+    "x": 1,
+    "y": 14
+   },
+   "items": {
+    "super-potion": 1
+   }
+  }
+ ],
+ "npcs": [
+  {
+   "id": "r10-pokemaniac",
+   "name": "PokéManiac Mark",
+   "kind": "trainer",
+   "pos": {
+    "x": 12,
+    "y": 6
+   },
+   "text": [
+    "Rare Pokémon? I've got them!"
+   ],
+   "afterText": [
+    "Not rare enough..."
+   ],
+   "team": [
+    {
+     "species": "rhyhorn",
+     "level": 19
+    },
+    {
+     "species": "lickitung",
+     "level": 19
+    }
+   ],
+   "reward": {
+    "money": 950
+   }
+  },
+  {
+   "id": "r10-engineer",
+   "name": "Engineer Bernie",
+   "kind": "trainer",
+   "pos": {
+    "x": 19,
+    "y": 3
+   },
+   "text": [
+    "The Power Plant is across the river. Abandoned, they say..."
+   ],
+   "afterText": [
+    "You'd need to Surf there."
+   ],
+   "team": [
+    {
+     "species": "magnemite",
+     "level": 19
+    },
+    {
+     "species": "voltorb",
+     "level": 20
+    }
+   ],
+   "reward": {
+    "money": 800
+   }
+  }
+ ]
+}

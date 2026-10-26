@@ -40,7 +40,7 @@ export function tilesBetween(a: Point, b: Point): Point[] {
   return out.filter((p) => !samePoint(p, a) && !samePoint(p, b));
 }
 
-/** True if no sight-blocking terrain lies strictly between a and b. Units never block sight. */
-export function hasLineOfSight(grid: Grid, a: Point, b: Point): boolean {
-  return tilesBetween(a, b).every((p) => !grid.terrainAt(p).blocksSight);
+/** True if no sight-blocking terrain (and no tile `blocked` marks, e.g. a standing Pokémon) lies strictly between a and b. */
+export function hasLineOfSight(grid: Grid, a: Point, b: Point, blocked?: (p: Point) => boolean): boolean {
+  return tilesBetween(a, b).every((p) => !grid.terrainAt(p).blocksSight && !blocked?.(p));
 }

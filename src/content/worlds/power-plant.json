@@ -1,0 +1,148 @@
+{
+ "id": "power-plant",
+ "name": "Power Plant",
+ "ai": "normal",
+ "deploySlots": 5,
+ "rows": [
+  "########################",
+  "#...~~~uuuu#uuuuuuu#uuu#",
+  "#...~~~uuuu#uuuuuuu#uuu#",
+  "....~~~uuuu#uuuuuuu#uuu#",
+  "#...~~~uuuu#uuuuuuu#uuu#",
+  "#...~~~uuuu#uuu#uuu#uuu#",
+  "#...~~~uuuu#uuu#uuu#uuu#",
+  "#...~~~uuuu#uuu#uuu#uuu#",
+  "#...~~~uuuu#uuu#uuu#uuu#",
+  "#...~~~uuuu#uuu#uuu#uuu#",
+  "#...~~~uuuu#uuu#uuu#uuu#",
+  "#...~~~uuuuuuuu#uuuuuuu#",
+  "#...~~~uuuuuuuu#uuuuuuu#",
+  "#...~~~uuuuuuuu#uuuuuuu#",
+  "#...~~~uuuuuuuu#uuuuuuu#",
+  "########################"
+ ],
+ "start": {
+  "x": 1,
+  "y": 3
+ },
+ "areaNames": {
+  "route": "Power Plant shore",
+  "power-plant": "Power Plant"
+ },
+ "exits": [
+  {
+   "name": "Route 10",
+   "pos": {
+    "x": 0,
+    "y": 3
+   },
+   "to": "route-10",
+   "arrive": {
+    "x": 22,
+    "y": 2
+   }
+  }
+ ],
+ "spawnZones": [
+  {
+   "biome": "power-plant",
+   "count": 4,
+   "levels": {
+    "min": 20,
+    "max": 22
+   },
+   "points": [
+    {
+     "x": 8,
+     "y": 3
+    },
+    {
+     "x": 9,
+     "y": 12
+    },
+    {
+     "x": 13,
+     "y": 4
+    },
+    {
+     "x": 13,
+     "y": 13
+    },
+    {
+     "x": 17,
+     "y": 2
+    },
+    {
+     "x": 17,
+     "y": 11
+    },
+    {
+     "x": 21,
+     "y": 13
+    }
+   ]
+  }
+ ],
+ "pickups": [
+  {
+   "id": "pp-shore",
+   "pos": {
+    "x": 2,
+    "y": 13
+   },
+   "items": {
+    "super-potion": 1,
+    "oran-berry": 1
+   }
+  },
+  {
+   "id": "pp-shore-magnet",
+   "pos": {
+    "x": 3,
+    "y": 1
+   },
+   "items": {
+    "magnet": 1
+   },
+   "once": true
+  }
+ ],
+ "npcs": [
+  {
+   "id": "pp-notice",
+   "name": "Warning Sign",
+   "kind": "talk",
+   "pos": {
+    "x": 2,
+    "y": 8
+   },
+   "text": [
+    "POWER PLANT - closed. The plant lies across the water: only reachable by Surf."
+   ]
+  },
+  {
+   "id": "zapdos",
+   "name": "Zapdos",
+   "kind": "wild",
+   "pos": {
+    "x": 21,
+    "y": 2
+   },
+   "capture": true,
+   "arena": "power-plant",
+   "text": [
+    "Gyaoo! The air crackles with electricity!"
+   ],
+   "afterText": [
+    "The generators hum quietly."
+   ],
+   "team": [
+    {
+     "species": "zapdos",
+     "level": 28,
+     "heldItem": "magnet"
+    }
+   ]
+  }
+ ]
+}

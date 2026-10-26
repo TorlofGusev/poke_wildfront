@@ -1,0 +1,166 @@
+{
+ "id": "route-5",
+ "name": "Route 5",
+ "ai": "normal",
+ "deploySlots": 5,
+ "rows": [
+  "###########E############",
+  "#EEEEEEEEEEEEEEEEEEEEEE#",
+  "#EEEEEEEEEEEEEEEEEExxxE#",
+  "#EEEE###EEEEEEEEEEExxxE#",
+  "#EEEE###EEEEEEEEEEEEEEE#",
+  "#EEEE###EEEEEEEEEEEEEEE#",
+  "#EEEEEEEEEEEEEEEEEEEEEE#",
+  "#EEEEEEEEEEEEEEEEEEEEEE#",
+  "#EEEEEEEEEEEEEE####EEEE#",
+  "#EEEEEEEEEEEEEE####EEEE#",
+  "#EEEEEEEEEEEEEEEEEEEEEE#",
+  "####EEEEEEEEEEEEEEEEEEE#",
+  "EEEEEEEEEEEEEEEEEEEEEEE#",
+  "####EEEEEEEEEEEEEEEEEEE#",
+  "#EEEEEEEEEEEEEEEEEEEEEE#",
+  "###########E############"
+ ],
+ "start": {
+  "x": 11,
+  "y": 1
+ },
+ "areaNames": {
+  "vermilion-route5": "Route 5",
+  "kanto-shallows": "Route 5 pond"
+ },
+ "exits": [
+  {
+   "name": "Cerulean City",
+   "pos": {
+    "x": 11,
+    "y": 0
+   },
+   "to": "cerulean-city",
+   "arrive": {
+    "x": 11,
+    "y": 14
+   }
+  },
+  {
+   "name": "Saffron City",
+   "pos": {
+    "x": 11,
+    "y": 15
+   },
+   "to": "saffron-city",
+   "arrive": {
+    "x": 12,
+    "y": 1
+   }
+  },
+  {
+   "name": "Underground Path",
+   "pos": {
+    "x": 0,
+    "y": 12
+   },
+   "to": "route-6",
+   "arrive": {
+    "x": 1,
+    "y": 3
+   }
+  }
+ ],
+ "spawnZones": [
+  {
+   "biome": "vermilion-route5",
+   "count": 3,
+   "levels": {
+    "min": 13,
+    "max": 16
+   },
+   "points": [
+    {
+     "x": 3,
+     "y": 2
+    },
+    {
+     "x": 9,
+     "y": 5
+    },
+    {
+     "x": 14,
+     "y": 3
+    },
+    {
+     "x": 20,
+     "y": 6
+    },
+    {
+     "x": 5,
+     "y": 9
+    },
+    {
+     "x": 13,
+     "y": 12
+    },
+    {
+     "x": 20,
+     "y": 13
+    }
+   ]
+  },
+  {
+   "biome": "kanto-shallows",
+   "count": 1,
+   "levels": {
+    "min": 13,
+    "max": 16
+   },
+   "points": [
+    {
+     "x": 19,
+     "y": 2
+    },
+    {
+     "x": 21,
+     "y": 3
+    }
+   ]
+  }
+ ],
+ "pickups": [
+  {
+   "id": "r5-berries",
+   "pos": {
+    "x": 8,
+    "y": 10
+   },
+   "items": {
+    "oran-berry": 2,
+    "cheri-berry": 1
+   }
+  },
+  {
+   "id": "r5-potion",
+   "pos": {
+    "x": 21,
+    "y": 10
+   },
+   "items": {
+    "super-potion": 1
+   }
+  }
+ ],
+ "npcs": [
+  {
+   "id": "r5-daycare",
+   "name": "Day-Care Man",
+   "kind": "talk",
+   "pos": {
+    "x": 4,
+    "y": 8
+   },
+   "text": [
+    "I run the Day-Care down here.",
+    "The Underground Path to the west leads straight to Route 6."
+   ]
+  }
+ ]
+}

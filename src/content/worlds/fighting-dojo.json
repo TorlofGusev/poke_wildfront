@@ -1,0 +1,188 @@
+{
+ "id": "fighting-dojo",
+ "name": "Fighting Dojo",
+ "ai": "normal",
+ "deploySlots": 5,
+ "rows": [
+  "############",
+  "#RRRRRRRRRR#",
+  "#RRRRRRRRRR#",
+  "#RR##RR##RR#",
+  "#RRRRRRRRRR#",
+  "#RRRRRRRRRR#",
+  "#RRRRRRRRRR#",
+  "######R#####"
+ ],
+ "start": {
+  "x": 6,
+  "y": 6
+ },
+ "areaNames": {
+  "celadon-dojo": "Fighting Dojo"
+ },
+ "exits": [
+  {
+   "name": "Saffron City",
+   "pos": {
+    "x": 6,
+    "y": 7
+   },
+   "to": "saffron-city",
+   "arrive": {
+    "x": 18,
+    "y": 1
+   }
+  }
+ ],
+ "spawnZones": [],
+ "pickups": [
+  {
+   "id": "fd-training",
+   "pos": {
+    "x": 10,
+    "y": 6
+   },
+   "items": {
+    "super-potion": 1,
+    "cheri-berry": 2
+   }
+  }
+ ],
+ "npcs": [
+  {
+   "id": "blackbelt-dojo-1",
+   "name": "Blackbelt",
+   "kind": "trainer",
+   "pos": {
+    "x": 2,
+    "y": 5
+   },
+   "text": [
+    "Hwaa! Show me your fighting spirit!"
+   ],
+   "afterText": [
+    "Oof! Well fought."
+   ],
+   "team": [
+    {
+     "species": "mankey",
+     "level": 21
+    },
+    {
+     "species": "machop",
+     "level": 21
+    }
+   ],
+   "reward": {
+    "money": 500
+   }
+  },
+  {
+   "id": "blackbelt-dojo-2",
+   "name": "Blackbelt",
+   "kind": "trainer",
+   "pos": {
+    "x": 9,
+    "y": 5
+   },
+   "text": [
+    "Hiyah! Only the strong pass!"
+   ],
+   "afterText": [
+    "Your training shows."
+   ],
+   "team": [
+    {
+     "species": "machop",
+     "level": 21
+    },
+    {
+     "species": "primeape",
+     "level": 22
+    }
+   ],
+   "reward": {
+    "money": 550
+   }
+  },
+  {
+   "id": "karate-master",
+   "name": "Karate Master",
+   "kind": "trainer",
+   "pos": {
+    "x": 5,
+    "y": 1
+   },
+   "text": [
+    "I am the Karate Master! Face my fists!"
+   ],
+   "afterText": [
+    "You beat me fair and square. Take one of my prized Pokémon."
+   ],
+   "team": [
+    {
+     "species": "primeape",
+     "level": 22
+    },
+    {
+     "species": "machoke",
+     "level": 22
+    },
+    {
+     "species": "mankey",
+     "level": 21
+    }
+   ],
+   "reward": {
+    "money": 1200
+   }
+  },
+  {
+   "id": "dojo-prize",
+   "name": "Dojo Student",
+   "kind": "gift",
+   "pos": {
+    "x": 8,
+    "y": 1
+   },
+   "requires": {
+    "flags": [
+     "npc:karate-master"
+    ]
+   },
+   "lockedText": [
+    "Only those who defeat the Master may claim a prize."
+   ],
+   "text": [
+    "The Master lets you pick one of our prized fighters."
+   ],
+   "afterText": [
+    "Train it hard!"
+   ],
+   "choices": [
+    {
+     "label": "Hitmonlee",
+     "reward": {
+      "pokemon": [
+       {
+        "species": "hitmonlee",
+        "level": 22
+       }
+      ]
+     }
+    },
+    {
+     "label": "Hitmonchan",
+     "reward": {
+      "pokemon": [
+       {
+        "species": "hitmonchan",
+        "level": 22
+       }
+      ]
+     }
+    }
+   ]
+  }
+ ]
+}

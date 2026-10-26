@@ -9,6 +9,7 @@ import {
   restAll,
   type GameState,
   type PartyMember,
+  MAX_PARTY_SIZE,
 } from "../../src/core/party";
 import { content, pm, prog } from "./fixtures";
 
@@ -33,17 +34,17 @@ function battleWhereAFaints(extra: { id: string }[] = []): BattleState {
 }
 
 describe("party limits", () => {
-  it("adds to the party until 6, then to storage", () => {
-    let g = game([1, 2, 3, 4, 5].map((i) => member(`m${i}`)));
-    let r = addPokemon(g, member("m6"));
+  it("adds to the party until it is full (10), then to storage", () => {
+    let g = game(Array.from({ length: MAX_PARTY_SIZE - 1 }, (_, i) => member(`m${i + 1}`)));
+    let r = addPokemon(g, member("last"));
     expect(r.to).toBe("party");
-    r = addPokemon(r.game, member("m7"));
+    r = addPokemon(r.game, member("extra"));
     expect(r.to).toBe("storage");
-    expect(r.game.roster.party).toHaveLength(6);
+    expect(r.game.roster.party).toHaveLength(MAX_PARTY_SIZE);
     g = r.game;
-    expect(() => moveBetweenPartyAndStorage(g.roster, "m7")).toThrow(/full/);
-    const swapped = moveBetweenPartyAndStorage(moveBetweenPartyAndStorage(g.roster, "m1"), "m7");
-    expect(swapped.party.map((m) => m.uid)).toContain("m7");
+    expect(() => moveBetweenPartyAndStorage(g.roster, "extra")).toThrow(/full/);
+    const swapped = moveBetweenPartyAndStorage(moveBetweenPartyAndStorage(g.roster, "m1"), "extra");
+    expect(swapped.party.map((m) => m.uid)).toContain("extra");
     expect(swapped.storage.map((m) => m.uid)).toEqual(["m1"]);
   });
 
@@ -113,7 +114,7 @@ describe("captured Pokémon after battle", () => {
       { id: "e", speciesId: "slow", side: "enemy", pos: { x: 1, y: 0 }, hp: 3 },
     ], { captureAllowed: true, balls: { "poke-ball": 1 } });
     state = { ...state, units: state.units.map((u) => (u.id === "e" ? { ...u, captured: true } : u)), outcome: "victory", balls: { "poke-ball": 0 } };
-    const full = game([1, 2, 3, 4, 5, 6].map((i) => member(`m${i}`)).map((m, i) => (i === 0 ? { ...m, uid: "a" } : m)));
+    const full = game(Array.from({ length: MAX_PARTY_SIZE }, (_, i) => member(`m${i + 1}`)).map((m, i) => (i === 0 ? { ...m, uid: "a" } : m)));
     const { game: next, summary } = resolveBattle(content, prog, full, state);
     expect(summary.captured).toEqual([{ member: pm("pk100", "slow", 0, 3, { activeMoves: ["ember"] }), to: "storage" }]);
     expect(next.nextUid).toBe(101);

@@ -9,6 +9,8 @@ export interface ActiveStatus {
   readonly id: string;
   /** Remaining turns of the affected unit. */
   turnsLeft: number;
+  /** The unit that applied it (combos reward exploiting an ally's setup). */
+  sourceId?: string;
 }
 
 export interface BattleUnit {
@@ -39,6 +41,13 @@ export interface BattleUnit {
   attackBoost: number;
   /** Sturdy has already saved it this battle. */
   sturdyUsed: boolean;
+  /** Fury Cutter: the foe it hit last, and how many hits in a row. */
+  furyTarget: string | null;
+  furyStreak: number;
+  /** The foe it is engaged with (always mutual), or null. */
+  engagedWith: string | null;
+  /** Round whose start-of-turn effects (cooldowns, damage over time, healing) it already had. */
+  startedRound?: number;
 }
 
 export interface TurnState {
@@ -47,6 +56,8 @@ export interface TurnState {
   actionUsed: boolean;
   /** The basic attack is separate from the action: one of each per turn. */
   basicUsed: boolean;
+  /** Nothing done yet: the player may still hand the turn to another of their units. */
+  fresh?: boolean;
 }
 
 export type BattleOutcome = "ongoing" | "victory" | "defeat" | "retreated";

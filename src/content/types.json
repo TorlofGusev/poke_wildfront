@@ -4,6 +4,8 @@
    "hp": 5,
    "attack": 5,
    "defense": 5,
+   "spAttack": 5,
+   "spDefense": 5,
    "speed": 5
   },
   "summary": "Adaptable generalist. Normal moves are never resisted.",
@@ -16,6 +18,8 @@
    "hp": 4,
    "attack": 7,
    "defense": 3,
+   "spAttack": 8,
+   "spDefense": 5,
    "speed": 6
   },
   "summary": "Burst striker. Fire moves Burn: damage each turn and \u221220% damage dealt.",
@@ -31,6 +35,8 @@
    "hp": 6,
    "attack": 5,
    "defense": 5,
+   "spAttack": 6,
+   "spDefense": 6,
    "speed": 4
   },
   "summary": "Displacement and sustain. Water moves push the target 1 extra tile.",
@@ -43,6 +49,8 @@
    "hp": 6,
    "attack": 4,
    "defense": 5,
+   "spAttack": 6,
+   "spDefense": 6,
    "speed": 5
   },
   "summary": "Drain and control. Grass moves heal the user for 25% of the damage dealt.",
@@ -55,6 +63,8 @@
    "hp": 3,
    "attack": 6,
    "defense": 3,
+   "spAttack": 7,
+   "spDefense": 4,
    "speed": 8
   },
   "summary": "Fast skirmisher. Electric moves Paralyze: the target cannot move on its next turn.",
@@ -70,6 +80,8 @@
    "hp": 5,
    "attack": 5,
    "defense": 4,
+   "spAttack": 6,
+   "spDefense": 5,
    "speed": 6
   },
   "summary": "Lockdown control. Ice moves Freeze: the target cannot act on its next turn.",
@@ -85,6 +97,8 @@
    "hp": 6,
    "attack": 7,
    "defense": 4,
+   "spAttack": 3,
+   "spDefense": 4,
    "speed": 3
   },
   "summary": "Melee bruiser. +25% damage when an ally also stands next to the target.",
@@ -97,6 +111,8 @@
    "hp": 5,
    "attack": 4,
    "defense": 5,
+   "spAttack": 5,
+   "spDefense": 5,
    "speed": 6
   },
   "summary": "Attrition. Poison stacks: every new application adds its turns."
@@ -106,6 +122,8 @@
    "hp": 6,
    "attack": 6,
    "defense": 6,
+   "spAttack": 3,
+   "spDefense": 4,
    "speed": 2
   },
   "summary": "Terrain shaper. Ground moves turn the target's tile into mud.",
@@ -118,6 +136,8 @@
    "hp": 4,
    "attack": 5,
    "defense": 3,
+   "spAttack": 4,
+   "spDefense": 4,
    "speed": 8
   },
   "summary": "Mobility. Flies over water, mud and other Pok\u00e9mon.",
@@ -130,6 +150,8 @@
    "hp": 4,
    "attack": 7,
    "defense": 3,
+   "spAttack": 8,
+   "spDefense": 6,
    "speed": 6
   },
   "summary": "Ranged manipulation. Psychic moves pull the target 1 tile closer.",
@@ -142,6 +164,8 @@
    "hp": 4,
    "attack": 5,
    "defense": 4,
+   "spAttack": 4,
+   "spDefense": 4,
    "speed": 7
   },
   "summary": "Swarm tactics. +10% damage for each ally next to the target.",
@@ -154,6 +178,8 @@
    "hp": 6,
    "attack": 6,
    "defense": 8,
+   "spAttack": 3,
+   "spDefense": 4,
    "speed": 0
   },
   "summary": "Fortress. Cannot be pushed or pulled.",
@@ -166,6 +192,8 @@
    "hp": 4,
    "attack": 6,
    "defense": 3,
+   "spAttack": 7,
+   "spDefense": 5,
    "speed": 7
   },
   "summary": "Trickster. Moves through enemies; Ghost moves Curse: +25% damage taken.",
@@ -184,6 +212,8 @@
    "hp": 6,
    "attack": 7,
    "defense": 5,
+   "spAttack": 6,
+   "spDefense": 5,
    "speed": 2
   },
   "summary": "Rare all-rounder. Dragon moves ignore Defense.",

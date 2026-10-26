@@ -1,0 +1,189 @@
+{
+ "id": "route-8",
+ "name": "Route 8",
+ "ai": "normal",
+ "deploySlots": 5,
+ "rows": [
+  "########################",
+  "#yyyy\"\"\"yyyyyyy\"\"yyyyyy#",
+  "#yy##yyyyyy##yyyyy##yyy#",
+  "yyyyyy\"\"yyyyyy\"\"yyyyyyyy",
+  "#yy\"\"yyyy##yyyyy\"\"yyyyy#",
+  "#yyyyyy##yyyyyyyyyy##yy#",
+  "#y\"\"yyyyyyyy\"\"\"yyyyyyyy#",
+  "#yyyy##yyyyyyyyyy##yyyy#",
+  "#yyyyyyyyyyyyyyyyyyyyyy#",
+  "###########y############"
+ ],
+ "start": {
+  "x": 22,
+  "y": 3
+ },
+ "areaNames": {
+  "kanto-route7-8": "Route 8"
+ },
+ "exits": [
+  {
+   "name": "Saffron City",
+   "pos": {
+    "x": 0,
+    "y": 3
+   },
+   "to": "saffron-city",
+   "arrive": {
+    "x": 22,
+    "y": 8
+   }
+  },
+  {
+   "name": "Lavender Town",
+   "pos": {
+    "x": 23,
+    "y": 3
+   },
+   "to": "lavender-town",
+   "arrive": {
+    "x": 1,
+    "y": 6
+   }
+  },
+  {
+   "name": "Underground Path",
+   "pos": {
+    "x": 11,
+    "y": 9
+   },
+   "to": "route-7",
+   "arrive": {
+    "x": 8,
+    "y": 6
+   }
+  }
+ ],
+ "spawnZones": [
+  {
+   "biome": "kanto-route7-8",
+   "count": 3,
+   "levels": {
+    "min": 18,
+    "max": 20
+   },
+   "points": [
+    {
+     "x": 3,
+     "y": 1
+    },
+    {
+     "x": 9,
+     "y": 2
+    },
+    {
+     "x": 14,
+     "y": 4
+    },
+    {
+     "x": 20,
+     "y": 6
+    },
+    {
+     "x": 4,
+     "y": 7
+    },
+    {
+     "x": 13,
+     "y": 8
+    },
+    {
+     "x": 21,
+     "y": 1
+    }
+   ]
+  }
+ ],
+ "pickups": [
+  {
+   "id": "r8-berries",
+   "pos": {
+    "x": 22,
+    "y": 8
+   },
+   "items": {
+    "oran-berry": 2,
+    "rawst-berry": 2
+   }
+  },
+  {
+   "id": "r8-charcoal",
+   "pos": {
+    "x": 1,
+    "y": 1
+   },
+   "items": {
+    "charcoal": 1
+   },
+   "once": true
+  }
+ ],
+ "npcs": [
+  {
+   "id": "gambler-route8",
+   "name": "Gambler",
+   "kind": "trainer",
+   "pos": {
+    "x": 14,
+    "y": 1
+   },
+   "text": [
+    "Let's roll the dice on a battle!"
+   ],
+   "afterText": [
+    "Snake eyes for me..."
+   ],
+   "team": [
+    {
+     "species": "growlithe",
+     "level": 19
+    },
+    {
+     "species": "vulpix",
+     "level": 19
+    }
+   ],
+   "reward": {
+    "money": 600
+   }
+  },
+  {
+   "id": "lass-route8",
+   "name": "Lass",
+   "kind": "trainer",
+   "pos": {
+    "x": 9,
+    "y": 7
+   },
+   "text": [
+    "You came through the Underground Path? Battle me!"
+   ],
+   "afterText": [
+    "My cute team lost..."
+   ],
+   "team": [
+    {
+     "species": "oddish",
+     "level": 19
+    },
+    {
+     "species": "pidgey",
+     "level": 19
+    },
+    {
+     "species": "meowth",
+     "level": 19
+    }
+   ],
+   "reward": {
+    "money": 450
+   }
+  }
+ ]
+}

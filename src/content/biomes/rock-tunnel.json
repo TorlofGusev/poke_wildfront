@@ -1,0 +1,659 @@
+{
+ "rock-tunnel-route": {
+  "id": "rock-tunnel-route",
+  "name": "Routes 9 & 10",
+  "char": "K",
+  "travelCost": 1,
+  "encounters": {
+   "groupSize": {
+    "min": 3,
+    "max": 4
+   },
+   "entries": [
+    {
+     "speciesId": "rattata",
+     "weight": 3
+    },
+    {
+     "speciesId": "raticate",
+     "weight": 2
+    },
+    {
+     "speciesId": "spearow",
+     "weight": 3
+    },
+    {
+     "speciesId": "fearow",
+     "weight": 1,
+     "maxPerGroup": 1
+    },
+    {
+     "speciesId": "ekans",
+     "weight": 2
+    },
+    {
+     "speciesId": "sandshrew",
+     "weight": 2
+    },
+    {
+     "speciesId": "voltorb",
+     "weight": 1,
+     "maxPerGroup": 1
+    }
+   ],
+   "levels": {
+    "min": 16,
+    "max": 18
+   }
+  },
+  "arena": {
+   "mapRows": [
+    "................",
+    "..\"\"......#.....",
+    "......##....\"\"..",
+    "..#.............",
+    ".......\"\"...#...",
+    "....#..\"\".......",
+    "..........##....",
+    "..\"\"............",
+    ".......#....\"\"..",
+    "................"
+   ],
+   "deploymentZone": [
+    {
+     "x": 0,
+     "y": 1
+    },
+    {
+     "x": 1,
+     "y": 1
+    },
+    {
+     "x": 0,
+     "y": 2
+    },
+    {
+     "x": 1,
+     "y": 2
+    },
+    {
+     "x": 0,
+     "y": 3
+    },
+    {
+     "x": 1,
+     "y": 3
+    },
+    {
+     "x": 0,
+     "y": 4
+    },
+    {
+     "x": 1,
+     "y": 4
+    },
+    {
+     "x": 0,
+     "y": 5
+    },
+    {
+     "x": 1,
+     "y": 5
+    },
+    {
+     "x": 0,
+     "y": 6
+    },
+    {
+     "x": 1,
+     "y": 6
+    },
+    {
+     "x": 0,
+     "y": 7
+    },
+    {
+     "x": 1,
+     "y": 7
+    },
+    {
+     "x": 0,
+     "y": 8
+    },
+    {
+     "x": 1,
+     "y": 8
+    }
+   ],
+   "enemySpawns": [
+    {
+     "x": 14,
+     "y": 1
+    },
+    {
+     "x": 14,
+     "y": 5
+    },
+    {
+     "x": 15,
+     "y": 8
+    },
+    {
+     "x": 13,
+     "y": 3
+    },
+    {
+     "x": 15,
+     "y": 6
+    }
+   ]
+  },
+  "forage": {
+   "oran-berry": 1,
+   "rawst-berry": 1
+  },
+  "loot": [
+   {
+    "item": "super-potion",
+    "chance": 0.12
+   },
+   {
+    "item": "sharp-beak",
+    "chance": 0.03
+   },
+   {
+    "item": "revival-herb",
+    "chance": 0.06
+   }
+  ]
+ },
+ "rock-tunnel-cave": {
+  "id": "rock-tunnel-cave",
+  "name": "Rock Tunnel",
+  "char": "L",
+  "travelCost": 2,
+  "encounters": {
+   "groupSize": {
+    "min": 3,
+    "max": 4
+   },
+   "entries": [
+    {
+     "speciesId": "zubat",
+     "weight": 4
+    },
+    {
+     "speciesId": "geodude",
+     "weight": 4
+    },
+    {
+     "speciesId": "machop",
+     "weight": 3
+    },
+    {
+     "speciesId": "onix",
+     "weight": 1,
+     "maxPerGroup": 1
+    },
+    {
+     "speciesId": "cubone",
+     "weight": 1,
+     "maxPerGroup": 1
+    },
+    {
+     "speciesId": "graveler",
+     "weight": 1,
+     "maxPerGroup": 1
+    }
+   ],
+   "levels": {
+    "min": 16,
+    "max": 19
+   }
+  },
+  "arena": {
+   "mapRows": [
+    "################",
+    "......#..mm.....",
+    "..#mm.....#.....",
+    "....##..mm..#...",
+    "..........##....",
+    "..#..mm##.......",
+    "......#.....#...",
+    "..mm#.....mm..#.",
+    "..........#.....",
+    "################"
+   ],
+   "deploymentZone": [
+    {
+     "x": 0,
+     "y": 1
+    },
+    {
+     "x": 1,
+     "y": 1
+    },
+    {
+     "x": 0,
+     "y": 2
+    },
+    {
+     "x": 1,
+     "y": 2
+    },
+    {
+     "x": 0,
+     "y": 3
+    },
+    {
+     "x": 1,
+     "y": 3
+    },
+    {
+     "x": 0,
+     "y": 4
+    },
+    {
+     "x": 1,
+     "y": 4
+    },
+    {
+     "x": 0,
+     "y": 5
+    },
+    {
+     "x": 1,
+     "y": 5
+    },
+    {
+     "x": 0,
+     "y": 6
+    },
+    {
+     "x": 1,
+     "y": 6
+    },
+    {
+     "x": 0,
+     "y": 7
+    },
+    {
+     "x": 1,
+     "y": 7
+    },
+    {
+     "x": 0,
+     "y": 8
+    },
+    {
+     "x": 1,
+     "y": 8
+    }
+   ],
+   "enemySpawns": [
+    {
+     "x": 14,
+     "y": 1
+    },
+    {
+     "x": 14,
+     "y": 5
+    },
+    {
+     "x": 15,
+     "y": 8
+    },
+    {
+     "x": 13,
+     "y": 3
+    },
+    {
+     "x": 15,
+     "y": 6
+    }
+   ]
+  },
+  "forage": {
+   "pecha-berry": 1,
+   "cheri-berry": 1
+  },
+  "loot": [
+   {
+    "item": "hard-stone",
+    "chance": 0.04
+   },
+   {
+    "item": "revival-herb",
+    "chance": 0.07
+   },
+   {
+    "item": "super-potion",
+    "chance": 0.12
+   }
+  ]
+ },
+ "rock-tunnel-plant": {
+  "id": "rock-tunnel-plant",
+  "name": "Power Plant",
+  "char": "N",
+  "travelCost": 2,
+  "encounters": {
+   "groupSize": {
+    "min": 3,
+    "max": 4
+   },
+   "entries": [
+    {
+     "speciesId": "voltorb",
+     "weight": 4
+    },
+    {
+     "speciesId": "magnemite",
+     "weight": 4
+    },
+    {
+     "speciesId": "pikachu",
+     "weight": 2
+    },
+    {
+     "speciesId": "magneton",
+     "weight": 1,
+     "maxPerGroup": 1
+    },
+    {
+     "speciesId": "electrode",
+     "weight": 1,
+     "maxPerGroup": 1
+    },
+    {
+     "speciesId": "electabuzz",
+     "weight": 1,
+     "maxPerGroup": 1
+    },
+    {
+     "speciesId": "zapdos",
+     "weight": 0.05,
+     "maxPerGroup": 1
+    }
+   ],
+   "levels": {
+    "min": 20,
+    "max": 22
+   }
+  },
+  "arena": {
+   "mapRows": [
+    "################",
+    "..mm....mmm.....",
+    ".....##.....mm..",
+    "..m.....mm......",
+    "....mmm....##...",
+    ".........mmm....",
+    "..##..m.........",
+    ".....mm...##.mm.",
+    "..m......m......",
+    "################"
+   ],
+   "deploymentZone": [
+    {
+     "x": 0,
+     "y": 1
+    },
+    {
+     "x": 1,
+     "y": 1
+    },
+    {
+     "x": 0,
+     "y": 2
+    },
+    {
+     "x": 1,
+     "y": 2
+    },
+    {
+     "x": 0,
+     "y": 3
+    },
+    {
+     "x": 1,
+     "y": 3
+    },
+    {
+     "x": 0,
+     "y": 4
+    },
+    {
+     "x": 1,
+     "y": 4
+    },
+    {
+     "x": 0,
+     "y": 5
+    },
+    {
+     "x": 1,
+     "y": 5
+    },
+    {
+     "x": 0,
+     "y": 6
+    },
+    {
+     "x": 1,
+     "y": 6
+    },
+    {
+     "x": 0,
+     "y": 7
+    },
+    {
+     "x": 1,
+     "y": 7
+    },
+    {
+     "x": 0,
+     "y": 8
+    },
+    {
+     "x": 1,
+     "y": 8
+    }
+   ],
+   "enemySpawns": [
+    {
+     "x": 14,
+     "y": 1
+    },
+    {
+     "x": 14,
+     "y": 5
+    },
+    {
+     "x": 15,
+     "y": 8
+    },
+    {
+     "x": 13,
+     "y": 3
+    },
+    {
+     "x": 15,
+     "y": 6
+    }
+   ]
+  },
+  "forage": {
+   "cheri-berry": 2
+  },
+  "loot": [
+   {
+    "item": "magnet",
+    "chance": 0.06
+   },
+   {
+    "item": "quick-claw",
+    "chance": 0.03
+   },
+   {
+    "item": "super-potion",
+    "chance": 0.14
+   }
+  ]
+ },
+ "rock-tunnel-tower": {
+  "id": "rock-tunnel-tower",
+  "name": "Pokémon Tower",
+  "char": "O",
+  "travelCost": 2,
+  "encounters": {
+   "groupSize": {
+    "min": 3,
+    "max": 4
+   },
+   "entries": [
+    {
+     "speciesId": "gastly",
+     "weight": 5
+    },
+    {
+     "speciesId": "haunter",
+     "weight": 2
+    },
+    {
+     "speciesId": "cubone",
+     "weight": 2
+    },
+    {
+     "speciesId": "marowak",
+     "weight": 0.5,
+     "maxPerGroup": 1
+    }
+   ],
+   "levels": {
+    "min": 18,
+    "max": 20
+   }
+  },
+  "arena": {
+   "mapRows": [
+    "################",
+    ".....#....#.....",
+    "..#..#..#...#...",
+    "..#.....#.......",
+    ".....##....#....",
+    "........#..#....",
+    "..##....#.......",
+    ".....#.....##...",
+    "..#..#..........",
+    "################"
+   ],
+   "deploymentZone": [
+    {
+     "x": 0,
+     "y": 1
+    },
+    {
+     "x": 1,
+     "y": 1
+    },
+    {
+     "x": 0,
+     "y": 2
+    },
+    {
+     "x": 1,
+     "y": 2
+    },
+    {
+     "x": 0,
+     "y": 3
+    },
+    {
+     "x": 1,
+     "y": 3
+    },
+    {
+     "x": 0,
+     "y": 4
+    },
+    {
+     "x": 1,
+     "y": 4
+    },
+    {
+     "x": 0,
+     "y": 5
+    },
+    {
+     "x": 1,
+     "y": 5
+    },
+    {
+     "x": 0,
+     "y": 6
+    },
+    {
+     "x": 1,
+     "y": 6
+    },
+    {
+     "x": 0,
+     "y": 7
+    },
+    {
+     "x": 1,
+     "y": 7
+    },
+    {
+     "x": 0,
+     "y": 8
+    },
+    {
+     "x": 1,
+     "y": 8
+    }
+   ],
+   "enemySpawns": [
+    {
+     "x": 14,
+     "y": 1
+    },
+    {
+     "x": 14,
+     "y": 5
+    },
+    {
+     "x": 15,
+     "y": 8
+    },
+    {
+     "x": 13,
+     "y": 3
+    },
+    {
+     "x": 15,
+     "y": 6
+    }
+   ]
+  },
+  "forage": {
+   "pecha-berry": 1,
+   "revival-herb": 1
+  },
+  "loot": [
+   {
+    "item": "revival-herb",
+    "chance": 0.1
+   },
+   {
+    "item": "leftovers",
+    "chance": 0.02
+   },
+   {
+    "item": "super-potion",
+    "chance": 0.12
+   }
+  ]
+ }
+}

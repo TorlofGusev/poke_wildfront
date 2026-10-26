@@ -5,6 +5,7 @@ import {
   memberStats,
   movesKnownAt,
   playstylePoints,
+  scaledXp,
   type Progress,
   type ProgressEvent,
   type ProgressionContent,
@@ -12,7 +13,7 @@ import {
 import type { BattleState } from "../battle/state";
 import type { WorldState } from "../expedition/world";
 
-export const MAX_PARTY_SIZE = 6;
+export const MAX_PARTY_SIZE = 10;
 export const KNOCKOUTS_TO_DEATH = 3;
 
 export interface PartyMember extends Progress {
@@ -44,6 +45,22 @@ export interface GameState {
   readonly world: WorldState;
   /** Pokédollars. */
   readonly money: number;
+  /** Species met in battle (the spawn panel names only these). */
+  readonly seen?: readonly string[];
+  /** Story progress: flags set by NPCs and quests. */
+  readonly flags?: readonly string[];
+  /** Badges earned, by id (see core/story BADGES). */
+  readonly badges?: readonly string[];
+  /** Key items: HMs, Poké Flute, Silph Scope, tickets, fossils… */
+  readonly keyItems?: readonly string[];
+  /** The starter species chosen at the start (rival teams answer it). */
+  readonly starter?: string;
+}
+
+/** Species the player knows: met in battle, or ever owned. */
+export function knownSpecies(game: GameState): Set<string> {
+  const { party, storage, fallen } = game.roster;
+  return new Set([...(game.seen ?? []), ...[...party, ...storage, ...fallen].map((m) => m.speciesId)]);
 }
 
 export function newMember(
@@ -150,7 +167,7 @@ export function resolveBattle(
     inventory: { ...game.inventory, balls: { ...battle.balls } },
   };
 
-  // Victory rewards: every deployed Pokémon that is still in the party shares the full XP.
+  // Victory rewards: every deployed Pokémon still in the party gets the full XP, the rest of the party a share (Exp. Share).
   const defeatedLevels = battle.units.filter((u) => u.side === "enemy" && (u.hp <= 0 || u.captured)).reduce((s, u) => s + u.level, 0);
   const won = battle.outcome === "victory";
   const xp = won ? defeatedLevels * prog.rules.xpPerEnemyLevel : 0;
@@ -163,8 +180,11 @@ export function resolveBattle(
       roster: {
         ...next.roster,
         party: next.roster.party.map((m) => {
-          if (!deployed.has(m.uid)) return m;
-          const r = gainXp(content, prog, m, xp);
+          const foeLevels = battle.units.filter((u) => u.side === "enemy" && (u.hp <= 0 || u.captured)).map((u) => u.level);
+          const full = scaledXp(xp, m.level, foeLevels);
+          const gained = deployed.has(m.uid) ? full : Math.floor(full * prog.rules.benchXpShare);
+          if (gained <= 0) return m;
+          const r = gainXp(content, prog, m, gained);
           progress[m.uid] = r.events;
           return r.member;
         }),
@@ -188,5 +208,7 @@ export function resolveBattle(
     next = { ...next, roster: restAll(content, prog, next.roster) };
   }
 
+  const met = battle.units.filter((u) => u.side === "enemy").map((u) => u.speciesId);
+  next = { ...next, seen: [...new Set([...(next.seen ?? []), ...met])] };
   return { game: next, summary: { outcome: battle.outcome, knockedOut, fallen: fallenIds, captured, xp, money, candies, progress } };
 }

@@ -1,46 +1,46 @@
 {
  "id": "route-3",
- "name": "Pewter City & Route 3",
+ "name": "Route 3",
+ "ai": "novice",
+ "deploySlots": 4,
  "rows": [
   "########################",
-  "#TTTTTT......\"\"\"...^^^^#",
-  "#TTTTTT..##..\"\"\"...^^cc#",
-  "#TTTTTT.......\"\"..^^^cc#",
-  "#TTTTTT...~~~.....^^^^^#",
-  "#TTTTTT...~~~..\"\"..^^^^#",
-  "#.........~~~..\"\"...^^^#",
-  "#..##..........\"\"\"....##",
-  "#......\"\"\"\"......^^^...#",
-  "#......\"\"\"\"..##..^^^...#",
-  "#...........\"\"\"........#",
-  "#..~~~......\"\"\"...##...#",
-  "#..~~~..............^^^#",
-  "#...........##.......^^#",
-  "#......................#",
-  "####.###################"
+  "##........##....^^^^^^^#",
+  "##.qqqqqq.##....^^^^^^^#",
+  "#..qqqqqq.##....^^^^^^^^",
+  "#..qqqqqq.##....^^^^^^^#",
+  "#..qqqqqq.##....^^^^^^^#",
+  "#............##.^^^^^^^#",
+  "#............##....#...#",
+  "......~~~..........#...#",
+  "#...........qqqqqqq.^^^#",
+  "###.........qqqqqqq.^^^#",
+  "#...qqqqqq..qqqqqqq.^^^#",
+  "#...qqqqqq..qqqqqqq.^^^#",
+  "#...qqqqqq..........^^^#",
+  "#...................^^^#",
+  "########################"
  ],
  "start": {
-  "x": 4,
-  "y": 14
+  "x": 1,
+  "y": 8
  },
  "areaNames": {
-  "town": "Pewter City",
   "route": "Route 3",
-  "forest": "Route 3 thicket",
-  "mountain": "Mt. Moon foothills",
-  "cave": "Mt. Moon cave mouth"
+  "route3-grass": "Route 3 grass",
+  "mountain": "Mt. Moon foothills"
  },
  "exits": [
   {
-   "name": "Route 2",
+   "name": "Pewter City",
    "pos": {
-    "x": 4,
-    "y": 15
+    "x": 0,
+    "y": 8
    },
-   "to": "route-2",
+   "to": "pewter-city",
    "arrive": {
-    "x": 10,
-    "y": 1
+    "x": 22,
+    "y": 7
    }
   },
   {
@@ -48,12 +48,17 @@
    "pos": {
     "x": 23,
     "y": 3
+   },
+   "to": "mt-moon-1f",
+   "arrive": {
+    "x": 1,
+    "y": 8
    }
   }
  ],
  "spawnZones": [
   {
-   "biome": "route",
+   "biome": "route3-grass",
    "count": 3,
    "levels": {
     "min": 5,
@@ -61,16 +66,24 @@
    },
    "points": [
     {
-     "x": 8,
-     "y": 6
+     "x": 4,
+     "y": 3
     },
     {
-     "x": 12,
-     "y": 8
+     "x": 7,
+     "y": 5
+    },
+    {
+     "x": 13,
+     "y": 10
+    },
+    {
+     "x": 17,
+     "y": 12
     },
     {
      "x": 5,
-     "y": 10
+     "y": 12
     },
     {
      "x": 9,
@@ -78,41 +91,7 @@
     },
     {
      "x": 15,
-     "y": 12
-    },
-    {
-     "x": 18,
-     "y": 10
-    }
-   ]
-  },
-  {
-   "biome": "forest",
-   "count": 2,
-   "levels": {
-    "min": 6,
-    "max": 8
-   },
-   "points": [
-    {
-     "x": 14,
-     "y": 2
-    },
-    {
-     "x": 16,
-     "y": 6
-    },
-    {
-     "x": 8,
      "y": 9
-    },
-    {
-     "x": 13,
-     "y": 11
-    },
-    {
-     "x": 16,
-     "y": 7
     }
    ]
   },
@@ -120,47 +99,29 @@
    "biome": "mountain",
    "count": 2,
    "levels": {
-    "min": 8,
-    "max": 10
+    "min": 6,
+    "max": 8
    },
    "points": [
     {
-     "x": 20,
+     "x": 17,
+     "y": 2
+    },
+    {
+     "x": 21,
      "y": 1
     },
     {
      "x": 18,
-     "y": 8
-    },
-    {
-     "x": 21,
-     "y": 12
-    },
-    {
-     "x": 20,
      "y": 5
     },
     {
-     "x": 19,
-     "y": 3
-    }
-   ]
-  },
-  {
-   "biome": "cave",
-   "count": 1,
-   "levels": {
-    "min": 9,
-    "max": 11
-   },
-   "points": [
-    {
      "x": 21,
-     "y": 2
+     "y": 10
     },
     {
-     "x": 22,
-     "y": 3
+     "x": 20,
+     "y": 13
     }
    ]
   }
@@ -169,8 +130,8 @@
   {
    "id": "r3-berries",
    "pos": {
-    "x": 8,
-    "y": 11
+    "x": 2,
+    "y": 14
    },
    "items": {
     "oran-berry": 2,
@@ -178,20 +139,10 @@
    }
   },
   {
-   "id": "r3-herb",
-   "pos": {
-    "x": 22,
-    "y": 12
-   },
-   "items": {
-    "revival-herb": 1
-   }
-  },
-  {
    "id": "r3-band",
    "pos": {
-    "x": 16,
-    "y": 10
+    "x": 22,
+    "y": 14
    },
    "items": {
     "muscle-band": 1
@@ -199,39 +150,115 @@
    "once": true
   },
   {
-   "id": "r3-cave",
+   "id": "r3-ridge",
    "pos": {
     "x": 22,
-    "y": 2
-   },
-   "balls": {
-    "ultra-ball": 1
-   },
-   "items": {
-    "hard-stone": 1
-   },
-   "once": true
-  },
-  {
-   "id": "r3-pond",
-   "pos": {
-    "x": 1,
-    "y": 12
+    "y": 6
    },
    "items": {
     "super-potion": 1,
-    "pecha-berry": 2
+    "revival-herb": 1
    }
   },
   {
-   "id": "r3-thicket",
+   "id": "r3-balls",
    "pos": {
-    "x": 15,
-    "y": 1
+    "x": 9,
+    "y": 10
    },
-   "items": {
-    "cheri-berry": 2,
-    "revival-herb": 1
+   "balls": {
+    "great-ball": 1,
+    "poke-ball": 2
+   }
+  }
+ ],
+ "npcs": [
+  {
+   "id": "r3-youngster",
+   "name": "Youngster Ben",
+   "kind": "trainer",
+   "pos": {
+    "x": 10,
+    "y": 7
+   },
+   "text": [
+    "Hi! I like shorts! They're comfy and easy to wear!"
+   ],
+   "afterText": [
+    "My Ekans needs more training..."
+   ],
+   "team": [
+    {
+     "species": "rattata",
+     "level": 6
+    },
+    {
+     "species": "ekans",
+     "level": 7
+    }
+   ],
+   "reward": {
+    "money": 120
+   }
+  },
+  {
+   "id": "r3-lass",
+   "name": "Lass Janice",
+   "kind": "trainer",
+   "pos": {
+    "x": 14,
+    "y": 13
+   },
+   "text": [
+    "You looked at me, didn't you? Battle!"
+   ],
+   "afterText": [
+    "Hmph, you're no fun."
+   ],
+   "team": [
+    {
+     "species": "pidgey",
+     "level": 7
+    },
+    {
+     "species": "jigglypuff",
+     "level": 7
+    }
+   ],
+   "reward": {
+    "money": 140
+   }
+  },
+  {
+   "id": "r3-bugcatcher",
+   "name": "Bug Catcher Colton",
+   "kind": "trainer",
+   "pos": {
+    "x": 16,
+    "y": 8
+   },
+   "text": [
+    "My bugs are almost evolved! Battle me!"
+   ],
+   "afterText": [
+    "Back to Viridian Forest for me..."
+   ],
+   "team": [
+    {
+     "species": "caterpie",
+     "level": 7
+    },
+    {
+     "species": "weedle",
+     "level": 7
+    },
+    {
+     "species": "metapod",
+     "level": 8
+    }
+   ],
+   "reward": {
+    "money": 150
    }
   }
  ]

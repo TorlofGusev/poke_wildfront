@@ -1,0 +1,157 @@
+{
+ "id": "route-1",
+ "name": "Route 1",
+ "ai": "tutorial",
+ "deploySlots": 3,
+ "rows": [
+  "############.###########",
+  "##...............~~~~..#",
+  "##rrrrrrr..............#",
+  "##rrrrrrr.....rrrrrrrr.#",
+  "#.rrrrrrr.....rrrrrrrr.#",
+  "#.rrrrrrr.....rrrrrrrr.#",
+  "#.........##..rrrrrrrr.#",
+  "####......##...........#",
+  "#.................######",
+  "#..rrrrrrr.............#",
+  "#..rrrrrrr...rrrrrrrr..#",
+  "#..rrrrrrr...rrrrrrrr..#",
+  "#..rrrrrrr...rrrrrrrr.##",
+  "#............rrrrrrrr.##",
+  "#.....................##",
+  "###########.############"
+ ],
+ "start": {
+  "x": 11,
+  "y": 14
+ },
+ "areaNames": {
+  "route": "Route 1",
+  "kanto-grass": "Route 1 grass"
+ },
+ "exits": [
+  {
+   "name": "Pallet Town",
+   "pos": {
+    "x": 11,
+    "y": 15
+   },
+   "to": "pallet-town",
+   "arrive": {
+    "x": 11,
+    "y": 1
+   }
+  },
+  {
+   "name": "Viridian City",
+   "pos": {
+    "x": 12,
+    "y": 0
+   },
+   "to": "viridian-city",
+   "arrive": {
+    "x": 12,
+    "y": 14
+   }
+  }
+ ],
+ "spawnZones": [
+  {
+   "biome": "kanto-grass",
+   "count": 3,
+   "levels": {
+    "min": 2,
+    "max": 3
+   },
+   "points": [
+    {
+     "x": 3,
+     "y": 3
+    },
+    {
+     "x": 7,
+     "y": 4
+    },
+    {
+     "x": 15,
+     "y": 4
+    },
+    {
+     "x": 20,
+     "y": 6
+    },
+    {
+     "x": 5,
+     "y": 10
+    },
+    {
+     "x": 8,
+     "y": 12
+    },
+    {
+     "x": 14,
+     "y": 11
+    },
+    {
+     "x": 19,
+     "y": 13
+    }
+   ]
+  }
+ ],
+ "pickups": [
+  {
+   "id": "r1-berries",
+   "pos": {
+    "x": 2,
+    "y": 13
+   },
+   "items": {
+    "oran-berry": 2
+   }
+  },
+  {
+   "id": "r1-cache",
+   "pos": {
+    "x": 21,
+    "y": 11
+   },
+   "items": {
+    "potion": 2
+   },
+   "once": true
+  },
+  {
+   "id": "r1-grass-balls",
+   "pos": {
+    "x": 5,
+    "y": 3
+   },
+   "balls": {
+    "poke-ball": 2
+   }
+  }
+ ],
+ "npcs": [
+  {
+   "id": "r1-clerk",
+   "name": "Mart Clerk",
+   "kind": "gift",
+   "pos": {
+    "x": 13,
+    "y": 8
+   },
+   "text": [
+    "Hi! I work at the Viridian Poké Mart. Here, a free sample!"
+   ],
+   "afterText": [
+    "Come shop in Viridian sometime!"
+   ],
+   "reward": {
+    "items": {
+     "potion": 1
+    }
+   }
+  }
+ ]
+}

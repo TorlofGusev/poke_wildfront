@@ -1,8 +1,9 @@
+import type { ActiveStatus } from "./state";
 import { ASCII_LEGEND, Grid } from "../grid/Grid";
 import type { TerrainDef } from "../grid/terrain";
 import { hasLineOfSight } from "../grid/lineOfSight";
 import { reachableTiles, type Occupancy, type Reachable } from "../grid/movement";
-import { key, manhattan, samePoint, type Point } from "../grid/types";
+import { gridDistance, key, samePoint, type Point } from "../grid/types";
 import { captureChance, captureUnavailableReason } from "../capture/capture";
 import { nextRandom } from "../rng";
 import { typeMultiplier } from "../rules/typeChart";
@@ -39,7 +40,9 @@ export type BattleAction =
   | { readonly type: "useMove"; readonly unitId: string; readonly moveId: string; readonly target: Point }
   | { readonly type: "throwBall"; readonly unitId: string; readonly ballId: string; readonly target: Point }
   | { readonly type: "retreat"; readonly unitId: string }
-  | { readonly type: "endTurn"; readonly unitId: string };
+  | { readonly type: "endTurn"; readonly unitId: string }
+  /** The player hands a fresh turn to another of their units that has not acted this round. */
+  | { readonly type: "switchUnit"; readonly unitId: string; readonly to: string };
 
 export interface BattleOptions {
   /** PRNG seed for capture rolls. */
@@ -85,7 +88,7 @@ export function bondCostFor(move: MoveDef, unit: BattleUnit): number {
   return Math.max(1, (move.bondCost ?? 0) - unit.mods.bondCostReduction);
 }
 
-function gainBond(state: BattleState, side: Side, amount: number, reason: "knockout" | "fainted", events: BattleEvent[]): void {
+function gainBond(state: BattleState, side: Side, amount: number, reason: "knockout" | "fainted" | "combo", events: BattleEvent[]): void {
   const before = state.bond[side];
   state.bond[side] = Math.min(state.bondMax[side], before + amount);
   if (state.bond[side] !== before) events.push({ type: "bondChanged", side, amount: state.bond[side] - before, total: state.bond[side], reason });
@@ -93,11 +96,11 @@ function gainBond(state: BattleState, side: Side, amount: number, reason: "knock
 
 export function movementPoints(content: BattleContent, unit: BattleUnit, state?: BattleState): number {
   if (unit.statuses.some((st) => content.statuses[st.id]?.noMove)) return 0;
-  if (state && livingUnits(state).some((o) => o.side !== unit.side && o.ability?.arenaTrap && manhattan(o.pos, unit.pos) === 1)) return 0;
+  if (state && livingUnits(state).some((o) => o.side !== unit.side && o.ability?.arenaTrap && gridDistance(o.pos, unit.pos) === 1)) return 0;
   const r = content.rules;
   const base = Math.min(r.moveMax, r.moveBase + Math.floor(unit.stats.speed / r.speedPerMove));
   const penalty = unit.statuses.reduce((s, st) => s + (content.statuses[st.id]?.movePenalty ?? 0), 0);
-  return Math.max(0, base - penalty + unit.mods.moveBonus);
+  return Math.max(0, base - penalty + unit.mods.moveBonus + (unit.statuses.length ? unit.mods.statusedMove : 0));
 }
 
 /** Combined battlefield traits of a Pokémon's types. */
@@ -125,7 +128,7 @@ export function reachableFor(state: BattleState, unitId: string): Reachable {
   const unit = unitById(state, unitId);
   const mp = state.turn?.unitId === unitId ? state.turn.movePointsLeft : 0;
   const grid = unit.traits.flies ? Grid.fromAscii(state.mapRows, FLYING_LEGEND) : gridOf(state);
-  return reachableTiles(grid, unit.pos, mp, occupancyFor(state, unit));
+  return reachableTiles(grid, unit.pos, mp, occupancyFor(state, unit), true);
 }
 
 /** Why a move is currently unavailable, or null if it can be used. */
@@ -147,6 +150,13 @@ export function moveUnavailableReason(
   if (move?.kind === "bond" && state.bond[unit.side] < bondCostFor(move, unit)) return `needs ${bondCostFor(move, unit)} Bond`;
   const blocking = unit.statuses.find((st) => content.statuses[st.id]?.noAction);
   if (blocking) return `${content.statuses[blocking.id]!.name.toLowerCase()}: cannot act this turn`;
+  const engaged = unit.engagedWith !== null;
+  if (moveId === "struggle") {
+    const basic = basicOf(content, unit);
+    if (!engaged || !basic || !isRangedMove(content.moves[basic]!)) return "only while engaged, when its basic attack is ranged";
+  } else if (engaged && move?.affects === "enemies" && (isRangedMove(move) || move.range.max === 0)) {
+    return "engaged: only melee moves on its partner";
+  }
   return null;
 }
 
@@ -162,7 +172,7 @@ export function moveArea(state: BattleState, move: MoveDef, user: BattleUnit, ta
       for (let dy = -r; dy <= r; dy++)
         for (let dx = -r; dx <= r; dx++) {
           const p = { x: target.x + dx, y: target.y + dy };
-          if (Math.abs(dx) + Math.abs(dy) <= r && grid.inBounds(p)) tiles.push(p);
+          if (gridDistance(target, p) <= r && grid.inBounds(p)) tiles.push(p);
         }
       return tiles;
     }
@@ -188,6 +198,10 @@ export function affectedUnits(state: BattleState, move: MoveDef, user: BattleUni
     .sort((a, b) => a.pos.y - b.pos.y || a.pos.x - b.pos.x);
 }
 
+/** A move's range for this unit: ranged moves (2+ tiles) reach further with a range bonus. */
+export const moveRange = (unit: { readonly mods: UnitModifiers }, move: MoveDef): { min: number; max: number } =>
+  ({ min: move.range.min, max: move.range.max >= 2 ? move.range.max + unit.mods.rangeBonus : move.range.max });
+
 /** Target tiles the unit may legally aim the move at right now. */
 export function validTargets(
   state: BattleState,
@@ -199,15 +213,21 @@ export function validTargets(
   const user = unitById(state, unitId);
   const move = content.moves[moveId]!;
   const grid = gridOf(state);
+  const range = moveRange(user, move);
+  // Pokémon standing in the way block shots that need line of sight (a Tank can screen its allies).
+  const bodyBlocks = (p: Point) => state.units.some((u) => u.hp > 0 && !u.captured && samePoint(u.pos, p));
   const out: Point[] = [];
   for (let y = 0; y < grid.height; y++)
     for (let x = 0; x < grid.width; x++) {
       const p = { x, y };
-      const dist = manhattan(user.pos, p);
-      if (dist < move.range.min || dist > move.range.max) continue;
+      const dist = gridDistance(user.pos, p);
+      if (dist < range.min || dist > range.max) continue;
       if (grid.terrainAt(p).blocksSight) continue;
-      if (move.requiresLineOfSight && !hasLineOfSight(grid, user.pos, p)) continue;
-      if (move.shape.kind === "line" && p.x !== user.pos.x && p.y !== user.pos.y) continue;
+      if (move.requiresLineOfSight && !hasLineOfSight(grid, user.pos, p, bodyBlocks)) continue;
+      // Lines go in one of the 8 directions: orthogonal or exactly diagonal.
+      if (move.shape.kind === "line" && p.x !== user.pos.x && p.y !== user.pos.y && Math.abs(p.x - user.pos.x) !== Math.abs(p.y - user.pos.y)) continue;
+      // Engaged: attacks may only aim at the partner.
+      if (user.engagedWith && move.affects === "enemies" && !samePoint(p, partnerOf(state, user)!.pos)) continue;
       if (move.shape.kind === "single") {
         const t = unitAt(state, p);
         if (!t) continue;
@@ -224,6 +244,19 @@ export function validTargets(
 
 export const hpFromStat = (content: BattleContent, hp: number): number =>
   content.rules.hpBase + content.rules.hpPerPoint * hp;
+
+/**
+ * Max HP at a level: the HP stat plus growth per level, which species with a higher base Defense
+ * (their constitution) gain faster. Base, not current, Defense so Defense growth does not snowball into HP.
+ */
+export const maxHpAt = (content: BattleContent, hp: number, baseDefense: number, level: number): number => {
+  const r = content.rules;
+  return hpFromStat(content, hp) + Math.round((level - 1) * (r.hpPerLevel + r.hpPerLevelPerDefense * baseDefense));
+};
+
+/** Whether a move is resolved with Sp. Atk / Sp. Def. */
+export const isSpecialMove = (content: BattleContent, move: MoveDef): boolean =>
+  (move.category ?? (content.rules.specialTypes.includes(move.type) ? "special" : "physical")) === "special";
 
 /** Max HP of a species with its level-1 stats. */
 export const maxHpOf = (content: BattleContent, speciesId: string): number => hpFromStat(content, content.species[speciesId]!.stats.hp);
@@ -262,12 +295,16 @@ export function createBattle(
         captured: false,
         level: u.level ?? 1,
         stats: { ...(u.stats ?? species.stats) },
-        moves: [...(u.moves ?? species.moves)],
+        // Struggle is everyone's fallback for an engagement when the basic attack is ranged.
+        moves: [...new Set([...(u.moves ?? species.moves), ...(content.moves.struggle ? ["struggle"] : [])])],
         mods: combineModifiers(u.mods ?? {}, ability?.mods ?? {}, u.side === "player" ? options.playerModifiers ?? {} : {}),
         traits: unitTraits(content, species.types),
         ability,
         attackBoost: 0,
         sturdyUsed: false,
+        furyTarget: null,
+        furyStreak: 0,
+        engagedWith: null,
       };
     }),
     round: 0,
@@ -286,9 +323,13 @@ export function createBattle(
   return { state, events };
 }
 
-/** Initiative: Speed descending, ties to the player, then by unit id. */
+/**
+ * Initiative (as in Wartales): the sides alternate, starting with the side of the fastest unit (ties to
+ * the player); within a side, Speed descending. When one side runs out, the other acts in a row.
+ * The player may hand any of their turns to another of their units that has not acted yet.
+ */
 export function initiativeOrder(state: BattleState, content: BattleContent): string[] {
-  return livingUnits(state)
+  const bySpeed = livingUnits(state)
     .slice()
     .sort((a, b) => {
       const sa = a.stats.speed;
@@ -296,8 +337,26 @@ export function initiativeOrder(state: BattleState, content: BattleContent): str
       if (sa !== sb) return sb - sa;
       if (a.side !== b.side) return a.side === "player" ? -1 : 1;
       return a.id < b.id ? -1 : a.id > b.id ? 1 : 0;
-    })
-    .map((u) => u.id);
+    });
+  const sides = { player: bySpeed.filter((u) => u.side === "player"), enemy: bySpeed.filter((u) => u.side === "enemy") };
+  const out: string[] = [];
+  let side: Side = bySpeed[0]?.side ?? "player";
+  while (sides.player.length || sides.enemy.length) {
+    const next = sides[side].shift() ?? sides[side === "player" ? "enemy" : "player"].shift()!;
+    out.push(next.id);
+    side = side === "player" ? "enemy" : "player";
+  }
+  return out;
+}
+
+/** Own units that can take over the current fresh player turn. */
+export function switchTargets(state: BattleState): string[] {
+  const t = state.turn;
+  if (!t?.fresh || unitById(state, t.unitId).side !== "player") return [];
+  return state.queue.slice(1).filter((id) => {
+    const u = state.units.find((x) => x.id === id);
+    return u !== undefined && u.side === "player" && u.hp > 0 && !u.captured;
+  });
 }
 
 // ---------------------------------------------------------------- actions
@@ -307,9 +366,19 @@ export function applyAction(state: BattleState, content: BattleContent, action: 
   if (state.turn?.unitId !== action.unitId) throw new IllegalActionError(`not ${action.unitId}'s turn`);
   const next = structuredClone(state) as BattleState;
   const events: BattleEvent[] = [];
+  if (action.type === "switchUnit") {
+    if (!switchTargets(state).includes(action.to)) throw new IllegalActionError(`cannot hand the turn to ${action.to}`);
+    // Swap the two places in the queue: the passed unit acts at the chosen unit's later player turn.
+    const i = next.queue.indexOf(action.to);
+    next.queue[i] = action.unitId;
+    next.queue[0] = action.to;
+    startTurn(next, content, events);
+    return { state: next, events };
+  }
+  next.turn!.fresh = false;
   switch (action.type) {
     case "move":
-      doMove(next, action.unitId, action.to, events);
+      doMove(next, content, action.unitId, action.to, events);
       break;
     case "useMove":
       doUseMove(next, content, action.unitId, action.moveId, action.target, events);
@@ -330,15 +399,84 @@ export function applyAction(state: BattleState, content: BattleContent, action: 
   return { state: next, events };
 }
 
-function doMove(state: BattleState, unitId: string, to: Point, events: BattleEvent[]): void {
-  const path = reachableFor(state, unitId).pathTo(to);
+/** The unit's own basic attack (not Struggle). */
+const basicOf = (content: BattleContent, unit: BattleUnit): string | undefined =>
+  unit.moves.find((m) => m !== "struggle" && content.moves[m]?.kind === "basic");
+
+/** Whether a move is ranged: it can reach 2 or more tiles. */
+const isRangedMove = (move: MoveDef): boolean => move.range.max >= 2;
+
+/** The foe a unit is engaged with, if any. */
+export function partnerOf(state: BattleState, unit: BattleUnit): BattleUnit | undefined {
+  return unit.engagedWith ? state.units.find((u) => u.id === unit.engagedWith) : undefined;
+}
+
+function engage(a: BattleUnit, b: BattleUnit, events: BattleEvent[]): void {
+  a.engagedWith = b.id;
+  b.engagedWith = a.id;
+  events.push({ type: "engaged", unitId: a.id, targetId: b.id });
+}
+
+function disengage(state: BattleState, unit: BattleUnit, events: BattleEvent[]): void {
+  const partner = partnerOf(state, unit);
+  unit.engagedWith = null;
+  if (!partner) return;
+  partner.engagedWith = null;
+  events.push({ type: "disengaged", unitId: unit.id, targetId: partner.id });
+}
+
+/** The partner's free attack on a unit breaking away: its basic attack, or Struggle if that is ranged. */
+function engagementStrike(state: BattleState, content: BattleContent, attacker: BattleUnit, target: BattleUnit, events: BattleEvent[]): void {
+  const basic = basicOf(content, attacker)!;
+  const moveId = isRangedMove(content.moves[basic]!) ? "struggle" : basic;
+  events.push({ type: "engagementStrike", unitId: attacker.id, targetId: target.id });
+  events.push({ type: "moveUsed", unitId: attacker.id, moveId, target: { ...target.pos }, affected: [target.id] });
+  const before = target.hp;
+  resolveHits(state, content, attacker, effectiveMove(content, attacker, moveId), [target], events, attacker.mods.strikeDamage);
+  if (target.hp < before && attacker.mods.bondOnStrike) gainBond(state, attacker.side, attacker.mods.bondOnStrike, "combo", events);
+}
+
+/** Struggle hits with the type of the unit's basic attack and `fallbackPower` × its power. */
+function effectiveMove(content: BattleContent, unit: BattleUnit, moveId: string): MoveDef {
+  const move = content.moves[moveId]!;
+  if (moveId !== "struggle") return move;
+  const basic = content.moves[basicOf(content, unit)!]!;
+  return { ...move, type: basic.type, category: isSpecialMove(content, basic) ? "special" : "physical", power: Math.round(basic.power * content.rules.engagement.fallbackPower) };
+}
+
+/**
+ * Moves a unit along its path. Stepping away from its engaged partner draws one free attack from it
+ * (unless the unit disengages freely) and ends the engagement; a unit knocked out by it stays where it was.
+ */
+function doMove(state: BattleState, content: BattleContent, unitId: string, to: Point, events: BattleEvent[]): void {
+  const reach = reachableFor(state, unitId);
+  const path = reach.pathTo(to);
   if (!path) throw new IllegalActionError(`cannot move ${unitId} to ${key(to)}`);
-  const grid = gridOf(state);
-  const cost = path.reduce((s, p) => s + grid.terrainAt(p).moveCost!, 0);
   const unit = unitById(state, unitId);
-  unit.pos = { ...to };
-  state.turn!.movePointsLeft -= cost;
-  events.push({ type: "moved", unitId, path, cost });
+  let segment: Point[] = [];
+  let spent = 0;
+  const flush = () => {
+    if (!segment.length) return;
+    const cost = reach.cost.get(key(segment[segment.length - 1]!))! - spent;
+    spent += cost;
+    state.turn!.movePointsLeft -= cost;
+    events.push({ type: "moved", unitId, path: segment, cost });
+    segment = [];
+  };
+  for (const step of path) {
+    const partner = partnerOf(state, unit);
+    if (partner && gridDistance(partner.pos, step) > 1) {
+      flush();
+      const canStrike = (!unit.mods.disengage || partner.mods.noEscape) && !partner.statuses.some((st) => content.statuses[st.id]?.noAction);
+      if (canStrike) engagementStrike(state, content, partner, unit, events);
+      if (unit.hp <= 0) break;
+      disengage(state, unit, events);
+    }
+    unit.pos = { ...step };
+    segment.push(step);
+  }
+  flush();
+  checkOutcome(state, events);
 }
 
 function doUseMove(
@@ -355,11 +493,12 @@ function doUseMove(
     throw new IllegalActionError(`${moveId}: invalid target ${key(target)}`);
 
   const user = unitById(state, unitId);
-  const move = content.moves[moveId]!;
+  const move = effectiveMove(content, user, moveId);
   const affected = affectedUnits(state, move, user, target);
   if (move.kind === "basic") state.turn!.basicUsed = true;
   else state.turn!.actionUsed = true;
-  if (move.kind === "special" && move.cooldown) user.cooldowns[moveId] = move.cooldown;
+  if (move.kind === "special" && move.cooldown)
+    user.cooldowns[moveId] = move.power > 0 ? move.cooldown : Math.max(1, move.cooldown - user.mods.statusCooldownReduction);
   if (move.kind === "ultimate") user.usedUltimates.push(moveId);
   if (move.kind === "bond") {
     const cost = bondCostFor(move, user);
@@ -368,60 +507,7 @@ function doUseMove(
   }
   events.push({ type: "moveUsed", unitId, moveId, target, affected: affected.map((u) => u.id) });
 
-  const mech = content.types[move.type]?.move ?? {};
-  for (const t of affected) {
-    if (t.hp <= 0) continue;
-    const isFoe = t.side !== user.side;
-    if (move.power > 0) {
-      const defender = content.species[t.speciesId]!;
-      const typeEff = typeMultiplier(content.typeChart, move.type, defender.types);
-      const eff = mech.neverResisted ? Math.max(1, typeEff) : typeEff;
-      const m = user.mods;
-      const situational =
-        (t.statuses.length > 0 ? m.vsStatusDamage : 1) *
-        (t.hp === t.maxHp ? m.fullHpTargetDamage : 1) *
-        (user.hp * 2 < user.maxHp ? m.lowHpDamage * (m.lowHpTypeDamage[move.type] ?? 1) : 1);
-      const helpers = adjacentAllies(state, user, t);
-      const positional =
-        (mech.flankBonus && helpers > 0 ? mech.flankBonus + m.flankBonus : 1) *
-        (1 + (mech.swarmBonus ? (mech.swarmBonus + m.swarmBonus) * helpers : 0));
-      const statusMult = statusFactor(content, user, "damageDealt") * statusFactor(content, t, "damageTaken");
-      const mult = eff * m.damageDealt * (m.typeDamage[move.type] ?? 1) * situational * positional * statusMult * t.mods.damageTaken;
-      const off = content.rules.statOffset;
-      const defense = mech.ignoresDefense ? 0 : t.stats.defense;
-      const raw = (move.power * (off + user.stats.attack + user.attackBoost)) / (off + defense) * mult / content.rules.damageDivisor;
-      // Any hit deals at least 1, unless something blocks all damage (Protect).
-      const dealt = dealDamage(state, t, mult > 0 ? Math.max(1, Math.round(raw)) : 0, "move", events, eff);
-      if (dealt > 0 && t.hp > 0) onDamaged(content, user, t, manhattan(user.pos, t.pos) === 1, events);
-      if (t.hp <= 0 && t.side !== user.side) gainBond(state, user.side, content.rules.bond.perKnockout + user.mods.bondOnKo, "knockout", events);
-      if (mech.drain && dealt > 0 && user.hp > 0) {
-        heal(user, Math.max(1, Math.round(dealt * (mech.drain + m.drainBonus))), events);
-      }
-    }
-    for (const effect of move.effects ?? []) {
-      if (t.hp <= 0) break;
-      switch (effect.kind) {
-        case "heal":
-          heal(t, effect.amount, events);
-          break;
-        case "status":
-          applyStatus(content, user, t, effect.status, effect.duration, events);
-          break;
-        case "push":
-        case "pull":
-          displace(state, content, user, t, effect.kind, effect.distance + (effect.kind === "push" ? user.mods.pushBonus : user.mods.pullBonus), events);
-          break;
-      }
-    }
-    // Type mechanics apply to the enemies a move hits.
-    if (!isFoe || t.hp <= 0) continue;
-    if (mech.appliesStatus) applyStatus(content, user, t, mech.appliesStatus.status, mech.appliesStatus.duration, events);
-    const extra = user.ability?.moveStatus;
-    if (extra && extra.type === move.type) applyStatus(content, user, t, extra.status, extra.duration, events);
-    if (mech.extraPush) displace(state, content, user, t, "push", mech.extraPush + user.mods.pushBonus, events);
-    if (mech.extraPull) displace(state, content, user, t, "pull", mech.extraPull + user.mods.pullBonus, events);
-    if (mech.terrainOnHit) changeTerrain(state, t.pos, mech.terrainOnHit, events);
-  }
+  resolveHits(state, content, user, move, affected, events);
   checkOutcome(state, events);
 }
 
@@ -441,7 +527,7 @@ function onDamaged(content: BattleContent, attacker: BattleUnit, target: BattleU
 
 /** Other living allies of `user` standing next to `target`. */
 function adjacentAllies(state: BattleState, user: BattleUnit, target: BattleUnit): number {
-  return livingUnits(state).filter((u) => u.side === user.side && u.id !== user.id && manhattan(u.pos, target.pos) === 1).length;
+  return livingUnits(state).filter((u) => u.side === user.side && u.id !== user.id && gridDistance(u.pos, target.pos) === 1).length;
 }
 
 /** Product of a multiplier over the unit's active statuses (Burn, Curse…). */
@@ -458,10 +544,13 @@ function heal(unit: BattleUnit, amount: number, events: BattleEvent[]): void {
 
 function applyStatus(content: BattleContent, user: BattleUnit, t: BattleUnit, status: string, base: number, events: BattleEvent[]): void {
   if (t.mods.statusImmune.includes(status) || t.mods.statusImmune.includes("*")) return;
-  const duration = base + user.mods.statusDurationBonus;
+  const def = content.statuses[status];
+  const bonus = def?.noAction || def?.noMove ? 0 : Math.min(content.rules.statusBonusCap, user.mods.statusDurationBonus);
+  const duration = base + bonus;
   const existing = t.statuses.find((s) => s.id === status);
   if (existing) existing.turnsLeft = content.statuses[status]?.stacks ? existing.turnsLeft + duration : Math.max(existing.turnsLeft, duration);
-  else t.statuses.push({ id: status, turnsLeft: duration });
+  else t.statuses.push({ id: status, turnsLeft: duration, sourceId: user.id });
+  if (existing) existing.sourceId = user.id;
   events.push({ type: "statusApplied", unitId: t.id, status, duration });
 }
 
@@ -473,6 +562,168 @@ function changeTerrain(state: BattleState, p: Point, char: string, events: Battl
   rows[p.y] = row.slice(0, p.x) + char + row.slice(p.x + 1);
   state.mapRows = rows;
   events.push({ type: "terrainChanged", pos: { ...p }, terrain: char });
+}
+
+/** Moxie, Speed Boost, Beast Boost, Mind Reader: what a unit gains from knocking a foe out. */
+function onKnockout(state: BattleState, user: BattleUnit, events: BattleEvent[]): void {
+  const m = user.mods;
+  if (m.koAttackBoost && user.attackBoost < 3) user.attackBoost = Math.min(3, user.attackBoost + m.koAttackBoost);
+  if (m.koResetCooldowns) for (const id of Object.keys(user.cooldowns)) user.cooldowns[id] = 0;
+  const myTurn = state.turn?.unitId === user.id;
+  if (myTurn && m.koMove) state.turn!.movePointsLeft += m.koMove;
+  if (myTurn && m.koRefreshBasic) state.turn!.basicUsed = false;
+  if (m.koAttackBoost || m.koResetCooldowns || (myTurn && (m.koMove || m.koRefreshBasic)))
+    events.push({ type: "abilityTriggered", unitId: user.id, ability: "knockout bonus" });
+}
+
+/** Lingering Aroma / Toxic Debris: statuses on a fainted foe spread to its neighbours, if their source has the mod. */
+function spreadStatuses(state: BattleState, content: BattleContent, fallen: BattleUnit, events: BattleEvent[]): void {
+  for (const st of fallen.statuses) {
+    const source = st.sourceId ? state.units.find((u) => u.id === st.sourceId) : undefined;
+    if (!source?.mods.statusSpreadOnKo) continue;
+    for (const n of livingUnits(state).filter((o) => o.side === fallen.side && gridDistance(o.pos, fallen.pos) === 1))
+      applyStatus(content, source, n, st.id, 1, events);
+  }
+}
+
+/** Whether a foe carries a status applied by one of the user's allies (not the user itself). */
+function hasAllySetupStatus(state: BattleState, user: BattleUnit, target: BattleUnit): boolean {
+  return target.statuses.some((st) => st.sourceId !== undefined && st.sourceId !== user.id
+    && state.units.find((u) => u.id === st.sourceId)?.side === user.side);
+}
+
+/**
+ * The ally setup a hit on this foe exploits, if any: the foe is engaged with one of the user's allies,
+ * or carries a status an ally applied.
+ */
+export function comboSetup(state: BattleState, user: BattleUnit, target: BattleUnit): "engaged" | "status" | null {
+  const partner = partnerOf(state, target);
+  if (partner && partner.id !== user.id && partner.side === user.side) return "engaged";
+  return hasAllySetupStatus(state, user, target) ? "status" : null;
+}
+
+/** Applies a move's damage, effects and type mechanics to the units it affects. */
+function resolveHits(
+  state: BattleState, content: BattleContent, user: BattleUnit, move: MoveDef, affected: readonly BattleUnit[], events: BattleEvent[],
+  /** Extra multiplier for this hit, e.g. Pursuit on a free strike. */
+  hitMult = 1,
+): void {
+  const mech = content.types[move.type]?.move ?? {};
+  let comboScored = false;
+  let koScored = false;
+  let furyCounted = false;
+  const bondOn = (when: "combo" | "knockout") =>
+    (move.effects ?? []).reduce((s, e) => s + (e.kind === "bond" && e.when === when ? e.amount : 0), 0);
+  for (const t of affected) {
+    if (t.hp <= 0) continue;
+    const isFoe = t.side !== user.side;
+    if (move.power > 0) {
+      const defender = content.species[t.speciesId]!;
+      const typeEff = typeMultiplier(content.typeChart, move.type, defender.types);
+      const eff = mech.neverResisted ? Math.max(1, typeEff) : typeEff;
+      const m = user.mods;
+      const dist = gridDistance(user.pos, t.pos);
+      const situational =
+        (t.statuses.length > 0 ? m.vsStatusDamage : 1) *
+        (t.hp === t.maxHp ? m.fullHpTargetDamage : 1) *
+        (dist >= 3 ? m.farDamage : dist === 1 ? m.closeDamage : 1) *
+        (user.hp * 2 < user.maxHp ? m.lowHpDamage * (m.lowHpTypeDamage[move.type] ?? 1) : 1);
+      const helpers = adjacentAllies(state, user, t);
+      const positional =
+        (mech.flankBonus && helpers > 0 ? mech.flankBonus + m.flankBonus : 1) *
+        (1 + (mech.swarmBonus ? (mech.swarmBonus + m.swarmBonus) * helpers : 0));
+      const statusMult = statusFactor(content, user, "damageDealt") * statusFactor(content, t, "damageTaken");
+      const setup = isFoe ? comboSetup(state, user, t) : null;
+      const comboMult = (setup === "engaged" ? m.vsEngagedDamage : 1) * (isFoe && hasAllySetupStatus(state, user, t) ? m.vsSetupDamage : 1);
+      const pinner = isFoe ? partnerOf(state, t) : null;
+      const adjacentFoes = livingUnits(state).filter((o) => o.side !== user.side && gridDistance(o.pos, user.pos) === 1).length;
+      const streak = isFoe && user.furyTarget === t.id ? Math.min(3, user.furyStreak) : 0;
+      const conditional =
+        (pinner && pinner.id !== user.id && pinner.side === user.side ? pinner.mods.pinDamage : 1) *
+        (state.mapRows[t.pos.y]?.[t.pos.x] === "m" ? m.vsMudDamage : 1) *
+        (adjacentFoes >= 2 ? m.surroundedDamage : 1) *
+        (user.statuses.length > 0 ? m.statusedDamage : 1) *
+        t.statuses.reduce((x, st) => x * (m.vsStatusIdDamage[st.id] ?? 1), 1) *
+        (1 + m.furyCutter * streak) *
+        (t.hp === t.maxHp ? t.mods.fullHpDamageTaken : 1) *
+        hitMult;
+      const mult = conditional * comboMult * eff * m.damageDealt * (m.typeDamage[move.type] ?? 1) * situational * positional * statusMult * t.mods.damageTaken;
+      const off = content.rules.statOffset;
+      const special = isSpecialMove(content, move);
+      const defense = mech.ignoresDefense ? 0 : special ? t.stats.spDefense : t.stats.defense;
+      const attack = special ? user.stats.spAttack : user.stats.attack;
+      const raw = (move.power * (off + attack + user.attackBoost)) / (off + defense) * mult / content.rules.damageDivisor;
+      // Any hit deals at least 1, unless something blocks all damage (Protect).
+      const dealt = dealDamage(state, t, mult > 0 ? Math.max(1, Math.round(raw)) : 0, "move", events, eff);
+      if (dealt > 0 && t.hp > 0) onDamaged(content, user, t, dist === 1, events);
+      if (dealt > 0 && isFoe && !furyCounted) {
+        furyCounted = true;
+        user.furyStreak = user.furyTarget === t.id ? user.furyStreak + 1 : 1;
+        user.furyTarget = t.id;
+      }
+      // One combo per action; Bond for it only comes from masteries (comboBond) and skills (bond effects).
+      if (dealt > 0 && setup && !comboScored) {
+        comboScored = true;
+        events.push({ type: "combo", unitId: user.id, targetId: t.id, setup });
+        const bond = m.comboBond + bondOn("combo");
+        if (bond > 0) gainBond(state, user.side, bond, "combo", events);
+      }
+      if (t.hp <= 0 && t.side !== user.side) {
+        const skillBond = koScored ? 0 : bondOn("knockout");
+        koScored = true;
+        gainBond(state, user.side, content.rules.bond.perKnockout + user.mods.bondOnKo + skillBond, "knockout", events);
+        if (m.koHeal && user.hp > 0) heal(user, Math.max(1, Math.round(user.maxHp * m.koHeal)), events);
+        onKnockout(state, user, events);
+        spreadStatuses(state, content, t, events);
+      }
+      if (dealt > 0 && isFoe && dist === 1) {
+        if (m.contactStatus && t.hp > 0) applyStatus(content, user, t, m.contactStatus.status, m.contactStatus.duration, events);
+        if (t.mods.thorns && user.hp > 0) dealDamage(state, user, t.mods.thorns, "thorns", events);
+      }
+      if (mech.drain && dealt > 0 && user.hp > 0) {
+        heal(user, Math.max(1, Math.round(dealt * (mech.drain + m.drainBonus))), events);
+      }
+    }
+    for (const effect of move.effects ?? []) {
+      if (t.hp <= 0) break;
+      switch (effect.kind) {
+        case "heal":
+          heal(t, effect.amount, events);
+          break;
+        case "status":
+          applyStatus(content, user, t, effect.status, effect.duration, events);
+          break;
+        case "push":
+        case "pull":
+          displace(state, content, user, t, effect.kind, effect.distance + (effect.kind === "push" ? user.mods.pushBonus : user.mods.pullBonus), events);
+          break;
+        case "engage":
+          if (isFoe && t.engagedWith !== user.id && gridDistance(user.pos, t.pos) === 1) {
+            disengage(state, user, events);
+            disengage(state, t, events);
+            engage(user, t, events);
+          }
+          break;
+        case "bond":
+          break; // Resolved with the hit above.
+        case "disengage":
+          // Applied once to the user, whoever the move hit.
+          if (t === affected[0]) disengage(state, user, events);
+          break;
+      }
+    }
+    // A damaging melee hit engages the two, if neither is engaged yet (one on one).
+    if (isFoe && t.hp > 0 && user.hp > 0 && move.power > 0 && !isRangedMove(move) && gridDistance(user.pos, t.pos) === 1
+      && !user.engagedWith && !t.engagedWith && !(move.effects ?? []).some((e) => e.kind === "disengage")) engage(user, t, events);
+    // Type mechanics apply to the enemies a move hits.
+    if (!isFoe || t.hp <= 0) continue;
+    if (mech.appliesStatus) applyStatus(content, user, t, mech.appliesStatus.status, mech.appliesStatus.duration, events);
+    const extra = user.ability?.moveStatus;
+    if (extra && extra.type === move.type) applyStatus(content, user, t, extra.status, extra.duration, events);
+    if (mech.extraPush) displace(state, content, user, t, "push", mech.extraPush + user.mods.pushBonus, events);
+    if (mech.extraPull) displace(state, content, user, t, "pull", mech.extraPull + user.mods.pullBonus, events);
+    if (mech.terrainOnHit) changeTerrain(state, t.pos, mech.terrainOnHit, events);
+  }
 }
 
 function doThrowBall(
@@ -495,6 +746,7 @@ function doThrowBall(
   events.push({ type: "ballThrown", unitId, targetId: victim.id, ballId, chance, success });
   if (success) {
     victim.captured = true;
+    disengage(state, victim, events);
     state.queue = state.queue.filter((id, i) => i === 0 || id !== victim.id);
     events.push({ type: "captured", unitId: victim.id });
     checkOutcome(state, events);
@@ -514,7 +766,9 @@ function displace(
   const dy = target.pos.y - user.pos.y;
   if ((dx === 0 && dy === 0) || distance <= 0) return;
   if (target.traits.immovable) return;
-  const away = Math.abs(dx) >= Math.abs(dy) ? { x: Math.sign(dx), y: 0 } : { x: 0, y: Math.sign(dy) };
+  // Straight away from the user: diagonal when the target stands exactly diagonal, else along the dominant axis.
+  const away = Math.abs(dx) === Math.abs(dy) ? { x: Math.sign(dx), y: Math.sign(dy) }
+    : Math.abs(dx) > Math.abs(dy) ? { x: Math.sign(dx), y: 0 } : { x: 0, y: Math.sign(dy) };
   const dir = kind === "push" ? away : { x: -away.x, y: -away.y };
   const grid = gridOf(state);
   const from = { ...target.pos };
@@ -529,6 +783,8 @@ function displace(
   }
   if (!samePoint(from, target.pos) || blocked)
     events.push({ type: "displaced", unitId: target.id, from, to: { ...target.pos }, blocked });
+  const partner = partnerOf(state, target);
+  if (partner && gridDistance(partner.pos, target.pos) > 1) disengage(state, target, events);
   // Only a push into an obstacle hurts; a pull that reaches the user simply stops.
   if (blocked && kind === "push") dealDamage(state, target, content.rules.impactDamage + user.mods.impactBonus, "impact", events);
 }
@@ -537,21 +793,22 @@ function dealDamage(
   state: BattleState,
   unit: BattleUnit,
   amount: number,
-  source: "move" | "status" | "impact",
+  source: "move" | "status" | "impact" | "thorns",
   events: BattleEvent[],
   effectiveness?: number,
 ): number {
   let dealt = Math.min(amount, unit.hp);
-  if (dealt === unit.hp && unit.ability?.sturdy && !unit.sturdyUsed && unit.hp > 1) {
-    // Sturdy: hangs on at 1 HP once per battle.
+  if (dealt === unit.hp && (unit.ability?.sturdy || unit.mods.sturdy) && !unit.sturdyUsed && unit.hp > 1) {
+    // Sturdy (ability) / Endure (mastery): hangs on at 1 HP once per battle.
     unit.sturdyUsed = true;
     dealt = unit.hp - 1;
-    events.push({ type: "abilityTriggered", unitId: unit.id, ability: unit.ability.id });
+    events.push({ type: "abilityTriggered", unitId: unit.id, ability: unit.ability?.sturdy ? unit.ability.id : "sturdy" });
   }
   unit.hp -= dealt;
   events.push({ type: "damaged", unitId: unit.id, amount: dealt, hp: unit.hp, source, ...(effectiveness !== undefined && { effectiveness }) });
   if (unit.hp === 0) {
     events.push({ type: "fainted", unitId: unit.id });
+    disengage(state, unit, events);
     if (unit.mods.bondOnFaint) gainBond(state, unit.side, unit.mods.bondOnFaint, "fainted", events);
     state.queue = state.queue.filter((id, i) => i === 0 || id !== unit.id);
   }
@@ -570,18 +827,29 @@ function startRound(state: BattleState, content: BattleContent, events: BattleEv
 function startTurn(state: BattleState, content: BattleContent, events: BattleEvent[]): void {
   const unitId = state.queue[0]!;
   const unit = unitById(state, unitId);
-  for (const id of Object.keys(unit.cooldowns)) {
-    unit.cooldowns[id] = Math.max(0, unit.cooldowns[id]! - 1);
-  }
-  state.turn = { unitId, movePointsLeft: movementPoints(content, unit, state), actionUsed: false, basicUsed: false };
+  // A unit passed over by a switch already had its start-of-turn effects this round.
+  const begins = unit.startedRound !== state.round;
+  unit.startedRound = state.round;
+  if (begins) for (const id of Object.keys(unit.cooldowns)) unit.cooldowns[id] = Math.max(0, unit.cooldowns[id]! - 1);
+  state.turn = { unitId, movePointsLeft: movementPoints(content, unit, state), actionUsed: false, basicUsed: false, fresh: true };
   events.push({ type: "turnStarted", unitId, movePoints: state.turn.movePointsLeft });
+  if (!begins) return;
 
   for (const st of unit.statuses) {
     const frac = content.statuses[st.id]?.damagePerTurn;
-    if (frac && unit.hp > 0) dealDamage(state, unit, Math.max(1, Math.floor(unit.maxHp * frac)), "status", events);
+    if (frac && unit.hp > 0) {
+      dealDamage(state, unit, Math.max(1, Math.floor(unit.maxHp * frac)), "status", events);
+      if (unit.hp <= 0) spreadStatuses(state, content, unit, events);
+    }
   }
-  if (unit.hp > 0 && unit.mods.healPerTurn > 0 && unit.hp < unit.maxHp) {
-    const amount = Math.min(unit.maxHp - unit.hp, Math.max(1, Math.floor(unit.maxHp * unit.mods.healPerTurn)));
+  if (unit.hp > 0 && unit.mods.shedStatuses) {
+    const foeMade = (st: ActiveStatus) => st.sourceId !== undefined && state.units.find((u) => u.id === st.sourceId)?.side !== unit.side;
+    for (const st of unit.statuses.filter(foeMade)) events.push({ type: "statusExpired", unitId: unit.id, status: st.id });
+    unit.statuses = unit.statuses.filter((st) => !foeMade(st));
+  }
+  const healFrac = unit.mods.healPerTurn + (unit.engagedWith ? unit.mods.healWhileEngaged : 0);
+  if (unit.hp > 0 && healFrac > 0 && unit.hp < unit.maxHp) {
+    const amount = Math.min(unit.maxHp - unit.hp, Math.max(1, Math.floor(unit.maxHp * healFrac)));
     unit.hp += amount;
     events.push({ type: "healed", unitId: unit.id, amount, hp: unit.hp });
   }

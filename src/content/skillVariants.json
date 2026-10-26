@@ -1,0 +1,118 @@
+{
+ "mega-punch": {
+  "fire": "Flame Wheel",
+  "water": "Aqua Tail",
+  "grass": "Power Whip",
+  "electric": "Spark",
+  "ice": "Ice Fang",
+  "fighting": "Brick Break",
+  "poison": "Poison Jab",
+  "ground": "Drill Run",
+  "flying": "Brave Bird",
+  "psychic": "Zen Headbutt",
+  "bug": "X-Scissor",
+  "rock": "Head Smash",
+  "ghost": "Shadow Claw",
+  "dragon": "Dragon Claw"
+ },
+ "feint-attack": {
+  "fire": "Incinerate",
+  "water": "Water Shuriken",
+  "grass": "Bullet Seed",
+  "electric": "Shock Wave",
+  "ice": "Ice Shard",
+  "fighting": "Vacuum Wave",
+  "poison": "Clear Smog",
+  "ground": "Mud Shot",
+  "flying": "Air Cutter",
+  "psychic": "Psycho Cut",
+  "bug": "Struggle Bug",
+  "rock": "Smack Down",
+  "ghost": "Astonish",
+  "dragon": "Twister"
+ },
+ "swift": {
+  "fire": "Flame Burst",
+  "water": "Scald",
+  "grass": "Magical Leaf",
+  "electric": "Electro Ball",
+  "ice": "Icy Wind",
+  "fighting": "Aura Sphere",
+  "poison": "Sludge Bomb",
+  "ground": "Mud Bomb",
+  "flying": "Air Slash",
+  "psychic": "Psyshock",
+  "bug": "Signal Beam",
+  "rock": "Rock Blast",
+  "ghost": "Ominous Wind",
+  "dragon": "Dragon Pulse"
+ },
+ "u-turn": {
+  "bug": "U-turn",
+  "electric": "Volt Switch",
+  "water": "Flip Turn",
+  "ghost": "Shadow Sneak",
+  "flying": "Bounce"
+ },
+ "protect": {
+  "fire": "Burning Bulwark",
+  "grass": "Spiky Shield",
+  "fighting": "Detect",
+  "poison": "Baneful Bunker",
+  "bug": "Silk Trap",
+  "psychic": "Barrier"
+ },
+ "iron-defense": {
+  "psychic": "Reflect",
+  "grass": "Cotton Guard",
+  "poison": "Acid Armor",
+  "rock": "Iron Defense"
+ },
+ "focus-energy": {
+  "fighting": "Bulk Up",
+  "dragon": "Dragon Dance",
+  "grass": "Growth",
+  "electric": "Charge",
+  "bug": "Tail Glow",
+  "psychic": "Calm Mind",
+  "fire": "Sunny Day",
+  "water": "Rain Dance",
+  "ice": "Hail"
+ },
+ "leer": {
+  "poison": "Acid Spray",
+  "flying": "Feather Dance",
+  "grass": "Cotton Spore",
+  "electric": "Eerie Impulse",
+  "ghost": "Spite",
+  "dragon": "Scary Face",
+  "water": "Soak"
+ },
+ "agility": {
+  "flying": "Tailwind",
+  "rock": "Rock Polish",
+  "bug": "Quiver Dance",
+  "water": "Aqua Jet",
+  "electric": "Magnet Rise"
+ },
+ "block": {
+  "water": "Whirlpool",
+  "ghost": "Mean Look",
+  "electric": "Thunder Cage",
+  "grass": "Snap Trap",
+  "ground": "Sand Tomb",
+  "bug": "Infestation",
+  "fire": "Magma Storm",
+  "rock": "Rock Tomb"
+ },
+ "lock-on": {
+  "psychic": "Miracle Eye",
+  "ghost": "Foresight",
+  "flying": "Mirror Move"
+ },
+ "teleport": {
+  "psychic": "Teleport",
+  "water": "Dive",
+  "ghost": "Phantom Force"
+ }
+}

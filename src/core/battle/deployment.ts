@@ -12,6 +12,8 @@ export interface BattleScenario {
   /** Tiles the player may deploy on. */
   readonly deploymentZone: readonly Point[];
   readonly enemies: readonly UnitSetup[];
+  /** How many Pokémon the player may deploy (default MAX_ACTIVE_UNITS). */
+  readonly maxDeploy?: number;
   /** Enemy unit ids whose details are hidden until revealed in battle. */
   readonly hiddenEnemies?: readonly string[];
 }
@@ -44,7 +46,8 @@ export function deploymentErrors(
   const usedTiles = new Set<string>();
 
   if (placements.length === 0) errors.push("deploy at least one Pokémon");
-  if (placements.length > MAX_ACTIVE_UNITS) errors.push(`at most ${MAX_ACTIVE_UNITS} Pokémon can be deployed`);
+  const max = scenario.maxDeploy ?? MAX_ACTIVE_UNITS;
+  if (placements.length > max) errors.push(`at most ${max} Pokémon can be deployed`);
 
   for (const p of placements) {
     const member = party.find((m) => m.id === p.unitId);

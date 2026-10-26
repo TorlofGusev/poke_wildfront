@@ -1,0 +1,247 @@
+{
+ "id": "viridian-city",
+ "name": "Viridian City",
+ "ai": "tutorial",
+ "deploySlots": 3,
+ "rows": [
+  "############T###########",
+  "#TTTTTTTTTTTTTTTTTTTTTT#",
+  "#T###TTTT##TTTT#########",
+  "#T###TTTT##TTTT#TTTTTT##",
+  "#TTTTTTTT##TTTT#TTTTTT##",
+  "#TTTTTTTTTTTTTT#TTTTTT##",
+  "#TTTTTTTTTTTTTT#TTTTTT##",
+  "TTTTTTTTTTTTTTT#TTTTTT##",
+  "#TTTTTTTTTTTTTT###T#####",
+  "#TT~~~~TTTTTTTTTTTTTTTT#",
+  "#TT~~~~T##TTTTTTTTTTTTT#",
+  "#TTTTTTT##TTTTTTTTTTTTT#",
+  "#T####TTTTTTTTTTT~~~~TT#",
+  "#T####TTTTTTTTTTT~~~~TT#",
+  "#TTTTTTTTTTTTTTTTTTTTTT#",
+  "############T###########"
+ ],
+ "start": {
+  "x": 12,
+  "y": 14
+ },
+ "areaNames": {
+  "town": "Viridian City"
+ },
+ "exits": [
+  {
+   "name": "Route 1",
+   "pos": {
+    "x": 12,
+    "y": 15
+   },
+   "to": "route-1",
+   "arrive": {
+    "x": 12,
+    "y": 1
+   }
+  },
+  {
+   "name": "Route 2",
+   "pos": {
+    "x": 12,
+    "y": 0
+   },
+   "to": "route-2",
+   "arrive": {
+    "x": 12,
+    "y": 14
+   }
+  },
+  {
+   "name": "Route 22",
+   "pos": {
+    "x": 0,
+    "y": 7
+   },
+   "to": "route-22",
+   "arrive": {
+    "x": 22,
+    "y": 8
+   }
+  }
+ ],
+ "spawnZones": [],
+ "pickups": [
+  {
+   "id": "vc-potion",
+   "pos": {
+    "x": 1,
+    "y": 14
+   },
+   "items": {
+    "potion": 1
+   }
+  },
+  {
+   "id": "vc-berries",
+   "pos": {
+    "x": 13,
+    "y": 13
+   },
+   "items": {
+    "oran-berry": 1,
+    "cheri-berry": 1
+   }
+  }
+ ],
+ "obstacles": [
+  {
+   "pos": {
+    "x": 18,
+    "y": 8
+   },
+   "kind": "guard",
+   "opensIf": {
+    "badges": 7
+   },
+   "text": "The Viridian Gym is locked. Its leader is away... Come back with seven badges."
+  }
+ ],
+ "npcs": [
+  {
+   "id": "viridian-oldman",
+   "name": "Old Man",
+   "kind": "talk",
+   "pos": {
+    "x": 7,
+    "y": 6
+   },
+   "text": [
+    "Ahh, I've had my coffee now!",
+    "Weaken a wild Pokémon before you throw a ball. That's the trick."
+   ]
+  },
+  {
+   "id": "viridian-gym-blackbelt",
+   "name": "Blackbelt Atsushi",
+   "kind": "trainer",
+   "pos": {
+    "x": 17,
+    "y": 5
+   },
+   "arena": "mountain",
+   "requires": {
+    "badges": 7
+   },
+   "lockedText": [
+    "..."
+   ],
+   "text": [
+    "The boss is back. You won't get past me!"
+   ],
+   "afterText": [
+    "Giovanni... he's on another level."
+   ],
+   "team": [
+    {
+     "species": "machoke",
+     "level": 26
+    },
+    {
+     "species": "primeape",
+     "level": 26
+    }
+   ],
+   "reward": {
+    "money": 780
+   }
+  },
+  {
+   "id": "viridian-gym-cooltrainer",
+   "name": "Cooltrainer Samuel",
+   "kind": "trainer",
+   "pos": {
+    "x": 20,
+    "y": 5
+   },
+   "arena": "mountain",
+   "requires": {
+    "badges": 7
+   },
+   "lockedText": [
+    "..."
+   ],
+   "text": [
+    "Ground types swallow electricity whole. Ready?"
+   ],
+   "afterText": [
+    "Go on. He's waiting."
+   ],
+   "team": [
+    {
+     "species": "sandslash",
+     "level": 27
+    },
+    {
+     "species": "rhyhorn",
+     "level": 26
+    }
+   ],
+   "reward": {
+    "money": 810
+   }
+  },
+  {
+   "id": "giovanni",
+   "name": "Giovanni",
+   "kind": "leader",
+   "pos": {
+    "x": 18,
+    "y": 3
+   },
+   "arena": "mountain",
+   "requires": {
+    "badges": 7
+   },
+   "lockedText": [
+    "The leader's seat is empty."
+   ],
+   "text": [
+    "So. You have come this far, child.",
+    "Team Rocket may be finished, but I am still the strongest trainer in Viridian.",
+    "Show me what you've learned!"
+   ],
+   "afterText": [
+    "Ha! You are a true trainer. I shall leave and start over.",
+    "Take the Earth Badge. The Pokémon League awaits."
+   ],
+   "team": [
+    {
+     "species": "rhyhorn",
+     "level": 28,
+     "heldItem": "hard-stone"
+    },
+    {
+     "species": "dugtrio",
+     "level": 28,
+     "heldItem": "quick-claw"
+    },
+    {
+     "species": "nidoqueen",
+     "level": 28,
+     "heldItem": "leftovers"
+    },
+    {
+     "species": "nidoking",
+     "level": 29,
+     "heldItem": "muscle-band"
+    },
+    {
+     "species": "rhydon",
+     "level": 30,
+     "heldItem": "hard-stone"
+    }
+   ],
+   "reward": {
+    "money": 6000,
+    "badge": "earth"
+   }
+  }
+ ]
+}

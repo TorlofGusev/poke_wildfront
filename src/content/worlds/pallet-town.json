@@ -1,0 +1,220 @@
+{
+ "id": "pallet-town",
+ "name": "Pallet Town",
+ "ai": "tutorial",
+ "deploySlots": 3,
+ "rows": [
+  "###########.############",
+  "#.....##.....\"\"\"\"\"....##",
+  "#..\"\"\"##.....\"\"\"\"\".....#",
+  "#..\"\"\"..TTTTTTTTTT.....#",
+  "#.......TTTTTTTTTT..##.#",
+  "#..##...TTTTTTTTTT.....#",
+  "#.......TTTTTTTTTT.\"\"\".#",
+  "#...\"\"\".TTTTTTTTTT.\"\"\".#",
+  "#...\"\"\".TTTTTTTTTT.....#",
+  "#.......TTTTTTTTTT..T..#",
+  "#..##..........~~~~~T~~#",
+  "#TTTTT.........~~~~~T~~#",
+  "#TTTTT.\"\"\".....~~~~~T~~#",
+  "#TTTTT.\"\"\".....~~~~~T~~#",
+  "#TTTTT.........~~~~~T~~#",
+  "####################T###"
+ ],
+ "start": {
+  "x": 3,
+  "y": 13
+ },
+ "areaNames": {
+  "town": "Pallet Town",
+  "route": "Pallet outskirts",
+  "forest": "Pallet thicket"
+ },
+ "exits": [
+  {
+   "name": "Route 1",
+   "pos": {
+    "x": 11,
+    "y": 0
+   },
+   "to": "route-1",
+   "arrive": {
+    "x": 11,
+    "y": 14
+   }
+  },
+  {
+   "name": "Route 21",
+   "pos": {
+    "x": 20,
+    "y": 15
+   },
+   "to": "route-21",
+   "arrive": {
+    "x": 5,
+    "y": 1
+   },
+   "requires": {
+    "fieldMove": "surf"
+   },
+   "lockedText": "The sea stretches south. You need Surf to cross it."
+  }
+ ],
+ "spawnZones": [
+  {
+   "biome": "route",
+   "count": 2,
+   "levels": {
+    "min": 1,
+    "max": 2
+   },
+   "points": [
+    {
+     "x": 2,
+     "y": 8
+    },
+    {
+     "x": 10,
+     "y": 12
+    },
+    {
+     "x": 13,
+     "y": 11
+    },
+    {
+     "x": 2,
+     "y": 4
+    },
+    {
+     "x": 12,
+     "y": 2
+    }
+   ]
+  },
+  {
+   "biome": "forest",
+   "count": 2,
+   "levels": {
+    "min": 2,
+    "max": 3
+   },
+   "points": [
+    {
+     "x": 14,
+     "y": 1
+    },
+    {
+     "x": 16,
+     "y": 2
+    },
+    {
+     "x": 20,
+     "y": 7
+    },
+    {
+     "x": 5,
+     "y": 8
+    },
+    {
+     "x": 8,
+     "y": 13
+    }
+   ]
+  }
+ ],
+ "pickups": [
+  {
+   "id": "grove-balls",
+   "pos": {
+    "x": 4,
+    "y": 2
+   },
+   "balls": {
+    "poke-ball": 3
+   }
+  },
+  {
+   "id": "pallet-garden",
+   "pos": {
+    "x": 10,
+    "y": 11
+   },
+   "items": {
+    "potion": 1,
+    "oran-berry": 1
+   }
+  },
+  {
+   "id": "pallet-thicket",
+   "pos": {
+    "x": 21,
+    "y": 6
+   },
+   "items": {
+    "oran-berry": 2,
+    "potion": 1
+   },
+   "once": true
+  },
+  {
+   "id": "pallet-shore",
+   "pos": {
+    "x": 14,
+    "y": 13
+   },
+   "items": {
+    "pecha-berry": 2
+   }
+  }
+ ],
+ "npcs": [
+  {
+   "id": "oak",
+   "name": "Professor Oak",
+   "kind": "gift",
+   "pos": {
+    "x": 12,
+    "y": 4
+   },
+   "text": [
+    "Ah, there you are! The world is full of Pokémon, and your journey starts today.",
+    "Head north through Route 1. Viridian City and Pewter's Gym await.",
+    "Take these Poké Balls. Catch, train, and fill those pages!"
+   ],
+   "afterText": [
+    "Brock in Pewter City is the first real test. Go get that Boulder Badge!"
+   ],
+   "reward": {
+    "balls": {
+     "poke-ball": 5
+    }
+   }
+  },
+  {
+   "id": "pallet-mom",
+   "name": "Mom",
+   "kind": "talk",
+   "pos": {
+    "x": 3,
+    "y": 12
+   },
+   "text": [
+    "Off already? Rest whenever you're tired, dear.",
+    "And don't wander into the tall grass without your Pokémon!"
+   ]
+  },
+  {
+   "id": "pallet-sailor",
+   "name": "Old Sailor",
+   "kind": "talk",
+   "pos": {
+    "x": 19,
+    "y": 9
+   },
+   "text": [
+    "South of this pier lies Route 21 and Cinnabar Island.",
+    "Only a Pokémon that knows Surf could carry you there."
+   ]
+  }
+ ]
+}

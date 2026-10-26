@@ -17,6 +17,8 @@ import {
   wildScenario,
   worldGrid,
   type EncounterTable,
+  pickupKind,
+  rollLoot,
 } from "../../src/core/expedition";
 import { createBattle } from "../../src/core/battle";
 import { key } from "../../src/core/grid";
@@ -166,6 +168,11 @@ describe("team-scaled encounters", () => {
     expect(effectiveGroup(g, 6)).toMatchObject({ species: ["a", "b", "c"], levels: [3, 5, 4] });
     expect(effectiveGroup(g, 0).species).toHaveLength(1);
   });
+
+  it("allows as many wild Pokémon as the map's deploy slots", () => {
+    expect(effectiveGroup(g, 6, 4).species).toHaveLength(4);
+    expect(effectiveGroup(g, 2, 4).species).toHaveLength(2);
+  });
 });
 
 describe("multiple maps", () => {
@@ -204,5 +211,23 @@ describe("first map difficulty", () => {
   it("never has wild Pokémon above level 3", () => {
     for (let seed = 1; seed < 30; seed++)
       for (const g of newWorld(WORLD_CONTENT, WORLD, seed).encounters) expect(Math.max(...g.levels)).toBeLessThanOrEqual(3);
+  });
+});
+
+describe("loot and pickups", () => {
+  it("a won battle yields at most one item from the loot table", () => {
+    const table = [{ item: "a", chance: 1 }, { item: "b", chance: 1 }];
+    expect(rollLoot(table, 1).item).toBe("a");
+    expect(rollLoot([{ item: "a", chance: 0 }], 1).item).toBeNull();
+  });
+
+  it("pickups show what they hold: rare one-time finds, then held items, balls, healing, food", () => {
+    const kind = (id: string) => ({ claw: "held", potion: "potion", berry: "food" })[id];
+    const at = { id: "p", pos: { x: 0, y: 0 } };
+    expect(pickupKind({ ...at, once: true, items: { berry: 1 } }, kind)).toBe("rare");
+    expect(pickupKind({ ...at, items: { claw: 1, potion: 1 } }, kind)).toBe("held");
+    expect(pickupKind({ ...at, balls: { "poke-ball": 1 }, items: { potion: 1 } }, kind)).toBe("ball");
+    expect(pickupKind({ ...at, items: { potion: 1, berry: 1 } }, kind)).toBe("heal");
+    expect(pickupKind({ ...at, items: { berry: 2 } }, kind)).toBe("food");
   });
 });

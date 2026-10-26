@@ -1,0 +1,237 @@
+{
+ "id": "route-25",
+ "name": "Route 25",
+ "ai": "normal",
+ "deploySlots": 5,
+ "rows": [
+  "########################",
+  "#xxxBBBBBBBBBBBBBB######",
+  "#xxxBBBBBBBBBBBBBB#TTT##",
+  "#xxxBBBBBBBBBBBBBB#TTT##",
+  "#BBBBBBBBBBBBBBBBB#TTT##",
+  "#BBBBBBB###BBBBBBB##B###",
+  "#BBBBBBB###BBBBBBBBBBBB#",
+  "#BBBBBBBBBBBBBBBBBBBBBB#",
+  "#BBBBBBBBBBBBB###BBBBBB#",
+  "BBBBBBBBBBBBBB###BBBBBB#",
+  "#BBBBBBBBBBBBBBBBBBBBBB#",
+  "########################"
+ ],
+ "start": {
+  "x": 1,
+  "y": 9
+ },
+ "areaNames": {
+  "cerulean-route24": "Route 25",
+  "town": "Sea Cottage",
+  "kanto-shallows": "Route 25 cove"
+ },
+ "exits": [
+  {
+   "name": "Route 24",
+   "pos": {
+    "x": 0,
+    "y": 9
+   },
+   "to": "route-24",
+   "arrive": {
+    "x": 22,
+    "y": 2
+   }
+  }
+ ],
+ "spawnZones": [
+  {
+   "biome": "cerulean-route24",
+   "count": 3,
+   "levels": {
+    "min": 12,
+    "max": 14
+   },
+   "points": [
+    {
+     "x": 5,
+     "y": 2
+    },
+    {
+     "x": 12,
+     "y": 3
+    },
+    {
+     "x": 6,
+     "y": 9
+    },
+    {
+     "x": 11,
+     "y": 8
+    },
+    {
+     "x": 17,
+     "y": 7
+    },
+    {
+     "x": 21,
+     "y": 9
+    }
+   ]
+  },
+  {
+   "biome": "kanto-shallows",
+   "count": 1,
+   "levels": {
+    "min": 12,
+    "max": 14
+   },
+   "points": [
+    {
+     "x": 1,
+     "y": 1
+    },
+    {
+     "x": 3,
+     "y": 3
+    }
+   ]
+  }
+ ],
+ "pickups": [
+  {
+   "id": "r25-berries",
+   "pos": {
+    "x": 12,
+    "y": 10
+   },
+   "items": {
+    "oran-berry": 2,
+    "rawst-berry": 1
+   }
+  },
+  {
+   "id": "r25-cove",
+   "pos": {
+    "x": 2,
+    "y": 2
+   },
+   "items": {
+    "candy": 1
+   },
+   "once": true
+  }
+ ],
+ "npcs": [
+  {
+   "id": "r25-hiker",
+   "name": "Hiker Franklin",
+   "kind": "trainer",
+   "pos": {
+    "x": 6,
+    "y": 4
+   },
+   "text": [
+    "My rocks are tougher than your team!"
+   ],
+   "afterText": [
+    "Rock solid loss..."
+   ],
+   "team": [
+    {
+     "species": "geodude",
+     "level": 13
+    },
+    {
+     "species": "machop",
+     "level": 13
+    },
+    {
+     "species": "onix",
+     "level": 13
+    }
+   ],
+   "reward": {
+    "money": 520
+   }
+  },
+  {
+   "id": "r25-camper",
+   "name": "Camper Flint",
+   "kind": "trainer",
+   "pos": {
+    "x": 12,
+    "y": 7
+   },
+   "text": [
+    "Don't rush to Bill's house!"
+   ],
+   "afterText": [
+    "Bill lives at the end of the cape."
+   ],
+   "team": [
+    {
+     "species": "rattata",
+     "level": 14
+    },
+    {
+     "species": "ekans",
+     "level": 14
+    }
+   ],
+   "reward": {
+    "money": 280
+   }
+  },
+  {
+   "id": "r25-lass",
+   "name": "Lass Haley",
+   "kind": "trainer",
+   "pos": {
+    "x": 15,
+    "y": 3
+   },
+   "text": [
+    "Look at my cute Pokémon!"
+   ],
+   "afterText": [
+    "Aww..."
+   ],
+   "team": [
+    {
+     "species": "oddish",
+     "level": 13
+    },
+    {
+     "species": "pidgey",
+     "level": 13
+    },
+    {
+     "species": "oddish",
+     "level": 13
+    }
+   ],
+   "reward": {
+    "money": 260
+   }
+  },
+  {
+   "id": "bill",
+   "name": "Bill",
+   "kind": "gift",
+   "pos": {
+    "x": 20,
+    "y": 2
+   },
+   "text": [
+    "Hiya! I'm Bill, the Pokémon maniac! Thanks for helping me out of that teleporter mishap.",
+    "Here, take this ticket for the S.S. Anne in Vermilion."
+   ],
+   "afterText": [
+    "Go enjoy the S.S. Anne party! There are trainers from all over aboard."
+   ],
+   "reward": {
+    "keyItems": [
+     "ss-ticket"
+    ],
+    "money": 500
+   }
+  }
+ ]
+}

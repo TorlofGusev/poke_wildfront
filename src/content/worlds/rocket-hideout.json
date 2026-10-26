@@ -1,0 +1,226 @@
+{
+ "id": "rocket-hideout",
+ "name": "Rocket Hideout",
+ "ai": "normal",
+ "deploySlots": 5,
+ "rows": [
+  "#######2########",
+  "#22222222222222#",
+  "#22####22####22#",
+  "#22#22222222#22#",
+  "#22#22####22#22#",
+  "#22222#22#22222#",
+  "####22#22#22####",
+  "#22222222222222#",
+  "#22##22222##222#",
+  "#22#2222222#222#",
+  "#22222222222222#",
+  "################"
+ ],
+ "start": {
+  "x": 7,
+  "y": 1
+ },
+ "exits": [
+  {
+   "name": "Celadon City",
+   "pos": {
+    "x": 7,
+    "y": 0
+   },
+   "to": "celadon-city",
+   "arrive": {
+    "x": 18,
+    "y": 14
+   }
+  }
+ ],
+ "spawnZones": [],
+ "pickups": [
+  {
+   "id": "rh-stash",
+   "pos": {
+    "x": 14,
+    "y": 1
+   },
+   "items": {
+    "super-potion": 2
+   },
+   "balls": {
+    "great-ball": 2
+   }
+  },
+  {
+   "id": "rh-band",
+   "pos": {
+    "x": 1,
+    "y": 10
+   },
+   "items": {
+    "muscle-band": 1
+   },
+   "once": true
+  }
+ ],
+ "npcs": [
+  {
+   "id": "rocket-hideout-1",
+   "name": "Rocket Grunt",
+   "kind": "rocket",
+   "pos": {
+    "x": 10,
+    "y": 1
+   },
+   "text": [
+    "An intruder in our base!"
+   ],
+   "afterText": [
+    "The Boss won't be pleased..."
+   ],
+   "team": [
+    {
+     "species": "rattata",
+     "level": 19
+    },
+    {
+     "species": "zubat",
+     "level": 19
+    },
+    {
+     "species": "raticate",
+     "level": 20
+    }
+   ],
+   "reward": {
+    "money": 600
+   }
+  },
+  {
+   "id": "rocket-hideout-2",
+   "name": "Rocket Grunt",
+   "kind": "rocket",
+   "pos": {
+    "x": 5,
+    "y": 3
+   },
+   "text": [
+    "You won't reach the Boss!"
+   ],
+   "afterText": [
+    "Ugh, the elevator needs a key anyway."
+   ],
+   "team": [
+    {
+     "species": "koffing",
+     "level": 20
+    },
+    {
+     "species": "grimer",
+     "level": 20
+    }
+   ],
+   "reward": {
+    "money": 650
+   }
+  },
+  {
+   "id": "rocket-hideout-3",
+   "name": "Rocket Grunt",
+   "kind": "rocket",
+   "pos": {
+    "x": 14,
+    "y": 5
+   },
+   "text": [
+    "Team Rocket never forgives!"
+   ],
+   "afterText": [
+    "I'll get you next time."
+   ],
+   "team": [
+    {
+     "species": "ekans",
+     "level": 20
+    },
+    {
+     "species": "zubat",
+     "level": 20
+    },
+    {
+     "species": "koffing",
+     "level": 21
+    }
+   ],
+   "reward": {
+    "money": 700
+   }
+  },
+  {
+   "id": "lift-key-grunt",
+   "name": "Clumsy Grunt",
+   "kind": "gift",
+   "pos": {
+    "x": 13,
+    "y": 9
+   },
+   "text": [
+    "Oops! I dropped the Lift Key!",
+    "...Wait, don't take it!"
+   ],
+   "afterText": [
+    "The Boss is going to kill me."
+   ],
+   "reward": {
+    "keyItems": [
+     "lift-key"
+    ]
+   }
+  },
+  {
+   "id": "giovanni-hideout",
+   "name": "Team Rocket Boss Giovanni",
+   "kind": "rocket",
+   "pos": {
+    "x": 5,
+    "y": 9
+   },
+   "arena": "rocket-hideout",
+   "requires": {
+    "keyItems": [
+     "lift-key"
+    ]
+   },
+   "lockedText": [
+    "The elevator to the Boss's office won't move without the Lift Key."
+   ],
+   "text": [
+    "So, you have come this far. I am Giovanni, leader of Team Rocket."
+   ],
+   "afterText": [
+    "I will retreat for now. Take this scope; it is of no use to me now."
+   ],
+   "team": [
+    {
+     "species": "onix",
+     "level": 21,
+     "heldItem": "hard-stone"
+    },
+    {
+     "species": "rhyhorn",
+     "level": 21
+    },
+    {
+     "species": "kangaskhan",
+     "level": 22,
+     "heldItem": "quick-claw"
+    }
+   ],
+   "reward": {
+    "keyItems": [
+     "silph-scope"
+    ],
+    "money": 2500
+   }
+  }
+ ]
+}

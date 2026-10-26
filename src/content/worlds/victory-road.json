@@ -1,0 +1,449 @@
+{
+ "id": "victory-road",
+ "name": "Victory Road",
+ "ai": "normal",
+ "deploySlots": 5,
+ "rows": [
+  "####################4###",
+  "#44444##444444444444444#",
+  "#44444##4444##444444444#",
+  "#44444##444444444##4444#",
+  "###4####444444444444444#",
+  "###4############4#######",
+  "#4444444##4444444444444#",
+  "#44##444444444444##4444#",
+  "#4444444##444444444~~44#",
+  "#444444444444##44444444#",
+  "#######4################",
+  "#4444444444##4444444444#",
+  "#44##444444##44444##444#",
+  "#4444444##4444444444444#",
+  "#4444444444444444444##4#",
+  "###4####################"
+ ],
+ "start": {
+  "x": 3,
+  "y": 14
+ },
+ "areaNames": {
+  "victory-road-cave": "Victory Road"
+ },
+ "exits": [
+  {
+   "name": "Route 23",
+   "pos": {
+    "x": 3,
+    "y": 15
+   },
+   "to": "route-23",
+   "arrive": {
+    "x": 10,
+    "y": 1
+   }
+  },
+  {
+   "name": "Indigo Plateau",
+   "pos": {
+    "x": 20,
+    "y": 0
+   },
+   "to": "indigo-plateau",
+   "arrive": {
+    "x": 11,
+    "y": 14
+   }
+  }
+ ],
+ "spawnZones": [
+  {
+   "biome": "victory-road-cave",
+   "count": 4,
+   "points": [
+    {
+     "x": 3,
+     "y": 1
+    },
+    {
+     "x": 11,
+     "y": 1
+    },
+    {
+     "x": 15,
+     "y": 1
+    },
+    {
+     "x": 19,
+     "y": 1
+    },
+    {
+     "x": 10,
+     "y": 2
+    },
+    {
+     "x": 14,
+     "y": 2
+    },
+    {
+     "x": 18,
+     "y": 2
+    },
+    {
+     "x": 22,
+     "y": 2
+    },
+    {
+     "x": 1,
+     "y": 3
+    },
+    {
+     "x": 5,
+     "y": 3
+    },
+    {
+     "x": 9,
+     "y": 3
+    },
+    {
+     "x": 13,
+     "y": 3
+    },
+    {
+     "x": 21,
+     "y": 3
+    },
+    {
+     "x": 8,
+     "y": 4
+    },
+    {
+     "x": 12,
+     "y": 4
+    },
+    {
+     "x": 16,
+     "y": 4
+    },
+    {
+     "x": 20,
+     "y": 4
+    },
+    {
+     "x": 3,
+     "y": 5
+    },
+    {
+     "x": 2,
+     "y": 6
+    },
+    {
+     "x": 6,
+     "y": 6
+    },
+    {
+     "x": 10,
+     "y": 6
+    },
+    {
+     "x": 14,
+     "y": 6
+    },
+    {
+     "x": 18,
+     "y": 6
+    },
+    {
+     "x": 22,
+     "y": 6
+    },
+    {
+     "x": 1,
+     "y": 7
+    },
+    {
+     "x": 5,
+     "y": 7
+    },
+    {
+     "x": 9,
+     "y": 7
+    },
+    {
+     "x": 13,
+     "y": 7
+    },
+    {
+     "x": 21,
+     "y": 7
+    },
+    {
+     "x": 4,
+     "y": 8
+    },
+    {
+     "x": 12,
+     "y": 8
+    },
+    {
+     "x": 16,
+     "y": 8
+    },
+    {
+     "x": 3,
+     "y": 9
+    },
+    {
+     "x": 7,
+     "y": 9
+    },
+    {
+     "x": 11,
+     "y": 9
+    },
+    {
+     "x": 15,
+     "y": 9
+    },
+    {
+     "x": 19,
+     "y": 9
+    },
+    {
+     "x": 1,
+     "y": 11
+    },
+    {
+     "x": 5,
+     "y": 11
+    },
+    {
+     "x": 9,
+     "y": 11
+    },
+    {
+     "x": 13,
+     "y": 11
+    },
+    {
+     "x": 17,
+     "y": 11
+    },
+    {
+     "x": 21,
+     "y": 11
+    },
+    {
+     "x": 8,
+     "y": 12
+    },
+    {
+     "x": 16,
+     "y": 12
+    },
+    {
+     "x": 20,
+     "y": 12
+    },
+    {
+     "x": 3,
+     "y": 13
+    },
+    {
+     "x": 7,
+     "y": 13
+    },
+    {
+     "x": 11,
+     "y": 13
+    },
+    {
+     "x": 15,
+     "y": 13
+    },
+    {
+     "x": 19,
+     "y": 13
+    },
+    {
+     "x": 2,
+     "y": 14
+    },
+    {
+     "x": 6,
+     "y": 14
+    },
+    {
+     "x": 10,
+     "y": 14
+    },
+    {
+     "x": 14,
+     "y": 14
+    },
+    {
+     "x": 18,
+     "y": 14
+    },
+    {
+     "x": 22,
+     "y": 14
+    }
+   ],
+   "levels": {
+    "min": 28,
+    "max": 30
+   }
+  }
+ ],
+ "pickups": [
+  {
+   "id": "vr-hardstone",
+   "pos": {
+    "x": 22,
+    "y": 11
+   },
+   "items": {
+    "hard-stone": 1
+   },
+   "once": true
+  },
+  {
+   "id": "vr-potion",
+   "pos": {
+    "x": 14,
+    "y": 7
+   },
+   "items": {
+    "super-potion": 2,
+    "revival-herb": 1
+   }
+  },
+  {
+   "id": "vr-ultra",
+   "pos": {
+    "x": 22,
+    "y": 3
+   },
+   "balls": {
+    "ultra-ball": 2
+   }
+  }
+ ],
+ "npcs": [
+  {
+   "id": "moltres",
+   "name": "Moltres",
+   "kind": "wild",
+   "pos": {
+    "x": 2,
+    "y": 2
+   },
+   "capture": true,
+   "arena": "victory-road-cave",
+   "text": [
+    "The cave grows scorching hot...",
+    "The legendary Moltres attacks!"
+   ],
+   "team": [
+    {
+     "species": "moltres",
+     "level": 29,
+     "heldItem": "charcoal"
+    }
+   ]
+  },
+  {
+   "id": "cooltrainer-vr1",
+   "name": "Cooltrainer Naomi",
+   "kind": "trainer",
+   "pos": {
+    "x": 12,
+    "y": 7
+   },
+   "arena": "victory-road-cave",
+   "text": [
+    "Only the best make it through here."
+   ],
+   "afterText": [
+    "You might just make it."
+   ],
+   "team": [
+    {
+     "species": "persian",
+     "level": 28
+    },
+    {
+     "species": "ninetales",
+     "level": 28
+    },
+    {
+     "species": "dewgong",
+     "level": 28
+    }
+   ],
+   "reward": {
+    "money": 1400
+   }
+  },
+  {
+   "id": "cooltrainer-vr2",
+   "name": "Cooltrainer Rolando",
+   "kind": "trainer",
+   "pos": {
+    "x": 17,
+    "y": 12
+   },
+   "arena": "victory-road-cave",
+   "text": [
+    "The Elite Four await beyond this cave!"
+   ],
+   "afterText": [
+    "Go on. Show them."
+   ],
+   "team": [
+    {
+     "species": "ivysaur",
+     "level": 28
+    },
+    {
+     "species": "wartortle",
+     "level": 28
+    },
+    {
+     "species": "charmeleon",
+     "level": 28
+    },
+    {
+     "species": "charizard",
+     "level": 29
+    }
+   ],
+   "reward": {
+    "money": 1500
+   }
+  }
+ ],
+ "obstacles": [
+  {
+   "pos": {
+    "x": 7,
+    "y": 10
+   },
+   "kind": "boulder",
+   "opensIf": {
+    "fieldMove": "strength"
+   },
+   "text": "A huge boulder. A strong Pokémon could push it."
+  },
+  {
+   "pos": {
+    "x": 16,
+    "y": 5
+   },
+   "kind": "boulder",
+   "opensIf": {
+    "fieldMove": "strength"
+   },
+   "text": "A huge boulder. A strong Pokémon could push it."
+  }
+ ]
+}

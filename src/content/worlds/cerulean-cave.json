@@ -1,0 +1,149 @@
+{
+ "id": "cerulean-cave",
+ "name": "Cerulean Cave",
+ "ai": "normal",
+ "deploySlots": 5,
+ "rows": [
+  "########################",
+  "#ttttt#tttttttttt#ttttt#",
+  "#ttttt#tttttttttt#ttttt#",
+  "#ttttt#tttttttttt#ttttt#",
+  "#ttttt#ttttt#tttt#ttttt#",
+  "#####t#ttttt#tttt#ttttt#",
+  "#ttttt#t~~~t#tttt#ttttt#",
+  "#ttttt#t~~~t#tttt#ttttt#",
+  "#ttttt#t~~~t#tttt#tttttt",
+  "#ttttt#ttttt#tttt#ttttt#",
+  "#ttttt#ttttt#tttt#ttttt#",
+  "#ttttt#ttttt#t~~~tttttt#",
+  "#ttttttttttt#t~~~tttttt#",
+  "#ttttttttttt#t~~~tttttt#",
+  "#ttttttttttt#tttttttttt#",
+  "########################"
+ ],
+ "start": {
+  "x": 22,
+  "y": 8
+ },
+ "areaNames": {
+  "cerulean-cave-deep": "Cerulean Cave"
+ },
+ "exits": [
+  {
+   "name": "Cerulean City",
+   "pos": {
+    "x": 23,
+    "y": 8
+   },
+   "to": "cerulean-city",
+   "arrive": {
+    "x": 1,
+    "y": 12
+   }
+  }
+ ],
+ "spawnZones": [
+  {
+   "biome": "cerulean-cave-deep",
+   "count": 4,
+   "levels": {
+    "min": 27,
+    "max": 30
+   },
+   "points": [
+    {
+     "x": 20,
+     "y": 3
+    },
+    {
+     "x": 20,
+     "y": 12
+    },
+    {
+     "x": 15,
+     "y": 3
+    },
+    {
+     "x": 14,
+     "y": 8
+    },
+    {
+     "x": 9,
+     "y": 2
+    },
+    {
+     "x": 9,
+     "y": 12
+    },
+    {
+     "x": 3,
+     "y": 8
+    },
+    {
+     "x": 4,
+     "y": 13
+    }
+   ]
+  }
+ ],
+ "pickups": [
+  {
+   "id": "ccave-ultra",
+   "pos": {
+    "x": 15,
+    "y": 1
+   },
+   "balls": {
+    "ultra-ball": 3
+   },
+   "once": true
+  },
+  {
+   "id": "ccave-herb",
+   "pos": {
+    "x": 8,
+    "y": 13
+   },
+   "items": {
+    "revival-herb": 2
+   }
+  },
+  {
+   "id": "ccave-leftovers",
+   "pos": {
+    "x": 1,
+    "y": 1
+   },
+   "items": {
+    "leftovers": 1
+   },
+   "once": true
+  }
+ ],
+ "npcs": [
+  {
+   "id": "mewtwo",
+   "name": "Mewtwo",
+   "kind": "wild",
+   "pos": {
+    "x": 2,
+    "y": 2
+   },
+   "capture": true,
+   "arena": "cerulean-cave-deep",
+   "text": [
+    "A fierce psychic presence fills the cavern..."
+   ],
+   "afterText": [
+    "The cavern is silent now."
+   ],
+   "team": [
+    {
+     "species": "mewtwo",
+     "level": 30,
+     "heldItem": "leftovers"
+    }
+   ]
+  }
+ ]
+}

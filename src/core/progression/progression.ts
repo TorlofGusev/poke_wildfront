@@ -1,9 +1,9 @@
-import { hpFromStat } from "../battle/battle";
+import { maxHpAt } from "../battle/battle";
 import type { BaseStats, BattleContent, SpeciesDef } from "../battle/content";
 import { STAT_NAMES, type StatName } from "../battle/species";
 import { combineModifiers, type UnitModifiers } from "../battle/modifiers";
 import type { UnitSetup } from "../battle/battle";
-import type { ProgressionContent, TreeNode } from "./content";
+import type { ProgressionContent, TalentDef, TreeNode } from "./content";
 
 /** The parts of a party member that progression reads and changes. */
 export interface Progress {
@@ -23,7 +23,7 @@ export interface Progress {
   readonly unspentPoints: number;
 }
 
-export const NO_POINTS: BaseStats = { hp: 0, attack: 0, defense: 0, speed: 0 };
+export const NO_POINTS: BaseStats = { hp: 0, attack: 0, defense: 0, spAttack: 0, spDefense: 0, speed: 0 };
 
 export const basicMoveOf = (content: BattleContent, species: SpeciesDef): string => {
   const basic = species.moves.find((m) => content.moves[m]?.kind === "basic");
@@ -45,15 +45,35 @@ export function defaultActiveMoves(content: BattleContent, prog: ProgressionCont
 
 export const xpToNext = (prog: ProgressionContent, level: number): number => level * prog.rules.xpPerLevel;
 
-/** Effective battle stats: species level-1 stats + spent points + talent points. */
+/**
+ * XP scaled by level gap (as in Gen 5): a Pokémon above the foes' average level gets 30% less per level of gap
+ * (at least 10%), one below them 10% more per level (at most +50%). Keeps the team near the area's level.
+ */
+export function scaledXp(base: number, memberLevel: number, foeLevels: readonly number[]): number {
+  if (!foeLevels.length || base <= 0) return base;
+  const gap = memberLevel - foeLevels.reduce((s, l) => s + l, 0) / foeLevels.length;
+  const factor = gap > 0 ? Math.max(0.1, 1 - 0.3 * gap) : Math.min(1.5, 1 - 0.1 * gap);
+  return Math.max(1, Math.round(base * factor));
+}
+
+/** Stats a role adds automatically by a level. */
+export function roleGrowth(prog: ProgressionContent, roleId: string | null, level: number): BaseStats {
+  const growth = (roleId && prog.roles[roleId]?.growth) || {};
+  const out = { ...NO_POINTS } as Record<StatName, number>;
+  for (const s of STAT_NAMES) out[s] = Math.floor((growth[s] ?? 0) * (level - 1));
+  return out;
+}
+
+/** Effective battle stats: species level-1 stats + role growth + spent points + talent points. */
 export function memberStats(content: BattleContent, prog: ProgressionContent, m: Progress): { stats: BaseStats; maxHp: number } {
   const base = content.species[m.speciesId]!.stats;
+  const growth = roleGrowth(prog, m.role, m.level);
   const out = {} as Record<StatName, number>;
   for (const s of STAT_NAMES) {
     const fromTalents = m.talents.reduce((sum, t) => sum + (prog.talents[t]?.stats?.[s] ?? 0), 0);
-    out[s] = base[s] + m.statPoints[s] + fromTalents;
+    out[s] = base[s] + growth[s] + m.statPoints[s] + fromTalents;
   }
-  return { stats: out, maxHp: hpFromStat(content, out.hp) };
+  return { stats: out, maxHp: maxHpAt(content, out.hp, base.defense, m.level) };
 }
 
 /**
@@ -77,6 +97,7 @@ export function spendPoints<T extends Progress>(m: T, stat: StatName, amount: nu
 
 export function memberModifiers(prog: ProgressionContent, m: Progress): UnitModifiers {
   const parts: Partial<UnitModifiers>[] = m.talents.map((t) => prog.talents[t]?.mods ?? {});
+  if (m.role) parts.push(prog.roles[m.role]?.mods ?? {});
   if (m.heldItem) parts.push(prog.items[m.heldItem]?.mods ?? {});
   return combineModifiers(...parts);
 }
@@ -92,14 +113,54 @@ export function toUnitSetup(content: BattleContent, prog: ProgressionContent, m:
 }
 
 /** A wild Pokémon of a given level, with its default loadout. */
-export function wildSetup(content: BattleContent, prog: ProgressionContent, speciesId: string, level: number): Omit<UnitSetup, "id" | "side" | "pos"> {
+/** The form a wild Pokémon of a species has at a level: evolved as far as its level allows. */
+export function wildForm(content: BattleContent, speciesId: string, level: number): string {
+  let id = speciesId;
+  for (let evo = content.species[id]!.evolution; evo && level >= evo.level && content.species[evo.into]; evo = content.species[id]!.evolution) id = evo.into;
+  return id;
+}
+
+export function wildSetup(content: BattleContent, prog: ProgressionContent, wildSpecies: string, level: number): Omit<UnitSetup, "id" | "side" | "pos"> {
+  const speciesId = wildForm(content, wildSpecies, level);
   const known = movesKnownAt(content.species[speciesId]!, level);
   const points = playstylePoints(content, speciesId, (level - 1) * prog.rules.pointsPerLevel);
   const m: Progress = {
-    speciesId, level, xp: 0, role: null, talents: [], heldItem: null, knownMoves: known,
+    // Wild Pokémon grow along their species' first role.
+    speciesId, level, xp: 0, role: content.species[speciesId]!.roles?.[0] ?? null, talents: [], heldItem: null, knownMoves: known,
     activeMoves: defaultActiveMoves(content, prog, speciesId, known), hp: Number.MAX_SAFE_INTEGER,
     statPoints: points, unspentPoints: 0,
   };
+  return toUnitSetup(content, prog, m);
+}
+
+/**
+ * A trainer's Pokémon: fully developed like a player's (role, the first mastery of every reached
+ * row, stat points) with an optional held item and fixed moves. Gym leaders and rivals use it.
+ */
+export function trainerSetup(
+  content: BattleContent, prog: ProgressionContent,
+  mon: { readonly species: string; readonly level: number; readonly role?: string; readonly heldItem?: string; readonly moves?: readonly string[] },
+): Omit<UnitSetup, "id" | "side" | "pos"> {
+  const species = content.species[mon.species]!;
+  const known = movesKnownAt(species, mon.level);
+  let m: Progress = {
+    speciesId: mon.species, level: mon.level, xp: 0, role: null, talents: [], heldItem: mon.heldItem ?? null, knownMoves: known,
+    activeMoves: defaultActiveMoves(content, prog, mon.species, known), hp: Number.MAX_SAFE_INTEGER,
+    statPoints: playstylePoints(content, mon.species, (mon.level - 1) * prog.rules.pointsPerLevel), unspentPoints: 0,
+  };
+  for (let guard = 0; guard < 40; guard++) {
+    const p = pendingChoice(content, prog, m);
+    if (p === "role") {
+      const role = mon.role && species.roles?.includes(mon.role) ? mon.role : species.roles![0]!;
+      m = chooseRole(content, prog, m, role);
+    } else if (p === "talent") {
+      m = chooseTalent(content, prog, m, talentOptions(content, prog, m)[0]!);
+    } else break;
+  }
+  if (mon.moves) {
+    const basic = basicMoveOf(content, species);
+    m = { ...m, activeMoves: mon.moves.filter((id) => id !== basic && content.moves[id]).slice(0, prog.rules.maxActiveMoves) };
+  }
   return toUnitSetup(content, prog, m);
 }
 
@@ -138,14 +199,47 @@ export function gainXp<T extends Progress>(content: BattleContent, prog: Progres
   return { member: cur, events };
 }
 
-/** Talent points earned by a level. */
-export const talentPointsAt = (prog: ProgressionContent, level: number): number => prog.rules.talentLevels.filter((l) => l <= level).length;
+/**
+ * The mastery grid: one row per level, each row a set of mutually exclusive masteries (pick one).
+ * Rows come from the role's tree and the trees of all the species' types; without a role only the
+ * type rows are known.
+ */
+export interface GridRow {
+  readonly level: number;
+  readonly options: readonly string[];
+}
+
+export function masteryGrid(content: BattleContent, prog: ProgressionContent, speciesId: string, role: string | null): GridRow[] {
+  const types = content.species[speciesId]!.types;
+  const nodes = [...((role && prog.roles[role]?.tree) || []), ...types.flatMap((t) => prog.typeTrees[t]?.tree ?? [])];
+  const byLevel = new Map<number, string[]>();
+  for (const n of nodes) {
+    const id = nodeTalent(prog, n, types);
+    if (!id || !prog.talents[id]) continue;
+    const row = byLevel.get(n.level) ?? [];
+    if (!row.includes(id)) row.push(id);
+    byLevel.set(n.level, row);
+  }
+  return [...byLevel.entries()].sort((a, b) => a[0] - b[0]).map(([level, options]) => ({ level, options }));
+}
+
+export const memberGrid = (content: BattleContent, prog: ProgressionContent, m: Progress): GridRow[] =>
+  masteryGrid(content, prog, m.speciesId, m.role);
+
+/** The mastery picked in a row, if any. */
+export const rowPick = (row: GridRow, m: Progress): string | null => row.options.find((o) => m.talents.includes(o)) ?? null;
+
+/** Reached rows still waiting for a pick. */
+function openRows(content: BattleContent, prog: ProgressionContent, m: Progress): GridRow[] {
+  if (m.role === null) return [];
+  return memberGrid(content, prog, m).filter((r) => r.level <= m.level && rowPick(r, m) === null);
+}
 
 /** The choice a member is waiting for, if any. */
-export function pendingChoice(prog: ProgressionContent, m: Progress): "role" | "talent" | null {
+export function pendingChoice(content: BattleContent, prog: ProgressionContent, m: Progress): "role" | "talent" | null {
   if (m.level < prog.rules.roleLevel) return null;
   if (m.role === null) return "role";
-  return m.talents.length < talentPointsAt(prog, m.level) ? "talent" : null;
+  return openRows(content, prog, m).length ? "talent" : null;
 }
 
 export function roleOptions(content: BattleContent, m: Progress): string[] {
@@ -153,7 +247,7 @@ export function roleOptions(content: BattleContent, m: Progress): string[] {
 }
 
 export function chooseRole<T extends Progress>(content: BattleContent, prog: ProgressionContent, m: T, roleId: string): T {
-  if (pendingChoice(prog, m) !== "role") throw new Error("no role choice pending");
+  if (pendingChoice(content, prog, m) !== "role") throw new Error("no role choice pending");
   if (!roleOptions(content, m).includes(roleId) || !prog.roles[roleId]) throw new Error(`${m.speciesId} cannot become ${roleId}`);
   return { ...m, role: roleId };
 }
@@ -164,35 +258,38 @@ export function nodeTalent(prog: ProgressionContent, node: TreeNode, types: read
   return Object.values(prog.talents).find((t) => t.requiresType === types[0])?.id ?? null;
 }
 
-export type NodeState = "learned" | "available" | "locked-level" | "locked-path";
-
-/** State of a tree node for this Pokémon (ignores whether a talent point is free). */
-export function nodeState(prog: ProgressionContent, m: Progress, node: TreeNode, types: readonly string[]): NodeState {
-  const id = nodeTalent(prog, node, types);
-  if (id && m.talents.includes(id)) return "learned";
-  if (node.level > m.level) return "locked-level";
-  const reqs = node.requires ?? [];
-  return reqs.length === 0 || reqs.some((r) => m.talents.includes(r)) ? "available" : "locked-path";
+/**
+ * A talent as a Pokémon of these types sees it: a skill with a type-flavoured version (primary type
+ * first) teaches that move instead and takes its name.
+ */
+export function talentFor(content: BattleContent, prog: ProgressionContent, talentId: string, types: readonly string[]): TalentDef {
+  const t = prog.talents[talentId]!;
+  const move = types.map((ty) => t.typedMoves?.[ty]).find((x) => x !== undefined);
+  return move ? { ...t, grantsMove: move, name: content.moves[move]?.name ?? t.name } : t;
 }
 
-/** Talents that can be learned right now (requires a free talent point). */
-export function talentOptions(prog: ProgressionContent, m: Progress, types: readonly string[] = []): string[] {
-  if (pendingChoice(prog, m) !== "talent" || !m.role) return [];
-  return (prog.roles[m.role]?.tree ?? [])
-    .filter((n) => nodeState(prog, m, n, types) === "available")
-    .map((n) => nodeTalent(prog, n, types))
-    .filter((id): id is string => id !== null);
+/** Masteries that can be picked right now (the options of every open row). */
+export function talentOptions(content: BattleContent, prog: ProgressionContent, m: Progress): string[] {
+  return openRows(content, prog, m).flatMap((r) => r.options);
 }
 
-export function chooseTalent<T extends Progress>(prog: ProgressionContent, m: T, talentId: string, types: readonly string[] = []): T {
-  if (pendingChoice(prog, m) !== "talent") throw new Error("no talent choice pending");
-  if (!talentOptions(prog, m, types).includes(talentId)) throw new Error(`talent ${talentId} is not available`);
+export function chooseTalent<T extends Progress>(content: BattleContent, prog: ProgressionContent, m: T, talentId: string): T {
+  if (pendingChoice(content, prog, m) !== "talent") throw new Error("no talent choice pending");
+  if (!talentOptions(content, prog, m).includes(talentId)) throw new Error(`talent ${talentId} is not available`);
   const next = { ...m, talents: [...m.talents, talentId] };
-  const move = prog.talents[talentId]!.grantsMove;
+  const move = talentFor(content, prog, talentId, content.species[m.speciesId]!.types).grantsMove;
   if (!move || next.knownMoves.includes(move)) return next;
   // A skill talent teaches a move; it becomes active if there is room.
   const room = next.activeMoves.length < prog.rules.maxActiveMoves;
   return { ...next, knownMoves: [...next.knownMoves, move], activeMoves: room ? [...next.activeMoves, move] : next.activeMoves };
+}
+
+export const respecCost = (prog: ProgressionContent, m: Progress): number => prog.rules.respecCostPerLevel * m.level;
+
+/** Forgets the role and every mastery, with the moves the masteries taught. */
+export function resetMasteries<T extends Progress>(content: BattleContent, m: T): T {
+  const natural = new Set(movesKnownAt(content.species[m.speciesId]!, m.level));
+  return { ...m, role: null, talents: [], knownMoves: m.knownMoves.filter((mv) => natural.has(mv)), activeMoves: m.activeMoves.filter((mv) => natural.has(mv)) };
 }
 
 /** Sets the active moves (besides the basic attack). */

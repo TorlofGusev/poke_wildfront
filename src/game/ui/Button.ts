@@ -1,4 +1,5 @@
 import Phaser from "phaser";
+import { sfx } from "../audio";
 import { FONT } from "./theme";
 
 /** Minimal text button with enabled/disabled state. */
@@ -16,7 +17,11 @@ export class Button extends Phaser.GameObjects.Container {
     this.bg.setInteractive({ useHandCursor: true });
     this.bg.on("pointerover", () => this.enabled && this.bg.setFillStyle(0x3a4560));
     this.bg.on("pointerout", () => this.bg.setFillStyle(this.enabled ? 0x2a3245 : 0x1c2130));
-    this.bg.on("pointerdown", () => this.enabled && onClick());
+    this.bg.on("pointerdown", () => {
+      if (!this.enabled) return;
+      sfx(scene, "select");
+      onClick();
+    });
     scene.add.existing(this);
   }
 

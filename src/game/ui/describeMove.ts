@@ -16,14 +16,18 @@ export function describeMove(content: BattleContent, move: MoveDef): string {
   const lines = [
     `${tag("title", move.name)} — ${tag(move.type, move.type.toUpperCase())}`,
     kind,
-    `Range ${tag("num", range)} · ${shape}${move.requiresLineOfSight ? " · needs line of sight" : ""}`,
+    `Range ${tag("num", range)} · ${shape}${move.requiresLineOfSight ? " · needs line of sight (Pokémon in the way block it)" : ""}`,
     move.power > 0 ? `Power ${tag("dmg", move.power)} ${tag("dim", "(hover a target to see the exact damage)")}` : tag("dim", "No damage"),
   ];
+  if (move.id === "struggle") lines.push(`Fallback while engaged when the basic attack is ranged: its basic attack's type at ${tag("num", `${Math.round(content.rules.engagement.fallbackPower * 100)}%`)} power`);
   for (const e of move.effects ?? []) {
     switch (e.kind) {
       case "push": lines.push(`Pushes ${tag("num", e.distance)} tile${e.distance > 1 ? "s" : ""} away; hitting an obstacle deals ${tag("dmg", content.rules.impactDamage)} damage`); break;
       case "pull": lines.push(`Pulls up to ${tag("num", e.distance)} tiles towards the user`); break;
       case "heal": lines.push(`Heals ${tag("heal", `${e.amount} HP`)}`); break;
+      case "engage": lines.push(`${tag("bad", "Engages")} the target (taking it over from any other engagement): they may only attack each other`); break;
+      case "bond": lines.push(`${tag("good", `+${e.amount} Bond`)} if it ${e.when === "combo" ? "lands a combo (hits a foe an ally set up)" : "knocks a foe out"}`); break;
+      case "disengage": lines.push(`Ends the user's engagement ${tag("good", "without a free attack")}`); break;
       case "status": {
         const st = content.statuses[e.status];
         const verb = move.affects === "allies" ? "Grants" : "Inflicts";

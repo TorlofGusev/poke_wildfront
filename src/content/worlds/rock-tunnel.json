@@ -1,0 +1,215 @@
+{
+ "id": "rock-tunnel",
+ "name": "Rock Tunnel",
+ "ai": "normal",
+ "deploySlots": 5,
+ "rows": [
+  "########################",
+  "#wwwwwwwwwwwwwwwww#wwww#",
+  "wwwwwwwwwwwwwwwwww#wwww#",
+  "#wwwwwwwwwwwwwwwww#wwww#",
+  "##############w#ww#wwww#",
+  "#wwwwwww#wwwwwwwww#wwww#",
+  "#wwwwwww#wwwwwwwww#wwww#",
+  "#wwwwwww#wwwwwwwww#wwww#",
+  "#wwwwwww#wwwwwwwwwwwwww#",
+  "#www#w#############w#ww#",
+  "#wwwwwwwwwwwwwwwwwwwwww#",
+  "#wwwwwwwwwww#wwwwwwwwww#",
+  "#wwwwwwwwwww#wwwwwwwwww#",
+  "#wwwwwwwwwww#wwwwwwwwww#",
+  "#wwwwwwwwwww#wwwwwwwwww#",
+  "####################w###"
+ ],
+ "start": {
+  "x": 1,
+  "y": 2
+ },
+ "areaNames": {
+  "rock-tunnel-dark": "Rock Tunnel"
+ },
+ "exits": [
+  {
+   "name": "Route 9",
+   "pos": {
+    "x": 0,
+    "y": 2
+   },
+   "to": "route-9",
+   "arrive": {
+    "x": 22,
+    "y": 9
+   }
+  },
+  {
+   "name": "Route 10",
+   "pos": {
+    "x": 20,
+    "y": 15
+   },
+   "to": "route-10",
+   "arrive": {
+    "x": 3,
+    "y": 1
+   }
+  }
+ ],
+ "spawnZones": [
+  {
+   "biome": "rock-tunnel-dark",
+   "count": 4,
+   "levels": {
+    "min": 16,
+    "max": 19
+   },
+   "points": [
+    {
+     "x": 10,
+     "y": 2
+    },
+    {
+     "x": 16,
+     "y": 6
+    },
+    {
+     "x": 4,
+     "y": 7
+    },
+    {
+     "x": 12,
+     "y": 7
+    },
+    {
+     "x": 3,
+     "y": 12
+    },
+    {
+     "x": 9,
+     "y": 13
+    },
+    {
+     "x": 16,
+     "y": 12
+    },
+    {
+     "x": 21,
+     "y": 4
+    }
+   ]
+  }
+ ],
+ "pickups": [
+  {
+   "id": "rt-stone",
+   "pos": {
+    "x": 22,
+    "y": 1
+   },
+   "items": {
+    "hard-stone": 1
+   },
+   "once": true
+  },
+  {
+   "id": "rt-herb",
+   "pos": {
+    "x": 1,
+    "y": 14
+   },
+   "items": {
+    "revival-herb": 1,
+    "super-potion": 1
+   }
+  }
+ ],
+ "npcs": [
+  {
+   "id": "rt-hiker-1",
+   "name": "Hiker Lenny",
+   "kind": "trainer",
+   "pos": {
+    "x": 10,
+    "y": 6
+   },
+   "text": [
+    "Who turned on the lights?"
+   ],
+   "afterText": [
+    "Lost in the dark..."
+   ],
+   "team": [
+    {
+     "species": "geodude",
+     "level": 18
+    },
+    {
+     "species": "machop",
+     "level": 18
+    },
+    {
+     "species": "onix",
+     "level": 18
+    }
+   ],
+   "reward": {
+    "money": 720
+   }
+  },
+  {
+   "id": "rt-pokemaniac",
+   "name": "PokéManiac Ashton",
+   "kind": "trainer",
+   "pos": {
+    "x": 4,
+    "y": 11
+   },
+   "text": [
+    "I came here for rare Pokémon!"
+   ],
+   "afterText": [
+    "Rare loss."
+   ],
+   "team": [
+    {
+     "species": "cubone",
+     "level": 19
+    },
+    {
+     "species": "slowpoke",
+     "level": 19
+    }
+   ],
+   "reward": {
+    "money": 950
+   }
+  },
+  {
+   "id": "rt-hiker-2",
+   "name": "Hiker Oliver",
+   "kind": "trainer",
+   "pos": {
+    "x": 16,
+    "y": 13
+   },
+   "text": [
+    "The exit is close, but not for you!"
+   ],
+   "afterText": [
+    "Go on through."
+   ],
+   "team": [
+    {
+     "species": "graveler",
+     "level": 19
+    },
+    {
+     "species": "onix",
+     "level": 19
+    }
+   ],
+   "reward": {
+    "money": 760
+   }
+  }
+ ]
+}

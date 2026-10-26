@@ -3,21 +3,12 @@
  "maxLevel": 30,
  "xpPerLevel": 30,
  "xpPerEnemyLevel": 6,
- "moneyPerEnemyLevel": 12,
+ "benchXpShare": 0.5,
+ "moneyPerEnemyLevel": 8,
  "maxActiveMoves": 3,
  "pointsPerLevel": 1,
  "evolutionPoints": 2,
  "candyBonus": 1,
  "candiesPerVictory": 1,
- "talentLevels": [
-  4,
-  6,
-  8,
-  10,
-  12,
-  14,
-  16,
-  18,
-  20
- ]
+ "respecCostPerLevel": 20
 }

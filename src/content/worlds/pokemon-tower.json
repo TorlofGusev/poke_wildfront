@@ -1,0 +1,424 @@
+{
+ "id": "pokemon-tower",
+ "name": "Pokémon Tower",
+ "ai": "normal",
+ "deploySlots": 5,
+ "rows": [
+  "##############",
+  "#zzzzzz#zzzzz#",
+  "#zzzzzz#zzzzz#",
+  "#zz##zz#zz#zz#",
+  "#zzzzzzzzz#zz#",
+  "######z#######",
+  "#zzzzzzzzzzzz#",
+  "#zz#zzz##zzzz#",
+  "#zzzzzzzzzz#z#",
+  "#z##zzzzzzzzz#",
+  "#zzzzzzzzzzzz#",
+  "#######z######"
+ ],
+ "start": {
+  "x": 7,
+  "y": 10
+ },
+ "exits": [
+  {
+   "name": "Lavender Town",
+   "pos": {
+    "x": 7,
+    "y": 11
+   },
+   "to": "lavender-town",
+   "arrive": {
+    "x": 22,
+    "y": 6
+   }
+  }
+ ],
+ "spawnZones": [
+  {
+   "biome": "pokemon-tower",
+   "count": 2,
+   "levels": {
+    "min": 19,
+    "max": 21
+   },
+   "points": [
+    {
+     "x": 1,
+     "y": 6
+    },
+    {
+     "x": 12,
+     "y": 6
+    },
+    {
+     "x": 2,
+     "y": 10
+    },
+    {
+     "x": 11,
+     "y": 10
+    },
+    {
+     "x": 5,
+     "y": 8
+    },
+    {
+     "x": 12,
+     "y": 9
+    }
+   ]
+  },
+  {
+   "biome": "pokemon-tower",
+   "count": 1,
+   "levels": {
+    "min": 20,
+    "max": 21
+   },
+   "points": [
+    {
+     "x": 2,
+     "y": 1
+    },
+    {
+     "x": 9,
+     "y": 1
+    },
+    {
+     "x": 3,
+     "y": 4
+    },
+    {
+     "x": 12,
+     "y": 3
+    }
+   ]
+  }
+ ],
+ "pickups": [
+  {
+   "id": "pt-herbs",
+   "pos": {
+    "x": 1,
+    "y": 10
+   },
+   "items": {
+    "revival-herb": 1,
+    "pecha-berry": 2
+   }
+  },
+  {
+   "id": "pt-top",
+   "pos": {
+    "x": 1,
+    "y": 1
+   },
+   "items": {
+    "leftovers": 1
+   },
+   "once": true
+  }
+ ],
+ "npcs": [
+  {
+   "id": "rival-tower",
+   "name": "Rival",
+   "kind": "rival",
+   "pos": {
+    "x": 10,
+    "y": 7
+   },
+   "text": [
+    "What are you doing here? Your Pokémon aren't dead!",
+    "Let me show you how strong mine have grown!"
+   ],
+   "afterText": [
+    "Hmph. The ghost upstairs scares everyone off anyway. Smell ya later!"
+   ],
+   "teamByStarter": {
+    "bulbasaur": [
+     {
+      "species": "pidgeotto",
+      "level": 21
+     },
+     {
+      "species": "kadabra",
+      "level": 21
+     },
+     {
+      "species": "gyarados",
+      "level": 21
+     },
+     {
+      "species": "exeggcute",
+      "level": 21
+     },
+     {
+      "species": "charmeleon",
+      "level": 22
+     }
+    ],
+    "charmander": [
+     {
+      "species": "pidgeotto",
+      "level": 21
+     },
+     {
+      "species": "kadabra",
+      "level": 21
+     },
+     {
+      "species": "growlithe",
+      "level": 21
+     },
+     {
+      "species": "exeggcute",
+      "level": 21
+     },
+     {
+      "species": "wartortle",
+      "level": 22
+     }
+    ],
+    "squirtle": [
+     {
+      "species": "pidgeotto",
+      "level": 21
+     },
+     {
+      "species": "kadabra",
+      "level": 21
+     },
+     {
+      "species": "growlithe",
+      "level": 21
+     },
+     {
+      "species": "gyarados",
+      "level": 21
+     },
+     {
+      "species": "ivysaur",
+      "level": 22
+     }
+    ],
+    "pikachu": [
+     {
+      "species": "pidgeotto",
+      "level": 21
+     },
+     {
+      "species": "kadabra",
+      "level": 21
+     },
+     {
+      "species": "growlithe",
+      "level": 21
+     },
+     {
+      "species": "exeggcute",
+      "level": 21
+     },
+     {
+      "species": "vaporeon",
+      "level": 22
+     }
+    ]
+   },
+   "reward": {
+    "money": 1500
+   }
+  },
+  {
+   "id": "channeler-tower-1",
+   "name": "Channeler",
+   "kind": "trainer",
+   "pos": {
+    "x": 2,
+    "y": 6
+   },
+   "text": [
+    "Be gone... evil spirit!"
+   ],
+   "afterText": [
+    "I was possessed... how embarrassing."
+   ],
+   "team": [
+    {
+     "species": "gastly",
+     "level": 20
+    },
+    {
+     "species": "gastly",
+     "level": 20
+    },
+    {
+     "species": "haunter",
+     "level": 21
+    }
+   ],
+   "reward": {
+    "money": 500
+   }
+  },
+  {
+   "id": "channeler-tower-2",
+   "name": "Channeler",
+   "kind": "trainer",
+   "pos": {
+    "x": 6,
+    "y": 9
+   },
+   "text": [
+    "Kekeke... join us..."
+   ],
+   "afterText": [
+    "Huh? Where am I?"
+   ],
+   "team": [
+    {
+     "species": "haunter",
+     "level": 21
+    },
+    {
+     "species": "gastly",
+     "level": 20
+    }
+   ],
+   "reward": {
+    "money": 500
+   }
+  },
+  {
+   "id": "marowak-ghost",
+   "name": "Ghost",
+   "kind": "wild",
+   "pos": {
+    "x": 6,
+    "y": 5
+   },
+   "sprite": "marowak",
+   "arena": "pokemon-tower",
+   "requires": {
+    "keyItems": [
+     "silph-scope"
+    ]
+   },
+   "lockedText": [
+    "A ghost blocks the stairs! You can't make out what it is...",
+    "Get out... get out..."
+   ],
+   "text": [
+    "The Silph Scope reveals the ghost: it's Marowak's restless spirit!"
+   ],
+   "afterText": [
+    "Marowak's spirit is finally at peace."
+   ],
+   "team": [
+    {
+     "species": "marowak",
+     "level": 22
+    }
+   ],
+   "reward": {
+    "flags": [
+     "marowak-at-rest"
+    ]
+   }
+  },
+  {
+   "id": "rocket-tower-1",
+   "name": "Rocket Grunt",
+   "kind": "rocket",
+   "pos": {
+    "x": 3,
+    "y": 2
+   },
+   "text": [
+    "The old man doesn't want to talk? We'll make him!"
+   ],
+   "afterText": [
+    "Fine, we're leaving..."
+   ],
+   "team": [
+    {
+     "species": "zubat",
+     "level": 21
+    },
+    {
+     "species": "golbat",
+     "level": 22
+    }
+   ],
+   "reward": {
+    "money": 700
+   }
+  },
+  {
+   "id": "rocket-tower-2",
+   "name": "Rocket Grunt",
+   "kind": "rocket",
+   "pos": {
+    "x": 9,
+    "y": 2
+   },
+   "text": [
+    "Mr. Fuji is our guest. Get lost!"
+   ],
+   "afterText": [
+    "Team Rocket retreats!"
+   ],
+   "team": [
+    {
+     "species": "koffing",
+     "level": 21
+    },
+    {
+     "species": "raticate",
+     "level": 22
+    },
+    {
+     "species": "koffing",
+     "level": 21
+    }
+   ],
+   "reward": {
+    "money": 750
+   }
+  },
+  {
+   "id": "mr-fuji-tower",
+   "name": "Mr. Fuji",
+   "kind": "gift",
+   "pos": {
+    "x": 12,
+    "y": 1
+   },
+   "requires": {
+    "flags": [
+     "npc:marowak-ghost"
+    ]
+   },
+   "lockedText": [
+    "...Something terrible lingers on the stairs below."
+   ],
+   "text": [
+    "Thank you for driving them away, and for calming poor Marowak.",
+    "Take my Poké Flute. Its tune wakes even the deepest sleeper."
+   ],
+   "afterText": [
+    "I will return to my house in Lavender Town."
+   ],
+   "reward": {
+    "keyItems": [
+     "poke-flute"
+    ],
+    "flags": [
+     "fuji-freed"
+    ]
+   }
+  }
+ ]
+}

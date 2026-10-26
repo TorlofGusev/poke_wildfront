@@ -1,0 +1,267 @@
+{
+ "id": "vermilion-city",
+ "name": "Vermilion City",
+ "ai": "normal",
+ "deploySlots": 5,
+ "rows": [
+  "###########T############",
+  "#TTTTTTTTTTTTTTTTTTTTTT#",
+  "#TTTTTTTTTTTTTTTTTTTTTT#",
+  "#TT####TTTTTTTTTTTTTTTT#",
+  "#TT#TT#TTTTTTTTTTTTTTTT#",
+  "#TT#T##TTTTTTTTTTTTTTTT#",
+  "#TTTTTTTTTTTTTTTTTTTTTT#",
+  "#TTTTTTTTTTTTTTTTTTTTTTT",
+  "#TTTTTTTTTTTTTTTTTTTTTT#",
+  "#TTTTTTTTTTTTTT###T###T#",
+  "#TTTTTTTTTTTTTT#TTTTT#T#",
+  "#TTTTTTTTTTTTTT#TTTTT#T#",
+  "#~~~~~~~~~~T~~T#TTTTT#T#",
+  "#~~~~~~~~~~T~~T#######T#",
+  "#~~~~~~~~~~T~~TTTTTTTTT#",
+  "###########T############"
+ ],
+ "start": {
+  "x": 11,
+  "y": 1
+ },
+ "areaNames": {
+  "town": "Vermilion City"
+ },
+ "exits": [
+  {
+   "name": "Route 6",
+   "pos": {
+    "x": 11,
+    "y": 0
+   },
+   "to": "route-6",
+   "arrive": {
+    "x": 11,
+    "y": 14
+   }
+  },
+  {
+   "name": "Route 11",
+   "pos": {
+    "x": 23,
+    "y": 7
+   },
+   "to": "route-11",
+   "arrive": {
+    "x": 1,
+    "y": 5
+   }
+  },
+  {
+   "name": "S.S. Anne",
+   "pos": {
+    "x": 11,
+    "y": 15
+   },
+   "to": "ss-anne",
+   "arrive": {
+    "x": 11,
+    "y": 10
+   },
+   "requires": {
+    "keyItems": [
+     "ss-ticket"
+    ]
+   },
+   "lockedText": "A sailor stops you: \"Ticket, please! No ticket, no boarding.\""
+  }
+ ],
+ "spawnZones": [],
+ "obstacles": [
+  {
+   "pos": {
+    "x": 18,
+    "y": 9
+   },
+   "kind": "cut",
+   "opensIf": {
+    "fieldMove": "cut"
+   },
+   "text": "A small tree blocks the gym door. It looks like it could be cut."
+  }
+ ],
+ "pickups": [
+  {
+   "id": "vermilion-berries",
+   "pos": {
+    "x": 20,
+    "y": 2
+   },
+   "items": {
+    "oran-berry": 2,
+    "rawst-berry": 1
+   }
+  },
+  {
+   "id": "vermilion-magnet",
+   "pos": {
+    "x": 22,
+    "y": 14
+   },
+   "items": {
+    "magnet": 1
+   },
+   "once": true
+  }
+ ],
+ "npcs": [
+  {
+   "id": "vermilion-gentleman",
+   "name": "Gentleman Tucker",
+   "kind": "trainer",
+   "pos": {
+    "x": 16,
+    "y": 11
+   },
+   "arena": "power-plant",
+   "text": [
+    "Lt. Surge's gym runs on pure voltage!"
+   ],
+   "afterText": [
+    "Shocking..."
+   ],
+   "team": [
+    {
+     "species": "pikachu",
+     "level": 15
+    },
+    {
+     "species": "voltorb",
+     "level": 16
+    }
+   ],
+   "reward": {
+    "money": 960
+   }
+  },
+  {
+   "id": "vermilion-sailor",
+   "name": "Sailor Dwayne",
+   "kind": "trainer",
+   "pos": {
+    "x": 20,
+    "y": 11
+   },
+   "arena": "power-plant",
+   "text": [
+    "Surge taught me everything!"
+   ],
+   "afterText": [
+    "Electric shock!"
+   ],
+   "team": [
+    {
+     "species": "magnemite",
+     "level": 16
+    },
+    {
+     "species": "pikachu",
+     "level": 16
+    }
+   ],
+   "reward": {
+    "money": 480
+   }
+  },
+  {
+   "id": "surge",
+   "name": "Lt. Surge",
+   "kind": "leader",
+   "pos": {
+    "x": 18,
+    "y": 12
+   },
+   "arena": "power-plant",
+   "text": [
+    "Hey kid! Electric Pokémon saved me during the war!",
+    "You won't live long in combat, that's for sure!"
+   ],
+   "afterText": [
+    "The Thunder Badge cranks up your Pokémon's speed. Ha!"
+   ],
+   "team": [
+    {
+     "species": "voltorb",
+     "level": 17,
+     "heldItem": "quick-claw"
+    },
+    {
+     "species": "pikachu",
+     "level": 17,
+     "heldItem": "magnet"
+    },
+    {
+     "species": "raichu",
+     "level": 19,
+     "heldItem": "magnet"
+    }
+   ],
+   "reward": {
+    "money": 1900,
+    "badge": "thunder"
+   }
+  },
+  {
+   "id": "vermilion-chairman",
+   "name": "Fan Club Chairman",
+   "kind": "talk",
+   "pos": {
+    "x": 4,
+    "y": 4
+   },
+   "text": [
+    "Welcome to the Pokémon Fan Club!",
+    "Have you seen the S.S. Anne? Only ticket holders may board."
+   ]
+  },
+  {
+   "id": "vermilion-sailor-dock",
+   "name": "Dock Sailor",
+   "kind": "talk",
+   "pos": {
+    "x": 12,
+    "y": 11
+   },
+   "text": [
+    "The S.S. Anne is moored at the dock just south.",
+    "She sails soon, so don't dawdle!"
+   ]
+  },
+  {
+   "id": "vermilion-squirtle",
+   "name": "Officer",
+   "kind": "gift",
+   "requires": {
+    "badges": 3
+   },
+   "lockedText": [
+    "This Squirtle needs a strong trainer.",
+    "Come back with the Thunder Badge."
+   ],
+   "text": [
+    "You have the Thunder Badge. Squirtle, go with them!"
+   ],
+   "afterText": [
+    "Squirtle is in good hands."
+   ],
+   "reward": {
+    "pokemon": [
+     {
+      "species": "squirtle",
+      "level": 16
+     }
+    ]
+   },
+   "pos": {
+    "x": 8,
+    "y": 1
+   }
+  }
+ ]
+}

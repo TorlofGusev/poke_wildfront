@@ -1,0 +1,167 @@
+{
+ "id": "lavender-town",
+ "name": "Lavender Town",
+ "ai": "normal",
+ "deploySlots": 5,
+ "rows": [
+  "###########T############",
+  "#TTTTTTTTTTTTTTTTTTTTTT#",
+  "#TTTTTTTTTTTTTTT######T#",
+  "#TTTTTTTTTTTTTTT######T#",
+  "#TTTTTTTTTTTTTTT######T#",
+  "#TTTTTTTTTTTTTTT######T#",
+  "TTTTTTTTTTTTTTTTTTTTTTTT",
+  "#TTTTTTTTTTTTTTTTTTTTTT#",
+  "#TT##T##TTTTTTTTTTTTTTT#",
+  "#TT#TTT#TTTTTTTTTTTTTTT#",
+  "#TT#TTT#TTTTTTTTTTTTTTT#",
+  "#TT#TTT#TTTTTTTTTTTTTTT#",
+  "#TT#####TTTTTTTTTTTTTTT#",
+  "###########T############"
+ ],
+ "start": {
+  "x": 11,
+  "y": 1
+ },
+ "areaNames": {
+  "town": "Lavender Town"
+ },
+ "exits": [
+  {
+   "name": "Route 10",
+   "pos": {
+    "x": 11,
+    "y": 0
+   },
+   "to": "route-10",
+   "arrive": {
+    "x": 11,
+    "y": 14
+   }
+  },
+  {
+   "name": "Route 8",
+   "pos": {
+    "x": 0,
+    "y": 6
+   },
+   "to": "route-8",
+   "arrive": {
+    "x": 22,
+    "y": 3
+   }
+  },
+  {
+   "name": "Route 12",
+   "pos": {
+    "x": 11,
+    "y": 13
+   },
+   "to": "route-12",
+   "arrive": {
+    "x": 5,
+    "y": 1
+   }
+  },
+  {
+   "name": "Pokémon Tower",
+   "pos": {
+    "x": 23,
+    "y": 6
+   },
+   "to": "pokemon-tower",
+   "arrive": {
+    "x": 7,
+    "y": 10
+   }
+  }
+ ],
+ "spawnZones": [],
+ "pickups": [
+  {
+   "id": "lavender-berries",
+   "pos": {
+    "x": 20,
+    "y": 11
+   },
+   "items": {
+    "pecha-berry": 2,
+    "oran-berry": 1
+   }
+  }
+ ],
+ "npcs": [
+  {
+   "id": "lavender-mourner",
+   "name": "Channeler",
+   "kind": "talk",
+   "pos": {
+    "x": 19,
+    "y": 7
+   },
+   "text": [
+    "The Pokémon Tower is east of town.",
+    "Ghosts haunt its upper floors..."
+   ]
+  },
+  {
+   "id": "lavender-girl",
+   "name": "Little Girl",
+   "kind": "talk",
+   "pos": {
+    "x": 13,
+    "y": 4
+   },
+   "text": [
+    "Team Rocket took Mr. Fuji up the tower!",
+    "Please help him."
+   ]
+  },
+  {
+   "id": "lavender-name-rater",
+   "name": "Name Rater",
+   "kind": "talk",
+   "pos": {
+    "x": 9,
+    "y": 10
+   },
+   "text": [
+    "Your Pokémon have fine names. Treasure them."
+   ]
+  },
+  {
+   "id": "mr-fuji",
+   "name": "Mr. Fuji",
+   "kind": "gift",
+   "pos": {
+    "x": 5,
+    "y": 11
+   },
+   "requires": {
+    "flags": [
+     "fuji-freed"
+    ]
+   },
+   "lockedText": [
+    "The house is empty. A note reads: \"Gone to the Pokémon Tower.\""
+   ],
+   "text": [
+    "Thank you for saving me from Team Rocket.",
+    "Please take these. They will serve your Pokémon well."
+   ],
+   "afterText": [
+    "Care for your Pokémon, and they will care for you."
+   ],
+   "reward": {
+    "money": 2000,
+    "items": {
+     "leftovers": 1,
+     "revival-herb": 2
+    },
+    "balls": {
+     "ultra-ball": 2
+    }
+   }
+  }
+ ]
+}

@@ -34,12 +34,20 @@ export function formatEvent(e: BattleEvent, ctx: LogContext): LogEntry | null {
       return null;
     case "moved":
       return { text: `${name(e.unitId)} moves ${e.path.length} tile${e.path.length === 1 ? "" : "s"}`, tone: side(e.unitId) };
+    case "engagementStrike":
+      return { text: `${name(e.unitId)} strikes ${name(e.targetId)} as it breaks away`, tone: side(e.unitId) };
+    case "combo":
+      return { text: `${tag("good", "Combo!")} ${name(e.unitId)} exploits ${e.setup === "engaged" ? "an ally's engagement" : "an ally's setup"} on ${name(e.targetId)}`, tone: side(e.unitId) };
+    case "engaged":
+      return { text: `${name(e.unitId)} and ${name(e.targetId)} are ${tag("bad", "engaged")}`, tone: "info" };
+    case "disengaged":
+      return { text: `${name(e.unitId)} and ${name(e.targetId)} are no longer engaged`, tone: "info" };
     case "moveUsed": {
       const targets = e.affected.length ? ` → ${e.affected.map(name).join(", ")}` : "";
       return { text: `${name(e.unitId)} uses ${tag("title", ctx.moveName(e.moveId))}${targets}`, tone: side(e.unitId) };
     }
     case "damaged": {
-      const why = e.source === "status" ? " from status" : e.source === "impact" ? " from impact" : "";
+      const why = e.source === "status" ? " from status" : e.source === "impact" ? " from impact" : e.source === "thorns" ? " from spikes" : "";
       const eff = e.effectiveness === undefined || e.effectiveness === 1 ? ""
         : e.effectiveness > 1 ? ` ${tag("good", `(super effective ×${e.effectiveness})`)}` : ` ${tag("dim", `(not very effective ×${e.effectiveness})`)}`;
       return { text: `${name(e.unitId)} takes ${tag("dmg", `${e.amount} damage`)}${why}${eff} — ${e.hp} HP left`, tone: "damage" };
@@ -68,7 +76,7 @@ export function formatEvent(e: BattleEvent, ctx: LogContext): LogEntry | null {
       return null;
     case "bondChanged":
       return {
-        text: `${tag(e.side === "player" ? "player" : "enemy", e.side === "player" ? "Your team" : "Foes")} ${e.amount > 0 ? "gain" : "spend"} ${tag("num", `${Math.abs(e.amount)} ${ctx.bondName}`)} — ${e.total} left${e.reason === "knockout" ? " (knockout)" : e.reason === "fainted" ? " (a fallen ally)" : ""}`,
+        text: `${tag(e.side === "player" ? "player" : "enemy", e.side === "player" ? "Your team" : "Foes")} ${e.amount > 0 ? "gain" : "spend"} ${tag("num", `${Math.abs(e.amount)} ${ctx.bondName}`)} — ${e.total} left${e.reason === "knockout" ? " (knockout)" : e.reason === "fainted" ? " (a fallen ally)" : e.reason === "combo" ? " (combo)" : ""}`,
         tone: "info",
       };
     case "abilityTriggered":

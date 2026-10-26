@@ -1,0 +1,319 @@
+{
+ "id": "route-22",
+ "name": "Route 22",
+ "ai": "tutorial",
+ "deploySlots": 3,
+ "rows": [
+  "###.####################",
+  "#......................#",
+  "#..nnnnnnn.~~~~.########",
+  "#..nnnnnnn.~~~~.########",
+  "#..nnnnnnn.~~~~.########",
+  "#..nnnnnnn.~~~~........#",
+  "####.####..............#",
+  "####.####..............#",
+  "#.......................",
+  "#............nnnnnnn...#",
+  "#...nnnnnn...nnnnnnn...#",
+  "#...nnnnnn...nnnnnnn...#",
+  "#...nnnnnn...nnnnnnn...#",
+  "#...nnnnnn.##.......####",
+  "#..........##.......####",
+  "########################"
+ ],
+ "start": {
+  "x": 22,
+  "y": 8
+ },
+ "areaNames": {
+  "route": "Route 22",
+  "route22-grass": "Route 22 grass"
+ },
+ "exits": [
+  {
+   "name": "Viridian City",
+   "pos": {
+    "x": 23,
+    "y": 8
+   },
+   "to": "viridian-city",
+   "arrive": {
+    "x": 1,
+    "y": 7
+   }
+  },
+  {
+   "name": "Route 23",
+   "pos": {
+    "x": 3,
+    "y": 0
+   },
+   "to": "route-23",
+   "arrive": {
+    "x": 2,
+    "y": 14
+   }
+  }
+ ],
+ "spawnZones": [
+  {
+   "biome": "route22-grass",
+   "count": 3,
+   "levels": {
+    "min": 2,
+    "max": 4
+   },
+   "points": [
+    {
+     "x": 4,
+     "y": 3
+    },
+    {
+     "x": 8,
+     "y": 4
+    },
+    {
+     "x": 14,
+     "y": 10
+    },
+    {
+     "x": 18,
+     "y": 11
+    },
+    {
+     "x": 5,
+     "y": 11
+    },
+    {
+     "x": 8,
+     "y": 13
+    },
+    {
+     "x": 6,
+     "y": 2
+    }
+   ]
+  }
+ ],
+ "pickups": [
+  {
+   "id": "r22-berries",
+   "pos": {
+    "x": 1,
+    "y": 13
+   },
+   "items": {
+    "oran-berry": 2,
+    "pecha-berry": 1
+   }
+  },
+  {
+   "id": "r22-pond",
+   "pos": {
+    "x": 15,
+    "y": 6
+   },
+   "items": {
+    "mystic-water": 1
+   },
+   "once": true
+  },
+  {
+   "id": "r22-balls",
+   "pos": {
+    "x": 22,
+    "y": 10
+   },
+   "balls": {
+    "poke-ball": 2
+   }
+  }
+ ],
+ "npcs": [
+  {
+   "id": "rival-route22a",
+   "name": "Rival",
+   "kind": "rival",
+   "pos": {
+    "x": 15,
+    "y": 7
+   },
+   "arena": "route",
+   "text": [
+    "Hey! You're heading to the League gate too?",
+    "Gramps gave me a Pokémon as well. Let's see whose is stronger!"
+   ],
+   "afterText": [
+    "Hmph. Lucky win. I'll be way ahead next time!"
+   ],
+   "teamByStarter": {
+    "bulbasaur": [
+     {
+      "species": "pidgey",
+      "level": 4
+     },
+     {
+      "species": "charmander",
+      "level": 5
+     }
+    ],
+    "charmander": [
+     {
+      "species": "pidgey",
+      "level": 4
+     },
+     {
+      "species": "squirtle",
+      "level": 5
+     }
+    ],
+    "squirtle": [
+     {
+      "species": "pidgey",
+      "level": 4
+     },
+     {
+      "species": "bulbasaur",
+      "level": 5
+     }
+    ],
+    "pikachu": [
+     {
+      "species": "pidgey",
+      "level": 4
+     },
+     {
+      "species": "eevee",
+      "level": 5
+     }
+    ]
+   },
+   "reward": {
+    "money": 280
+   }
+  },
+  {
+   "id": "rival-route22b",
+   "name": "Rival",
+   "kind": "rival",
+   "pos": {
+    "x": 6,
+    "y": 9
+   },
+   "arena": "route",
+   "requires": {
+    "badges": 8
+   },
+   "visibleIf": {
+    "badges": 8
+   },
+   "lockedText": [
+    "Come back when you have all eight badges."
+   ],
+   "text": [
+    "Eight badges? Yeah, me too.",
+    "Only one of us walks into Victory Road. Let's settle it!"
+   ],
+   "afterText": [
+    "Fine. Go on ahead... I'll catch up at the League."
+   ],
+   "teamByStarter": {
+    "bulbasaur": [
+     {
+      "species": "pidgeot",
+      "level": 28
+     },
+     {
+      "species": "alakazam",
+      "level": 28
+     },
+     {
+      "species": "rhyhorn",
+      "level": 28
+     },
+     {
+      "species": "exeggcute",
+      "level": 28
+     },
+     {
+      "species": "charizard",
+      "level": 29,
+      "heldItem": "charcoal"
+     }
+    ],
+    "charmander": [
+     {
+      "species": "pidgeot",
+      "level": 28
+     },
+     {
+      "species": "alakazam",
+      "level": 28
+     },
+     {
+      "species": "rhyhorn",
+      "level": 28
+     },
+     {
+      "species": "growlithe",
+      "level": 28
+     },
+     {
+      "species": "blastoise",
+      "level": 29,
+      "heldItem": "mystic-water"
+     }
+    ],
+    "squirtle": [
+     {
+      "species": "pidgeot",
+      "level": 28
+     },
+     {
+      "species": "alakazam",
+      "level": 28
+     },
+     {
+      "species": "rhyhorn",
+      "level": 28
+     },
+     {
+      "species": "gyarados",
+      "level": 28
+     },
+     {
+      "species": "venusaur",
+      "level": 29,
+      "heldItem": "miracle-seed"
+     }
+    ],
+    "pikachu": [
+     {
+      "species": "pidgeot",
+      "level": 28
+     },
+     {
+      "species": "alakazam",
+      "level": 28
+     },
+     {
+      "species": "rhyhorn",
+      "level": 28
+     },
+     {
+      "species": "growlithe",
+      "level": 28
+     },
+     {
+      "species": "vaporeon",
+      "level": 29,
+      "heldItem": "mystic-water"
+     }
+    ]
+   },
+   "reward": {
+    "money": 3000
+   }
+  }
+ ]
+}

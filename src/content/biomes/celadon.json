@@ -1,0 +1,699 @@
+{
+ "celadon-route8": {
+  "id": "celadon-route8",
+  "name": "Route 8",
+  "char": "P",
+  "travelCost": 1,
+  "encounters": {
+   "groupSize": {
+    "min": 3,
+    "max": 4
+   },
+   "entries": [
+    {
+     "speciesId": "pidgey",
+     "weight": 3
+    },
+    {
+     "speciesId": "pidgeotto",
+     "weight": 1,
+     "maxPerGroup": 1
+    },
+    {
+     "speciesId": "meowth",
+     "weight": 3
+    },
+    {
+     "speciesId": "ekans",
+     "weight": 2
+    },
+    {
+     "speciesId": "sandshrew",
+     "weight": 2
+    },
+    {
+     "speciesId": "growlithe",
+     "weight": 2,
+     "maxPerGroup": 1
+    },
+    {
+     "speciesId": "vulpix",
+     "weight": 2,
+     "maxPerGroup": 1
+    },
+    {
+     "speciesId": "mankey",
+     "weight": 2
+    }
+   ],
+   "levels": {
+    "min": 18,
+    "max": 20
+   }
+  },
+  "arena": {
+   "mapRows": [
+    "................",
+    "..\"\"............",
+    "......#.....\"\"..",
+    "..##............",
+    "......\"\"....#...",
+    "......\"\"........",
+    ".........##.....",
+    "....#...........",
+    "..........\"\"....",
+    "................"
+   ],
+   "deploymentZone": [
+    {
+     "x": 0,
+     "y": 1
+    },
+    {
+     "x": 1,
+     "y": 1
+    },
+    {
+     "x": 0,
+     "y": 2
+    },
+    {
+     "x": 1,
+     "y": 2
+    },
+    {
+     "x": 0,
+     "y": 3
+    },
+    {
+     "x": 1,
+     "y": 3
+    },
+    {
+     "x": 0,
+     "y": 4
+    },
+    {
+     "x": 1,
+     "y": 4
+    },
+    {
+     "x": 0,
+     "y": 5
+    },
+    {
+     "x": 1,
+     "y": 5
+    },
+    {
+     "x": 0,
+     "y": 6
+    },
+    {
+     "x": 1,
+     "y": 6
+    },
+    {
+     "x": 0,
+     "y": 7
+    },
+    {
+     "x": 1,
+     "y": 7
+    },
+    {
+     "x": 0,
+     "y": 8
+    },
+    {
+     "x": 1,
+     "y": 8
+    }
+   ],
+   "enemySpawns": [
+    {
+     "x": 14,
+     "y": 1
+    },
+    {
+     "x": 14,
+     "y": 5
+    },
+    {
+     "x": 15,
+     "y": 8
+    },
+    {
+     "x": 13,
+     "y": 3
+    },
+    {
+     "x": 15,
+     "y": 6
+    }
+   ]
+  },
+  "forage": {
+   "oran-berry": 1,
+   "rawst-berry": 1
+  },
+  "loot": [
+   {
+    "item": "super-potion",
+    "chance": 0.12
+   },
+   {
+    "item": "charcoal",
+    "chance": 0.03
+   },
+   {
+    "item": "revival-herb",
+    "chance": 0.06
+   }
+  ]
+ },
+ "celadon-route7": {
+  "id": "celadon-route7",
+  "name": "Route 7",
+  "char": "Q",
+  "travelCost": 1,
+  "encounters": {
+   "groupSize": {
+    "min": 3,
+    "max": 4
+   },
+   "entries": [
+    {
+     "speciesId": "pidgey",
+     "weight": 3
+    },
+    {
+     "speciesId": "oddish",
+     "weight": 3
+    },
+    {
+     "speciesId": "bellsprout",
+     "weight": 3
+    },
+    {
+     "speciesId": "meowth",
+     "weight": 2
+    },
+    {
+     "speciesId": "growlithe",
+     "weight": 1,
+     "maxPerGroup": 1
+    },
+    {
+     "speciesId": "vulpix",
+     "weight": 1,
+     "maxPerGroup": 1
+    },
+    {
+     "speciesId": "jigglypuff",
+     "weight": 2
+    },
+    {
+     "speciesId": "abra",
+     "weight": 1,
+     "maxPerGroup": 1
+    },
+    {
+     "speciesId": "mr-mime",
+     "weight": 0.4,
+     "maxPerGroup": 1
+    }
+   ],
+   "levels": {
+    "min": 18,
+    "max": 21
+   }
+  },
+  "arena": {
+   "mapRows": [
+    "................",
+    "..\"\"\"\"..........",
+    "..\"\"....#...\"\"..",
+    "..........\"\"\"\"..",
+    "....#...........",
+    "......\"\"\"\"......",
+    "..\"\"......#.....",
+    "..\"\"....\"\"......",
+    ".......#....\"\"..",
+    "................"
+   ],
+   "deploymentZone": [
+    {
+     "x": 0,
+     "y": 1
+    },
+    {
+     "x": 1,
+     "y": 1
+    },
+    {
+     "x": 0,
+     "y": 2
+    },
+    {
+     "x": 1,
+     "y": 2
+    },
+    {
+     "x": 0,
+     "y": 3
+    },
+    {
+     "x": 1,
+     "y": 3
+    },
+    {
+     "x": 0,
+     "y": 4
+    },
+    {
+     "x": 1,
+     "y": 4
+    },
+    {
+     "x": 0,
+     "y": 5
+    },
+    {
+     "x": 1,
+     "y": 5
+    },
+    {
+     "x": 0,
+     "y": 6
+    },
+    {
+     "x": 1,
+     "y": 6
+    },
+    {
+     "x": 0,
+     "y": 7
+    },
+    {
+     "x": 1,
+     "y": 7
+    },
+    {
+     "x": 0,
+     "y": 8
+    },
+    {
+     "x": 1,
+     "y": 8
+    }
+   ],
+   "enemySpawns": [
+    {
+     "x": 14,
+     "y": 1
+    },
+    {
+     "x": 14,
+     "y": 5
+    },
+    {
+     "x": 15,
+     "y": 8
+    },
+    {
+     "x": 13,
+     "y": 3
+    },
+    {
+     "x": 15,
+     "y": 6
+    }
+   ]
+  },
+  "forage": {
+   "oran-berry": 1,
+   "pecha-berry": 1
+  },
+  "loot": [
+   {
+    "item": "miracle-seed",
+    "chance": 0.04
+   },
+   {
+    "item": "super-potion",
+    "chance": 0.12
+   },
+   {
+    "item": "revival-herb",
+    "chance": 0.06
+   }
+  ]
+ },
+ "celadon-dojo": {
+  "id": "celadon-dojo",
+  "name": "Fighting Dojo",
+  "char": "R",
+  "travelCost": 2,
+  "encounters": {
+   "groupSize": {
+    "min": 3,
+    "max": 4
+   },
+   "entries": [
+    {
+     "speciesId": "machop",
+     "weight": 4
+    },
+    {
+     "speciesId": "machoke",
+     "weight": 2
+    },
+    {
+     "speciesId": "mankey",
+     "weight": 3
+    },
+    {
+     "speciesId": "primeape",
+     "weight": 1,
+     "maxPerGroup": 1
+    },
+    {
+     "speciesId": "hitmonlee",
+     "weight": 0.4,
+     "maxPerGroup": 1
+    },
+    {
+     "speciesId": "hitmonchan",
+     "weight": 0.4,
+     "maxPerGroup": 1
+    }
+   ],
+   "levels": {
+    "min": 20,
+    "max": 22
+   }
+  },
+  "arena": {
+   "mapRows": [
+    "################",
+    "................",
+    "..#..........#..",
+    "................",
+    ".....#....#.....",
+    ".....#....#.....",
+    "................",
+    "..#..........#..",
+    "................",
+    "################"
+   ],
+   "deploymentZone": [
+    {
+     "x": 0,
+     "y": 1
+    },
+    {
+     "x": 1,
+     "y": 1
+    },
+    {
+     "x": 0,
+     "y": 2
+    },
+    {
+     "x": 1,
+     "y": 2
+    },
+    {
+     "x": 0,
+     "y": 3
+    },
+    {
+     "x": 1,
+     "y": 3
+    },
+    {
+     "x": 0,
+     "y": 4
+    },
+    {
+     "x": 1,
+     "y": 4
+    },
+    {
+     "x": 0,
+     "y": 5
+    },
+    {
+     "x": 1,
+     "y": 5
+    },
+    {
+     "x": 0,
+     "y": 6
+    },
+    {
+     "x": 1,
+     "y": 6
+    },
+    {
+     "x": 0,
+     "y": 7
+    },
+    {
+     "x": 1,
+     "y": 7
+    },
+    {
+     "x": 0,
+     "y": 8
+    },
+    {
+     "x": 1,
+     "y": 8
+    }
+   ],
+   "enemySpawns": [
+    {
+     "x": 14,
+     "y": 1
+    },
+    {
+     "x": 14,
+     "y": 5
+    },
+    {
+     "x": 15,
+     "y": 8
+    },
+    {
+     "x": 13,
+     "y": 3
+    },
+    {
+     "x": 15,
+     "y": 6
+    }
+   ]
+  },
+  "forage": {
+   "cheri-berry": 1,
+   "oran-berry": 1
+  },
+  "loot": [
+   {
+    "item": "muscle-band",
+    "chance": 0.04
+   },
+   {
+    "item": "quick-claw",
+    "chance": 0.03
+   },
+   {
+    "item": "super-potion",
+    "chance": 0.12
+   }
+  ]
+ },
+ "celadon-park": {
+  "id": "celadon-park",
+  "name": "Game Corner Park",
+  "char": "S",
+  "travelCost": 2,
+  "encounters": {
+   "groupSize": {
+    "min": 3,
+    "max": 4
+   },
+   "entries": [
+    {
+     "speciesId": "oddish",
+     "weight": 3
+    },
+    {
+     "speciesId": "bellsprout",
+     "weight": 3
+    },
+    {
+     "speciesId": "meowth",
+     "weight": 2
+    },
+    {
+     "speciesId": "gloom",
+     "weight": 1,
+     "maxPerGroup": 1
+    },
+    {
+     "speciesId": "weepinbell",
+     "weight": 1,
+     "maxPerGroup": 1
+    },
+    {
+     "speciesId": "eevee",
+     "weight": 0.4,
+     "maxPerGroup": 1
+    },
+    {
+     "speciesId": "porygon",
+     "weight": 0.3,
+     "maxPerGroup": 1
+    },
+    {
+     "speciesId": "jolteon",
+     "weight": 0.15,
+     "maxPerGroup": 1
+    },
+    {
+     "speciesId": "flareon",
+     "weight": 0.15,
+     "maxPerGroup": 1
+    }
+   ],
+   "levels": {
+    "min": 19,
+    "max": 22
+   }
+  },
+  "arena": {
+   "mapRows": [
+    "....\"\"\"\"\"\"......",
+    "..\"\"\"\"\"\"\"\"\"\"....",
+    "..\"\"..\"\"\"\"..\"\"..",
+    "\"\"\"\"....~~\"\"\"\"..",
+    "..\"\"\"\"..~~..\"\"..",
+    "..\"\"\"\"\"\"..\"\"\"\"..",
+    "\"\"..\"\"\"\"\"\"\"\"....",
+    "..\"\"\"\"..\"\"\"\"\"\"..",
+    "....\"\"\"\"\"\"..\"\"..",
+    "..\"\"....\"\"\"\"...."
+   ],
+   "deploymentZone": [
+    {
+     "x": 0,
+     "y": 1
+    },
+    {
+     "x": 1,
+     "y": 1
+    },
+    {
+     "x": 0,
+     "y": 2
+    },
+    {
+     "x": 1,
+     "y": 2
+    },
+    {
+     "x": 0,
+     "y": 3
+    },
+    {
+     "x": 1,
+     "y": 3
+    },
+    {
+     "x": 0,
+     "y": 4
+    },
+    {
+     "x": 1,
+     "y": 4
+    },
+    {
+     "x": 0,
+     "y": 5
+    },
+    {
+     "x": 1,
+     "y": 5
+    },
+    {
+     "x": 0,
+     "y": 6
+    },
+    {
+     "x": 1,
+     "y": 6
+    },
+    {
+     "x": 0,
+     "y": 7
+    },
+    {
+     "x": 1,
+     "y": 7
+    },
+    {
+     "x": 0,
+     "y": 8
+    },
+    {
+     "x": 1,
+     "y": 8
+    }
+   ],
+   "enemySpawns": [
+    {
+     "x": 14,
+     "y": 1
+    },
+    {
+     "x": 14,
+     "y": 5
+    },
+    {
+     "x": 15,
+     "y": 8
+    },
+    {
+     "x": 13,
+     "y": 3
+    },
+    {
+     "x": 15,
+     "y": 6
+    }
+   ]
+  },
+  "forage": {
+   "oran-berry": 1,
+   "pecha-berry": 1,
+   "cheri-berry": 1
+  },
+  "loot": [
+   {
+    "item": "leftovers",
+    "chance": 0.02
+   },
+   {
+    "item": "miracle-seed",
+    "chance": 0.05
+   },
+   {
+    "item": "super-potion",
+    "chance": 0.12
+   }
+  ]
+ }
+}

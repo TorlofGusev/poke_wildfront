@@ -1,0 +1,20 @@
+{
+ "steps": [
+  {"flag": "npc:brock", "text": "Earn the Boulder Badge from Brock in Pewter City."},
+  {"flag": "npc:rocket-mtmoon", "text": "Drive Team Rocket out of Mt. Moon and claim a fossil."},
+  {"flag": "npc:misty", "text": "Earn the Cascade Badge from Misty in Cerulean City."},
+  {"flag": "npc:bill", "text": "Visit Bill at the end of Route 25."},
+  {"flag": "npc:rival-ssanne", "text": "Board the S.S. Anne in Vermilion with Bill's ticket."},
+  {"flag": "npc:surge", "text": "Earn the Thunder Badge from Lt. Surge in Vermilion City."},
+  {"flag": "npc:erika", "text": "Earn the Rainbow Badge from Erika in Celadon City."},
+  {"flag": "npc:giovanni-hideout", "text": "Raid the Rocket Hideout under the Celadon Game Corner."},
+  {"flag": "npc:mr-fuji", "text": "Climb the Pokémon Tower in Lavender Town and free Mr. Fuji."},
+  {"flag": "npc:koga", "text": "Earn the Soul Badge from Koga in Fuchsia City."},
+  {"flag": "npc:giovanni-silph", "text": "Free Silph Co. in Saffron City from Team Rocket."},
+  {"flag": "npc:sabrina", "text": "Earn the Marsh Badge from Sabrina in Saffron City."},
+  {"flag": "npc:blaine", "text": "Earn the Volcano Badge from Blaine on Cinnabar Island."},
+  {"flag": "npc:giovanni", "text": "Earn the Earth Badge from Giovanni in Viridian City."},
+  {"flag": "npc:rival-route22b", "text": "Face your rival on Route 22 before Victory Road."},
+  {"flag": "npc:champion", "text": "Defeat the Elite Four and the Champion at the Indigo Plateau."}
+ ]
+}
