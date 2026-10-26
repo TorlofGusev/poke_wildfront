@@ -32,6 +32,7 @@ import { animKey, facingFor, hasSprite, portraitKey } from "../sprites";
 import { Button } from "../ui/Button";
 import { addFullscreenButton } from "../ui/fullscreen";
 import { tag } from "../ui/markup";
+import { t } from "../i18n";
 import { RichText } from "../ui/RichText";
 import { COLORS, FONT, PHONE, TYPE_COLORS, px } from "../ui/theme";
 
@@ -70,6 +71,13 @@ export class OverworldScene extends Phaser.Scene {
   /** Touch: the tile a press started on, and whether the finger has dragged off it since. */
   private dragFrom: Point | null = null;
   private dragging = false;
+  private hudPending = false;
+  private stripBox!: Phaser.GameObjects.Container;
+  private statsText!: RichText;
+  private msgText!: RichText;
+  private btnBox!: Phaser.GameObjects.Container;
+  private stripKey = "";
+  private btnKey = "";
   /** The dialogue box with an NPC, while open. */
   private dialog: Phaser.GameObjects.Container | null = null;
   /** The "wild Pokémon here" panel over the map, while open. */
@@ -79,15 +87,18 @@ export class OverworldScene extends Phaser.Scene {
     super("Overworld");
   }
 
-  init(data: { message?: string }): void {
+  private intro = false;
+
+  init(data: { message?: string; intro?: boolean }): void {
     this.message = data?.message ?? "";
+    this.intro = data?.intro ?? false;
     this.moving = false;
   }
 
   create(): void {
     playMusic(this, "overworld");
     this.add.text(MAP_X, 16, currentWorld().name, { fontFamily: FONT, fontSize: "20px", color: "#f5d76e" });
-    this.add.text(MAP_X, 40, PHONE ? "Tap twice or drag to walk · red ring: wild group · ★ ◆ ✚ pickups" : "Click to walk. Red ring: wild group. Pickups: ★ rare · ◆ held item · ✚ heal · M: sound on/off", {
+    this.add.text(MAP_X, 40, PHONE ? t("Tap twice or drag to walk · red ring: wild group · ★ ◆ ✚ pickups") : t("Click to walk. Red ring: wild group. Pickups: ★ rare · ◆ held item · ✚ heal · M: sound on/off"), {
       fontFamily: FONT, fontSize: px(11), color: COLORS.dim, wordWrap: { width: 672 },
     });
     this.drawMap();
@@ -108,6 +119,14 @@ export class OverworldScene extends Phaser.Scene {
     ]).setDepth(5);
     this.hud = new RichText(this, HUD_X, 16, 240, 12);
     this.buttons = this.add.container(HUD_X, 0);
+    // The HUD column is rebuilt piece by piece, and only what changed: rebuilding text and buttons
+    // creates GPU textures, which is what made taps feel slow on phones.
+    this.stripBox = this.add.container(0, 0);
+    this.statsText = new RichText(this, 0, 0, 240, 12);
+    this.msgText = new RichText(this, 0, 0, 240, 12);
+    this.btnBox = this.add.container(0, 0);
+    this.stripKey = this.btnKey = "";
+    this.buttons.add([this.stripBox, this.statsText, this.msgText, this.btnBox]);
 
     this.input.on("pointermove", (p: Phaser.Input.Pointer) => {
       // Only redo the path preview when the pointer reaches another tile.
@@ -128,6 +147,8 @@ export class OverworldScene extends Phaser.Scene {
         this.dragFrom = t;
         this.dragging = false;
         this.lastHover = t;
+        // Instant feedback under the finger; the path and HUD follow.
+        this.preview.lineStyle(3, 0xf5d76e, 1).strokeRect(MAP_X + t.x * T + 1, MAP_Y + t.y * T + 1, T - 2, T - 2);
         return;
       }
       this.act(t);
@@ -156,11 +177,18 @@ export class OverworldScene extends Phaser.Scene {
     });
     this.render();
     this.announceArea(this.world.pos);
+    if (this.intro) this.showIntro();
   }
 
   /** The party as a row of portraits with HP bars; tap one to open the camp screen. Returns the y below it. */
   private partyStrip(y: number): number {
     const size = 36, gap = 4;
+    this.stripBox.setY(y);
+    const key = session.game.roster.party.map((m) => `${m.uid}:${m.hp}:${m.level}:${m.knockouts}:${pendingChoice(CONTENT, PROGRESSION, m) || m.unspentPoints > 0}`).join("|") + `|${this.moving}`;
+    if (key === this.stripKey) return y + size + 12;
+    this.stripKey = key;
+    this.stripBox.removeAll(true);
+    y = 0;
     session.game.roster.party.forEach((m, i) => {
       const x = i * (size + gap);
       const frac = Math.max(0, m.hp / memberMaxHp(CONTENT, PROGRESSION, m));
@@ -176,9 +204,9 @@ export class OverworldScene extends Phaser.Scene {
       if (m.knockouts) parts.push(this.add.text(x + size - 2, y + size - 6, "●".repeat(m.knockouts), { fontFamily: FONT, fontSize: px(9), color: "#ff6b6b" }).setOrigin(1, 1));
       parts.push(this.add.rectangle(x, y + size + 2, size, 4, 0x2a3242).setOrigin(0));
       parts.push(this.add.rectangle(x, y + size + 2, size * frac, 4, frac > 0.5 ? 0x6bd36b : frac > 0.2 ? 0xf5d76e : 0xff6b6b).setOrigin(0));
-      this.buttons.add(parts);
+      this.stripBox.add(parts);
     });
-    return y + size + 12;
+    return this.stripBox.y + size + 12;
   }
 
   /** Party members able to fight; wild groups never outnumber them (see effectiveGroup). */
@@ -232,7 +260,7 @@ export class OverworldScene extends Phaser.Scene {
       this.add.text(e.x, e.y, arrow, { fontFamily: FONT, fontSize: px(14), color: "#f5d76e", fontStyle: "bold" }).setOrigin(0.5).setDepth(6);
       // The label points inward, so it stays on the map.
       const inward = exit.pos.y === 0 ? { x: 0, y: 1 } : exit.pos.y === grid.height - 1 ? { x: 0, y: -1 } : exit.pos.x === 0 ? { x: 1, y: 0 } : { x: -1, y: 0 };
-      this.add.text(e.x + inward.x * (T / 2 + 2), e.y + inward.y * (T / 2 + 2), `${arrow} ${exit.name}${open ? "" : " (coming soon)"}`, {
+      this.add.text(e.x + inward.x * (T / 2 + 2), e.y + inward.y * (T / 2 + 2), open ? `${arrow} ${exit.name}` : t("{arrow} {name} (coming soon)", { arrow, name: exit.name }), {
         fontFamily: FONT, fontSize: px(10), color: "#f5d76e", backgroundColor: "#10141ccc", padding: { x: 3, y: 1 },
       }).setOrigin(inward.x === 0 ? 0.5 : inward.x > 0 ? 0 : 1, inward.y === 0 ? 0.5 : inward.y > 0 ? 0 : 1).setDepth(6);
     }
@@ -257,7 +285,7 @@ export class OverworldScene extends Phaser.Scene {
       // Wild groups are visible: the strongest member stands on the map, with the group size.
       this.markers.add(this.add.ellipse(x, y + 8, 22, 8, 0xd0021b, 0.6).setStrokeStyle(1, 0xd0021b));
       const leadIdx = e.levels.indexOf(Math.max(...e.levels));
-      const lead = wildForm(CONTENT, e.species[leadIdx] ?? e.species[0]!, e.levels[leadIdx] ?? e.levels[0]!);
+      const lead = wildForm(CONTENT, e.species[leadIdx] ?? e.species[0]!, e.levels[leadIdx] ?? e.levels[0]!, e.id);
       if (hasSprite(lead)) this.markers.add(this.add.sprite(x, y + 8, `${lead}-idle`).setOrigin(0.5, 0.85).play(animKey(lead, "idle", 0)));
       else this.markers.add(this.add.circle(x, y, 10, 0xd0021b).setStrokeStyle(2, 0x10141c));
       this.markers.add(this.add.text(x + 9, y - 13, String(e.species.length), {
@@ -314,6 +342,32 @@ export class OverworldScene extends Phaser.Scene {
     this.openDialog(npc);
   }
 
+  /** A few lines for a new game: what this is and how to play. */
+  private showIntro(): void {
+    this.closeDialog();
+    const w = 600;
+    const x0 = MAP_X + 30, y0 = MAP_Y + 40;
+    const text = new RichText(this, x0 + 16, y0 + 12, w - 32, 13);
+    const fatigue = tag("bad", t("fatigue"));
+    const h = text.setMarkup([
+      tag("title", t("Welcome to Pokémon Wildfront!")),
+      t("A tactics journey through Kanto: travel the map, fight wild Pokémon and trainers in turn-based battles, and earn the 8 badges."),
+      "",
+      `${tag("num", t("Map:"))} ${PHONE
+        ? t("Tap twice (or drag) a tile to walk. Walking adds {fatigue}; rest at camp or heal at a Pokémon Center. A red ring marks a wild group: walk into it to battle.", { fatigue })
+        : t("Click a tile to walk. Walking adds {fatigue}; rest at camp or heal at a Pokémon Center. A red ring marks a wild group: walk into it to battle.", { fatigue })}`,
+      `${tag("num", t("Battle:"))} ${t("place up to 3 Pokémon on the blue hexes. On a turn a Pokémon can move, use one basic attack and one action. Tap a foe to see how far it can reach.")}`,
+      `${tag("num", t("Grow:"))} ${t("Pokémon level up, pick a role at Lv 3 and masteries later (Camp → a Pokémon). Weaken wild Pokémon and throw a ball to catch them.")}`,
+      tag("dim", t("Three knockouts and a Pokémon is gone for good, so retreat in time.")),
+    ].join("\n")) + 60;
+    const items: Phaser.GameObjects.GameObject[] = [
+      this.add.rectangle(x0, y0, w, h, 0x10141c, 0.97).setOrigin(0).setStrokeStyle(2, 0xf5d76e).setInteractive(),
+      text,
+      new Button(this, x0 + w / 2 - 90, y0 + h - 40, 180, 28, t("Let's go!"), () => this.closeDialog()).setHighlighted(true),
+    ];
+    this.dialog = this.add.container(0, 0, items).setDepth(30);
+  }
+
   private closeDialog(): void {
     this.dialog?.destroy();
     this.dialog = null;
@@ -334,11 +388,11 @@ export class OverworldScene extends Phaser.Scene {
     items.push(this.add.rectangle(x0, y0, w, h, 0x10141c, 0.96).setOrigin(0).setStrokeStyle(2, 0xf5d76e).setInteractive(), text);
     const buttons: [string, () => void][] = [];
     if (!done && ready) {
-      if (isBattler(npc)) buttons.push([npc.kind === "wild" ? "Battle!" : "Battle!", () => this.startNpcBattle(npc)]);
+      if (isBattler(npc)) buttons.push([t("Battle!"), () => this.startNpcBattle(npc)]);
       else if (npc.choices?.length) npc.choices.forEach((c, i) => buttons.push([c.label, () => this.finishNpc(npc, i)]));
-      else buttons.push(["OK", () => this.finishNpc(npc)]);
+      else buttons.push([t("OK"), () => this.finishNpc(npc)]);
     }
-    buttons.push([done || !ready || !isBattler(npc) ? "Close" : "Not now", () => this.closeDialog()]);
+    buttons.push([done || !ready || !isBattler(npc) ? t("Close") : t("Not now"), () => this.closeDialog()]);
     const bw = Math.min(170, (w - 32 - (buttons.length - 1) * 8) / buttons.length);
     buttons.forEach(([label, fn], i) => items.push(new Button(this, x0 + 16 + i * (bw + 8), y0 + h - 40, bw, 28, label, fn)));
     this.dialog = this.add.container(0, 0, items).setDepth(30);
@@ -351,7 +405,7 @@ export class OverworldScene extends Phaser.Scene {
     session.update(game);
     this.closeDialog();
     if (notes.length) sfx(this, "pickup");
-    this.message = tag("good", notes.length ? notes.join(" ") : `${npc.name}: done.`);
+    this.message = tag("good", notes.length ? notes.join(" ") : t("{name}: done.", { name: npc.name }));
     this.render();
   }
 
@@ -403,76 +457,78 @@ export class OverworldScene extends Phaser.Scene {
     const over = level.movePenalty > 0 || level.damageMultiplier !== 1;
     const levelKey = over ? "bad" : world.fatigue >= WORLD_CONTENT.fatigue.max * 0.75 ? "num" : "good";
     const effect = level.movePenalty || level.damageMultiplier !== 1
-      ? [level.movePenalty ? `−${level.movePenalty} movement` : "", level.damageMultiplier !== 1 ? `−${Math.round((1 - level.damageMultiplier) * 100)}% damage` : ""].filter(Boolean).join(", ")
-      : `no penalty until ${WORLD_CONTENT.fatigue.max}`;
+      ? [level.movePenalty ? t("−{n} movement", { n: level.movePenalty }) : "", level.damageMultiplier !== 1 ? t("−{n}% damage", { n: Math.round((1 - level.damageMultiplier) * 100) }) : ""].filter(Boolean).join(", ")
+      : t("no penalty until {max}", { max: WORLD_CONTENT.fatigue.max });
     const bar = "█".repeat(Math.round(world.fatigue / 10)) + "░".repeat(10 - Math.round(world.fatigue / 10));
     const here = biomeAt(WORLD_CONTENT, currentWorld(), world.pos);
     const lines = [
       // Compact: phones show the HUD at about two thirds of its size, so every line counts.
-      `${tag("title", "Fatigue")} ${tag(levelKey, `${world.fatigue}/${WORLD_CONTENT.fatigue.max} ${level.name}`)} ${tag(levelKey, bar)}`,
-      ...(over ? [tag("bad", `In battle: ${effect}`)] : []),
-      `${tag("title", "Badges")} ${tag("num", `${(session.game.badges ?? []).length}/${BADGES.length}`)}${(session.game.keyItems ?? []).length ? `  ${tag("title", "Key items")} ${tag("num", (session.game.keyItems ?? []).length)}` : ""}`,
-      ...(currentGoal(session.game, STORY_STEPS) ? [tag("dim", `Goal: ${currentGoal(session.game, STORY_STEPS)}`)] : []),
+      `${tag("title", t("Fatigue"))} ${tag(levelKey, `${world.fatigue}/${WORLD_CONTENT.fatigue.max} ${level.name}`)} ${tag(levelKey, bar)}`,
+      ...(over ? [tag("bad", t("In battle: {effect}", { effect }))] : []),
+      `${tag("title", t("Badges"))} ${tag("num", `${(session.game.badges ?? []).length}/${BADGES.length}`)}${(session.game.keyItems ?? []).length ? `  ${tag("title", t("Key items"))} ${tag("num", (session.game.keyItems ?? []).length)}` : ""}`,
+      ...(currentGoal(session.game, STORY_STEPS) ? [tag("dim", t("Goal: {goal}", { goal: currentGoal(session.game, STORY_STEPS)! }))] : []),
     ];
     const lower = [
-      `${tag("num", `₽${session.game.money}`)}  ${tag("title", "Candy")} ${tag("num", inventory.items.candy ?? 0)}  ${tag("title", CONTENT.terms.food)} ${tag("num", Object.entries(inventory.items).filter(([id]) => PROGRESSION.items[id]?.kind === "food").reduce((n, [, c]) => n + c, 0))}`,
-      `${tag("title", "Meal")} ${world.meal ? tag(world.meal.id === "hungry" ? "bad" : "good", world.meal.name) : tag("dim", "none")}`,
-      `${tag("title", "Bag")} ${Object.entries(inventory.balls).map(([id, n]) => `${CONTENT.balls[id]?.name.replace(" Ball", "") ?? id} ${n}`).join(" · ")}`,
+      `${tag("num", `₽${session.game.money}`)}  ${tag("title", t("Candy"))} ${tag("num", inventory.items.candy ?? 0)}  ${tag("title", CONTENT.terms.food)} ${tag("num", Object.entries(inventory.items).filter(([id]) => PROGRESSION.items[id]?.kind === "food").reduce((n, [, c]) => n + c, 0))}`,
+      `${tag("title", t("Meal"))} ${world.meal ? tag(world.meal.id === "hungry" ? "bad" : "good", world.meal.name) : tag("dim", t("none"))}`,
+      `${tag("title", t("Bag"))} ${Object.entries(inventory.balls).map(([id, n]) => `${CONTENT.balls[id]?.name.replace(" Ball", "") ?? id} ${n}`).join(" · ")}`,
     ];
     const h = this.hud.setMarkup(lines.join("\n"));
-    this.buttons.removeAll(true);
     let y = 16 + h + 6;
     y = this.partyStrip(y);
-    const stats = new RichText(this, 0, y, 240, 12);
-    y += stats.setMarkup(lower.join("\n")) + 8;
-    this.buttons.add(stats);
+    this.statsText.setY(y);
+    y += this.statsText.setMarkup(lower.join("\n")) + 8;
     // The latest message (path preview, heal, errors) sits right under the stats, so it never falls off small screens.
-    if (this.message) {
-      const msg = new RichText(this, 0, y, 240, 12);
-      y += msg.setMarkup(this.message) + 8;
-      this.buttons.add(msg);
-    }
+    this.msgText.setY(y);
+    const mh = this.msgText.setMarkup(this.message);
+    if (mh) y += mh + 8;
+    this.btnBox.setY(y);
+    const pending = roster.party.some((m) => pendingChoice(CONTENT, PROGRESSION, m) || m.unspentPoints > 0);
+    const spawns = spawnsAt(WORLD_CONTENT, currentWorld(), world.pos);
+    const hurt = roster.party.some((m) => m.hp < memberMaxHp(CONTENT, PROGRESSION, m));
+    const cost = centerTreatmentCost(session.game, CAMP.treatmentPerMark);
+    const key = [pending, this.moving, spawns.length > 0, this.spawnPanel !== null, here.id, hurt, cost, session.game.money >= cost].join("|");
+    if (key === this.btnKey) return;
+    this.btnKey = key;
+    this.btnBox.removeAll(true);
+    let by = 0;
     // Buttons two to a row to keep the column short.
     const half = (x: number, label: string, onClick: () => void) => {
-      const b = new Button(this, x, y, 116, 28, label, onClick);
-      this.buttons.add(b);
+      const b = new Button(this, x, by, 116, 28, label, onClick);
+      this.btnBox.add(b);
       return b;
     };
-    const pending = roster.party.some((m) => pendingChoice(CONTENT, PROGRESSION, m) || m.unspentPoints > 0);
     // One button: the camp screen manages the party, and resting there is a separate choice.
-    half(0, pending ? "★ Camp" : "⛺ Camp", () => this.scene.start("Party", { rested: false, choosingMeal: false })).setEnabled(!this.moving).setHighlighted(pending);
-    half(124, "🎒 Bag", () => this.scene.start("Inventory", { from: "Overworld" })).setEnabled(!this.moving);
-    y += 34;
-    const spawns = spawnsAt(WORLD_CONTENT, currentWorld(), world.pos);
-    this.buttons.add(new Button(this, 0, y, 240, 28, this.spawnPanel ? "✕ Close wild Pokémon list" : "🔍 Wild Pokémon here [I]", () => this.toggleSpawnPanel())
+    half(0, pending ? t("★ Camp") : t("⛺ Camp"), () => this.scene.start("Party", { rested: false, choosingMeal: false })).setEnabled(!this.moving).setHighlighted(pending);
+    half(124, t("🎒 Bag"), () => this.scene.start("Inventory", { from: "Overworld" })).setEnabled(!this.moving);
+    by += 34;
+    this.btnBox.add(new Button(this, 0, by, 240, 28, this.spawnPanel ? t("✕ Close wild Pokémon list") : t("🔍 Wild Pokémon here [I]"), () => this.toggleSpawnPanel())
       .setEnabled(spawns.length > 0 || this.spawnPanel !== null));
-    y += 34;
+    by += 34;
     if (here.id === "town") {
-      const hurt = roster.party.some((m) => m.hp < memberMaxHp(CONTENT, PROGRESSION, m));
-      half(0, "❤ Heal", () => {
+      half(0, t("❤ Heal"), () => {
         session.update(centerHeal(CONTENT, PROGRESSION, session.game));
         sfx(this, "heal");
-        this.message = tag("heal", `Your team is fully healed!`);
+        this.message = tag("heal", t("Your team is fully healed!"));
         this.render();
       }).setEnabled(hurt && !this.moving);
-      const cost = centerTreatmentCost(session.game, CAMP.treatmentPerMark);
-      half(124, cost ? `✚ KO ₽${cost}` : "✚ KO marks", () => {
+      half(124, cost ? t("✚ KO ₽{cost}", { cost }) : t("✚ KO marks"), () => {
         try {
           session.update(centerTreatment(session.game, CAMP.treatmentPerMark));
           sfx(this, "heal");
-          this.message = tag("heal", "All knockout marks treated.");
+          this.message = tag("heal", t("All knockout marks treated."));
         } catch (e) {
-          this.message = tag("bad", e instanceof Error ? e.message : "Cannot treat.");
+          this.message = tag("bad", e instanceof Error ? t(e.message) : t("Cannot treat."));
         }
         this.render();
       }).setEnabled(cost > 0 && session.game.money >= cost && !this.moving);
-      y += 34;
-      this.buttons.add(new Button(this, 0, y, 240, 28, "🛒 Poké Mart", () => this.scene.start("Shop", {})));
-      y += 34;
+      by += 34;
+      this.btnBox.add(new Button(this, 0, by, 240, 28, t("🛒 Poké Mart"), () => this.scene.start("Shop", {})));
+      by += 34;
     }
-    half(0, "⌂ Title", () => this.scene.start("Title"));
-    const full = addFullscreenButton(this, 124, y, 116);
-    if (full) this.buttons.add(full);
+    half(0, t("⌂ Title"), () => this.scene.start("Title"));
+    const full = addFullscreenButton(this, 124, by, 116);
+    if (full) this.btnBox.add(full);
   }
 
   private announceArea(p: Point): void {
@@ -496,16 +552,16 @@ export class OverworldScene extends Phaser.Scene {
       const name = known.has(s.speciesId)
         ? `${sp.types.map((t) => tag(t, "●")).join("")} ${tag("title", sp.name.padEnd(11))}`
         : `  ${tag("dim", "???".padEnd(11))}`;
-      const limit = s.maxPerGroup !== undefined ? tag("dim", ` · max ${s.maxPerGroup}/group`) : "";
+      const limit = s.maxPerGroup !== undefined ? tag("dim", t(" · max {n}/group", { n: s.maxPerGroup })) : "";
       return `${name} ${tag("num", `${Math.round(s.chance * 100)}%`.padStart(4))}  ${tag("dim", `Lv ${s.levels.min}-${s.levels.max}`)}${limit}`;
     });
     const lines = [
-      tag("title", `Wild Pokémon · ${areaName(WORLD_CONTENT, currentWorld(), world.pos)}`),
-      tag("dim", "Share of wild Pokémon here. Species you have not met yet show as ???."),
+      tag("title", t("Wild Pokémon · {area}", { area: areaName(WORLD_CONTENT, currentWorld(), world.pos) })),
+      tag("dim", t("Share of wild Pokémon here. Species you have not met yet show as ???.")),
       "",
       ...rows,
       "",
-      tag("dim", "Tap anywhere on this panel to close."),
+      tag("dim", t("Tap anywhere on this panel to close.")),
     ];
     const w = 420;
     const text = new RichText(this, MAP_X + 16, MAP_Y + 14, w - 32, 12);
@@ -536,10 +592,10 @@ export class OverworldScene extends Phaser.Scene {
     void this.travelTo(t);
   }
 
-  private showPreview(t: Point | null): void {
+  private showPreview(to: Point | null): void {
     this.preview.clear();
-    if (!t || this.moving) return;
-    const path = travelPath(WORLD_CONTENT, currentWorld(), this.world, t, this.access());
+    if (!to || this.moving) return;
+    const path = travelPath(WORLD_CONTENT, currentWorld(), this.world, to, this.access());
     if (!path) return;
     const grid = worldGrid(WORLD_CONTENT, currentWorld(), this.access());
     let cost = 0;
@@ -549,23 +605,33 @@ export class OverworldScene extends Phaser.Scene {
       this.preview.fillRect(MAP_X + p.x * T + 4, MAP_Y + p.y * T + 4, T - 8, T - 8);
     }
     const after = Math.min(WORLD_CONTENT.fatigue.max, this.world.fatigue + cost);
-    const rawEnc = this.world.encounters.find((e) => samePoint(e.pos, t));
+    const rawEnc = this.world.encounters.find((e) => samePoint(e.pos, to));
     const enc = rawEnc ? effectiveGroup(rawEnc, this.healthy()) : undefined;
-    const hint = `${tag("num", `${path.length} tiles`)}, fatigue ${tag("dmg", `+${cost}`)} → ${after} (${fatigueLevel(WORLD_CONTENT.fatigue, after).name})${enc ? `\n${tag("enemy", "Wild group — battle!")}\n${enc.species.map((sp, i) => `${tag(`foe:${CONTENT.species[sp]!.types[0]}`, CONTENT.species[sp]!.name)} Lv ${enc.levels[i]}`).join("\n")}` : ""}`;
+    const hint = `${t("{tiles}, fatigue {cost} → {after} ({level})", { tiles: tag("num", t("{n} tiles", { n: path.length })), cost: tag("dmg", `+${cost}`), after, level: fatigueLevel(WORLD_CONTENT.fatigue, after).name })}${enc ? `\n${tag("enemy", t("Wild group — battle!"))}\n${enc.species.map((sp, i) => `${tag(`foe:${CONTENT.species[sp]!.types[0]}`, CONTENT.species[sp]!.name)} Lv ${enc.levels[i]}`).join("\n")}` : ""}`;
     this.message = hint;
-    this.renderHud();
+    this.renderHudSoon();
   }
 
-  private async travelTo(t: Point): Promise<void> {
-    if (this.moving || samePoint(t, this.world.pos)) return;
-    if (!travelPath(WORLD_CONTENT, currentWorld(), this.world, t, this.access())) return;
+  /** Rebuilds the HUD on the next frame, so the path preview shows first (the HUD is slow on phones). */
+  private renderHudSoon(): void {
+    if (this.hudPending) return;
+    this.hudPending = true;
+    this.time.delayedCall(0, () => {
+      this.hudPending = false;
+      this.renderHud();
+    });
+  }
+
+  private async travelTo(to: Point): Promise<void> {
+    if (this.moving || samePoint(to, this.world.pos)) return;
+    if (!travelPath(WORLD_CONTENT, currentWorld(), this.world, to, this.access())) return;
     if (this.spawnPanel) this.toggleSpawnPanel();
     const before = this.world.pos;
-    const result = travel(WORLD_CONTENT, currentWorld(), this.world, t, this.access());
+    const result = travel(WORLD_CONTENT, currentWorld(), this.world, to, this.access());
     this.moving = true;
     this.preview.clear();
     for (const step of result.path) {
-      if (result.encounter && samePoint(step, t)) break;
+      if (result.encounter && samePoint(step, to)) break;
       const c = this.center(step);
       if (this.leader) this.leaderSprite?.play(animKey(this.leader, "walk", facingFor(c.x - this.token.x, c.y - this.token.y)), true);
       await new Promise<void>((resolve) => this.tweens.add({ targets: this.token, x: c.x, y: c.y, duration: STEP_MS, onComplete: () => resolve() }));
@@ -589,13 +655,13 @@ export class OverworldScene extends Phaser.Scene {
       inventory = { ...inventory, balls, items };
     }
     // An encounter stops the party on the tile next to the wild group.
-    const stopAt = result.encounter ? (result.path.length >= 2 ? result.path[result.path.length - 2]! : before) : t;
+    const stopAt = result.encounter ? (result.path.length >= 2 ? result.path[result.path.length - 2]! : before) : to;
     session.update({ ...session.game, inventory, world: { ...result.world, pos: stopAt } });
-    this.message = found.length ? tag("good", `Found ${found.join(", ")}!`) : "";
+    this.message = found.length ? tag("good", t("Found {items}!", { items: found.join(", ") })) : "";
     if (found.length) sfx(this, "pickup");
     const exit = !result.encounter ? exitAt(currentWorld(), stopAt) : undefined;
     if (exit?.to && WORLDS[exit.to] && !meets(session.game, exit.requires)) {
-      this.message = tag("bad", exit.lockedText ?? "The way is shut for now.");
+      this.message = tag("bad", exit.lockedText ?? t("The way is shut for now."));
     } else if (exit?.to && WORLDS[exit.to]) {
       // Through the exit: the next map starts fresh around the arrival point.
       const target = WORLDS[exit.to]!;
@@ -611,7 +677,7 @@ export class OverworldScene extends Phaser.Scene {
     this.render();
 
     if (result.encounter) {
-      const scenario = wildScenario(WORLD_CONTENT, effectiveGroup(result.encounter, this.healthy(), this.slots()), (s, lv) => wildSetup(CONTENT, PROGRESSION, s, lv), this.slots(), Date.now() >>> 0);
+      const scenario = wildScenario(WORLD_CONTENT, effectiveGroup(result.encounter, this.healthy(), this.slots()), (s, lv) => wildSetup(CONTENT, PROGRESSION, s, lv, result.encounter!.id), this.slots(), Date.now() >>> 0);
       sfx(this, "encounter");
       this.scene.start("Battle", { scenario, encounterId: result.encounter.id, biome: result.encounter.biome });
     }

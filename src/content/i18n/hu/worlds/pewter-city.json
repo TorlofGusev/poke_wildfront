@@ -1,0 +1,41 @@
+{
+ "npcs": [
+  {
+   "id": "pewter-gym-camper",
+   "text": [
+    "Állj! Fényévekre vagy attól, hogy Brockkal szembenézz!"
+   ],
+   "afterText": [
+    "A fényév távolságot mér, nem időt... mindegy."
+   ]
+  },
+  {
+   "id": "brock",
+   "text": [
+    "Brock vagyok, Pewter edzőtermének vezetője.",
+    "Kőkemény akaratom a Pokémonjaimban is látszik. Mutasd a legjobbad!"
+   ],
+   "afterText": [
+    "Alábecsültelek. Fogadd el a Boulder Badge-et.",
+    "Vele a Flash csatán kívül is működik. Oak asszisztense a Route 2-n odaadja a HM-et."
+   ]
+  },
+  {
+   "id": "pewter-museum",
+   "text": [
+    "Üdv a Pewter Tudományos Múzeumban!",
+    "Van egy kis felesleges borostyánunk, ősi DNS-sel. Vidd el - talán Cinnabar laborja fel tudja éleszteni."
+   ],
+   "afterText": [
+    "A tudomány csodálatos!"
+   ]
+  },
+  {
+   "id": "pewter-guide",
+   "text": [
+    "Brock edzőterme a nyugati kőépület.",
+    "A kő típus fittyet hány a Normal és Fire támadásokra. Hozz Water vagy Grass Pokémont!"
+   ]
+  }
+ ]
+}

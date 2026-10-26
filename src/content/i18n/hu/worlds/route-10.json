@@ -1,0 +1,29 @@
+{
+ "exits": [
+  {
+   "lockedText": "Odabent koromsötét van. Flash kell, hogy bemehess."
+  },
+  {},
+  {}
+ ],
+ "npcs": [
+  {
+   "id": "r10-pokemaniac",
+   "text": [
+    "Ritka Pokémonok? Nekem vannak!"
+   ],
+   "afterText": [
+    "Nem elég ritka..."
+   ]
+  },
+  {
+   "id": "r10-engineer",
+   "text": [
+    "A Power Plant a folyó túloldalán van. Azt mondják, elhagyatott..."
+   ],
+   "afterText": [
+    "Csak Surffel juthatsz oda."
+   ]
+  }
+ ]
+}

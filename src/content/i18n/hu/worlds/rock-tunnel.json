@@ -1,0 +1,31 @@
+{
+ "npcs": [
+  {
+   "id": "rt-hiker-1",
+   "text": [
+    "Ki kapcsolta fel a villanyt?"
+   ],
+   "afterText": [
+    "Eltévedtem a sötétben..."
+   ]
+  },
+  {
+   "id": "rt-pokemaniac",
+   "text": [
+    "Ritka Pokémonokért jöttem ide!"
+   ],
+   "afterText": [
+    "Ritka vereség."
+   ]
+  },
+  {
+   "id": "rt-hiker-2",
+   "text": [
+    "A kijárat közel van, de nem neked!"
+   ],
+   "afterText": [
+    "Menj csak tovább."
+   ]
+  }
+ ]
+}

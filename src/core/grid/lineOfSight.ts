@@ -1,8 +1,9 @@
 import type { Grid } from "./Grid";
+import { hexBetween } from "./hex";
 import { samePoint, type Point } from "./types";
 
 /**
- * Tiles crossed by the straight line between tile centres, excluding both ends.
+ * Square tiles crossed by the straight line between tile centres, excluding both ends.
  * Uses a supercover walk; when the line passes exactly through a corner,
  * both adjacent tiles are included, so corners block conservatively and
  * the result is symmetric.
@@ -40,7 +41,7 @@ export function tilesBetween(a: Point, b: Point): Point[] {
   return out.filter((p) => !samePoint(p, a) && !samePoint(p, b));
 }
 
-/** True if no sight-blocking terrain (and no tile `blocked` marks, e.g. a standing Pokémon) lies strictly between a and b. */
+/** True if no sight-blocking terrain (and no hex `blocked` marks, e.g. a standing Pokémon) lies strictly between a and b on the battle hex grid. */
 export function hasLineOfSight(grid: Grid, a: Point, b: Point, blocked?: (p: Point) => boolean): boolean {
-  return tilesBetween(a, b).every((p) => !grid.terrainAt(p).blocksSight && !blocked?.(p));
+  return hexBetween(a, b).filter((p) => grid.inBounds(p)).every((p) => !grid.terrainAt(p).blocksSight && !blocked?.(p));
 }

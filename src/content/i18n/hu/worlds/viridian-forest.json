@@ -1,0 +1,31 @@
+{
+ "npcs": [
+  {
+   "id": "bugcatcher-rick",
+   "text": [
+    "Hé! Neked Pokémonjaid vannak! Gyerünk, harcoljunk!"
+   ],
+   "afterText": [
+    "Ne! Szétlapították a bogaraimat!"
+   ]
+  },
+  {
+   "id": "bugcatcher-doug",
+   "text": [
+    "Ezeket a magas fűben fogtam! Vigyázz a Poison Stingre!"
+   ],
+   "afterText": [
+    "Kakuna csak ült ott..."
+   ]
+  },
+  {
+   "id": "bugcatcher-sammy",
+   "text": [
+    "Az erdő a hazai pályám. Nem jutsz ki ilyen könnyen!"
+   ],
+   "afterText": [
+    "Menj csak, Pewter rögtön északra van."
+   ]
+  }
+ ]
+}

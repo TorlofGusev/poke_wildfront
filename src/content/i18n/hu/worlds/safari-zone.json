@@ -1,0 +1,14 @@
+{
+ "npcs": [
+  {
+   "id": "safari-secret-house",
+   "text": [
+    "Megtaláltad a titkos házamat! Gratulálok!",
+    "Tessék, fogadd el a HM03 Surföt. Vele a Pokémonjaid átkelhetnek a vízen."
+   ],
+   "afterText": [
+    "A Surf csatán kívüli használatához Koga Soul Badge-e kell."
+   ]
+  }
+ ]
+}

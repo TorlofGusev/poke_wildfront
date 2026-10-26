@@ -1,0 +1,27 @@
+{
+ "npcs": [
+  {
+   "id": "rival-route22a",
+   "text": [
+    "Hé! Te is a League kapujához tartasz?",
+    "A nagyapám nekem is adott egy Pokémont. Lássuk, kié az erősebb!"
+   ],
+   "afterText": [
+    "Hmph. Szerencsés győzelem. Legközelebb jóval előtted járok!"
+   ]
+  },
+  {
+   "id": "rival-route22b",
+   "lockedText": [
+    "Gyere vissza, ha meglesz mind a nyolc kitűződ."
+   ],
+   "text": [
+    "Nyolc kitűző? Na, nekem is.",
+    "Csak egyikünk léphet be a Victory Roadra. Döntsük el!"
+   ],
+   "afterText": [
+    "Jól van. Menj előre... A League-ben utolérlek."
+   ]
+  }
+ ]
+}

@@ -1,0 +1,81 @@
+{
+ "npcs": [
+  {
+   "id": "nugget-1",
+   "text": [
+    "Nugget Bridge kihívás! Győzz le mind az ötünket!"
+   ],
+   "afterText": [
+    "Csak így tovább!"
+   ]
+  },
+  {
+   "id": "nugget-2",
+   "text": [
+    "Nugget Bridge kihívás! Győzz le mind az ötünket!"
+   ],
+   "afterText": [
+    "Csak így tovább!"
+   ]
+  },
+  {
+   "id": "nugget-3",
+   "text": [
+    "Nugget Bridge kihívás! Győzz le mind az ötünket!"
+   ],
+   "afterText": [
+    "Csak így tovább!"
+   ]
+  },
+  {
+   "id": "nugget-4",
+   "text": [
+    "Nugget Bridge kihívás! Győzz le mind az ötünket!"
+   ],
+   "afterText": [
+    "Csak így tovább!"
+   ]
+  },
+  {
+   "id": "nugget-5",
+   "text": [
+    "Nugget Bridge kihívás! Győzz le mind az ötünket!"
+   ],
+   "afterText": [
+    "Csak így tovább!"
+   ]
+  },
+  {
+   "id": "nugget-rocket",
+   "text": [
+    "Gratula a Nugget Bridge-hez! Nincs kedved csatlakozni a Team Rockethez?",
+    "Nem? Akkor majd rákényszerítelek!"
+   ],
+   "afterText": [
+    "Áááh... tartsd meg a rögöt."
+   ]
+  },
+  {
+   "id": "rival-cerulean",
+   "text": [
+    "Csá! Északra mész Billhez? Lássuk, erősödtél-e valamit!"
+   ],
+   "afterText": [
+    "Hmph. Bill megmutatta a ritka Pokémonjait. Nézd meg őket te is."
+   ]
+  },
+  {
+   "id": "route24-charmander",
+   "lockedText": [
+    "Az edzőm itt hagyta ezt a Charmandert...",
+    "Előbb mutasd meg, hogy nyerni tudsz ezen a hídon."
+   ],
+   "text": [
+    "Legyőzted a Nugget Bridge-et. Charmander egy ilyen edzőt érdemel, mint te."
+   ],
+   "afterText": [
+    "Vigyázz nagyon Charmanderre!"
+   ]
+  }
+ ]
+}

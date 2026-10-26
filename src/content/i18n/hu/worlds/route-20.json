@@ -1,0 +1,18 @@
+{
+ "npcs": [
+  {
+   "id": "swimmer-route20",
+   "text": [
+    "Seafoam barlangjai jéghidegek!"
+   ],
+   "afterText": [
+    "Brr, én kiszálltam."
+   ]
+  }
+ ],
+ "obstacles": [
+  {
+   "text": "Egy szikla szorult a Seafoam kövei közé. A Strength el tudná mozdítani."
+  }
+ ]
+}

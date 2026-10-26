@@ -1,4 +1,5 @@
 import Phaser from "phaser";
+import { LANG, setLang } from "../../content/lang";
 import { playMusic } from "../music";
 import { px } from "../ui/theme";
 import { DISCLAIMER, GAME_VERSION } from "../../core/version";
@@ -6,6 +7,7 @@ import { session } from "../session";
 import { Button } from "../ui/Button";
 import { addFullscreenButton } from "../ui/fullscreen";
 import { getVolume, setVolume, sfx } from "../audio";
+import { t } from "../i18n";
 
 export class TitleScene extends Phaser.Scene {
   private confirmNew = false;
@@ -22,32 +24,43 @@ export class TitleScene extends Phaser.Scene {
       .text(width / 2, height / 2 - 110, "Pokémon Wildfront", { fontFamily: "monospace", fontSize: "48px", color: "#f5d76e" })
       .setOrigin(0.5);
     this.add
-      .text(width / 2, height / 2 - 60, "Tactical prototype", { fontFamily: "monospace", fontSize: "18px", color: "#c8d0e0" })
+      .text(width / 2, height / 2 - 60, t("Tactical prototype"), { fontFamily: "monospace", fontSize: "18px", color: "#c8d0e0" })
       .setOrigin(0.5);
 
     const hasSave = session.hasSave() && session.load();
     let y = height / 2 - 10;
     if (hasSave) {
-      new Button(this, width / 2 - 140, y, 280, 32, "▶ Continue", () => this.scene.start("Overworld", {}));
+      new Button(this, width / 2 - 140, y, 280, 32, t("▶ Continue"), () => this.scene.start("Overworld", {}));
       y += 42;
     }
-    const newButton = new Button(this, width / 2 - 140, y, 280, 32, "✦ New game", () => {
+    const newButton = new Button(this, width / 2 - 140, y, 280, 32, t("✦ New game"), () => {
       if (hasSave && !this.confirmNew) {
         this.confirmNew = true;
-        newButton.setText("✦ New game: click again to overwrite");
+        newButton.setText(t("✦ New game: click again to overwrite"));
         return;
       }
       this.scene.start("Starter");
     });
     y += 42;
     if (addFullscreenButton(this, width / 2 - 140, y, 280)) y += 42;
-    new Button(this, width / 2 - 140, y, 280, 32, "ⓘ Credits", () => this.scene.start("Credits"));
+    // Credits and the hex prototype share a row.
+    new Button(this, width / 2 - 140, y, 136, 32, t("ⓘ Credits"), () => this.scene.start("Credits"));
+    new Button(this, width / 2 + 4, y, 136, 32, t("⬢ Hex test"), () => this.scene.start("HexLab"));
     y += 42;
     this.volumeSlider(width / 2 - 140, y + 6, 280);
-    y += 42;
+    y += 32;
+    // Language: switching reloads, so content and texts are rebuilt in the new language.
+    (["en", "hu"] as const).forEach((l, i) => {
+      new Button(this, width / 2 - 140 + i * 144, y, 136, 26, l === "en" ? "English" : "Magyar", () => {
+        if (l === LANG) return;
+        setLang(l);
+        window.location.reload();
+      }).setHighlighted(l === LANG).centerLabel();
+    });
+    y += 36;
     if (session.loadError) {
       this.add
-        .text(width / 2, y + 10, `Your save could not be loaded (${session.loadError}).`, {
+        .text(width / 2, y + 10, t("Your save could not be loaded ({error}).", { error: session.loadError }), {
           fontFamily: "monospace", fontSize: px(12), color: "#ff6b6b",
         })
         .setOrigin(0.5);
@@ -70,7 +83,7 @@ export class TitleScene extends Phaser.Scene {
     const knob = this.add.circle(barX, y, 9, 0xf5d76e);
     const draw = () => {
       const v = getVolume();
-      label.setText(`♪ Volume ${Math.round(v * 100)}%`);
+      label.setText(t("♪ Volume {pct}%", { pct: Math.round(v * 100) }));
       fill.width = barW * v;
       knob.x = barX + barW * v;
     };

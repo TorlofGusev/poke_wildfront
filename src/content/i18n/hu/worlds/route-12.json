@@ -1,0 +1,24 @@
+{
+ "npcs": [
+  {
+   "id": "snorlax-route12",
+   "lockedText": [
+    "Egy alvó Snorlax torlaszolja el az utat.",
+    "Talán egy megnyugtató dallam felébresztené."
+   ],
+   "text": [
+    "Megszólaltatod a Poké Flute-ot...",
+    "Snorlax rosszkedvűen ébred!"
+   ]
+  },
+  {
+   "id": "fisher-route12",
+   "text": [
+    "Itt lent harapnak a legjobban a halak!"
+   ],
+   "afterText": [
+    "Még a Goldeenem is feladta."
+   ]
+  }
+ ]
+}

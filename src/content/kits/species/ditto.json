@@ -1,0 +1,335 @@
+{
+ "species": [
+  "ditto"
+ ],
+ "moves": {
+  "ditto-transform": {
+   "id": "ditto-transform",
+   "name": "Transform",
+   "type": "normal",
+   "kind": "special",
+   "cooldown": 4,
+   "power": 0,
+   "range": {
+    "min": 0,
+    "max": 0
+   },
+   "requiresLineOfSight": false,
+   "shape": {
+    "kind": "single"
+   },
+   "affects": "allies",
+   "effects": [
+    {
+     "kind": "status",
+     "status": "focused",
+     "duration": 2
+    },
+    {
+     "kind": "status",
+     "status": "fortified",
+     "duration": 2
+    }
+   ]
+  },
+  "ditto-mimic": {
+   "id": "ditto-mimic",
+   "name": "Mimic",
+   "type": "normal",
+   "kind": "special",
+   "cooldown": 2,
+   "power": 55,
+   "range": {
+    "min": 1,
+    "max": 2
+   },
+   "requiresLineOfSight": false,
+   "shape": {
+    "kind": "single"
+   },
+   "affects": "enemies"
+  },
+  "ditto-recycle": {
+   "id": "ditto-recycle",
+   "name": "Recycle",
+   "type": "normal",
+   "kind": "special",
+   "cooldown": 3,
+   "power": 0,
+   "range": {
+    "min": 0,
+    "max": 0
+   },
+   "requiresLineOfSight": false,
+   "shape": {
+    "kind": "single"
+   },
+   "affects": "allies",
+   "effects": [
+    {
+     "kind": "heal",
+     "amount": 30
+    }
+   ]
+  },
+  "ditto-copied-blow": {
+   "id": "ditto-copied-blow",
+   "name": "Copied Blow",
+   "type": "normal",
+   "kind": "special",
+   "cooldown": 4,
+   "power": 90,
+   "range": {
+    "min": 1,
+    "max": 1
+   },
+   "requiresLineOfSight": true,
+   "shape": {
+    "kind": "single"
+   },
+   "affects": "enemies",
+   "effects": [
+    {
+     "kind": "push",
+     "distance": 1
+    }
+   ]
+  },
+  "ditto-mirror-coat": {
+   "id": "ditto-mirror-coat",
+   "name": "Mirror Coat",
+   "type": "psychic",
+   "kind": "special",
+   "cooldown": 4,
+   "power": 0,
+   "range": {
+    "min": 0,
+    "max": 0
+   },
+   "requiresLineOfSight": false,
+   "shape": {
+    "kind": "single"
+   },
+   "affects": "allies",
+   "effects": [
+    {
+     "kind": "status",
+     "status": "protected",
+     "duration": 1
+    }
+   ]
+  },
+  "ditto-perfect-copy": {
+   "id": "ditto-perfect-copy",
+   "name": "Perfect Copy",
+   "type": "normal",
+   "kind": "special",
+   "cooldown": 5,
+   "power": 95,
+   "range": {
+    "min": 1,
+    "max": 3
+   },
+   "requiresLineOfSight": true,
+   "shape": {
+    "kind": "single"
+   },
+   "affects": "enemies"
+  },
+  "ditto-shapeshift-rush": {
+   "id": "ditto-shapeshift-rush",
+   "name": "Shapeshift Rush",
+   "type": "normal",
+   "kind": "special",
+   "cooldown": 4,
+   "power": 70,
+   "range": {
+    "min": 1,
+    "max": 2
+   },
+   "requiresLineOfSight": false,
+   "shape": {
+    "kind": "single"
+   },
+   "affects": "enemies",
+   "effects": [
+    {
+     "kind": "disengage"
+    }
+   ]
+  }
+ },
+ "talents": {
+  "ditto-skill-transform": {
+   "id": "ditto-skill-transform",
+   "name": "Transform",
+   "description": "New skill: copies a foe's form; Focused and Fortified for 2 turns.",
+   "grantsMove": "ditto-transform"
+  },
+  "ditto-imposter": {
+   "id": "ditto-imposter",
+   "name": "Imposter",
+   "description": "+1 to every stat.",
+   "stats": {
+    "hp": 1,
+    "attack": 1,
+    "defense": 1,
+    "spAttack": 1,
+    "spDefense": 1,
+    "speed": 1
+   }
+  },
+  "ditto-copycat": {
+   "id": "ditto-copycat",
+   "name": "Copycat",
+   "description": "+20% damage to foes carrying a status an ally applied.",
+   "mods": {
+    "vsSetupDamage": 1.2
+   }
+  },
+  "ditto-skill-mimic": {
+   "id": "ditto-skill-mimic",
+   "name": "Mimic",
+   "description": "New skill: copies a foe's attack against it, up to 2 hexes away (Power 55).",
+   "grantsMove": "ditto-mimic"
+  },
+  "ditto-skill-recycle": {
+   "id": "ditto-skill-recycle",
+   "name": "Recycle",
+   "description": "New skill: reshapes its body, healing itself 30 HP.",
+   "grantsMove": "ditto-recycle"
+  },
+  "ditto-learning-curve": {
+   "id": "ditto-learning-curve",
+   "name": "Learning Curve",
+   "description": "+10% damage for each hit in a row on the same foe (up to +30%).",
+   "mods": {
+    "furyCutter": 0.1
+   }
+  },
+  "ditto-shapeshift": {
+   "id": "ditto-shapeshift",
+   "name": "Shapeshift",
+   "description": "Sheds statuses foes put on it at the start of its turn.",
+   "mods": {
+    "shedStatuses": true
+   }
+  },
+  "ditto-skill-copied-blow": {
+   "id": "ditto-skill-copied-blow",
+   "name": "Copied Blow",
+   "description": "New skill: mimics a foe's strongest blow on an adjacent foe (Power 90), pushes 1 hex.",
+   "grantsMove": "ditto-copied-blow"
+  },
+  "ditto-skill-mirror-coat": {
+   "id": "ditto-skill-mirror-coat",
+   "name": "Mirror Coat",
+   "description": "New skill: a mirror sheen blocks all damage to it until its turn ends.",
+   "grantsMove": "ditto-mirror-coat"
+  },
+  "ditto-mirror-skin": {
+   "id": "ditto-mirror-skin",
+   "name": "Mirror Skin",
+   "description": "Foes that hit it from an adjacent hex take 8 damage.",
+   "mods": {
+    "thorns": 8
+   }
+  },
+  "ditto-assimilate": {
+   "id": "ditto-assimilate",
+   "name": "Assimilate",
+   "description": "Knocking out a foe gives +1 Attack (this battle, max +3).",
+   "mods": {
+    "koAttackBoost": 1
+   }
+  },
+  "ditto-skill-perfect-copy": {
+   "id": "ditto-skill-perfect-copy",
+   "name": "Perfect Copy",
+   "description": "New skill: turns a foe's own power on it, up to 3 hexes away (Power 95).",
+   "grantsMove": "ditto-perfect-copy"
+  },
+  "ditto-skill-shapeshift-rush": {
+   "id": "ditto-skill-shapeshift-rush",
+   "name": "Shapeshift Rush",
+   "description": "New skill: a fluid lunge up to 2 hexes (Power 70) that ends its engagement.",
+   "grantsMove": "ditto-shapeshift-rush"
+  },
+  "ditto-fluid-form": {
+   "id": "ditto-fluid-form",
+   "name": "Fluid Form",
+   "description": "+2 movement when it knocks out a foe on its turn.",
+   "mods": {
+    "koMove": 2
+   }
+  },
+  "ditto-rubber-body": {
+   "id": "ditto-rubber-body",
+   "name": "Rubber Body",
+   "description": "Survives one knockout blow per battle at 1 HP.",
+   "mods": {
+    "sturdy": true
+   }
+  },
+  "ditto-imposter-supreme": {
+   "id": "ditto-imposter-supreme",
+   "name": "Perfect Imposter",
+   "description": "Capstone. +2 to every stat; a KO on its turn refreshes its basic attack.",
+   "stats": {
+    "hp": 2,
+    "attack": 2,
+    "defense": 2,
+    "spAttack": 2,
+    "spDefense": 2,
+    "speed": 2
+   },
+   "mods": {
+    "koRefreshBasic": true
+   }
+  },
+  "ditto-malleable-mass": {
+   "id": "ditto-malleable-mass",
+   "name": "Malleable Mass",
+   "description": "Capstone. Takes 15% less damage; heals 4% of its max HP each turn.",
+   "mods": {
+    "damageTaken": 0.85,
+    "healPerTurn": 0.04
+   }
+  }
+ },
+ "start": "ditto-skill-transform",
+ "rows": {
+  "4": [
+   "ditto-imposter",
+   "ditto-copycat"
+  ],
+  "12": [
+   "ditto-skill-mimic",
+   "ditto-skill-recycle"
+  ],
+  "15": [
+   "ditto-learning-curve",
+   "ditto-shapeshift"
+  ],
+  "18": [
+   "ditto-skill-copied-blow",
+   "ditto-skill-mirror-coat"
+  ],
+  "21": [
+   "ditto-mirror-skin",
+   "ditto-assimilate"
+  ],
+  "24": [
+   "ditto-skill-perfect-copy",
+   "ditto-skill-shapeshift-rush"
+  ],
+  "27": [
+   "ditto-fluid-form",
+   "ditto-rubber-body"
+  ],
+  "30": [
+   "ditto-imposter-supreme",
+   "ditto-malleable-mass"
+  ]
+ }
+}

@@ -1,4 +1,5 @@
 import Phaser from "phaser";
+import { playMoveFx } from "../moveFx";
 import { playMusic, stopMusic } from "../music";
 import { CONTENT, SCENARIOS, type ScenarioDef } from "../../content";
 import { captureChance, captureTargets, captureUnavailableReason } from "../../core/capture";
@@ -27,6 +28,8 @@ import {
   lockDeployment,
   moveUnavailableReason,
   reachableFor,
+  threatZone,
+  createBattle,
   unitAt,
   maxHpOf,
   moveRange,
@@ -51,8 +54,9 @@ import { describeMove } from "../ui/describeMove";
 import { statLine } from "../ui/describeEffects";
 import { stripMarkup, tag } from "../ui/markup";
 import { RichText } from "../ui/RichText";
+import { t } from "../i18n";
 import { animKey, FACE_LEFT, FACE_RIGHT, facingFor, hasSprite, portraitKey, type Facing, type SpriteAnim } from "../sprites";
-import { BOARD_X, BOARD_Y, COLORS, FONT, PANEL_X, PANEL_W, TILE, TYPE_COLORS, tileToWorld, UNIT_SCALE, px, PHONE } from "../ui/theme";
+import { BOARD_X, BOARD_Y, boardSize, COLORS, FONT, HEX_R, hexCorners, PANEL_X, PANEL_W, TILE, TYPE_COLORS, tileToWorld, UNIT_SCALE, worldToTile, px, PHONE } from "../ui/theme";
 
 type Phase = "deploy" | "battle" | "over";
 
@@ -101,7 +105,7 @@ export class BattleScene extends Phaser.Scene {
   /** Touch: the action tile tapped once; a second tap on it confirms. */
   private armed: Point | null = null;
   private activeRing: Phaser.GameObjects.Arc | null = null;
-  private armedFrame: Phaser.GameObjects.Rectangle | null = null;
+  private armedFrame: Phaser.GameObjects.Polygon | null = null;
   private revealed = new Set<string>();
   private log: LogEntry[] = [];
   private logStrip!: RichText;
@@ -156,6 +160,7 @@ export class BattleScene extends Phaser.Scene {
   }
 
   create(): void {
+    this.panelKey = "";
     playMusic(this, "battle");
     this.header = this.add.text(BOARD_X, 16, "", { fontFamily: FONT, fontSize: "20px", color: "#f5d76e" });
     this.add.text(BOARD_X, 44, this.scenario.name, { fontFamily: FONT, fontSize: px(13), color: COLORS.dim });
@@ -164,8 +169,9 @@ export class BattleScene extends Phaser.Scene {
     this.panel = this.add.container(PANEL_X, 16);
     this.infoText = new RichText(this, PANEL_X, 330, PANEL_W, 12);
 
-    this.logStrip = new RichText(this, BOARD_X, BOARD_Y + this.grid.height * TILE + 4, 450, 11, COLORS.dim, 15);
-    const logButton = new Button(this, BOARD_X + this.grid.width * TILE - 110, BOARD_Y + this.grid.height * TILE + 6, 110, 22, PHONE ? "Full log" : "Full log [L]", () => this.toggleLogOverlay());
+    const board = boardSize(this.grid.width, this.grid.height);
+    this.logStrip = new RichText(this, BOARD_X, BOARD_Y + board.h + 4, 450, 11, COLORS.dim, 15);
+    const logButton = new Button(this, BOARD_X + board.w - 110, BOARD_Y + board.h + 6, 110, 22, PHONE ? t("Full log") : t("Full log [L]"), () => this.toggleLogOverlay());
     logButton.setDepth(5);
     this.input.keyboard?.on("keydown-L", () => this.toggleLogOverlay());
     this.input.on("wheel", (_p: unknown, _o: unknown, _dx: number, dy: number) => {
@@ -212,7 +218,13 @@ export class BattleScene extends Phaser.Scene {
         return;
       }
       this.armed = null;
+      // A tap also inspects: info and, on a foe, its threat zone.
+      if (p.wasTouch) this.hovered = t;
       this.onTileClicked(t);
+      if (p.wasTouch && !this.busy) {
+        this.refreshOverlay();
+        this.refreshInfo();
+      }
     });
     this.input.mouse?.disableContextMenu();
     this.input.keyboard?.on("keydown-ESC", () => this.cancelSelection());
@@ -230,22 +242,16 @@ export class BattleScene extends Phaser.Scene {
     for (let y = 0; y < this.grid.height; y++)
       for (let x = 0; x < this.grid.width; x++) {
         const id = this.grid.terrainAt({ x, y }).id as keyof typeof COLORS;
-        g.fillStyle(COLORS[id] as number, 1);
-        g.fillRect(BOARD_X + x * TILE, BOARD_Y + y * TILE, TILE, TILE);
+        const c = tileToWorld({ x, y });
+        g.fillStyle(COLORS[id] as number, 1).fillPoints(hexCorners(c.x, c.y), true);
+        g.lineStyle(1, COLORS.gridLine, 0.35).strokePoints(hexCorners(c.x, c.y), true);
         if (id === "grass") {
           g.fillStyle(0x3f8a45, 1);
-          for (const [dx, dy] of [[10, 30], [24, 18], [34, 34]] as const) g.fillTriangle(
-            BOARD_X + x * TILE + dx, BOARD_Y + y * TILE + dy,
-            BOARD_X + x * TILE + dx + 4, BOARD_Y + y * TILE + dy - 10,
-            BOARD_X + x * TILE + dx + 8, BOARD_Y + y * TILE + dy,
+          for (const [dx, dy] of [[-12, 8], [0, -4], [8, 10]] as const) g.fillTriangle(
+            c.x + dx, c.y + dy, c.x + dx + 4, c.y + dy - 10, c.x + dx + 8, c.y + dy,
           );
         }
       }
-    g.lineStyle(1, COLORS.gridLine, 0.35);
-    for (let x = 0; x <= this.grid.width; x++)
-      g.lineBetween(BOARD_X + x * TILE, BOARD_Y, BOARD_X + x * TILE, BOARD_Y + this.grid.height * TILE);
-    for (let y = 0; y <= this.grid.height; y++)
-      g.lineBetween(BOARD_X, BOARD_Y + y * TILE, BOARD_X + this.grid.width * TILE, BOARD_Y + y * TILE);
   }
 
   private createUnitView(id: string, speciesId: string, side: "player" | "enemy", pos: Point): void {
@@ -304,7 +310,14 @@ export class BattleScene extends Phaser.Scene {
     for (const u of this.state.units) {
       const view = this.units.get(u.id);
       if (!view) continue;
-      const { x, y } = tileToWorld(u.pos);
+      let { x, y } = tileToWorld(u.pos);
+      // Engaged Pokémon lean towards each other, so a duel is visible at a glance.
+      const partner = u.engagedWith ? this.state.units.find((o) => o.id === u.engagedWith && o.hp > 0) : undefined;
+      if (partner) {
+        const to = tileToWorld(partner.pos);
+        x += (to.x - x) * 0.22;
+        y += (to.y - y) * 0.22;
+      }
       view.container.setPosition(x, y).setVisible(u.hp > 0);
       const frac = u.hp / u.maxHp;
       view.hpBar.width = 36 * frac;
@@ -314,9 +327,56 @@ export class BattleScene extends Phaser.Scene {
     }
   }
 
+  /** Hover (or tap) a foe: where it can move next turn (orange) and what it can hit from there (red). */
+  private drawThreat(): void {
+    if (!this.hovered || this.selectedMove || this.selectedBall || this.hoveredMove || this.busy) return;
+    const state = this.state ?? (this.phase === "deploy" ? this.deployPreviewState() : null);
+    const foe = state ? unitAt(state, this.hovered) : undefined;
+    if (!state || !foe || foe.side !== "enemy" || foe.hp <= 0 || this.isHidden(foe.id)) return;
+    const { reach, strike } = threatZone(state, CONTENT, foe.id);
+    // Near-solid colours, so the zone reads the same over any terrain.
+    this.fillTiles(strike, COLORS.target, 0.55);
+    this.fillTiles(reach, COLORS.engage, 0.85);
+    // Outlines keep the zones readable over any terrain colour.
+    this.outlineTiles([...reach, ...strike], COLORS.target);
+    this.outlineTiles([...reach, foe.pos], COLORS.engage);
+  }
+
+  /** Draws the outer border of a group of hexes. */
+  private outlineTiles(tiles: readonly Point[], color: number): void {
+    const inside = new Set(tiles.map((p) => `${p.x},${p.y}`));
+    this.overlay.lineStyle(2, color, 0.95);
+    for (const p of tiles) {
+      const c = tileToWorld(p);
+      const cs = hexCorners(c.x, c.y);
+      // Edge i joins corners i and i+1 and faces the neighbour whose centre is beyond its midpoint.
+      for (let i = 0; i < 6; i++) {
+        const a = cs[i]!, b = cs[(i + 1) % 6]!;
+        const n = worldToTile(c.x + ((a.x + b.x) / 2 - c.x) * 2, c.y + ((a.y + b.y) / 2 - c.y) * 2, this.grid.width, this.grid.height);
+        if (!n || !inside.has(`${n.x},${n.y}`)) this.overlay.lineBetween(a.x, a.y, b.x, b.y);
+      }
+    }
+  }
+
+  /** The battle as it would start with the current placements, for previews during deployment. */
+  private deployPreviewState(): BattleState | null {
+    try {
+      const players = this.placements.map((p) => {
+        const m = this.party.find((c) => c.id === p.unitId)!;
+        return { ...m.setup, id: m.id, speciesId: m.speciesId, side: "player" as const, pos: p.pos, hp: m.hp };
+      });
+      return createBattle(CONTENT, this.scenario.mapRows, [...players, ...this.scenario.enemies], { seed: 1 }).state;
+    } catch {
+      return null;
+    }
+  }
+
   private fillTiles(tiles: readonly Point[], color: number, alpha: number): void {
     this.overlay.fillStyle(color, alpha);
-    for (const p of tiles) this.overlay.fillRect(BOARD_X + p.x * TILE + 1, BOARD_Y + p.y * TILE + 1, TILE - 2, TILE - 2);
+    for (const p of tiles) {
+      const c = tileToWorld(p);
+      this.overlay.fillPoints(hexCorners(c.x, c.y, HEX_R - 1.5), true);
+    }
   }
 
   private refreshOverlay(): void {
@@ -356,17 +416,21 @@ export class BattleScene extends Phaser.Scene {
         if (this.hovered && reach.destinations.some((p) => samePoint(p, this.hovered!))) this.previewEngagement(unit.id, this.hovered);
       }
     }
+    this.drawThreat();
     if (this.phase === "battle" && this.state) this.drawCombatMarks();
     // Touch: the tapped action tile pulses in gold until it is tapped again (confirm).
     if (!this.armedFrame) {
-      this.armedFrame = this.add.rectangle(0, 0, TILE - 4, TILE - 4).setStrokeStyle(4, 0xf5d76e).setDepth(20).setVisible(false);
+      this.armedFrame = this.add.polygon(0, 0, hexCorners(0, 0, HEX_R - 3)).setOrigin(0).setStrokeStyle(4, 0xf5d76e).setDepth(20).setVisible(false);
       this.tweens.add({ targets: this.armedFrame, alpha: { from: 1, to: 0.25 }, duration: 350, yoyo: true, repeat: -1 });
     }
     this.armedFrame.setVisible(this.armed !== null);
-    if (this.armed) this.armedFrame.setPosition(BOARD_X + this.armed.x * TILE + TILE / 2, BOARD_Y + this.armed.y * TILE + TILE / 2);
+    if (this.armed) {
+      const c = tileToWorld(this.armed);
+      this.armedFrame.setPosition(c.x, c.y);
+    }
     if (this.hovered && this.grid.inBounds(this.hovered)) {
-      this.overlay.lineStyle(2, 0xffffff, 0.8);
-      this.overlay.strokeRect(BOARD_X + this.hovered.x * TILE + 1, BOARD_Y + this.hovered.y * TILE + 1, TILE - 2, TILE - 2);
+      const c = tileToWorld(this.hovered);
+      this.overlay.lineStyle(2, 0xffffff, 0.8).strokePoints(hexCorners(c.x, c.y, HEX_R - 1.5), true);
     }
   }
 
@@ -376,7 +440,7 @@ export class BattleScene extends Phaser.Scene {
    */
   private drawCombatMarks(): void {
     const state = this.state!;
-    const centre = (p: Point) => ({ x: BOARD_X + p.x * TILE + TILE / 2, y: BOARD_Y + p.y * TILE + TILE / 2 });
+    const centre = tileToWorld;
     this.overlay.lineStyle(3, COLORS.engage, 0.85);
     for (const u of state.units) {
       const partner = u.hp > 0 ? partnerOf(state, u) : null;
@@ -389,7 +453,8 @@ export class BattleScene extends Phaser.Scene {
     this.overlay.fillStyle(COLORS.combo, 0.95);
     for (const foe of state.units) {
       if (foe.side === active.side || foe.hp <= 0 || this.isHidden(foe.id) || !comboSetup(state, active, foe)) continue;
-      const x = BOARD_X + foe.pos.x * TILE + TILE - 3, y = BOARD_Y + foe.pos.y * TILE + 3;
+      const c = tileToWorld(foe.pos);
+      const x = c.x + TILE / 2 - 3, y = c.y - HEX_R / 2 - 4;
       this.overlay.fillTriangle(x, y, x - 12, y, x, y + 12);
     }
   }
@@ -411,7 +476,7 @@ export class BattleScene extends Phaser.Scene {
     if (!this.state || unit.hp <= 0) return "";
     const partner = partnerOf(this.state, unit);
     if (!partner) return "";
-    return `${tag("bad", "Engaged")} with ${CONTENT.species[partner.speciesId]!.name} ${tag("dim", unit.mods.disengage ? "(only melee on each other; slips away freely)" : "(only melee on each other; stepping away draws a free attack)")}`;
+    return `${t("{engaged} with {name}", { engaged: tag("bad", t("Engaged")), name: CONTENT.species[partner.speciesId]!.name })} ${tag("dim", unit.mods.disengage ? t("(only melee on each other; slips away freely)") : t("(only melee on each other; stepping away draws a free attack)"))}`;
   }
 
   /** "Set up for a combo": hitting this foe now gains Bond and triggers combo bonuses. */
@@ -420,7 +485,7 @@ export class BattleScene extends Phaser.Scene {
     const active = activeUnit(this.state)!;
     const setup = unit.side !== active.side ? comboSetup(this.state, active, unit) : null;
     if (!setup) return "";
-    return `${tag("good", "Combo target")} ${tag("dim", setup === "engaged" ? "an ally has engaged it: hit it for +1 Bond and combo bonuses" : "it carries an ally's status: hit it for +1 Bond and combo bonuses")}`;
+    return `${tag("good", t("Combo target"))} ${tag("dim", setup === "engaged" ? t("an ally has engaged it: hit it for +1 Bond and combo bonuses") : t("it carries an ally's status: hit it for +1 Bond and combo bonuses"))}`;
   }
 
   /** Hovering a destination: the free attacks the move would draw, shown like a damage preview. */
@@ -431,8 +496,8 @@ export class BattleScene extends Phaser.Scene {
     const knockedOut = events.some((e) => e.type === "fainted" && e.unitId === unitId);
     this.showPreview([{ unitId, damage, healed: 0, knockedOut, statuses: [] }]);
     const strikes = events.filter((e) => e.type === "engagementStrike").length;
-    const p = { x: BOARD_X + to.x * TILE + TILE / 2, y: BOARD_Y + to.y * TILE + TILE / 2 };
-    this.previewLabels!.add(this.add.text(p.x, p.y - 22, `⚔ ${strikes} free attack${strikes > 1 ? "s" : ""}`, {
+    const p = tileToWorld(to);
+    this.previewLabels!.add(this.add.text(p.x, p.y - 22, strikes > 1 ? t("⚔ {n} free attacks", { n: strikes }) : t("⚔ {n} free attack", { n: strikes }), {
       fontFamily: FONT, fontSize: "12px", fontStyle: "bold", color: "#ff8080", backgroundColor: "#10141ccc", padding: { x: 3, y: 1 },
     }).setOrigin(0.5).setDepth(8));
   }
@@ -471,7 +536,22 @@ export class BattleScene extends Phaser.Scene {
     this.orderStrip = this.add.container(0, 0, items);
   }
 
+  private panelKey = "";
+
+  /** Everything the side panel shows depends on; when it is unchanged the panel is not rebuilt (that costs GPU textures). */
+  private panelSignature(): string {
+    const st = this.state;
+    return JSON.stringify([
+      this.phase, this.busy, this.selectedMove, this.selectedBall, this.confirmRetreat, this.selectedCandidate, this.placements,
+      this.rewardText, this.summary !== null && this.summary !== undefined,
+      st && [st.round, st.turn, st.bond, st.outcome, st.balls, st.units.map((u) => [u.id, u.pos.x, u.pos.y, u.hp, u.statuses, u.cooldowns, u.engagedWith, u.usedUltimates.length, u.captured])],
+    ]);
+  }
+
   private refreshPanel(): void {
+    const sig = this.panelSignature();
+    if (sig === this.panelKey) return;
+    this.panelKey = sig;
     this.orderStrip?.destroy();
     this.orderStrip = null;
     this.panel.removeAll(true);
@@ -490,11 +570,13 @@ export class BattleScene extends Phaser.Scene {
     };
 
     if (this.phase === "deploy") {
-      this.header.setText("Deployment");
-      text(`Pick up to ${this.scenario.maxDeploy ?? MAX_ACTIVE_UNITS}: tap a card, then a blue tile. Tap a foe to inspect it.`, COLORS.dim, 12);
+      this.header.setText(t("Deployment"));
+      text(t("Pick up to {n}: tap a card, then a blue tile. Tap a foe: its reach (orange) and attack range (red).", { n: this.scenario.maxDeploy ?? MAX_ACTIVE_UNITS }), COLORS.dim, 12);
       const level = fatigueLevel(WORLD_CONTENT.fatigue, session.game.world.fatigue);
       if (level.movePenalty || level.damageMultiplier !== 1)
-        text(`Fatigue: ${level.name}. Your Pokémon get −${level.movePenalty} movement${level.damageMultiplier !== 1 ? ` and deal ${Math.round((1 - level.damageMultiplier) * 100)}% less damage` : ""}.`, COLORS.bad, 12);
+        text(level.damageMultiplier !== 1
+          ? t("Fatigue: {level}. Your Pokémon get −{move} movement and deal {dmg}% less damage.", { level: level.name, move: level.movePenalty, dmg: Math.round((1 - level.damageMultiplier) * 100) })
+          : t("Fatigue: {level}. Your Pokémon get −{move} movement.", { level: level.name, move: level.movePenalty }), COLORS.bad, 12);
       // The party as portrait cards (3 per row): tap one, then a blue tile to place it.
       const cardW = Math.floor((PANEL_W - 12) / 3), cardH = 66;
       this.party.forEach((m, i) => {
@@ -523,71 +605,71 @@ export class BattleScene extends Phaser.Scene {
       y += Math.ceil(this.party.length / 3) * (cardH + 6);
       const errors = deploymentErrors(this.scenario, this.party, this.placements);
       y += 4;
-      button(`▶ Lock deployment & start (${this.placements.length}/${this.scenario.maxDeploy ?? MAX_ACTIVE_UNITS})`, errors.length === 0, false, () => this.startBattle());
-      button("← Avoid this battle", true, false, () => this.scene.start("Overworld", {}));
+      button(t("▶ Lock deployment & start ({n}/{max})", { n: this.placements.length, max: this.scenario.maxDeploy ?? MAX_ACTIVE_UNITS }), errors.length === 0, false, () => this.startBattle());
+      button(t("← Avoid this battle"), true, false, () => this.scene.start("Overworld", {}));
       return;
     }
 
     const state = this.state!;
     if (this.phase === "over") {
-      this.header.setText(state.outcome === "victory" ? "Victory!" : state.outcome === "defeat" ? "Defeat" : "Retreated");
+      this.header.setText(state.outcome === "victory" ? t("Victory!") : state.outcome === "defeat" ? t("Defeat") : t("Retreated"));
       const sum = this.summary;
       if (sum) {
         const name = (uid: string) => CONTENT.species[this.party.find((m) => m.id === uid)!.speciesId]!.name;
-        if (state.outcome === "defeat") text("Your team falls back to camp and rests there.", COLORS.dim, 12);
-        for (const c of sum.captured) text(`Caught ${CONTENT.species[c.member.speciesId]!.name}! Sent to ${c.to === "party" ? "your party" : "storage (party full)"}.`, COLORS.good);
+        if (state.outcome === "defeat") text(t("Your team falls back to camp and rests there."), COLORS.dim, 12);
+        for (const c of sum.captured) text(c.to === "party" ? t("Caught {name}! Sent to your party.", { name: CONTENT.species[c.member.speciesId]!.name }) : t("Caught {name}! Sent to storage (party full).", { name: CONTENT.species[c.member.speciesId]!.name }), COLORS.good);
         for (const uid of sum.knockedOut.filter((u) => !sum.fallen.includes(u)))
-          text(`${name(uid)} was knocked out (KO ${this.knockoutsOf(uid)}/${KNOCKOUTS_TO_DEATH}).`, COLORS.bad);
-        for (const uid of sum.fallen) text(`${name(uid)} has fallen for good.`, COLORS.bad);
-        if (sum.xp || sum.money) text(`+${sum.xp} XP for each Pokémon that fought (half for the rest of the party) · +₽${sum.money}${sum.candies ? ` · +${sum.candies} Candy` : ""}`, "#f5d76e");
+          text(t("{name} was knocked out (KO {n}/{max}).", { name: name(uid), n: this.knockoutsOf(uid), max: KNOCKOUTS_TO_DEATH }), COLORS.bad);
+        for (const uid of sum.fallen) text(t("{name} has fallen for good.", { name: name(uid) }), COLORS.bad);
+        if (sum.xp || sum.money) text(`${t("+{xp} XP for each Pokémon that fought (half for the rest of the party) · +₽{money}", { xp: sum.xp, money: sum.money })}${sum.candies ? t(" · +{n} Candy", { n: sum.candies }) : ""}`, "#f5d76e");
         for (const [uid, evs] of Object.entries(sum.progress)) {
           for (const e of evs) {
-            if (e.type === "levelUp") text(`${name(uid)} reached Lv ${e.level}!`, COLORS.good, 12);
-            else if (e.type === "evolved") text(`${name(uid)} evolved into ${CONTENT.species[e.into]!.name}!`, "#f5d76e");
-            else text(`${name(uid)} learned ${CONTENT.moves[e.move]!.name}${e.activated ? "" : " (set it active in Party)"}.`, COLORS.good, 12);
+            if (e.type === "levelUp") text(t("{name} reached Lv {lv}!", { name: name(uid), lv: e.level }), COLORS.good, 12);
+            else if (e.type === "evolved") text(t("{name} evolved into {into}!", { name: name(uid), into: CONTENT.species[e.into]!.name }), "#f5d76e");
+            else text(e.activated ? t("{name} learned {move}.", { name: name(uid), move: CONTENT.moves[e.move]!.name }) : t("{name} learned {move} (set it active in Party).", { name: name(uid), move: CONTENT.moves[e.move]!.name }), COLORS.good, 12);
           }
         }
-        if (!sum.captured.length && !sum.knockedOut.length && !sum.xp) text("No losses.", COLORS.dim);
+        if (!sum.captured.length && !sum.knockedOut.length && !sum.xp) text(t("No losses."), COLORS.dim);
       }
       if (this.rewardText) text(this.rewardText, COLORS.good);
-      button("➜ Continue", true, false, () => this.scene.start("Overworld", {}));
+      button(t("➜ Continue"), true, false, () => this.scene.start("Overworld", {}));
       return;
     }
 
     const unit = activeUnit(state);
-    this.header.setText(`Round ${state.round}`);
+    this.header.setText(t("Round {n}", { n: state.round }));
     this.renderTurnOrder(state);
     const bond = state.bond.player;
     text(`${CONTENT.terms.bond} ${"●".repeat(bond)}${"○".repeat(Math.max(0, state.bondMax.player - bond))} ${bond}/${state.bondMax.player}`, "#f5d76e", 13);
     if (unit && unit.side === "player" && !this.busy) {
       const species = CONTENT.species[unit.speciesId]!;
-      text(`${species.name} · move ${state.turn!.movePointsLeft}`, COLORS.good);
+      text(t("{name} · move {n}", { name: species.name, n: state.turn!.movePointsLeft }), COLORS.good);
       // A short guide to what can be done now, for new players.
-      if (!this.selectedMove && !this.selectedBall) text("Blue: move · pick a move to attack", COLORS.dim, 11);
-      if (switchTargets(state).length) text("Tap another of your Pokémon to act with it instead.", COLORS.dim, 11);
+      if (!this.selectedMove && !this.selectedBall) text(t("Blue: move · pick a move to attack"), COLORS.dim, 11);
+      if (switchTargets(state).length) text(t("Tap another of your Pokémon to act with it instead."), COLORS.dim, 11);
       // Basic attack and action are separate budgets: one of each per turn, in any order.
       // Struggle only shows while it is the unit's way to fight (engaged, ranged basic attack).
       const basics = unit.moves.filter((m) => CONTENT.moves[m]!.kind === "basic" && (m !== "struggle" || !moveUnavailableReason(state, CONTENT, unit.id, m)));
       const others = unit.moves.filter((m) => CONTENT.moves[m]!.kind !== "basic");
       const ordered = [...basics, ...others];
       for (const moveId of ordered) {
-        if (moveId === basics[0]) text(`Basic attack · ${state.turn!.basicUsed ? "used" : "ready"} (1 per turn)`, state.turn!.basicUsed ? COLORS.dim : "#9fd3ff", 12);
-        if (moveId === others[0]) text(`Action · ${state.turn!.actionUsed ? "used" : "ready"} (1 per turn)`, state.turn!.actionUsed ? COLORS.dim : "#9fd3ff", 12);
+        if (moveId === basics[0]) text(state.turn!.basicUsed ? t("Basic attack · used (1 per turn)") : t("Basic attack · ready (1 per turn)"), state.turn!.basicUsed ? COLORS.dim : "#9fd3ff", 12);
+        if (moveId === others[0]) text(state.turn!.actionUsed ? t("Action · used (1 per turn)") : t("Action · ready (1 per turn)"), state.turn!.actionUsed ? COLORS.dim : "#9fd3ff", 12);
         const move = CONTENT.moves[moveId]!;
         const reason = moveUnavailableReason(state, CONTENT, unit.id, moveId);
         const targets = reason ? [] : validTargets(state, CONTENT, unit.id, moveId);
         const cd = unit.cooldowns[moveId] ?? 0;
         const range = moveRange(unit, move);
         const used = move.kind === "basic" ? state.turn!.basicUsed : state.turn!.actionUsed;
-        const status = cd > 0 ? `wait ${cd}`
-          : !used && !reason && targets.length === 0 ? `no target ${range.min === range.max ? range.max : `${range.min}-${range.max}`}`
-          : move.kind === "basic" ? "basic"
-          : move.kind === "special" ? "special"
+        const status = cd > 0 ? t("wait {n}", { n: cd })
+          : !used && !reason && targets.length === 0 ? t("no target {r}", { r: range.min === range.max ? range.max : `${range.min}-${range.max}` })
+          : move.kind === "basic" ? t("basic")
+          : move.kind === "special" ? t("special")
           : move.kind === "bond" ? `${CONTENT.terms.bond} ${bondCostFor(move, unit)}`
-          : unit.usedUltimates.includes(moveId) ? "ult used" : "ult 1×";
+          : unit.usedUltimates.includes(moveId) ? t("ult used") : t("ult 1×");
         const ownBasic = basics.find((b) => b !== "struggle") ?? unit.moves.find((m) => m !== "struggle" && CONTENT.moves[m]!.kind === "basic");
         const power = moveId === "struggle" && ownBasic ? Math.round(CONTENT.moves[ownBasic]!.power * CONTENT.rules.engagement.fallbackPower) : move.power;
-        button(`${move.name.padEnd(13)} ${power ? `Power ${String(power).padStart(2)}` : "        "}  ${status}`, targets.length > 0, this.selectedMove === moveId, () => {
+        button(`${move.name.padEnd(13)} ${power ? t("Power {n}", { n: String(power).padStart(2) }) : "        "}  ${status}`, targets.length > 0, this.selectedMove === moveId, () => {
           this.selectedBall = null;
           this.selectedMove = this.selectedMove === moveId ? null : moveId;
           this.refreshAll();
@@ -613,8 +695,8 @@ export class BattleScene extends Phaser.Scene {
         y += 30;
       }
       const half = (PANEL_W - 8) / 2;
-      this.panel.add(new Button(this, 0, y, half, 26, PHONE ? "End turn" : "End turn [Space]", () => this.playerEndTurn()));
-      this.panel.add(new Button(this, half + 8, y, half, 26, this.confirmRetreat ? "Tap again to flee" : "Retreat…", () => {
+      this.panel.add(new Button(this, 0, y, half, 26, PHONE ? t("End turn") : t("End turn [Space]"), () => this.playerEndTurn()));
+      this.panel.add(new Button(this, half + 8, y, half, 26, this.confirmRetreat ? t("Tap again to flee") : t("Retreat…"), () => {
         if (!this.confirmRetreat) {
           this.confirmRetreat = true;
           this.refreshAll();
@@ -625,7 +707,7 @@ export class BattleScene extends Phaser.Scene {
       }).setHighlighted(this.confirmRetreat));
       y += 30;
     } else {
-      text("Enemy turn…", COLORS.bad);
+      text(t("Enemy turn…"), COLORS.bad);
     }
     this.infoY = 16 + y + 10;
     this.infoText.setY(this.infoY);
@@ -642,9 +724,9 @@ export class BattleScene extends Phaser.Scene {
       let text = describeMove(CONTENT, CONTENT.moves[this.hoveredMove]!);
       const unit = this.state ? activeUnit(this.state) : null;
       if (unit) {
-        const reason = moveUnavailableReason(this.state!, CONTENT, unit.id, this.hoveredMove)
-          ?? (validTargets(this.state!, CONTENT, unit.id, this.hoveredMove).length === 0 ? "no valid target from here" : null);
-        if (reason) text += `\n\n${tag("bad", `Not usable now: ${reason}`)}`;
+        const raw = moveUnavailableReason(this.state!, CONTENT, unit.id, this.hoveredMove);
+        const reason = raw ? t(raw) : validTargets(this.state!, CONTENT, unit.id, this.hoveredMove).length === 0 ? t("no valid target from here") : null;
+        if (reason) text += `\n\n${tag("bad", t("Not usable now: {reason}", { reason }))}`;
       }
       this.setInfo(text);
       return;
@@ -668,41 +750,41 @@ export class BattleScene extends Phaser.Scene {
       return;
     }
     if (unit.side === "enemy" && this.isHidden(unit.id)) {
-      this.infoText.setMarkup(`${tag("enemy", "??? Unknown Pokémon")}\n${tag("dim", "Its details are revealed once it acts or is hit.")}`);
+      this.infoText.setMarkup(`${tag("enemy", t("??? Unknown Pokémon"))}\n${tag("dim", t("Its details are revealed once it acts or is hit."))}`);
       return;
     }
     const s = CONTENT.species[unit.speciesId]!;
     const lines = [
-      `${tag(`${unit.side === "player" ? "ally" : "foe"}:${s.types[0]}`, s.name)} ${tag("dim", unit.side === "enemy" ? "(foe)" : "(yours)")}  ${s.types.map((t) => tag(t, t)).join("/")}`,
+      `${tag(`${unit.side === "player" ? "ally" : "foe"}:${s.types[0]}`, s.name)} ${tag("dim", unit.side === "enemy" ? t("(foe)") : t("(yours)"))}  ${s.types.map((t) => tag(t, t)).join("/")}`,
       `HP ${tag(unit.hp / unit.maxHp > 0.5 ? "heal" : "dmg", `${unit.hp}/${unit.maxHp}`)}  ${statLine(unit.stats)}`,
       ...s.types.map((t) => `${tag(t, t)}: ${tag("dim", CONTENT.types[t]?.summary ?? "")}`),
       unit.ability ? `${tag("special", unit.ability.name)}: ${tag("dim", unit.ability.description)}${unit.attackBoost ? tag("num", ` (+${unit.attackBoost} Atk)`) : ""}` : "",
-      unit.statuses.length ? `Status: ${unit.statuses.map((x) => `${tag("status", CONTENT.statuses[x.id]?.name ?? x.id)} (${x.turnsLeft})`).join(", ")}` : "",
+      unit.statuses.length ? `${t("Status:")} ${unit.statuses.map((x) => `${tag("status", CONTENT.statuses[x.id]?.name ?? x.id)} (${x.turnsLeft})`).join(", ")}` : "",
       this.engagementLine(unit),
       this.comboLine(unit),
       ...unit.moves.filter((m) => m !== "struggle").map((m) => {
         const mv = CONTENT.moves[m]!;
-        const shape = mv.shape.kind === "single" ? "" : mv.shape.kind === "burst" ? `, area ${mv.shape.radius}` : `, line ${mv.shape.length}`;
-        return `· ${tag(mv.kind, mv.name)} ${tag(mv.type, mv.type)}, range ${moveRange(unit, mv).min}-${moveRange(unit, mv).max}${shape}${mv.power ? `, power ${tag("dmg", mv.power)}` : ""}`;
+        const shape = mv.shape.kind === "single" ? "" : mv.shape.kind === "burst" ? t(", area {n}", { n: mv.shape.radius }) : t(", line {n}", { n: mv.shape.length });
+        return `· ${tag(mv.kind, mv.name)} ${tag(mv.type, mv.type)}${t(", range {min}-{max}", { min: moveRange(unit, mv).min, max: moveRange(unit, mv).max })}${shape}${mv.power ? t(", power {n}", { n: tag("dmg", mv.power) }) : ""}`;
       }),
     ];
     const active = this.state ? activeUnit(this.state) : null;
     if (active && active.side === "player" && unit.side === "enemy" && this.selectedMove) {
       const mv = CONTENT.moves[this.selectedMove]!;
       const eff = typeMultiplier(CONTENT.typeChart, mv.type, s.types);
-      if (eff !== 1) lines.push(eff > 1 ? tag("good", `${mv.name} is super effective (×${eff})`) : tag("bad", `${mv.name} is not very effective (×${eff})`));
+      if (eff !== 1) lines.push(eff > 1 ? tag("good", t("{move} is super effective (×{eff})", { move: mv.name, eff })) : tag("bad", t("{move} is not very effective (×{eff})", { move: mv.name, eff })));
     }
     if (active && active.side === "player" && unit.side === "enemy" && this.selectedBall && this.state) {
       const ball = CONTENT.balls[this.selectedBall]!;
       const reason = captureUnavailableReason(this.state, CONTENT, active.id, this.selectedBall, unit.pos);
-      lines.push(reason ? `${ball.name}: ${tag("bad", reason)}` : `${ball.name}: ${tag("good", `${Math.round(captureChance(CONTENT, unit, this.selectedBall) * 100)}% to catch`)} ${tag("dim", "(ball is used up either way)")}`);
+      lines.push(reason ? `${ball.name}: ${tag("bad", t(reason))}` : `${ball.name}: ${tag("good", t("{n}% to catch", { n: Math.round(captureChance(CONTENT, unit, this.selectedBall) * 100) }))} ${tag("dim", t("(ball is used up either way)"))}`);
     }
-    if (unit.side === "player" && this.knockoutsOf(unit.id) > 0) lines.push(`Knockouts: ${tag("ko", `${this.knockoutsOf(unit.id)}/${KNOCKOUTS_TO_DEATH}`)}`);
+    if (unit.side === "player" && this.knockoutsOf(unit.id) > 0) lines.push(`${t("Knockouts:")} ${tag("ko", `${this.knockoutsOf(unit.id)}/${KNOCKOUTS_TO_DEATH}`)}`);
     // Compact: no type summaries, the moves on one line.
     const typeLines = new Set(s.types.map((t) => `${tag(t, t)}: ${tag("dim", CONTENT.types[t]?.summary ?? "")}`));
     const moveNames = unit.moves.filter((m) => m !== "struggle").map((m) => tag(CONTENT.moves[m]!.kind, CONTENT.moves[m]!.name)).join(", ");
     const compact = lines.filter((l) => l && !typeLines.has(l) && !l.startsWith("· "));
-    compact.splice(Math.min(compact.length, 4), 0, `Moves: ${moveNames}`);
+    compact.splice(Math.min(compact.length, 4), 0, `${t("Moves:")} ${moveNames}`);
     this.setInfo(lines.filter(Boolean).join("\n"), compact.join("\n"));
   }
 
@@ -712,10 +794,10 @@ export class BattleScene extends Phaser.Scene {
 
   private terrainInfo(id: string): string {
     switch (id) {
-      case "grass": return "Tall grass — units here can only be targeted from adjacent tiles.";
-      case "mud": return "Mud — costs 2 movement.";
-      case "wall": return "Rock — blocks movement and line of sight.";
-      case "water": return "Water — impassable.";
+      case "grass": return t("Tall grass — units here can only be targeted from adjacent tiles.");
+      case "mud": return t("Mud — costs 2 movement.");
+      case "wall": return t("Rock — blocks movement and line of sight.");
+      case "water": return t("Water — impassable.");
       default: return "";
     }
   }
@@ -744,8 +826,7 @@ export class BattleScene extends Phaser.Scene {
   // ------------------------------------------------------------ input
 
   private pointerTile(p: Phaser.Input.Pointer): Point | null {
-    const t = { x: Math.floor((p.worldX - BOARD_X) / TILE), y: Math.floor((p.worldY - BOARD_Y) / TILE) };
-    return this.grid.inBounds(t) ? t : null;
+    return worldToTile(p.worldX, p.worldY, this.grid.width, this.grid.height);
   }
 
   /** Tiles where a tap acts (move there, use the selected move or ball); others just inspect. */
@@ -768,7 +849,8 @@ export class BattleScene extends Phaser.Scene {
       this.activeRing = this.add.circle(0, 0, TILE / 2 - 2).setStrokeStyle(3, 0xf5d76e).setDepth(1);
       this.tweens.add({ targets: this.activeRing, alpha: { from: 1, to: 0.35 }, duration: 600, yoyo: true, repeat: -1 });
     }
-    this.activeRing.setPosition(BOARD_X + unit.pos.x * TILE + TILE / 2, BOARD_Y + unit.pos.y * TILE + TILE / 2).setVisible(true);
+    const c = tileToWorld(unit.pos);
+    this.activeRing.setPosition(c.x, c.y).setVisible(true);
   }
 
   private onTileClicked(t: Point): void {
@@ -906,7 +988,7 @@ export class BattleScene extends Phaser.Scene {
         game = { ...game, world: { ...game.world, rngState: roll.state } };
         if (roll.value < 0.15) {
           game = { ...game, inventory: { ...game.inventory, balls: { ...game.inventory.balls, "poke-ball": (game.inventory.balls["poke-ball"] ?? 0) + 1 } } };
-          this.rewardText = "Found a Poké Ball after the battle!";
+          this.rewardText = t("Found a Poké Ball after the battle!");
         }
         // Foraging: the area's food is found after a won wild battle.
         const forage = this.biome ? WORLD_CONTENT.biomes[this.biome]?.forage : undefined;
@@ -915,14 +997,14 @@ export class BattleScene extends Phaser.Scene {
           for (const [id, n] of Object.entries(forage)) items[id] = (items[id] ?? 0) + n;
           game = { ...game, inventory: { ...game.inventory, items } };
           const found = Object.entries(forage).map(([id, n]) => `${n} ${PROGRESSION.items[id]?.name ?? id}`).join(", ");
-          this.rewardText = [this.rewardText, `Foraged ${found}.`].filter(Boolean).join(" ");
+          this.rewardText = [this.rewardText, t("Foraged {items}.", { items: found })].filter(Boolean).join(" ");
         }
         // Loot: at most one of the area's items turns up.
         const loot = rollLoot((this.biome ? WORLD_CONTENT.biomes[this.biome]?.loot : undefined) ?? [], game.world.rngState);
         game = { ...game, world: { ...game.world, rngState: loot.rngState } };
         if (loot.item) {
           game = { ...game, inventory: { ...game.inventory, items: { ...game.inventory.items, [loot.item]: (game.inventory.items[loot.item] ?? 0) + 1 } } };
-          this.rewardText = [this.rewardText, `Found ${PROGRESSION.items[loot.item]?.name ?? loot.item}!`].filter(Boolean).join(" ");
+          this.rewardText = [this.rewardText, t("Found {item}!", { item: PROGRESSION.items[loot.item]?.name ?? loot.item })].filter(Boolean).join(" ");
         }
       }
       // Trainers, leaders and story battles: their reward and flag on a win; the Elite Four resets on a loss.
@@ -931,7 +1013,7 @@ export class BattleScene extends Phaser.Scene {
       if (npc && this.state.outcome === "victory") {
         const granted = grantGifts(completeNpc(game, npc), npc.reward);
         game = granted.game;
-        this.rewardText = [`${npc.name} is defeated!`, ...granted.notes].join(" ");
+        this.rewardText = [t("{name} is defeated!", { name: npc.name }), ...granted.notes].join(" ");
       } else if (npc) game = failNpc(game, npc, npcs);
       if (this.state.outcome === "defeat") game = { ...game, world: returnToLastCamp(WORLD_CONTENT, currentWorld(), game.world) };
       session.update(game);
@@ -954,7 +1036,7 @@ export class BattleScene extends Phaser.Scene {
     const ctx = {
       name: (id: string) => {
         const u = unitById(state, id);
-        return u.side === "enemy" ? `Foe ${this.displayName(u)}` : this.displayName(u);
+        return u.side === "enemy" ? t("Foe {name}", { name: this.displayName(u) }) : this.displayName(u);
       },
       isPlayer: (id: string) => unitById(state, id).side === "player",
       typeOf: (id: string) => {
@@ -993,6 +1075,10 @@ export class BattleScene extends Phaser.Scene {
                 duration: 90, yoyo: true, onComplete: () => resolve(),
               }));
             }
+            // The move's effect, styled by its type, on everyone it touches (or the aimed hex).
+            const hit = e.affected.map((id) => this.state?.units.find((u) => u.id === id)).filter((u) => u !== undefined).map((u) => tileToWorld(u.pos));
+            const move = CONTENT.moves[e.moveId];
+            if (move) await playMoveFx(this, move, { x: view.container.x, y: view.container.y }, hit.length ? hit : [tileToWorld(e.target)]);
           }
           break;
         }
@@ -1058,8 +1144,7 @@ export class BattleScene extends Phaser.Scene {
   /** Full scrollable history drawn over the board; newest at the bottom, wheel scrolls back. */
   private renderLogOverlay(): void {
     this.logOverlay?.destroy();
-    const w = this.grid.width * TILE;
-    const h = this.grid.height * TILE;
+    const { w, h } = boardSize(this.grid.width, this.grid.height);
     const lineH = 15;
     const visible = Math.floor((h - 40) / lineH);
     const maxScroll = Math.max(0, this.log.length - visible);
@@ -1072,7 +1157,7 @@ export class BattleScene extends Phaser.Scene {
       if (!this.logDragged && this.time.now - this.logOpenedAt > 300) this.toggleLogOverlay();
       this.logDragged = false;
     });
-    const title = this.add.text(10, 8, `Combat log (${this.log.length})  ·  scroll or drag  ·  tap or L to close`, {
+    const title = this.add.text(10, 8, t("Combat log ({n})  ·  scroll or drag  ·  tap or L to close", { n: this.log.length }), {
       fontFamily: FONT, fontSize: px(12), color: "#f5d76e",
     });
     const body = new RichText(this, 10, 32, w - 20, 12, LOG_COLORS.info, lineH);

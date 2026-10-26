@@ -1,0 +1,31 @@
+{
+ "npcs": [
+  {
+   "id": "r3-youngster",
+   "text": [
+    "Szia! Imádom a rövidnadrágot! Kényelmes, és könnyű hordani!"
+   ],
+   "afterText": [
+    "Az Ekansomnak még edzés kell..."
+   ]
+  },
+  {
+   "id": "r3-lass",
+   "text": [
+    "Rám néztél, ugye? Harc!"
+   ],
+   "afterText": [
+    "Hmph, veled nem lehet szórakozni."
+   ]
+  },
+  {
+   "id": "r3-bugcatcher",
+   "text": [
+    "A bogaraim mindjárt fejlődnek! Harcolj velem!"
+   ],
+   "afterText": [
+    "Irány vissza a Viridian Forestbe..."
+   ]
+  }
+ ]
+}

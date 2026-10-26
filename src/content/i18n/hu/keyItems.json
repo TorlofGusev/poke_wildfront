@@ -1,0 +1,44 @@
+{
+ "hm-cut": {
+  "description": "Kis fákat vág ki. Kell hozzá a Cascade Badge."
+ },
+ "hm-flash": {
+  "description": "Bevilágítja a sötét barlangokat. Kell hozzá a Boulder Badge."
+ },
+ "hm-surf": {
+  "description": "Átkel a vízen. Kell hozzá a Soul Badge."
+ },
+ "hm-strength": {
+  "description": "Sziklákat mozgat. Kell hozzá a Rainbow Badge."
+ },
+ "ss-ticket": {
+  "description": "Jegy az S.S. Anne-re, amely Vermilionban horgonyoz."
+ },
+ "poke-flute": {
+  "description": "Dallama felébreszti az alvó Pokémonokat."
+ },
+ "silph-scope": {
+  "description": "Felfedi a szellemek valódi alakját."
+ },
+ "tea": {
+  "description": "Egy szomjas őr nagyon örülne neki."
+ },
+ "card-key": {
+  "description": "Kinyitja a Silph Co. ajtóit."
+ },
+ "lift-key": {
+  "description": "Ezzel működik a Rocket Hideout liftje."
+ },
+ "helix-fossil": {
+  "description": "Egy ősi tengeri Pokémon kövülete. A Cinnabar Lab életre keltheti."
+ },
+ "dome-fossil": {
+  "description": "Egy ősi tengeri Pokémon kövülete. A Cinnabar Lab életre keltheti."
+ },
+ "old-amber": {
+  "description": "Borostyán, benne ősi DNS-sel. A Cinnabar Lab életre keltheti."
+ },
+ "secret-key": {
+  "description": "Kinyitja a Cinnabar Gymet."
+ }
+}

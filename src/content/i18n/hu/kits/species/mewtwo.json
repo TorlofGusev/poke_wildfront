@@ -1,0 +1,55 @@
+{
+ "talents": {
+  "mewtwo-skill-psycho-cut": {
+   "description": "Új képesség: pszichikus pengék legfeljebb 2 hexnyire (Erő 50)."
+  },
+  "mewtwo-unnerve": {
+   "description": "+20% sebzés teljes HP-jú ellenfelekre."
+  },
+  "mewtwo-engineered": {
+   "description": "+2 Sp. Atk és +1 Sp. Def."
+  },
+  "mewtwo-skill-psychic": {
+   "description": "Új képesség: erős telekinetikus csapás legfeljebb 3 hexnyire (Erő 70)."
+  },
+  "mewtwo-skill-barrier": {
+   "description": "Új képesség: pszichikus fal; 3 körig Megerősített."
+  },
+  "mewtwo-iron-will": {
+   "description": "Nem fagyasztható és nem bénítható."
+  },
+  "mewtwo-psionic-edge": {
+   "description": "+20% sebzés fagyott ellenfelekre."
+  },
+  "mewtwo-skill-psystrike": {
+   "description": "Új képesség: pszichikus erő legfeljebb 3 hexnyire, Defense ellen (Erő 100)."
+  },
+  "mewtwo-skill-recover": {
+   "description": "Új képesség: 35 HP-t gyógyít magán."
+  },
+  "mewtwo-mind-over-matter": {
+   "description": "Csatánként egyszer 1 HP-val túlél egy kiütő csapást."
+  },
+  "mewtwo-self-repair": {
+   "description": "Minden körben max HP-ja 5%-át gyógyítja."
+  },
+  "mewtwo-skill-aura-sphere": {
+   "description": "Új képesség: aura lövedék legfeljebb 3 hexnyire, rálátás nélkül (Erő 80)."
+  },
+  "mewtwo-skill-psywave": {
+   "description": "Új képesség: pszichikus hullámok egy területen (Erő 70); 2 körre Sebezhetővé tesz."
+  },
+  "mewtwo-psychic-mastery": {
+   "description": "A pszichikus mozdulatok 20%-kal többet sebeznek."
+  },
+  "mewtwo-armor": {
+   "description": "10%-kal kevesebb sebzést kap; +2 HP."
+  },
+  "mewtwo-unbound": {
+   "description": "Csúcsképesség. 20%-kal többet sebez; kiütés után képességei újratöltődnek."
+  },
+  "mewtwo-mega-evolution": {
+   "description": "Csúcsképesség. +3 Attack, +3 Sp. Atk, +2 Speed; sorozattalálatonként +10% (max 3)."
+  }
+ }
+}

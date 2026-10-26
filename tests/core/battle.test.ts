@@ -193,8 +193,8 @@ describe("displacement", () => {
   });
 
   it("pulls the target towards the user and stops adjacent", () => {
-    let { state } = battle([u("p", "mid", "player", 0, 0), u("e", "slow", "enemy", 4, 0)]);
-    const r = act(state, { type: "useMove", unitId: "p", moveId: "lasso", target: { x: 4, y: 0 } });
+    let { state } = battle([u("p", "mid", "player", 0, 0), u("e", "slow", "enemy", 3, 0)]);
+    const r = act(state, { type: "useMove", unitId: "p", moveId: "lasso", target: { x: 3, y: 0 } });
     expect(unitById(r.state, "e").pos).toEqual({ x: 1, y: 0 });
     expect(r.events.some((e) => e.type === "damaged")).toBe(false);
   });

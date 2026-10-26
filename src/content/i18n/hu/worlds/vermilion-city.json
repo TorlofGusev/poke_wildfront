@@ -1,0 +1,71 @@
+{
+ "exits": [
+  {},
+  {},
+  {
+   "lockedText": "Egy matróz megállít: „A jegyet, legyen szíves! Jegy nélkül nincs beszállás.”"
+  }
+ ],
+ "obstacles": [
+  {
+   "text": "Egy kis fa állja el az edzőterem ajtaját. Úgy tűnik, ki lehetne vágni."
+  }
+ ],
+ "npcs": [
+  {
+   "id": "vermilion-gentleman",
+   "text": [
+    "Lt. Surge edzőterme tiszta feszültségből működik!"
+   ],
+   "afterText": [
+    "Sokkoló..."
+   ]
+  },
+  {
+   "id": "vermilion-sailor",
+   "text": [
+    "Surge mindenre megtanított!"
+   ],
+   "afterText": [
+    "Áramütés!"
+   ]
+  },
+  {
+   "id": "surge",
+   "text": [
+    "Hé, kölyök! A háborúban elektromos Pokémonok mentették meg az életem!",
+    "Te nem húzod sokáig a csatában, az biztos!"
+   ],
+   "afterText": [
+    "A Thunder Badge felpörgeti a Pokémonjaid sebességét. Ha!"
+   ]
+  },
+  {
+   "id": "vermilion-chairman",
+   "text": [
+    "Üdv a Pokémon Fan Clubban!",
+    "Láttad már az S.S. Anne-t? Csak jeggyel lehet felszállni."
+   ]
+  },
+  {
+   "id": "vermilion-sailor-dock",
+   "text": [
+    "Az S.S. Anne rögtön délre, a kikötőben horgonyoz.",
+    "Hamarosan kifut, szóval ne tökölj!"
+   ]
+  },
+  {
+   "id": "vermilion-squirtle",
+   "lockedText": [
+    "Ennek a Squirtle-nek erős edző kell.",
+    "Gyere vissza a Thunder Badge-dzsel."
+   ],
+   "text": [
+    "Megvan a Thunder Badge-ed. Squirtle, tarts vele!"
+   ],
+   "afterText": [
+    "Squirtle jó kezekben van."
+   ]
+  }
+ ]
+}

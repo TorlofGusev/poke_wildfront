@@ -1,0 +1,13 @@
+{
+ "npcs": [
+  {
+   "id": "r1-clerk",
+   "text": [
+    "Szia! A Viridian Poké Martban dolgozom. Tessék, egy ingyen minta!"
+   ],
+   "afterText": [
+    "Nézz be egyszer Viridianba vásárolni!"
+   ]
+  }
+ ]
+}

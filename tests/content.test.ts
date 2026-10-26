@@ -6,6 +6,11 @@ import { CONTENT, SCENARIOS } from "../src/content";
 import { maxHpOf } from "../src/core/battle";
 
 describe("content integrity", () => {
+  it("only Bond moves reach beyond 3 hexes", () => {
+    const far = Object.values(CONTENT.moves).filter((m) => m.kind !== "bond" && m.range.max > 3).map((m) => m.id);
+    expect(far).toEqual([]);
+  });
+
   it("species reference existing types and moves; ids match keys", () => {
     for (const [id, s] of Object.entries(CONTENT.species)) {
       expect(s.id).toBe(id);

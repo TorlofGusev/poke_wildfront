@@ -1,0 +1,43 @@
+{
+ "npcs": [
+  {
+   "id": "blackbelt-dojo-1",
+   "text": [
+    "Hwaa! Mutasd meg a harci szellemed!"
+   ],
+   "afterText": [
+    "Uff! Szép harc volt."
+   ]
+  },
+  {
+   "id": "blackbelt-dojo-2",
+   "text": [
+    "Hijá! Csak az erősek juthatnak tovább!"
+   ],
+   "afterText": [
+    "Látszik, hogy edzettél."
+   ]
+  },
+  {
+   "id": "karate-master",
+   "text": [
+    "Én vagyok a Karate Mester! Nézz szembe az ökleimmel!"
+   ],
+   "afterText": [
+    "Tisztességesen legyőztél. Válassz egyet a legbecsesebb Pokémonjaim közül."
+   ]
+  },
+  {
+   "id": "dojo-prize",
+   "lockedText": [
+    "Csak az kaphat jutalmat, aki legyőzi a Mestert."
+   ],
+   "text": [
+    "A Mester megengedi, hogy válassz egyet a legjobb harcosaink közül."
+   ],
+   "afterText": [
+    "Eddzd keményen!"
+   ]
+  }
+ ]
+}

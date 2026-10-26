@@ -1,0 +1,75 @@
+{
+ "npcs": [
+  {
+   "id": "burglar-cinnabar",
+   "text": [
+    "A hőség miatt jöttem, Blaine miatt maradtam!"
+   ],
+   "afterText": [
+    "Ez nekem túl forró."
+   ]
+  },
+  {
+   "id": "supernerd-cinnabar",
+   "text": [
+    "Kvízidő! A tűz legyőzi a füvet. Most pedig harc!"
+   ],
+   "afterText": [
+    "Helyes válasz: te nyertél."
+   ]
+  },
+  {
+   "id": "blaine",
+   "lockedText": [
+    "Az edzőterem ajtaja zárva.",
+    "A kulcs valahol a régi kúriában lehet."
+   ],
+   "text": [
+    "Hah! Blaine vagyok, a forrófejű kvízmester!",
+    "A tűz Pokémonjaim porrá égetnek!"
+   ],
+   "afterText": [
+    "Kiégtem. Kiérdemelted a Volcano Badge-et!"
+   ]
+  },
+  {
+   "id": "lab-helix",
+   "lockedText": [
+    "Mi Helix Fossilokból élesztünk fel Pokémonokat."
+   ],
+   "text": [
+    "Egy Helix Fossil! Hadd élesszem fel...",
+    "Ez egy Omanyte! Vigyázz rá nagyon."
+   ],
+   "afterText": [
+    "Remélem, Omanyte jól van?"
+   ]
+  },
+  {
+   "id": "lab-dome",
+   "lockedText": [
+    "Mi Dome Fossilokból élesztünk fel Pokémonokat."
+   ],
+   "text": [
+    "Egy Dome Fossil! Hadd élesszem fel...",
+    "Ez egy Kabuto! Vigyázz rá nagyon."
+   ],
+   "afterText": [
+    "Remélem, Kabuto jól van?"
+   ]
+  },
+  {
+   "id": "lab-amber",
+   "lockedText": [
+    "Az Old Amber ősi DNS-t rejt. Fel tudjuk éleszteni."
+   ],
+   "text": [
+    "Old Amber! Hadd élesszem fel...",
+    "Ez egy Aerodactyl! Vigyázz rá nagyon."
+   ],
+   "afterText": [
+    "Remélem, Aerodactyl jól van?"
+   ]
+  }
+ ]
+}

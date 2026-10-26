@@ -5,7 +5,7 @@
 export interface UnitModifiers {
   /** Added to movement points (fatigue −1, Quick Claw +1). */
   readonly moveBonus: number;
-  /** Extra max range on moves that already reach 2+ tiles (Sharpshooter). */
+  /** Extra max range on moves that already reach 2+ hexes; only Bond moves may go past 3 (see moveRange). */
   readonly rangeBonus: number;
   /** Damage multipliers against targets 3+ tiles away, and adjacent targets. */
   readonly farDamage: number;
@@ -99,6 +99,8 @@ export interface UnitModifiers {
   readonly sturdy: boolean;
   /** Foes engaged with it always draw its free strike when stepping away, even with disengage. */
   readonly noEscape: boolean;
+  /** Its ranged moves fire over Pokémon standing in the way (they do not block its line of sight). */
+  readonly shootOver: boolean;
   /** Damage multipliers against foes carrying a given status, e.g. Merciless { poison: 1.25 }. */
   readonly vsStatusIdDamage: Readonly<Record<string, number>>;
 }
@@ -107,7 +109,7 @@ export const NO_MODIFIERS: UnitModifiers = {
   moveBonus: 0, rangeBonus: 0, farDamage: 1, closeDamage: 1, damageDealt: 1, damageTaken: 1, typeDamage: {}, vsStatusDamage: 1, fullHpTargetDamage: 1,
   lowHpDamage: 1, healPerTurn: 0, statusDurationBonus: 0, impactBonus: 0,
   flankBonus: 0, swarmBonus: 0, drainBonus: 0, pushBonus: 0, pullBonus: 0, lowHpTypeDamage: {}, bondOnKo: 0, bondOnFaint: 0, bondCostReduction: 0, contactStatus: null, koHeal: 0, thorns: 0, vsEngagedDamage: 1, vsSetupDamage: 1, comboBond: 0, disengage: false, statusImmune: [],
-  pinDamage: 1, strikeDamage: 1, vsMudDamage: 1, surroundedDamage: 1, statusedDamage: 1, fullHpDamageTaken: 1, koAttackBoost: 0, koMove: 0, healWhileEngaged: 0, bondOnStrike: 0, furyCutter: 0, statusedMove: 0, statusCooldownReduction: 0, koRefreshBasic: false, koResetCooldowns: false, statusSpreadOnKo: false, shedStatuses: false, sturdy: false, noEscape: false, vsStatusIdDamage: {},
+  pinDamage: 1, strikeDamage: 1, vsMudDamage: 1, surroundedDamage: 1, statusedDamage: 1, fullHpDamageTaken: 1, koAttackBoost: 0, koMove: 0, healWhileEngaged: 0, bondOnStrike: 0, furyCutter: 0, statusedMove: 0, statusCooldownReduction: 0, koRefreshBasic: false, koResetCooldowns: false, statusSpreadOnKo: false, shedStatuses: false, sturdy: false, noEscape: false, shootOver: false, vsStatusIdDamage: {},
 };
 
 export function combineModifiers(...parts: readonly Partial<UnitModifiers>[]): UnitModifiers {
@@ -168,6 +170,7 @@ export function combineModifiers(...parts: readonly Partial<UnitModifiers>[]): U
       shedStatuses: acc.shedStatuses || (p.shedStatuses ?? false),
       sturdy: acc.sturdy || (p.sturdy ?? false),
       noEscape: acc.noEscape || (p.noEscape ?? false),
+      shootOver: acc.shootOver || (p.shootOver ?? false),
       vsStatusIdDamage,
     };
   }, NO_MODIFIERS);

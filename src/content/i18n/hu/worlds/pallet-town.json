@@ -1,0 +1,35 @@
+{
+ "exits": [
+  {},
+  {
+   "lockedText": "Délre a tenger nyújtózik. Surf kell az átkeléshez."
+  }
+ ],
+ "npcs": [
+  {
+   "id": "oak",
+   "text": [
+    "Á, hát itt vagy! A világ tele van Pokémonokkal, és a te utad ma kezdődik.",
+    "Indulj északra a Route 1-en át. Viridian City és Pewter edzőterme vár.",
+    "Fogadd el ezeket a Poké Ballokat. Fogj, edz, és töltsd meg azokat a lapokat!"
+   ],
+   "afterText": [
+    "Brock Pewter Cityben az első igazi próba. Szerezd meg a Boulder Badge-et!"
+   ]
+  },
+  {
+   "id": "pallet-mom",
+   "text": [
+    "Már indulsz is? Pihenj, amikor elfáradsz, kincsem.",
+    "És ne kóborolj a magas fűbe a Pokémonjaid nélkül!"
+   ]
+  },
+  {
+   "id": "pallet-sailor",
+   "text": [
+    "E móló alatt délre fekszik a Route 21 és Cinnabar Island.",
+    "Csak egy Surföt ismerő Pokémon vihet el oda."
+   ]
+  }
+ ]
+}

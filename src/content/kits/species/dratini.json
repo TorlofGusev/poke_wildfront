@@ -1,0 +1,40 @@
+{
+ "species": [
+  "dratini",
+  "dragonair",
+  "dragonite"
+ ],
+ "moves": {
+  "dratini-extreme-speed": {
+   "id": "dratini-extreme-speed",
+   "name": "Extreme Speed",
+   "type": "normal",
+   "kind": "special",
+   "cooldown": 2,
+   "power": 60,
+   "range": {
+    "min": 1,
+    "max": 2
+   },
+   "requiresLineOfSight": false,
+   "shape": {
+    "kind": "single"
+   },
+   "affects": "enemies"
+  }
+ },
+ "talents": {
+  "dratini-skill-extreme-speed": {
+   "id": "dratini-skill-extreme-speed",
+   "name": "Extreme Speed",
+   "description": "New skill: a blinding rush at a foe up to 2 hexes away, no line of sight (Power 60).",
+   "grantsMove": "dratini-extreme-speed"
+  }
+ },
+ "rows": {
+  "12": [
+   "dragon-skill-dragon-claw",
+   "dratini-skill-extreme-speed"
+  ]
+ }
+}

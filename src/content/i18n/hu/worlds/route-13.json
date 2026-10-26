@@ -1,0 +1,13 @@
+{
+ "npcs": [
+  {
+   "id": "birdkeeper-route13",
+   "text": [
+    "Az én madaraim uralják ezt az eget!"
+   ],
+   "afterText": [
+    "Földre kényszerítve..."
+   ]
+  }
+ ]
+}

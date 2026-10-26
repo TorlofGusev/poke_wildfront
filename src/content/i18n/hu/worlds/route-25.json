@@ -1,0 +1,41 @@
+{
+ "npcs": [
+  {
+   "id": "r25-hiker",
+   "text": [
+    "A sziklaim keményebbek a csapatodnál!"
+   ],
+   "afterText": [
+    "Kőkemény vereség..."
+   ]
+  },
+  {
+   "id": "r25-camper",
+   "text": [
+    "Ne siess annyira Bill házához!"
+   ],
+   "afterText": [
+    "Bill a földnyelv végén lakik."
+   ]
+  },
+  {
+   "id": "r25-lass",
+   "text": [
+    "Nézd, milyen cukik a Pokémonjaim!"
+   ],
+   "afterText": [
+    "Óóó..."
+   ]
+  },
+  {
+   "id": "bill",
+   "text": [
+    "Szia! Bill vagyok, a Pokémon-mániás! Köszi, hogy kihúztál abból a teleportálós balesetből.",
+    "Tessék, fogadd el ezt a jegyet a vermilioni S.S. Anne-re."
+   ],
+   "afterText": [
+    "Érezd jól magad az S.S. Anne partiján! Mindenhonnan vannak edzők a fedélzeten."
+   ]
+  }
+ ]
+}

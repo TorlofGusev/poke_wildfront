@@ -1,19 +1,19 @@
 {
  "mega-punch": {
   "fire": "Flame Wheel",
-  "water": "Aqua Tail",
+  "water": "Waterfall",
   "grass": "Power Whip",
   "electric": "Spark",
   "ice": "Ice Fang",
   "fighting": "Brick Break",
   "poison": "Poison Jab",
   "ground": "Drill Run",
-  "flying": "Brave Bird",
+  "flying": "Wing Attack",
   "psychic": "Zen Headbutt",
-  "bug": "X-Scissor",
-  "rock": "Head Smash",
+  "bug": "Lunge",
+  "rock": "Mighty Cleave",
   "ghost": "Shadow Claw",
-  "dragon": "Dragon Claw"
+  "dragon": "Dual Chop"
  },
  "feint-attack": {
   "fire": "Incinerate",
@@ -40,7 +40,7 @@
   "fighting": "Aura Sphere",
   "poison": "Sludge Bomb",
   "ground": "Mud Bomb",
-  "flying": "Air Slash",
+  "flying": "Gust",
   "psychic": "Psyshock",
   "bug": "Signal Beam",
   "rock": "Rock Blast",
@@ -69,10 +69,10 @@
   "rock": "Iron Defense"
  },
  "focus-energy": {
-  "fighting": "Bulk Up",
+  "fighting": "Coaching",
   "dragon": "Dragon Dance",
   "grass": "Growth",
-  "electric": "Charge",
+  "electric": "Electric Terrain",
   "bug": "Tail Glow",
   "psychic": "Calm Mind",
   "fire": "Sunny Day",
@@ -96,14 +96,14 @@
   "electric": "Magnet Rise"
  },
  "block": {
-  "water": "Whirlpool",
+  "water": "Clamp",
   "ghost": "Mean Look",
   "electric": "Thunder Cage",
   "grass": "Snap Trap",
   "ground": "Sand Tomb",
   "bug": "Infestation",
   "fire": "Magma Storm",
-  "rock": "Rock Tomb"
+  "rock": "Stealth Rock"
  },
  "lock-on": {
   "psychic": "Miracle Eye",

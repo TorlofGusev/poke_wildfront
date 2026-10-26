@@ -1,0 +1,176 @@
+{
+ "role": "striker",
+ "roleDescription": "Raw melee damage: hits adjacent foes 20% harder.",
+ "roleMods": {
+  "closeDamage": 1.2
+ },
+ "moves": {
+  "striker-giga-impact": {
+   "id": "striker-giga-impact",
+   "name": "Giga Impact",
+   "type": "normal",
+   "kind": "special",
+   "requiresLineOfSight": false,
+   "shape": {
+    "kind": "single"
+   },
+   "affects": "enemies",
+   "cooldown": 4,
+   "power": 90,
+   "range": {
+    "min": 1,
+    "max": 1
+   }
+  },
+  "striker-double-edge": {
+   "id": "striker-double-edge",
+   "name": "Double-Edge",
+   "type": "normal",
+   "kind": "special",
+   "requiresLineOfSight": false,
+   "shape": {
+    "kind": "single"
+   },
+   "affects": "enemies",
+   "cooldown": 4,
+   "power": 80,
+   "range": {
+    "min": 1,
+    "max": 1
+   },
+   "effects": [
+    {
+     "kind": "status",
+     "status": "exposed",
+     "duration": 2
+    }
+   ]
+  }
+ },
+ "variants": {
+  "striker-giga-impact": {
+   "fire": "Flare Blitz",
+   "water": "Wave Crash",
+   "grass": "Wood Hammer",
+   "electric": "Volt Tackle",
+   "ice": "Icicle Crash",
+   "fighting": "Superpower",
+   "poison": "Shell Side Arm",
+   "ground": "High Horsepower",
+   "flying": "Beak Blast",
+   "psychic": "Psychic Fangs",
+   "bug": "First Impression",
+   "rock": "Rock Wrecker",
+   "ghost": "Poltergeist",
+   "dragon": "Outrage",
+   "normal": "Head Charge"
+  },
+  "striker-double-edge": {
+   "normal": "Double-Edge",
+   "fire": "Blaze Kick",
+   "water": "Liquidation",
+   "grass": "Horn Leech",
+   "electric": "Thunder Punch",
+   "ice": "Ice Hammer",
+   "fighting": "Cross Chop",
+   "poison": "Poison Tail",
+   "ground": "Headlong Rush",
+   "flying": "Brave Bird",
+   "psychic": "Zen Headbutt",
+   "bug": "X-Scissor",
+   "rock": "Stone Axe",
+   "ghost": "Phantom Force",
+   "dragon": "Dragon Hammer"
+  }
+ },
+ "talents": {
+  "striker-killer-instinct": {
+   "id": "striker-killer-instinct",
+   "name": "Killer Instinct",
+   "description": "Capstone. A knockout gives +1 Attack (max +3) and, on its turn, its basic attack again.",
+   "stats": {
+    "attack": 2,
+    "speed": 1,
+    "spAttack": 1,
+    "hp": 1
+   },
+   "mods": {
+    "koAttackBoost": 1,
+    "koRefreshBasic": true
+   }
+  },
+  "striker-last-stand": {
+   "id": "striker-last-stand",
+   "name": "Last Stand",
+   "description": "+25% damage while its HP is below half; +1 Attack.",
+   "mods": {
+    "lowHpDamage": 1.25
+   },
+   "stats": {
+    "attack": 1
+   }
+  },
+  "striker-bloodlust": {
+   "id": "striker-bloodlust",
+   "name": "Bloodlust",
+   "description": "Heals 20% of its max HP when it knocks out a foe; +1 HP.",
+   "mods": {
+    "koHeal": 0.2
+   },
+   "stats": {
+    "hp": 1
+   }
+  },
+  "skill-striker-giga-impact": {
+   "id": "skill-striker-giga-impact",
+   "name": "Giga Impact",
+   "description": "New skill: an all-out melee strike (Power 90, recharges in 4 turns).",
+   "grantsMove": "striker-giga-impact"
+  },
+  "striker-endure": {
+   "id": "striker-endure",
+   "name": "Endure",
+   "description": "Survives one knockout blow per battle at 1 HP; +1 HP.",
+   "mods": {
+    "sturdy": true
+   },
+   "stats": {
+    "hp": 1
+   }
+  },
+  "striker-guard-break": {
+   "id": "striker-guard-break",
+   "name": "Guard Break",
+   "description": "+25% damage against Exposed foes; +1 Attack, +1 HP.",
+   "mods": {
+    "vsStatusIdDamage": {
+     "exposed": 1.25
+    }
+   },
+   "stats": {
+    "attack": 1,
+    "hp": 1
+   }
+  },
+  "skill-striker-double-edge": {
+   "id": "skill-striker-double-edge",
+   "name": "Double-Edge",
+   "description": "New skill: a crushing melee hit that Exposes the foe for 2 turns (Power 80, cooldown 4).",
+   "grantsMove": "striker-double-edge"
+  }
+ },
+ "passives": [
+  "striker-last-stand",
+  "striker-bloodlust",
+  "rally",
+  "striker-endure",
+  "striker-guard-break"
+ ],
+ "skills": [
+  "skill-mega-punch",
+  "skill-focus-energy",
+  "skill-striker-giga-impact",
+  "skill-striker-double-edge"
+ ],
+ "capstone": "striker-killer-instinct"
+}

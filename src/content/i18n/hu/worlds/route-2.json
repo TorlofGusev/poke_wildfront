@@ -1,0 +1,18 @@
+{
+ "npcs": [
+  {
+   "id": "route2-aide",
+   "lockedText": [
+    "Professor Oak egyik asszisztense vagyok.",
+    "Győzd le Brockot Pewter Cityben, és lesz valamim a számodra."
+   ],
+   "text": [
+    "Legyőzted Brockot? A professzor el lesz ragadtatva!",
+    "Fogadd el a HM05 Flasht. A Boulder Badge-dzsel bevilágítja a sötét barlangokat."
+   ],
+   "afterText": [
+    "A Flash később segít majd átjutni a Rock Tunnelen."
+   ]
+  }
+ ]
+}

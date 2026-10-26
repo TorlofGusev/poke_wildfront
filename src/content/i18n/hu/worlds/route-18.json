@@ -1,0 +1,31 @@
+{
+ "npcs": [
+  {
+   "id": "biker-route18-1",
+   "text": [
+    "Az utolsó szakasz Fuchsia előtt! Versenyezzünk!"
+   ],
+   "afterText": [
+    "Túl gyors vagy..."
+   ]
+  },
+  {
+   "id": "bird-keeper-route18",
+   "text": [
+    "Az én madaraim uralják ezt az eget!"
+   ],
+   "afterText": [
+    "Földre kényszerítve..."
+   ]
+  },
+  {
+   "id": "route18-trade",
+   "text": [
+    "Túl sokat fogtam. Vidd ezt a Lickitungot!"
+   ],
+   "afterText": [
+    "Lickitung kedvel téged."
+   ]
+  }
+ ]
+}

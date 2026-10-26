@@ -83,12 +83,39 @@ export interface ProgressionRules {
   readonly respecCostPerLevel: number;
 }
 
+/** A type's share of every tree: the starting skill, 5 passives, 4 skills, a capstone. */
+export interface TypeKit {
+  readonly start: string;
+  readonly passives: readonly string[];
+  readonly skills: readonly string[];
+  readonly capstone: string;
+}
+
+/** A role's share of every tree: 5 passives, 4 skills, a capstone. */
+export interface RoleKit {
+  readonly passives: readonly string[];
+  readonly skills: readonly string[];
+  readonly capstone: string;
+}
+
+/** A species' unique tree or signature slot: replaces the start skill and/or whole rows (by level). */
+export interface SpeciesKit {
+  readonly start?: string;
+  readonly rows?: Readonly<Record<string, readonly string[]>>;
+}
+
 export interface ProgressionContent {
   readonly roles: Readonly<Record<string, RoleDef>>;
   readonly talents: Readonly<Record<string, TalentDef>>;
   readonly typeTrees: Readonly<Record<string, TypeTreeDef>>;
   readonly items: Readonly<Record<string, ItemDef>>;
   readonly rules: ProgressionRules;
+  /** Mastery kits (docs/design/mastery-kits.md): a path's tree is its role kit plus its type kit. */
+  readonly kits?: { readonly types: Readonly<Record<string, TypeKit>>; readonly roles: Readonly<Record<string, RoleKit>> };
+  /** Unique trees and signature slots by species id. */
+  readonly speciesKits?: Readonly<Record<string, SpeciesKit>>;
+  /** Dual-type species: their fixed role (they choose a type instead). */
+  readonly speciesRoles?: Readonly<Record<string, string>>;
   /** Key items (HMs, quest items) by id. */
   readonly keyItems?: Readonly<Record<string, { readonly id: string; readonly name: string; readonly description: string }>>;
 }

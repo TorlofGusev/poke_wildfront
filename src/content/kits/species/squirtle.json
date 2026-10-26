@@ -1,0 +1,30 @@
+{
+ "species": [
+  "squirtle",
+  "wartortle",
+  "blastoise"
+ ],
+ "moves": {},
+ "talents": {
+  "squirtle-shell-armor": {
+   "id": "squirtle-shell-armor",
+   "name": "Shell Armor",
+   "description": "Cannot be Exposed or Marked; +1 Defense.",
+   "stats": {
+    "defense": 1
+   },
+   "mods": {
+    "statusImmune": [
+     "exposed",
+     "marked"
+    ]
+   }
+  }
+ },
+ "rows": {
+  "4": [
+   "water-torrent",
+   "squirtle-shell-armor"
+  ]
+ }
+}

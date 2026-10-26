@@ -10,28 +10,26 @@ const u = (id: string, speciesId: string, side: "player" | "enemy", x: number, y
 /** "fast" acts first (Speed 100), so the player unit p moves on the first turn. */
 const start = (units: UnitSetup[], map = OPEN): BattleState => createBattle(content, map, units).state;
 
-describe("8-directional grid", () => {
-  it("counts diagonals alternately as 1 and 2, so all eight neighbours are adjacent", () => {
-    expect(gridDistance({ x: 0, y: 0 }, { x: 1, y: 1 })).toBe(1);
-    expect(gridDistance({ x: 0, y: 0 }, { x: 2, y: 2 })).toBe(3);
-    expect(gridDistance({ x: 0, y: 0 }, { x: 3, y: 3 })).toBe(4);
-    expect(gridDistance({ x: 0, y: 0 }, { x: 3, y: 1 })).toBe(3);
+describe("hex grid", () => {
+  it("has six neighbours at distance 1 (odd rows are shifted right)", () => {
+    expect(gridDistance({ x: 2, y: 2 }, { x: 2, y: 3 })).toBe(1);
+    expect(gridDistance({ x: 2, y: 2 }, { x: 1, y: 3 })).toBe(1);
+    expect(gridDistance({ x: 2, y: 2 }, { x: 3, y: 3 })).toBe(2);
+    expect(gridDistance({ x: 0, y: 0 }, { x: 3, y: 0 })).toBe(3);
   });
 
-  it("moves diagonally with the same alternating cost, never cutting a wall's corner", () => {
+  it("moves to the six neighbours for one point each, around walls", () => {
     const grid = Grid.fromAscii([".....", ".....", "....."]);
-    const r = reachableTiles(grid, { x: 0, y: 0 }, 3, undefined, true);
-    expect(r.cost.get(key({ x: 1, y: 1 }))).toBe(1);
-    expect(r.cost.get(key({ x: 2, y: 2 }))).toBe(3);
-    const walled = Grid.fromAscii([".#.", "...", "..."]);
-    // (0,0) → (1,1) would cut the corner of the wall at (1,0).
-    expect(reachableTiles(walled, { x: 0, y: 0 }, 1, undefined, true).destinations.map(key)).toEqual(["0,1"]);
-    expect(reachableTiles(grid, { x: 0, y: 0 }, 1).cost.has(key({ x: 1, y: 1 }))).toBe(false);
+    const r = reachableTiles(grid, { x: 2, y: 1 }, 1, undefined, true);
+    expect(r.destinations.length).toBe(6);
+    const walled = Grid.fromAscii([".#.", "#..", "..."]);
+    // (0,0) has only two neighbours on the map, (1,0) and (0,1): both walls.
+    expect(reachableTiles(walled, { x: 0, y: 0 }, 3, undefined, true).destinations).toEqual([]);
   });
 
-  it("melee attacks reach diagonal neighbours", () => {
-    const state = start([u("p", "fast", "player", 2, 2), u("e", "slow", "enemy", 3, 3)]);
-    expect(validTargets(state, content, "p", "tackle").map(key)).toEqual(["3,3"]);
+  it("melee attacks reach every neighbouring hex", () => {
+    const state = start([u("p", "fast", "player", 2, 2), u("e", "slow", "enemy", 2, 3)]);
+    expect(validTargets(state, content, "p", "tackle").map(key)).toEqual(["2,3"]);
   });
 });
 
@@ -50,9 +48,9 @@ describe("engagement (one on one)", () => {
     applyAction(state, content, { type: "useMove", unitId, moveId, target: { x, y } });
 
   it("standing next to a foe does not engage; a damaging melee hit does, for both", () => {
-    const state = start([u("p", "fast", "player", 2, 2), u("e", "mid", "enemy", 3, 3)]);
+    const state = start([u("p", "fast", "player", 2, 2), u("e", "mid", "enemy", 2, 3)]);
     expect(unitById(state, "p").engagedWith).toBeNull();
-    const r = hit(state, "p", "tackle", 3, 3);
+    const r = hit(state, "p", "tackle", 2, 3);
     expect(r.events).toContainEqual({ type: "engaged", unitId: "p", targetId: "e" });
     expect(unitById(r.state, "e").engagedWith).toBe("p");
   });

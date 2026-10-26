@@ -1,0 +1,13 @@
+{
+ "npcs": [
+  {
+   "id": "r4-lass",
+   "text": [
+    "Cerulean már itt van előttünk! De előbb én jövök!"
+   ],
+   "afterText": [
+    "Misty sokkal keményebb nálam."
+   ]
+  }
+ ]
+}

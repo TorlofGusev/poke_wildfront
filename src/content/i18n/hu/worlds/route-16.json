@@ -1,0 +1,25 @@
+{
+ "npcs": [
+  {
+   "id": "biker-route16",
+   "text": [
+    "Félre az utamból, kölyök!"
+   ],
+   "afterText": [
+    "Összetörték a járgányomat..."
+   ]
+  },
+  {
+   "id": "snorlax-route16",
+   "lockedText": [
+    "Egy hatalmas Pokémon alszik az úton. Meg sem moccan."
+   ],
+   "text": [
+    "A Poké Flute dallama felébreszti Snorlaxot! Rosszkedvűen támad!"
+   ],
+   "afterText": [
+    "Az út most már szabad."
+   ]
+  }
+ ]
+}

@@ -371,9 +371,10 @@
  "long-shot": {
   "id": "long-shot",
   "name": "Long Shot",
-  "description": "Ranged moves reach 1 tile further; +1 Sp. Atk.",
+  "description": "Ranged moves reach 1 hex further (up to 3; Bond moves no limit) and fire over Pokémon in the way; +1 Sp. Atk.",
   "mods": {
-   "rangeBonus": 1
+   "rangeBonus": 1,
+   "shootOver": true
   },
   "stats": {
    "spAttack": 1
@@ -883,9 +884,10 @@
  "telekinesis": {
   "id": "telekinesis",
   "name": "Telekinesis",
-  "description": "Ranged moves reach 1 tile further.",
+  "description": "Ranged moves reach 1 hex further (up to 3; Bond moves no limit) and fly over Pokémon in the way.",
   "mods": {
-   "rangeBonus": 1
+   "rangeBonus": 1,
+   "shootOver": true
   },
   "requiresType": "psychic",
   "stats": {
@@ -1279,10 +1281,11 @@
  "deadeye": {
   "id": "deadeye",
   "name": "Deadeye",
-  "description": "Capstone. +25% damage against foes 3+ tiles away; ranged moves reach 1 tile further.",
+  "description": "Capstone. +25% damage against foes 3+ hexes away; ranged moves reach 1 hex further (up to 3; Bond moves no limit) and fire over Pokémon in the way.",
   "mods": {
    "farDamage": 1.25,
-   "rangeBonus": 1
+   "rangeBonus": 1,
+   "shootOver": true
   }
  },
  "pressure": {

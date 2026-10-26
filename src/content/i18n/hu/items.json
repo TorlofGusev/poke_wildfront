@@ -1,0 +1,53 @@
+{
+ "potion": {
+  "description": "40 HP-t állít vissza csatán kívül."
+ },
+ "super-potion": {
+  "description": "90 HP-t állít vissza csatán kívül."
+ },
+ "charcoal": {
+  "description": "A Fire támadások 20%-kal többet sebeznek."
+ },
+ "mystic-water": {
+  "description": "A Water támadások 20%-kal többet sebeznek."
+ },
+ "miracle-seed": {
+  "description": "A Grass támadások 20%-kal többet sebeznek."
+ },
+ "magnet": {
+  "description": "Az Electric támadások 20%-kal többet sebeznek."
+ },
+ "hard-stone": {
+  "description": "A Rock támadások 20%-kal többet sebeznek."
+ },
+ "sharp-beak": {
+  "description": "A Flying támadások 20%-kal többet sebeznek."
+ },
+ "quick-claw": {
+  "description": "+1 mozgás."
+ },
+ "leftovers": {
+  "description": "Minden kör elején gyógyít max HP 6%-ot."
+ },
+ "muscle-band": {
+  "description": "Minden támadás 10%-kal többet sebez."
+ },
+ "candy": {
+  "description": "Egy szintlépési ponttal együtt használva +1 helyett +2-t ad bármelyik statra."
+ },
+ "oran-berry": {
+  "description": "Gyakori, laktató bogyó. Hozzávaló a tábori ételekhez."
+ },
+ "cheri-berry": {
+  "description": "Csípős bogyó. Hozzávaló a tábori ételekhez."
+ },
+ "pecha-berry": {
+  "description": "Édes, nyugtató bogyó. Hozzávaló a tábori ételekhez."
+ },
+ "revival-herb": {
+  "description": "Keserű, erős gyógynövény. 1 kiütés-jelet távolít el egy Pokémonról."
+ },
+ "rawst-berry": {
+  "description": "Kemény, keserű bogyó. Hozzávaló a tábori ételekhez."
+ }
+}

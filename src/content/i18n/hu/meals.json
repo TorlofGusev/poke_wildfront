@@ -1,0 +1,17 @@
+{
+ "simple-meal": {
+  "description": "Egyszerű, laktató étel. Teljes pihenés, extra hatás nélkül."
+ },
+ "hearty-stew": {
+  "description": "Meleg és megnyugtató: a csapat +1 Bonddal kezdi a csatákat."
+ },
+ "spicy-curry": {
+  "description": "Mindenkit feltüzel: +10% sebzés."
+ },
+ "calming-tea": {
+  "description": "Megnyugtatja az idegeket: +1 Bond plafon és 10%-kal kevesebb elszenvedett sebzés."
+ },
+ "rawst-broth": {
+  "description": "Keserű, de erőt ad: −10% elszenvedett sebzés."
+ }
+}

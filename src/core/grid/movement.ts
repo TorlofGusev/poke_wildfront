@@ -1,5 +1,6 @@
 import type { Grid } from "./Grid";
-import { DIAGONAL_OFFSETS, key, NEIGHBOR_OFFSETS, type Point } from "./types";
+import { hexNeighbors } from "./hex";
+import { key, NEIGHBOR_OFFSETS, type Point } from "./types";
 
 /**
  * Who stands where, from the moving unit's point of view.
@@ -24,17 +25,16 @@ export interface Reachable {
 
 /**
  * Dijkstra flood fill limited by movement points. Deterministic tie-breaking.
- * With `diagonal`, units also step diagonally: every second diagonal step costs 1 extra
- * (matching `gridDistance`), and a diagonal step may not cut the corner of impassable terrain.
+ * With `hex`, the grid is read as hexes (battles): six neighbours, each step paying the terrain cost.
+ * Without it, four-directional squares (the overworld).
  */
 export function reachableTiles(
   grid: Grid,
   start: Point,
   movePoints: number,
   occupancy: Occupancy = EMPTY_OCCUPANCY,
-  diagonal = false,
+  hex = false,
 ): Reachable {
-  // Search state: tile plus whether an odd number of diagonal steps was taken (the next one costs extra).
   type Node = { readonly p: Point; readonly odd: boolean };
   const nodeKey = (n: Node) => `${key(n.p)}|${n.odd ? 1 : 0}`;
   const best = new Map<string, number>([[nodeKey({ p: start, odd: false }), 0]]);
@@ -43,7 +43,6 @@ export function reachableTiles(
   const bestNode = new Map<string, Node>([[key(start), { p: start, odd: false }]]);
   const points = new Map<string, Point>([[key(start), start]]);
   const frontier: Node[] = [{ p: start, odd: false }];
-  const offsets = diagonal ? [...NEIGHBOR_OFFSETS, ...DIAGONAL_OFFSETS] : NEIGHBOR_OFFSETS;
 
   while (frontier.length > 0) {
     // Small grids: a sorted array is fast enough and keeps order deterministic.
@@ -51,20 +50,14 @@ export function reachableTiles(
     const current = frontier.shift()!;
     const currentCost = best.get(nodeKey(current))!;
 
-    for (const o of offsets) {
-      const next = { x: current.p.x + o.x, y: current.p.y + o.y };
+    const nexts = hex ? hexNeighbors(current.p) : NEIGHBOR_OFFSETS.map((o) => ({ x: current.p.x + o.x, y: current.p.y + o.y }));
+    for (const next of nexts) {
       if (!grid.inBounds(next)) continue;
       const step = grid.terrainAt(next).moveCost;
       if (step === null || occupancy.isEnemy(next)) continue;
-      const isDiagonal = o.x !== 0 && o.y !== 0;
-      if (isDiagonal) {
-        const sideA = { x: current.p.x + o.x, y: current.p.y };
-        const sideB = { x: current.p.x, y: current.p.y + o.y };
-        if (grid.terrainAt(sideA).moveCost === null || grid.terrainAt(sideB).moveCost === null) continue;
-      }
-      const nextCost = currentCost + step + (isDiagonal && current.odd ? 1 : 0);
+      const nextCost = currentCost + step;
       if (nextCost > movePoints) continue;
-      const node: Node = { p: next, odd: isDiagonal ? !current.odd : current.odd };
+      const node: Node = { p: next, odd: false };
       const nk = nodeKey(node);
       if (nextCost < (best.get(nk) ?? Infinity)) {
         best.set(nk, nextCost);

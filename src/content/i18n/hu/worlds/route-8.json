@@ -1,0 +1,22 @@
+{
+ "npcs": [
+  {
+   "id": "gambler-route8",
+   "text": [
+    "Dobjunk kockát egy csatára!"
+   ],
+   "afterText": [
+    "Nekem kígyószem jött ki..."
+   ]
+  },
+  {
+   "id": "lass-route8",
+   "text": [
+    "Az Underground Pathon jöttél? Harcolj velem!"
+   ],
+   "afterText": [
+    "Kikapott a cuki csapatom..."
+   ]
+  }
+ ]
+}

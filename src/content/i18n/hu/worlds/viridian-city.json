@@ -1,0 +1,55 @@
+{
+ "obstacles": [
+  {
+   "text": "A Viridian Gym zárva. A vezetője távol van... Gyere vissza hét kitűzővel."
+  }
+ ],
+ "npcs": [
+  {
+   "id": "viridian-oldman",
+   "text": [
+    "Áh, megvan a reggeli kávém!",
+    "Gyengítsd le a vad Pokémont, mielőtt labdát dobsz. Ez a trükk."
+   ]
+  },
+  {
+   "id": "viridian-gym-blackbelt",
+   "lockedText": [
+    "..."
+   ],
+   "text": [
+    "A főnök visszatért. Nem jutsz át rajtam!"
+   ],
+   "afterText": [
+    "Giovanni... ő egy másik szinten van."
+   ]
+  },
+  {
+   "id": "viridian-gym-cooltrainer",
+   "lockedText": [
+    "..."
+   ],
+   "text": [
+    "A föld típus egészben elnyeli az elektromosságot. Készen állsz?"
+   ],
+   "afterText": [
+    "Menj csak. Vár rád."
+   ]
+  },
+  {
+   "id": "giovanni",
+   "lockedText": [
+    "A vezető széke üres."
+   ],
+   "text": [
+    "Hát. Idáig eljutottál, gyermek.",
+    "A Team Rocketnek talán vége, de még mindig én vagyok Viridian legerősebb edzője.",
+    "Mutasd meg, mit tanultál!"
+   ],
+   "afterText": [
+    "Ha! Igazi edző vagy. Távozom, és újrakezdem.",
+    "Fogadd el az Earth Badge-et. A Pokémon League vár."
+   ]
+  }
+ ]
+}

@@ -1,0 +1,14 @@
+{
+ "npcs": [
+  {
+   "id": "route7-mime",
+   "text": [
+    "A Mr. Mime-om látni szeretné a világot.",
+    "Vidd magaddal!"
+   ],
+   "afterText": [
+    "Mr. Mime integet neked."
+   ]
+  }
+ ]
+}

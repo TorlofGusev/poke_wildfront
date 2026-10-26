@@ -1,0 +1,207 @@
+{
+ "role": "skirmisher",
+ "roleDescription": "Hit-and-run flanker: steps away from engaged foes without free attacks; +15% damage to foes engaged with an ally.",
+ "roleMods": {
+  "disengage": true,
+  "vsEngagedDamage": 1.15
+ },
+ "moves": {
+  "skirmisher-acrobatics": {
+   "id": "skirmisher-acrobatics",
+   "name": "Acrobatics",
+   "type": "normal",
+   "kind": "special",
+   "requiresLineOfSight": false,
+   "shape": {
+    "kind": "single"
+   },
+   "affects": "enemies",
+   "cooldown": 3,
+   "power": 70,
+   "range": {
+    "min": 1,
+    "max": 2
+   },
+   "effects": [
+    {
+     "kind": "disengage"
+    }
+   ]
+  },
+  "skirmisher-extreme-speed": {
+   "id": "skirmisher-extreme-speed",
+   "name": "Extreme Speed",
+   "type": "normal",
+   "kind": "special",
+   "requiresLineOfSight": false,
+   "shape": {
+    "kind": "single"
+   },
+   "affects": "enemies",
+   "cooldown": 4,
+   "power": 80,
+   "range": {
+    "min": 1,
+    "max": 1
+   },
+   "effects": [
+    {
+     "kind": "status",
+     "status": "slow",
+     "duration": 1
+    },
+    {
+     "kind": "disengage"
+    }
+   ]
+  }
+ },
+ "variants": {
+  "skirmisher-acrobatics": {
+   "fire": "Flame Charge",
+   "water": "Aqua Jet",
+   "grass": "Leaf Blade",
+   "electric": "Nuzzle",
+   "ice": "Ice Spinner",
+   "fighting": "Mach Punch",
+   "poison": "Cross Poison",
+   "ground": "Bone Rush",
+   "flying": "Acrobatics",
+   "psychic": "Psycho Cut",
+   "bug": "Fell Stinger",
+   "rock": "Accelerock",
+   "ghost": "Shadow Sneak",
+   "dragon": "Dual Chop"
+  },
+  "skirmisher-extreme-speed": {
+   "normal": "Extreme Speed",
+   "fire": "Fire Lash",
+   "water": "Aqua Step",
+   "grass": "Trop Kick",
+   "electric": "Zing Zap",
+   "ice": "Triple Axel",
+   "fighting": "Low Sweep",
+   "poison": "Dire Claw",
+   "ground": "Stomping Tantrum",
+   "flying": "Dual Wingbeat",
+   "psychic": "Psyblade",
+   "bug": "Pounce",
+   "rock": "Rollout",
+   "ghost": "Shadow Claw",
+   "dragon": "Dragon Claw"
+  }
+ },
+ "talents": {
+  "skirmisher-sure-footed": {
+   "id": "skirmisher-sure-footed",
+   "name": "Sure-Footed",
+   "description": "Immune to Slow and Paralysis; +1 Speed.",
+   "mods": {
+    "statusImmune": [
+     "slow",
+     "paralysis"
+    ]
+   },
+   "stats": {
+    "speed": 1
+   }
+  },
+  "skirmisher-ambush": {
+   "id": "skirmisher-ambush",
+   "name": "Ambush",
+   "description": "+20% damage against foes at full HP; +1 Attack.",
+   "mods": {
+    "fullHpTargetDamage": 1.2
+   },
+   "stats": {
+    "attack": 1
+   }
+  },
+  "skirmisher-backstab": {
+   "id": "skirmisher-backstab",
+   "name": "Backstab",
+   "description": "+1 Bond when it lands a combo; +1 Attack.",
+   "mods": {
+    "comboBond": 1
+   },
+   "stats": {
+    "attack": 1
+   }
+  },
+  "skill-skirmisher-u-turn": {
+   "id": "skill-skirmisher-u-turn",
+   "name": "Rapid Spin",
+   "description": "New skill: a melee hit that ends its engagement, so it can step away freely.",
+   "grantsMove": "u-turn"
+  },
+  "skill-skirmisher-feint-attack": {
+   "id": "skill-skirmisher-feint-attack",
+   "name": "Sonic Boom",
+   "description": "New skill: strikes a foe up to 2 hexes away, ignoring line of sight.",
+   "grantsMove": "feint-attack"
+  },
+  "skill-skirmisher-acrobatics": {
+   "id": "skill-skirmisher-acrobatics",
+   "name": "Acrobatics",
+   "description": "New skill: strikes up to 2 hexes away and ends its engagement (Power 70).",
+   "grantsMove": "skirmisher-acrobatics"
+  },
+  "skirmisher-phantom-step": {
+   "id": "skirmisher-phantom-step",
+   "name": "Phantom Step",
+   "description": "Capstone. +2 movement when it knocks out a foe on its turn; +15% vs engaged foes.",
+   "mods": {
+    "koMove": 2,
+    "vsEngagedDamage": 1.15
+   },
+   "stats": {
+    "speed": 2,
+    "attack": 1,
+    "hp": 1
+   }
+  },
+  "skirmisher-evasion": {
+   "id": "skirmisher-evasion",
+   "name": "Evasion",
+   "description": "Takes 10% less damage; +1 Speed.",
+   "mods": {
+    "damageTaken": 0.9
+   },
+   "stats": {
+    "speed": 1
+   }
+  },
+  "skirmisher-opportunist": {
+   "id": "skirmisher-opportunist",
+   "name": "Opportunist",
+   "description": "+25% damage to foes carrying an ally's status; +1 Attack, +1 Speed.",
+   "mods": {
+    "vsSetupDamage": 1.25
+   },
+   "stats": {
+    "attack": 1,
+    "speed": 1
+   }
+  },
+  "skill-skirmisher-extreme-speed": {
+   "id": "skill-skirmisher-extreme-speed",
+   "name": "Extreme Speed",
+   "description": "New skill: a fast melee hit that Slows the foe 1 turn and ends its engagement (Power 80).",
+   "grantsMove": "skirmisher-extreme-speed"
+  }
+ },
+ "passives": [
+  "skirmisher-sure-footed",
+  "skirmisher-ambush",
+  "skirmisher-backstab",
+  "skirmisher-evasion",
+  "skirmisher-opportunist"
+ ],
+ "skills": [
+  "skill-skirmisher-u-turn",
+  "skill-skirmisher-feint-attack",
+  "skill-skirmisher-acrobatics",
+  "skill-skirmisher-extreme-speed"
+ ],
+ "capstone": "skirmisher-phantom-step"
+}

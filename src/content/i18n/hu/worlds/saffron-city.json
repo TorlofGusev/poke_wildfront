@@ -1,0 +1,49 @@
+{
+ "obstacles": [
+  {
+   "text": "„Szolgálatban vagyok, és nagyon szomjas... Nem engedhetlek át.”"
+  },
+  {
+   "text": "„Szolgálatban vagyok, és nagyon szomjas... Nem engedhetlek át.”"
+  },
+  {
+   "text": "„Szolgálatban vagyok, és nagyon szomjas... Nem engedhetlek át.”"
+  },
+  {
+   "text": "„Szolgálatban vagyok, és nagyon szomjas... Nem engedhetlek át.”"
+  }
+ ],
+ "npcs": [
+  {
+   "id": "psychic-saffron-gym-1",
+   "text": [
+    "Láttam, hogy jössz. Látomásom volt."
+   ],
+   "afterText": [
+    "Ezt nem láttam előre..."
+   ]
+  },
+  {
+   "id": "channeler-saffron-gym",
+   "text": [
+    "Sabrina ereje meghaladja a tiédet."
+   ],
+   "afterText": [
+    "Erős az akaratod."
+   ]
+  },
+  {
+   "id": "sabrina",
+   "lockedText": [
+    "Az edzőterem le van zárva. A Team Rocket elfoglalta a Silph Co.-t!"
+   ],
+   "text": [
+    "Tudtam, hogy jönni fogsz. Láttam egy látomásban.",
+    "Nem szeretek harcolni, de megmutatom az erőmet."
+   ],
+   "afterText": [
+    "A Marsh Badge a tiéd. Előre láttam... talán."
+   ]
+  }
+ ]
+}

@@ -1,0 +1,37 @@
+{
+ "talents": {
+  "bug-skill-string-shot": {
+   "description": "Új képesség: ragacsos selyem, amely lelassít (Slow) egy ellenfelet."
+  },
+  "bug-swarm": {
+   "description": "Bug raj bónusz +10% segítőnként; +1 Attack."
+  },
+  "bug-shed-skin": {
+   "description": "Nem kaphat Slow-t és Poison-t; +1 HP."
+  },
+  "bug-skill-pin-missile": {
+   "description": "Új képesség: tüskezápor távolra."
+  },
+  "bug-skill-sticky-web": {
+   "description": "Új képesség: háló, amely 2 körre lelassít (Slow) minden ellenfelet egy területen."
+  },
+  "bug-fury-cutter": {
+   "description": "+8% sebzés minden egymás utáni találatért ugyanazon az ellenfélen (max 3)."
+  },
+  "bug-skill-bug-buzz": {
+   "description": "Új képesség: zúgó hanghullám, amely mindent eltalál egy vonalban."
+  },
+  "bug-hive-mind": {
+   "description": "A Bug támadások 20%-kal erősebbek; +1 csapat-Bond, amikor kombót ér el."
+  },
+  "bug-tinted-lens": {
+   "description": "+20% sebzés Slow alatt álló ellenfelekre; +1 Attack."
+  },
+  "bug-feeding-frenzy": {
+   "description": "A kiütések visszaállítják a képességei újratöltését."
+  },
+  "bug-skill-megahorn": {
+   "description": "Új képesség: brutális szarvdöfés, amely 1 hexszel hátralöki a célt."
+  }
+ }
+}

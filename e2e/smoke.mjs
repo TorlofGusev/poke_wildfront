@@ -42,7 +42,7 @@ try {
   });
   await step("deploying and starting the battle", async () => {
     for (const [x, y] of [[1, 2], [1, 4], [1, 5]]) {
-      await page.mouse.click(12 + x * 40 + 20, 72 + y * 40 + 20);
+      await page.mouse.click(12 + 19.4 + x * 38.8 + (y & 1 ? 19.4 : 0), 72 + 22.4 + y * 33.6);
       await page.waitForTimeout(100);
     }
     await page.mouse.click(808, 230);

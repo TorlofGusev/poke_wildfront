@@ -11,6 +11,10 @@ export interface Progress {
   readonly level: number;
   readonly xp: number;
   readonly role: string | null;
+  /** A type an evolution added (Charmeleon → Charizard: Flying) and the level it came at: one extra row from its kit. */
+  readonly bonusType?: { readonly type: string; readonly level: number } | null;
+  /** The type half of the path chosen at the role level (role + type form the mastery tree). */
+  readonly focus?: string | null;
   readonly talents: readonly string[];
   readonly heldItem: string | null;
   readonly knownMoves: readonly string[];
@@ -113,15 +117,59 @@ export function toUnitSetup(content: BattleContent, prog: ProgressionContent, m:
 }
 
 /** A wild Pokémon of a given level, with its default loadout. */
-/** The form a wild Pokémon of a species has at a level: evolved as far as its level allows. */
-export function wildForm(content: BattleContent, speciesId: string, level: number): string {
+function evolveInto<T extends Progress>(content: BattleContent, prog: ProgressionContent, m: T, into: string, events: ProgressEvent[]): T {
+  events.push({ type: "evolved", from: m.speciesId, into });
+  // A type the new form adds (and the path does not use) opens a gift row from that type's kit.
+  const before = content.species[m.speciesId]!.types;
+  const added = content.species[into]!.types.find((ty) => !before.includes(ty));
+  const bonusType = m.bonusType ?? (added ? { type: added, level: m.level } : null);
+  return retrainType(content, prog, { ...m, speciesId: into, bonusType, unspentPoints: m.unspentPoints + prog.rules.evolutionPoints });
+}
+
+function learnLevelMoves<T extends Progress>(content: BattleContent, prog: ProgressionContent, m: T, events: ProgressEvent[]): T {
+  let cur = m;
+  for (const move of movesKnownAt(content.species[cur.speciesId]!, cur.level)) {
+    if (cur.knownMoves.includes(move)) continue;
+    const basic = basicMoveOf(content, content.species[cur.speciesId]!);
+    const activate = move !== basic && cur.activeMoves.length < prog.rules.maxActiveMoves;
+    cur = { ...cur, knownMoves: [...cur.knownMoves, move], activeMoves: activate ? [...cur.activeMoves, move] : cur.activeMoves };
+    events.push({ type: "learned", move, activated: activate });
+  }
+  return cur;
+}
+
+/** Forms a member may evolve into right now by the player's choice (Eevee at Lv 15), else []. */
+export function evolutionChoices(content: BattleContent, m: Progress): string[] {
+  const evo = content.species[m.speciesId]!.evolution;
+  return evo?.choices && m.level >= evo.level ? evo.choices.filter((id) => content.species[id]) : [];
+}
+
+/** Evolves into the chosen form of a branching evolution. */
+export function chooseEvolution<T extends Progress>(content: BattleContent, prog: ProgressionContent, m: T, into: string): { member: T; events: ProgressEvent[] } {
+  if (!evolutionChoices(content, m).includes(into)) throw new Error(`${m.speciesId} cannot evolve into ${into} now`);
+  const events: ProgressEvent[] = [];
+  const before = memberStats(content, prog, m).maxHp;
+  let cur = learnLevelMoves(content, prog, evolveInto(content, prog, m, into, events), events);
+  const after = memberStats(content, prog, cur).maxHp;
+  if (cur.hp > 0) cur = { ...cur, hp: Math.min(after, cur.hp + Math.max(0, after - before)) };
+  return { member: cur, events };
+}
+
+/**
+ * The form a wild Pokémon of a species has at a level: evolved as far as its level allows. A branching
+ * evolution (Eevee) picks one of its forms from `salt` (e.g. the encounter id), so a group keeps its form.
+ */
+export function wildForm(content: BattleContent, speciesId: string, level: number, salt = ""): string {
   let id = speciesId;
-  for (let evo = content.species[id]!.evolution; evo && level >= evo.level && content.species[evo.into]; evo = content.species[id]!.evolution) id = evo.into;
+  for (let evo = content.species[id]!.evolution; evo && level >= evo.level && content.species[evo.into]; evo = content.species[id]!.evolution) {
+    const forms = evo.choices?.filter((f) => content.species[f]) ?? [];
+    id = forms.length ? forms[[...`${salt}:${id}`].reduce((h, c) => (h * 31 + c.charCodeAt(0)) >>> 0, 7) % forms.length]! : evo.into;
+  }
   return id;
 }
 
-export function wildSetup(content: BattleContent, prog: ProgressionContent, wildSpecies: string, level: number): Omit<UnitSetup, "id" | "side" | "pos"> {
-  const speciesId = wildForm(content, wildSpecies, level);
+export function wildSetup(content: BattleContent, prog: ProgressionContent, wildSpecies: string, level: number, salt = ""): Omit<UnitSetup, "id" | "side" | "pos"> {
+  const speciesId = wildForm(content, wildSpecies, level, salt);
   const known = movesKnownAt(content.species[speciesId]!, level);
   const points = playstylePoints(content, speciesId, (level - 1) * prog.rules.pointsPerLevel);
   const m: Progress = {
@@ -151,7 +199,8 @@ export function trainerSetup(
   for (let guard = 0; guard < 40; guard++) {
     const p = pendingChoice(content, prog, m);
     if (p === "role") {
-      const role = mon.role && species.roles?.includes(mon.role) ? mon.role : species.roles![0]!;
+      const paths = pathOptions(content, prog, m);
+      const role = paths.find((p) => p.startsWith(`${mon.role}:`)) ?? paths[0]!;
       m = chooseRole(content, prog, m, role);
     } else if (p === "talent") {
       m = chooseTalent(content, prog, m, talentOptions(content, prog, m)[0]!);
@@ -181,17 +230,9 @@ export function gainXp<T extends Progress>(content: BattleContent, prog: Progres
     cur = { ...cur, xp: cur.xp - xpToNext(prog, cur.level), level: cur.level + 1, unspentPoints: cur.unspentPoints + prog.rules.pointsPerLevel };
     events.push({ type: "levelUp", level: cur.level });
     const evo = content.species[cur.speciesId]!.evolution;
-    if (evo && cur.level >= evo.level && content.species[evo.into]) {
-      events.push({ type: "evolved", from: cur.speciesId, into: evo.into });
-      cur = { ...cur, speciesId: evo.into, unspentPoints: cur.unspentPoints + prog.rules.evolutionPoints };
-    }
-    for (const move of movesKnownAt(content.species[cur.speciesId]!, cur.level)) {
-      if (cur.knownMoves.includes(move)) continue;
-      const basic = basicMoveOf(content, content.species[cur.speciesId]!);
-      const activate = move !== basic && cur.activeMoves.length < prog.rules.maxActiveMoves;
-      cur = { ...cur, knownMoves: [...cur.knownMoves, move], activeMoves: activate ? [...cur.activeMoves, move] : cur.activeMoves };
-      events.push({ type: "learned", move, activated: activate });
-    }
+    // A branching evolution (Eevee) waits for the player's pick, see chooseEvolution.
+    if (evo && !evo.choices && cur.level >= evo.level && content.species[evo.into]) cur = evolveInto(content, prog, cur, evo.into, events);
+    cur = learnLevelMoves(content, prog, cur, events);
     const after = memberStats(content, prog, cur).maxHp;
     if (cur.hp > 0) cur = { ...cur, hp: Math.min(after, cur.hp + Math.max(0, after - before)) };
   }
@@ -200,31 +241,119 @@ export function gainXp<T extends Progress>(content: BattleContent, prog: Progres
 }
 
 /**
- * The mastery grid: one row per level, each row a set of mutually exclusive masteries (pick one).
- * Rows come from the role's tree and the trees of all the species' types; without a role only the
- * type rows are known.
+ * The mastery tree: one tree per Pokémon, as in Wartales (docs/design/mastery-kits.md). At the role
+ * level it takes a path = role + type, which grants the type's starting skill. Single-type species
+ * choose one of their two roles; dual-type species have a fixed role and choose one of their types.
+ * The tree is then fixed slots filled from the role kit and the type kit; each row pairs passives
+ * with passives or skills with skills.
  */
 export interface GridRow {
   readonly level: number;
   readonly options: readonly string[];
 }
 
-export function masteryGrid(content: BattleContent, prog: ProgressionContent, speciesId: string, role: string | null): GridRow[] {
-  const types = content.species[speciesId]!.types;
-  const nodes = [...((role && prog.roles[role]?.tree) || []), ...types.flatMap((t) => prog.typeTrees[t]?.tree ?? [])];
-  const byLevel = new Map<number, string[]>();
-  for (const n of nodes) {
-    const id = nodeTalent(prog, n, types);
-    if (!id || !prog.talents[id]) continue;
-    const row = byLevel.get(n.level) ?? [];
-    if (!row.includes(id)) row.push(id);
-    byLevel.set(n.level, row);
-  }
-  return [...byLevel.entries()].sort((a, b) => a[0] - b[0]).map(([level, options]) => ({ level, options }));
+/** Path ids are "role:type". */
+export const pathId = (role: string, type: string): string => `${role}:${type}`;
+
+export function resolvePath(content: BattleContent, speciesId: string, path: string): { role: string; type: string } {
+  const [role, type] = path.split(":") as [string, string | undefined];
+  return { role, type: type ?? content.species[speciesId]!.types[0]! };
 }
 
-export const memberGrid = (content: BattleContent, prog: ProgressionContent, m: Progress): GridRow[] =>
-  masteryGrid(content, prog, m.speciesId, m.role);
+/** The fixed role of a dual-type species (its listed first role if none is set). */
+export function fixedRole(content: BattleContent, prog: ProgressionContent, speciesId: string): string {
+  return prog.speciesRoles?.[speciesId] ?? content.species[speciesId]!.roles![0]!;
+}
+
+/** The paths offered at the role level. */
+export function pathOptions(content: BattleContent, prog: ProgressionContent, m: { readonly speciesId: string }): string[] {
+  const s = content.species[m.speciesId]!;
+  if (s.types.length > 1) return s.types.map((t) => pathId(fixedRole(content, prog, m.speciesId), t));
+  return (s.roles ?? []).map((r) => pathId(r, s.types[0]!));
+}
+
+/** The path a member took, or null before choosing. */
+export function pathOf(content: BattleContent, m: Progress): string | null {
+  if (!m.role) return null;
+  return pathId(m.role, m.focus ?? content.species[m.speciesId]!.types[0]!);
+}
+
+/** Display name of a path, e.g. "Grass Tank". */
+export function pathName(prog: ProgressionContent, path: string): string {
+  const [role, type = ""] = path.split(":");
+  return `${type.charAt(0).toUpperCase()}${type.slice(1)} ${prog.roles[role!]?.name ?? role}`;
+}
+
+/** The skill a path grants when chosen (a species' unique tree may have its own). */
+export const pathStartSkill = (prog: ProgressionContent, path: string, speciesId?: string): string | null =>
+  (speciesId && prog.speciesKits?.[speciesId]?.start) || (prog.kits?.types[path.split(":")[1] ?? ""]?.start ?? null);
+
+/** Tree slots: level and which kit entries fill them ([role or type, passive or skill, index]). */
+const SLOTS: readonly { level: number; options: readonly (readonly ["r" | "t", "p" | "s", number])[] }[] = [
+  { level: 4, options: [["t", "p", 0], ["t", "p", 1]] },
+  { level: 6, options: [["r", "s", 0], ["r", "s", 1]] },
+  { level: 9, options: [["r", "p", 0], ["r", "p", 1]] },
+  { level: 12, options: [["t", "s", 0], ["t", "s", 1]] },
+  { level: 15, options: [["r", "p", 2], ["t", "p", 2]] },
+  { level: 18, options: [["r", "s", 2], ["t", "s", 2]] },
+  { level: 21, options: [["t", "p", 3], ["r", "p", 3]] },
+  { level: 24, options: [["t", "s", 3], ["r", "s", 3]] },
+  { level: 27, options: [["r", "p", 4], ["t", "p", 4]] },
+];
+
+export function masteryGrid(content: BattleContent, prog: ProgressionContent, speciesId: string, path: string | null): GridRow[] {
+  if (!path) return [];
+  const { role, type } = resolvePath(content, speciesId, path);
+  const r = prog.kits?.roles[role];
+  const t = prog.kits?.types[type];
+  if (!r || !t) return [];
+  const pick = ([who, kind, i]: readonly ["r" | "t", "p" | "s", number]) => (who === "r" ? r : t)[kind === "p" ? "passives" : "skills"][i];
+  const rows: GridRow[] = [
+    ...SLOTS.map((s) => ({ level: s.level, options: s.options.map(pick) })),
+    { level: 30, options: [r.capstone, t.capstone] },
+  ]
+    // Kits still missing late entries simply leave those rows out.
+    .filter((row) => row.options.every((o): o is string => typeof o === "string"))
+    .map((row) => ({ level: row.level, options: row.options as string[] }));
+  // A species' unique tree or signature slot replaces whole rows.
+  const own = prog.speciesKits?.[speciesId]?.rows ?? {};
+  return rows.map((row) => (own[row.level] ? { level: row.level, options: [...own[row.level]!] } : row));
+}
+
+export function memberGrid(content: BattleContent, prog: ProgressionContent, m: Progress): GridRow[] {
+  const rows = masteryGrid(content, prog, m.speciesId, pathOf(content, m));
+  const gift = m.bonusType && m.bonusType.type !== m.focus ? prog.kits?.types[m.bonusType.type] : undefined;
+  if (!gift || !rows.length) return rows;
+  // The gift row: the added type's starting skill or its first skill (both new to this tree).
+  const taken = new Set(rows.flatMap((r) => r.options));
+  const options = [gift.start, gift.skills[0]].filter((o): o is string => !!o && !taken.has(o));
+  return options.length ? [...rows, { level: m.bonusType!.level, options }].sort((a, b) => a.level - b.level) : rows;
+}
+
+/**
+ * After an evolution that drops the path's type (Eevee → Vaporeon), the path moves to the new form's
+ * first type: masteries no longer in the tree (and the moves they taught) are forgotten, so those rows
+ * open again, and the new type's start skill is learned.
+ */
+function retrainType<T extends Progress>(content: BattleContent, prog: ProgressionContent, m: T): T {
+  if (!m.role || !m.focus || content.species[m.speciesId]!.types.includes(m.focus)) return m;
+  const focus = content.species[m.speciesId]!.types[0]!;
+  const moved = { ...m, focus };
+  const tree = new Set(memberGrid(content, prog, moved).flatMap((r) => r.options));
+  const keep = (id: string) => tree.has(id);
+  const dropped = m.talents.filter((id) => !keep(id));
+  const lost = new Set(dropped.map((id) => prog.talents[id]?.grantsMove).filter((x): x is string => !!x).flatMap((mv) => [mv, ...m.knownMoves.filter((k) => k.startsWith(`${mv}--`))]));
+  const natural = new Set(movesKnownAt(content.species[m.speciesId]!, m.level));
+  const forget = (mv: string) => lost.has(mv) && !natural.has(mv);
+  const cleaned = {
+    ...moved,
+    talents: m.talents.filter(keep),
+    knownMoves: m.knownMoves.filter((mv) => !forget(mv)),
+    activeMoves: m.activeMoves.filter((mv) => !forget(mv)),
+  };
+  const start = pathStartSkill(prog, pathOf(content, cleaned)!, m.speciesId);
+  return start && prog.talents[start] && !cleaned.talents.includes(start) ? grantTalent(content, prog, cleaned, start) : cleaned;
+}
 
 /** The mastery picked in a row, if any. */
 export const rowPick = (row: GridRow, m: Progress): string | null => row.options.find((o) => m.talents.includes(o)) ?? null;
@@ -236,20 +365,22 @@ function openRows(content: BattleContent, prog: ProgressionContent, m: Progress)
 }
 
 /** The choice a member is waiting for, if any. */
-export function pendingChoice(content: BattleContent, prog: ProgressionContent, m: Progress): "role" | "talent" | null {
+export function pendingChoice(content: BattleContent, prog: ProgressionContent, m: Progress): "evolution" | "role" | "talent" | null {
+  if (evolutionChoices(content, m).length) return "evolution";
   if (m.level < prog.rules.roleLevel) return null;
   if (m.role === null) return "role";
   return openRows(content, prog, m).length ? "talent" : null;
 }
 
-export function roleOptions(content: BattleContent, m: Progress): string[] {
-  return [...(content.species[m.speciesId]!.roles ?? [])];
-}
-
 export function chooseRole<T extends Progress>(content: BattleContent, prog: ProgressionContent, m: T, roleId: string): T {
   if (pendingChoice(content, prog, m) !== "role") throw new Error("no role choice pending");
-  if (!roleOptions(content, m).includes(roleId) || !prog.roles[roleId]) throw new Error(`${m.speciesId} cannot become ${roleId}`);
-  return { ...m, role: roleId };
+  if (!pathOptions(content, prog, m).includes(roleId)) throw new Error(`${m.speciesId} cannot take the path ${roleId}`);
+  const { role, type } = resolvePath(content, m.speciesId, roleId);
+  if (!prog.roles[role]) throw new Error(`unknown role ${role}`);
+  // The path is kept as role + type (focus), so it survives evolutions that change the types.
+  const chosen = { ...m, role, focus: type };
+  const start = pathStartSkill(prog, roleId, m.speciesId);
+  return start && prog.talents[start] ? grantTalent(content, prog, chosen, start) : chosen;
 }
 
 /** The talent a tree node stands for: "@type" becomes the talent of the Pokémon's primary type. */
@@ -276,8 +407,13 @@ export function talentOptions(content: BattleContent, prog: ProgressionContent, 
 export function chooseTalent<T extends Progress>(content: BattleContent, prog: ProgressionContent, m: T, talentId: string): T {
   if (pendingChoice(content, prog, m) !== "talent") throw new Error("no talent choice pending");
   if (!talentOptions(content, prog, m).includes(talentId)) throw new Error(`talent ${talentId} is not available`);
+  return grantTalent(content, prog, m, talentId);
+}
+
+/** Adds a talent; a skill talent also teaches its move (active if there is room). */
+function grantTalent<T extends Progress>(content: BattleContent, prog: ProgressionContent, m: T, talentId: string): T {
   const next = { ...m, talents: [...m.talents, talentId] };
-  const move = talentFor(content, prog, talentId, content.species[m.speciesId]!.types).grantsMove;
+  const move = talentFor(content, prog, talentId, m.focus ? [m.focus] : content.species[m.speciesId]!.types).grantsMove;
   if (!move || next.knownMoves.includes(move)) return next;
   // A skill talent teaches a move; it becomes active if there is room.
   const room = next.activeMoves.length < prog.rules.maxActiveMoves;
@@ -289,7 +425,7 @@ export const respecCost = (prog: ProgressionContent, m: Progress): number => pro
 /** Forgets the role and every mastery, with the moves the masteries taught. */
 export function resetMasteries<T extends Progress>(content: BattleContent, m: T): T {
   const natural = new Set(movesKnownAt(content.species[m.speciesId]!, m.level));
-  return { ...m, role: null, talents: [], knownMoves: m.knownMoves.filter((mv) => natural.has(mv)), activeMoves: m.activeMoves.filter((mv) => natural.has(mv)) };
+  return { ...m, role: null, focus: null, talents: [], knownMoves: m.knownMoves.filter((mv) => natural.has(mv)), activeMoves: m.activeMoves.filter((mv) => natural.has(mv)) };
 }
 
 /** Sets the active moves (besides the basic attack). */
@@ -311,12 +447,10 @@ export function teamBond(
   deployed: readonly Progress[],
   bonus: { readonly startBond?: number; readonly maxBond?: number } = {},
 ): { start: number; max: number } {
-  let start = content.rules.bond.start + (bonus.startBond ?? 0);
-  let max = content.rules.bond.max + (bonus.maxBond ?? 0);
-  for (const m of deployed)
-    for (const t of m.talents) {
-      start += prog.talents[t]?.team?.startBond ?? 0;
-      max += prog.talents[t]?.team?.maxBond ?? 0;
-    }
+  // Team talents do not stack between Pokémon: the team gets the best one of each kind.
+  const best = (k: "startBond" | "maxBond") =>
+    Math.max(0, ...deployed.flatMap((m) => m.talents.map((t) => prog.talents[t]?.team?.[k] ?? 0)));
+  const start = content.rules.bond.start + (bonus.startBond ?? 0) + best("startBond");
+  const max = content.rules.bond.max + (bonus.maxBond ?? 0) + best("maxBond");
   return { start: Math.min(start, max), max };
 }

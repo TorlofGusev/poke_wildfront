@@ -1,0 +1,59 @@
+{
+ "npcs": [
+  {
+   "id": "ssanne-sailor-1",
+   "text": [
+    "Pajtás, benne vagy egy csatában?"
+   ],
+   "afterText": [
+    "Cserben hagyott a tengeri lábam."
+   ]
+  },
+  {
+   "id": "ssanne-gentleman",
+   "text": [
+    "Egy kifinomult csatát, ha kérhetem."
+   ],
+   "afterText": [
+    "Nagyszerű előadás."
+   ]
+  },
+  {
+   "id": "ssanne-sailor-2",
+   "text": [
+    "A fedélzet alatt én vagyok az úr!"
+   ],
+   "afterText": [
+    "Az áldóját!"
+   ]
+  },
+  {
+   "id": "ssanne-lass",
+   "text": [
+    "Hát nem csodás ez a hajóút?"
+   ],
+   "afterText": [
+    "Elázott a ruhám..."
+   ]
+  },
+  {
+   "id": "rival-ssanne",
+   "text": [
+    "Bonjour! Te is az S.S. Anne-en vagy? Harcoljunk a fedélzeten!"
+   ],
+   "afterText": [
+    "A kapitány megtanított egy trükköt a fák kivágására. Majd találkozunk, csiga!"
+   ]
+  },
+  {
+   "id": "ss-anne-captain",
+   "text": [
+    "Uhh... tengeribeteg vagyok. Köszönöm, hogy megdörzsölted a hátam!",
+    "Kérlek, fogadd el ezt a HM-et. Megtanítja a Cutot."
+   ],
+   "afterText": [
+    "A Cut csatán kívüli használatához Cascade Badge kell. Indulj, a hajó hamarosan kifut!"
+   ]
+  }
+ ]
+}

@@ -1,0 +1,55 @@
+{
+ "talents": {
+  "zapdos-skill-charge-beam": {
+   "description": "Új képesség: gyors elektromos sugár legfeljebb 3 hexnyire (Erő 45)."
+  },
+  "zapdos-static": {
+   "description": "Szomszédos ellenfelekre mért találatai 1 körre megbénítanak."
+  },
+  "zapdos-first-strike": {
+   "description": "+20% sebzés teljes HP-jú ellenfelekre."
+  },
+  "zapdos-skill-thunderbolt": {
+   "description": "Új képesség: villám távolra (Erő 60), amely 1 körre megbénít."
+  },
+  "zapdos-skill-charge": {
+   "description": "Új képesség: erőt gyűjt, és 2 körre Fókuszált lesz."
+  },
+  "zapdos-storm-rider": {
+   "description": "Szabad ütés nélkül lép el a lekötött ellenfelektől."
+  },
+  "zapdos-quick-charge": {
+   "description": "Nem sebző képességei 1 körrel gyorsabban töltődnek (legalább 1)."
+  },
+  "zapdos-skill-zap-cannon": {
+   "description": "Új képesség: hatalmas elektromos gömb távolra (Erő 90), amely megbénít."
+  },
+  "zapdos-skill-hurricane": {
+   "description": "Új képesség: vihar sújt egy legfeljebb 3 hexnyire lévő ellenfelet, 2 hexszel ellöki (Erő 90)."
+  },
+  "zapdos-insulated": {
+   "description": "Nem bénítható és nem lassítható; +1 Sp. Def."
+  },
+  "zapdos-recharge": {
+   "description": "Minden körben max HP-ja 4%-át gyógyítja."
+  },
+  "zapdos-skill-thunder": {
+   "description": "Új képesség: villám csap egy 2-3 hexnyire lévő területre (Erő 85), megbénít."
+  },
+  "zapdos-skill-volt-switch": {
+   "description": "Új képesség: villám távolra (Erő 70), amely megszünteti a lekötését."
+  },
+  "zapdos-thunder-lord": {
+   "description": "Az elektromos mozdulatok 20%-kal többet sebeznek."
+  },
+  "zapdos-storm-herald": {
+   "description": "+1 extra Kötelék, ha kiüt egy ellenfelet; +2 Speed."
+  },
+  "zapdos-thunderstorm": {
+   "description": "Csúcsképesség. +25% bénult ellenfelekre; kiütés után képességei azonnal újratöltődnek."
+  },
+  "zapdos-storm-crown": {
+   "description": "Csúcsképesség. A csapat +1 max és kezdő Köteléket kap; Kötelékmozdulatai 1-gyel olcsóbbak."
+  }
+ }
+}

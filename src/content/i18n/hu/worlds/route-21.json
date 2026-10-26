@@ -1,0 +1,18 @@
+{
+ "npcs": [
+  {
+   "id": "fisher-route21",
+   "text": [
+    "Psszt! Elijeszted a halakat!"
+   ],
+   "afterText": [
+    "Most már mind elúszott..."
+   ]
+  }
+ ],
+ "obstacles": [
+  {
+   "text": "Hullámok csapnak át ezen a homokpadon. Surf kell, hogy átjuss."
+  }
+ ]
+}

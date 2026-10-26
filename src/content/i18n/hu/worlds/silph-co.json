@@ -1,0 +1,76 @@
+{
+ "npcs": [
+  {
+   "id": "rocket-silph-1",
+   "text": [
+    "A Silph Co. mostantól a Team Rocketé!"
+   ],
+   "afterText": [
+    "Kulcs nélkül nem jutsz át az ajtókon."
+   ]
+  },
+  {
+   "id": "rocket-silph-2",
+   "text": [
+    "A kutatásunk nem gyerekeknek való!"
+   ],
+   "afterText": [
+    "A kísérleteim..."
+   ]
+  },
+  {
+   "id": "rocket-silph-3",
+   "text": [
+    "A Főnök fent van. Sosem fogod meglátni!"
+   ],
+   "afterText": [
+    "Ugh..."
+   ]
+  },
+  {
+   "id": "rival-silph",
+   "text": [
+    "Te is itt vagy? Én magam állítom meg a Team Rocketet!",
+    "De előbb legyőzlek!"
+   ],
+   "afterText": [
+    "Jól van, menj előre. Giovanni a tiéd. Majd találkozunk, csiga!"
+   ]
+  },
+  {
+   "id": "silph-worker",
+   "text": [
+    "A Rocketek ellen harcolsz? Fogadd el ezt a Card Keyt!",
+    "Ez nyitja az elnök irodáját."
+   ],
+   "afterText": [
+    "Kérlek, mentsd meg az elnököt!"
+   ]
+  },
+  {
+   "id": "giovanni-silph",
+   "lockedText": [
+    "Az elnöki iroda ajtaja zárva. Card Key kell hozzá."
+   ],
+   "text": [
+    "Már megint te! A Silph Co. hamarosan a Team Rocketé lesz.",
+    "Nem hagyom, hogy egy gyerek kétszer az utamba álljon!"
+   ],
+   "afterText": [
+    "A fenébe! A Team Rocket kivonul a Silph Co.-ból."
+   ]
+  },
+  {
+   "id": "silph-lapras",
+   "lockedText": [
+    "A Rocketek őriznek. Kérlek, segíts nekünk!"
+   ],
+   "text": [
+    "Megmentetted a Silph Co.-t! Kérlek, köszönetül fogadd el ezt a Laprast."
+   ],
+   "afterText": [
+    "Lapras szelíd. Bánj vele jól."
+   ]
+  }
+ ]
+}

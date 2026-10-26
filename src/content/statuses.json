@@ -26,6 +26,12 @@
   "name": "Freeze",
   "noAction": true
  },
+ "sleep": {
+  "id": "sleep",
+  "name": "Sleep",
+  "noAction": true,
+  "wakesOnDamage": true
+ },
  "curse": {
   "id": "curse",
   "name": "Curse",

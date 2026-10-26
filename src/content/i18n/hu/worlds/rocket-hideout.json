@@ -1,0 +1,53 @@
+{
+ "npcs": [
+  {
+   "id": "rocket-hideout-1",
+   "text": [
+    "Betolakodó a bázisunkon!"
+   ],
+   "afterText": [
+    "Ennek a Főnök nem fog örülni..."
+   ]
+  },
+  {
+   "id": "rocket-hideout-2",
+   "text": [
+    "Nem jutsz el a Főnökig!"
+   ],
+   "afterText": [
+    "Ugh, a lifthez amúgy is kulcs kell."
+   ]
+  },
+  {
+   "id": "rocket-hideout-3",
+   "text": [
+    "A Team Rocket sosem bocsát meg!"
+   ],
+   "afterText": [
+    "Legközelebb elkaplak."
+   ]
+  },
+  {
+   "id": "lift-key-grunt",
+   "text": [
+    "Hoppá! Elejtettem a Lift Keyt!",
+    "...Várj, ne vidd el!"
+   ],
+   "afterText": [
+    "A Főnök ki fog nyírni."
+   ]
+  },
+  {
+   "id": "giovanni-hideout",
+   "lockedText": [
+    "A Főnök irodájába vezető lift nem indul a Lift Key nélkül."
+   ],
+   "text": [
+    "Szóval idáig eljutottál. Giovanni vagyok, a Team Rocket vezetője."
+   ],
+   "afterText": [
+    "Most visszavonulok. Vidd ezt a scope-ot, nekem már semmi hasznát nem veszem."
+   ]
+  }
+ ]
+}

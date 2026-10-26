@@ -87,7 +87,7 @@
   "power": 35,
   "range": {
    "min": 2,
-   "max": 4
+   "max": 3
   },
   "requiresLineOfSight": true,
   "shape": {
@@ -224,7 +224,7 @@
   "power": 25,
   "range": {
    "min": 2,
-   "max": 4
+   "max": 3
   },
   "requiresLineOfSight": true,
   "shape": {
@@ -745,7 +745,7 @@
   "power": 45,
   "range": {
    "min": 2,
-   "max": 4
+   "max": 3
   },
   "requiresLineOfSight": true,
   "shape": {
@@ -813,7 +813,7 @@
   "power": 50,
   "range": {
    "min": 1,
-   "max": 4
+   "max": 3
   },
   "requiresLineOfSight": true,
   "shape": {
@@ -1059,7 +1059,7 @@
   "power": 45,
   "range": {
    "min": 2,
-   "max": 5
+   "max": 3
   },
   "requiresLineOfSight": false,
   "shape": {
@@ -1440,7 +1440,7 @@
   "power": 0,
   "range": {
    "min": 1,
-   "max": 5
+   "max": 3
   },
   "requiresLineOfSight": true,
   "shape": {
@@ -1587,8 +1587,8 @@
   "effects": [
    {
     "kind": "status",
-    "status": "freeze",
-    "duration": 1
+    "status": "sleep",
+    "duration": 2
    }
   ]
  },
@@ -1611,8 +1611,8 @@
   "effects": [
    {
     "kind": "status",
-    "status": "freeze",
-    "duration": 1
+    "status": "sleep",
+    "duration": 2
    }
   ]
  },
@@ -1635,8 +1635,8 @@
   "effects": [
    {
     "kind": "status",
-    "status": "freeze",
-    "duration": 1
+    "status": "sleep",
+    "duration": 2
    }
   ]
  },
@@ -2214,7 +2214,7 @@
   "power": 55,
   "range": {
    "min": 2,
-   "max": 4
+   "max": 3
   },
   "requiresLineOfSight": true,
   "shape": {
@@ -2453,8 +2453,8 @@
   "effects": [
    {
     "kind": "status",
-    "status": "freeze",
-    "duration": 1
+    "status": "sleep",
+    "duration": 2
    }
   ]
  },
@@ -2477,8 +2477,8 @@
   "effects": [
    {
     "kind": "status",
-    "status": "freeze",
-    "duration": 1
+    "status": "sleep",
+    "duration": 2
    }
   ]
  },

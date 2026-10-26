@@ -1,0 +1,22 @@
+{
+ "npcs": [
+  {
+   "id": "r6-bugcatcher",
+   "text": [
+    "A bogaraim felnőttek!"
+   ],
+   "afterText": [
+    "Kibogaraztam magam..."
+   ]
+  },
+  {
+   "id": "r6-jrtrainer",
+   "text": [
+    "Vermilion rögtön délre van. Előbb harcolj velem!"
+   ],
+   "afterText": [
+    "Sok sikert Lt. Surge ellen."
+   ]
+  }
+ ]
+}

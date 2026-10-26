@@ -1,0 +1,226 @@
+{
+ "type": "ghost",
+ "moves": {
+  "shadow-sneak": {
+   "id": "shadow-sneak",
+   "name": "Shadow Sneak",
+   "type": "ghost",
+   "kind": "special",
+   "power": 40,
+   "range": {
+    "min": 1,
+    "max": 2
+   },
+   "requiresLineOfSight": false,
+   "shape": {
+    "kind": "single"
+   },
+   "affects": "enemies",
+   "cooldown": 2
+  },
+  "curse": {
+   "id": "curse",
+   "name": "Curse",
+   "type": "ghost",
+   "kind": "special",
+   "power": 0,
+   "range": {
+    "min": 1,
+    "max": 3
+   },
+   "requiresLineOfSight": true,
+   "shape": {
+    "kind": "single"
+   },
+   "affects": "enemies",
+   "cooldown": 3,
+   "effects": [
+    {
+     "kind": "status",
+     "status": "curse",
+     "duration": 3
+    }
+   ]
+  },
+  "phantom-force": {
+   "id": "phantom-force",
+   "name": "Phantom Force",
+   "type": "ghost",
+   "kind": "special",
+   "power": 90,
+   "range": {
+    "min": 1,
+    "max": 3
+   },
+   "requiresLineOfSight": false,
+   "shape": {
+    "kind": "single"
+   },
+   "affects": "enemies",
+   "cooldown": 4,
+   "effects": [
+    {
+     "kind": "disengage"
+    }
+   ]
+  },
+  "poltergeist": {
+   "id": "poltergeist",
+   "name": "Poltergeist",
+   "type": "ghost",
+   "kind": "special",
+   "power": 95,
+   "range": {
+    "min": 1,
+    "max": 3
+   },
+   "requiresLineOfSight": false,
+   "shape": {
+    "kind": "single"
+   },
+   "affects": "enemies",
+   "cooldown": 5,
+   "effects": [
+    {
+     "kind": "status",
+     "status": "curse",
+     "duration": 2
+    }
+   ]
+  }
+ },
+ "talents": {
+  "ghost-skill-shadow-sneak": {
+   "id": "ghost-skill-shadow-sneak",
+   "name": "Shadow Sneak",
+   "description": "New skill: a sneaky strike from the shadows that needs no line of sight.",
+   "requiresType": "ghost",
+   "grantsMove": "shadow-sneak"
+  },
+  "ghost-cursed-body": {
+   "id": "ghost-cursed-body",
+   "name": "Cursed Body",
+   "description": "Its damaging hits on adjacent foes Curse them for 1 turn.",
+   "requiresType": "ghost",
+   "mods": {
+    "contactStatus": {
+     "status": "curse",
+     "duration": 1
+    }
+   },
+   "stats": {
+    "spAttack": 1,
+    "hp": 1
+   }
+  },
+  "ghost-shadow-tag": {
+   "id": "ghost-shadow-tag",
+   "name": "Shadow Tag",
+   "description": "Foes it engages cannot slip away without its free strike; +1 HP.",
+   "requiresType": "ghost",
+   "mods": {
+    "noEscape": true
+   },
+   "stats": {
+    "hp": 1,
+    "spAttack": 1
+   }
+  },
+  "ghost-skill-shadow-ball": {
+   "id": "ghost-skill-shadow-ball",
+   "name": "Shadow Ball",
+   "description": "New skill: a shadowy blob hurled at range.",
+   "requiresType": "ghost",
+   "grantsMove": "shadow-ball"
+  },
+  "ghost-skill-curse": {
+   "id": "ghost-skill-curse",
+   "name": "Curse",
+   "description": "New skill: Curses a foe for 3 turns, so it takes more damage.",
+   "requiresType": "ghost",
+   "grantsMove": "curse"
+  },
+  "ghost-soul-feast": {
+   "id": "ghost-soul-feast",
+   "name": "Soul Feast",
+   "description": "Heals 25% max HP when it knocks out a foe.",
+   "requiresType": "ghost",
+   "mods": {
+    "koHeal": 0.25
+   },
+   "stats": {
+    "spAttack": 1
+   }
+  },
+  "ghost-skill-phantom-force": {
+   "id": "ghost-skill-phantom-force",
+   "name": "Phantom Force",
+   "description": "New skill: vanishes and strikes anything in reach, slipping its engagement.",
+   "requiresType": "ghost",
+   "grantsMove": "phantom-force"
+  },
+  "ghost-malice": {
+   "id": "ghost-malice",
+   "name": "Malice",
+   "description": "+25% damage against foes with a status effect; Ghost moves deal 15% more.",
+   "requiresType": "ghost",
+   "mods": {
+    "vsStatusDamage": 1.25,
+    "typeDamage": {
+     "ghost": 1.15
+    }
+   },
+   "stats": {
+    "spAttack": 2
+   }
+  },
+  "ghost-infiltrator": {
+   "id": "ghost-infiltrator",
+   "name": "Infiltrator",
+   "description": "Steps away from engaged foes without free attacks; +1 Sp. Atk.",
+   "requiresType": "ghost",
+   "mods": {
+    "disengage": true
+   },
+   "stats": {
+    "spAttack": 1,
+    "speed": 1
+   }
+  },
+  "ghost-shadow-shield": {
+   "id": "ghost-shadow-shield",
+   "name": "Shadow Shield",
+   "description": "Takes 15% less damage; +1 HP.",
+   "requiresType": "ghost",
+   "mods": {
+    "damageTaken": 0.85
+   },
+   "stats": {
+    "hp": 2,
+    "spAttack": 1
+   }
+  },
+  "ghost-skill-poltergeist": {
+   "id": "ghost-skill-poltergeist",
+   "name": "Poltergeist",
+   "description": "New skill: hurls haunted objects without line of sight and Curses for 2 turns.",
+   "requiresType": "ghost",
+   "grantsMove": "poltergeist"
+  }
+ },
+ "start": "ghost-skill-shadow-sneak",
+ "passives": [
+  "ghost-cursed-body",
+  "ghost-shadow-tag",
+  "ghost-soul-feast",
+  "ghost-infiltrator",
+  "ghost-shadow-shield"
+ ],
+ "skills": [
+  "ghost-skill-shadow-ball",
+  "ghost-skill-curse",
+  "ghost-skill-phantom-force",
+  "ghost-skill-poltergeist"
+ ],
+ "capstone": "ghost-malice"
+}

@@ -1,0 +1,37 @@
+{
+ "npcs": [
+  {
+   "id": "moltres",
+   "text": [
+    "A barlang perzselően forró lesz...",
+    "A legendás Moltres támad!"
+   ]
+  },
+  {
+   "id": "cooltrainer-vr1",
+   "text": [
+    "Csak a legjobbak jutnak át itt."
+   ],
+   "afterText": [
+    "Talán neked sikerülhet."
+   ]
+  },
+  {
+   "id": "cooltrainer-vr2",
+   "text": [
+    "A barlangon túl vár az Elite Four!"
+   ],
+   "afterText": [
+    "Menj csak. Mutasd meg nekik."
+   ]
+  }
+ ],
+ "obstacles": [
+  {
+   "text": "Egy hatalmas szikla. Egy erős Pokémon el tudná tolni."
+  },
+  {
+   "text": "Egy hatalmas szikla. Egy erős Pokémon el tudná tolni."
+  }
+ ]
+}

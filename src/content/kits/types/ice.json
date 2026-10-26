@@ -1,0 +1,217 @@
+{
+ "type": "ice",
+ "moves": {
+  "powder-snow": {
+   "id": "powder-snow",
+   "name": "Powder Snow",
+   "type": "ice",
+   "kind": "special",
+   "cooldown": 2,
+   "power": 40,
+   "range": {
+    "min": 1,
+    "max": 3
+   },
+   "requiresLineOfSight": true,
+   "shape": {
+    "kind": "single"
+   },
+   "affects": "enemies",
+   "effects": [
+    {
+     "kind": "status",
+     "status": "slow",
+     "duration": 1
+    }
+   ]
+  },
+  "icy-wind": {
+   "id": "icy-wind",
+   "name": "Icy Wind",
+   "type": "ice",
+   "kind": "special",
+   "cooldown": 3,
+   "power": 35,
+   "range": {
+    "min": 1,
+    "max": 1
+   },
+   "requiresLineOfSight": true,
+   "shape": {
+    "kind": "line",
+    "length": 3
+   },
+   "affects": "enemies",
+   "effects": [
+    {
+     "kind": "status",
+     "status": "slow",
+     "duration": 2
+    }
+   ]
+  },
+  "sheer-cold": {
+   "id": "sheer-cold",
+   "name": "Sheer Cold",
+   "type": "ice",
+   "kind": "special",
+   "cooldown": 4,
+   "power": 85,
+   "range": {
+    "min": 1,
+    "max": 2
+   },
+   "requiresLineOfSight": true,
+   "shape": {
+    "kind": "single"
+   },
+   "affects": "enemies",
+   "effects": [
+    {
+     "kind": "status",
+     "status": "freeze",
+     "duration": 1
+    }
+   ]
+  },
+  "blizzard": {
+   "id": "blizzard",
+   "name": "Blizzard",
+   "type": "ice",
+   "kind": "special",
+   "requiresLineOfSight": true,
+   "affects": "enemies",
+   "cooldown": 5,
+   "power": 75,
+   "range": {
+    "min": 2,
+    "max": 3
+   },
+   "shape": {
+    "kind": "burst",
+    "radius": 1
+   },
+   "effects": [
+    {
+     "kind": "status",
+     "status": "freeze",
+     "duration": 1
+    }
+   ]
+  }
+ },
+ "talents": {
+  "ice-skill-powder-snow": {
+   "id": "ice-skill-powder-snow",
+   "name": "Powder Snow",
+   "description": "New skill: snow hits a foe up to 3 hexes away and Slows it for 1 turn (Power 40).",
+   "requiresType": "ice",
+   "grantsMove": "powder-snow"
+  },
+  "ice-skill-icy-wind": {
+   "id": "ice-skill-icy-wind",
+   "name": "Icy Wind",
+   "description": "New skill: a 3-hex line of frost that Slows every foe hit for 2 turns.",
+   "requiresType": "ice",
+   "grantsMove": "icy-wind"
+  },
+  "ice-skill-sheer-cold": {
+   "id": "ice-skill-sheer-cold",
+   "name": "Sheer Cold",
+   "description": "New skill: deep cold hits a foe up to 2 hexes away and Freezes it (Power 85).",
+   "requiresType": "ice",
+   "grantsMove": "sheer-cold"
+  },
+  "ice-ice-body": {
+   "id": "ice-ice-body",
+   "name": "Ice Body",
+   "description": "Heals 4% of its max HP at the start of each of its turns.",
+   "requiresType": "ice",
+   "mods": {
+    "healPerTurn": 0.04
+   },
+   "stats": {
+    "hp": 1
+   }
+  },
+  "ice-brittle": {
+   "id": "ice-brittle",
+   "name": "Brittle Frost",
+   "description": "+20% damage to Slowed foes.",
+   "requiresType": "ice",
+   "mods": {
+    "vsStatusIdDamage": {
+     "slow": 1.2
+    }
+   },
+   "stats": {
+    "spAttack": 1
+   }
+  },
+  "ice-absolute-zero": {
+   "id": "ice-absolute-zero",
+   "name": "Absolute Zero",
+   "description": "Capstone. Ice moves deal 20% more damage; +25% damage to Frozen foes.",
+   "requiresType": "ice",
+   "mods": {
+    "typeDamage": {
+     "ice": 1.2
+    },
+    "vsStatusIdDamage": {
+     "freeze": 1.25
+    }
+   },
+   "stats": {
+    "spAttack": 2,
+    "hp": 1
+   }
+  },
+  "ice-permafrost": {
+   "id": "ice-permafrost",
+   "name": "Permafrost",
+   "description": "Statuses it inflicts last 1 turn longer.",
+   "requiresType": "ice",
+   "mods": {
+    "statusDurationBonus": 1
+   },
+   "stats": {
+    "spAttack": 1
+   }
+  },
+  "ice-snow-warning": {
+   "id": "ice-snow-warning",
+   "name": "Snow Warning",
+   "description": "+15% damage against foes with any status; +1 Sp. Attack.",
+   "requiresType": "ice",
+   "mods": {
+    "vsStatusDamage": 1.15
+   },
+   "stats": {
+    "spAttack": 1,
+    "hp": 1
+   }
+  },
+  "ice-skill-blizzard": {
+   "id": "ice-skill-blizzard",
+   "name": "Blizzard",
+   "description": "New skill: a blizzard hits an area 2-3 hexes away and Freezes it (Power 75).",
+   "requiresType": "ice",
+   "grantsMove": "blizzard"
+  }
+ },
+ "start": "ice-skill-powder-snow",
+ "passives": [
+  "chill",
+  "ice-ice-body",
+  "ice-brittle",
+  "ice-permafrost",
+  "ice-snow-warning"
+ ],
+ "skills": [
+  "skill-ice-beam",
+  "ice-skill-icy-wind",
+  "ice-skill-sheer-cold",
+  "ice-skill-blizzard"
+ ],
+ "capstone": "ice-absolute-zero"
+}

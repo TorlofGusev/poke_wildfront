@@ -1,0 +1,34 @@
+{
+ "exits": [
+  {},
+  {
+   "lockedText": "Csak 8 kitűzővel rendelkező edzők léphetnek be a Victory Roadra."
+  }
+ ],
+ "obstacles": [
+  {
+   "text": "Csak 1 kitűzővel rendelkező edzők mehetnek tovább."
+  },
+  {
+   "text": "Csak 2 kitűzővel rendelkező edzők mehetnek tovább."
+  },
+  {
+   "text": "Csak 3 kitűzővel rendelkező edzők mehetnek tovább."
+  },
+  {
+   "text": "Csak 4 kitűzővel rendelkező edzők mehetnek tovább."
+  },
+  {
+   "text": "Csak 5 kitűzővel rendelkező edzők mehetnek tovább."
+  },
+  {
+   "text": "Csak 6 kitűzővel rendelkező edzők mehetnek tovább."
+  },
+  {
+   "text": "Csak 7 kitűzővel rendelkező edzők mehetnek tovább."
+  },
+  {
+   "text": "Csak 8 kitűzővel rendelkező edzők mehetnek tovább."
+  }
+ ]
+}

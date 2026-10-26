@@ -11,6 +11,7 @@ import { ShopScene } from "./scenes/ShopScene";
 import { StarterScene } from "./scenes/StarterScene";
 import { OverworldScene } from "./scenes/OverworldScene";
 import { TitleScene } from "./scenes/TitleScene";
+import { HexLabScene } from "./scenes/HexLabScene";
 
 const game = new Phaser.Game({
   type: Phaser.AUTO,
@@ -23,7 +24,9 @@ const game = new Phaser.Game({
     width: 960,
     height: 540,
   },
-  scene: [BootScene, TitleScene, StarterScene, OverworldScene, PartyScene, PokemonScene, ShopScene, InventoryScene, BattleScene, CreditsScene],
+  scene: [BootScene, TitleScene, StarterScene, OverworldScene, PartyScene, PokemonScene, ShopScene, InventoryScene, BattleScene, CreditsScene, HexLabScene],
 });
 setupRotation(game);
 setupAudio(game);
+// For e2e scripts: lets them read scene state (e.g. enemy positions).
+(window as unknown as { __game: Phaser.Game }).__game = game;

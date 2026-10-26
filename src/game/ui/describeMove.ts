@@ -1,58 +1,74 @@
 import type { BattleContent, MoveDef, StatusDef } from "../../core/battle";
+import { t } from "../i18n";
 import { tag } from "./markup";
 
 /** Rules text (with colour markup) generated from move data, so it never drifts from the rules. */
 export function describeMove(content: BattleContent, move: MoveDef): string {
+  const bond = content.terms.bond;
   const kind =
-    move.kind === "basic" ? `${tag("basic", "Basic attack")} · usable every turn`
-    : move.kind === "special" ? `${tag("special", "Special")} · ${tag("num", move.cooldown ?? 0)}-turn cooldown`
-    : move.kind === "bond" ? `${tag("ultimate", content.terms.bond)} · costs ${tag("num", move.bondCost ?? 0)} team ${content.terms.bond}`
-    : `${tag("ultimate", "Ultimate")} · once per battle`;
+    move.kind === "basic" ? t("{x} · usable every turn", { x: tag("basic", t("Basic attack")) })
+    : move.kind === "special" ? t("{x} · {n}-turn cooldown", { x: tag("special", t("Special")), n: tag("num", move.cooldown ?? 0) })
+    : move.kind === "bond" ? t("{x} · costs {n} team {bond}", { x: tag("ultimate", bond), n: tag("num", move.bondCost ?? 0), bond })
+    : t("{x} · once per battle", { x: tag("ultimate", t("Ultimate")) });
   const range = move.range.min === move.range.max ? `${move.range.max}` : `${move.range.min}–${move.range.max}`;
   const shape =
-    move.shape.kind === "single" ? "single target"
-    : move.shape.kind === "burst" ? `area: target tile + ${tag("num", move.shape.radius)} around it`
-    : `line: ${tag("num", move.shape.length)} tiles in a straight direction, stopped by rocks`;
+    move.shape.kind === "single" ? t("single target")
+    : move.shape.kind === "burst" ? t("area: target tile + {n} around it", { n: tag("num", move.shape.radius) })
+    : t("line: {n} tiles in a straight direction, stopped by rocks", { n: tag("num", move.shape.length) });
+  const los = move.requiresLineOfSight ? t(" · needs line of sight (Pokémon in the way block it)") : "";
   const lines = [
     `${tag("title", move.name)} — ${tag(move.type, move.type.toUpperCase())}`,
     kind,
-    `Range ${tag("num", range)} · ${shape}${move.requiresLineOfSight ? " · needs line of sight (Pokémon in the way block it)" : ""}`,
-    move.power > 0 ? `Power ${tag("dmg", move.power)} ${tag("dim", "(hover a target to see the exact damage)")}` : tag("dim", "No damage"),
+    t("Range {n} · {shape}{los}", { n: tag("num", range), shape, los }),
+    move.power > 0 ? t("Power {n} {hint}", { n: tag("dmg", move.power), hint: tag("dim", t("(hover a target to see the exact damage)")) }) : tag("dim", t("No damage")),
   ];
-  if (move.id === "struggle") lines.push(`Fallback while engaged when the basic attack is ranged: its basic attack's type at ${tag("num", `${Math.round(content.rules.engagement.fallbackPower * 100)}%`)} power`);
+  if (move.id === "struggle") lines.push(t("Fallback while engaged when the basic attack is ranged: its basic attack's type at {n} power", { n: tag("num", `${Math.round(content.rules.engagement.fallbackPower * 100)}%`) }));
   for (const e of move.effects ?? []) {
     switch (e.kind) {
-      case "push": lines.push(`Pushes ${tag("num", e.distance)} tile${e.distance > 1 ? "s" : ""} away; hitting an obstacle deals ${tag("dmg", content.rules.impactDamage)} damage`); break;
-      case "pull": lines.push(`Pulls up to ${tag("num", e.distance)} tiles towards the user`); break;
-      case "heal": lines.push(`Heals ${tag("heal", `${e.amount} HP`)}`); break;
-      case "engage": lines.push(`${tag("bad", "Engages")} the target (taking it over from any other engagement): they may only attack each other`); break;
-      case "bond": lines.push(`${tag("good", `+${e.amount} Bond`)} if it ${e.when === "combo" ? "lands a combo (hits a foe an ally set up)" : "knocks a foe out"}`); break;
-      case "disengage": lines.push(`Ends the user's engagement ${tag("good", "without a free attack")}`); break;
+      case "push": {
+        const vars = { n: tag("num", e.distance), dmg: tag("dmg", content.rules.impactDamage) };
+        lines.push(e.distance > 1
+          ? t("Pushes {n} tiles away; hitting an obstacle deals {dmg} damage", vars)
+          : t("Pushes {n} tile away; hitting an obstacle deals {dmg} damage", vars));
+        break;
+      }
+      case "pull": lines.push(t("Pulls up to {n} tiles towards the user", { n: tag("num", e.distance) })); break;
+      case "heal": lines.push(t("Heals {x}", { x: tag("heal", `${e.amount} HP`) })); break;
+      case "engage": lines.push(t("{x} the target (taking it over from any other engagement): they may only attack each other", { x: tag("bad", t("Engages")) })); break;
+      case "bond": {
+        const x = tag("good", t("+{n} Bond", { n: e.amount }));
+        lines.push(e.when === "combo" ? t("{x} if it lands a combo (hits a foe an ally set up)", { x }) : t("{x} if it knocks a foe out", { x }));
+        break;
+      }
+      case "disengage": lines.push(t("Ends the user's engagement {x}", { x: tag("good", t("without a free attack")) })); break;
       case "status": {
         const st = content.statuses[e.status];
-        const verb = move.affects === "allies" ? "Grants" : "Inflicts";
         const what = st ? statusEffectText(st) : "";
-        lines.push(`${verb} ${tag("status", st?.name ?? e.status)} for ${tag("num", e.duration)} turn${e.duration > 1 ? "s" : ""}${what ? ` (${what})` : ""}`);
+        const vars = { status: tag("status", st?.name ?? e.status), n: tag("num", e.duration), what: what ? ` (${what})` : "" };
+        const grants = move.affects === "allies";
+        lines.push(e.duration > 1
+          ? (grants ? t("Grants {status} for {n} turns{what}", vars) : t("Inflicts {status} for {n} turns{what}", vars))
+          : (grants ? t("Grants {status} for {n} turn{what}", vars) : t("Inflicts {status} for {n} turn{what}", vars)));
         break;
       }
     }
   }
   const typeRule = content.types[move.type]?.summary?.split(". ").slice(1).join(". ");
-  if (typeRule && move.affects === "enemies") lines.push(`${tag(move.type, "Type")}: ${typeRule}`);
-  lines.push(tag("dim", move.range.max === 0 && move.affects === "allies" ? "Targets itself" : `Affects ${move.affects === "enemies" ? "enemies only" : "allies"}`));
+  if (typeRule && move.affects === "enemies") lines.push(`${tag(move.type, t("Type"))}: ${typeRule}`);
+  lines.push(tag("dim", move.range.max === 0 && move.affects === "allies" ? t("Targets itself") : move.affects === "enemies" ? t("Affects enemies only") : t("Affects allies")));
   return lines.join("\n");
 }
 
 /** What a status does, in exact numbers. Durations count the affected Pokémon's own turns. */
 export function statusEffectText(st: StatusDef): string {
   const parts: string[] = [];
-  if (st.damagePerTurn) parts.push(`loses ${Math.round(st.damagePerTurn * 100)}% max HP each turn`);
-  if (st.movePenalty) parts.push(st.movePenalty > 0 ? `−${st.movePenalty} movement` : `+${-st.movePenalty} movement`);
-  if (st.noMove) parts.push("cannot move");
-  if (st.noAction) parts.push("cannot use moves");
-  if (st.damageDealt !== undefined && st.damageDealt !== 1) parts.push(`${st.damageDealt > 1 ? "+" : "−"}${Math.round(Math.abs(st.damageDealt - 1) * 100)}% damage dealt`);
+  if (st.damagePerTurn) parts.push(t("loses {n}% max HP each turn", { n: Math.round(st.damagePerTurn * 100) }));
+  if (st.movePenalty) parts.push(t("{v} movement", { v: st.movePenalty > 0 ? `−${st.movePenalty}` : `+${-st.movePenalty}` }));
+  if (st.noMove) parts.push(t("cannot move"));
+  if (st.noAction) parts.push(t("cannot use moves"));
+  if (st.damageDealt !== undefined && st.damageDealt !== 1) parts.push(t("{v} damage dealt", { v: `${st.damageDealt > 1 ? "+" : "−"}${Math.round(Math.abs(st.damageDealt - 1) * 100)}%` }));
   if (st.damageTaken !== undefined && st.damageTaken !== 1)
-    parts.push(st.damageTaken === 0 ? "takes no damage" : `${st.damageTaken > 1 ? "+" : "−"}${Math.round(Math.abs(st.damageTaken - 1) * 100)}% damage taken`);
-  if (st.stacks) parts.push("stacks");
+    parts.push(st.damageTaken === 0 ? t("takes no damage") : t("{v} damage taken", { v: `${st.damageTaken > 1 ? "+" : "−"}${Math.round(Math.abs(st.damageTaken - 1) * 100)}%` }));
+  if (st.stacks) parts.push(t("stacks"));
   return parts.join(", ");
 }

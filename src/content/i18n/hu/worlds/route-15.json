@@ -1,0 +1,13 @@
+{
+ "npcs": [
+  {
+   "id": "beauty-route15",
+   "text": [
+    "Hát nem gyönyörűek a Pokémonjaim?"
+   ],
+   "afterText": [
+    "Egyáltalán nem vagy rossz."
+   ]
+  }
+ ]
+}

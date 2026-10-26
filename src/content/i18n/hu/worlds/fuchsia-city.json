@@ -1,0 +1,62 @@
+{
+ "exits": [
+  {},
+  {},
+  {},
+  {
+   "lockedText": "Délre a tenger nyújtózik. Surf kell az átkeléshez."
+  }
+ ],
+ "npcs": [
+  {
+   "id": "juggler-fuchsia1",
+   "text": [
+    "Koga edzőterme tele van trükkökkel!"
+   ],
+   "afterText": [
+    "A falak láthatatlanok, tudod."
+   ]
+  },
+  {
+   "id": "tamer-fuchsia2",
+   "text": [
+    "Méreg és türelem, ez a nindzsák útja!"
+   ],
+   "afterText": [
+    "Kogával nem lesz ilyen könnyű dolgod."
+   ]
+  },
+  {
+   "id": "koga",
+   "text": [
+    "Fwahahaha! Egy gyerek merészel kihívni engem?",
+    "Rettegj a méreg kúszó borzalmától!"
+   ],
+   "afterText": [
+    "A Soul Badge-dzsel csatán kívül is használhatod a Surföt.",
+    "Csak így tovább, fiatal barátom."
+   ]
+  },
+  {
+   "id": "warden",
+   "lockedText": [
+    "Elhagytam az aranyfogaimat a Safari Zone-ban...",
+    "Gyere vissza, ha megszerezted Koga kitűzőjét."
+   ],
+   "text": [
+    "Legyőzted Kogát? Nagyszerű!",
+    "Fogadd el ezt a HM-et. A Strength a nagy sziklákat is megmozdítja."
+   ],
+   "afterText": [
+    "A Strength használatához Rainbow Badge kell."
+   ]
+  },
+  {
+   "id": "fuchsia-fisher",
+   "text": [
+    "Cinnabar Island messze délen fekszik.",
+    "Csak egy szörfözni tudó Pokémon vihet el oda."
+   ]
+  }
+ ]
+}

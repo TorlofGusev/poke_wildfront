@@ -15,6 +15,12 @@ import {
   wildForm,
   wildSetup,
   masteryGrid,
+  chooseEvolution,
+  evolutionChoices,
+  memberGrid,
+  pathOf,
+  pathOptions,
+  pathStartSkill,
   resetMasteries,
   toUnitSetup,
   xpToNext,
@@ -61,12 +67,12 @@ describe("levels and stats", () => {
     expect(isSpecialMove(CONTENT, { ...CONTENT.moves.tackle!, category: "special" })).toBe(true);
   });
 
-  it("Sharpshooter: ranged moves reach further, melee moves do not; weak up close, strong at distance", () => {
+  it("Sharpshooter: ranged moves reach further, melee moves do not; strong at distance", () => {
     const m = { ...starter("pikachu", 10), role: "sharpshooter", talents: ["long-shot"] };
     const unit = toUnitSetup(CONTENT, PROGRESSION, m) as { mods: ReturnType<typeof memberModifiers> };
-    expect(moveRange(unit, CONTENT.moves["thunder-shock"]!)).toEqual({ min: 1, max: 4 });
+    expect(moveRange(unit, CONTENT.moves["thunder-shock"]!)).toEqual({ min: 1, max: 3 });
+    expect(unit.mods.shootOver).toBe(true);
     expect(moveRange(unit, CONTENT.moves["quick-attack"]!)).toEqual({ min: 1, max: 1 });
-    expect(unit.mods.closeDamage).toBeLessThan(1);
     expect(unit.mods.farDamage).toBeGreaterThan(1);
   });
 
@@ -113,24 +119,18 @@ describe("levels and stats", () => {
 });
 
 describe("roles and talents", () => {
-  it("asks for a role at the role level, then one mastery per reached row", () => {
-    const c = { ...content, species: { ...content.species, fast: { ...content.species.fast!, roles: ["striker", "tank"] } } };
-    let m = pm("a", "fast", 0, 40, { level: 4 });
-    expect(pendingChoice(c, prog, m)).toBeNull();
-    m = { ...m, level: 5 };
-    expect(pendingChoice(c, prog, m)).toBe("role");
-    expect(() => chooseRole(c, prog, m, "healer")).toThrow();
-    m = chooseRole(c, prog, m, "striker");
-    expect(pendingChoice(c, prog, m)).toBeNull();
-    m = { ...m, level: 7 };
-    // Power and Brutal share the Lv 6 row: picking one closes the other.
-    expect(talentOptions(c, prog, m)).toEqual(["power", "brutal", "shell"]);
-    m = chooseTalent(c, prog, m, "power");
-    expect(talentOptions(c, prog, m)).toEqual(["shell"]);
-    expect(() => chooseTalent(c, prog, m, "brutal")).toThrow(/not available/);
-    m = chooseTalent(c, prog, m, "shell");
-    expect(pendingChoice(c, prog, m)).toBeNull();
-    expect(() => chooseTalent(c, prog, m, "brutal")).toThrow(/no talent choice/);
+  it("asks for a path at the role level, then one mastery per reached row", () => {
+    let m = { ...starter("charmander", 2), role: null };
+    expect(pendingChoice(CONTENT, PROGRESSION, m)).toBeNull();
+    m = { ...m, level: 3 };
+    expect(pendingChoice(CONTENT, PROGRESSION, m)).toBe("role");
+    expect(() => chooseRole(CONTENT, PROGRESSION, m, "tank:fire")).toThrow();
+    m = chooseRole(CONTENT, PROGRESSION, m, "striker:fire") as typeof m;
+    expect(pendingChoice(CONTENT, PROGRESSION, m)).toBeNull();
+    m = { ...m, level: 4 };
+    const [a, b] = talentOptions(CONTENT, PROGRESSION, m);
+    m = chooseTalent(CONTENT, PROGRESSION, m, a!) as typeof m;
+    expect(() => chooseTalent(CONTENT, PROGRESSION, m, b!)).toThrow(/no talent choice/);
   });
 
   it("stat talents raise stats and role talents change battle results", () => {
@@ -258,25 +258,79 @@ describe("content", () => {
 describe("mastery grid", () => {
   const charmander = (level: number, talents: string[] = []) => ({ ...starter("charmander", level), role: "striker", talents });
 
-  it("rows merge the role tree and every type tree by level", () => {
-    const rows = masteryGrid(CONTENT, PROGRESSION, "charmander", "striker");
-    expect(rows.find((r) => r.level === 6)!.options).toEqual(["type-fire", "flame-body"]);
-    expect(rows.find((r) => r.level === 12)!.options).toEqual(["momentum", "last-stand", "skill-fire-spin"]);
-    // A dual type gets both types' options in the same rows; without a role only type rows exist.
-    const bulba = masteryGrid(CONTENT, PROGRESSION, "bulbasaur", null);
-    expect(bulba.find((r) => r.level === 6)!.options).toEqual(["type-grass", "spore-cloud", "type-poison", "toxic-barbs"]);
-    expect(bulba.some((r) => r.level === 4)).toBe(false);
+  it("one tree per path: dual types have a fixed role and choose a type, single types choose a role", () => {
+    expect(pathOptions(CONTENT, PROGRESSION, { speciesId: "bulbasaur" })).toEqual(["tank:grass", "tank:poison"]);
+    expect(pathOptions(CONTENT, PROGRESSION, { speciesId: "charmander" })).toEqual(["striker:fire", "sharpshooter:fire"]);
+    // Every tree: 10 rows of 2 from the role and type kits, one kind per row, no repeats, a start skill.
+    for (const sp of Object.values(CONTENT.species))
+      for (const path of pathOptions(CONTENT, PROGRESSION, { speciesId: sp.id })) {
+        const rows = masteryGrid(CONTENT, PROGRESSION, sp.id, path);
+        expect(rows.map((r) => r.level), `${sp.id}/${path}`).toEqual([4, 6, 9, 12, 15, 18, 21, 24, 27, 30]);
+        const ids = rows.flatMap((r) => r.options);
+        expect(new Set(ids).size, `${sp.id}/${path} repeats a mastery`).toBe(ids.length);
+        for (const row of rows) {
+          expect(row.options.length).toBe(2);
+          for (const o of row.options) expect(PROGRESSION.talents, o).toHaveProperty(o);
+          const kinds = new Set(row.options.map((o) => Boolean(PROGRESSION.talents[o]!.grantsMove)));
+          expect(kinds.size, `${sp.id}/${path} Lv ${row.level} mixes skills and passives`).toBe(1);
+        }
+        const start = pathStartSkill(PROGRESSION, path)!;
+        expect(CONTENT.moves, start).toHaveProperty(PROGRESSION.talents[start]!.grantsMove!);
+      }
+    // The path keeps role + type and grants its starting skill.
+    const m = chooseRole(CONTENT, PROGRESSION, { ...starter("bulbasaur", 3), role: null }, "tank:poison");
+    expect(m).toMatchObject({ role: "tank", focus: "poison" });
+    expect(m.talents).toEqual([pathStartSkill(PROGRESSION, "tank:poison")]);
+    expect(pathOf(CONTENT, m)).toBe("tank:poison");
+  });
+
+  it("an evolution that drops the path's type moves the path to the new type and keeps only masteries still in the tree", () => {
+    let m: ReturnType<typeof starter> = chooseRole(CONTENT, PROGRESSION, { ...starter("eevee", 14), role: null }, pathOptions(CONTENT, PROGRESSION, { speciesId: "eevee" })[0]!);
+    while (pendingChoice(CONTENT, PROGRESSION, m) === "talent") m = chooseTalent(CONTENT, PROGRESSION, m, talentOptions(CONTENT, PROGRESSION, m)[0]!);
+    const grown = gainXp(CONTENT, PROGRESSION, m, xpToNext(PROGRESSION, 14)).member;
+    // Eevee waits for the player's pick of its form.
+    expect(grown.speciesId).toBe("eevee");
+    expect(pendingChoice(CONTENT, PROGRESSION, grown)).toBe("evolution");
+    expect(evolutionChoices(CONTENT, grown)).toEqual(["vaporeon", "jolteon", "flareon"]);
+    const up = chooseEvolution(CONTENT, PROGRESSION, grown, "vaporeon").member;
+    expect(up.speciesId).toBe("vaporeon");
+    expect(up.focus).toBe("water");
+    const tree = new Set([pathStartSkill(PROGRESSION, pathOf(CONTENT, up)!, "vaporeon"), ...masteryGrid(CONTENT, PROGRESSION, "vaporeon", pathOf(CONTENT, up)).flatMap((r) => r.options)]);
+    for (const id of up.talents) expect(tree.has(id), id).toBe(true);
+  });
+
+  it("an evolution that adds a type opens a gift row from that type's kit; Sleep ends on a hit", () => {
+    let m: ReturnType<typeof starter> = chooseRole(CONTENT, PROGRESSION, { ...starter("charmeleon", 19), role: null }, "striker:fire");
+    while (pendingChoice(CONTENT, PROGRESSION, m) === "talent") m = chooseTalent(CONTENT, PROGRESSION, m, talentOptions(CONTENT, PROGRESSION, m)[0]!);
+    const up = gainXp(CONTENT, PROGRESSION, m, xpToNext(PROGRESSION, 19)).member;
+    expect(up.speciesId).toBe("charizard");
+    expect(up.bonusType).toEqual({ type: "flying", level: up.level });
+    const gift = memberGrid(CONTENT, PROGRESSION, up).find((r) => r.options.includes(PROGRESSION.kits!.types.flying!.start));
+    expect(gift).toBeDefined();
+    expect(talentOptions(CONTENT, PROGRESSION, up)).toEqual(expect.arrayContaining([...gift!.options]));
+    // Sleep: no action, and the first hit wakes the sleeper.
+    let { state } = createBattle(CONTENT, ["....."], [
+      { id: "p", speciesId: "jigglypuff", side: "player", pos: { x: 0, y: 0 }, stats: { ...CONTENT.species.jigglypuff!.stats, speed: 20 }, moves: ["sing", "pound"] },
+      { id: "e", speciesId: "rattata", side: "enemy", pos: { x: 1, y: 0 } },
+    ]);
+    state = applyAction(state, CONTENT, { type: "useMove", unitId: "p", moveId: "sing", target: { x: 1, y: 0 } }).state;
+    expect(state.units.find((u) => u.id === "e")!.statuses.map((s) => s.id)).toContain("sleep");
+    state = applyAction(state, CONTENT, { type: "useMove", unitId: "p", moveId: "pound", target: { x: 1, y: 0 } }).state;
+    expect(state.units.find((u) => u.id === "e")!.statuses.map((s) => s.id)).not.toContain("sleep");
   });
 
   it("offers the options of every reached row without a pick", () => {
+    const grid = masteryGrid(CONTENT, PROGRESSION, "charmander", "striker:fire");
     expect(pendingChoice(CONTENT, PROGRESSION, charmander(3))).toBeNull();
-    expect(talentOptions(CONTENT, PROGRESSION, charmander(4))).toEqual(["rally", "heavy-hitter"]);
-    expect(talentOptions(CONTENT, PROGRESSION, charmander(6, ["rally"]))).toEqual(["type-fire", "flame-body"]);
-    expect(talentOptions(CONTENT, PROGRESSION, charmander(8, ["rally", "flame-body"]))).toEqual(["follow-through", "skill-focus-energy"]);
+    expect(talentOptions(CONTENT, PROGRESSION, charmander(grid[0]!.level))).toEqual(grid[0]!.options);
+    expect(talentOptions(CONTENT, PROGRESSION, charmander(grid[1]!.level, [grid[0]!.options[0]!]))).toEqual(grid[1]!.options);
   });
 
   it("skill masteries teach a new move and activate it when there is room", () => {
-    const m = { ...charmander(8, ["rally", "flame-body"]), activeMoves: ["ember"] };
+    const grid = masteryGrid(CONTENT, PROGRESSION, "charmander", "striker:fire");
+    const skillRow = grid.findIndex((r) => r.options.includes("skill-focus-energy"));
+    const before = grid.slice(0, skillRow).map((r) => r.options[0]!);
+    const m = { ...charmander(grid[skillRow]!.level, before), activeMoves: ["ember"] };
     const next = chooseTalent(CONTENT, PROGRESSION, m, "skill-focus-energy");
     expect(next.knownMoves).toContain("focus-energy--fire");
     // A Fire Pokémon learns the Fire version of the skill (Sunny Day), named after it.
@@ -286,7 +340,9 @@ describe("mastery grid", () => {
   });
 
   it("a reset forgets the role, masteries and the moves they taught", () => {
-    const m = chooseTalent(CONTENT, PROGRESSION, { ...charmander(8, ["rally", "flame-body"]), activeMoves: ["ember"] }, "skill-focus-energy");
+    const grid = masteryGrid(CONTENT, PROGRESSION, "charmander", "striker:fire");
+    const skillRow = grid.findIndex((r) => r.options.includes("skill-focus-energy"));
+    const m = chooseTalent(CONTENT, PROGRESSION, { ...charmander(grid[skillRow]!.level, grid.slice(0, skillRow).map((r) => r.options[0]!)), activeMoves: ["ember"] }, "skill-focus-energy");
     const r = resetMasteries(CONTENT, m);
     expect(r.role).toBeNull();
     expect(r.talents).toEqual([]);
@@ -307,28 +363,6 @@ describe("mastery grid", () => {
     expect(r.events).toContainEqual(expect.objectContaining({ type: "damaged", unitId: "p", amount: 0 }));
   });
 
-  it("every tree references valid masteries; every type has its own tree; rows stay small", () => {
-    for (const role of [...Object.values(PROGRESSION.roles), ...Object.values(PROGRESSION.typeTrees)])
-      for (const n of role.tree) if (n.talent !== "@type") expect(PROGRESSION.talents, `${role.id}: ${n.talent}`).toHaveProperty(n.talent);
-    for (const sp of Object.values(CONTENT.species))
-      for (const role of sp.roles ?? []) for (const row of masteryGrid(CONTENT, PROGRESSION, sp.id, role)) expect(row.options.length, `${sp.id}/${role} Lv ${row.level}`).toBeLessThanOrEqual(4);
-    for (const t of Object.values(PROGRESSION.talents)) if (t.grantsMove) expect(CONTENT.moves, t.id).toHaveProperty(t.grantsMove);
-    for (const id of Object.keys(CONTENT.types)) {
-      const tree = PROGRESSION.typeTrees[id]?.tree ?? [];
-      expect(tree.length, id).toBeGreaterThanOrEqual(5);
-      for (const n of tree) expect(PROGRESSION.talents[n.talent]?.requiresType, n.talent).toBe(id);
-    }
-    // A mastery lives in at most one tree, so points are counted per tree.
-    const all = [...Object.values(PROGRESSION.roles), ...Object.values(PROGRESSION.typeTrees)].flatMap((r) => r.tree.map((n) => `${r.id}:${n.talent}`));
-    const typeIds = Object.values(PROGRESSION.typeTrees).flatMap((r) => r.tree.map((n) => n.talent));
-    const roleIds = Object.values(PROGRESSION.roles).flatMap((r) => r.tree.map((n) => n.talent));
-    expect(typeIds.filter((t) => roleIds.includes(t))).toEqual([]);
-    expect(new Set(typeIds).size).toBe(typeIds.length);
-    // Names are unique too, so two nodes of a tree never read the same.
-    const names = Object.values(PROGRESSION.talents).map((t) => t.name);
-    expect(names.filter((n, i) => names.indexOf(n) !== i)).toEqual([]);
-    expect(all.length).toBeGreaterThan(0);
-  });
 });
 
 describe("level-gap XP", () => {

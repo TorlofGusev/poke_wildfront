@@ -1,0 +1,13 @@
+{
+ "npcs": [
+  {
+   "id": "biker-route14",
+   "text": [
+    "Félre az útból, kölyök!"
+   ],
+   "afterText": [
+    "Jól van, gurulj tovább."
+   ]
+  }
+ ]
+}

@@ -1,0 +1,29 @@
+{
+ "npcs": [
+  {
+   "id": "rocket-mtmoon-1",
+   "text": [
+    "Ezek a barlangok a Team Rocketéi! Tűnés, kölyök!"
+   ],
+   "afterText": [
+    "Ezt a Főnök is meg fogja tudni..."
+   ]
+  },
+  {
+   "id": "mtmoon-hiker",
+   "text": [
+    "Hűha, egy edző idelent? Csapjunk össze!"
+   ],
+   "afterText": [
+    "Azok a Rocketek fosszíliákat ásnak ki. Állítsd meg őket!"
+   ]
+  },
+  {
+   "id": "mtmoon-clefairy-fan",
+   "text": [
+    "Psszt! Telihold idején Clefairyk táncolnak ebben a mélyedésben.",
+    "Kérlek, ne ijeszd el őket."
+   ]
+  }
+ ]
+}

@@ -60,12 +60,12 @@ try {
   const t0 = Date.now();
   await tap(tx, ty, 4500);
   await shot("05-deploy");
-  for (const [x, y] of [[1, 2], [1, 4], [1, 5]]) await tap(12 + x * 40 + 20, 72 + y * 40 + 20, 150);
+  for (const [x, y] of [[1, 2], [1, 4], [1, 5]]) await tap(12 + 19.4 + x * 38.8 + (y & 1 ? 19.4 : 0), 72 + 22.4 + y * 33.6, 150);
   await shot("06-deploy-placed");
   await tap(808, 230, 3000);
   await shot("07-battle");
   // Tap a reachable tile once (armed), screenshot, and measure a second tap's response.
-  await tap(12 + 3 * 40 + 20, 72 + 2 * 40 + 20, 400);
+  await tap(12 + 19.4 + 3 * 38.8, 72 + 22.4 + 2 * 33.6, 400);
   await shot("08-battle-armed");
   const lag = await page.evaluate(async () => {
     const a = performance.now();

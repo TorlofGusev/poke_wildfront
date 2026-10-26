@@ -1,0 +1,55 @@
+{
+ "talents": {
+  "mew-skill-psyshock": {
+   "description": "Új képesség: pszichikus hullám legfeljebb 3 hexnyire, Defense ellen (Erő 50)."
+  },
+  "mew-gene-pool": {
+   "description": "+1 minden statisztikára."
+  },
+  "mew-playful": {
+   "description": "+1 csapat Kötelék, ha kombót visz be."
+  },
+  "mew-skill-baton-pass": {
+   "description": "Új képesség: erejét átadja egy legfeljebb 3 hexnyi szövetségesnek: 2 körre Fókuszált."
+  },
+  "mew-skill-life-dew": {
+   "description": "Új képesség: gyógyító harmat 20 HP-t ad egy terület szövetségeseinek."
+  },
+  "mew-elusive": {
+   "description": "25%-kal kevesebb sebzést kap, amíg teljes a HP-ja."
+  },
+  "mew-bond-of-origins": {
+   "description": "A csapat 1-gyel több Köteléket tarthat."
+  },
+  "mew-skill-mystic-blast": {
+   "description": "Új képesség: mitikus erő robbanása egy területen, távolra (Erő 80)."
+  },
+  "mew-skill-ancient-power": {
+   "description": "Új képesség: ősi követ hajít legfeljebb 3 hexnyire (Erő 65)."
+  },
+  "mew-natural-cure": {
+   "description": "Köre elején lerázza az ellenfelek által rárakott állapotokat."
+  },
+  "mew-regenerator": {
+   "description": "Minden körben max HP-ja 5%-át gyógyítja."
+  },
+  "mew-skill-aura-sphere": {
+   "description": "Új képesség: aura lövedék legfeljebb 3 hexnyire, rálátás nélkül (Erő 85)."
+  },
+  "mew-skill-dazzling-gleam": {
+   "description": "Új képesség: villanás a 2 hexen belüli ellenfelekre (Erő 60), 2 körre Sebezhetővé tesz."
+  },
+  "mew-psychic-heritage": {
+   "description": "A pszichikus mozdulatok 20%-kal többet sebeznek."
+  },
+  "mew-sturdy-spirit": {
+   "description": "Csatánként egyszer 1 HP-val túlél egy kiütő csapást."
+  },
+  "mew-origin-of-all": {
+   "description": "Csúcsképesség. Minden állapotra immunis; 15%-kal többet sebez."
+  },
+  "mew-mythical-bond": {
+   "description": "Csúcsképesség. A csapat +2 Kötelékkel kezd; Kötelékmozdulatai 1-gyel olcsóbbak."
+  }
+ }
+}

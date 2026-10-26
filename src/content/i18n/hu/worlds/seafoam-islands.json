@@ -1,0 +1,19 @@
+{
+ "npcs": [
+  {
+   "id": "articuno",
+   "text": [
+    "Fagyos szél süvít...",
+    "A legendás Articuno támad!"
+   ]
+  }
+ ],
+ "obstacles": [
+  {
+   "text": "Egy hatalmas szikla. Egy erős Pokémon el tudná tolni."
+  },
+  {
+   "text": "Egy hatalmas szikla. Egy erős Pokémon el tudná tolni."
+  }
+ ]
+}

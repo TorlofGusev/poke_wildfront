@@ -1,0 +1,78 @@
+{
+ "npcs": [
+  {
+   "id": "lorelei",
+   "text": [
+    "Üdv a Pokémon League-ben! Lorelei vagyok, az Elite Four tagja.",
+    "A Pokémonjaid a kegyelmemre lesznek bízva, ha jéggé fagynak!"
+   ],
+   "afterText": [
+    "Menj csak. Bruno vár rád."
+   ]
+  },
+  {
+   "id": "bruno",
+   "lockedText": [
+    "Előbb Loreleivel nézz szembe."
+   ],
+   "text": [
+    "Bruno vagyok, az Elite Four tagja!",
+    "Kemény edzéssel az emberek és a Pokémonok is erősebbek lesznek!"
+   ],
+   "afterText": [
+    "Az én dolgom végeztem. Agatha következik."
+   ]
+  },
+  {
+   "id": "agatha",
+   "lockedText": [
+    "Előbb Bruno vár rád."
+   ],
+   "text": [
+    "Agatha vagyok, az Elite Four tagja.",
+    "Oak nagyon érdeklődik irántad. Megmutatom, hogyan harcol egy igazi edző!"
+   ],
+   "afterText": [
+    "Lance az utolsó közülünk. Menj!"
+   ]
+  },
+  {
+   "id": "lance",
+   "lockedText": [
+    "Előbb Agatha jön."
+   ],
+   "text": [
+    "Lance vagyok, a sárkányedző.",
+    "A sárkányok misztikus Pokémonok. Nehéz befogni és felnevelni őket, de az erejük páratlan!"
+   ],
+   "afterText": [
+    "A Bajnok vár. Tudod, ki az..."
+   ]
+  },
+  {
+   "id": "champion",
+   "lockedText": [
+    "Előbb győzd le Lance-et."
+   ],
+   "text": [
+    "Hé! Már vártam, hogy itt lássalak.",
+    "Most én vagyok a Pokémon League Bajnoka! Gyerünk!"
+   ],
+   "afterText": [
+    "Legyőztél... Te vagy a Pokémon League új Bajnoka!"
+   ]
+  },
+  {
+   "id": "indigo-guide",
+   "text": [
+    "E kapu mögött vár az Elite Four.",
+    "Ha bármelyiküktől kikapsz, kezdheted elölről!"
+   ]
+  }
+ ],
+ "obstacles": [
+  {
+   "text": "Csak 8 kitűzővel rendelkező edzők léphetnek be a Pokémon League-be."
+  }
+ ]
+}

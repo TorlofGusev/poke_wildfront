@@ -1,0 +1,293 @@
+{
+ "species": [
+  "moltres"
+ ],
+ "moves": {
+  "moltres-fire-spin": {
+   "id": "moltres-fire-spin",
+   "name": "Fire Spin",
+   "type": "fire",
+   "kind": "special",
+   "cooldown": 2,
+   "power": 40,
+   "range": {
+    "min": 1,
+    "max": 2
+   },
+   "requiresLineOfSight": true,
+   "shape": {
+    "kind": "single"
+   },
+   "affects": "enemies",
+   "effects": [
+    {
+     "kind": "status",
+     "status": "burn",
+     "duration": 2
+    }
+   ]
+  },
+  "moltres-heat-wave": {
+   "id": "moltres-heat-wave",
+   "name": "Heat Wave",
+   "type": "fire",
+   "kind": "special",
+   "cooldown": 3,
+   "power": 55,
+   "range": {
+    "min": 1,
+    "max": 3
+   },
+   "requiresLineOfSight": true,
+   "shape": {
+    "kind": "burst",
+    "radius": 1
+   },
+   "affects": "enemies",
+   "effects": [
+    {
+     "kind": "status",
+     "status": "burn",
+     "duration": 1
+    }
+   ]
+  },
+  "moltres-flame-charge": {
+   "id": "moltres-flame-charge",
+   "name": "Flame Charge",
+   "type": "fire",
+   "kind": "special",
+   "cooldown": 2,
+   "power": 60,
+   "range": {
+    "min": 1,
+    "max": 2
+   },
+   "requiresLineOfSight": false,
+   "shape": {
+    "kind": "single"
+   },
+   "affects": "enemies"
+  },
+  "moltres-sky-attack": {
+   "id": "moltres-sky-attack",
+   "name": "Sky Attack",
+   "type": "flying",
+   "kind": "special",
+   "cooldown": 4,
+   "power": 100,
+   "range": {
+    "min": 1,
+    "max": 3
+   },
+   "requiresLineOfSight": false,
+   "shape": {
+    "kind": "single"
+   },
+   "affects": "enemies",
+   "effects": [
+    {
+     "kind": "push",
+     "distance": 1
+    }
+   ]
+  },
+  "moltres-burn-up": {
+   "id": "moltres-burn-up",
+   "name": "Burn Up",
+   "type": "fire",
+   "kind": "special",
+   "cooldown": 5,
+   "power": 100,
+   "range": {
+    "min": 1,
+    "max": 1
+   },
+   "requiresLineOfSight": true,
+   "shape": {
+    "kind": "single"
+   },
+   "affects": "enemies",
+   "effects": [
+    {
+     "kind": "status",
+     "status": "burn",
+     "duration": 2
+    }
+   ]
+  }
+ },
+ "talents": {
+  "moltres-skill-fire-spin": {
+   "id": "moltres-skill-fire-spin",
+   "name": "Fire Spin",
+   "description": "New skill: a vortex of fire at a foe up to 2 hexes away (Power 40) that Burns.",
+   "grantsMove": "moltres-fire-spin"
+  },
+  "moltres-flame-body": {
+   "id": "moltres-flame-body",
+   "name": "Flame Body",
+   "description": "Its hits on adjacent foes Burn them for 2 turns.",
+   "mods": {
+    "contactStatus": {
+     "status": "burn",
+     "duration": 2
+    }
+   }
+  },
+  "moltres-flame-mantle": {
+   "id": "moltres-flame-mantle",
+   "name": "Flame Mantle",
+   "description": "Takes 20% less damage while at full HP.",
+   "mods": {
+    "fullHpDamageTaken": 0.8
+   }
+  },
+  "moltres-skill-heat-wave": {
+   "id": "moltres-skill-heat-wave",
+   "name": "Heat Wave",
+   "description": "New skill: a scorching wind hits an area at range (Power 55) and Burns.",
+   "grantsMove": "moltres-heat-wave"
+  },
+  "moltres-skill-flame-charge": {
+   "id": "moltres-skill-flame-charge",
+   "name": "Flame Charge",
+   "description": "New skill: a flaming dive at a foe up to 2 hexes away (Power 60).",
+   "grantsMove": "moltres-flame-charge"
+  },
+  "moltres-scorch": {
+   "id": "moltres-scorch",
+   "name": "Scorch",
+   "description": "+20% damage against Burned foes.",
+   "mods": {
+    "vsStatusIdDamage": {
+     "burn": 1.2
+    }
+   }
+  },
+  "moltres-wildfire": {
+   "id": "moltres-wildfire",
+   "name": "Wildfire",
+   "description": "When a foe with its status faints, adjacent foes catch that status for 1 turn.",
+   "mods": {
+    "statusSpreadOnKo": true
+   }
+  },
+  "moltres-skill-sky-attack": {
+   "id": "moltres-skill-sky-attack",
+   "name": "Sky Attack",
+   "description": "New skill: a blazing dive up to 3 hexes away (Power 100) that pushes 1 hex.",
+   "grantsMove": "moltres-sky-attack"
+  },
+  "moltres-skill-overheat": {
+   "id": "moltres-skill-overheat",
+   "name": "Overheat",
+   "description": "New skill: an all-out blast of fire at range (Power 95) that Burns.",
+   "grantsMove": "overheat"
+  },
+  "moltres-rebirth": {
+   "id": "moltres-rebirth",
+   "name": "Rebirth",
+   "description": "Survives one knockout blow per battle at 1 HP.",
+   "mods": {
+    "sturdy": true
+   }
+  },
+  "moltres-burning-plumage": {
+   "id": "moltres-burning-plumage",
+   "name": "Burning Plumage",
+   "description": "Foes that hit it from an adjacent hex take 8 damage.",
+   "mods": {
+    "thorns": 8
+   }
+  },
+  "moltres-skill-burn-up": {
+   "id": "moltres-skill-burn-up",
+   "name": "Burn Up",
+   "description": "New skill: pours all its fire into an adjacent foe (Power 100), Burning it.",
+   "grantsMove": "moltres-burn-up"
+  },
+  "moltres-skill-hurricane": {
+   "id": "moltres-skill-hurricane",
+   "name": "Hurricane",
+   "description": "New skill: a storm hits a foe up to 3 hexes away and pushes it 2 hexes (Power 90).",
+   "grantsMove": "hurricane"
+  },
+  "moltres-inferno-lord": {
+   "id": "moltres-inferno-lord",
+   "name": "Inferno Lord",
+   "description": "Fire moves deal 20% more damage.",
+   "mods": {
+    "typeDamage": {
+     "fire": 1.2
+    }
+   }
+  },
+  "moltres-ember-hide": {
+   "id": "moltres-ember-hide",
+   "name": "Ember Hide",
+   "description": "Takes 10% less damage; +2 HP.",
+   "stats": {
+    "hp": 2
+   },
+   "mods": {
+    "damageTaken": 0.9
+   }
+  },
+  "moltres-blazing-sky": {
+   "id": "moltres-blazing-sky",
+   "name": "Blazing Sky",
+   "description": "Capstone. After a KO on its turn: +2 movement and its basic attack again.",
+   "mods": {
+    "koMove": 2,
+    "koRefreshBasic": true
+   }
+  },
+  "moltres-undying-flame": {
+   "id": "moltres-undying-flame",
+   "name": "Undying Flame",
+   "description": "Capstone. Heals 6% max HP each turn; +25% Fire damage below half HP.",
+   "mods": {
+    "healPerTurn": 0.06,
+    "lowHpTypeDamage": {
+     "fire": 1.25
+    }
+   }
+  }
+ },
+ "start": "moltres-skill-fire-spin",
+ "rows": {
+  "4": [
+   "moltres-flame-body",
+   "moltres-flame-mantle"
+  ],
+  "12": [
+   "moltres-skill-heat-wave",
+   "moltres-skill-flame-charge"
+  ],
+  "15": [
+   "moltres-scorch",
+   "moltres-wildfire"
+  ],
+  "18": [
+   "moltres-skill-sky-attack",
+   "moltres-skill-overheat"
+  ],
+  "21": [
+   "moltres-rebirth",
+   "moltres-burning-plumage"
+  ],
+  "24": [
+   "moltres-skill-burn-up",
+   "moltres-skill-hurricane"
+  ],
+  "27": [
+   "moltres-inferno-lord",
+   "moltres-ember-hide"
+  ],
+  "30": [
+   "moltres-blazing-sky",
+   "moltres-undying-flame"
+  ]
+ }
+}

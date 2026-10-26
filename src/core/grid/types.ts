@@ -11,15 +11,8 @@ export const samePoint = (a: Point, b: Point): boolean => a.x === b.x && a.y ===
 export const manhattan = (a: Point, b: Point): number =>
   Math.abs(a.x - b.x) + Math.abs(a.y - b.y);
 
-/**
- * Battle distance with 8-directional movement, diagonals alternating 1 and 2 (1, 3, 4, 6…):
- * all eight surrounding tiles are at distance 1, and long diagonals are not a shortcut.
- */
-export const gridDistance = (a: Point, b: Point): number => {
-  const dx = Math.abs(a.x - b.x);
-  const dy = Math.abs(a.y - b.y);
-  return Math.max(dx, dy) + Math.floor(Math.min(dx, dy) / 2);
-};
+/** Battle distance: battles use a hex grid (see hex.ts), so the six surrounding hexes are at distance 1. */
+export { hexDistance as gridDistance } from "./hex";
 
 export const DIAGONAL_OFFSETS: readonly Point[] = [
   { x: 1, y: -1 },

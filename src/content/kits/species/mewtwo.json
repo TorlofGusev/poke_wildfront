@@ -1,0 +1,285 @@
+{
+ "species": [
+  "mewtwo"
+ ],
+ "moves": {
+  "mewtwo-psycho-cut": {
+   "id": "mewtwo-psycho-cut",
+   "name": "Psycho Cut",
+   "type": "psychic",
+   "kind": "special",
+   "cooldown": 2,
+   "power": 50,
+   "range": {
+    "min": 1,
+    "max": 2
+   },
+   "requiresLineOfSight": true,
+   "shape": {
+    "kind": "single"
+   },
+   "affects": "enemies",
+   "category": "physical"
+  },
+  "mewtwo-barrier": {
+   "id": "mewtwo-barrier",
+   "name": "Barrier",
+   "type": "psychic",
+   "kind": "special",
+   "cooldown": 3,
+   "power": 0,
+   "range": {
+    "min": 0,
+    "max": 0
+   },
+   "requiresLineOfSight": false,
+   "shape": {
+    "kind": "single"
+   },
+   "affects": "allies",
+   "effects": [
+    {
+     "kind": "status",
+     "status": "fortified",
+     "duration": 3
+    }
+   ]
+  },
+  "mewtwo-psystrike": {
+   "id": "mewtwo-psystrike",
+   "name": "Psystrike",
+   "type": "psychic",
+   "kind": "special",
+   "cooldown": 4,
+   "power": 100,
+   "range": {
+    "min": 1,
+    "max": 3
+   },
+   "requiresLineOfSight": true,
+   "shape": {
+    "kind": "single"
+   },
+   "affects": "enemies",
+   "category": "physical"
+  },
+  "mewtwo-aura-sphere": {
+   "id": "mewtwo-aura-sphere",
+   "name": "Aura Sphere",
+   "type": "fighting",
+   "kind": "special",
+   "cooldown": 4,
+   "power": 80,
+   "range": {
+    "min": 1,
+    "max": 3
+   },
+   "requiresLineOfSight": false,
+   "shape": {
+    "kind": "single"
+   },
+   "affects": "enemies"
+  },
+  "mewtwo-psywave": {
+   "id": "mewtwo-psywave",
+   "name": "Psywave",
+   "type": "psychic",
+   "kind": "special",
+   "cooldown": 5,
+   "power": 70,
+   "range": {
+    "min": 1,
+    "max": 3
+   },
+   "requiresLineOfSight": true,
+   "shape": {
+    "kind": "burst",
+    "radius": 1
+   },
+   "affects": "enemies",
+   "effects": [
+    {
+     "kind": "status",
+     "status": "exposed",
+     "duration": 2
+    }
+   ]
+  }
+ },
+ "talents": {
+  "mewtwo-skill-psycho-cut": {
+   "id": "mewtwo-skill-psycho-cut",
+   "name": "Psycho Cut",
+   "description": "New skill: psychic blades strike a foe up to 2 hexes away (Power 50).",
+   "grantsMove": "mewtwo-psycho-cut"
+  },
+  "mewtwo-unnerve": {
+   "id": "mewtwo-unnerve",
+   "name": "Unnerve",
+   "description": "+20% damage against foes at full HP.",
+   "mods": {
+    "fullHpTargetDamage": 1.2
+   }
+  },
+  "mewtwo-engineered": {
+   "id": "mewtwo-engineered",
+   "name": "Engineered",
+   "description": "+2 Sp. Atk and +1 Sp. Def.",
+   "stats": {
+    "spAttack": 2,
+    "spDefense": 1
+   }
+  },
+  "mewtwo-skill-psychic": {
+   "id": "mewtwo-skill-psychic",
+   "name": "Psychic",
+   "description": "New skill: a strong telekinetic blow at a foe up to 3 hexes away (Power 70).",
+   "grantsMove": "psychic"
+  },
+  "mewtwo-skill-barrier": {
+   "id": "mewtwo-skill-barrier",
+   "name": "Barrier",
+   "description": "New skill: a psychic wall; it is Fortified for 3 turns.",
+   "grantsMove": "mewtwo-barrier"
+  },
+  "mewtwo-iron-will": {
+   "id": "mewtwo-iron-will",
+   "name": "Iron Will",
+   "description": "Cannot be Frozen or Paralyzed.",
+   "mods": {
+    "statusImmune": [
+     "freeze",
+     "paralysis"
+    ]
+   }
+  },
+  "mewtwo-psionic-edge": {
+   "id": "mewtwo-psionic-edge",
+   "name": "Psionic Edge",
+   "description": "+20% damage against Frozen foes.",
+   "mods": {
+    "vsStatusIdDamage": {
+     "freeze": 1.2
+    }
+   }
+  },
+  "mewtwo-skill-psystrike": {
+   "id": "mewtwo-skill-psystrike",
+   "name": "Psystrike",
+   "description": "New skill: psychic force hits a foe up to 3 hexes away vs its Defense (Power 100).",
+   "grantsMove": "mewtwo-psystrike"
+  },
+  "mewtwo-skill-recover": {
+   "id": "mewtwo-skill-recover",
+   "name": "Recover",
+   "description": "New skill: restores 35 HP to itself.",
+   "grantsMove": "recover"
+  },
+  "mewtwo-mind-over-matter": {
+   "id": "mewtwo-mind-over-matter",
+   "name": "Mind over Matter",
+   "description": "Survives one knockout blow per battle at 1 HP.",
+   "mods": {
+    "sturdy": true
+   }
+  },
+  "mewtwo-self-repair": {
+   "id": "mewtwo-self-repair",
+   "name": "Self-Repair",
+   "description": "Heals 5% of its max HP each turn.",
+   "mods": {
+    "healPerTurn": 0.05
+   }
+  },
+  "mewtwo-skill-aura-sphere": {
+   "id": "mewtwo-skill-aura-sphere",
+   "name": "Aura Sphere",
+   "description": "New skill: an aura blast up to 3 hexes away that needs no line of sight (Power 80).",
+   "grantsMove": "mewtwo-aura-sphere"
+  },
+  "mewtwo-skill-psywave": {
+   "id": "mewtwo-skill-psywave",
+   "name": "Psywave",
+   "description": "New skill: psychic waves hit an area (Power 70); foes hit are Exposed for 2 turns.",
+   "grantsMove": "mewtwo-psywave"
+  },
+  "mewtwo-psychic-mastery": {
+   "id": "mewtwo-psychic-mastery",
+   "name": "Psychic Mastery",
+   "description": "Psychic moves deal 20% more damage.",
+   "mods": {
+    "typeDamage": {
+     "psychic": 1.2
+    }
+   }
+  },
+  "mewtwo-armor": {
+   "id": "mewtwo-armor",
+   "name": "Battle Armor",
+   "description": "Takes 10% less damage; +2 HP.",
+   "stats": {
+    "hp": 2
+   },
+   "mods": {
+    "damageTaken": 0.9
+   }
+  },
+  "mewtwo-unbound": {
+   "id": "mewtwo-unbound",
+   "name": "Unbound Power",
+   "description": "Capstone. Deals 20% more damage; a knockout resets its skill cooldowns.",
+   "mods": {
+    "damageDealt": 1.2,
+    "koResetCooldowns": true
+   }
+  },
+  "mewtwo-mega-evolution": {
+   "id": "mewtwo-mega-evolution",
+   "name": "Mega Evolution",
+   "description": "Capstone. +3 Attack, +3 Sp. Atk, +2 Speed; +10% damage per hit in a row (max 3).",
+   "stats": {
+    "attack": 3,
+    "spAttack": 3,
+    "speed": 2
+   },
+   "mods": {
+    "furyCutter": 0.1
+   }
+  }
+ },
+ "start": "mewtwo-skill-psycho-cut",
+ "rows": {
+  "4": [
+   "mewtwo-unnerve",
+   "mewtwo-engineered"
+  ],
+  "12": [
+   "mewtwo-skill-psychic",
+   "mewtwo-skill-barrier"
+  ],
+  "15": [
+   "mewtwo-iron-will",
+   "mewtwo-psionic-edge"
+  ],
+  "18": [
+   "mewtwo-skill-psystrike",
+   "mewtwo-skill-recover"
+  ],
+  "21": [
+   "mewtwo-mind-over-matter",
+   "mewtwo-self-repair"
+  ],
+  "24": [
+   "mewtwo-skill-aura-sphere",
+   "mewtwo-skill-psywave"
+  ],
+  "27": [
+   "mewtwo-psychic-mastery",
+   "mewtwo-armor"
+  ],
+  "30": [
+   "mewtwo-unbound",
+   "mewtwo-mega-evolution"
+  ]
+ }
+}

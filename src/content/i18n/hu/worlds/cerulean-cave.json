@@ -1,0 +1,13 @@
+{
+ "npcs": [
+  {
+   "id": "mewtwo",
+   "text": [
+    "Erős pszichikus jelenlét tölti be a barlangot..."
+   ],
+   "afterText": [
+    "A barlang most csendes."
+   ]
+  }
+ ]
+}

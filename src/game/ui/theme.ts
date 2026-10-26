@@ -1,4 +1,7 @@
-export const TILE = 40;
+import Phaser from "phaser";
+/** Battle hexes (pointy-top, odd rows shifted right): centre-to-corner radius and width. */
+export const HEX_R = 22.4;
+export const TILE = Math.sqrt(3) * HEX_R;
 /** Unit graphics are drawn for 48 px tiles and scaled to the board. */
 export const UNIT_SCALE = TILE / 48;
 export const BOARD_X = 12;
@@ -42,10 +45,38 @@ export const TYPE_COLORS: Record<string, number> = {
   psychic: 0xf85888, bug: 0xa8b820, rock: 0xb8a038, ghost: 0x705898, dragon: 0x7038f8,
 };
 
+/** Centre of a battle hex on screen. */
 export const tileToWorld = (p: { x: number; y: number }) => ({
-  x: BOARD_X + p.x * TILE + TILE / 2,
-  y: BOARD_Y + p.y * TILE + TILE / 2,
+  x: BOARD_X + TILE / 2 + p.x * TILE + (p.y & 1 ? TILE / 2 : 0),
+  y: BOARD_Y + HEX_R + p.y * HEX_R * 1.5,
 });
+
+/** Screen size of a battle board of w × h hexes. */
+export const boardSize = (w: number, h: number) => ({ w: TILE * (w + 0.5), h: HEX_R * (1.5 * (h - 1) + 2) });
+
+/** The six corners of a hex around (cx, cy). */
+export const hexCorners = (cx: number, cy: number, r = HEX_R) =>
+  Array.from({ length: 6 }, (_, i) => {
+    const a = (Math.PI / 180) * (60 * i - 30);
+    return new Phaser.Math.Vector2(cx + r * Math.cos(a), cy + r * Math.sin(a));
+  });
+
+/** The battle hex under a screen point, or null when outside every hex. */
+export const worldToTile = (x: number, y: number, w: number, h: number): { x: number; y: number } | null => {
+  const row = Math.round((y - BOARD_Y - HEX_R) / (HEX_R * 1.5));
+  let best: { x: number; y: number } | null = null, bd = Infinity;
+  for (let ry = row - 1; ry <= row + 1; ry++) {
+    if (ry < 0 || ry >= h) continue;
+    const col = Math.round((x - BOARD_X - TILE / 2 - (ry & 1 ? TILE / 2 : 0)) / TILE);
+    for (let rx = col - 1; rx <= col + 1; rx++) {
+      if (rx < 0 || rx >= w) continue;
+      const c = tileToWorld({ x: rx, y: ry });
+      const d = (c.x - x) ** 2 + (c.y - y) ** 2;
+      if (d < bd) { bd = d; best = { x: rx, y: ry }; }
+    }
+  }
+  return bd <= HEX_R * HEX_R ? best : null;
+};
 
 const toHex = (n: number) => `#${n.toString(16).padStart(6, "0")}`;
 

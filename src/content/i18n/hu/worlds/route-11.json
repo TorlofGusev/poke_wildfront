@@ -1,0 +1,37 @@
+{
+ "npcs": [
+  {
+   "id": "r11-youngster",
+   "text": [
+    "A Pokémonjaim formában vannak!"
+   ],
+   "afterText": [
+    "Kifordultam a formámból."
+   ]
+  },
+  {
+   "id": "r11-gambler",
+   "text": [
+    "Fogadjunk egy csatára!"
+   ],
+   "afterText": [
+    "Elveszítettem a fogadást."
+   ]
+  },
+  {
+   "id": "r11-engineer",
+   "text": [
+    "Vigyázz, mindenfelé élő vezetékek!"
+   ],
+   "afterText": [
+    "Rövidzárlat!"
+   ]
+  },
+  {
+   "id": "r11-aide",
+   "text": [
+    "Diglett's Cave rögtön északra van. Azt az alagutat a Diglettek ásták egészen maguktól!"
+   ]
+  }
+ ]
+}

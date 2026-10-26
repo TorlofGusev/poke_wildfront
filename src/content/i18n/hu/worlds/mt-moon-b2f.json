@@ -1,0 +1,23 @@
+{
+ "npcs": [
+  {
+   "id": "rocket-mtmoon-2",
+   "text": [
+    "A fosszíliákra pályázunk! Nem kaphatod meg őket!"
+   ],
+   "afterText": [
+    "A vezetőnk őrzi a fosszíliákat beljebb."
+   ]
+  },
+  {
+   "id": "rocket-mtmoon",
+   "text": [
+    "Ezek a fosszíliák egy vagyont érnek a Team Rocketnek!",
+    "Átadni őket? Soha! Készülj, mert szétlapítalak!"
+   ],
+   "afterText": [
+    "Cö. Vidd a fosszíliádat, és tűnj el!"
+   ]
+  }
+ ]
+}

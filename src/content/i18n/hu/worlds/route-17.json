@@ -1,0 +1,31 @@
+{
+ "npcs": [
+  {
+   "id": "biker-route17-1",
+   "text": [
+    "Ez a mi utunk! Fizesd ki a vámot!"
+   ],
+   "afterText": [
+    "Cö, akkor menj csak."
+   ]
+  },
+  {
+   "id": "biker-route17-2",
+   "text": [
+    "Brrrm brrrm! Harc ideje!"
+   ],
+   "afterText": [
+    "Kifogyott a benzin..."
+   ]
+  },
+  {
+   "id": "cue-ball-route17",
+   "text": [
+    "Ne bámuld a fejem!"
+   ],
+   "afterText": [
+    "Elveszett a fényem..."
+   ]
+  }
+ ]
+}

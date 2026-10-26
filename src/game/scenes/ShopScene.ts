@@ -8,6 +8,7 @@ import { Button } from "../ui/Button";
 import { tag } from "../ui/markup";
 import { RichText } from "../ui/RichText";
 import { COLORS, FONT, px } from "../ui/theme";
+import { t } from "../i18n";
 
 interface Ware {
   readonly id: string;
@@ -47,7 +48,7 @@ export class ShopScene extends Phaser.Scene {
     const { balls, items } = session.game.inventory;
     return [
       ...Object.values(CONTENT.balls).filter((b) => b.price).map((b) => ({
-        id: b.id, category: "Balls", name: b.name, price: b.price!, owned: balls[b.id] ?? 0, description: `Catch rate ×${b.multiplier}`,
+        id: b.id, category: "Balls", name: b.name, price: b.price!, owned: balls[b.id] ?? 0, description: t("Catch rate ×{x}", { x: b.multiplier }),
       })),
       ...Object.values(PROGRESSION.items).map((i) => ({ id: i.id, category: CATEGORY[i.kind] ?? "Other", name: i.name, price: i.price, owned: items[i.id] ?? 0, description: i.description })),
     ];
@@ -62,13 +63,13 @@ export class ShopScene extends Phaser.Scene {
     this.root.removeAll(true);
     const add = <T extends Phaser.GameObjects.GameObject>(o: T) => (this.root.add(o), o);
     add(this.add.text(16, 14, "Poké Mart", { fontFamily: FONT, fontSize: "20px", color: "#f5d76e" }));
-    add(this.add.text(160, 20, `You have ₽${session.game.money}`, { fontFamily: FONT, fontSize: px(14), color: "#f5d76e" }));
-    add(new Button(this, 794, 12, 150, 26, "➜ Leave", () => this.scene.start("Overworld", {})));
-    TABS.forEach((t, i) => add(new Button(this, 16 + i * 128, 50, 120, 26, t, () => {
-      this.tab = t;
+    add(this.add.text(160, 20, t("You have ₽{money}", { money: session.game.money }), { fontFamily: FONT, fontSize: px(14), color: "#f5d76e" }));
+    add(new Button(this, 794, 12, 150, 26, t("➜ Leave"), () => this.scene.start("Overworld", {})));
+    TABS.forEach((tab, i) => add(new Button(this, 16 + i * 128, 50, 120, 26, t(tab), () => {
+      this.tab = tab;
       this.scroll = 0;
       this.render();
-    }).setHighlighted(this.tab === t)));
+    }).setHighlighted(this.tab === tab)));
     const wares = this.wares().filter((w) => w.category === this.tab);
     const rows = Math.ceil(wares.length / 2);
     const maxScroll = Math.max(0, rows * 62 - (LIST_BOTTOM - LIST_TOP));
@@ -84,20 +85,20 @@ export class ShopScene extends Phaser.Scene {
       list.add(this.add.rectangle(x, y, 460, 56, 0x1c2130).setOrigin(0).setStrokeStyle(1, 0x3a4560));
       const info = new RichText(this, x + 10, y + 6, 330, 13);
       list.add(info);
-      info.setMarkup(`${tag("title", w.name)}  ${tag("num", `₽${w.price}`)}  ${tag("dim", `own ${w.owned}`)}\n${tag("dim", w.description)}`);
+      info.setMarkup(`${tag("title", w.name)}  ${tag("num", `₽${w.price}`)}  ${tag("dim", t("own {n}", { n: w.owned }))}\n${tag("dim", w.description)}`);
       const trade = (verb: string, f: () => typeof session.game) => {
         try {
           session.update(f());
           sfx(this, "buy");
-          this.message = tag("good", `${verb} ${w.name}.`);
+          this.message = tag("good", verb === "Bought" ? t("Bought {item}.", { item: w.name }) : t("Sold {item}.", { item: w.name }));
         } catch (e) {
-          this.message = tag("bad", e instanceof Error ? e.message : "Cannot do that.");
+          this.message = tag("bad", e instanceof Error ? e.message : t("Cannot do that."));
         }
         this.render();
       };
-      list.add(new Button(this, x + 350, y + 4, 100, 24, "Buy", () => trade("Bought", () => buy(CONTENT, PROGRESSION, session.game, w.id)))
+      list.add(new Button(this, x + 350, y + 4, 100, 24, t("Buy"), () => trade("Bought", () => buy(CONTENT, PROGRESSION, session.game, w.id)))
         .setEnabled(session.game.money >= w.price));
-      list.add(new Button(this, x + 350, y + 30, 100, 22, `Sell ₽${sellPrice(CONTENT, PROGRESSION, w.id)}`, () =>
+      list.add(new Button(this, x + 350, y + 30, 100, 22, t("Sell ₽{price}", { price: sellPrice(CONTENT, PROGRESSION, w.id) }), () =>
         trade("Sold", () => sell(CONTENT, PROGRESSION, session.game, w.id))).setEnabled(w.owned > 0));
     });
     if (maxScroll > 0) {
@@ -105,6 +106,6 @@ export class ShopScene extends Phaser.Scene {
       add(new Button(this, 900, LIST_BOTTOM - 28, 44, 28, "▼", () => this.scrollBy(124)).setEnabled(this.scroll < maxScroll));
     }
     if (this.message) add(new RichText(this, 16, 512, 900, 13)).setMarkup(this.message);
-    add(this.add.text(16, 490, "Items sell for half their price. Held items are given to Pokémon in the Party screen; potions are used there too.", { fontFamily: FONT, fontSize: px(11), color: COLORS.dim }));
+    add(this.add.text(16, 490, t("Items sell for half their price. Held items are given to Pokémon in the Party screen; potions are used there too."), { fontFamily: FONT, fontSize: px(11), color: COLORS.dim }));
   }
 }

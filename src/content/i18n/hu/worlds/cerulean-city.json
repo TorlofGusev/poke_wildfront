@@ -1,0 +1,67 @@
+{
+ "exits": [
+  {},
+  {},
+  {},
+  {
+   "lockedText": "Egy őr állja el a barlang bejáratát. „Csak a Bajnok léphet be.”"
+  },
+  {}
+ ],
+ "npcs": [
+  {
+   "id": "cerulean-swimmer-1",
+   "text": [
+    "Misty edzőterme nem pancsolómedence!"
+   ],
+   "afterText": [
+    "Elmosott a víz..."
+   ]
+  },
+  {
+   "id": "cerulean-swimmer-2",
+   "text": [
+    "Előbb rajtam kell túljutnod!"
+   ],
+   "afterText": [
+    "Misty sokkal keményebb nálam."
+   ]
+  },
+  {
+   "id": "misty",
+   "text": [
+    "Misty vagyok, a vadóc sellő!",
+    "Az elvem: teljes támadás víz típusú Pokémonokkal!"
+   ],
+   "afterText": [
+    "A Cascade Badge-dzsel csatán kívül is használhatod a Cutot."
+   ]
+  },
+  {
+   "id": "rocket-cerulean",
+   "text": [
+    "Hé! Maradj ki ebből a házból! Nem lopok semmit!"
+   ],
+   "afterText": [
+    "Jól van, vidd vissza, amit elcsórtam!"
+   ]
+  },
+  {
+   "id": "cerulean-guard",
+   "text": [
+    "A nyugati barlang tele van félelmetes Pokémonokkal.",
+    "Csak a Pokémon League Bajnoka léphet be."
+   ]
+  },
+  {
+   "id": "cerulean-bulbasaur",
+   "text": [
+    "Ez a Bulbasaur folyton elkóborol.",
+    "Vigyáznál rá?"
+   ],
+   "afterText": [
+    "Bulbasaur boldognak tűnik veled."
+   ]
+  }
+ ]
+}

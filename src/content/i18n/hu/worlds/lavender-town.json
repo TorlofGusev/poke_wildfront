@@ -1,0 +1,37 @@
+{
+ "npcs": [
+  {
+   "id": "lavender-mourner",
+   "text": [
+    "A Pokémon Tower a várostól keletre van.",
+    "Szellemek kísértenek a felső emeletein..."
+   ]
+  },
+  {
+   "id": "lavender-girl",
+   "text": [
+    "A Team Rocket felvitte Mr. Fujit a toronyba!",
+    "Kérlek, segíts neki."
+   ]
+  },
+  {
+   "id": "lavender-name-rater",
+   "text": [
+    "Szép nevük van a Pokémonjaidnak. Becsüld meg őket."
+   ]
+  },
+  {
+   "id": "mr-fuji",
+   "lockedText": [
+    "A ház üres. Egy cetlin ez áll: „Elmentem a Pokémon Towerbe.”"
+   ],
+   "text": [
+    "Köszönöm, hogy megmentettél a Team Rockettől.",
+    "Kérlek, fogadd el ezeket. Jó szolgálatot tesznek a Pokémonjaidnak."
+   ],
+   "afterText": [
+    "Gondoskodj a Pokémonjaidról, és ők is gondoskodnak rólad."
+   ]
+  }
+ ]
+}

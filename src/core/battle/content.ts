@@ -27,7 +27,8 @@ export interface SpeciesDef {
   readonly learnset?: readonly { readonly level: number; readonly move: string }[];
   /** The two roles this species can specialise into. */
   readonly roles?: readonly string[];
-  readonly evolution?: { readonly level: number; readonly into: string };
+  /** `choices`: the player picks the form when the level is reached (Eevee); `into` is the default (wild Pokémon). */
+  readonly evolution?: { readonly level: number; readonly into: string; readonly choices?: readonly string[] };
   readonly ability?: string;
 }
 
@@ -89,6 +90,8 @@ export interface StatusDef {
   readonly noMove?: boolean;
   /** Cannot use moves or balls while active (Freeze). */
   readonly noAction?: boolean;
+  /** Ends as soon as the unit takes damage (Sleep). */
+  readonly wakesOnDamage?: boolean;
   /** Multiplies damage dealt by the affected unit (Burn). */
   readonly damageDealt?: number;
   /** Multiplies damage taken by the affected unit (Curse). */

@@ -1,0 +1,76 @@
+{
+ "npcs": [
+  {
+   "id": "rival-tower",
+   "text": [
+    "Mit keresel itt? A Pokémonjaid nem haltak meg!",
+    "Megmutatom, mennyire megerősödtek az enyéim!"
+   ],
+   "afterText": [
+    "Hmph. Az emeleti szellem úgyis mindenkit elijeszt. Majd találkozunk, csiga!"
+   ]
+  },
+  {
+   "id": "channeler-tower-1",
+   "text": [
+    "Távozz... gonosz szellem!"
+   ],
+   "afterText": [
+    "Megszálltak... milyen kínos."
+   ]
+  },
+  {
+   "id": "channeler-tower-2",
+   "text": [
+    "Kekeke... csatlakozz hozzánk..."
+   ],
+   "afterText": [
+    "Hm? Hol vagyok?"
+   ]
+  },
+  {
+   "id": "marowak-ghost",
+   "lockedText": [
+    "Egy szellem állja el a lépcsőt! Nem tudod kivenni, mi az...",
+    "Takarodj... takarodj..."
+   ],
+   "text": [
+    "A Silph Scope felfedi a szellemet: Marowak nyugtalan lelke az!"
+   ],
+   "afterText": [
+    "Marowak lelke végre megnyugodott."
+   ]
+  },
+  {
+   "id": "rocket-tower-1",
+   "text": [
+    "Az öreg nem akar beszélni? Majd mi szóra bírjuk!"
+   ],
+   "afterText": [
+    "Jól van, elmegyünk..."
+   ]
+  },
+  {
+   "id": "rocket-tower-2",
+   "text": [
+    "Mr. Fuji a vendégünk. Tűnés!"
+   ],
+   "afterText": [
+    "A Team Rocket visszavonul!"
+   ]
+  },
+  {
+   "id": "mr-fuji-tower",
+   "lockedText": [
+    "...Valami szörnyűség lappang a lenti lépcsőn."
+   ],
+   "text": [
+    "Köszönöm, hogy elkergetted őket, és hogy megnyugtattad szegény Marowakot.",
+    "Fogadd el a Poké Flute-omat. A dallama még a legmélyebben alvót is felébreszti."
+   ],
+   "afterText": [
+    "Visszatérek a házamba Lavender Townba."
+   ]
+  }
+ ]
+}

@@ -1,0 +1,19 @@
+{
+ "npcs": [
+  {
+   "id": "pp-notice",
+   "text": [
+    "POWER PLANT - zárva. Az erőmű a víz túloldalán van: csak Surffel érhető el."
+   ]
+  },
+  {
+   "id": "zapdos",
+   "text": [
+    "Gyaoo! A levegő szikrázik az elektromosságtól!"
+   ],
+   "afterText": [
+    "A generátorok halkan zümmögnek."
+   ]
+  }
+ ]
+}

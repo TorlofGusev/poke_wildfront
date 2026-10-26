@@ -1,0 +1,28 @@
+{
+ "talents": {
+  "water-skill-bubble": {
+   "description": "Új képesség: buborékzápor, amely egy területet eltalál és lelassít."
+  },
+  "water-torrent": {
+   "description": "+25% vízsebzés, amíg HP-ja a fele alatt van."
+  },
+  "water-skill-whirlpool": {
+   "description": "Új képesség: örvény, amely 1 hexszel közelebb rántja és lelassítja az ellenfelet."
+  },
+  "water-skill-hydro-cannon": {
+   "description": "Új képesség: zúzó vízsugár távolra (Erő 95), amely 2 hexszel hátralök."
+  },
+  "water-tidal-force": {
+   "description": "Csúcsképesség. +25% sebzés lelassított ellenfelekre; víz támadásai 15%-kal többet sebeznek."
+  },
+  "water-swift-swim": {
+   "description": "Szabad támadás nélkül lép el a lekötött ellenfelektől."
+  },
+  "water-undertow": {
+   "description": "Lökései és húzásai 1 hexszel messzebbre mozgatják az ellenfelet."
+  },
+  "water-skill-muddy-water": {
+   "description": "Új képesség: sáros hullám távolra (Erő 75), 2 körre lelassít egy 1 hexes területet."
+  }
+ }
+}

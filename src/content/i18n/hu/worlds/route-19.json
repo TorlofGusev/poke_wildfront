@@ -1,0 +1,18 @@
+{
+ "npcs": [
+  {
+   "id": "swimmer-route19",
+   "text": [
+    "Ma remek a sodrás!"
+   ],
+   "afterText": [
+    "Majd kiúszom magamból."
+   ]
+  }
+ ],
+ "obstacles": [
+  {
+   "text": "Hullámok csapnak át ezen a homokpadon. Surf kell, hogy átjuss."
+  }
+ ]
+}

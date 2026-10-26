@@ -7,6 +7,7 @@ import { describeItem } from "../ui/describeEffects";
 import { tag } from "../ui/markup";
 import { RichText } from "../ui/RichText";
 import { FONT } from "../ui/theme";
+import { t } from "../i18n";
 
 /** The bag: everything carried, grouped by use, with exact effects. Opened from the map or camp. */
 export class InventoryScene extends Phaser.Scene {
@@ -23,16 +24,16 @@ export class InventoryScene extends Phaser.Scene {
   create(): void {
     playMusic(this, "overworld");
     const { inventory, money, roster } = session.game;
-    this.add.text(16, 14, "Bag", { fontFamily: FONT, fontSize: "20px", color: "#f5d76e" });
+    this.add.text(16, 14, t("Bag"), { fontFamily: FONT, fontSize: "20px", color: "#f5d76e" });
     new RichText(this, 90, 19, 400, 14).setMarkup(`${tag("num", `₽${money}`)}`);
-    new Button(this, 794, 12, 150, 26, "← Back", () => this.scene.start(this.returnTo, this.returnTo === "Party" ? { rested: false, choosingMeal: false } : {}));
+    new Button(this, 794, 12, 150, 26, t("← Back"), () => this.scene.start(this.returnTo, this.returnTo === "Party" ? { rested: false, choosingMeal: false } : {}));
 
     const heldBy = (id: string) => roster.party.concat(roster.storage).filter((m) => m.heldItem === id).map((m) => CONTENT.species[m.speciesId]!.name);
     const groups: [string, string[]][] = [
-      ["Poké Balls", Object.keys(CONTENT.balls)],
+      [t("Poké Balls"), Object.keys(CONTENT.balls)],
       [CONTENT.terms.food, Object.values(PROGRESSION.items).filter((i) => i.kind === "food").map((i) => i.id)],
-      ["Healing and Candy", Object.values(PROGRESSION.items).filter((i) => i.kind === "potion" || i.kind === "candy" || i.kind === "remedy").map((i) => i.id)],
-      ["Held items", Object.values(PROGRESSION.items).filter((i) => i.kind === "held").map((i) => i.id)],
+      [t("Healing and Candy"), Object.values(PROGRESSION.items).filter((i) => i.kind === "potion" || i.kind === "candy" || i.kind === "remedy").map((i) => i.id)],
+      [t("Held items"), Object.values(PROGRESSION.items).filter((i) => i.kind === "held").map((i) => i.id)],
     ];
     let y = 52;
     const col = { x: 16 };
@@ -44,11 +45,11 @@ export class InventoryScene extends Phaser.Scene {
           const holders = ball ? [] : heldBy(id);
           if (count <= 0 && holders.length === 0) return null;
           const name = ball?.name ?? PROGRESSION.items[id]!.name;
-          const effect = ball ? `catch chance ×${ball.multiplier}` : describeItem(CONTENT, PROGRESSION.items[id]!).join(" · ");
-          return `${tag("num", `${count}×`)} ${tag("title", name)} ${tag("dim", "—")} ${effect}${holders.length ? tag("dim", ` (held by ${holders.join(", ")})`) : ""}`;
+          const effect = ball ? t("catch chance ×{x}", { x: ball.multiplier }) : describeItem(CONTENT, PROGRESSION.items[id]!).join(" · ");
+          return `${tag("num", `${count}×`)} ${tag("title", name)} ${tag("dim", "—")} ${effect}${holders.length ? tag("dim", t(" (held by {names})", { names: holders.join(", ") })) : ""}`;
         })
         .filter((r): r is string => r !== null);
-      const block = [tag("special", title), ...(rows.length ? rows : [tag("dim", "none")])];
+      const block = [tag("special", title), ...(rows.length ? rows : [tag("dim", t("none"))])];
       const h = new RichText(this, col.x, y, 450, 12).setMarkup(block.join("\n"));
       y += h + 14;
       // Two columns: move to the right when the left fills up.

@@ -1,0 +1,70 @@
+{
+ "npcs": [
+  {
+   "id": "lass-celadon-gym",
+   "text": [
+    "Erika kertje nem a durva alakok helye!"
+   ],
+   "afterText": [
+    "Elhervadtak a virágaim..."
+   ]
+  },
+  {
+   "id": "beauty-celadon-gym",
+   "text": [
+    "A fű típusú Pokémonok elegánsak, nem gondolod?"
+   ],
+   "afterText": [
+    "Milyen faragatlan dolog volt nyerni."
+   ]
+  },
+  {
+   "id": "erika",
+   "text": [
+    "Ó, szia. Elszunyókáltam a virágok között.",
+    "Erika vagyok. Nem fogok veszíteni."
+   ],
+   "afterText": [
+    "Erős vagy. Viseld büszkén a Rainbow Badge-et."
+   ]
+  },
+  {
+   "id": "tea-lady",
+   "text": [
+    "Egy hosszú séta után semmi sem jobb egy csésze teánál.",
+    "Tessék, vigyél magaddal."
+   ],
+   "afterText": [
+    "Oszd meg a teát valakivel, aki szomjas."
+   ]
+  },
+  {
+   "id": "celadon-eevee",
+   "text": [
+    "Ezt az Eevee-t a tetőn találtam. Szeretne utazni.",
+    "Vigyáznál rá?"
+   ],
+   "afterText": [
+    "Eevee boldognak tűnik veled."
+   ]
+  },
+  {
+   "id": "rocket-gamecorner",
+   "text": [
+    "Hé! Ne nézd azt a plakátot!"
+   ],
+   "afterText": [
+    "Jól van, menj le. A Főnök úgyis szétlapít."
+   ]
+  },
+  {
+   "id": "game-corner-prize",
+   "text": [
+    "Game Corner nyeremények! Válassz egyet."
+   ],
+   "afterText": [
+    "Gyere vissza máskor is!"
+   ]
+  }
+ ]
+}

@@ -2,6 +2,7 @@ import type { ActiveStatus } from "./state";
 import { ASCII_LEGEND, Grid } from "../grid/Grid";
 import type { TerrainDef } from "../grid/terrain";
 import { hasLineOfSight } from "../grid/lineOfSight";
+import { hexDirToward, hexOnAxis, hexStep } from "../grid/hex";
 import { reachableTiles, type Occupancy, type Reachable } from "../grid/movement";
 import { gridDistance, key, samePoint, type Point } from "../grid/types";
 import { captureChance, captureUnavailableReason } from "../capture/capture";
@@ -100,7 +101,8 @@ export function movementPoints(content: BattleContent, unit: BattleUnit, state?:
   const r = content.rules;
   const base = Math.min(r.moveMax, r.moveBase + Math.floor(unit.stats.speed / r.speedPerMove));
   const penalty = unit.statuses.reduce((s, st) => s + (content.statuses[st.id]?.movePenalty ?? 0), 0);
-  return Math.max(0, base - penalty + unit.mods.moveBonus + (unit.statuses.length ? unit.mods.statusedMove : 0));
+  // Bonuses (abilities, items, masteries) help slow Pokémon but never lift anyone past the cap.
+  return Math.max(0, Math.min(r.moveMax, base - penalty + unit.mods.moveBonus + (unit.statuses.length ? unit.mods.statusedMove : 0)));
 }
 
 /** Combined battlefield traits of a Pokémon's types. */
@@ -170,17 +172,18 @@ export function moveArea(state: BattleState, move: MoveDef, user: BattleUnit, ta
       const r = move.shape.radius;
       const tiles: Point[] = [];
       for (let dy = -r; dy <= r; dy++)
-        for (let dx = -r; dx <= r; dx++) {
+        for (let dx = -r - 1; dx <= r + 1; dx++) {
           const p = { x: target.x + dx, y: target.y + dy };
           if (gridDistance(target, p) <= r && grid.inBounds(p)) tiles.push(p);
         }
       return tiles;
     }
     case "line": {
-      const dir = { x: Math.sign(target.x - user.pos.x), y: Math.sign(target.y - user.pos.y) };
+      const dir = hexDirToward(user.pos, target);
       const tiles: Point[] = [];
+      let p = user.pos;
       for (let i = 1; i <= move.shape.length; i++) {
-        const p = { x: user.pos.x + dir.x * i, y: user.pos.y + dir.y * i };
+        p = hexStep(p, dir);
         if (!grid.inBounds(p) || grid.terrainAt(p).blocksSight) break;
         tiles.push(p);
       }
@@ -198,9 +201,18 @@ export function affectedUnits(state: BattleState, move: MoveDef, user: BattleUni
     .sort((a, b) => a.pos.y - b.pos.y || a.pos.x - b.pos.x);
 }
 
-/** A move's range for this unit: ranged moves (2+ tiles) reach further with a range bonus. */
-export const moveRange = (unit: { readonly mods: UnitModifiers }, move: MoveDef): { min: number; max: number } =>
-  ({ min: move.range.min, max: move.range.max >= 2 ? move.range.max + unit.mods.rangeBonus : move.range.max });
+/** The attacker's own damage bonuses add up to at most this (+100%). */
+export const MAX_DAMAGE_BONUS = 1;
+
+/** Only Bond moves reach further than this. */
+export const MAX_RANGE = 3;
+
+/** A move's range for this unit: ranged moves (2+ hexes) reach further with a range bonus, up to MAX_RANGE unless a Bond move. */
+export const moveRange = (unit: { readonly mods: UnitModifiers }, move: MoveDef): { min: number; max: number } => {
+  if (move.range.max < 2) return { min: move.range.min, max: move.range.max };
+  const max = move.range.max + unit.mods.rangeBonus;
+  return { min: move.range.min, max: move.kind === "bond" ? max : Math.min(MAX_RANGE, Math.max(move.range.max, max)) };
+};
 
 /** Target tiles the unit may legally aim the move at right now. */
 export function validTargets(
@@ -215,7 +227,7 @@ export function validTargets(
   const grid = gridOf(state);
   const range = moveRange(user, move);
   // Pokémon standing in the way block shots that need line of sight (a Tank can screen its allies).
-  const bodyBlocks = (p: Point) => state.units.some((u) => u.hp > 0 && !u.captured && samePoint(u.pos, p));
+  const bodyBlocks = (p: Point) => !user.mods.shootOver && state.units.some((u) => u.hp > 0 && !u.captured && samePoint(u.pos, p));
   const out: Point[] = [];
   for (let y = 0; y < grid.height; y++)
     for (let x = 0; x < grid.width; x++) {
@@ -224,8 +236,8 @@ export function validTargets(
       if (dist < range.min || dist > range.max) continue;
       if (grid.terrainAt(p).blocksSight) continue;
       if (move.requiresLineOfSight && !hasLineOfSight(grid, user.pos, p, bodyBlocks)) continue;
-      // Lines go in one of the 8 directions: orthogonal or exactly diagonal.
-      if (move.shape.kind === "line" && p.x !== user.pos.x && p.y !== user.pos.y && Math.abs(p.x - user.pos.x) !== Math.abs(p.y - user.pos.y)) continue;
+      // Lines go along one of the six hex directions.
+      if (move.shape.kind === "line" && !hexOnAxis(user.pos, p)) continue;
       // Engaged: attacks may only aim at the partner.
       if (user.engagedWith && move.affects === "enemies" && !samePoint(p, partnerOf(state, user)!.pos)) continue;
       if (move.shape.kind === "single") {
@@ -623,31 +635,36 @@ function resolveHits(
       const eff = mech.neverResisted ? Math.max(1, typeEff) : typeEff;
       const m = user.mods;
       const dist = gridDistance(user.pos, t.pos);
-      const situational =
-        (t.statuses.length > 0 ? m.vsStatusDamage : 1) *
-        (t.hp === t.maxHp ? m.fullHpTargetDamage : 1) *
-        (dist >= 3 ? m.farDamage : dist === 1 ? m.closeDamage : 1) *
-        (user.hp * 2 < user.maxHp ? m.lowHpDamage * (m.lowHpTypeDamage[move.type] ?? 1) : 1);
       const helpers = adjacentAllies(state, user, t);
       const positional =
         (mech.flankBonus && helpers > 0 ? mech.flankBonus + m.flankBonus : 1) *
         (1 + (mech.swarmBonus ? (mech.swarmBonus + m.swarmBonus) * helpers : 0));
       const statusMult = statusFactor(content, user, "damageDealt") * statusFactor(content, t, "damageTaken");
       const setup = isFoe ? comboSetup(state, user, t) : null;
-      const comboMult = (setup === "engaged" ? m.vsEngagedDamage : 1) * (isFoe && hasAllySetupStatus(state, user, t) ? m.vsSetupDamage : 1);
       const pinner = isFoe ? partnerOf(state, t) : null;
       const adjacentFoes = livingUnits(state).filter((o) => o.side !== user.side && gridDistance(o.pos, user.pos) === 1).length;
       const streak = isFoe && user.furyTarget === t.id ? Math.min(3, user.furyStreak) : 0;
-      const conditional =
-        (pinner && pinner.id !== user.id && pinner.side === user.side ? pinner.mods.pinDamage : 1) *
-        (state.mapRows[t.pos.y]?.[t.pos.x] === "m" ? m.vsMudDamage : 1) *
-        (adjacentFoes >= 2 ? m.surroundedDamage : 1) *
-        (user.statuses.length > 0 ? m.statusedDamage : 1) *
-        t.statuses.reduce((x, st) => x * (m.vsStatusIdDamage[st.id] ?? 1), 1) *
-        (1 + m.furyCutter * streak) *
-        (t.hp === t.maxHp ? t.mods.fullHpDamageTaken : 1) *
-        hitMult;
-      const mult = conditional * comboMult * eff * m.damageDealt * (m.typeDamage[move.type] ?? 1) * situational * positional * statusMult * t.mods.damageTaken;
+      // The attacker's own damage bonuses (role, masteries, items) add up instead of multiplying,
+      // capped at +100%, so long chains of conditions cannot snowball; penalties still multiply.
+      const ownFactors = [
+        m.damageDealt, m.typeDamage[move.type] ?? 1,
+        t.statuses.length > 0 ? m.vsStatusDamage : 1,
+        t.hp === t.maxHp ? m.fullHpTargetDamage : 1,
+        dist >= 3 ? m.farDamage : dist === 1 ? m.closeDamage : 1,
+        user.hp * 2 < user.maxHp ? m.lowHpDamage * (m.lowHpTypeDamage[move.type] ?? 1) : 1,
+        setup === "engaged" ? m.vsEngagedDamage : 1,
+        isFoe && hasAllySetupStatus(state, user, t) ? m.vsSetupDamage : 1,
+        pinner && pinner.id !== user.id && pinner.side === user.side ? pinner.mods.pinDamage : 1,
+        state.mapRows[t.pos.y]?.[t.pos.x] === "m" ? m.vsMudDamage : 1,
+        adjacentFoes >= 2 ? m.surroundedDamage : 1,
+        user.statuses.length > 0 ? m.statusedDamage : 1,
+        ...t.statuses.map((st) => m.vsStatusIdDamage[st.id] ?? 1),
+        1 + m.furyCutter * streak,
+      ];
+      const bonus = ownFactors.reduce((sum, f) => sum + (f > 1 ? f - 1 : 0), 0);
+      const penalty = ownFactors.reduce((prod, f) => prod * (f < 1 ? f : 1), 1);
+      const own = penalty * (1 + Math.min(MAX_DAMAGE_BONUS, bonus));
+      const mult = own * eff * positional * statusMult * hitMult * t.mods.damageTaken * (t.hp === t.maxHp ? t.mods.fullHpDamageTaken : 1);
       const off = content.rules.statOffset;
       const special = isSpecialMove(content, move);
       const defense = mech.ignoresDefense ? 0 : special ? t.stats.spDefense : t.stats.defense;
@@ -766,15 +783,14 @@ function displace(
   const dy = target.pos.y - user.pos.y;
   if ((dx === 0 && dy === 0) || distance <= 0) return;
   if (target.traits.immovable) return;
-  // Straight away from the user: diagonal when the target stands exactly diagonal, else along the dominant axis.
-  const away = Math.abs(dx) === Math.abs(dy) ? { x: Math.sign(dx), y: Math.sign(dy) }
-    : Math.abs(dx) > Math.abs(dy) ? { x: Math.sign(dx), y: 0 } : { x: 0, y: Math.sign(dy) };
-  const dir = kind === "push" ? away : { x: -away.x, y: -away.y };
+  // Along the hex direction that points most straight away from the user (or back towards it).
+  const away = hexDirToward(user.pos, target.pos);
+  const dir = kind === "push" ? away : away + 3;
   const grid = gridOf(state);
   const from = { ...target.pos };
   let blocked = false;
   for (let i = 0; i < distance; i++) {
-    const next = { x: target.pos.x + dir.x, y: target.pos.y + dir.y };
+    const next = hexStep(target.pos, dir);
     if (!grid.isPassable(next) || unitAt(state, next)) {
       blocked = true;
       break;
@@ -806,6 +822,11 @@ function dealDamage(
   }
   unit.hp -= dealt;
   events.push({ type: "damaged", unitId: unit.id, amount: dealt, hp: unit.hp, source, ...(effectiveness !== undefined && { effectiveness }) });
+  // A hit wakes a sleeping Pokémon (poison ticks too).
+  if (dealt > 0 && unit.hp > 0 && unit.statuses.some((st) => st.id === "sleep")) {
+    unit.statuses = unit.statuses.filter((st) => st.id !== "sleep");
+    events.push({ type: "statusExpired", unitId: unit.id, status: "sleep" });
+  }
   if (unit.hp === 0) {
     events.push({ type: "fainted", unitId: unit.id });
     disengage(state, unit, events);
@@ -882,4 +903,25 @@ function checkOutcome(state: BattleState, events: BattleEvent[]): void {
   else return;
   state.turn = null;
   events.push({ type: "battleEnded", outcome: state.outcome });
+}
+
+/**
+ * Where a unit could hurt you on its next turn: the tiles it can move to with full movement,
+ * and the further tiles its damaging moves reach from any of them (line of sight ignored, so it errs on the safe side).
+ */
+export function threatZone(state: BattleState, content: BattleContent, unitId: string): { reach: readonly Point[]; strike: Point[] } {
+  const unit = unitById(state, unitId);
+  const grid = unit.traits.flies ? Grid.fromAscii(state.mapRows, FLYING_LEGEND) : gridOf(state);
+  const reach = reachableTiles(grid, unit.pos, movementPoints(content, unit, state), occupancyFor(state, unit), true).destinations;
+  const stands = [unit.pos, ...reach];
+  const ranges = unit.moves.map((m) => content.moves[m]).filter((m): m is MoveDef => !!m && m.power > 0).map((m) => moveRange(unit, m));
+  const covered = new Set(stands.map(key));
+  const strike: Point[] = [];
+  for (let y = 0; y < grid.height; y++)
+    for (let x = 0; x < grid.width; x++) {
+      const p = { x, y };
+      if (covered.has(key(p))) continue;
+      if (stands.some((s) => ranges.some((r) => { const d = gridDistance(s, p); return d >= r.min && d <= r.max; }))) strike.push(p);
+    }
+  return { reach, strike };
 }

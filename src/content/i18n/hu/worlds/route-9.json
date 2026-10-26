@@ -1,0 +1,42 @@
+{
+ "exits": [
+  {},
+  {
+   "lockedText": "Odabent koromsötét van. Flash kell, hogy bemehess."
+  }
+ ],
+ "obstacles": [
+  {
+   "text": "Egy vékony fa állja el az utat. Ki lehetne vágni."
+  }
+ ],
+ "npcs": [
+  {
+   "id": "r9-hiker",
+   "text": [
+    "Az előttünk lévő alagút sötét és sziklás!"
+   ],
+   "afterText": [
+    "Szerezz Flasht, mielőtt bemész."
+   ]
+  },
+  {
+   "id": "r9-picnicker",
+   "text": [
+    "Milyen szép nap egy csatához!"
+   ],
+   "afterText": [
+    "Hát, ez van."
+   ]
+  },
+  {
+   "id": "r9-bugcatcher",
+   "text": [
+    "A bogarak a legjobbak!"
+   ],
+   "afterText": [
+    "Szétlapítva..."
+   ]
+  }
+ ]
+}

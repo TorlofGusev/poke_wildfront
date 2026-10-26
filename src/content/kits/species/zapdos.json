@@ -1,0 +1,299 @@
+{
+ "species": [
+  "zapdos"
+ ],
+ "moves": {
+  "zapdos-charge-beam": {
+   "id": "zapdos-charge-beam",
+   "name": "Charge Beam",
+   "type": "electric",
+   "kind": "special",
+   "cooldown": 2,
+   "power": 45,
+   "range": {
+    "min": 1,
+    "max": 3
+   },
+   "requiresLineOfSight": true,
+   "shape": {
+    "kind": "single"
+   },
+   "affects": "enemies"
+  },
+  "zapdos-thunderbolt": {
+   "id": "zapdos-thunderbolt",
+   "name": "Thunderbolt",
+   "type": "electric",
+   "kind": "special",
+   "cooldown": 3,
+   "power": 60,
+   "range": {
+    "min": 1,
+    "max": 3
+   },
+   "requiresLineOfSight": true,
+   "shape": {
+    "kind": "single"
+   },
+   "affects": "enemies",
+   "effects": [
+    {
+     "kind": "status",
+     "status": "paralysis",
+     "duration": 1
+    }
+   ]
+  },
+  "zapdos-charge": {
+   "id": "zapdos-charge",
+   "name": "Charge",
+   "type": "electric",
+   "kind": "special",
+   "cooldown": 4,
+   "power": 0,
+   "range": {
+    "min": 0,
+    "max": 0
+   },
+   "requiresLineOfSight": false,
+   "shape": {
+    "kind": "single"
+   },
+   "affects": "allies",
+   "effects": [
+    {
+     "kind": "status",
+     "status": "focused",
+     "duration": 2
+    }
+   ]
+  },
+  "zapdos-thunder": {
+   "id": "zapdos-thunder",
+   "name": "Thunder",
+   "type": "electric",
+   "kind": "special",
+   "cooldown": 5,
+   "power": 85,
+   "range": {
+    "min": 2,
+    "max": 3
+   },
+   "requiresLineOfSight": true,
+   "shape": {
+    "kind": "burst",
+    "radius": 1
+   },
+   "affects": "enemies",
+   "effects": [
+    {
+     "kind": "status",
+     "status": "paralysis",
+     "duration": 1
+    }
+   ]
+  },
+  "zapdos-volt-switch": {
+   "id": "zapdos-volt-switch",
+   "name": "Volt Switch",
+   "type": "electric",
+   "kind": "special",
+   "cooldown": 4,
+   "power": 70,
+   "range": {
+    "min": 1,
+    "max": 3
+   },
+   "requiresLineOfSight": true,
+   "shape": {
+    "kind": "single"
+   },
+   "affects": "enemies",
+   "effects": [
+    {
+     "kind": "disengage"
+    }
+   ]
+  }
+ },
+ "talents": {
+  "zapdos-skill-charge-beam": {
+   "id": "zapdos-skill-charge-beam",
+   "name": "Charge Beam",
+   "description": "New skill: a quick electric beam at a foe up to 3 hexes away (Power 45).",
+   "grantsMove": "zapdos-charge-beam"
+  },
+  "zapdos-static": {
+   "id": "zapdos-static",
+   "name": "Static",
+   "description": "Its hits on adjacent foes Paralyze them for 1 turn.",
+   "mods": {
+    "contactStatus": {
+     "status": "paralysis",
+     "duration": 1
+    }
+   }
+  },
+  "zapdos-first-strike": {
+   "id": "zapdos-first-strike",
+   "name": "First Strike",
+   "description": "+20% damage against foes at full HP.",
+   "mods": {
+    "fullHpTargetDamage": 1.2
+   }
+  },
+  "zapdos-skill-thunderbolt": {
+   "id": "zapdos-skill-thunderbolt",
+   "name": "Thunderbolt",
+   "description": "New skill: a bolt at range (Power 60) that Paralyzes for 1 turn.",
+   "grantsMove": "zapdos-thunderbolt"
+  },
+  "zapdos-skill-charge": {
+   "id": "zapdos-skill-charge",
+   "name": "Charge",
+   "description": "New skill: stores power and becomes Focused for 2 turns.",
+   "grantsMove": "zapdos-charge"
+  },
+  "zapdos-storm-rider": {
+   "id": "zapdos-storm-rider",
+   "name": "Storm Rider",
+   "description": "Steps away from engaged foes without drawing free strikes.",
+   "mods": {
+    "disengage": true
+   }
+  },
+  "zapdos-quick-charge": {
+   "id": "zapdos-quick-charge",
+   "name": "Quick Charge",
+   "description": "Its non-damaging skills recharge 1 turn faster (minimum 1).",
+   "mods": {
+    "statusCooldownReduction": 1
+   }
+  },
+  "zapdos-skill-zap-cannon": {
+   "id": "zapdos-skill-zap-cannon",
+   "name": "Zap Cannon",
+   "description": "New skill: a huge electric orb at range (Power 90) that Paralyzes.",
+   "grantsMove": "zap-cannon"
+  },
+  "zapdos-skill-hurricane": {
+   "id": "zapdos-skill-hurricane",
+   "name": "Hurricane",
+   "description": "New skill: a storm hits a foe up to 3 hexes away and pushes it 2 hexes (Power 90).",
+   "grantsMove": "hurricane"
+  },
+  "zapdos-insulated": {
+   "id": "zapdos-insulated",
+   "name": "Insulated",
+   "description": "Cannot be Paralyzed or Slowed; +1 Sp. Def.",
+   "stats": {
+    "spDefense": 1
+   },
+   "mods": {
+    "statusImmune": [
+     "paralysis",
+     "slow"
+    ]
+   }
+  },
+  "zapdos-recharge": {
+   "id": "zapdos-recharge",
+   "name": "Recharge",
+   "description": "Heals 4% of its max HP each turn.",
+   "mods": {
+    "healPerTurn": 0.04
+   }
+  },
+  "zapdos-skill-thunder": {
+   "id": "zapdos-skill-thunder",
+   "name": "Thunder",
+   "description": "New skill: lightning strikes an area 2-3 hexes away (Power 85) and Paralyzes.",
+   "grantsMove": "zapdos-thunder"
+  },
+  "zapdos-skill-volt-switch": {
+   "id": "zapdos-skill-volt-switch",
+   "name": "Volt Switch",
+   "description": "New skill: a bolt at range (Power 70) that ends its engagement.",
+   "grantsMove": "zapdos-volt-switch"
+  },
+  "zapdos-thunder-lord": {
+   "id": "zapdos-thunder-lord",
+   "name": "Thunder Lord",
+   "description": "Electric moves deal 20% more damage.",
+   "mods": {
+    "typeDamage": {
+     "electric": 1.2
+    }
+   }
+  },
+  "zapdos-storm-herald": {
+   "id": "zapdos-storm-herald",
+   "name": "Storm Herald",
+   "description": "+1 extra Bond when it knocks out a foe; +2 Speed.",
+   "stats": {
+    "speed": 2
+   },
+   "mods": {
+    "bondOnKo": 1
+   }
+  },
+  "zapdos-thunderstorm": {
+   "id": "zapdos-thunderstorm",
+   "name": "Thunderstorm",
+   "description": "Capstone. +25% vs Paralyzed foes; a knockout resets its skill cooldowns.",
+   "mods": {
+    "vsStatusIdDamage": {
+     "paralysis": 1.25
+    },
+    "koResetCooldowns": true
+   }
+  },
+  "zapdos-storm-crown": {
+   "id": "zapdos-storm-crown",
+   "name": "Storm Crown",
+   "description": "Capstone. Team gets +1 max and starting Bond; its Bond moves cost 1 less.",
+   "team": {
+    "startBond": 1,
+    "maxBond": 1
+   },
+   "mods": {
+    "bondCostReduction": 1
+   }
+  }
+ },
+ "start": "zapdos-skill-charge-beam",
+ "rows": {
+  "4": [
+   "zapdos-static",
+   "zapdos-first-strike"
+  ],
+  "12": [
+   "zapdos-skill-thunderbolt",
+   "zapdos-skill-charge"
+  ],
+  "15": [
+   "zapdos-storm-rider",
+   "zapdos-quick-charge"
+  ],
+  "18": [
+   "zapdos-skill-zap-cannon",
+   "zapdos-skill-hurricane"
+  ],
+  "21": [
+   "zapdos-insulated",
+   "zapdos-recharge"
+  ],
+  "24": [
+   "zapdos-skill-thunder",
+   "zapdos-skill-volt-switch"
+  ],
+  "27": [
+   "zapdos-thunder-lord",
+   "zapdos-storm-herald"
+  ],
+  "30": [
+   "zapdos-thunderstorm",
+   "zapdos-storm-crown"
+  ]
+ }
+}

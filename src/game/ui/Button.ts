@@ -32,6 +32,20 @@ export class Button extends Phaser.GameObjects.Container {
     return this;
   }
 
+  /** Marks the button with a colour: a stripe on the left and a tinted label (e.g. a move's type). */
+  setAccent(color: number): this {
+    const stripe = this.scene.add.rectangle(0, 0, 4, this.height, color).setOrigin(0);
+    this.add(stripe);
+    this.label.setColor(`#${color.toString(16).padStart(6, "0")}`);
+    return this;
+  }
+
+  /** Centres the label in the button. */
+  centerLabel(): this {
+    this.label.setOrigin(0.5, 0.5).setX(this.width / 2);
+    return this;
+  }
+
   setText(text: string): this {
     this.label.setText(text);
     return this;

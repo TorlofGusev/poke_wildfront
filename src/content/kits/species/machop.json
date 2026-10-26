@@ -1,0 +1,47 @@
+{
+ "species": [
+  "machop",
+  "machoke",
+  "machamp"
+ ],
+ "moves": {
+  "machop-dynamic-punch": {
+   "id": "machop-dynamic-punch",
+   "name": "Dynamic Punch",
+   "type": "fighting",
+   "kind": "special",
+   "cooldown": 4,
+   "power": 75,
+   "range": {
+    "min": 1,
+    "max": 1
+   },
+   "requiresLineOfSight": true,
+   "shape": {
+    "kind": "single"
+   },
+   "affects": "enemies",
+   "effects": [
+    {
+     "kind": "status",
+     "status": "paralysis",
+     "duration": 1
+    }
+   ]
+  }
+ },
+ "talents": {
+  "machop-skill-dynamic-punch": {
+   "id": "machop-skill-dynamic-punch",
+   "name": "Dynamic Punch",
+   "description": "New skill: a huge punch (Power 75) that Paralyzes the foe for 1 turn.",
+   "grantsMove": "machop-dynamic-punch"
+  }
+ },
+ "rows": {
+  "12": [
+   "machop-skill-dynamic-punch",
+   "fighting-skill-bulk-up"
+  ]
+ }
+}

@@ -1,0 +1,47 @@
+{
+ "species": [
+  "bulbasaur",
+  "ivysaur",
+  "venusaur"
+ ],
+ "moves": {
+  "bulbasaur-leech-seed": {
+   "id": "bulbasaur-leech-seed",
+   "name": "Leech Seed",
+   "type": "grass",
+   "kind": "special",
+   "cooldown": 3,
+   "power": 40,
+   "range": {
+    "min": 1,
+    "max": 3
+   },
+   "requiresLineOfSight": true,
+   "shape": {
+    "kind": "single"
+   },
+   "affects": "enemies",
+   "effects": [
+    {
+     "kind": "status",
+     "status": "poison",
+     "duration": 2
+    }
+   ]
+  }
+ },
+ "talents": {
+  "bulbasaur-skill-leech-seed": {
+   "id": "bulbasaur-skill-leech-seed",
+   "name": "Leech Seed",
+   "description": "New skill: plants a seed on a foe up to 3 hexes away (Power 40) that saps it (Poison).",
+   "grantsMove": "bulbasaur-leech-seed"
+  }
+ },
+ "rows": {
+  "6": [
+   "skill-block",
+   "bulbasaur-skill-leech-seed"
+  ]
+ }
+}

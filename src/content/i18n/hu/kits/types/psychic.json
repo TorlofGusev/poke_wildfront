@@ -1,0 +1,37 @@
+{
+ "talents": {
+  "psychic-skill-psybeam": {
+   "description": "Új képesség: pszichikus sugár, amely mindent eltalál egy vonalban."
+  },
+  "psychic-magic-guard": {
+   "description": "Immunis a Poison és a Burn ellen; +1 Sp. Def."
+  },
+  "psychic-precognition": {
+   "description": "25%-kal kevesebb sebzést kap, amíg teljes a HP-ja; +1 Speed."
+  },
+  "psychic-skill-extrasensory": {
+   "description": "Új képesség: gyors, távolsági pszichikus csapás."
+  },
+  "psychic-skill-hypnosis": {
+   "description": "Új képesség: 2 körre elaltat egy ellenfelet (Sleep)."
+  },
+  "psychic-minds-eye": {
+   "description": "Távolsági támadásai átrepülnek az útban álló Pokémonok felett."
+  },
+  "psychic-skill-expanding-force": {
+   "description": "Új képesség: pszichikus robbanás, amely a célt és a körülötte állókat is eltalálja."
+  },
+  "psychic-surge": {
+   "description": "A Psychic támadások 25%-kal többet sebeznek; +25% sebzés alvó (Sleep) ellenfelekre."
+  },
+  "psychic-telepathy": {
+   "description": "+20% sebzés olyan ellenfelekre, akiken egy szövetséges állapota van (kombó); +1 Sp. Def."
+  },
+  "psychic-inner-focus": {
+   "description": "Minden körben lerázza az ellenfelek által rá tett állapotokat; +1 Sp. Atk."
+  },
+  "psychic-skill-future-sight": {
+   "description": "Új Bond képesség: előre látott pszichikus csapás 4 hexig, rálátás nélkül."
+  }
+ }
+}

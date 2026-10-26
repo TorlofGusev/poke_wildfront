@@ -1,0 +1,23 @@
+{
+ "npcs": [
+  {
+   "id": "scientist-mansion",
+   "text": [
+    "Ez a kúria tiltott terület!"
+   ],
+   "afterText": [
+    "Az emeleti napló Mew-ról mesél..."
+   ]
+  },
+  {
+   "id": "mansion-secret-key",
+   "text": [
+    "Egy poros Pokémon-szobor. Valami csillog alatta.",
+    "Megtaláltad a Secret Keyt!"
+   ],
+   "afterText": [
+    "Most már csak egy poros öreg szobor."
+   ]
+  }
+ ]
+}

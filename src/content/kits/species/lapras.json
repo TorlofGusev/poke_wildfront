@@ -1,0 +1,46 @@
+{
+ "species": [
+  "lapras"
+ ],
+ "moves": {
+  "lapras-sing": {
+   "id": "lapras-sing",
+   "name": "Sing",
+   "type": "normal",
+   "kind": "special",
+   "cooldown": 4,
+   "power": 0,
+   "range": {
+    "min": 1,
+    "max": 3
+   },
+   "requiresLineOfSight": true,
+   "shape": {
+    "kind": "burst",
+    "radius": 1
+   },
+   "affects": "enemies",
+   "effects": [
+    {
+     "kind": "status",
+     "status": "sleep",
+     "duration": 2
+    }
+   ]
+  }
+ },
+ "talents": {
+  "lapras-skill-sing": {
+   "id": "lapras-skill-sing",
+   "name": "Sing",
+   "description": "New skill: a soothing song puts foes in an area to Sleep for 2 turns.",
+   "grantsMove": "lapras-sing"
+  }
+ },
+ "rows": {
+  "6": [
+   "skill-block",
+   "lapras-skill-sing"
+  ]
+ }
+}

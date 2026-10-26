@@ -1,0 +1,24 @@
+{
+ "species": [
+  "gastly",
+  "haunter",
+  "gengar"
+ ],
+ "moves": {},
+ "talents": {
+  "gengar-destiny-bond": {
+   "id": "gengar-destiny-bond",
+   "name": "Destiny Bond",
+   "description": "Team gains +2 Bond when it faints.",
+   "mods": {
+    "bondOnFaint": 2
+   }
+  }
+ },
+ "rows": {
+  "9": [
+   "controller-prankster",
+   "gengar-destiny-bond"
+  ]
+ }
+}

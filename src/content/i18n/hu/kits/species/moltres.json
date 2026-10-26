@@ -1,0 +1,55 @@
+{
+ "talents": {
+  "moltres-skill-fire-spin": {
+   "description": "Új képesség: tűzörvény legfeljebb 2 hexnyire (Erő 40), amely megéget."
+  },
+  "moltres-flame-body": {
+   "description": "Szomszédos ellenfelekre mért találatai 2 körre megégetnek."
+  },
+  "moltres-flame-mantle": {
+   "description": "20%-kal kevesebb sebzést kap, amíg teljes a HP-ja."
+  },
+  "moltres-skill-heat-wave": {
+   "description": "Új képesség: perzselő szél egy területre távolra (Erő 55), megéget."
+  },
+  "moltres-skill-flame-charge": {
+   "description": "Új képesség: lángoló zuhanórepülés legfeljebb 2 hexnyire (Erő 60)."
+  },
+  "moltres-scorch": {
+   "description": "+20% sebzés megégett ellenfelekre."
+  },
+  "moltres-wildfire": {
+   "description": "Ha egy általa sújtott ellenfél elájul, szomszédai 1 körre elkapják az állapotot."
+  },
+  "moltres-skill-sky-attack": {
+   "description": "Új képesség: izzó zuhanás legfeljebb 3 hexnyire (Erő 100), 1 hexszel ellök."
+  },
+  "moltres-skill-overheat": {
+   "description": "Új képesség: teljes erejű tűzrobbanás távolra (Erő 95), amely megéget."
+  },
+  "moltres-rebirth": {
+   "description": "Csatánként egyszer 1 HP-val túlél egy kiütő csapást."
+  },
+  "moltres-burning-plumage": {
+   "description": "Szomszédos hexről támadó ellenfelek 8 sebzést kapnak."
+  },
+  "moltres-skill-burn-up": {
+   "description": "Új képesség: minden tüzét egy szomszédos ellenfélbe zúdítja (Erő 100), megéget."
+  },
+  "moltres-skill-hurricane": {
+   "description": "Új képesség: vihar sújt egy legfeljebb 3 hexnyire lévő ellenfelet, 2 hexszel ellöki (Erő 90)."
+  },
+  "moltres-inferno-lord": {
+   "description": "A tűz mozdulatok 20%-kal többet sebeznek."
+  },
+  "moltres-ember-hide": {
+   "description": "10%-kal kevesebb sebzést kap; +2 HP."
+  },
+  "moltres-blazing-sky": {
+   "description": "Csúcsképesség. Saját körös kiütés után: +2 mozgás és újra alaptámadás."
+  },
+  "moltres-undying-flame": {
+   "description": "Csúcsképesség. Körönként 6% max HP gyógyulás; +25% tűz sebzés fél HP alatt."
+  }
+ }
+}

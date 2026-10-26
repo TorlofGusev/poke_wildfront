@@ -1,0 +1,34 @@
+{
+ "talents": {
+  "skirmisher-sure-footed": {
+   "description": "Immunis a Lassításra és a Bénulásra; +1 Gyorsaság."
+  },
+  "skirmisher-ambush": {
+   "description": "+20% sebzés teljes HP-jú ellenfelekre; +1 Támadás."
+  },
+  "skirmisher-backstab": {
+   "description": "+1 Kötelék, amikor kombót visz be; +1 Támadás."
+  },
+  "skill-skirmisher-u-turn": {
+   "description": "Új képesség: közelharci ütés, ami megszünteti a lekötését, így szabadon elléphet."
+  },
+  "skill-skirmisher-feint-attack": {
+   "description": "Új képesség: legfeljebb 2 hexnyire lévő ellenfelet üt, rálátás nélkül is."
+  },
+  "skill-skirmisher-acrobatics": {
+   "description": "Új képesség: legfeljebb 2 hexnyire üt, és megszünteti a lekötését (Erő 70)."
+  },
+  "skirmisher-phantom-step": {
+   "description": "Végső. +2 mozgás, ha a saját körében kiüt egy ellenfelet; +15% lekötött ellenfelekre."
+  },
+  "skirmisher-evasion": {
+   "description": "10%-kal kevesebb sebzést kap; +1 Gyorsaság."
+  },
+  "skirmisher-opportunist": {
+   "description": "+25% sebzés a szövetséges állapotát viselő ellenfelekre; +1 Támadás, +1 Gyorsaság."
+  },
+  "skill-skirmisher-extreme-speed": {
+   "description": "Új képesség: gyors közelharci ütés, 1 körre Lassít és bontja a lekötést (Erő 80)."
+  }
+ }
+}

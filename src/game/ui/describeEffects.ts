@@ -1,5 +1,6 @@
 import { STAT_NAMES, type BaseStats, type BattleContent, type StatName, type UnitModifiers } from "../../core/battle";
 import type { ItemDef, ProgressionContent, RoleDef, TalentDef } from "../../core/progression";
+import { t } from "../i18n";
 import { describeMove } from "./describeMove";
 import { tag } from "./markup";
 
@@ -9,62 +10,73 @@ const pct = (x: number) => `${Math.round(Math.abs(x) * 100)}%`;
 export function describeModifiers(content: BattleContent, m: Partial<UnitModifiers>): string[] {
   const out: string[] = [];
   const up = (s: string) => tag("good", s);
-  if (m.rangeBonus) out.push(`Ranged moves (2+ tiles) reach ${up(`+${m.rangeBonus} tile${m.rangeBonus > 1 ? "s" : ""}`)} further`);
-  if (m.farDamage && m.farDamage !== 1) out.push(`${m.farDamage > 1 ? up(`+${pct(m.farDamage - 1)}`) : tag("bad", `−${pct(m.farDamage - 1)}`)} damage to foes 3+ tiles away`);
-  if (m.closeDamage && m.closeDamage !== 1) out.push(`${m.closeDamage > 1 ? up(`+${pct(m.closeDamage - 1)}`) : tag("bad", `−${pct(m.closeDamage - 1)}`)} damage to adjacent foes`);
-  if (m.moveBonus) out.push(`${up(`${m.moveBonus > 0 ? "+" : ""}${m.moveBonus} movement`)} every turn`);
-  if (m.damageDealt && m.damageDealt !== 1) out.push(`${up(`${m.damageDealt > 1 ? "+" : "−"}${pct(m.damageDealt - 1)} damage`)} with every move`);
-  if (m.damageTaken && m.damageTaken !== 1) out.push(`Takes ${up(`${pct(1 - m.damageTaken)} ${m.damageTaken < 1 ? "less" : "more"} damage`)}`);
-  for (const [t, x] of Object.entries(m.typeDamage ?? {})) out.push(`${tag(t, t)} moves deal ${up(`+${pct(x - 1)} damage`)}`);
-  for (const [t, x] of Object.entries(m.lowHpTypeDamage ?? {})) out.push(`${tag(t, t)} moves deal ${up(`+${pct(x - 1)} damage`)} while below half HP`);
-  if (m.fullHpTargetDamage && m.fullHpTargetDamage !== 1) out.push(`${up(`+${pct(m.fullHpTargetDamage - 1)} damage`)} against foes at full HP`);
-  if (m.lowHpDamage && m.lowHpDamage !== 1) out.push(`${up(`+${pct(m.lowHpDamage - 1)} damage`)} while its HP is below half`);
-  if (m.vsStatusDamage && m.vsStatusDamage !== 1) out.push(`${up(`+${pct(m.vsStatusDamage - 1)} damage`)} against foes with a status effect`);
-  if (m.healPerTurn) out.push(`Heals ${up(`${pct(m.healPerTurn)} of max HP`)} at the start of each of its turns`);
-  if (m.statusDurationBonus) out.push(`Statuses it inflicts last ${up(`+${m.statusDurationBonus} turn`)}`);
-  if (m.impactBonus) out.push(`Pushing a foe into an obstacle deals ${up(`+${m.impactBonus}`)} (base ${content.rules.impactDamage})`);
-  if (m.flankBonus) out.push(`Fighting flank bonus ${up(`+${pct(m.flankBonus)}`)}`);
-  if (m.swarmBonus) out.push(`Bug swarm bonus ${up(`+${pct(m.swarmBonus)} per helper`)}`);
-  if (m.drainBonus) out.push(`Grass drain heals ${up(`+${pct(m.drainBonus)}`)} more of the damage dealt`);
-  if (m.pushBonus) out.push(`Pushes it causes go ${up(`+${m.pushBonus} tile`)}`);
-  if (m.pullBonus) out.push(`Pulls it causes go ${up(`+${m.pullBonus} tile`)}`);
-  if (m.bondOnKo) out.push(`${up(`+${m.bondOnKo} extra ${content.terms.bond}`)} when it knocks out a foe`);
-  if (m.bondOnFaint) out.push(`Team gains ${up(`+${m.bondOnFaint} ${content.terms.bond}`)} when it faints`);
-  if (m.bondCostReduction) out.push(`Its ${content.terms.bond} moves cost ${up(`${m.bondCostReduction} less`)} (minimum 1)`);
-  if (m.contactStatus) out.push(`Its hits on adjacent foes inflict ${tag("status", content.statuses[m.contactStatus.status]?.name ?? m.contactStatus.status)} (${m.contactStatus.duration} turn${m.contactStatus.duration > 1 ? "s" : ""})`);
-  if (m.vsEngagedDamage && m.vsEngagedDamage !== 1) out.push(`${up(`+${pct(m.vsEngagedDamage - 1)}`)} damage to foes engaged with an ally (combo)`);
-  if (m.vsSetupDamage && m.vsSetupDamage !== 1) out.push(`${up(`+${pct(m.vsSetupDamage - 1)}`)} damage to foes carrying an ally's status (combo)`);
-  if (m.comboBond) out.push(`${up(`+${m.comboBond}`)} Bond when it lands a combo`);
-  if (m.disengage) out.push(`Steps away from engaged foes ${up("without free attacks")}`);
-  const mul = (v: number | undefined, text: string) => { if (v && v !== 1) out.push(`${up(`${v > 1 ? "+" : "−"}${pct(v - 1)}`)} ${text}`); };
-  mul(m.pinDamage, "damage foes it engages take from its allies");
-  mul(m.strikeDamage, "damage on its free strikes at foes breaking away");
-  mul(m.vsMudDamage, "damage to foes standing on mud");
-  mul(m.surroundedDamage, "damage while 2+ foes stand next to it");
-  mul(m.statusedDamage, "damage while it carries a status");
-  mul(m.fullHpDamageTaken, "damage taken while at full HP");
-  for (const [st, v] of Object.entries(m.vsStatusIdDamage ?? {})) mul(v, `damage to foes with ${st}`);
-  if (m.koAttackBoost) out.push(`${up(`+${m.koAttackBoost} Attack`)} per knockout (this battle, max +3)`);
-  if (m.koMove) out.push(`${up(`+${m.koMove} movement`)} when it knocks a foe out on its turn`);
-  if (m.koRefreshBasic) out.push(`Its basic attack ${up("refreshes")} when it knocks a foe out on its turn`);
-  if (m.koResetCooldowns) out.push(`Knockouts ${up("reset its cooldowns")}`);
-  if (m.statusSpreadOnKo) out.push(`Its statuses ${up("spread")} to adjacent foes when the carrier faints`);
-  if (m.healWhileEngaged) out.push(`Heals ${up(pct(m.healWhileEngaged))} of max HP per turn while engaged`);
-  if (m.bondOnStrike) out.push(`${up(`+${m.bondOnStrike} Bond`)} when its free strike hits`);
-  if (m.furyCutter) out.push(`${up(`+${pct(m.furyCutter)}`)} damage per hit in a row on the same foe (max 3)`);
-  if (m.statusedMove) out.push(`${up(`+${m.statusedMove} movement`)} while it carries a status`);
-  if (m.statusCooldownReduction) out.push(`Non-damaging specials recharge ${up(`${m.statusCooldownReduction} turn faster`)}`);
-  if (m.shedStatuses) out.push(`${up("Sheds")} statuses foes put on it each turn`);
-  if (m.sturdy) out.push(`${up("Survives")} one knockout blow per battle at 1 HP`);
-  if (m.noEscape) out.push(`Foes it engages ${up("cannot slip away")} without its free strike`);
-  if (m.koHeal) out.push(`Heals ${up(pct(m.koHeal))} of its max HP when it knocks out a foe`);
-  if (m.thorns) out.push(`Foes that hit it from an adjacent tile take ${up(`${m.thorns} damage`)}`);
-  if (m.statusImmune?.length) out.push(`Immune to ${m.statusImmune.includes("*") ? "all statuses" : m.statusImmune.join(", ")}`);
+  const bond = content.terms.bond;
+  if (m.rangeBonus) out.push(t("Ranged moves (2+ hexes) reach {n} further (max 3, Bond moves no limit)", { n: up(m.rangeBonus > 1 ? t("+{n} hexes", { n: m.rangeBonus }) : t("+{n} hex", { n: m.rangeBonus })) }));
+  if (m.shootOver) out.push(t("Its ranged moves {x} in the way", { x: up(t("fire over Pokémon")) }));
+  if (m.farDamage && m.farDamage !== 1) out.push(t("{v} damage to foes 3+ tiles away", { v: m.farDamage > 1 ? up(`+${pct(m.farDamage - 1)}`) : tag("bad", `−${pct(m.farDamage - 1)}`) }));
+  if (m.closeDamage && m.closeDamage !== 1) out.push(t("{v} damage to adjacent foes", { v: m.closeDamage > 1 ? up(`+${pct(m.closeDamage - 1)}`) : tag("bad", `−${pct(m.closeDamage - 1)}`) }));
+  if (m.moveBonus) out.push(t("{x} every turn", { x: up(t("{v} movement", { v: `${m.moveBonus > 0 ? "+" : ""}${m.moveBonus}` })) }));
+  if (m.damageDealt && m.damageDealt !== 1) out.push(t("{x} with every move", { x: up(t("{v} damage", { v: `${m.damageDealt > 1 ? "+" : "−"}${pct(m.damageDealt - 1)}` })) }));
+  if (m.damageTaken && m.damageTaken !== 1) out.push(t("Takes {x}", { x: up(m.damageTaken < 1 ? t("{v} less damage", { v: pct(1 - m.damageTaken) }) : t("{v} more damage", { v: pct(1 - m.damageTaken) })) }));
+  const plusDmg = (x: number) => up(t("{v} damage", { v: `+${pct(x - 1)}` }));
+  for (const [ty, x] of Object.entries(m.typeDamage ?? {})) out.push(t("{type} moves deal {x}", { type: tag(ty, ty), x: plusDmg(x) }));
+  for (const [ty, x] of Object.entries(m.lowHpTypeDamage ?? {})) out.push(t("{type} moves deal {x} while below half HP", { type: tag(ty, ty), x: plusDmg(x) }));
+  if (m.fullHpTargetDamage && m.fullHpTargetDamage !== 1) out.push(t("{x} against foes at full HP", { x: plusDmg(m.fullHpTargetDamage) }));
+  if (m.lowHpDamage && m.lowHpDamage !== 1) out.push(t("{x} while its HP is below half", { x: plusDmg(m.lowHpDamage) }));
+  if (m.vsStatusDamage && m.vsStatusDamage !== 1) out.push(t("{x} against foes with a status effect", { x: plusDmg(m.vsStatusDamage) }));
+  if (m.healPerTurn) out.push(t("Heals {x} at the start of each of its turns", { x: up(t("{v} of max HP", { v: pct(m.healPerTurn) })) }));
+  if (m.statusDurationBonus) out.push(t("Statuses it inflicts last {x}", { x: up(t("+{n} turn", { n: m.statusDurationBonus })) }));
+  if (m.impactBonus) out.push(t("Pushing a foe into an obstacle deals {x} (base {base})", { x: up(`+${m.impactBonus}`), base: content.rules.impactDamage }));
+  if (m.flankBonus) out.push(t("Fighting flank bonus {x}", { x: up(`+${pct(m.flankBonus)}`) }));
+  if (m.swarmBonus) out.push(t("Bug swarm bonus {x}", { x: up(t("{v} per helper", { v: `+${pct(m.swarmBonus)}` })) }));
+  if (m.drainBonus) out.push(t("Grass drain heals {x} more of the damage dealt", { x: up(`+${pct(m.drainBonus)}`) }));
+  if (m.pushBonus) out.push(t("Pushes it causes go {x}", { x: up(t("+{n} tile", { n: m.pushBonus })) }));
+  if (m.pullBonus) out.push(t("Pulls it causes go {x}", { x: up(t("+{n} tile", { n: m.pullBonus })) }));
+  if (m.bondOnKo) out.push(t("{x} when it knocks out a foe", { x: up(t("+{n} extra {bond}", { n: m.bondOnKo, bond })) }));
+  if (m.bondOnFaint) out.push(t("Team gains {x} when it faints", { x: up(`+${m.bondOnFaint} ${bond}`) }));
+  if (m.bondCostReduction) out.push(t("Its {bond} moves cost {x} (minimum 1)", { bond, x: up(t("{n} less", { n: m.bondCostReduction })) }));
+  if (m.contactStatus) {
+    const d = m.contactStatus.duration;
+    const status = tag("status", content.statuses[m.contactStatus.status]?.name ?? m.contactStatus.status);
+    out.push(d > 1
+      ? t("Its hits on adjacent foes inflict {status} ({n} turns)", { status, n: d })
+      : t("Its hits on adjacent foes inflict {status} ({n} turn)", { status, n: d }));
+  }
+  if (m.vsEngagedDamage && m.vsEngagedDamage !== 1) out.push(t("{v} damage to foes engaged with an ally (combo)", { v: up(`+${pct(m.vsEngagedDamage - 1)}`) }));
+  if (m.vsSetupDamage && m.vsSetupDamage !== 1) out.push(t("{v} damage to foes carrying an ally's status (combo)", { v: up(`+${pct(m.vsSetupDamage - 1)}`) }));
+  if (m.comboBond) out.push(t("{v} Bond when it lands a combo", { v: up(`+${m.comboBond}`) }));
+  if (m.disengage) out.push(t("Steps away from engaged foes {x}", { x: up(t("without free attacks")) }));
+  const mul = (v: number | undefined, key: string, vars: Record<string, string> = {}) => {
+    if (v && v !== 1) out.push(t(key, { ...vars, v: up(`${v > 1 ? "+" : "−"}${pct(v - 1)}`) }));
+  };
+  mul(m.pinDamage, "{v} damage foes it engages take from its allies");
+  mul(m.strikeDamage, "{v} damage on its free strikes at foes breaking away");
+  mul(m.vsMudDamage, "{v} damage to foes standing on mud");
+  mul(m.surroundedDamage, "{v} damage while 2+ foes stand next to it");
+  mul(m.statusedDamage, "{v} damage while it carries a status");
+  mul(m.fullHpDamageTaken, "{v} damage taken while at full HP");
+  for (const [st, v] of Object.entries(m.vsStatusIdDamage ?? {})) mul(v, "{v} damage to foes with {status}", { status: st });
+  if (m.koAttackBoost) out.push(t("{x} per knockout (this battle, max +3)", { x: up(t("+{n} Attack", { n: m.koAttackBoost })) }));
+  if (m.koMove) out.push(t("{x} when it knocks a foe out on its turn", { x: up(t("{v} movement", { v: `+${m.koMove}` })) }));
+  if (m.koRefreshBasic) out.push(t("Its basic attack {x} when it knocks a foe out on its turn", { x: up(t("refreshes")) }));
+  if (m.koResetCooldowns) out.push(t("Knockouts {x}", { x: up(t("reset its cooldowns")) }));
+  if (m.statusSpreadOnKo) out.push(t("Its statuses {x} to adjacent foes when the carrier faints", { x: up(t("spread")) }));
+  if (m.healWhileEngaged) out.push(t("Heals {v} of max HP per turn while engaged", { v: up(pct(m.healWhileEngaged)) }));
+  if (m.bondOnStrike) out.push(t("{x} when its free strike hits", { x: up(t("+{n} Bond", { n: m.bondOnStrike })) }));
+  if (m.furyCutter) out.push(t("{v} damage per hit in a row on the same foe (max 3)", { v: up(`+${pct(m.furyCutter)}`) }));
+  if (m.statusedMove) out.push(t("{x} while it carries a status", { x: up(t("{v} movement", { v: `+${m.statusedMove}` })) }));
+  if (m.statusCooldownReduction) out.push(t("Non-damaging specials recharge {x}", { x: up(t("{n} turn faster", { n: m.statusCooldownReduction })) }));
+  if (m.shedStatuses) out.push(t("{x} statuses foes put on it each turn", { x: up(t("Sheds")) }));
+  if (m.sturdy) out.push(t("{x} one knockout blow per battle at 1 HP", { x: up(t("Survives")) }));
+  if (m.noEscape) out.push(t("Foes it engages {x} without its free strike", { x: up(t("cannot slip away")) }));
+  if (m.koHeal) out.push(t("Heals {v} of its max HP when it knocks out a foe", { v: up(pct(m.koHeal)) }));
+  if (m.thorns) out.push(t("Foes that hit it from an adjacent tile take {x}", { x: up(t("{n} damage", { n: m.thorns })) }));
+  if (m.statusImmune?.length) out.push(m.statusImmune.includes("*") ? t("Immune to all statuses") : t("Immune to {list}", { list: m.statusImmune.join(", ") }));
   return out;
 }
 
-export const STAT_LABEL: Record<StatName, string> = { hp: "HP", attack: "Attack", defense: "Defense", spAttack: "Sp. Atk", spDefense: "Sp. Def", speed: "Speed" };
-export const STAT_SHORT: Record<StatName, string> = { hp: "HP", attack: "Atk", defense: "Def", spAttack: "SpA", spDefense: "SpD", speed: "Spe" };
+export const STAT_LABEL: Record<StatName, string> = { hp: t("HP"), attack: t("Attack"), defense: t("Defense"), spAttack: t("Sp. Atk"), spDefense: t("Sp. Def"), speed: t("Speed") };
+export const STAT_SHORT: Record<StatName, string> = { hp: t("HP"), attack: t("Atk"), defense: t("Def"), spAttack: t("SpA"), spDefense: t("SpD"), speed: t("Spe") };
 
 /** "Atk 7  Def 3  SpA 8  SpD 5  Spe 6" (HP is shown separately as current/max). */
 export const statLine = (stats: BaseStats): string =>
@@ -77,22 +89,24 @@ export function describeGrowth(role: RoleDef): string {
     .map((s) => `${STAT_SHORT[s]} ${role.growth[s]! >= 0.25 ? "++" : "+"}`).join(" · ");
 }
 
-export function describeTalent(content: BattleContent, prog: ProgressionContent, t: TalentDef): string[] {
+export function describeTalent(content: BattleContent, prog: ProgressionContent, talent: TalentDef): string[] {
   const out: string[] = [];
-  for (const [s, v] of Object.entries(t.stats ?? {}) as [StatName, number][]) {
-    const extra = s === "hp" ? ` (max HP +${v * content.rules.hpPerPoint})` : s === "speed" ? ` (movement +1 every ${content.rules.speedPerMove} Speed)` : "";
+  const bond = content.terms.bond;
+  for (const [s, v] of Object.entries(talent.stats ?? {}) as [StatName, number][]) {
+    const extra = s === "hp" ? t(" (max HP +{n})", { n: v * content.rules.hpPerPoint })
+      : s === "speed" ? t(" (movement +1 every {n} Speed)", { n: content.rules.speedPerMove }) : "";
     out.push(`${tag("good", `+${v} ${STAT_LABEL[s]}`)}${tag("dim", extra)}`);
   }
-  out.push(...describeModifiers(content, t.mods ?? {}));
-  if (t.team?.startBond) out.push(`While deployed, the team starts battles with ${tag("good", `+${t.team.startBond} ${content.terms.bond}`)} (base ${content.rules.bond.start})`);
-  if (t.team?.maxBond) out.push(`While deployed, the team's ${content.terms.bond} cap is ${tag("good", `+${t.team.maxBond}`)} (base ${content.rules.bond.max})`);
-  if (t.grantsMove && content.moves[t.grantsMove]) out.push(`${tag("special", "New skill")} (joins the move list):`, describeMove(content, content.moves[t.grantsMove]!));
+  out.push(...describeModifiers(content, talent.mods ?? {}));
+  if (talent.team?.startBond) out.push(t("While deployed, the team starts battles with {x} (base {base})", { x: tag("good", `+${talent.team.startBond} ${bond}`), base: content.rules.bond.start }));
+  if (talent.team?.maxBond) out.push(t("While deployed, the team's {bond} cap is {x} (base {base})", { bond, x: tag("good", `+${talent.team.maxBond}`), base: content.rules.bond.max }));
+  if (talent.grantsMove && content.moves[talent.grantsMove]) out.push(t("{x} (joins the move list):", { x: tag("special", t("New skill")) }), describeMove(content, content.moves[talent.grantsMove]!));
   return out;
 }
 
 export function describeItem(content: BattleContent, item: ItemDef): string[] {
-  if (item.kind === "potion") return [`Restores ${tag("heal", `${item.heal} HP`)} outside battle (not to fainted Pokémon).`];
+  if (item.kind === "potion") return [t("Restores {x} outside battle (not to fainted Pokémon).", { x: tag("heal", `${item.heal} HP`) })];
   if (item.kind === "candy" || item.kind === "food") return [item.description];
-  if (item.kind === "remedy") return [`Removes ${tag("heal", `${item.clearsKnockouts} knockout mark`)} from a Pokémon.`];
+  if (item.kind === "remedy") return [t("Removes {x} from a Pokémon.", { x: tag("heal", t("{n} knockout mark", { n: String(item.clearsKnockouts) })) })];
   return describeModifiers(content, item.mods ?? {});
 }

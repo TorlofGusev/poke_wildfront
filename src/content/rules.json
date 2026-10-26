@@ -16,7 +16,7 @@
  "damageDivisor": 4,
  "moveBase": 2,
  "speedPerMove": 4,
- "moveMax": 5,
+ "moveMax": 4,
  "impactDamage": 8,
  "bond": {
   "start": 2,

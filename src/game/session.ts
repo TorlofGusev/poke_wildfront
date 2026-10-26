@@ -5,6 +5,7 @@ import { newWorld } from "../core/expedition";
 import type { DeployCandidate } from "../core/battle";
 import { newMember, type GameState } from "../core/party";
 import { loadSaveFile, SaveError, toSaveFile } from "../core/save";
+import { t } from "./i18n";
 
 const SAVE_KEY = "pokemon-wildfront.save";
 
@@ -51,7 +52,7 @@ class Session {
       return true;
     } catch (e) {
       // Prototype policy: incompatible or broken saves are discarded, the player starts fresh.
-      this.loadError = `${e instanceof SaveError ? e.message : "save could not be read"}; it was discarded`;
+      this.loadError = t("{reason}; it was discarded", { reason: e instanceof SaveError ? e.message : t("save could not be read") });
       try {
         localStorage.removeItem(SAVE_KEY);
       } catch {
