@@ -5,7 +5,7 @@
  ],
  "focus": [
   {
-   "stat": "spAttack",
+   "stat": "attack",
    "skill": "staryu-surf"
   },
   {
@@ -13,7 +13,7 @@
    "skill": "staryu-rapid-spin"
   },
   {
-   "stat": "spDefense",
+   "stat": "willpower",
    "skill": "staryu-minimize"
   }
  ],
@@ -318,7 +318,7 @@
   "staryu-surf": {
    "id": "staryu-surf",
    "name": "Surf",
-   "description": "Bond skill: a great wave hits every foe within 2 hexes of it (Power 80, Sp. Atk).",
+   "description": "Bond skill: a great wave hits every foe within 2 hexes of it (Power 80).",
    "grantsMove": "staryu-surf"
   },
   "staryu-rapid-spin": {

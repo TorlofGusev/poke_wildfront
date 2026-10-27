@@ -12,11 +12,11 @@
    "skill": "seel-rest"
   },
   {
-   "stat": "spDefense",
+   "stat": "willpower",
    "skill": "seel-safeguard"
   },
   {
-   "stat": "spAttack",
+   "stat": "attack",
    "skill": "seel-surf"
   }
  ],
@@ -337,7 +337,7 @@
   "seel-surf": {
    "id": "seel-surf",
    "name": "Surf",
-   "description": "Bond skill: a big wave up to 2 hexes away hitting foes in a 1-hex area (Power 85, Sp. Atk).",
+   "description": "Bond skill: a big wave up to 2 hexes away hitting foes in a 1-hex area (Power 85).",
    "grantsMove": "seel-surf"
   },
   "seel-hydration": {

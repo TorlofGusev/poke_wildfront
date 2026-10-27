@@ -173,6 +173,10 @@
    {
     "item": "miracle-seed",
     "chance": 0.04
+   },
+   {
+    "item": "poison-barb",
+    "chance": 0.03
    }
   ]
  },
@@ -340,6 +344,10 @@
    {
     "item": "sharp-beak",
     "chance": 0.04
+   },
+   {
+    "item": "silk-scarf",
+    "chance": 0.03
    }
   ]
  },
@@ -539,6 +547,10 @@
    {
     "item": "leftovers",
     "chance": 0.02
+   },
+   {
+    "item": "poison-barb",
+    "chance": 0.03
    }
   ]
  },
@@ -698,6 +710,10 @@
    {
     "item": "super-potion",
     "chance": 0.15
+   },
+   {
+    "item": "dragon-fang",
+    "chance": 0.03
    }
   ]
  }

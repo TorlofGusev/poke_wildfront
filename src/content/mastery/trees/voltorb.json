@@ -12,11 +12,11 @@
    "skill": "voltorb-electro-ball"
   },
   {
-   "stat": "spAttack",
+   "stat": "attack",
    "skill": "voltorb-zap-cannon"
   },
   {
-   "stat": "spDefense",
+   "stat": "willpower",
    "skill": "voltorb-light-screen"
   }
  ],
@@ -314,7 +314,7 @@
   "voltorb-zap-cannon": {
    "id": "voltorb-zap-cannon",
    "name": "Zap Cannon",
-   "description": "Bond skill: an electric cannon up to 3 hexes away (Power 100, Sp. Atk) that Paralyzes for 1 turn.",
+   "description": "Bond skill: an electric cannon up to 3 hexes away (Power 100) that Paralyzes for 1 turn.",
    "grantsMove": "voltorb-zap-cannon"
   },
   "voltorb-light-screen": {

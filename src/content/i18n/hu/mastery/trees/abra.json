@@ -1,7 +1,7 @@
 {
  "talents": {
   "abra-future-sight": {
-   "description": "Bond képesség: előre látott pszichikus csapás legfeljebb 3 hexre, rálátás nélkül (Power 100, Sp. Atk)."
+   "description": "Bond képesség: előre látott pszichikus csapás legfeljebb 3 hexre, rálátás nélkül (Power 100)."
   },
   "abra-teleport": {
    "description": "Bond képesség: teleportálva szabad ütés nélkül kiszabadul a lekötésből, 2 körre Hasted lesz."

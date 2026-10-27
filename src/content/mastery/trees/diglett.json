@@ -9,7 +9,7 @@
    "skill": "diglett-night-slash"
   },
   {
-   "stat": "spAttack",
+   "stat": "attack",
    "skill": "diglett-earth-power"
   },
   {
@@ -300,7 +300,7 @@
   "diglett-earth-power": {
    "id": "diglett-earth-power",
    "name": "Earth Power",
-   "description": "Bond skill: the ground erupts under a foe up to 3 hexes away, no line of sight (Power 85, Sp. Atk).",
+   "description": "Bond skill: the ground erupts under a foe up to 3 hexes away, no line of sight (Power 85).",
    "grantsMove": "diglett-earth-power"
   },
   "diglett-sucker-punch": {

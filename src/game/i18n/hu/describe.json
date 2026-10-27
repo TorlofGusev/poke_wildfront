@@ -69,10 +69,6 @@
  "Restores {x} outside battle (not to fainted Pokémon).": "Csatán kívül {x} állít vissza (ájult Pokémonra nem).",
  "Retreated from battle": "Visszavonultál a csatából",
  "Sheds": "Lerázza",
- "Sp. Atk": "Sp. Atk",
- "Sp. Def": "Sp. Def",
- "SpA": "SpA",
- "SpD": "SpD",
  "Spe": "Spe",
  "Special": "Speciális",
  "Speed": "Speed",
@@ -182,5 +178,8 @@
  "{v} damage to foes with {status}": "{v} sebzés {status} állapotú ellenfelekre",
  "Removes the statuses foes put on the target": "Leveszi a célpontról az ellenfelek által rárakott státuszokat",
  "{v} damage to foes 2+ hexes away": "{v} sebzés 2+ hexnyire lévő ellenfelekre",
- " (more movement at {steps} Speed)": " (több mozgás {steps} Speed-nél)"
+ " (more movement at {steps} Speed)": " (több mozgás {steps} Speed-nél)",
+ "Willpower": "Akaraterő",
+ "Crit": "Krit",
+ "Will": "Akar"
 }

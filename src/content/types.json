@@ -1,12 +1,12 @@
 {
  "normal": {
   "profile": {
-   "hp": 5,
-   "attack": 5,
+   "hp": 6,
+   "attack": 6,
    "defense": 5,
-   "spAttack": 5,
-   "spDefense": 5,
-   "speed": 5
+   "speed": 4,
+   "willpower": 4,
+   "crit": 5
   },
   "summary": "Adaptable generalist. Normal moves are never resisted.",
   "move": {
@@ -16,13 +16,13 @@
  "fire": {
   "profile": {
    "hp": 4,
-   "attack": 7,
-   "defense": 3,
-   "spAttack": 8,
-   "spDefense": 5,
-   "speed": 6
+   "attack": 9,
+   "defense": 4,
+   "speed": 5,
+   "willpower": 4,
+   "crit": 4
   },
-  "summary": "Burst striker. Fire moves Burn: damage each turn and \u221220% damage dealt.",
+  "summary": "Burst striker. Fire moves Burn: damage each turn and −20% damage dealt.",
   "move": {
    "appliesStatus": {
     "status": "burn",
@@ -33,11 +33,11 @@
  "water": {
   "profile": {
    "hp": 6,
-   "attack": 5,
-   "defense": 5,
-   "spAttack": 6,
-   "spDefense": 6,
-   "speed": 4
+   "attack": 6,
+   "defense": 6,
+   "speed": 3,
+   "willpower": 5,
+   "crit": 4
   },
   "summary": "Displacement and sustain. Water moves push the target 1 extra tile.",
   "move": {
@@ -47,11 +47,11 @@
  "grass": {
   "profile": {
    "hp": 6,
-   "attack": 4,
+   "attack": 6,
    "defense": 5,
-   "spAttack": 6,
-   "spDefense": 6,
-   "speed": 5
+   "speed": 4,
+   "willpower": 5,
+   "crit": 4
   },
   "summary": "Drain and control. Grass moves heal the user for 25% of the damage dealt.",
   "move": {
@@ -60,12 +60,12 @@
  },
  "electric": {
   "profile": {
-   "hp": 3,
-   "attack": 6,
+   "hp": 4,
+   "attack": 8,
    "defense": 3,
-   "spAttack": 7,
-   "spDefense": 4,
-   "speed": 8
+   "speed": 7,
+   "willpower": 4,
+   "crit": 4
   },
   "summary": "Fast skirmisher. Electric moves Paralyze: the target cannot move on its next turn.",
   "move": {
@@ -78,11 +78,11 @@
  "ice": {
   "profile": {
    "hp": 5,
-   "attack": 5,
+   "attack": 7,
    "defense": 4,
-   "spAttack": 6,
-   "spDefense": 5,
-   "speed": 6
+   "speed": 5,
+   "willpower": 5,
+   "crit": 4
   },
   "summary": "Lockdown control. Ice moves Freeze: the target cannot act on its next turn.",
   "move": {
@@ -95,11 +95,11 @@
  "fighting": {
   "profile": {
    "hp": 6,
-   "attack": 7,
-   "defense": 4,
-   "spAttack": 3,
-   "spDefense": 4,
-   "speed": 3
+   "attack": 8,
+   "defense": 5,
+   "speed": 2,
+   "willpower": 5,
+   "crit": 4
   },
   "summary": "Melee bruiser. +25% damage when an ally also stands next to the target.",
   "move": {
@@ -109,22 +109,22 @@
  "poison": {
   "profile": {
    "hp": 5,
-   "attack": 4,
+   "attack": 6,
    "defense": 5,
-   "spAttack": 5,
-   "spDefense": 5,
-   "speed": 6
+   "speed": 5,
+   "willpower": 5,
+   "crit": 4
   },
   "summary": "Attrition. Poison stacks: every new application adds its turns."
  },
  "ground": {
   "profile": {
    "hp": 6,
-   "attack": 6,
+   "attack": 7,
    "defense": 6,
-   "spAttack": 3,
-   "spDefense": 4,
-   "speed": 2
+   "speed": 2,
+   "willpower": 5,
+   "crit": 4
   },
   "summary": "Terrain shaper. Ground moves turn the target's tile into mud.",
   "move": {
@@ -134,13 +134,13 @@
  "flying": {
   "profile": {
    "hp": 4,
-   "attack": 5,
+   "attack": 6,
    "defense": 3,
-   "spAttack": 4,
-   "spDefense": 4,
-   "speed": 8
+   "speed": 7,
+   "willpower": 4,
+   "crit": 6
   },
-  "summary": "Mobility. Flies over water, mud and other Pok\u00e9mon.",
+  "summary": "Mobility. Flies over water, mud and other Pokémon.",
   "unit": {
    "flies": true
   }
@@ -148,11 +148,11 @@
  "psychic": {
   "profile": {
    "hp": 4,
-   "attack": 7,
+   "attack": 8,
    "defense": 3,
-   "spAttack": 8,
-   "spDefense": 6,
-   "speed": 6
+   "speed": 5,
+   "willpower": 7,
+   "crit": 3
   },
   "summary": "Ranged manipulation. Psychic moves pull the target 1 tile closer.",
   "move": {
@@ -162,11 +162,11 @@
  "bug": {
   "profile": {
    "hp": 4,
-   "attack": 5,
+   "attack": 6,
    "defense": 4,
-   "spAttack": 4,
-   "spDefense": 4,
-   "speed": 7
+   "speed": 6,
+   "willpower": 4,
+   "crit": 6
   },
   "summary": "Swarm tactics. +10% damage for each ally next to the target.",
   "move": {
@@ -177,10 +177,10 @@
   "profile": {
    "hp": 6,
    "attack": 6,
-   "defense": 8,
-   "spAttack": 3,
-   "spDefense": 4,
-   "speed": 0
+   "defense": 9,
+   "speed": 1,
+   "willpower": 5,
+   "crit": 3
   },
   "summary": "Fortress. Cannot be pushed or pulled.",
   "unit": {
@@ -190,11 +190,11 @@
  "ghost": {
   "profile": {
    "hp": 4,
-   "attack": 6,
+   "attack": 7,
    "defense": 3,
-   "spAttack": 7,
-   "spDefense": 5,
-   "speed": 7
+   "speed": 6,
+   "willpower": 6,
+   "crit": 4
   },
   "summary": "Trickster. Moves through enemies; Ghost moves Curse: +25% damage taken.",
   "move": {
@@ -212,9 +212,9 @@
    "hp": 6,
    "attack": 7,
    "defense": 5,
-   "spAttack": 6,
-   "spDefense": 5,
-   "speed": 2
+   "speed": 3,
+   "willpower": 6,
+   "crit": 3
   },
   "summary": "Rare all-rounder. Dragon moves ignore Defense.",
   "move": {

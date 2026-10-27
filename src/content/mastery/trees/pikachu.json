@@ -9,7 +9,7 @@
    "skill": "pikachu-electro-ball"
   },
   {
-   "stat": "spAttack",
+   "stat": "attack",
    "skill": "pikachu-electroweb"
   },
   {
@@ -315,7 +315,7 @@
   "pikachu-electroweb": {
    "id": "pikachu-electroweb",
    "name": "Electroweb",
-   "description": "Bond skill: an electric net on a 1-hex area up to 1 hex away (Power 70, Sp. Atk); Slows 1 turn.",
+   "description": "Bond skill: an electric net on a 1-hex area up to 1 hex away (Power 70); Slows 1 turn.",
    "grantsMove": "pikachu-electroweb"
   },
   "pikachu-volt-tackle": {

@@ -9,7 +9,7 @@
    "skill": "slowpoke-slack-off"
   },
   {
-   "stat": "spAttack",
+   "stat": "attack",
    "skill": "slowpoke-psyshock"
   },
   {
@@ -301,7 +301,7 @@
   "slowpoke-psyshock": {
    "id": "slowpoke-psyshock",
    "name": "Psyshock",
-   "description": "Bond skill: a psychic wave at a foe up to 3 hexes away (Power 90, Sp. Atk).",
+   "description": "Bond skill: a psychic wave at a foe up to 3 hexes away (Power 90).",
    "grantsMove": "slowpoke-psyshock"
   },
   "slowpoke-aqua-tail": {

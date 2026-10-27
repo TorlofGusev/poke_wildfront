@@ -4,7 +4,7 @@
    "description": "Bond skill: lángoló roham (Erő 90, Attack), 2 körre megégeti az ellenfelet."
   },
   "charmander-blast-burn": {
-   "description": "Bond skill: tűzrobbanás legfeljebb 2 hexnyira (Erő 80, Sp. Atk), 1 hex területen."
+   "description": "Bond skill: tűzrobbanás legfeljebb 2 hexnyira (Erő 80), 1 hex területen."
   },
   "charmander-flame-charge": {
    "description": "Bond skill: legfeljebb 2 hexet ront egy ellenfélre (Erő 55), és lekötik egymást."

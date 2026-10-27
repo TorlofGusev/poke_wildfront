@@ -155,6 +155,10 @@
    {
     "item": "super-potion",
     "chance": 0.05
+   },
+   {
+    "item": "silk-scarf",
+    "chance": 0.03
    }
   ]
  },
@@ -324,6 +328,10 @@
    {
     "item": "super-potion",
     "chance": 0.06
+   },
+   {
+    "item": "poison-barb",
+    "chance": 0.03
    }
   ]
  },
@@ -483,6 +491,10 @@
    {
     "item": "oran-berry",
     "chance": 0.15
+   },
+   {
+    "item": "twisted-spoon",
+    "chance": 0.03
    }
   ]
  },
@@ -654,7 +666,7 @@
     "chance": 0.05
    },
    {
-    "item": "quick-claw",
+    "item": "focus-band",
     "chance": 0.05
    },
    {
@@ -664,6 +676,10 @@
    {
     "item": "super-potion",
     "chance": 0.15
+   },
+   {
+    "item": "twisted-spoon",
+    "chance": 0.03
    }
   ]
  }

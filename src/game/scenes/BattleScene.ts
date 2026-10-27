@@ -63,6 +63,8 @@ type Phase = "deploy" | "battle" | "over";
 interface UnitView {
   container: Phaser.GameObjects.Container;
   hpBar: Phaser.GameObjects.Rectangle;
+  /** Gold Spirit bar under the HP bar. */
+  spiritBar: Phaser.GameObjects.Rectangle;
   /** Team-coloured base under the Pokémon's feet. */
   ring: Phaser.GameObjects.Ellipse;
   /** Placeholder shown for hidden enemies (and species without a sprite). */
@@ -91,6 +93,8 @@ export class BattleScene extends Phaser.Scene {
   private npcMapId: string | null = null;
   private biome: string | null = null;
   private rewardText = "";
+  /** EV the battle earned (wild win plus trainer or badge reward). */
+  private evGained = 0;
   private grid!: Grid;
   private phase: Phase = "deploy";
   private placements: Placement[] = [];
@@ -278,8 +282,9 @@ export class BattleScene extends Phaser.Scene {
       : null;
     const hpBg = this.add.rectangle(-18, 21, 36, 4, 0x000000).setOrigin(0, 0.5);
     const hpBar = this.add.rectangle(-18, 21, 36, 4, 0x7ed321).setOrigin(0, 0.5);
-    const container = this.add.container(x, y, [ring, ...(sprite ? [sprite] : []), body, label, hpBg, hpBar]).setScale(UNIT_SCALE);
-    this.units.set(id, { container, hpBar, ring, body, label, sprite, speciesId, facing });
+    const spiritBar = this.add.rectangle(-18, 24, 0, 2, 0xf5d76e).setOrigin(0, 0.5);
+    const container = this.add.container(x, y, [ring, ...(sprite ? [sprite] : []), body, label, hpBg, hpBar, spiritBar]).setScale(UNIT_SCALE);
+    this.units.set(id, { container, hpBar, spiritBar, ring, body, label, sprite, speciesId, facing });
     this.applyDisguise(id);
   }
 
@@ -331,6 +336,10 @@ export class BattleScene extends Phaser.Scene {
       const frac = u.hp / u.maxHp;
       view.hpBar.width = 36 * frac;
       view.hpBar.fillColor = frac > 0.5 ? 0x7ed321 : frac > 0.25 ? 0xf5a623 : 0xd0021b;
+      // Spirit: fills gold; full width (white) while Pumped.
+      const pumped = u.statuses.some((s) => s.id === "pumped");
+      view.spiritBar.width = pumped ? 36 : 36 * (u.spirit ?? 0) / CONTENT.rules.willpower.spiritMax;
+      view.spiritBar.fillColor = pumped ? 0xffffff : 0xf5d76e;
       const active = this.state.turn?.unitId === u.id;
       view.ring.setStrokeStyle(active ? 4 : 3, active ? COLORS.active : u.side === "player" ? COLORS.player : COLORS.enemy);
     }
@@ -630,7 +639,7 @@ export class BattleScene extends Phaser.Scene {
         for (const uid of sum.knockedOut.filter((u) => !sum.fallen.includes(u)))
           text(t("{name} was knocked out (KO {n}/{max}).", { name: name(uid), n: this.knockoutsOf(uid), max: KNOCKOUTS_TO_DEATH }), COLORS.bad);
         for (const uid of sum.fallen) text(t("{name} has fallen for good.", { name: name(uid) }), COLORS.bad);
-        if (sum.xp || sum.money) text(`${t("+{xp} XP for each Pokémon that fought (half for the rest of the party) · +₽{money}", { xp: sum.xp, money: sum.money })}${sum.candies ? t(" · +{n} Candy", { n: sum.candies }) : ""}`, "#f5d76e");
+        if (sum.xp || sum.money) text(`${t("+{xp} XP for each Pokémon that fought (half for the rest of the party) · +₽{money}", { xp: sum.xp, money: sum.money })}${this.evGained ? ` · +${this.evGained} EV` : ""}${sum.candies ? t(" · +{n} Rare Candy", { n: sum.candies }) : ""}`, "#f5d76e");
         for (const [uid, evs] of Object.entries(sum.progress)) {
           for (const e of evs) {
             if (e.type === "levelUp") text(t("{name} reached Lv {lv}!", { name: name(uid), lv: e.level }), COLORS.good, 12);
@@ -820,7 +829,7 @@ export class BattleScene extends Phaser.Scene {
       id, speciesId, side: enemy ? "enemy" : "player", maxHp, hp: member?.hp ?? maxHp,
       pos: enemy?.pos ?? { x: 0, y: 0 }, statuses: [], cooldowns: {}, usedUltimates: [], captured: false, level: 1, stats: CONTENT.species[speciesId]!.stats, moves: CONTENT.species[speciesId]!.moves, mods: NO_MODIFIERS,
       traits: unitTraits(CONTENT, CONTENT.species[speciesId]!.types),
-      ability: CONTENT.abilities[CONTENT.species[speciesId]!.ability ?? ""] ?? null, attackBoost: 0, sturdyUsed: false, furyTarget: null, furyStreak: 0, engagedWith: null,
+      ability: CONTENT.abilities[CONTENT.species[speciesId]!.ability ?? ""] ?? null, attackBoost: 0, spirit: 0, sturdyUsed: false, furyTarget: null, furyStreak: 0, engagedWith: null,
     };
   }
 
@@ -990,6 +999,7 @@ export class BattleScene extends Phaser.Scene {
       // Knockouts, deaths, captures and used balls become permanent here, and are autosaved.
       const result = resolveBattle(CONTENT, PROGRESSION, session.game, this.state, { countsKnockouts: this.scenario.countsKnockouts ?? true });
       let game = result.game;
+      const evBefore = session.game.ev ?? 0;
       if (this.state.outcome === "victory" && this.encounterId) {
         game = { ...game, world: removeEncounter(game.world, this.encounterId) };
         // Small chance of finding a Poké Ball after a won wild battle.
@@ -1020,11 +1030,12 @@ export class BattleScene extends Phaser.Scene {
       const npcs = this.npcMapId ? WORLDS[this.npcMapId]?.npcs ?? [] : [];
       const npc = npcs.find((n) => n.id === this.npcId);
       if (npc && this.state.outcome === "victory") {
-        const granted = grantGifts(completeNpc(game, npc), npc.reward);
+        const granted = grantGifts(completeNpc(game, npc, undefined, PROGRESSION.rules.ev), npc.reward);
         game = granted.game;
         this.rewardText = [t("{name} is defeated!", { name: npc.name }), ...granted.notes].join(" ");
       } else if (npc) game = failNpc(game, npc, npcs);
       if (this.state.outcome === "defeat") game = { ...game, world: returnToLastCamp(WORLD_CONTENT, currentWorld(), game.world) };
+      this.evGained = (game.ev ?? 0) - evBefore;
       session.update(game);
       this.summary = result.summary;
       // The victory jingle replaces the battle theme; a loss falls silent under the defeat sting.
@@ -1110,7 +1121,15 @@ export class BattleScene extends Phaser.Scene {
           if (e.blocked) this.cameras.main.shake(120, 0.004);
           break;
         case "statusApplied":
-          this.floatText(e.unitId, e.status, "#c070ff");
+          this.floatText(e.unitId, e.status === "pumped" ? t("Pumped!") : CONTENT.statuses[e.status]?.name ?? e.status, e.status === "pumped" ? "#f5d76e" : "#c070ff");
+          this.syncUnits();
+          break;
+        case "statusResisted":
+          this.floatText(e.unitId, t("Resisted"), "#e8ecf4");
+          break;
+        case "critical":
+          this.floatText(e.targetId, t("Critical!"), "#f5d76e");
+          this.cameras.main.shake(100, 0.003);
           break;
         case "terrainChanged":
           this.grid = Grid.fromAscii(this.state!.mapRows);

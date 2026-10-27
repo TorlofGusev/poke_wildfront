@@ -3,15 +3,6 @@
  "hpPerPoint": 2,
  "hpPerLevel": 1.5,
  "hpPerLevelPerDefense": 0.15,
- "specialTypes": [
-  "fire",
-  "water",
-  "grass",
-  "electric",
-  "ice",
-  "psychic",
-  "dragon"
- ],
  "statOffset": 6,
  "damageDivisor": 4,
  "moveMax": 3,
@@ -44,8 +35,23 @@
    "move": 2
   },
   {
-   "speed": 6,
+   "speed": 8,
    "move": 3
   }
- ]
+ ],
+ "crit": {
+  "base": 0.05,
+  "perPoint": 0.02,
+  "damage": 1.5,
+  "damagePerPoint": 0.03
+ },
+ "willpower": {
+  "spiritMax": 100,
+  "perHit": 15,
+  "perKnockout": 30,
+  "perAllyKnockout": 10,
+  "perPoint": 0.1,
+  "pumpedTurns": 1,
+  "resistPerPoint": 0.03
+ }
 }

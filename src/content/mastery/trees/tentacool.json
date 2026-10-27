@@ -8,11 +8,11 @@
  ],
  "focus": [
   {
-   "stat": "spDefense",
+   "stat": "willpower",
    "skill": "tentacool-acid-armor"
   },
   {
-   "stat": "spAttack",
+   "stat": "attack",
    "skill": "tentacool-sludge-wave"
   },
   {
@@ -325,7 +325,7 @@
   "tentacool-sludge-wave": {
    "id": "tentacool-sludge-wave",
    "name": "Sludge Wave",
-   "description": "Bond skill: a wave of sludge hits every adjacent foe (Power 90, Sp. Atk) and Poisons them 2 turns.",
+   "description": "Bond skill: a wave of sludge hits every adjacent foe (Power 90) and Poisons them 2 turns.",
    "grantsMove": "tentacool-sludge-wave"
   },
   "tentacool-rapid-spin": {

@@ -1,10 +1,10 @@
 {
  "talents": {
   "zapdos-zap-cannon": {
-   "description": "Bond képesség: elektromos ágyú legfeljebb 3 hexnyire (Power 100, Sp. Atk); 1 körig bénult."
+   "description": "Bond képesség: elektromos ágyú legfeljebb 3 hexnyire (Power 100); 1 körig bénult."
   },
   "zapdos-volt-switch": {
-   "description": "Bond képesség: villám legfeljebb 2 hexnyire (Power 70, Sp. Atk), majd kiszabadul a lekötésből."
+   "description": "Bond képesség: villám legfeljebb 2 hexnyire (Power 70), majd kiszabadul a lekötésből."
   },
   "zapdos-brave-bird": {
    "description": "Bond képesség: vakmerő zuhanórepülés egy szomszédos ellenfélre (Erő 100)."

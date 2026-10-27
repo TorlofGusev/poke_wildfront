@@ -25,7 +25,7 @@
    "description": "+25% sebzés státuszhatás alatt álló ellenfelekre; a Ghost támadások 15%-kal erősebbek."
   },
   "ghost-infiltrator": {
-   "description": "Szabad támadás nélkül lép el a lekötött ellenfelektől; +1 Sp. Atk."
+   "description": "Szabad támadás nélkül lép el a lekötött ellenfelektől; +1 Atk."
   },
   "ghost-shadow-shield": {
    "description": "15%-kal kevesebb sebzést kap; +1 HP."

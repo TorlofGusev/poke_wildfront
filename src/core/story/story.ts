@@ -155,9 +155,13 @@ export function applyReward(g: GameState, r: StoryReward | undefined): GameState
 }
 
 /** Finishing an NPC: its flag plus its reward. */
-export function completeNpc(g: GameState, npc: NpcDef, choice?: number): GameState {
+export function completeNpc(g: GameState, npc: NpcDef, choice?: number, ev?: { readonly trainerWin: number; readonly badge: number; readonly quest: number }): GameState {
   const reward = choice !== undefined ? npc.choices?.[choice]?.reward : npc.reward;
-  return applyReward(addFlags(g, [doneFlag(npc.id)]), reward);
+  const done = applyReward(addFlags(g, [doneFlag(npc.id)]), reward);
+  if (!ev) return done;
+  // EV: badges and the League pay most, other trainers some, helping people a little.
+  const gain = npc.kind === "leader" || npc.kind === "elite" || npc.kind === "champion" ? ev.badge : isBattler(npc) ? ev.trainerWin : reward ? ev.quest : 0;
+  return { ...done, ev: (done.ev ?? 0) + gain };
 }
 
 /** Losing to a grouped NPC (the Elite Four) resets the whole group. */

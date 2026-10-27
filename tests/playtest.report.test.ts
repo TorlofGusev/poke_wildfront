@@ -121,7 +121,7 @@ it.skipIf(!process.env.PLAYTEST)("playtest report", () => {
     const row = [1, 5, 10, 15, 20, 30].map((lv) => {
       const m = raise(s, lv, firstPick, 1);
       const { stats, maxHp } = memberStats(CONTENT, PROGRESSION, m);
-      return `L${lv} ${m.speciesId} HP${maxHp} A${stats.attack} D${stats.defense} SA${stats.spAttack} SD${stats.spDefense} S${stats.speed}`;
+      return `L${lv} ${m.speciesId} HP${maxHp} A${stats.attack} D${stats.defense} S${stats.speed} W${stats.willpower} C${stats.crit}`;
     });
     console.log(row.join(" | "));
   }

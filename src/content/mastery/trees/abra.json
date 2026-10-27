@@ -6,7 +6,7 @@
  ],
  "focus": [
   {
-   "stat": "spAttack",
+   "stat": "attack",
    "skill": "abra-future-sight"
   },
   {
@@ -14,7 +14,7 @@
    "skill": "abra-teleport"
   },
   {
-   "stat": "spDefense",
+   "stat": "willpower",
    "skill": "abra-reflect"
   }
  ],
@@ -307,7 +307,7 @@
   "abra-future-sight": {
    "id": "abra-future-sight",
    "name": "Future Sight",
-   "description": "Bond skill: a foreseen psychic strike up to 3 hexes away, no line of sight (Power 100, Sp. Atk).",
+   "description": "Bond skill: a foreseen psychic strike up to 3 hexes away, no line of sight (Power 100).",
    "grantsMove": "abra-future-sight"
   },
   "abra-teleport": {

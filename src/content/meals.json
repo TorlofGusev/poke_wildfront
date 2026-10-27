@@ -1,16 +1,16 @@
 {
  "simple-meal": {
   "id": "simple-meal",
-  "name": "Simple Meal",
-  "description": "A plain, filling meal. Full rest, no extra effect.",
+  "name": "Moomoo Milk",
+  "description": "Rich, fresh milk from Moomoo Farm. Full rest, no extra effect.",
   "ingredients": {
    "oran-berry": 2
   }
  },
  "hearty-stew": {
   "id": "hearty-stew",
-  "name": "Hearty Stew",
-  "description": "Warm and comforting: the team starts battles with +1 Bond.",
+  "name": "Big Malasada",
+  "description": "A big fried bun: the team starts battles with +1 Bond.",
   "ingredients": {
    "oran-berry": 2,
    "cheri-berry": 1
@@ -21,7 +21,7 @@
  },
  "spicy-curry": {
   "id": "spicy-curry",
-  "name": "Spicy Curry",
+  "name": "Rage Candy Bar",
   "description": "Fires everyone up: +10% damage.",
   "ingredients": {
    "cheri-berry": 2,
@@ -33,8 +33,8 @@
  },
  "calming-tea": {
   "id": "calming-tea",
-  "name": "Calming Tea",
-  "description": "Steady nerves: +1 Bond cap and 10% less damage taken.",
+  "name": "Old Gateau",
+  "description": "A soothing old-style cake: +1 Bond cap and 10% less damage taken.",
   "ingredients": {
    "pecha-berry": 2,
    "oran-berry": 1
@@ -48,8 +48,8 @@
  },
  "rawst-broth": {
   "id": "rawst-broth",
-  "name": "Rawst Broth",
-  "description": "Bitter but bracing: −10% damage taken.",
+  "name": "Pewter Crunchies",
+  "description": "Pewter City's crunchy snack: −10% damage taken.",
   "ingredients": {
    "rawst-berry": 2,
    "oran-berry": 1

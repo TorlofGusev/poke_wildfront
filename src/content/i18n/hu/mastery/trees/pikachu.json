@@ -4,7 +4,7 @@
    "description": "Bond képesség: elektromos gömböt dob egy max. 3 hexnyi ellenfélre (Erő 75, Speed alapján)."
   },
   "pikachu-electroweb": {
-   "description": "Bond képesség: elektromos háló max. 1 hexnyi, 1 hex területre (Erő 70, Sp. Atk); 1 körre lassít."
+   "description": "Bond képesség: elektromos háló max. 1 hexnyi, 1 hex területre (Erő 70); 1 körre lassít."
   },
   "pikachu-volt-tackle": {
    "description": "Bond képesség: teljesen feltöltött roham (Erő 100, Attack), amely 1 körre megbénít (Paralysis)."

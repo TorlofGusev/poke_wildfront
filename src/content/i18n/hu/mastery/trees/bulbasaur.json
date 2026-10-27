@@ -1,7 +1,7 @@
 {
  "talents": {
   "bulbasaur-frenzy-plant": {
-   "description": "Bond képesség: hatalmas gyökerek zúznak össze egy max. 3 hexnyire lévő ellenfelet (Erő 105, Sp. Atk)."
+   "description": "Bond képesség: hatalmas gyökerek zúznak össze egy max. 3 hexnyire lévő ellenfelet (Erő 105)."
   },
   "bulbasaur-protect": {
    "description": "Bond képesség: hagymája mögé húzódik, és 1 körre Protected lesz."

@@ -1,8 +1,9 @@
 import { describe, expect, it } from "vitest";
 import { CONTENT, PROGRESSION } from "../../src/content";
-import { applyAction, createBattle, isSpecialMove, maxHpAt, moveRange, moveUnavailableReason } from "../../src/core/battle";
-import { allocatePoint, buy, equipItem, sell, newMember, resolveBattle, usePotion, type GameState } from "../../src/core/party";
+import { applyAction, createBattle, maxHpAt, moveRange, moveUnavailableReason } from "../../src/core/battle";
+import { allocatePoint, useRareCandy, buy, equipItem, sell, newMember, resolveBattle, usePotion, type GameState } from "../../src/core/party";
 import {
+  statOffer,
   chooseFocus,
   chooseTalent,
   focusOptions,
@@ -31,17 +32,20 @@ describe("levels and stats", () => {
     const fresh = starter("charmander", 5);
     // Points from the 4 levels it arrived with are pre-spent along the Fire playstyle.
     expect(fresh.unspentPoints).toBe(0);
-    expect(fresh.statPoints).toEqual({ hp: 1, attack: 1, defense: 0, spAttack: 2, spDefense: 0, speed: 0 });
+    expect(fresh.statPoints).toEqual({ hp: 1, attack: 2, defense: 0, speed: 1, willpower: 0, crit: 0 });
     const up = gainXp(CONTENT, PROGRESSION, fresh, xpToNext(PROGRESSION, 5)).member;
     expect(up.unspentPoints).toBe(1);
     expect(memberStats(CONTENT, PROGRESSION, up).stats).toEqual(memberStats(CONTENT, PROGRESSION, fresh).stats);
   });
 
   it("type profiles give small stats: Fire is a striker, Rock a fortress", () => {
-    expect(CONTENT.species.charmander!.stats).toEqual({ hp: 4, attack: 7, defense: 3, spAttack: 8, spDefense: 5, speed: 6 });
+    expect(CONTENT.species.charmander!.stats).toEqual({ hp: 4, attack: 9, defense: 4, speed: 5, willpower: 4, crit: 4 });
     // Geodude: Rock/Ground average, +1 Defense nudge.
-    expect(CONTENT.species.geodude!.stats).toEqual({ hp: 6, attack: 6, defense: 8, spAttack: 3, spDefense: 4, speed: 1 });
+    expect(CONTENT.species.geodude!.stats).toEqual({ hp: 6, attack: 7, defense: 9, speed: 2, willpower: 5, crit: 4 });
     for (const sp of Object.values(CONTENT.species)) for (const v of Object.values(sp.stats)) expect(v).toBeLessThanOrEqual(10);
+    // Every type spends the same budget; types differ only in where it goes.
+    const sums = Object.values(CONTENT.types).map((ty) => Object.values(ty.profile).reduce((a, b) => a + b, 0));
+    expect(new Set(sums).size).toBe(1);
   });
 
   it("the focus gives a bonus, then +1 every 2 levels; max HP grows with level and Defense", () => {
@@ -55,12 +59,6 @@ describe("levels and stats", () => {
     // Sturdier species (higher base Defense) gain more HP per level; Defense growth itself does not add HP.
     expect(maxHpAt(CONTENT, 5, 8, 20) - maxHpAt(CONTENT, 5, 3, 20)).toBe(Math.round(19 * (r.hpPerLevel + r.hpPerLevelPerDefense * 8)) - Math.round(19 * (r.hpPerLevel + r.hpPerLevelPerDefense * 3)));
     expect(at(20).maxHp - at(10).maxHp).toBe(maxHpAt(CONTENT, at(20).stats.hp, CONTENT.species.squirtle!.stats.defense, 20) - maxHpAt(CONTENT, at(10).stats.hp, CONTENT.species.squirtle!.stats.defense, 10));
-  });
-
-  it("splits moves by type: Fire/Water/Grass/... use Sp. Atk vs Sp. Def, the rest Attack vs Defense", () => {
-    expect(isSpecialMove(CONTENT, CONTENT.moves.ember!)).toBe(true);
-    expect(isSpecialMove(CONTENT, CONTENT.moves.tackle!)).toBe(false);
-    expect(isSpecialMove(CONTENT, { ...CONTENT.moves.tackle!, category: "special" })).toBe(true);
   });
 
   it("Body Press hits with Defense (the canon exception); other moves use Attack / Sp. Atk", () => {
@@ -222,16 +220,25 @@ describe("money, shop and items", () => {
     expect(() => equipItem(prog, g, "a", "potion")).toThrow(/cannot be held/);
   });
 
-  it("spends level-up points on any stat; a Candy makes one count double", () => {
-    let g: GameState = { ...game(), roster: { ...game().roster, party: [pm("a", "fast", 0, 10, { unspentPoints: 2 })] }, inventory: { balls: {}, items: { candy: 1 } } };
-    g = allocatePoint(prog, g, "a", "speed");
-    g = allocatePoint(prog, g, "a", "attack", true);
-    expect(g.roster.party[0]!.statPoints).toMatchObject({ speed: 1, attack: 2 });
-    expect(g.roster.party[0]!.unspentPoints).toBe(0);
-    expect(g.inventory.items.candy).toBe(0);
-    expect(() => allocatePoint(prog, g, "a", "hp")).toThrow(/no stat points/);
-    const more = { ...g, roster: { ...g.roster, party: [{ ...g.roster.party[0]!, unspentPoints: 1 }] } };
-    expect(() => allocatePoint(prog, more, "a", "hp", true)).toThrow(/no Candy/);
+  it("spends level-up points on an offered stat, EV upgrades +1 to +2; a Rare Candy gives one level", () => {
+    let g: GameState = { ...game(), ev: 7, roster: { ...game().roster, party: [pm("a", "fast", 0, 10, { unspentPoints: 2 })] }, inventory: { balls: {}, items: { candy: 1 } } };
+    const offer = statOffer(content, prog, g.roster.party[0]!);
+    expect(offer).toHaveLength(3);
+    const missing = (["hp", "attack", "defense", "speed", "willpower", "crit"] as const).find((st) => !offer.some((o) => o.stat === st))!;
+    g = allocatePoint(content, prog, g, "a", missing, true);
+    expect(g.ev).toBe(0);
+    expect(g.roster.party[0]!.statPoints[missing]).toBe(2);
+    const next = statOffer(content, prog, g.roster.party[0]!);
+    const other = (["hp", "attack", "defense", "speed", "willpower", "crit"] as const).find((st) => !next.some((o) => o.stat === st))!;
+    expect(() => allocatePoint(content, prog, g, "a", other)).toThrow(/EV/);
+    g = allocatePoint(content, prog, g, "a", next[0]!.stat);
+    expect(() => allocatePoint(content, prog, g, "a", "hp")).toThrow();
+    const real: GameState = { ...game(), roster: { ...game().roster, party: [starter("pidgey", 5)] }, inventory: { balls: {}, items: { candy: 1 } } };
+    const uid = real.roster.party[0]!.uid;
+    const up = useRareCandy(CONTENT, PROGRESSION, real, uid).game;
+    expect(up.roster.party[0]!.level).toBe(6);
+    expect(up.inventory.items.candy).toBe(0);
+    expect(() => useRareCandy(CONTENT, PROGRESSION, up, uid)).toThrow(/no Rare Candy/);
   });
 
   it("held items change battle stats", () => {
@@ -279,7 +286,7 @@ describe("mastery grid", () => {
   const charmander = (level: number, talents: string[] = []) => ({ ...starter("charmander", level), focus: "attack" as const, talents: ["charmander-flare-blitz", ...talents] });
 
   it("each line has one hand-made tree: three focuses, then the same rows whatever the focus", () => {
-    expect(focusOptions(PROGRESSION, "charmeleon").map((f) => f.stat)).toEqual(["attack", "spAttack", "speed"]);
+    expect(focusOptions(PROGRESSION, "charmeleon").map((f) => f.stat)).toEqual(["attack", "attack", "speed"]);
     expect(masteryGrid(PROGRESSION, "charizard").map((r) => r.level)).toEqual([4, 6, 9, 12, 15, 18, 21, 24, 27, 30]);
     expect(masteryGrid(PROGRESSION, "charmander")).toEqual(masteryGrid(PROGRESSION, "charizard"));
   });
@@ -385,5 +392,17 @@ describe("level-gap XP", () => {
     expect(scaledXp(100, 20, [10])).toBe(10);
     expect(scaledXp(100, 7, [10])).toBe(130);
     expect(scaledXp(100, 1, [10])).toBe(150);
+  });
+});
+
+describe("EV rewards", () => {
+  it("badges pay most, trainers some, helpful NPCs a little; the Rare Candy is not sold", async () => {
+    const { completeNpc } = await import("../../src/core/story");
+    const ev = PROGRESSION.rules.ev;
+    const g = { roster: { party: [], storage: [], fallen: [] }, inventory: { balls: {}, items: {} }, nextUid: 1, money: 0, ev: 0 } as unknown as GameState;
+    expect(completeNpc(g, { id: "l", kind: "leader" } as never, undefined, ev).ev).toBe(ev.badge);
+    expect(completeNpc(g, { id: "t", kind: "trainer", team: [] } as never, undefined, ev).ev).toBe(ev.trainerWin);
+    expect(completeNpc(g, { id: "q", kind: "talk", reward: { money: 10 } } as never, undefined, ev).ev).toBe(ev.quest);
+    expect(() => buy(CONTENT, PROGRESSION, { ...g, money: 99999 }, "candy")).toThrow(/not sold/);
   });
 });

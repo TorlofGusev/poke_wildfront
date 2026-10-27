@@ -4,7 +4,7 @@
  ],
  "focus": [
   {
-   "stat": "spAttack",
+   "stat": "attack",
    "skill": "mew-swift"
   },
   {
@@ -306,7 +306,7 @@
   "mew-swift": {
    "id": "mew-swift",
    "name": "Swift",
-   "description": "Bond skill: never-missing stars up to 3 hexes away, even around others (Power 85, Sp. Atk).",
+   "description": "Bond skill: never-missing stars up to 3 hexes away, even around others (Power 85).",
    "grantsMove": "mew-swift"
   },
   "mew-zen-headbutt": {

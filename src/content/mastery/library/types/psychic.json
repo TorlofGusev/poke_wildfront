@@ -65,7 +65,7 @@
   "psychic-magic-guard": {
    "id": "psychic-magic-guard",
    "name": "Magic Guard",
-   "description": "Immune to Poison and Burn; +1 Sp. Def.",
+   "description": "Immune to Poison and Burn; +1 Willpower.",
    "requiresType": "psychic",
    "mods": {
     "statusImmune": [
@@ -74,8 +74,8 @@
     ]
    },
    "stats": {
-    "spDefense": 1,
-    "spAttack": 1
+    "willpower": 1,
+    "attack": 1
    }
   },
   "psychic-precognition": {
@@ -88,7 +88,7 @@
    },
    "stats": {
     "speed": 1,
-    "spAttack": 1
+    "attack": 1
    }
   },
   "psychic-skill-extrasensory": {
@@ -114,7 +114,7 @@
     "shootOver": true
    },
    "stats": {
-    "spAttack": 1
+    "attack": 1
    }
   },
   "psychic-skill-expanding-force": {
@@ -138,32 +138,32 @@
     }
    },
    "stats": {
-    "spAttack": 2
+    "attack": 2
    }
   },
   "psychic-telepathy": {
    "id": "psychic-telepathy",
    "name": "Telepathy",
-   "description": "+20% damage against foes carrying an ally's status (combo); +1 Sp. Def.",
+   "description": "+20% damage against foes carrying an ally's status (combo); +1 Willpower.",
    "requiresType": "psychic",
    "mods": {
     "vsSetupDamage": 1.2
    },
    "stats": {
-    "spDefense": 1,
-    "spAttack": 1
+    "willpower": 1,
+    "attack": 1
    }
   },
   "psychic-inner-focus": {
    "id": "psychic-inner-focus",
    "name": "Inner Focus",
-   "description": "Sheds statuses foes put on it each turn; +1 Sp. Atk.",
+   "description": "Sheds statuses foes put on it each turn; +1 Atk.",
    "requiresType": "psychic",
    "mods": {
     "shedStatuses": true
    },
    "stats": {
-    "spAttack": 2
+    "attack": 2
    }
   },
   "psychic-skill-future-sight": {

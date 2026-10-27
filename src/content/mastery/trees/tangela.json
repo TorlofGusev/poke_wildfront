@@ -8,7 +8,7 @@
    "skill": "tangela-ingrain"
   },
   {
-   "stat": "spAttack",
+   "stat": "attack",
    "skill": "tangela-solar-beam"
   },
   {
@@ -305,13 +305,13 @@
   "tangela-solar-beam": {
    "id": "tangela-solar-beam",
    "name": "Solar Beam",
-   "description": "Bond skill: a beam of gathered sunlight at a foe up to 3 hexes away (Power 100, Sp. Atk).",
+   "description": "Bond skill: a beam of gathered sunlight at a foe up to 3 hexes away (Power 100).",
    "grantsMove": "tangela-solar-beam"
   },
   "tangela-wring-out": {
    "id": "tangela-wring-out",
    "name": "Wring Out",
-   "description": "Bond skill: wrings an adjacent foe in its vines (Power 80, Sp. Atk) and holds it.",
+   "description": "Bond skill: wrings an adjacent foe in its vines (Power 80) and holds it.",
    "grantsMove": "tangela-wring-out"
   },
   "tangela-leaf-guard": {

@@ -101,9 +101,9 @@
    "description": "Capstone. When a foe with its status faints, adjacent foes catch that status for 1 turn.",
    "stats": {
     "defense": 1,
-    "spAttack": 1,
+    "attack": 1,
     "hp": 1,
-    "spDefense": 1
+    "willpower": 1
    },
    "mods": {
     "statusSpreadOnKo": true
@@ -112,12 +112,12 @@
   "controller-prankster": {
    "id": "controller-prankster",
    "name": "Prankster",
-   "description": "Its non-damaging special moves recharge 1 turn faster (minimum 1); +1 Sp. Def.",
+   "description": "Its non-damaging special moves recharge 1 turn faster (minimum 1); +1 Willpower.",
    "mods": {
     "statusCooldownReduction": 1
    },
    "stats": {
-    "spDefense": 1
+    "willpower": 1
    }
   },
   "skill-controller-gravity": {
@@ -138,7 +138,7 @@
   "controller-safeguard": {
    "id": "controller-safeguard",
    "name": "Safeguard",
-   "description": "Immune to all harmful statuses; +1 Sp. Def, +1 HP.",
+   "description": "Immune to all harmful statuses; +1 Willpower, +1 HP.",
    "mods": {
     "statusImmune": [
      "poison",
@@ -152,7 +152,7 @@
     ]
    },
    "stats": {
-    "spDefense": 1,
+    "willpower": 1,
     "hp": 1
    }
   },

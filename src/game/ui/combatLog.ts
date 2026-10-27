@@ -62,6 +62,10 @@ export function formatEvent(e: BattleEvent, ctx: LogContext): LogEntry | null {
         : e.effectiveness > 1 ? ` ${tag("good", t("(super effective ×{n})", { n: e.effectiveness }))}` : ` ${tag("dim", t("(not very effective ×{n})", { n: e.effectiveness }))}`;
       return { text: t("{unit} takes {dmg}{why}{eff} — {hp} HP left", { unit: name(e.unitId), dmg: tag("dmg", t("{n} damage", { n: e.amount })), why, eff, hp: e.hp }), tone: "damage" };
     }
+    case "critical":
+      return { text: t("{x} {unit} lands a critical hit on {target}", { x: tag("good", t("Critical!")), unit: name(e.unitId), target: name(e.targetId) }), tone: side(e.unitId) };
+    case "statusResisted":
+      return { text: t("{unit} shrugs off {status} through willpower", { unit: name(e.unitId), status: e.status }), tone: "info" };
     case "healed":
       return { text: t("{unit} recovers {x} — {hp} HP", { unit: name(e.unitId), x: tag("heal", `${e.amount} HP`), hp: e.hp }), tone: "heal" };
     case "displaced": {

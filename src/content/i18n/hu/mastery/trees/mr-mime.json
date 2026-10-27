@@ -1,7 +1,7 @@
 {
  "talents": {
   "mr-mime-future-sight": {
-   "description": "Kötelék-képesség: előre látott pszichikus robbanás legfeljebb 3 hexnyire (Erő 100, Sp. Atk)."
+   "description": "Kötelék-képesség: előre látott pszichikus robbanás legfeljebb 3 hexnyire (Erő 100)."
   },
   "mr-mime-barrier": {
    "description": "Kötelék-képesség: falat mímel max. 2 hexnyire; az 1 hex körzet szövetségesei 2 körre Fortified."

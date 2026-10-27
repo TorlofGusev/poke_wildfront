@@ -12,7 +12,7 @@
    "skill": "farfetchd-acrobatics"
   },
   {
-   "stat": "spAttack",
+   "stat": "attack",
    "skill": "farfetchd-air-slash"
   }
  ],
@@ -295,7 +295,7 @@
   "farfetchd-air-slash": {
    "id": "farfetchd-air-slash",
    "name": "Air Slash",
-   "description": "Bond skill: a blade of air at a foe up to 3 hexes away (Power 85, Sp. Atk).",
+   "description": "Bond skill: a blade of air at a foe up to 3 hexes away (Power 85).",
    "grantsMove": "farfetchd-air-slash"
   },
   "farfetchd-defiant": {

@@ -1,7 +1,7 @@
 import type { BaseStats } from "./content";
 
 export type StatName = keyof BaseStats;
-export const STAT_NAMES: readonly StatName[] = ["hp", "attack", "defense", "spAttack", "spDefense", "speed"];
+export const STAT_NAMES: readonly StatName[] = ["hp", "attack", "defense", "speed", "willpower", "crit"];
 
 export interface TypeProfile {
   /** Level-1 stats of a Pokémon of this type (the type's playstyle). */
@@ -57,7 +57,8 @@ export function speciesStats(types: Readonly<Record<string, TypeProfile>>, typeI
       if (!p) throw new Error(`unknown type ${t}`);
       return sum + p.profile[s];
     }, 0) / typeIds.length;
-    out[s] = Math.max(0, Math.round(avg) + (nudge[s] ?? 0));
+    // Level-1 stats stay within 0–10.
+    out[s] = Math.min(10, Math.max(0, Math.round(avg) + (nudge[s] ?? 0)));
   }
   return out;
 }

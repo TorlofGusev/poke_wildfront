@@ -109,7 +109,7 @@
     }
    },
    "stats": {
-    "spAttack": 1,
+    "attack": 1,
     "hp": 1
    }
   },
@@ -123,7 +123,7 @@
    },
    "stats": {
     "hp": 1,
-    "spAttack": 1
+    "attack": 1
    }
   },
   "ghost-skill-shadow-ball": {
@@ -149,7 +149,7 @@
     "koHeal": 0.25
    },
    "stats": {
-    "spAttack": 1
+    "attack": 1
    }
   },
   "ghost-skill-phantom-force": {
@@ -171,19 +171,19 @@
     }
    },
    "stats": {
-    "spAttack": 2
+    "attack": 2
    }
   },
   "ghost-infiltrator": {
    "id": "ghost-infiltrator",
    "name": "Infiltrator",
-   "description": "Steps away from engaged foes without free attacks; +1 Sp. Atk.",
+   "description": "Steps away from engaged foes without free attacks; +1 Atk.",
    "requiresType": "ghost",
    "mods": {
     "disengage": true
    },
    "stats": {
-    "spAttack": 1,
+    "attack": 1,
     "speed": 1
    }
   },
@@ -197,7 +197,7 @@
    },
    "stats": {
     "hp": 2,
-    "spAttack": 1
+    "attack": 1
    }
   },
   "ghost-skill-poltergeist": {

@@ -38,6 +38,8 @@ export interface ItemDef {
   readonly name: string;
   readonly description: string;
   readonly kind: "held" | "potion" | "candy" | "food" | "remedy";
+  /** Never in the Mart (Rare Candy): found or given only. */
+  readonly notSold?: boolean;
   readonly price: number;
   /** Held items: battle modifiers. */
   readonly mods?: Partial<UnitModifiers>;
@@ -61,8 +63,10 @@ export interface ProgressionRules {
   readonly pointsPerLevel: number;
   /** Free stat points gained on evolving. */
   readonly evolutionPoints: number;
-  /** Extra points when a Candy is used with a stat point. */
-  readonly candyBonus: number;
+  /** Level-up points: each offers `size` stats (one may come as +2); the player picks one. */
+  readonly statOffer: { readonly size: number; readonly doubleChance: number };
+  /** EV (Effort): earned by battles, badges and quests; `upgradeCost` turns a +1 into +2, `offerCost` buys a stat that was not offered. */
+  readonly ev: { readonly upgradeCost: number; readonly offerCost: number; readonly wildWin: number; readonly trainerWin: number; readonly badge: number; readonly quest: number };
   /** Candies earned per won battle. */
   readonly candiesPerVictory: number;
   /** XP each deployed Pokémon earns per defeated enemy level. */

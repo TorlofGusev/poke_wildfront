@@ -10,7 +10,7 @@
    "skill": "charmander-flare-blitz"
   },
   {
-   "stat": "spAttack",
+   "stat": "attack",
    "skill": "charmander-blast-burn"
   },
   {
@@ -268,7 +268,7 @@
   "charmander-blast-burn": {
    "id": "charmander-blast-burn",
    "name": "Blast Burn",
-   "description": "Bond skill: an explosion of fire up to 2 hexes away (Power 80, Sp. Atk) hitting a 1-hex area.",
+   "description": "Bond skill: an explosion of fire up to 2 hexes away (Power 80) hitting a 1-hex area.",
    "grantsMove": "charmander-blast-burn"
   },
   "charmander-flame-charge": {

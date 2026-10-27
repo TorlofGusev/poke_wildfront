@@ -10,7 +10,18 @@
  "maxActiveMoves": 3,
  "pointsPerLevel": 1,
  "evolutionPoints": 2,
- "candyBonus": 1,
- "candiesPerVictory": 1,
- "respecCostPerLevel": 20
+ "candiesPerVictory": 0,
+ "respecCostPerLevel": 20,
+ "statOffer": {
+  "size": 3,
+  "doubleChance": 0.2
+ },
+ "ev": {
+  "upgradeCost": 4,
+  "wildWin": 1,
+  "trainerWin": 3,
+  "badge": 10,
+  "quest": 2,
+  "offerCost": 3
+ }
 }

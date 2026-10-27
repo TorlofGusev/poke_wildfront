@@ -23,9 +23,6 @@
  "sharp-beak": {
   "description": "A Flying támadások 20%-kal többet sebeznek."
  },
- "quick-claw": {
-  "description": "+1 mozgás."
- },
  "leftovers": {
   "description": "Minden kör elején gyógyít max HP 6%-ot."
  },
@@ -33,7 +30,8 @@
   "description": "Minden támadás 10%-kal többet sebez."
  },
  "candy": {
-  "description": "Egy szintlépési ponttal együtt használva +1 helyett +2-t ad bármelyik statra."
+  "description": "1 szinttel emeli egy Pokémon szintjét.",
+  "name": "Rare Candy"
  },
  "oran-berry": {
   "description": "Gyakori, laktató bogyó. Hozzávaló a tábori ételekhez."
@@ -49,5 +47,48 @@
  },
  "rawst-berry": {
   "description": "Kemény, keserű bogyó. Hozzávaló a tábori ételekhez."
+ },
+ "focus-band": {
+  "name": "Focus Band",
+  "description": "Csatánként egyszer 1 HP-val túléli a kiütő csapást."
+ },
+ "soft-sand": {
+  "description": "A Ground támadások 20%-kal többet sebeznek."
+ },
+ "never-melt-ice": {
+  "description": "Az Ice támadások 20%-kal többet sebeznek."
+ },
+ "spell-tag": {
+  "description": "A Ghost támadások 20%-kal többet sebeznek."
+ },
+ "black-belt": {
+  "description": "A Fighting támadások 20%-kal többet sebeznek."
+ },
+ "poison-barb": {
+  "description": "A Poison támadások 20%-kal többet sebeznek."
+ },
+ "silver-powder": {
+  "description": "A Bug támadások 20%-kal többet sebeznek."
+ },
+ "twisted-spoon": {
+  "description": "A Psychic támadások 20%-kal többet sebeznek."
+ },
+ "dragon-fang": {
+  "description": "A Dragon támadások 20%-kal többet sebeznek."
+ },
+ "silk-scarf": {
+  "description": "A Normal támadások 20%-kal többet sebeznek."
+ },
+ "shell-bell": {
+  "description": "15% max HP-t gyógyul, ha kiüt egy ellenfelet."
+ },
+ "bright-powder": {
+  "description": "10%-kal kevesebb sebzést kap."
+ },
+ "kings-rock": {
+  "description": "Az általa okozott státuszok 1 körrel tovább tartanak."
+ },
+ "shed-shell": {
+  "description": "Szabad ütés nélkül léphet el a lefogó ellenfelek mellől."
  }
 }

@@ -2,7 +2,7 @@ import { CONTENT, PROGRESSION } from "../src/content";
 import { planTurn, type AiWeights } from "../src/core/ai";
 import { applyAction, createBattle, STAT_NAMES, type BattleState, type UnitSetup } from "../src/core/battle";
 import { newMember, type PartyMember } from "../src/core/party";
-import { chooseFocus, chooseTalent, defaultActiveMoves, focusOptions, gainXp, memberStats, pendingChoice, spendPoints, talentOptions, xpToNext } from "../src/core/progression";
+import { chooseFocus, chooseTalent, defaultActiveMoves, focusOptions, gainXp, memberStats, pendingChoice, statOffer, takeOffer, talentOptions, xpToNext } from "../src/core/progression";
 
 /** AI-vs-AI battle helpers shared by the report tests (not pass/fail tests). */
 // Mirror-symmetric arena and start positions, so neither side has a terrain advantage.
@@ -32,9 +32,9 @@ export function develop(m: PartyMember, pick: Pick, seed: number, candies = { n:
   const base = CONTENT.species[cur.speciesId]!.stats;
   const best = [...STAT_NAMES].filter((s) => s !== "hp").sort((a, b) => base[b] - base[a]);
   for (let i = 0; cur.unspentPoints > 0; i++) {
-    const bonus = candies.n > 0 ? PROGRESSION.rules.candyBonus : 0;
-    if (bonus) candies.n--;
-    cur = spendPoints(cur, ([best[0]!, "hp", best[1]!] as const)[i % 3]!, 1 + bonus, 1);
+    const want = [best[0]!, "hp", best[1]!][i % 3]!;
+    const offer = statOffer(CONTENT, PROGRESSION, cur);
+    cur = takeOffer(CONTENT, PROGRESSION, cur, (offer.find((o) => o.stat === want) ?? offer[0]!).stat);
   }
   return cur;
 }

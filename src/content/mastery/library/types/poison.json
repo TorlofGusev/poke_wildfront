@@ -103,7 +103,7 @@
     }
    },
    "stats": {
-    "spAttack": 1,
+    "attack": 1,
     "hp": 1
    }
   },
@@ -130,7 +130,7 @@
     "koHeal": 0.15
    },
    "stats": {
-    "spAttack": 1
+    "attack": 1
    }
   },
   "poison-skill-sludge-wave": {
@@ -152,7 +152,7 @@
     }
    },
    "stats": {
-    "spAttack": 2
+    "attack": 2
    }
   },
   "poison-liquid-ooze": {
@@ -165,7 +165,7 @@
    },
    "stats": {
     "hp": 1,
-    "spAttack": 1
+    "attack": 1
    }
   },
   "poison-heal": {

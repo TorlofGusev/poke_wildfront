@@ -1,7 +1,7 @@
 {
  "talents": {
   "koffing-sludge-bomb": {
-   "description": "Bond képesség: iszapot hajít egy legfeljebb 3 hexnyire álló ellenfélre (Erő 90, Sp. Atk), 2 körre megmérgezi."
+   "description": "Bond képesség: iszapot hajít egy legfeljebb 3 hexnyire álló ellenfélre (Erő 90), 2 körre megmérgezi."
   },
   "koffing-smokescreen": {
    "description": "Bond képesség: füst takar el egy legfeljebb 2 hexnyire álló társat és szomszédait, 1 körre Fortified."

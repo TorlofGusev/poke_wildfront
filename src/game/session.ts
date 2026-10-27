@@ -22,7 +22,7 @@ const freshWorld = () => newWorld(WORLD_CONTENT, WORLD, Date.now() >>> 0);
 export function newGame(team: readonly string[] = PLAYTEST_TEAM): GameState {
   return {
     roster: { party: team.map((s, i) => newMember(CONTENT, PROGRESSION, s, i + 1, STARTING_LEVEL)), storage: [], fallen: [] },
-    inventory: { balls: { "poke-ball": 5, "great-ball": 2, "ultra-ball": 1 }, items: { potion: 2, candy: 3, "oran-berry": 4, "cheri-berry": 2, "pecha-berry": 2 } },
+    inventory: { balls: { "poke-ball": 5, "great-ball": 2, "ultra-ball": 1 }, items: { potion: 2, candy: 1, "oran-berry": 4, "cheri-berry": 2, "pecha-berry": 2 } },
     nextUid: team.length + 1,
     world: freshWorld(),
     money: 500,

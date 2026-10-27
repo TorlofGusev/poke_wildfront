@@ -3,7 +3,7 @@
  * talents. Multipliers start at 1, bonuses at 0; sources are combined with `combineModifiers`.
  */
 export interface UnitModifiers {
-  /** Added to movement points (fatigue −1, Quick Claw +1). */
+  /** Added to movement points (fatigue −1). */
   readonly moveBonus: number;
   /** Extra max range on moves that already reach 2+ hexes; only Bond moves may go past 3 (see moveRange). */
   readonly rangeBonus: number;

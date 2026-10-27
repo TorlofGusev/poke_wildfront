@@ -10,7 +10,7 @@
    "skill": "nidoran-m-horn-drill"
   },
   {
-   "stat": "spAttack",
+   "stat": "attack",
    "skill": "nidoran-m-sludge-bomb"
   },
   {
@@ -303,7 +303,7 @@
   "nidoran-m-sludge-bomb": {
    "id": "nidoran-m-sludge-bomb",
    "name": "Sludge Bomb",
-   "description": "Bond skill: lobs sludge up to 3 hexes away (Power 90, Sp. Atk), Poisoning the foe for 2 turns.",
+   "description": "Bond skill: lobs sludge up to 3 hexes away (Power 90), Poisoning the foe for 2 turns.",
    "grantsMove": "nidoran-m-sludge-bomb"
   },
   "nidoran-m-poison-jab": {

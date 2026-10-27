@@ -6,11 +6,11 @@
  ],
  "focus": [
   {
-   "stat": "spAttack",
+   "stat": "attack",
    "skill": "oddish-solar-beam"
   },
   {
-   "stat": "spDefense",
+   "stat": "willpower",
    "skill": "oddish-grassy-terrain"
   },
   {
@@ -309,7 +309,7 @@
   "oddish-solar-beam": {
    "id": "oddish-solar-beam",
    "name": "Solar Beam",
-   "description": "Bond skill: a beam of gathered sunlight at a foe up to 3 hexes away (Power 110, Sp. Atk).",
+   "description": "Bond skill: a beam of gathered sunlight at a foe up to 3 hexes away (Power 110).",
    "grantsMove": "oddish-solar-beam"
   },
   "oddish-grassy-terrain": {

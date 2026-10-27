@@ -13,7 +13,7 @@
    "skill": "grimer-gunk-shot"
   },
   {
-   "stat": "spAttack",
+   "stat": "attack",
    "skill": "grimer-sludge-bomb"
   }
  ],
@@ -340,7 +340,7 @@
   "grimer-sludge-bomb": {
    "id": "grimer-sludge-bomb",
    "name": "Sludge Bomb",
-   "description": "Bond skill: lobs sludge up to 2 hexes away (Power 90, Sp. Atk) hitting a 1-hex area.",
+   "description": "Bond skill: lobs sludge up to 2 hexes away (Power 90) hitting a 1-hex area.",
    "grantsMove": "grimer-sludge-bomb"
   },
   "grimer-poison-touch": {

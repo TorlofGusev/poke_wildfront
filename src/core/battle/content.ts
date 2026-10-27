@@ -6,11 +6,11 @@ export interface BaseStats {
   readonly hp: number;
   readonly attack: number;
   readonly defense: number;
-  /** Power of special moves (see BattleRules.specialTypes). */
-  readonly spAttack: number;
-  /** Defense against special moves. */
-  readonly spDefense: number;
   readonly speed: number;
+  /** Fills the Spirit bar faster and resists statuses foes inflict. */
+  readonly willpower: number;
+  /** Chance and size of critical hits. */
+  readonly crit: number;
 }
 
 export interface SpeciesDef {
@@ -70,7 +70,7 @@ export interface MoveDef {
   readonly shape: TargetShape;
   /** Which units the move affects. */
   readonly affects: "enemies" | "allies";
-  /** Physical (Attack vs Defense) or special (Sp. Atk vs Sp. Def); defaults by type, see BattleRules.specialTypes. */
+  /** The canon physical/special category (flavour only: every move hits with Attack against Defense). */
   readonly category?: "physical" | "special";
   /** Turns before a special can be used again (special moves only). */
   readonly cooldown?: number;
@@ -110,7 +110,7 @@ export interface StatusDef {
  * Combat formulas (see docs/design/identity-and-stats-proposal.md):
  * - Max HP = hpBase + hpPerPoint × HP + (level − 1) × (hpPerLevel + hpPerLevelPerDefense × species base Def)
  * - Damage = max(1, round(power × (statOffset + Atk) / (statOffset + Def) × multipliers / damageDivisor)),
- *   with Sp. Atk / Sp. Def for special moves
+ *   × the crit multiplier on a critical hit (chance and size from Crit)
  * - Movement by Speed: the highest `moveBySpeed` step the Speed reaches (1 hex up to 3 Speed, 2 from 4, 3 from 6)
  */
 export interface BattleRules {
@@ -119,8 +119,13 @@ export interface BattleRules {
   /** Max HP gained per level above 1, plus a share of Defense (the Pokémon's constitution). */
   readonly hpPerLevel: number;
   readonly hpPerLevelPerDefense: number;
-  /** Moves of these types are special unless the move sets its own category (the classic type split). */
-  readonly specialTypes: readonly PokemonType[];
+  /** Critical hits: chance = base + perPoint × Crit, damage × (damage + damagePerPoint × Crit). */
+  readonly crit: { readonly base: number; readonly perPoint: number; readonly damage: number; readonly damagePerPoint: number };
+  /** Willpower: Spirit bar gains (× 1 + perPoint × Willpower) and status resistance per point. */
+  readonly willpower: {
+    readonly spiritMax: number; readonly perHit: number; readonly perKnockout: number; readonly perAllyKnockout: number;
+    readonly perPoint: number; readonly pumpedTurns: number; readonly resistPerPoint: number;
+  };
   readonly statOffset: number;
   readonly damageDivisor: number;
   /** Movement points by Speed: each step's `move` applies from its `speed` on (ascending). */

@@ -4,7 +4,7 @@
  ],
  "focus": [
   {
-   "stat": "spAttack",
+   "stat": "attack",
    "skill": "zapdos-zap-cannon"
   },
   {
@@ -313,13 +313,13 @@
   "zapdos-zap-cannon": {
    "id": "zapdos-zap-cannon",
    "name": "Zap Cannon",
-   "description": "Bond skill: an electric blast up to 3 hexes away (Power 100, Sp. Atk); Paralyzed 1 turn.",
+   "description": "Bond skill: an electric blast up to 3 hexes away (Power 100); Paralyzed 1 turn.",
    "grantsMove": "zapdos-zap-cannon"
   },
   "zapdos-volt-switch": {
    "id": "zapdos-volt-switch",
    "name": "Volt Switch",
-   "description": "Bond skill: a bolt up to 2 hexes away (Power 70, Sp. Atk), then it slips out of engagement.",
+   "description": "Bond skill: a bolt up to 2 hexes away (Power 70), then it slips out of engagement.",
    "grantsMove": "zapdos-volt-switch"
   },
   "zapdos-brave-bird": {

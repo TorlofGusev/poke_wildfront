@@ -4,11 +4,11 @@
  ],
  "focus": [
   {
-   "stat": "spAttack",
+   "stat": "attack",
    "skill": "articuno-freeze-dry"
   },
   {
-   "stat": "spDefense",
+   "stat": "willpower",
    "skill": "articuno-aurora-veil"
   },
   {
@@ -320,7 +320,7 @@
   "articuno-freeze-dry": {
    "id": "articuno-freeze-dry",
    "name": "Freeze-Dry",
-   "description": "Bond skill: a flash-freeze up to 3 hexes away (Power 80, Sp. Atk) that Freezes for 1 turn.",
+   "description": "Bond skill: a flash-freeze up to 3 hexes away (Power 80) that Freezes for 1 turn.",
    "grantsMove": "articuno-freeze-dry"
   },
   "articuno-aurora-veil": {

@@ -5,7 +5,7 @@
  ],
  "focus": [
   {
-   "stat": "spAttack",
+   "stat": "attack",
    "skill": "vulpix-inferno"
   },
   {
@@ -13,7 +13,7 @@
    "skill": "vulpix-feint-attack"
   },
   {
-   "stat": "spDefense",
+   "stat": "willpower",
    "skill": "vulpix-safeguard"
   }
  ],
@@ -305,7 +305,7 @@
   "vulpix-inferno": {
    "id": "vulpix-inferno",
    "name": "Inferno",
-   "description": "Bond skill: engulfs a foe up to 3 hexes away in flame (Power 100, Sp. Atk), Burning it for 2 turns.",
+   "description": "Bond skill: engulfs a foe up to 3 hexes away in flame (Power 100), Burning it for 2 turns.",
    "grantsMove": "vulpix-inferno"
   },
   "vulpix-feint-attack": {

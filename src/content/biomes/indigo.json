@@ -157,6 +157,10 @@
    {
     "item": "super-potion",
     "chance": 0.15
+   },
+   {
+    "item": "silk-scarf",
+    "chance": 0.03
    }
   ]
  },
@@ -320,6 +324,10 @@
    {
     "item": "super-potion",
     "chance": 0.15
+   },
+   {
+    "item": "silk-scarf",
+    "chance": 0.03
    }
   ]
  },
@@ -486,6 +494,10 @@
    {
     "item": "super-potion",
     "chance": 0.15
+   },
+   {
+    "item": "soft-sand",
+    "chance": 0.03
    }
   ]
  }

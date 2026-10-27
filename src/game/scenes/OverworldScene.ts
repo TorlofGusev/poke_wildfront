@@ -315,9 +315,15 @@ export class OverworldScene extends Phaser.Scene {
       this.markers.add(this.add.ellipse(x, y + 8, 22, 8, color, 0.7).setStrokeStyle(1, 0x10141c));
       const sprite = n.sprite ?? teamOf(session.game, n)[0]?.species;
       if (sprite && hasSprite(sprite)) this.markers.add(this.add.sprite(x, y + 8, `${sprite}-idle`).setOrigin(0.5, 0.85).play(animKey(sprite, "idle", 0)));
-      else this.markers.add(this.add.circle(x, y, 9, color).setStrokeStyle(2, 0x10141c));
+      else {
+        // A person: body and head, in the colour of what they are.
+        this.markers.add(this.add.rectangle(x, y + 3, 12, 11, color).setStrokeStyle(2, 0x10141c));
+        this.markers.add(this.add.circle(x, y - 6, 5, 0xf4d8b8).setStrokeStyle(2, 0x10141c));
+      }
+      // Bubble: "!" wants a battle, "…" has something to say, "★" has a gift; gone once done.
       const done = npcDone(session.game, n);
-      if (!done && isBattler(n)) this.markers.add(this.add.text(x, y - 15, "!", { fontFamily: FONT, fontSize: px(13), color: "#10141c", fontStyle: "bold", backgroundColor: "#f5d76e", padding: { x: 3, y: 0 } }).setOrigin(0.5));
+      const bubble = done ? null : isBattler(n) ? "!" : n.kind === "gift" || n.choices?.length || n.reward ? "★" : "…";
+      if (bubble) this.markers.add(this.add.text(x, y - 17, bubble, { fontFamily: FONT, fontSize: px(12), color: "#10141c", fontStyle: "bold", backgroundColor: bubble === "!" ? "#f5d76e" : "#ffffff", padding: { x: 3, y: 0 } }).setOrigin(0.5));
     }
     const c = this.center(world.pos);
     if (!this.moving) this.token.setPosition(c.x, c.y);
@@ -411,7 +417,10 @@ export class OverworldScene extends Phaser.Scene {
 
   private finishNpc(npc: NpcDef, choice?: number): void {
     const reward = choice !== undefined ? npc.choices?.[choice]?.reward : npc.reward;
-    const { game, notes } = grantGifts(completeNpc(session.game, npc, choice), reward);
+    const granted = grantGifts(completeNpc(session.game, npc, choice, PROGRESSION.rules.ev), reward);
+    const game = granted.game;
+    const evGain = (game.ev ?? 0) - (session.game.ev ?? 0);
+    const notes = evGain ? [...granted.notes, `+${evGain} EV`] : granted.notes;
     session.update(game);
     this.closeDialog();
     if (notes.length) sfx(this, "pickup");
@@ -479,7 +488,7 @@ export class OverworldScene extends Phaser.Scene {
       ...(currentGoal(session.game, STORY_STEPS) ? [tag("dim", t("Goal: {goal}", { goal: currentGoal(session.game, STORY_STEPS)! }))] : []),
     ];
     const lower = [
-      `${tag("num", `₽${session.game.money}`)}  ${tag("title", t("Candy"))} ${tag("num", inventory.items.candy ?? 0)}  ${tag("title", CONTENT.terms.food)} ${tag("num", Object.entries(inventory.items).filter(([id]) => PROGRESSION.items[id]?.kind === "food").reduce((n, [, c]) => n + c, 0))}`,
+      `${tag("num", `₽${session.game.money}`)}  ${tag("title", "EV")} ${tag("num", session.game.ev ?? 0)}  ${tag("title", t("Rare Candy"))} ${tag("num", inventory.items.candy ?? 0)}  ${tag("title", CONTENT.terms.food)} ${tag("num", Object.entries(inventory.items).filter(([id]) => PROGRESSION.items[id]?.kind === "food").reduce((n, [, c]) => n + c, 0))}`,
       `${tag("title", t("Meal"))} ${world.meal ? tag(world.meal.id === "hungry" ? "bad" : "good", world.meal.name) : tag("dim", t("none"))}`,
       `${tag("title", t("Bag"))} ${Object.entries(inventory.balls).map(([id, n]) => `${CONTENT.balls[id]?.name.replace(" Ball", "") ?? id} ${n}`).join(" · ")}`,
     ];

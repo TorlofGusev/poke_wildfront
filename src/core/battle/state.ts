@@ -37,6 +37,8 @@ export interface BattleUnit {
   /** Battlefield traits from its types. */
   readonly traits: TypeUnitTraits;
   readonly ability: AbilityDef | null;
+  /** Spirit bar (0 to rules.willpower.spiritMax), filled by hits and knockouts. */
+  spirit: number;
   /** Battle-long Attack bonus (Anger Point). */
   attackBoost: number;
   /** Sturdy has already saved it this battle. */
@@ -77,7 +79,7 @@ export interface BattleState {
   /** Team Bond points per side, spent by bond moves. */
   bond: Record<Side, number>;
   bondMax: Record<Side, number>;
-  /** Seeded PRNG state; only capture rolls consume it. */
+  /** Seeded PRNG state: capture rolls, critical hits and status resistance consume it. */
   rngState: number;
   /** Poké Balls carried into this battle, by ball id. */
   balls: Record<string, number>;

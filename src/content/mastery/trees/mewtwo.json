@@ -4,7 +4,7 @@
  ],
  "focus": [
   {
-   "stat": "spAttack",
+   "stat": "attack",
    "skill": "mewtwo-psystrike"
   },
   {
@@ -12,7 +12,7 @@
    "skill": "mewtwo-agility"
   },
   {
-   "stat": "spDefense",
+   "stat": "willpower",
    "skill": "mewtwo-barrier"
   }
  ],
@@ -294,7 +294,7 @@
   "mewtwo-psystrike": {
    "id": "mewtwo-psystrike",
    "name": "Psystrike",
-   "description": "Bond skill: materialized psychic waves up to 3 hexes away (Power 110, Sp. Atk).",
+   "description": "Bond skill: materialized psychic waves up to 3 hexes away (Power 110).",
    "grantsMove": "mewtwo-psystrike"
   },
   "mewtwo-barrier": {

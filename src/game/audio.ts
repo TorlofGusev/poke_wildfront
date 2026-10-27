@@ -1,10 +1,11 @@
 import Phaser from "phaser";
 import { CONTENT } from "../content";
 import { setMusicLevel } from "./music";
+import { playBlips, type Blip, type Duty } from "./gbSynth";
 
 /**
- * Sound: the classic Gen 1 Pokémon cries (PokeAPI cries, "legacy" set) and small chiptune effects
- * synthesised with Web Audio, so effects need no files. Muting is remembered per browser.
+ * Sound: the classic Gen 1 Pokémon cries (PokeAPI cries, "legacy" set) and Game Boy–style effects
+ * synthesised with Web Audio (gbSynth), so effects need no files. Muting is remembered per browser.
  */
 const CRIES = import.meta.glob("../assets/cries/*.ogg", { eager: true, query: "?url", import: "default" }) as Record<string, string>;
 const cryUrl = (dex: number) => CRIES[`../assets/cries/${String(dex).padStart(4, "0")}.ogg`];
@@ -75,24 +76,41 @@ export function playCry(scene: Phaser.Scene, speciesId: string, rate = 1): void 
 
 export type Sfx = "select" | "hit" | "superHit" | "weakHit" | "heal" | "status" | "faint" | "capture" | "levelUp" | "victory" | "defeat" | "encounter" | "pickup" | "warp" | "talk" | "buy";
 
-/** Note sequences: [frequency Hz, duration s, wave][]. */
-const PATTERNS: Record<Sfx, [number, number, OscillatorType][]> = {
-  select: [[880, 0.05, "square"]],
-  hit: [[220, 0.06, "square"], [140, 0.08, "square"]],
-  superHit: [[330, 0.05, "square"], [220, 0.05, "square"], [110, 0.12, "sawtooth"]],
-  weakHit: [[160, 0.08, "triangle"]],
-  heal: [[523, 0.07, "triangle"], [659, 0.07, "triangle"], [784, 0.12, "triangle"]],
-  status: [[392, 0.06, "square"], [370, 0.06, "square"], [349, 0.1, "square"]],
-  faint: [[392, 0.1, "square"], [294, 0.1, "square"], [196, 0.22, "square"]],
-  capture: [[659, 0.08, "square"], [784, 0.08, "square"], [988, 0.08, "square"], [1319, 0.2, "square"]],
-  levelUp: [[523, 0.08, "square"], [659, 0.08, "square"], [784, 0.08, "square"], [1047, 0.25, "square"]],
-  victory: [[784, 0.1, "square"], [784, 0.1, "square"], [784, 0.1, "square"], [1047, 0.35, "square"]],
-  defeat: [[330, 0.18, "triangle"], [262, 0.18, "triangle"], [196, 0.4, "triangle"]],
-  encounter: [[523, 0.05, "square"], [494, 0.05, "square"], [523, 0.05, "square"], [494, 0.05, "square"], [392, 0.12, "square"]],
-  pickup: [[784, 0.05, "square"], [1175, 0.09, "square"]],
-  warp: [[392, 0.06, "triangle"], [523, 0.06, "triangle"], [659, 0.1, "triangle"]],
-  talk: [[660, 0.03, "square"], [880, 0.03, "square"]],
-  buy: [[988, 0.05, "square"], [1319, 0.12, "square"]],
+/**
+ * Effects in the style of the Gen 1 handhelds (see gbSynth): pulse jingles with GB duty cycles, pitch
+ * sweeps, and the noise channel for hits and doors. Original sounds, made to feel like the era.
+ */
+const N = (freq: number, dur: number, duty: Duty = 0.5, vol = 1): Blip => ({ ch: "pulse", freq, dur, duty, vol });
+const PATTERNS: Record<Sfx, readonly Blip[]> = {
+  // Menu cursor: a short thin blip.
+  select: [N(1760, 0.035, 0.125, 0.7)],
+  // A hit: a burst of noise falling in brightness, with a low thump.
+  hit: [{ ch: "noise", freq: 6000, to: 800, dur: 0.12 }, { ch: "pulse", freq: 180, to: 70, dur: 0.1, duty: 0.5, vol: 0.6, at: 0 }],
+  // Super effective: a harder, longer crunch.
+  superHit: [{ ch: "noise", freq: 9000, to: 400, dur: 0.2, vol: 1.2 }, { ch: "pulse", freq: 260, to: 55, dur: 0.18, duty: 0.25, vol: 0.8, at: 0 }, { ch: "noise", freq: 3000, to: 300, dur: 0.12, vol: 0.8, at: 0.12 }],
+  // Not very effective: a dull tap.
+  weakHit: [{ ch: "noise", freq: 1800, to: 500, dur: 0.08, vol: 0.6 }],
+  // Healing: a bright rising arpeggio.
+  heal: [N(784, 0.06, 0.125), N(988, 0.06, 0.125), N(1175, 0.06, 0.125), N(1568, 0.16, 0.125)],
+  // A status takes hold: a wobbling falling sweep.
+  status: [{ ch: "pulse", freq: 900, to: 500, dur: 0.09, duty: 0.25 }, { ch: "pulse", freq: 800, to: 420, dur: 0.09, duty: 0.25 }, { ch: "pulse", freq: 700, to: 300, dur: 0.14, duty: 0.25 }],
+  // Fainting: the long falling tone of the handhelds.
+  faint: [{ ch: "pulse", freq: 600, to: 60, dur: 0.6, duty: 0.5 }],
+  // The ball: pop, three wobbles, click.
+  capture: [{ ch: "pulse", freq: 300, to: 1600, dur: 0.12, duty: 0.25 }, { ch: "noise", freq: 2500, to: 600, dur: 0.05, at: 0.3 }, { ch: "noise", freq: 2500, to: 600, dur: 0.05, at: 0.35 }, { ch: "noise", freq: 2500, to: 600, dur: 0.05, at: 0.35 }, N(1319, 0.05, 0.5, 0.9), N(1760, 0.18, 0.5, 0.9)],
+  // Level up: a short fanfare.
+  levelUp: [N(1047, 0.08, 0.25), N(1047, 0.08, 0.25), N(1047, 0.08, 0.25), N(1397, 0.24, 0.25), N(1319, 0.1, 0.25), N(1568, 0.3, 0.25)],
+  victory: [N(784, 0.1, 0.25), N(988, 0.1, 0.25), N(1175, 0.1, 0.25), N(1568, 0.4, 0.25)],
+  defeat: [N(494, 0.2, 0.5), N(440, 0.2, 0.5), N(370, 0.2, 0.5), { ch: "pulse", freq: 330, to: 110, dur: 0.5, duty: 0.5 }],
+  // A wild Pokémon appears: a rapid trill rising into the battle.
+  encounter: [N(1047, 0.04, 0.25), N(1175, 0.04, 0.25), N(1047, 0.04, 0.25), N(1175, 0.04, 0.25), N(1319, 0.04, 0.25), N(1397, 0.04, 0.25), { ch: "pulse", freq: 400, to: 1800, dur: 0.25, duty: 0.125 }],
+  // Item found.
+  pickup: [N(1319, 0.06, 0.5), N(1568, 0.06, 0.5), N(2093, 0.14, 0.5)],
+  // Doors and map changes: a step of noise and a falling blip.
+  warp: [{ ch: "noise", freq: 1500, to: 300, dur: 0.1 }, { ch: "pulse", freq: 700, to: 250, dur: 0.14, duty: 0.25, vol: 0.7 }],
+  // Text box advance.
+  talk: [N(2093, 0.025, 0.125, 0.5)],
+  buy: [N(1568, 0.05, 0.5), N(2093, 0.14, 0.5)],
 };
 
 export function sfx(scene: Phaser.Scene, name: Sfx): void {
@@ -101,26 +119,10 @@ export function sfx(scene: Phaser.Scene, name: Sfx): void {
   if (!ctx) return;
   // A still-locked context (first click of the session) plays the effect as soon as it resumes.
   if (ctx.state !== "running") {
-    ctx.resume().then(() => playPattern(ctx, name), () => undefined);
+    ctx.resume().then(() => playBlips(ctx, ctx.destination, PATTERNS[name], volume), () => undefined);
     return;
   }
-  playPattern(ctx, name);
-}
-
-function playPattern(ctx: AudioContext, name: Sfx): void {
-  let t = ctx.currentTime;
-  for (const [freq, dur, wave] of PATTERNS[name]) {
-    const osc = ctx.createOscillator();
-    const gain = ctx.createGain();
-    osc.type = wave;
-    osc.frequency.value = freq;
-    gain.gain.setValueAtTime(0.06 * volume, t);
-    gain.gain.exponentialRampToValueAtTime(0.0001, t + dur);
-    osc.connect(gain).connect(ctx.destination);
-    osc.start(t);
-    osc.stop(t + dur);
-    t += dur;
-  }
+  playBlips(ctx, ctx.destination, PATTERNS[name], volume);
 }
 
 /** M toggles sound everywhere; the first click or key press unlocks the browser's audio. */

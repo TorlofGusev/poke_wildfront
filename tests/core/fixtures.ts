@@ -7,8 +7,8 @@ export const content: BattleContent = {
   terms: { bond: "Bond", bondDescription: "", food: "Food", healCenter: "Center", healCenterDescription: "" },
   abilities: {},
   // Profiles are unused by rule tests (species set their stats directly); no type mechanics by default.
-  types: Object.fromEntries(Object.keys(typeChart.chart).map((t) => [t, { profile: { hp: 5, attack: 5, defense: 5, spAttack: 5, spDefense: 5, speed: 5 } }])),
-  rules: { statusBonusCap: 2, engagement: { fallbackPower: 0.5 }, melee: { closeBonus: 1, engagedRangedPenalty: 1 }, momentum: { speedPerStep: 4, stepBonus: 0, max: 0 }, hpPerLevel: 0, hpPerLevelPerDefense: 0, specialTypes: [],
+  types: Object.fromEntries(Object.keys(typeChart.chart).map((t) => [t, { profile: { hp: 5, attack: 5, defense: 5, speed: 5, willpower: 0, crit: 0 } }])),
+  rules: { statusBonusCap: 2, engagement: { fallbackPower: 0.5 }, melee: { closeBonus: 1, engagedRangedPenalty: 1 }, momentum: { speedPerStep: 4, stepBonus: 0, max: 0 }, hpPerLevel: 0, hpPerLevelPerDefense: 0, crit: { base: 0, perPoint: 0, damage: 1.5, damagePerPoint: 0 }, willpower: { spiritMax: 100, perHit: 0, perKnockout: 0, perAllyKnockout: 0, perPoint: 0, pumpedTurns: 1, resistPerPoint: 0 },
     // Offsets of 0 keep the arithmetic in tests simple: damage = power × Atk / Def / 4, HP = HP stat.
     hpBase: 0,
     hpPerPoint: 1,
@@ -29,9 +29,9 @@ export const content: BattleContent = {
     slow: { id: "slow", name: "Slow", movePenalty: 2 },
   },
   species: {
-    fast: { id: "fast", name: "Fast", types: ["normal"], stats: { hp: 40, attack: 40, defense: 40, spAttack: 40, spDefense: 40, speed: 100 }, moves: ["tackle", "shove", "zap", "nova"], captureBase: 0.5 },
-    mid: { id: "mid", name: "Mid", types: ["water"], stats: { hp: 40, attack: 40, defense: 40, spAttack: 40, spDefense: 40, speed: 70 }, moves: ["tackle", "spray", "toxin", "mend", "lasso"], captureBase: 0.5 },
-    slow: { id: "slow", name: "Slow", types: ["grass"], stats: { hp: 40, attack: 40, defense: 40, spAttack: 40, spDefense: 40, speed: 30 }, moves: ["tackle", "ember"], captureBase: 0.5 },
+    fast: { id: "fast", name: "Fast", types: ["normal"], stats: { hp: 40, attack: 40, defense: 40, speed: 100, willpower: 0, crit: 0 }, moves: ["tackle", "shove", "zap", "nova"], captureBase: 0.5 },
+    mid: { id: "mid", name: "Mid", types: ["water"], stats: { hp: 40, attack: 40, defense: 40, speed: 70, willpower: 0, crit: 0 }, moves: ["tackle", "spray", "toxin", "mend", "lasso"], captureBase: 0.5 },
+    slow: { id: "slow", name: "Slow", types: ["grass"], stats: { hp: 40, attack: 40, defense: 40, speed: 30, willpower: 0, crit: 0 }, moves: ["tackle", "ember"], captureBase: 0.5 },
   },
   moves: {
     struggle: { id: "struggle", name: "Struggle", type: "normal", kind: "basic", power: 0, range: { min: 1, max: 1 }, requiresLineOfSight: false, shape: { kind: "single" }, affects: "enemies" },
@@ -62,12 +62,12 @@ export const prog: ProgressionContent = {
     claw: { id: "claw", name: "Claw", description: "", kind: "held", price: 300, mods: { moveBonus: 1 } },
   },
   trees: {},
-  rules: { focusLevel: 5, focusBonus: 2, focusGrowthEvery: 2, respecCostPerLevel: 10, maxLevel: 30, xpPerLevel: 10, pointsPerLevel: 1, evolutionPoints: 2, candyBonus: 1, candiesPerVictory: 1, xpPerEnemyLevel: 5, benchXpShare: 0.5, moneyPerEnemyLevel: 10, maxActiveMoves: 3 },
+  rules: { focusLevel: 5, focusBonus: 2, focusGrowthEvery: 2, respecCostPerLevel: 10, maxLevel: 30, xpPerLevel: 10, pointsPerLevel: 1, evolutionPoints: 2, candiesPerVictory: 1, statOffer: { size: 3, doubleChance: 0 }, ev: { upgradeCost: 4, offerCost: 3, wildWin: 1, trainerWin: 3, badge: 10, quest: 2 }, xpPerEnemyLevel: 5, benchXpShare: 0.5, moneyPerEnemyLevel: 10, maxActiveMoves: 3 },
 };
 
 /** A party member with default progression fields. */
 export const pm = (uid: string, speciesId: string, knockouts = 0, hp = 40, extra: Partial<PartyMember> = {}): PartyMember => ({
   uid, speciesId, hp, knockouts, level: 1, xp: 0, focus: null, talents: [], heldItem: null,
   knownMoves: content.species[speciesId]?.moves ?? [], activeMoves: [],
-  statPoints: { hp: 0, attack: 0, defense: 0, spAttack: 0, spDefense: 0, speed: 0 }, unspentPoints: 0, ...extra,
+  statPoints: { hp: 0, attack: 0, defense: 0, speed: 0, willpower: 0, crit: 0 }, unspentPoints: 0, ...extra,
 });

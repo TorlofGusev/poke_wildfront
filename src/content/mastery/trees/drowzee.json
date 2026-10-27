@@ -8,11 +8,11 @@
  ],
  "focus": [
   {
-   "stat": "spAttack",
+   "stat": "attack",
    "skill": "drowzee-future-sight"
   },
   {
-   "stat": "spDefense",
+   "stat": "willpower",
    "skill": "drowzee-calm-mind"
   },
   {
@@ -314,7 +314,7 @@
   "drowzee-future-sight": {
    "id": "drowzee-future-sight",
    "name": "Future Sight",
-   "description": "Bond skill: a foreseen psychic blast at a foe up to 3 hexes away (Power 100, Sp. Atk).",
+   "description": "Bond skill: a foreseen psychic blast at a foe up to 3 hexes away (Power 100).",
    "grantsMove": "drowzee-future-sight"
   },
   "drowzee-calm-mind": {

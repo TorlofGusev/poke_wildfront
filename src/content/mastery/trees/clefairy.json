@@ -12,11 +12,11 @@
    "skill": "clefairy-heal-bell"
   },
   {
-   "stat": "spAttack",
+   "stat": "attack",
    "skill": "clefairy-moonblast"
   },
   {
-   "stat": "spDefense",
+   "stat": "willpower",
    "skill": "clefairy-light-screen"
   }
  ],
@@ -314,7 +314,7 @@
   "clefairy-moonblast": {
    "id": "clefairy-moonblast",
    "name": "Moonblast",
-   "description": "Bond skill: borrows the moon's power against a foe up to 3 hexes away (Power 90, Sp. Atk).",
+   "description": "Bond skill: borrows the moon's power against a foe up to 3 hexes away (Power 90).",
    "grantsMove": "clefairy-moonblast"
   },
   "clefairy-light-screen": {

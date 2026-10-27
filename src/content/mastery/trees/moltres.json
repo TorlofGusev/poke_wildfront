@@ -4,7 +4,7 @@
  ],
  "focus": [
   {
-   "stat": "spAttack",
+   "stat": "attack",
    "skill": "moltres-heat-wave"
   },
   {
@@ -293,7 +293,7 @@
   "moltres-heat-wave": {
    "id": "moltres-heat-wave",
    "name": "Heat Wave",
-   "description": "Bond skill: a scorching wind up to 2 hexes away (Power 85, Sp. Atk), 1-hex area; Burns 1 turn.",
+   "description": "Bond skill: a scorching wind up to 2 hexes away (Power 85), 1-hex area; Burns 1 turn.",
    "grantsMove": "moltres-heat-wave"
   },
   "moltres-sky-attack": {

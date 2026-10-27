@@ -7,7 +7,7 @@
    "description": "Bond képesség: lecsap egy max. 3 hexnyi ellenfélre (Erő 100, Attack), és leköti."
   },
   "pidgey-hurricane": {
-   "description": "Bond képesség: tomboló szél egy max. 3 hexnyi ellenfélre (Erő 95, Sp. Atk), 1 hexnyit lökve."
+   "description": "Bond képesség: tomboló szél egy max. 3 hexnyi ellenfélre (Erő 95), 1 hexnyit lökve."
   },
   "pidgey-big-pecks": {
    "description": "Védelme nem gyengíthető: nem lehet Exposed vagy Marked."

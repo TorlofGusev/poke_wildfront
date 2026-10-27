@@ -1,7 +1,7 @@
 {
  "talents": {
   "moltres-heat-wave": {
-   "description": "Bond képesség: perzselő szél legfeljebb 2 hexnyire (Power 85, Sp. Atk), 1 hex körzet; 1 körre éget."
+   "description": "Bond képesség: perzselő szél legfeljebb 2 hexnyire (Power 85), 1 hex körzet; 1 körre éget."
   },
   "moltres-sky-attack": {
    "description": "Bond képesség: lángba burkolózva zuhan le az égből egy ellenfélre (Power 110, Attack)."

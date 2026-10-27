@@ -4,10 +4,10 @@
    "description": "Kötelék-képesség: gyökeret ereszt, 20 HP-t gyógyul, és 2 körre Megerősített lesz."
   },
   "tangela-solar-beam": {
-   "description": "Kötelék-képesség: összegyűjtött napfény sugara egy legfeljebb 3 hexnyire lévő ellenfélre (Erő 100, Sp. Atk)."
+   "description": "Kötelék-képesség: összegyűjtött napfény sugara egy legfeljebb 3 hexnyire lévő ellenfélre (Erő 100)."
   },
   "tangela-wring-out": {
-   "description": "Kötelék-képesség: indáival kicsavarja egy szomszédos ellenfelet (Erő 80, Sp. Atk), és lekötve tartja."
+   "description": "Kötelék-képesség: indáival kicsavarja egy szomszédos ellenfelet (Erő 80), és lekötve tartja."
   },
   "tangela-leaf-guard": {
    "description": "Nem lehet megmérgezni vagy megbénítani."

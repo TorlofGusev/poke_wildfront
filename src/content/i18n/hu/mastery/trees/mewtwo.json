@@ -1,7 +1,7 @@
 {
  "talents": {
   "mewtwo-psystrike": {
-   "description": "Bond képesség: anyagot öltő pszichikus hullámok legfeljebb 3 hexnyire (Power 110, Sp. Atk)."
+   "description": "Bond képesség: anyagot öltő pszichikus hullámok legfeljebb 3 hexnyire (Power 110)."
   },
   "mewtwo-barrier": {
    "description": "Bond képesség: pszichikus gátat emel maga köré: 3 körig Fortified."

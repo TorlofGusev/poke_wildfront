@@ -6,7 +6,7 @@
  ],
  "focus": [
   {
-   "stat": "spAttack",
+   "stat": "attack",
    "skill": "bulbasaur-frenzy-plant"
   },
   {
@@ -312,7 +312,7 @@
   "bulbasaur-frenzy-plant": {
    "id": "bulbasaur-frenzy-plant",
    "name": "Frenzy Plant",
-   "description": "Bond skill: colossal roots smash a foe up to 3 hexes away (Power 105, Sp. Atk).",
+   "description": "Bond skill: colossal roots smash a foe up to 3 hexes away (Power 105).",
    "grantsMove": "bulbasaur-frenzy-plant"
   },
   "bulbasaur-protect": {

@@ -4,7 +4,7 @@
  ],
  "focus": [
   {
-   "stat": "spAttack",
+   "stat": "attack",
    "skill": "jynx-sheer-cold"
   },
   {
@@ -12,7 +12,7 @@
    "skill": "jynx-powder-snow"
   },
   {
-   "stat": "spDefense",
+   "stat": "willpower",
    "skill": "jynx-reflect"
   }
  ],
@@ -318,13 +318,13 @@
   "jynx-sheer-cold": {
    "id": "jynx-sheer-cold",
    "name": "Sheer Cold",
-   "description": "Bond skill: a wave of absolute cold up to 3 hexes away (Power 100, Sp. Atk), Freezing 1 turn.",
+   "description": "Bond skill: a wave of absolute cold up to 3 hexes away (Power 100), Freezing 1 turn.",
    "grantsMove": "jynx-sheer-cold"
   },
   "jynx-powder-snow": {
    "id": "jynx-powder-snow",
    "name": "Powder Snow",
-   "description": "Bond skill: a flurry up to 1 hex away (Power 55, Sp. Atk) Slows a 1-hex area 1 turn.",
+   "description": "Bond skill: a flurry up to 1 hex away (Power 55) Slows a 1-hex area 1 turn.",
    "grantsMove": "jynx-powder-snow"
   },
   "jynx-reflect": {

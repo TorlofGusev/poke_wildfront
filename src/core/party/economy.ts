@@ -1,6 +1,6 @@
 import type { BattleContent } from "../battle/content";
 import type { StatName } from "../battle/species";
-import { resetMasteries, respecCost, spendPoints, type ProgressionContent } from "../progression";
+import { gainXp, resetMasteries, respecCost, offerEvCost, takeOffer, xpToNext, type ProgressEvent, type ProgressionContent } from "../progression";
 import { memberMaxHp, type GameState, type PartyMember } from "./roster";
 
 const count = (bag: Readonly<Record<string, number>>, id: string) => bag[id] ?? 0;
@@ -11,7 +11,7 @@ export function buy(content: BattleContent, prog: ProgressionContent, game: Game
   const ball = content.balls[id];
   const item = prog.items[id];
   const price = ball?.price ?? item?.price;
-  if (price === undefined) throw new Error(`${id} is not sold here`);
+  if (price === undefined || item?.notSold) throw new Error(`${id} is not sold here`);
   const total = price * qty;
   if (game.money < total) throw new Error(`not enough money (need ₽${total}, have ₽${game.money})`);
   const inventory = ball
@@ -105,17 +105,24 @@ export const withMember = updateMember;
 
 export const CANDY = "candy";
 
-/** Spends one level-up point on any stat; with a Candy from the bag it counts double. */
-export function allocatePoint(prog: ProgressionContent, game: GameState, uid: string, stat: StatName, useCandy = false): GameState {
+/** Spends one level-up point; EV pays for a stat not offered and for `upgrade` (+1 → +2). */
+export function allocatePoint(content: BattleContent, prog: ProgressionContent, game: GameState, uid: string, stat: StatName, upgrade = false): GameState {
   if (!findMember(game, uid)) throw new Error(`${uid} is not in party or storage`);
-  let items = game.inventory.items;
-  if (useCandy) {
-    if (count(items, CANDY) < 1) throw new Error("no Candy in the bag");
-    items = { ...items, [CANDY]: count(items, CANDY) - 1 };
-  }
-  const amount = 1 + (useCandy ? prog.rules.candyBonus : 0);
-  const next = updateMember(game, uid, (m) => spendPoints(m, stat, amount, 1));
-  return { ...next, inventory: { ...next.inventory, items } };
+  const cost = offerEvCost(content, prog, findMember(game, uid)!, stat, upgrade);
+  if ((game.ev ?? 0) < cost) throw new Error("not enough EV");
+  const next = updateMember(game, uid, (m) => takeOffer(content, prog, m, stat, upgrade));
+  return { ...next, ev: (game.ev ?? 0) - cost };
+}
+
+/** Rare Candy: the member gains exactly one level (with its point, new moves and evolution). */
+export function useRareCandy(content: BattleContent, prog: ProgressionContent, game: GameState, uid: string): { game: GameState; events: ProgressEvent[] } {
+  if (count(game.inventory.items, CANDY) < 1) throw new Error("no Rare Candy in the bag");
+  const member = findMember(game, uid);
+  if (!member) throw new Error(`${uid} is not in party or storage`);
+  if (member.level >= prog.rules.maxLevel) throw new Error("already at the highest level");
+  const r = gainXp(content, prog, member, Math.max(0, xpToNext(prog, member.level) - member.xp));
+  const next = updateMember(game, uid, () => r.member);
+  return { game: { ...next, inventory: { ...next.inventory, items: { ...next.inventory.items, [CANDY]: count(next.inventory.items, CANDY) - 1 } } }, events: r.events };
 }
 
 /** Forgets a member's focus and masteries for Pokédollars, so they can be chosen again. */

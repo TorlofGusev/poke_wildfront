@@ -81,5 +81,11 @@
   "id": "confused",
   "name": "Confused",
   "misdirects": true
+ },
+ "pumped": {
+  "id": "pumped",
+  "name": "Pumped",
+  "damageDealt": 1.2,
+  "movePenalty": -1
  }
 }

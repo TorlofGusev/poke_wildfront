@@ -5,7 +5,7 @@
  ],
  "focus": [
   {
-   "stat": "spAttack",
+   "stat": "attack",
    "skill": "magnemite-zap-cannon"
   },
   {
@@ -13,7 +13,7 @@
    "skill": "magnemite-gyro-ball"
   },
   {
-   "stat": "spDefense",
+   "stat": "willpower",
    "skill": "magnemite-magnetic-flux"
   }
  ],
@@ -297,7 +297,7 @@
   "magnemite-zap-cannon": {
    "id": "magnemite-zap-cannon",
    "name": "Zap Cannon",
-   "description": "Bond skill: an electric cannon shot up to 3 hexes away (Power 100, Sp. Atk) that Paralyzes 1 turn.",
+   "description": "Bond skill: an electric cannon shot up to 3 hexes away (Power 100) that Paralyzes 1 turn.",
    "grantsMove": "magnemite-zap-cannon"
   },
   "magnemite-gyro-ball": {

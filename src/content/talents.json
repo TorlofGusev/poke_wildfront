@@ -82,7 +82,7 @@
  "type-fire": {
   "id": "type-fire",
   "name": "Flash Fire",
-  "description": "Fire moves deal 15% more damage; +1 Sp. Atk.",
+  "description": "Fire moves deal 15% more damage; +1 Atk.",
   "requiresType": "fire",
   "mods": {
    "typeDamage": {
@@ -90,7 +90,7 @@
    }
   },
   "stats": {
-   "spAttack": 2
+   "attack": 2
   }
  },
  "type-water": {
@@ -103,7 +103,7 @@
   },
   "stats": {
    "hp": 1,
-   "spAttack": 1
+   "attack": 1
   }
  },
  "type-grass": {
@@ -116,13 +116,13 @@
   },
   "stats": {
    "hp": 1,
-   "spAttack": 1
+   "attack": 1
   }
  },
  "type-electric": {
   "id": "type-electric",
   "name": "Plus",
-  "description": "Electric moves deal 15% more damage; +1 Sp. Atk.",
+  "description": "Electric moves deal 15% more damage; +1 Atk.",
   "requiresType": "electric",
   "mods": {
    "typeDamage": {
@@ -130,7 +130,7 @@
    }
   },
   "stats": {
-   "spAttack": 2
+   "attack": 2
   }
  },
  "type-ice": {
@@ -142,7 +142,7 @@
    "statusDurationBonus": 1
   },
   "stats": {
-   "spAttack": 2
+   "attack": 2
   }
  },
  "type-fighting": {
@@ -167,7 +167,7 @@
   },
   "stats": {
    "hp": 1,
-   "spAttack": 1
+   "attack": 1
   }
  },
  "type-ground": {
@@ -199,13 +199,13 @@
  "type-psychic": {
   "id": "type-psychic",
   "name": "Telepathy",
-  "description": "Pulls it causes go 1 hex further; +1 Sp. Atk.",
+  "description": "Pulls it causes go 1 hex further; +1 Atk.",
   "requiresType": "psychic",
   "mods": {
    "pullBonus": 1
   },
   "stats": {
-   "spAttack": 2
+   "attack": 2
   }
  },
  "type-bug": {
@@ -242,7 +242,7 @@
    "vsSetupDamage": 1.2
   },
   "stats": {
-   "spAttack": 2
+   "attack": 2
   }
  },
  "type-normal": {
@@ -280,7 +280,7 @@
   "stats": {
    "defense": 2,
    "hp": 2,
-   "spDefense": 1
+   "willpower": 1
   },
   "mods": {
    "pinDamage": 1.15,
@@ -294,7 +294,6 @@
   "stats": {
    "attack": 2,
    "speed": 1,
-   "spAttack": 1,
    "hp": 1
   },
   "mods": {
@@ -308,9 +307,9 @@
   "description": "Capstone. When a foe carrying its status faints, adjacent foes catch that status for 1 turn.",
   "stats": {
    "defense": 1,
-   "spAttack": 1,
+   "attack": 1,
    "hp": 1,
-   "spDefense": 1
+   "willpower": 1
   },
   "mods": {
    "statusSpreadOnKo": true
@@ -371,13 +370,13 @@
  "long-shot": {
   "id": "long-shot",
   "name": "Long Shot",
-  "description": "Ranged moves reach 1 hex further (up to 3; Bond moves no limit) and fire over Pokémon in the way; +1 Sp. Atk.",
+  "description": "Ranged moves reach 1 hex further (up to 3; Bond moves no limit) and fire over Pokémon in the way; +1 Atk.",
   "mods": {
    "rangeBonus": 1,
    "shootOver": true
   },
   "stats": {
-   "spAttack": 1
+   "attack": 1
   }
  },
  "skill-swift": {
@@ -391,7 +390,6 @@
   "name": "Marksman",
   "description": "Capstone. Knocking out a foe resets its special move cooldowns.",
   "stats": {
-   "spAttack": 2,
    "attack": 2,
    "speed": 1
   },
@@ -402,10 +400,9 @@
  "adaptable": {
   "id": "adaptable",
   "name": "Adaptability",
-  "description": "+2 Attack and +2 Sp. Atk.",
+  "description": "+2 Attack and +2 Atk.",
   "stats": {
-   "attack": 3,
-   "spAttack": 2
+   "attack": 3
   },
   "requiresType": "normal"
  },
@@ -451,7 +448,7 @@
   },
   "requiresType": "fire",
   "stats": {
-   "spAttack": 1
+   "attack": 1
   }
  },
  "scorch": {
@@ -463,7 +460,7 @@
   },
   "requiresType": "fire",
   "stats": {
-   "spAttack": 1
+   "attack": 1
   }
  },
  "skill-fire-spin": {
@@ -484,7 +481,7 @@
   },
   "requiresType": "fire",
   "stats": {
-   "spAttack": 1
+   "attack": 1
   }
  },
  "hydration": {
@@ -497,7 +494,7 @@
   "requiresType": "water",
   "stats": {
    "hp": 1,
-   "spAttack": 1
+   "attack": 1
   }
  },
  "riptide": {
@@ -509,16 +506,16 @@
   },
   "requiresType": "water",
   "stats": {
-   "spAttack": 1
+   "attack": 1
   }
  },
  "rain-dish": {
   "id": "rain-dish",
   "name": "Rain Dish",
-  "description": "Heals 4% max HP each turn; +1 Sp. Def.",
+  "description": "Heals 4% max HP each turn; +1 Willpower.",
   "stats": {
-   "spDefense": 1,
-   "spAttack": 1
+   "willpower": 1,
+   "attack": 1
   },
   "mods": {
    "healPerTurn": 0.04
@@ -542,7 +539,7 @@
   "requiresType": "grass",
   "stats": {
    "hp": 1,
-   "spAttack": 1
+   "attack": 1
   }
  },
  "spore-cloud": {
@@ -557,7 +554,7 @@
   },
   "requiresType": "grass",
   "stats": {
-   "spAttack": 1
+   "attack": 1
   }
  },
  "skill-giga-drain": {
@@ -578,7 +575,7 @@
   },
   "requiresType": "grass",
   "stats": {
-   "spAttack": 1
+   "attack": 1
   }
  },
  "static-charge": {
@@ -594,7 +591,7 @@
   "requiresType": "electric",
   "stats": {
    "speed": 1,
-   "spAttack": 1
+   "attack": 1
   }
  },
  "overcharge": {
@@ -608,7 +605,7 @@
   },
   "requiresType": "electric",
   "stats": {
-   "spAttack": 1
+   "attack": 1
   }
  },
  "skill-discharge": {
@@ -630,7 +627,7 @@
   },
   "requiresType": "electric",
   "stats": {
-   "spAttack": 1
+   "attack": 1
   }
  },
  "frost-armor": {
@@ -643,7 +640,7 @@
   "requiresType": "ice",
   "stats": {
    "defense": 1,
-   "spAttack": 1
+   "attack": 1
   }
  },
  "shatter": {
@@ -657,7 +654,7 @@
   },
   "requiresType": "ice",
   "stats": {
-   "spAttack": 1
+   "attack": 1
   }
  },
  "chill": {
@@ -672,7 +669,7 @@
   },
   "requiresType": "ice",
   "stats": {
-   "spAttack": 1
+   "attack": 1
   }
  },
  "skill-ice-beam": {
@@ -737,8 +734,7 @@
   },
   "requiresType": "poison",
   "stats": {
-   "attack": 1,
-   "spAttack": 1
+   "attack": 1
   }
  },
  "immunity": {
@@ -747,7 +743,7 @@
   "description": "+25% damage against Poisoned foes.",
   "stats": {
    "hp": 1,
-   "spAttack": 1
+   "attack": 1
   },
   "mods": {
    "vsStatusIdDamage": {
@@ -772,7 +768,7 @@
   },
   "requiresType": "poison",
   "stats": {
-   "spAttack": 1
+   "attack": 1
   }
  },
  "tremor": {
@@ -874,10 +870,10 @@
  "foresight": {
   "id": "foresight",
   "name": "Clarity",
-  "description": "+2 Sp. Atk and +2 Sp. Def.",
+  "description": "+2 Atk and +2 Willpower.",
   "stats": {
-   "spAttack": 3,
-   "spDefense": 2
+   "attack": 3,
+   "willpower": 2
   },
   "requiresType": "psychic"
  },
@@ -891,7 +887,7 @@
   },
   "requiresType": "psychic",
   "stats": {
-   "spAttack": 1
+   "attack": 1
   }
  },
  "skill-psybeam": {
@@ -913,7 +909,7 @@
   },
   "requiresType": "psychic",
   "stats": {
-   "spAttack": 1
+   "attack": 1
   }
  },
  "pest": {
@@ -1020,7 +1016,7 @@
   },
   "requiresType": "ghost",
   "stats": {
-   "spAttack": 1
+   "attack": 1
   }
  },
  "skill-shadow-ball": {
@@ -1042,7 +1038,7 @@
   },
   "requiresType": "ghost",
   "stats": {
-   "spAttack": 1
+   "attack": 1
   }
  },
  "hex-mastery": {
@@ -1056,7 +1052,7 @@
   },
   "requiresType": "ghost",
   "stats": {
-   "spAttack": 1
+   "attack": 1
   }
  },
  "dragon-fury": {
@@ -1074,10 +1070,9 @@
  "draconic-might": {
   "id": "draconic-might",
   "name": "Draconic Might",
-  "description": "+1 Attack and +1 Sp. Atk.",
+  "description": "+1 Attack and +1 Atk.",
   "stats": {
-   "attack": 2,
-   "spAttack": 1
+   "attack": 2
   },
   "requiresType": "dragon"
  },
@@ -1218,12 +1213,12 @@
  "torment": {
   "id": "torment",
   "name": "Torment",
-  "description": "+15% damage against foes carrying any status; +1 Sp. Atk.",
+  "description": "+15% damage against foes carrying any status; +1 Atk.",
   "mods": {
    "vsStatusDamage": 1.15
   },
   "stats": {
-   "spAttack": 2
+   "attack": 2
   }
  },
  "puppeteer": {

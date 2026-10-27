@@ -18,6 +18,6 @@ The stat-filler nodes of the talent trees were replaced by Bond talents: Steadfa
 
 - Food items (berries) come from the Poké Mart (₽60), from foraging after each won wild battle (per biome, `biomes.json` → `forage`) and the starting bag.
 - **Resting is a choice at camp** ("Rest here…"): cook one of the meals (`meals.json`) or rest hungry (`camp.json`).
-  - A meal uses its ingredients, fully restores HP and fatigue, and its effect lasts until the next rest (e.g. Hearty Stew: battles start with +1 Bond; Spicy Curry: +10% damage; Calming Tea: +1 Bond cap and −10% damage taken).
+  - A meal uses its ingredients, fully restores HP and fatigue, and its effect lasts until the next rest (e.g. Big Malasada: battles start with +1 Bond; Rage Candy Bar: +10% damage; Old Gateau: +1 Bond cap and −10% damage taken).
   - Resting hungry restores only 50% HP, leaves fatigue at 40 and the team starts battles with −1 Bond.
 - Either way wild groups move and the camp becomes the respawn point.

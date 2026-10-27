@@ -24,7 +24,7 @@ export interface Progress {
   readonly unspentPoints: number;
 }
 
-export const NO_POINTS: BaseStats = { hp: 0, attack: 0, defense: 0, spAttack: 0, spDefense: 0, speed: 0 };
+export const NO_POINTS: BaseStats = { hp: 0, attack: 0, defense: 0, speed: 0, willpower: 0, crit: 0 };
 
 export const basicMoveOf = (content: BattleContent, species: SpeciesDef): string => {
   const basic = species.moves.find((m) => content.moves[m]?.kind === "basic");
@@ -87,6 +87,48 @@ export function playstylePoints(content: BattleContent, speciesId: string, count
   const points = { ...NO_POINTS };
   for (let i = 0; i < count; i++) points[cycle[i % cycle.length]!] += 1;
   return points;
+}
+
+export interface StatOffer {
+  readonly stat: StatName;
+  /** Points it gives when picked: 1, or 2 for a lucky "++" offer. */
+  readonly plus: 1 | 2;
+}
+
+/**
+ * The stats offered for the next level-up point (as in Wartales): `size` stats, the focus stat always
+ * among them and the rest weighted by the species' base stats; sometimes one comes as "++". The offer
+ * follows from the member's state, so it cannot be rerolled. Empty when no point is waiting.
+ */
+export function statOffer(content: BattleContent, prog: ProgressionContent, m: Progress): StatOffer[] {
+  if (m.unspentPoints <= 0) return [];
+  const base = content.species[m.speciesId]!.stats;
+  const spent = STAT_NAMES.reduce((s, st) => s + m.statPoints[st], 0);
+  let seed = [...`${m.speciesId}:${m.level}:${spent}:${m.unspentPoints}`].reduce((h, c) => (h * 31 + c.charCodeAt(0)) >>> 0, 17);
+  const rand = () => ((seed = (seed * 1103515245 + 12345) >>> 0) / 2 ** 32);
+  const picks: StatName[] = m.focus ? [m.focus] : [];
+  while (picks.length < Math.min(prog.rules.statOffer.size, STAT_NAMES.length)) {
+    const pool = STAT_NAMES.filter((st) => !picks.includes(st));
+    const total = pool.reduce((s, st) => s + base[st] + 1, 0);
+    let r = rand() * total;
+    picks.push(pool.find((st) => (r -= base[st] + 1) < 0) ?? pool[pool.length - 1]!);
+  }
+  const lucky = rand() < prog.rules.statOffer.doubleChance ? Math.floor(rand() * picks.length) : -1;
+  return picks.map((stat, i) => ({ stat, plus: i === lucky ? 2 : 1 }));
+}
+
+/** EV a level-up point costs: `offerCost` for a stat not offered, `upgradeCost` more to make a +1 a +2. */
+export function offerEvCost(content: BattleContent, prog: ProgressionContent, m: Progress, stat: StatName, upgrade = false): number {
+  const offer = statOffer(content, prog, m).find((o) => o.stat === stat);
+  if (upgrade && offer?.plus === 2) throw new Error("already +2");
+  return (offer ? 0 : prog.rules.ev.offerCost) + (upgrade ? prog.rules.ev.upgradeCost : 0);
+}
+
+/** Takes one level-up point into a stat: an offered one at its +1/+2, any other at +1; `upgrade` adds +1 (EV paid by the caller). */
+export function takeOffer<T extends Progress>(content: BattleContent, prog: ProgressionContent, m: T, stat: StatName, upgrade = false): T {
+  const offer = statOffer(content, prog, m).find((o) => o.stat === stat);
+  if (upgrade && offer?.plus === 2) throw new Error("already +2");
+  return spendPoints(m, stat, (offer?.plus ?? 1) + (upgrade ? 1 : 0), 1);
 }
 
 /** Spends unspent points on a stat. */

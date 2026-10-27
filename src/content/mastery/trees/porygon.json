@@ -4,11 +4,11 @@
  ],
  "focus": [
   {
-   "stat": "spAttack",
+   "stat": "attack",
    "skill": "porygon-techno-blast"
   },
   {
-   "stat": "spDefense",
+   "stat": "willpower",
    "skill": "porygon-conversion-2"
   },
   {

@@ -14,7 +14,7 @@
    "skill": "pidgey-brave-bird"
   },
   {
-   "stat": "spAttack",
+   "stat": "attack",
    "skill": "pidgey-hurricane"
   }
  ],
@@ -312,7 +312,7 @@
   "pidgey-hurricane": {
    "id": "pidgey-hurricane",
    "name": "Hurricane",
-   "description": "Bond skill: a raging wind at a foe up to 3 hexes away (Power 95, Sp. Atk), pushing it 1 hex.",
+   "description": "Bond skill: a raging wind at a foe up to 3 hexes away (Power 95), pushing it 1 hex.",
    "grantsMove": "pidgey-hurricane"
   },
   "pidgey-big-pecks": {

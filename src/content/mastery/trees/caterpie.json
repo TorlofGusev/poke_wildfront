@@ -11,7 +11,7 @@
  ],
  "focus": [
   {
-   "stat": "spAttack",
+   "stat": "attack",
    "skill": "caterpie-bug-buzz"
   },
   {
@@ -320,7 +320,7 @@
   "caterpie-bug-buzz": {
    "id": "caterpie-bug-buzz",
    "name": "Bug Buzz",
-   "description": "Bond skill: a damaging buzz of its wings at a foe up to 3 hexes away (Power 95, Sp. Atk).",
+   "description": "Bond skill: a damaging buzz of its wings at a foe up to 3 hexes away (Power 95).",
    "grantsMove": "caterpie-bug-buzz"
   },
   "caterpie-harden": {

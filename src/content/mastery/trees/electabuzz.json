@@ -8,7 +8,7 @@
    "skill": "electabuzz-wild-charge"
   },
   {
-   "stat": "spAttack",
+   "stat": "attack",
    "skill": "electabuzz-discharge"
   },
   {
@@ -303,13 +303,13 @@
   "electabuzz-discharge": {
    "id": "electabuzz-discharge",
    "name": "Discharge",
-   "description": "Bond skill: a burst of electricity on every adjacent foe (Power 75, Sp. Atk); Paralyzes 1 turn.",
+   "description": "Bond skill: a burst of electricity on every adjacent foe (Power 75); Paralyzes 1 turn.",
    "grantsMove": "electabuzz-discharge"
   },
   "electabuzz-volt-switch": {
    "id": "electabuzz-volt-switch",
    "name": "Volt Switch",
-   "description": "Bond skill: zaps a foe up to 2 hexes away (Power 60, Sp. Atk) and breaks off from engaged foes.",
+   "description": "Bond skill: zaps a foe up to 2 hexes away (Power 60) and breaks off from engaged foes.",
    "grantsMove": "electabuzz-volt-switch"
   },
   "electabuzz-high-voltage": {

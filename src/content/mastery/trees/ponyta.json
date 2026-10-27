@@ -13,7 +13,7 @@
    "skill": "ponyta-flare-blitz"
   },
   {
-   "stat": "spAttack",
+   "stat": "attack",
    "skill": "ponyta-fire-blast"
   }
  ],
@@ -320,7 +320,7 @@
   "ponyta-fire-blast": {
    "id": "ponyta-fire-blast",
    "name": "Fire Blast",
-   "description": "Bond skill: a star of fire up to 3 hexes away (Power 100, Sp. Atk) that Burns the foe 2 turns.",
+   "description": "Bond skill: a star of fire up to 3 hexes away (Power 100) that Burns the foe 2 turns.",
    "grantsMove": "ponyta-fire-blast"
   },
   "ponyta-flash-fire": {

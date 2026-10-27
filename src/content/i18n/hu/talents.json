@@ -36,7 +36,7 @@
   "description": "Új képesség: 2 hex távolságból csap le, rálátás nélkül is."
  },
  "type-fire": {
-  "description": "A Fire támadások 15%-kal többet sebeznek; +1 Sp. Atk."
+  "description": "A Fire támadások 15%-kal többet sebeznek; +1 Atk."
  },
  "type-water": {
   "description": "Az általa okozott lökések 1 hexszel messzebbre visznek; +1 HP."
@@ -45,7 +45,7 @@
   "description": "A Grass szívás 25%-kal többet gyógyít az okozott sebzésből; +1 HP."
  },
  "type-electric": {
-  "description": "Az Electric támadások 15%-kal többet sebeznek; +1 Sp. Atk."
+  "description": "Az Electric támadások 15%-kal többet sebeznek; +1 Atk."
  },
  "type-ice": {
   "description": "Az általa okozott állapotok 1 körrel tovább tartanak (Freeze soha; összesen legfeljebb +2 kör)."
@@ -63,7 +63,7 @@
   "description": "+1 mozgás; +1 Speed."
  },
  "type-psychic": {
-  "description": "Az általa okozott húzások 1 hexszel messzebbre visznek; +1 Sp. Atk."
+  "description": "Az általa okozott húzások 1 hexszel messzebbre visznek; +1 Atk."
  },
  "type-bug": {
   "description": "Swarm bónusz +10% segítőnként; +1 Attack."
@@ -105,7 +105,7 @@
   "description": "A Bond támadásai 1-gyel kevesebbe kerülnek (legalább 1)."
  },
  "long-shot": {
-  "description": "A távolsági támadások 1 hexszel messzebbre érnek (legfeljebb 3-ig; Bond támadásoknál nincs korlát), és átlőnek az útban álló Pokémonokon; +1 Sp. Atk."
+  "description": "A távolsági támadások 1 hexszel messzebbre érnek (legfeljebb 3-ig; Bond támadásoknál nincs korlát), és átlőnek az útban álló Pokémonokon; +1 Atk."
  },
  "skill-swift": {
   "description": "Új képesség: csillagsorozat, amely figyelmen kívül hagyja a rálátást, 2 hexnyire."
@@ -114,7 +114,7 @@
   "description": "Csúcstehetség. Ellenfél kiütése nullázza a speciális támadásai újratöltését."
  },
  "adaptable": {
-  "description": "+2 Attack és +2 Sp. Atk."
+  "description": "+2 Attack és +2 Atk."
  },
  "skill-body-slam": {
   "description": "Új képesség: súlyos rávetődés, amely Paralysis-t okoz."
@@ -144,7 +144,7 @@
   "description": "Ha egy ellenfelet akadálynak lök, 6 extra sebzést okoz."
  },
  "rain-dish": {
-  "description": "Minden körben gyógyítja max HP-ja 4%-át; +1 Sp. Def."
+  "description": "Minden körben gyógyítja max HP-ja 4%-át; +1 Willpower."
  },
  "skill-surf": {
   "description": "Új képesség: hullám, amely egy vonalban mindent eltalál."
@@ -234,7 +234,7 @@
   "description": "A Flying támadások 20%-kal többet sebeznek."
  },
  "foresight": {
-  "description": "+2 Sp. Atk és +2 Sp. Def."
+  "description": "+2 Atk és +2 Willpower."
  },
  "telekinesis": {
   "description": "A távolsági támadások 1 hexszel messzebbre érnek (legfeljebb 3-ig; Bond támadásoknál nincs korlát), és átrepülnek az útban álló Pokémonokon."
@@ -285,7 +285,7 @@
   "description": "+30% sebzés, amíg HP-ja a fele alatt van."
  },
  "draconic-might": {
-  "description": "+1 Attack és +1 Sp. Atk."
+  "description": "+1 Attack és +1 Atk."
  },
  "skill-dragon-rage": {
   "description": "Új képesség: sárkányos düh robbanása."
@@ -336,7 +336,7 @@
   "description": "Az általa okozott állapotok 1 körrel tovább tartanak."
  },
  "torment": {
-  "description": "+15% sebzés bármilyen állapotot viselő ellenfelekre; +1 Sp. Atk."
+  "description": "+15% sebzés bármilyen állapotot viselő ellenfelekre; +1 Atk."
  },
  "puppeteer": {
   "description": "Csúcstehetség. Az általa okozott lökések és húzások 1 hexszel messzebbre visznek, és ha egy ellenfelet akadálynak lök, 10 extra sebzést okoz."

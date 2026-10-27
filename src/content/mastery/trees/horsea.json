@@ -8,7 +8,7 @@
  ],
  "focus": [
   {
-   "stat": "spAttack",
+   "stat": "attack",
    "skill": "horsea-octazooka"
   },
   {
@@ -320,7 +320,7 @@
   "horsea-octazooka": {
    "id": "horsea-octazooka",
    "name": "Octazooka",
-   "description": "Bond skill: blasts ink at a foe up to 3 hexes away (Power 80, Sp. Atk), Marking it 2 turns.",
+   "description": "Bond skill: blasts ink at a foe up to 3 hexes away (Power 80), Marking it 2 turns.",
    "grantsMove": "horsea-octazooka"
   },
   "horsea-smokescreen": {

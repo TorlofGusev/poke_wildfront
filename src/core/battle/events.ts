@@ -18,6 +18,10 @@ export type BattleEvent =
   | { type: "displaced"; unitId: string; from: Point; to: Point; blocked: boolean }
   | { type: "statusApplied"; unitId: string; status: string; duration: number }
   | { type: "statusExpired"; unitId: string; status: string }
+  /** Willpower shrugged off a status a foe tried to inflict. */
+  | { type: "statusResisted"; unitId: string; status: string }
+  /** A critical hit (followed by its damaged event). */
+  | { type: "critical"; unitId: string; targetId: string }
   | { type: "fainted"; unitId: string }
   | { type: "ballThrown"; unitId: string; targetId: string; ballId: string; chance: number; success: boolean }
   | { type: "captured"; unitId: string }

@@ -159,6 +159,10 @@
    {
     "item": "super-potion",
     "chance": 0.05
+   },
+   {
+    "item": "silk-scarf",
+    "chance": 0.03
    }
   ]
  },
@@ -318,6 +322,10 @@
    {
     "item": "oran-berry",
     "chance": 0.15
+   },
+   {
+    "item": "poison-barb",
+    "chance": 0.03
    }
   ]
  },
@@ -465,6 +473,10 @@
    {
     "item": "super-potion",
     "chance": 0.1
+   },
+   {
+    "item": "soft-sand",
+    "chance": 0.03
    }
   ]
  },
@@ -623,6 +635,10 @@
    },
    {
     "item": "sharp-beak",
+    "chance": 0.03
+   },
+   {
+    "item": "silk-scarf",
     "chance": 0.03
    }
   ]

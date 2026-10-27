@@ -1,7 +1,7 @@
 {
  "talents": {
   "vulpix-inferno": {
-   "description": "Bond képesség: lángba borít egy legfeljebb 3 hexnyi ellenfelet (Erő 100, Sp. Atk), 2 körre megégeti."
+   "description": "Bond képesség: lángba borít egy legfeljebb 3 hexnyi ellenfelet (Erő 100), 2 körre megégeti."
   },
   "vulpix-feint-attack": {
    "description": "Bond képesség: ravasz csel (Erő 55), 1 körre Exposed állapotba teszi az ellenfelet."

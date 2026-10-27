@@ -7,7 +7,7 @@ const selfBuff = (id: string, status: string): MoveDef => ({
   id, name: id, type: "normal", kind: "special", cooldown: 3, power: 0, range: { min: 0, max: 0 },
   requiresLineOfSight: false, shape: { kind: "single" }, affects: "allies", effects: [{ kind: "status", status, duration: 2 }],
 });
-const stats = { hp: 40, attack: 40, defense: 40, spAttack: 40, spDefense: 40, speed: 30 };
+const stats = { hp: 40, attack: 40, defense: 40, speed: 30, willpower: 0, crit: 0 };
 
 /** Fixture content plus self-buff moves and species that know them. */
 const content: BattleContent = {

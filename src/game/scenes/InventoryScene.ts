@@ -32,7 +32,7 @@ export class InventoryScene extends Phaser.Scene {
     const groups: [string, string[]][] = [
       [t("Poké Balls"), Object.keys(CONTENT.balls)],
       [CONTENT.terms.food, Object.values(PROGRESSION.items).filter((i) => i.kind === "food").map((i) => i.id)],
-      [t("Healing and Candy"), Object.values(PROGRESSION.items).filter((i) => i.kind === "potion" || i.kind === "candy" || i.kind === "remedy").map((i) => i.id)],
+      [t("Healing and Rare Candy"), Object.values(PROGRESSION.items).filter((i) => i.kind === "potion" || i.kind === "candy" || i.kind === "remedy").map((i) => i.id)],
       [t("Held items"), Object.values(PROGRESSION.items).filter((i) => i.kind === "held").map((i) => i.id)],
     ];
     let y = 52;

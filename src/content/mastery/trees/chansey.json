@@ -11,11 +11,11 @@
    "skill": "chansey-wish"
   },
   {
-   "stat": "spDefense",
+   "stat": "willpower",
    "skill": "chansey-light-screen"
   },
   {
-   "stat": "spAttack",
+   "stat": "attack",
    "skill": "chansey-hyper-voice"
   }
  ],
@@ -315,7 +315,7 @@
   "chansey-hyper-voice": {
    "id": "chansey-hyper-voice",
    "name": "Hyper Voice",
-   "description": "Bond skill: a booming cry up to 2 hexes away (Power 80, Sp. Atk) hitting a 1-hex area.",
+   "description": "Bond skill: a booming cry up to 2 hexes away (Power 80) hitting a 1-hex area.",
    "grantsMove": "chansey-hyper-voice"
   },
   "chansey-egg-padding": {

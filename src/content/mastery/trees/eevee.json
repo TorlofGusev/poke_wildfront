@@ -15,7 +15,7 @@
    "skill": "eevee-last-resort"
   },
   {
-   "stat": "spAttack",
+   "stat": "attack",
    "skill": "eevee-hyper-voice"
   },
   {
@@ -689,7 +689,7 @@
   "eevee-hyper-voice": {
    "id": "eevee-hyper-voice",
    "name": "Hyper Voice",
-   "description": "Bond skill: a piercing cry up to 2 hexes away (Power 75, Sp. Atk) hitting a 1-hex area.",
+   "description": "Bond skill: a piercing cry up to 2 hexes away (Power 75) hitting a 1-hex area.",
    "grantsMove": "eevee-hyper-voice"
   },
   "eevee-extreme-speed": {

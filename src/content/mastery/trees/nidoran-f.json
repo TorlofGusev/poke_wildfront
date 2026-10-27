@@ -14,7 +14,7 @@
    "skill": "nidoran-f-gunk-shot"
   },
   {
-   "stat": "spAttack",
+   "stat": "attack",
    "skill": "nidoran-f-sludge-wave"
   }
  ],
@@ -325,7 +325,7 @@
   "nidoran-f-sludge-wave": {
    "id": "nidoran-f-sludge-wave",
    "name": "Sludge Wave",
-   "description": "Bond skill: a wave of sludge hits all foes within 2 hexes (Power 75, Sp. Atk), Poisoning for 1 turn.",
+   "description": "Bond skill: a wave of sludge hits all foes within 2 hexes (Power 75), Poisoning for 1 turn.",
    "grantsMove": "nidoran-f-sludge-wave"
   },
   "nidoran-f-hustle": {

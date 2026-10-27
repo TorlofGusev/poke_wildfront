@@ -4,7 +4,7 @@
    "description": "Bond képesség: 2 körre elalszik, 70 HP-t gyógyul, és leveti az ellenfelek okozta állapotokat."
   },
   "seel-surf": {
-   "description": "Bond képesség: nagy hullám legfeljebb 2 hexnyire, 1 hex körzetben (Power 85, Sp. Atk)."
+   "description": "Bond képesség: nagy hullám legfeljebb 2 hexnyire, 1 hex körzetben (Power 85)."
   },
   "seel-hydration": {
    "description": "Köre elején lerázza magáról az ellenfelek okozta státuszokat."

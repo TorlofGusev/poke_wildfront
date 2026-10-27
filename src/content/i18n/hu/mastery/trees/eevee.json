@@ -4,7 +4,7 @@
    "description": "Bond képesség: az adu, egy teljes erejű rohamtámadás (Power 100, Attack)."
   },
   "eevee-hyper-voice": {
-   "description": "Bond képesség: átható kiáltás legfeljebb 2 hexnyire (Power 75, Sp. Atk), 1 hex körzetben."
+   "description": "Bond képesség: átható kiáltás legfeljebb 2 hexnyire (Power 75), 1 hex körzetben."
   },
   "eevee-extreme-speed": {
    "description": "Bond képesség: villámgyors roham legfeljebb 2 hexnyire (Power 60), lekötve az ellenfelet."

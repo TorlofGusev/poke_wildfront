@@ -36,7 +36,7 @@ describe("abilities", () => {
   it("Keen Eye targets Pokémon hidden in tall grass", () => {
     const c = withAbility({ keenEye: true });
     // The Keen Eye user acts first thanks to its Speed; the foe hides in grass 3 tiles away.
-    const fastStats = { hp: 40, attack: 40, defense: 40, spAttack: 40, spDefense: 40, speed: 200 };
+    const fastStats = { hp: 40, attack: 40, defense: 40, speed: 200, willpower: 0, crit: 0 };
     const { state } = createBattle(c, ['...""'], [u("p", "slow", "player", 0, 0, { stats: fastStats }), u("e", "fast", "enemy", 3, 0)]);
     expect(validTargets(state, c, "p", "ember").length).toBe(1);
     const plain = createBattle(base, ['...""'], [u("p", "slow", "player", 0, 0, { stats: fastStats }), u("e", "fast", "enemy", 3, 0)]).state;

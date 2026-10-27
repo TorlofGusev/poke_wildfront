@@ -258,6 +258,18 @@ describe("moving wild groups", () => {
     expect(steps).toBeGreaterThanOrEqual(2);
   });
 
+  it("towns are safe: groups never step into one and do not chase a party standing in it", () => {
+    const town = { ...def, rows: ['TTTT""""""""', 'TTTT""""""""', 'TTTT""""""""'] } as unknown as WorldDef;
+    let world: WorldState = { ...base, pos: { x: 3, y: 1 }, encounters: [group(5)] };
+    for (let i = 0; i < 40; i++) {
+      const r = stepGroups(WORLD_CONTENT, town, world);
+      expect(r.caught).toBeNull();
+      expect(r.world.encounters[0]!.chasing).toBe(false);
+      expect(r.world.encounters[0]!.pos.x).toBeGreaterThanOrEqual(4);
+      world = r.world;
+    }
+  });
+
   it("idle groups only wander near home, never onto the party, and the same state moves the same way", () => {
     let world: WorldState = { ...base, pos: { x: 11, y: 1 }, encounters: [group(0)] };
     for (let i = 0; i < 60; i++) {

@@ -1,4 +1,5 @@
 import Phaser from "phaser";
+import { pulseWave } from "./gbSynth";
 
 /**
  * Background music: a tiny chiptune step sequencer on Web Audio (original tunes, no files).
@@ -204,7 +205,9 @@ export function stopMusic(): void {
 function playNote(ctx: AudioContext, out: AudioNode, wave: OscillatorType, gain: number, freq: number, t: number, dur: number): void {
   const osc = ctx.createOscillator();
   const g = ctx.createGain();
-  osc.type = wave;
+  // Square voices play on the GB pulse channel (25% duty), the rest as written.
+  if (wave === "square") osc.setPeriodicWave(pulseWave(ctx, 0.25));
+  else osc.type = wave;
   osc.frequency.value = freq;
   g.gain.setValueAtTime(0, t);
   g.gain.linearRampToValueAtTime(gain, t + 0.008);

@@ -7,7 +7,7 @@
    "description": "Kötelék-képesség: legfeljebb 2 hexnyire fényfal 2 körre Megerősíti a szövetségeseket egy 1 hex körzetben."
   },
   "chansey-hyper-voice": {
-   "description": "Kötelék-képesség: harsány kiáltás legfeljebb 2 hexnyire (Erő 80, Sp. Atk), egy 1 hex körzetet eltalálva."
+   "description": "Kötelék-képesség: harsány kiáltás legfeljebb 2 hexnyire (Erő 80), egy 1 hex körzetet eltalálva."
   },
   "chansey-egg-padding": {
    "description": "20%-kal kevesebb sebzést kap, amíg teljes a HP-ja."

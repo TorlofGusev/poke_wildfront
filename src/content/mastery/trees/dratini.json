@@ -10,7 +10,7 @@
    "skill": "dratini-outrage"
   },
   {
-   "stat": "spAttack",
+   "stat": "attack",
    "skill": "dratini-dragon-pulse"
   },
   {
@@ -318,7 +318,7 @@
   "dratini-dragon-pulse": {
    "id": "dratini-dragon-pulse",
    "name": "Dragon Pulse",
-   "description": "Bond skill: a shockwave from its mouth at a foe up to 3 hexes away (Power 85, Sp. Atk).",
+   "description": "Bond skill: a shockwave from its mouth at a foe up to 3 hexes away (Power 85).",
    "grantsMove": "dratini-dragon-pulse"
   },
   "dratini-extreme-speed": {

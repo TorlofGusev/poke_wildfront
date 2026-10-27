@@ -45,6 +45,8 @@ export interface GameState {
   readonly world: WorldState;
   /** Pokédollars. */
   readonly money: number;
+  /** EV (Effort): spent at level-ups to make an offered +1 stat a +2. */
+  readonly ev?: number;
   /** Species met in battle (the spawn panel names only these). */
   readonly seen?: readonly string[];
   /** Story progress: flags set by NPCs and quests. */
@@ -191,7 +193,7 @@ export function resolveBattle(
       },
     };
   }
-  next = { ...next, money: next.money + money };
+  next = { ...next, money: next.money + money, ev: (next.ev ?? 0) + (won ? prog.rules.ev.wildWin : 0) };
   const candies = won ? prog.rules.candiesPerVictory : 0;
   if (candies) next = { ...next, inventory: { ...next.inventory, items: { ...next.inventory.items, candy: (next.inventory.items.candy ?? 0) + candies } } };
 

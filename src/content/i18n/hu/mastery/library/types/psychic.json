@@ -4,7 +4,7 @@
    "description": "Új képesség: pszichikus sugár egy vonal mentén (Erő 45); 2 körig Zavarodott."
   },
   "psychic-magic-guard": {
-   "description": "Immunis a Poison és a Burn ellen; +1 Sp. Def."
+   "description": "Immunis a Poison és a Burn ellen; +1 Willpower."
   },
   "psychic-precognition": {
    "description": "25%-kal kevesebb sebzést kap, amíg teljes a HP-ja; +1 Speed."
@@ -25,10 +25,10 @@
    "description": "A Psychic támadások 25%-kal többet sebeznek; +25% sebzés alvó (Sleep) ellenfelekre."
   },
   "psychic-telepathy": {
-   "description": "+20% sebzés olyan ellenfelekre, akiken egy szövetséges állapota van (kombó); +1 Sp. Def."
+   "description": "+20% sebzés olyan ellenfelekre, akiken egy szövetséges állapota van (kombó); +1 Willpower."
   },
   "psychic-inner-focus": {
-   "description": "Minden körben lerázza az ellenfelek által rá tett állapotokat; +1 Sp. Atk."
+   "description": "Minden körben lerázza az ellenfelek által rá tett állapotokat; +1 Atk."
   },
   "psychic-skill-future-sight": {
    "description": "Új Bond képesség: előre látott pszichikus csapás 3 hexig, rálátás nélkül."

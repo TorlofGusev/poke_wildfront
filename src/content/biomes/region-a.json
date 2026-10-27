@@ -138,6 +138,10 @@
    {
     "item": "oran-berry",
     "chance": 0.18
+   },
+   {
+    "item": "silk-scarf",
+    "chance": 0.03
    }
   ]
  },
@@ -284,6 +288,10 @@
    {
     "item": "oran-berry",
     "chance": 0.18
+   },
+   {
+    "item": "silk-scarf",
+    "chance": 0.03
    }
   ]
  },
@@ -442,6 +450,10 @@
    },
    {
     "item": "revival-herb",
+    "chance": 0.03
+   },
+   {
+    "item": "silver-powder",
     "chance": 0.03
    }
   ]
@@ -608,6 +620,10 @@
    {
     "item": "oran-berry",
     "chance": 0.18
+   },
+   {
+    "item": "poison-barb",
+    "chance": 0.03
    }
   ]
  },
@@ -758,6 +774,10 @@
    {
     "item": "oran-berry",
     "chance": 0.18
+   },
+   {
+    "item": "silk-scarf",
+    "chance": 0.03
    }
   ]
  }

@@ -59,7 +59,7 @@
    "stats": {
     "defense": 2,
     "hp": 2,
-    "spDefense": 1
+    "willpower": 1
    },
    "mods": {
     "pinDamage": 1.15,
@@ -69,12 +69,12 @@
   "tank-stalwart": {
    "id": "tank-stalwart",
    "name": "Stalwart",
-   "description": "Shakes off statuses foes put on it each turn; +1 Sp. Def.",
+   "description": "Shakes off statuses foes put on it each turn; +1 Willpower.",
    "mods": {
     "shedStatuses": true
    },
    "stats": {
-    "spDefense": 1
+    "willpower": 1
    }
   },
   "tank-iron-barbs": {

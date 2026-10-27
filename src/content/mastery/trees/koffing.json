@@ -8,7 +8,7 @@
  ],
  "focus": [
   {
-   "stat": "spAttack",
+   "stat": "attack",
    "skill": "koffing-sludge-bomb"
   },
   {
@@ -308,7 +308,7 @@
   "koffing-sludge-bomb": {
    "id": "koffing-sludge-bomb",
    "name": "Sludge Bomb",
-   "description": "Bond skill: hurls sludge at a foe up to 3 hexes away (Power 90, Sp. Atk), Poisoning it 2 turns.",
+   "description": "Bond skill: hurls sludge at a foe up to 3 hexes away (Power 90), Poisoning it 2 turns.",
    "grantsMove": "koffing-sludge-bomb"
   },
   "koffing-smokescreen": {

@@ -6,7 +6,7 @@
  ],
  "focus": [
   {
-   "stat": "spAttack",
+   "stat": "attack",
    "skill": "gastly-sludge-bomb"
   },
   {
@@ -304,7 +304,7 @@
   "gastly-sludge-bomb": {
    "id": "gastly-sludge-bomb",
    "name": "Sludge Bomb",
-   "description": "Bond skill: hurls filthy sludge up to 3 hexes away (Power 90, Sp. Atk) that Poisons for 2 turns.",
+   "description": "Bond skill: hurls filthy sludge up to 3 hexes away (Power 90) that Poisons for 2 turns.",
    "grantsMove": "gastly-sludge-bomb"
   },
   "gastly-shadow-sneak": {

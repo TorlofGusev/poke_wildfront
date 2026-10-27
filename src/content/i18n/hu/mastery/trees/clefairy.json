@@ -4,7 +4,7 @@
    "description": "Bond képesség: nyugtató csengőszó leveszi az ellenfelek okozta státuszokat róla és a szomszédos társakról, 25 HP-t gyógyítva."
   },
   "clefairy-moonblast": {
-   "description": "Bond képesség: a hold erejével sújt egy legfeljebb 3 hexnyire lévő ellenfélre (Power 90, Sp. Atk)."
+   "description": "Bond képesség: a hold erejével sújt egy legfeljebb 3 hexnyire lévő ellenfélre (Power 90)."
   },
   "clefairy-light-screen": {
    "description": "Bond képesség: fényfal legfeljebb 2 hexnyire, 1 hexes körzetben a szövetségesek 2 körre Fortified-ok."

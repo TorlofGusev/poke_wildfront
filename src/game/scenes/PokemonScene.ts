@@ -10,6 +10,7 @@ import {
   memberMaxHp,
   moveBetweenPartyAndStorage,
   respecMember,
+  useRareCandy,
   usePotion,
   useRemedy,
   withMember,
@@ -31,6 +32,7 @@ import {
   setActiveMoves,
   talentOptions,
   xpToNext,
+  statOffer,
 } from "../../core/progression";
 import { STAT_NAMES, type StatName } from "../../core/battle";
 import { session } from "../session";
@@ -48,6 +50,9 @@ const DETAIL_X = 16;
 const DETAIL_W = 928;
 
 /** One Pokémon: stats (and stat points), talent tree, moves, equipment. */
+/** Set once the player has read the EV explanation. */
+const EV_HELP_FLAG = "help-ev";
+
 export class PokemonScene extends Phaser.Scene {
   private root!: Phaser.GameObjects.Container;
   private selected: string | null = null;
@@ -59,6 +64,9 @@ export class PokemonScene extends Phaser.Scene {
   constructor() {
     super("Pokemon");
   }
+
+  /** The EV explanation, reopened with "?". */
+  private evHelp = false;
 
   init(data: { uid: string; tab?: Tab }): void {
     this.message = "";
@@ -202,24 +210,60 @@ export class PokemonScene extends Phaser.Scene {
 
   /** Stat points block (only when points are waiting). Returns the y below it. */
   private renderPoints(m: PartyMember, y: number, add: <T extends Phaser.GameObjects.GameObject>(o: T) => T): number {
-    // Stat points: +1 per level into any stat, +2 when a Candy is spent with it.
+    // Stat points: each level offers 3 stats (one may be ++); EV turns a +1 into +2.
     if (m.unspentPoints > 0) {
-      const candies = session.game.inventory.items[CANDY] ?? 0;
+      const ev = session.game.ev ?? 0;
+      // What EV is: shown by itself the first time, then behind the "?" button.
+      const helpSeen = session.game.flags?.includes(EV_HELP_FLAG) ?? false;
+      if (!helpSeen || this.evHelp) {
+        const r = PROGRESSION.rules.ev;
+        const box = add(new RichText(this, DETAIL_X + 8, y + 6, DETAIL_W - 16, 12));
+        const h = box.setMarkup([
+          tag("title", t("Effort (EV)")),
+          t("Each level-up point offers 3 stats; one marked ★ gives +2."),
+          t("Spend EV to grow it your way: {up} EV turns a +1 into +2, {off} EV picks a stat that was not offered.", { up: r.upgradeCost, off: r.offerCost }),
+          t("EV comes from winning: wild battle +{wild}, trainer +{trainer}, badge +{badge}, helping people +{quest}.", { wild: r.wildWin, trainer: r.trainerWin, badge: r.badge, quest: r.quest }),
+        ].join("\n"));
+        add(this.add.rectangle(DETAIL_X, y, DETAIL_W, h + 42, 0x1c2433, 0.95).setOrigin(0).setStrokeStyle(1, 0xf5d76e));
+        this.root.bringToTop(box);
+        add(new Button(this, DETAIL_X + 8, y + h + 12, 120, 24, t("Got it"), () => {
+          this.evHelp = false;
+          if (!helpSeen) session.update({ ...session.game, flags: [...(session.game.flags ?? []), EV_HELP_FLAG] });
+          this.render();
+        }));
+        y += h + 50;
+      } else {
+        add(new Button(this, DETAIL_X + DETAIL_W - 28, y, 28, 18, "?", () => ((this.evHelp = true), this.render())));
+      }
+      const { upgradeCost: cost, offerCost } = PROGRESSION.rules.ev;
       y += add(new RichText(this, DETAIL_X, y, DETAIL_W, 13)).setMarkup(
-        `${tag("num", m.unspentPoints > 1 ? t("★ {n} stat points to spend", { n: m.unspentPoints }) : t("★ {n} stat point to spend", { n: m.unspentPoints }))}  ${tag("dim", t("Candy ×{n}: a point with a Candy gives +2", { n: candies }))}`) + 4;
+        `${tag("num", m.unspentPoints > 1 ? t("★ {n} stat points to spend", { n: m.unspentPoints }) : t("★ {n} stat point to spend", { n: m.unspentPoints }))}  ${tag("dim", t("EV {ev} · {cost} EV makes a +1 a +2 · other stats +{off} EV", { ev, cost, off: offerCost }))}`) + 4;
       const labels = STAT_SHORT;
-      const w = Math.floor((DETAIL_W - 6 * (STAT_NAMES.length - 1)) / STAT_NAMES.length);
-      STAT_NAMES.forEach((stat, i) => {
-        add(new Button(this, DETAIL_X + i * (w + 6), y, w, 24, `+1 ${labels[stat]}`, () =>
-          this.act(() => session.update(allocatePoint(PROGRESSION, session.game, m.uid, stat)))));
-        if (candies > 0) {
-          add(new Button(this, DETAIL_X + i * (w + 6), y + 27, w, 22, t("+2 {stat} (Candy)", { stat: labels[stat] }), () =>
-            this.act(() => session.update(allocatePoint(PROGRESSION, session.game, m.uid, stat, true)), t("Candy used: +2 {stat}.", { stat: labels[stat] }))));
+      const offers = statOffer(CONTENT, PROGRESSION, m);
+      const w = Math.floor((DETAIL_W - 6 * (offers.length - 1)) / offers.length);
+      offers.forEach((o, i) => {
+        const x = DETAIL_X + i * (w + 6);
+        add(new Button(this, x, y, w, 24, `+${o.plus} ${labels[o.stat]}${o.plus === 2 ? " ★" : ""}`, () =>
+          this.act(() => session.update(allocatePoint(CONTENT, PROGRESSION, session.game, m.uid, o.stat)))));
+        if (o.plus === 1) {
+          add(new Button(this, x, y + 27, w, 22, t("+2 {stat} ({cost} EV)", { stat: labels[o.stat], cost }), () =>
+            this.act(() => session.update(allocatePoint(CONTENT, PROGRESSION, session.game, m.uid, o.stat, true))))).setEnabled(ev >= cost);
         }
       });
-      y += candies > 0 ? 56 : 30;
+      y += 56;
+      // Stats not offered: bought with EV.
+      const others = STAT_NAMES.filter((st) => !offers.some((o) => o.stat === st));
+      const ow = Math.floor((DETAIL_W - 6 * (others.length - 1)) / others.length);
+      others.forEach((stat, i) => {
+        const x = DETAIL_X + i * (ow + 6);
+        add(new Button(this, x, y, ow, 22, t("+1 {stat} ({cost} EV)", { stat: labels[stat], cost: offerCost }), () =>
+          this.act(() => session.update(allocatePoint(CONTENT, PROGRESSION, session.game, m.uid, stat))))).setEnabled(ev >= offerCost);
+        add(new Button(this, x, y + 25, ow, 22, t("+2 {stat} ({cost} EV)", { stat: labels[stat], cost: offerCost + cost }), () =>
+          this.act(() => session.update(allocatePoint(CONTENT, PROGRESSION, session.game, m.uid, stat, true))))).setEnabled(ev >= offerCost + cost);
+      });
+      y += 54;
       y += add(new RichText(this, DETAIL_X, y, DETAIL_W, 11)).setMarkup(tag("dim",
-        t("HP: +{hp} max HP per point · Atk/Def: physical damage dealt/taken · SpA/SpD: special damage ({types} moves) · Speed: movement {steps}, acts earlier", { hp: CONTENT.rules.hpPerPoint, types: CONTENT.rules.specialTypes.join(", "), steps: CONTENT.rules.moveBySpeed.map((s) => `${s.speed}+ → ${s.move}`).join(", ") }))) + 6;
+        t("HP: +{hp} max HP per point · Atk/Def: damage dealt/taken · Speed: movement {steps}, acts earlier · Will: fills Spirit faster, resists statuses · Crit: critical hit chance and damage", { hp: CONTENT.rules.hpPerPoint, steps: CONTENT.rules.moveBySpeed.map((s) => `${s.speed}+ → ${s.move}`).join(", ") }))) + 6;
     }
     return y;
   }
@@ -422,6 +466,13 @@ ${into.types.map((ty) => tag(ty, ty)).join("/")}`);
         this.act(() => session.update(usePotion(CONTENT, PROGRESSION, session.game, m.uid, id)), t("{name} recovered HP.", { name: s.name }))).setEnabled(m.hp > 0 && m.hp < max));
     });
     if (potions.length) y += 36;
+    // Rare Candy: one level at once.
+    const candies = session.game.inventory.items[CANDY] ?? 0;
+    if (candies > 0) {
+      add(new Button(this, DETAIL_X, y, 300, 26, t("Use Rare Candy (+1 Lv) ×{n}", { n: candies }), () =>
+        this.act(() => session.update(useRareCandy(CONTENT, PROGRESSION, session.game, m.uid).game), t("{name} grew to Lv {lv}!", { name: s.name, lv: m.level + 1 }))).setEnabled(m.level < PROGRESSION.rules.maxLevel));
+      y += 36;
+    }
     // Knockout marks: only remedies (or Pokémon Center treatment) remove them.
     const remedies = Object.entries(session.game.inventory.items).filter(([id, n]) => n > 0 && PROGRESSION.items[id]?.kind === "remedy");
     if (m.knockouts > 0) {

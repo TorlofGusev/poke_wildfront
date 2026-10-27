@@ -13,7 +13,7 @@
    "skill": "shellder-icicle-spear"
   },
   {
-   "stat": "spAttack",
+   "stat": "attack",
    "skill": "shellder-hydro-pump"
   }
  ],
@@ -329,7 +329,7 @@
   "shellder-hydro-pump": {
    "id": "shellder-hydro-pump",
    "name": "Hydro Pump",
-   "description": "Bond skill: a torrent of water at a foe up to 3 hexes away (Power 100, Sp. Atk).",
+   "description": "Bond skill: a torrent of water at a foe up to 3 hexes away (Power 100).",
    "grantsMove": "shellder-hydro-pump"
   },
   "shellder-shell-armor": {

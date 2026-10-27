@@ -7,7 +7,7 @@
  ],
  "focus": [
   {
-   "stat": "spAttack",
+   "stat": "attack",
    "skill": "magmar-inferno"
   },
   {
@@ -318,7 +318,7 @@
   "magmar-inferno": {
    "id": "magmar-inferno",
    "name": "Inferno",
-   "description": "Bond skill: engulfs a foe up to 3 hexes away in flames (Power 100, Sp. Atk); Burns 3 turns.",
+   "description": "Bond skill: engulfs a foe up to 3 hexes away in flames (Power 100); Burns 3 turns.",
    "grantsMove": "magmar-inferno"
   },
   "magmar-flare-blitz": {

@@ -4,11 +4,11 @@
  ],
  "focus": [
   {
-   "stat": "spAttack",
+   "stat": "attack",
    "skill": "mr-mime-future-sight"
   },
   {
-   "stat": "spDefense",
+   "stat": "willpower",
    "skill": "mr-mime-barrier"
   },
   {
@@ -301,7 +301,7 @@
   "mr-mime-future-sight": {
    "id": "mr-mime-future-sight",
    "name": "Future Sight",
-   "description": "Bond skill: a foreseen psychic blast at a foe up to 3 hexes away (Power 100, Sp. Atk).",
+   "description": "Bond skill: a foreseen psychic blast at a foe up to 3 hexes away (Power 100).",
    "grantsMove": "mr-mime-future-sight"
   },
   "mr-mime-barrier": {

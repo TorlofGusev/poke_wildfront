@@ -5,7 +5,7 @@
  ],
  "focus": [
   {
-   "stat": "spAttack",
+   "stat": "attack",
    "skill": "omanyte-brine"
   },
   {
@@ -313,7 +313,7 @@
   "omanyte-brine": {
    "id": "omanyte-brine",
    "name": "Brine",
-   "description": "Bond skill: a blast of brine at a foe up to 3 hexes away (Power 85, Sp. Atk).",
+   "description": "Bond skill: a blast of brine at a foe up to 3 hexes away (Power 85).",
    "grantsMove": "omanyte-brine"
   },
   "omanyte-rollout": {

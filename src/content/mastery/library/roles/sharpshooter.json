@@ -96,36 +96,36 @@
   "sharpshooter-clear-shot": {
    "id": "sharpshooter-clear-shot",
    "name": "Clear Shot",
-   "description": "Its ranged moves fire over Pokémon in the way; +1 Sp. Atk.",
+   "description": "Its ranged moves fire over Pokémon in the way; +1 Atk.",
    "mods": {
     "shootOver": true
    },
    "stats": {
-    "spAttack": 1
+    "attack": 1
    }
   },
   "sharpshooter-lock-in": {
    "id": "sharpshooter-lock-in",
    "name": "Lock In",
-   "description": "+25% damage against Marked foes; +1 Sp. Atk.",
+   "description": "+25% damage against Marked foes; +1 Atk.",
    "mods": {
     "vsStatusIdDamage": {
      "marked": 1.25
     }
    },
    "stats": {
-    "spAttack": 1
+    "attack": 1
    }
   },
   "sharpshooter-steady-aim": {
    "id": "sharpshooter-steady-aim",
    "name": "Steady Aim",
-   "description": "+15% more damage to foes 2+ hexes away; +1 Sp. Atk.",
+   "description": "+15% more damage to foes 2+ hexes away; +1 Atk.",
    "mods": {
     "farDamage": 1.15
    },
    "stats": {
-    "spAttack": 1
+    "attack": 1
    }
   },
   "skill-sharpshooter-swift": {
@@ -143,23 +143,23 @@
   "sharpshooter-camouflage": {
    "id": "sharpshooter-camouflage",
    "name": "Camouflage",
-   "description": "Takes 20% less damage while at full HP; +1 Sp. Def.",
+   "description": "Takes 20% less damage while at full HP; +1 Willpower.",
    "mods": {
     "fullHpDamageTaken": 0.8
    },
    "stats": {
-    "spDefense": 1
+    "willpower": 1
    }
   },
   "sharpshooter-sharp-focus": {
    "id": "sharpshooter-sharp-focus",
    "name": "Sharp Focus",
-   "description": "Its Bond moves cost 1 less (minimum 1); +1 Sp. Atk, +1 Speed.",
+   "description": "Its Bond moves cost 1 less (minimum 1); +1 Atk, +1 Speed.",
    "mods": {
     "bondCostReduction": 1
    },
    "stats": {
-    "spAttack": 1,
+    "attack": 1,
     "speed": 1
    }
   },

@@ -170,6 +170,10 @@
    {
     "item": "super-potion",
     "chance": 0.15
+   },
+   {
+    "item": "twisted-spoon",
+    "chance": 0.03
    }
   ]
  },
@@ -331,6 +335,10 @@
    {
     "item": "super-potion",
     "chance": 0.15
+   },
+   {
+    "item": "soft-sand",
+    "chance": 0.03
    }
   ]
  },
@@ -831,6 +839,10 @@
    {
     "item": "miracle-seed",
     "chance": 0.04
+   },
+   {
+    "item": "poison-barb",
+    "chance": 0.03
    }
   ]
  }

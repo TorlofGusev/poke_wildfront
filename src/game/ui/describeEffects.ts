@@ -75,8 +75,8 @@ export function describeModifiers(content: BattleContent, m: Partial<UnitModifie
   return out;
 }
 
-export const STAT_LABEL: Record<StatName, string> = { hp: t("HP"), attack: t("Attack"), defense: t("Defense"), spAttack: t("Sp. Atk"), spDefense: t("Sp. Def"), speed: t("Speed") };
-export const STAT_SHORT: Record<StatName, string> = { hp: t("HP"), attack: t("Atk"), defense: t("Def"), spAttack: t("SpA"), spDefense: t("SpD"), speed: t("Spe") };
+export const STAT_LABEL: Record<StatName, string> = { hp: t("HP"), attack: t("Attack"), defense: t("Defense"), speed: t("Speed"), willpower: t("Willpower"), crit: t("Crit") };
+export const STAT_SHORT: Record<StatName, string> = { hp: t("HP"), attack: t("Atk"), defense: t("Def"), speed: t("Spe"), willpower: t("Will"), crit: t("Crit") };
 
 /** "Atk 7  Def 3  SpA 8  SpD 5  Spe 6" (HP is shown separately as current/max). */
 export const statLine = (stats: BaseStats): string =>

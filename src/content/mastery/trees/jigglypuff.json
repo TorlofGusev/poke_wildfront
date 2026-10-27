@@ -13,7 +13,7 @@
    "skill": "jigglypuff-play-rough"
   },
   {
-   "stat": "spAttack",
+   "stat": "attack",
    "skill": "jigglypuff-hyper-voice"
   }
  ],
@@ -294,7 +294,7 @@
   "jigglypuff-hyper-voice": {
    "id": "jigglypuff-hyper-voice",
    "name": "Hyper Voice",
-   "description": "Bond skill: a booming song hits all foes within 2 hexes (Power 80, Sp. Atk).",
+   "description": "Bond skill: a booming song hits all foes within 2 hexes (Power 80).",
    "grantsMove": "jigglypuff-hyper-voice"
   },
   "jigglypuff-cute-charm": {

@@ -5,7 +5,7 @@
  ],
  "focus": [
   {
-   "stat": "spAttack",
+   "stat": "attack",
    "skill": "exeggcute-leaf-storm"
   },
   {
@@ -285,7 +285,7 @@
   "exeggcute-leaf-storm": {
    "id": "exeggcute-leaf-storm",
    "name": "Leaf Storm",
-   "description": "Bond skill: a storm of leaves up to 2 hexes away (Power 90, Sp. Atk) hitting a 1-hex area.",
+   "description": "Bond skill: a storm of leaves up to 2 hexes away (Power 90) hitting a 1-hex area.",
    "grantsMove": "exeggcute-leaf-storm"
   },
   "exeggcute-wood-hammer": {

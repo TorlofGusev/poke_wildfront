@@ -10,7 +10,7 @@
    "skill": "bellsprout-power-whip"
   },
   {
-   "stat": "spAttack",
+   "stat": "attack",
    "skill": "bellsprout-sludge-bomb"
   },
   {
@@ -296,7 +296,7 @@
   "bellsprout-sludge-bomb": {
    "id": "bellsprout-sludge-bomb",
    "name": "Sludge Bomb",
-   "description": "Bond skill: lobs sludge up to 3 hexes away (Power 90, Sp. Atk), Poisoning the foe for 2 turns.",
+   "description": "Bond skill: lobs sludge up to 3 hexes away (Power 90), Poisoning the foe for 2 turns.",
    "grantsMove": "bellsprout-sludge-bomb"
   },
   "bellsprout-grassy-glide": {

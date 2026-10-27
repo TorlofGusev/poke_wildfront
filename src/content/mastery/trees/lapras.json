@@ -11,11 +11,11 @@
    "skill": "lapras-life-dew"
   },
   {
-   "stat": "spAttack",
+   "stat": "attack",
    "skill": "lapras-sheer-cold"
   },
   {
-   "stat": "spDefense",
+   "stat": "willpower",
    "skill": "lapras-safeguard"
   }
  ],
@@ -320,7 +320,7 @@
   "lapras-sheer-cold": {
    "id": "lapras-sheer-cold",
    "name": "Sheer Cold",
-   "description": "Bond skill: absolute cold at a foe up to 3 hexes away (Power 110, Sp. Atk); Freezes 1 turn.",
+   "description": "Bond skill: absolute cold at a foe up to 3 hexes away (Power 110); Freezes 1 turn.",
    "grantsMove": "lapras-sheer-cold"
   },
   "lapras-safeguard": {

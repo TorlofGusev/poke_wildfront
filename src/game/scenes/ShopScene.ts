@@ -19,8 +19,8 @@ interface Ware {
   readonly owned: number;
 }
 
-const CATEGORY: Record<string, string> = { potion: "Healing", remedy: "Healing", food: "Food", candy: "Candy", held: "Held items" };
-const TABS = ["Balls", "Healing", "Food", "Held items", "Candy"];
+const CATEGORY: Record<string, string> = { potion: "Healing", remedy: "Healing", food: "Food", candy: "Rare Candy", held: "Held items" };
+const TABS = ["Balls", "Healing", "Food", "Held items"];
 const LIST_TOP = 86;
 const LIST_BOTTOM = 480;
 
@@ -50,7 +50,7 @@ export class ShopScene extends Phaser.Scene {
       ...Object.values(CONTENT.balls).filter((b) => b.price).map((b) => ({
         id: b.id, category: "Balls", name: b.name, price: b.price!, owned: balls[b.id] ?? 0, description: t("Catch rate ×{x}", { x: b.multiplier }),
       })),
-      ...Object.values(PROGRESSION.items).map((i) => ({ id: i.id, category: CATEGORY[i.kind] ?? "Other", name: i.name, price: i.price, owned: items[i.id] ?? 0, description: i.description })),
+      ...Object.values(PROGRESSION.items).filter((i) => !i.notSold).map((i) => ({ id: i.id, category: CATEGORY[i.kind] ?? "Other", name: i.name, price: i.price, owned: items[i.id] ?? 0, description: i.description })),
     ];
   }
 

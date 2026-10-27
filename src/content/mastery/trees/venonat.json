@@ -5,7 +5,7 @@
  ],
  "focus": [
   {
-   "stat": "spAttack",
+   "stat": "attack",
    "skill": "venonat-bug-buzz"
   },
   {
@@ -13,7 +13,7 @@
    "skill": "venonat-u-turn"
   },
   {
-   "stat": "spDefense",
+   "stat": "willpower",
    "skill": "venonat-quiver-dance"
   }
  ],
@@ -306,7 +306,7 @@
   "venonat-bug-buzz": {
    "id": "venonat-bug-buzz",
    "name": "Bug Buzz",
-   "description": "Bond skill: a damaging buzz from its wings at a foe up to 3 hexes away (Power 90, Sp. Atk).",
+   "description": "Bond skill: a damaging buzz from its wings at a foe up to 3 hexes away (Power 90).",
    "grantsMove": "venonat-bug-buzz"
   },
   "venonat-u-turn": {

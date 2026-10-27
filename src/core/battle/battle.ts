@@ -291,8 +291,6 @@ export const maxHpAt = (content: BattleContent, hp: number, baseDefense: number,
 };
 
 /** Whether a move is resolved with Sp. Atk / Sp. Def. */
-export const isSpecialMove = (content: BattleContent, move: MoveDef): boolean =>
-  (move.category ?? (content.rules.specialTypes.includes(move.type) ? "special" : "physical")) === "special";
 
 /** Max HP of a species with its level-1 stats. */
 export const maxHpOf = (content: BattleContent, speciesId: string): number => hpFromStat(content, content.species[speciesId]!.stats.hp);
@@ -337,6 +335,7 @@ export function createBattle(
         traits: unitTraits(content, species.types),
         ability,
         attackBoost: 0,
+        spirit: 0,
         sturdyUsed: false,
         furyTarget: null,
         furyStreak: 0,
@@ -477,7 +476,7 @@ function effectiveMove(content: BattleContent, unit: BattleUnit, moveId: string)
   const move = content.moves[moveId]!;
   if (moveId !== "struggle") return move;
   const basic = content.moves[basicOf(content, unit)!]!;
-  return { ...move, type: basic.type, category: isSpecialMove(content, basic) ? "special" : "physical", power: Math.round(basic.power * content.rules.engagement.fallbackPower) };
+  return { ...move, type: basic.type, power: Math.round(basic.power * content.rules.engagement.fallbackPower) };
 }
 
 /**
@@ -594,8 +593,44 @@ function heal(unit: BattleUnit, amount: number, events: BattleEvent[]): void {
   events.push({ type: "healed", unitId: unit.id, amount: healed, hp: unit.hp });
 }
 
-function applyStatus(content: BattleContent, user: BattleUnit, t: BattleUnit, status: string, base: number, events: BattleEvent[]): void {
+/** Next value of the battle's seeded PRNG (captures, crits, status resistance). */
+function roll(state: BattleState): number {
+  const r = nextRandom(state.rngState);
+  state.rngState = r.state;
+  return r.value;
+}
+
+export const critChance = (content: BattleContent, unit: BattleUnit): number =>
+  content.rules.crit.base + content.rules.crit.perPoint * unit.stats.crit;
+export const critMultiplier = (content: BattleContent, unit: BattleUnit): number =>
+  content.rules.crit.damage + content.rules.crit.damagePerPoint * unit.stats.crit;
+/** Chance to shrug off a status a foe inflicts. */
+export const statusResistChance = (content: BattleContent, unit: BattleUnit): number =>
+  Math.min(0.5, content.rules.willpower.resistPerPoint * unit.stats.willpower);
+
+/**
+ * Fills a unit's Spirit bar (faster with Willpower); a full bar empties into Pumped:
+ * through its next turn it hits harder and moves further.
+ */
+function spirit(state: BattleState, content: BattleContent, unit: BattleUnit, amount: number, events: BattleEvent[]): void {
+  const w = content.rules.willpower;
+  if (unit.hp <= 0 || amount <= 0 || unit.statuses.some((s) => s.id === "pumped")) return;
+  unit.spirit = Math.min(w.spiritMax, (unit.spirit ?? 0) + Math.round(amount * (1 + w.perPoint * unit.stats.willpower)));
+  if (unit.spirit < w.spiritMax) return;
+  unit.spirit = 0;
+  // Gained during its own turn, it still lasts through the next one (statuses tick at the end of turns).
+  const turns = w.pumpedTurns + (state.turn?.unitId === unit.id ? 1 : 0);
+  unit.statuses.push({ id: "pumped", turnsLeft: turns, sourceId: unit.id });
+  events.push({ type: "statusApplied", unitId: unit.id, status: "pumped", duration: turns });
+}
+
+function applyStatus(content: BattleContent, user: BattleUnit, t: BattleUnit, status: string, base: number, events: BattleEvent[], state?: BattleState): void {
   if (t.mods.statusImmune.includes(status) || t.mods.statusImmune.includes("*")) return;
+  // Willpower: a chance to shrug off what a foe inflicts.
+  if (state && user.side !== t.side && roll(state) < statusResistChance(content, t)) {
+    events.push({ type: "statusResisted", unitId: t.id, status });
+    return;
+  }
   const def = content.statuses[status];
   const bonus = def?.noAction || def?.noMove ? 0 : Math.min(content.rules.statusBonusCap, user.mods.statusDurationBonus);
   const duration = base + bonus;
@@ -634,7 +669,7 @@ function spreadStatuses(state: BattleState, content: BattleContent, fallen: Batt
     const source = st.sourceId ? state.units.find((u) => u.id === st.sourceId) : undefined;
     if (!source?.mods.statusSpreadOnKo) continue;
     for (const n of livingUnits(state).filter((o) => o.side === fallen.side && gridDistance(o.pos, fallen.pos) === 1))
-      applyStatus(content, source, n, st.id, 1, events);
+      applyStatus(content, source, n, st.id, 1, events, state);
   }
 }
 
@@ -711,13 +746,16 @@ function resolveHits(
       const own = penalty * (1 + Math.min(MAX_DAMAGE_BONUS, bonus));
       const mult = own * eff * positional * statusMult * hitMult * t.mods.damageTaken * (t.hp === t.maxHp ? t.mods.fullHpDamageTaken : 1);
       const off = content.rules.statOffset;
-      const special = isSpecialMove(content, move);
-      const defense = mech.ignoresDefense ? 0 : special ? t.stats.spDefense : t.stats.defense;
-      const attack = move.scaleStat ? user.stats[move.scaleStat] : special ? user.stats.spAttack : user.stats.attack;
-      const raw = (move.power * (off + attack + user.attackBoost)) / (off + defense) * mult / content.rules.damageDivisor;
+      const defense = mech.ignoresDefense ? 0 : t.stats.defense;
+      const attack = move.scaleStat ? user.stats[move.scaleStat] : user.stats.attack;
+      // Critical hit: Crit raises both the chance and the size (seeded, so replays match).
+      const crit = isFoe && mult > 0 && roll(state) < critChance(content, user);
+      const raw = (move.power * (off + attack + user.attackBoost)) / (off + defense) * mult / content.rules.damageDivisor * (crit ? critMultiplier(content, user) : 1);
+      if (crit) events.push({ type: "critical", unitId: user.id, targetId: t.id });
       // Any hit deals at least 1, unless something blocks all damage (Protect).
       const dealt = dealDamage(state, t, mult > 0 ? Math.max(1, Math.round(raw)) : 0, "move", events, eff);
       if (dealt > 0 && t.hp > 0) onDamaged(content, user, t, dist === 1, events);
+      if (dealt > 0 && isFoe) spirit(state, content, user, content.rules.willpower.perHit, events);
       if (dealt > 0 && isFoe && !furyCounted) {
         furyCounted = true;
         user.furyStreak = user.furyTarget === t.id ? user.furyStreak + 1 : 1;
@@ -737,9 +775,12 @@ function resolveHits(
         if (m.koHeal && user.hp > 0) heal(user, Math.max(1, Math.round(user.maxHp * m.koHeal)), events);
         onKnockout(state, user, events);
         spreadStatuses(state, content, t, events);
+        spirit(state, content, user, content.rules.willpower.perKnockout, events);
+        for (const ally of livingUnits(state).filter((a) => a.side === user.side && a.id !== user.id))
+          spirit(state, content, ally, content.rules.willpower.perAllyKnockout, events);
       }
       if (dealt > 0 && isFoe && dist === 1) {
-        if (m.contactStatus && t.hp > 0) applyStatus(content, user, t, m.contactStatus.status, m.contactStatus.duration, events);
+        if (m.contactStatus && t.hp > 0) applyStatus(content, user, t, m.contactStatus.status, m.contactStatus.duration, events, state);
         if (t.mods.thorns && user.hp > 0) dealDamage(state, user, t.mods.thorns, "thorns", events);
       }
       if (mech.drain && dealt > 0 && user.hp > 0) {
@@ -753,7 +794,7 @@ function resolveHits(
           heal(t, effect.amount, events);
           break;
         case "status":
-          applyStatus(content, user, t, effect.status, effect.duration, events);
+          applyStatus(content, user, t, effect.status, effect.duration, events, state);
           break;
         case "push":
         case "pull":
@@ -782,9 +823,9 @@ function resolveHits(
       && !user.engagedWith && !t.engagedWith && !(move.effects ?? []).some((e) => e.kind === "disengage")) engage(user, t, events);
     // Type mechanics apply to the enemies a move hits.
     if (!isFoe || t.hp <= 0) continue;
-    if (mech.appliesStatus) applyStatus(content, user, t, mech.appliesStatus.status, mech.appliesStatus.duration, events);
+    if (mech.appliesStatus) applyStatus(content, user, t, mech.appliesStatus.status, mech.appliesStatus.duration, events, state);
     const extra = user.ability?.moveStatus;
-    if (extra && extra.type === move.type) applyStatus(content, user, t, extra.status, extra.duration, events);
+    if (extra && extra.type === move.type) applyStatus(content, user, t, extra.status, extra.duration, events, state);
     if (mech.extraPush) displace(state, content, user, t, "push", mech.extraPush + user.mods.pushBonus, events);
     if (mech.extraPull) displace(state, content, user, t, "pull", mech.extraPull + user.mods.pullBonus, events);
     if (mech.terrainOnHit) changeTerrain(state, t.pos, mech.terrainOnHit, events);

@@ -1,7 +1,7 @@
 {
  "talents": {
   "staryu-surf": {
-   "description": "Kötelék-képesség: hatalmas hullám minden 2 hexen belüli ellenfelet eltalál (Erő 80, Sp. Atk)."
+   "description": "Kötelék-képesség: hatalmas hullám minden 2 hexen belüli ellenfelet eltalál (Erő 80)."
   },
   "staryu-rapid-spin": {
    "description": "Kötelék-képesség: pörögve a szomszédos ellenfeleknek csapódik (Erő 50, Attack), 1 hexnyit lökve."

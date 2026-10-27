@@ -5,7 +5,7 @@
  ],
  "focus": [
   {
-   "stat": "spAttack",
+   "stat": "attack",
    "skill": "psyduck-brine"
   },
   {
@@ -13,7 +13,7 @@
    "skill": "psyduck-aqua-jet"
   },
   {
-   "stat": "spDefense",
+   "stat": "willpower",
    "skill": "psyduck-aqua-ring"
   }
  ],
@@ -295,7 +295,7 @@
   "psyduck-brine": {
    "id": "psyduck-brine",
    "name": "Brine",
-   "description": "Bond skill: a jet of salty water at a foe up to 3 hexes away (Power 90, Sp. Atk).",
+   "description": "Bond skill: a jet of salty water at a foe up to 3 hexes away (Power 90).",
    "grantsMove": "psyduck-brine"
   },
   "psyduck-aqua-jet": {

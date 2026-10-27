@@ -87,14 +87,14 @@
    }
   }
  },
- "quick-claw": {
-  "id": "quick-claw",
-  "name": "Quick Claw",
-  "description": "+1 movement.",
+ "focus-band": {
+  "id": "focus-band",
+  "name": "Focus Band",
+  "description": "Once per battle it holds on with 1 HP after a knockout blow.",
   "kind": "held",
-  "price": 800,
+  "price": 1200,
   "mods": {
-   "moveBonus": 1
+   "sturdy": true
   }
  },
  "leftovers": {
@@ -117,12 +117,161 @@
    "damageDealt": 1.1
   }
  },
+ "soft-sand": {
+  "id": "soft-sand",
+  "name": "Soft Sand",
+  "description": "Ground moves deal 20% more damage.",
+  "kind": "held",
+  "price": 500,
+  "mods": {
+   "typeDamage": {
+    "ground": 1.2
+   }
+  }
+ },
+ "never-melt-ice": {
+  "id": "never-melt-ice",
+  "name": "Never-Melt Ice",
+  "description": "Ice moves deal 20% more damage.",
+  "kind": "held",
+  "price": 500,
+  "mods": {
+   "typeDamage": {
+    "ice": 1.2
+   }
+  }
+ },
+ "spell-tag": {
+  "id": "spell-tag",
+  "name": "Spell Tag",
+  "description": "Ghost moves deal 20% more damage.",
+  "kind": "held",
+  "price": 500,
+  "mods": {
+   "typeDamage": {
+    "ghost": 1.2
+   }
+  }
+ },
+ "black-belt": {
+  "id": "black-belt",
+  "name": "Black Belt",
+  "description": "Fighting moves deal 20% more damage.",
+  "kind": "held",
+  "price": 500,
+  "mods": {
+   "typeDamage": {
+    "fighting": 1.2
+   }
+  }
+ },
+ "poison-barb": {
+  "id": "poison-barb",
+  "name": "Poison Barb",
+  "description": "Poison moves deal 20% more damage.",
+  "kind": "held",
+  "price": 500,
+  "mods": {
+   "typeDamage": {
+    "poison": 1.2
+   }
+  }
+ },
+ "silver-powder": {
+  "id": "silver-powder",
+  "name": "Silver Powder",
+  "description": "Bug moves deal 20% more damage.",
+  "kind": "held",
+  "price": 500,
+  "mods": {
+   "typeDamage": {
+    "bug": 1.2
+   }
+  }
+ },
+ "twisted-spoon": {
+  "id": "twisted-spoon",
+  "name": "Twisted Spoon",
+  "description": "Psychic moves deal 20% more damage.",
+  "kind": "held",
+  "price": 500,
+  "mods": {
+   "typeDamage": {
+    "psychic": 1.2
+   }
+  }
+ },
+ "dragon-fang": {
+  "id": "dragon-fang",
+  "name": "Dragon Fang",
+  "description": "Dragon moves deal 20% more damage.",
+  "kind": "held",
+  "price": 500,
+  "mods": {
+   "typeDamage": {
+    "dragon": 1.2
+   }
+  }
+ },
+ "silk-scarf": {
+  "id": "silk-scarf",
+  "name": "Silk Scarf",
+  "description": "Normal moves deal 20% more damage.",
+  "kind": "held",
+  "price": 500,
+  "mods": {
+   "typeDamage": {
+    "normal": 1.2
+   }
+  }
+ },
+ "shell-bell": {
+  "id": "shell-bell",
+  "name": "Shell Bell",
+  "description": "Heals 15% max HP when it knocks out a foe.",
+  "kind": "held",
+  "price": 900,
+  "mods": {
+   "koHeal": 0.15
+  }
+ },
+ "bright-powder": {
+  "id": "bright-powder",
+  "name": "Bright Powder",
+  "description": "It takes 10% less damage.",
+  "kind": "held",
+  "price": 1000,
+  "mods": {
+   "damageTaken": 0.9
+  }
+ },
+ "kings-rock": {
+  "id": "kings-rock",
+  "name": "King's Rock",
+  "description": "Statuses it inflicts last 1 turn longer.",
+  "kind": "held",
+  "price": 900,
+  "mods": {
+   "statusDurationBonus": 1
+  }
+ },
+ "shed-shell": {
+  "id": "shed-shell",
+  "name": "Shed Shell",
+  "description": "It steps away from engaged foes without free attacks.",
+  "kind": "held",
+  "price": 800,
+  "mods": {
+   "disengage": true
+  }
+ },
  "candy": {
   "id": "candy",
-  "name": "Candy",
-  "description": "Use with a level-up point to put +2 into any stat instead of +1.",
+  "name": "Rare Candy",
+  "description": "Raises a Pokémon's level by 1.",
   "kind": "candy",
-  "price": 400
+  "price": 2400,
+  "notSold": true
  },
  "oran-berry": {
   "id": "oran-berry",

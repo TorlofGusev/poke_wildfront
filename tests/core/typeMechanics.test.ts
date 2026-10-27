@@ -22,12 +22,12 @@ const move = (id: string, type: string, power = 40, range = 1): MoveDef => ({
 /** Fixture content with one test species per type and the given type mechanics. */
 function withTypes(types: Record<string, Partial<TypeDef>>): BattleContent {
   const t: Record<string, TypeDef> = { ...base.types };
-  for (const [id, def] of Object.entries(types)) t[id] = { profile: { hp: 5, attack: 5, defense: 5, spAttack: 5, spDefense: 5, speed: 5 }, ...def };
+  for (const [id, def] of Object.entries(types)) t[id] = { profile: { hp: 5, attack: 5, defense: 5, speed: 5, willpower: 0, crit: 0 }, ...def };
   const species = { ...base.species };
   const moves = { ...base.moves };
   for (const id of Object.keys(t)) {
     moves[`${id}-hit`] = move(`${id}-hit`, id);
-    species[id] = { id, name: id, types: [id], stats: { hp: 40, attack: 40, defense: 40, spAttack: 40, spDefense: 40, speed: 50 }, moves: [`${id}-hit`, "tackle"], captureBase: 0.5 };
+    species[id] = { id, name: id, types: [id], stats: { hp: 40, attack: 40, defense: 40, speed: 50, willpower: 0, crit: 0 }, moves: [`${id}-hit`, "tackle"], captureBase: 0.5 };
   }
   return {
     ...base, types: t, species, moves,
@@ -156,7 +156,7 @@ describe("type mechanics", () => {
     let s = createBattle(c, OPEN, [u("p", "ghost", "player", 0, 0), u("e", "normal", "enemy", 1, 0)]).state;
     s = hit(c, s, "p", "ghost-hit", 1, 0).state;
     expect(unitById(s, "e").statuses.map((x) => x.id)).toEqual(["curse"]);
-    const tank = { stats: { hp: 40, attack: 40, defense: 400, spAttack: 400, spDefense: 400, speed: 50 }, maxHp: 200, hp: 200 };
+    const tank = { stats: { hp: 40, attack: 40, defense: 400, speed: 50, willpower: 0, crit: 0 }, maxHp: 200, hp: 200 };
     const vsTank = createBattle(c, OPEN, [u("p", "dragon", "player", 0, 0), u("e", "normal", "enemy", 1, 0, tank)]).state;
     // Ignoring Defense with statOffset 0 would divide by zero; real content uses an offset of 10.
     const withOffset = { ...c, rules: { ...c.rules, statOffset: 10 } };
