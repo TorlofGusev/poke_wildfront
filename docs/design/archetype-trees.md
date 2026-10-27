@@ -19,12 +19,15 @@ Owner decisions (2026-10-27), replacing the one-tree-per-line design of `mastery
 shared rows; every line in it brings its own **Lv 3 focus** (three Bond skills from its own canon moves, each
 with Attack, Defense or Vitality).
 
+**Moves come only from the tree.** A Pokémon starts with a basic attack and one typed move (species.json; an
+evolution adds none, levelling up teaches none); every other move is a tree skill. A move has one definition and
+one source: a line's tree never offers a move its species start with (tested). Wild and trainer Pokémon grow their
+tree too (wild ones pick by encounter, a group alike).
+
 **Bond moves.** Every focus skill and every row skill of canon power ≥ 100 (`progression.bondCanonPower`) teaches
-a Bond move (Bond cost 3 from canon 100 up, else 2), so a tree's big hits can't be spammed. A library move turns
-Bond everywhere (one definition per move). A species' own move (moves.json) keeps its kind; the skill teaches its
-Bond version `<id>--bond`. A focus may take a species' own iconic move only as that explicit exception:
-`skill:spore--bond` (Paras), Psybeam (Venonat), Bonemerang (Cubone), Crabhammer (Krabby), Withdraw (Shellder),
-Recover (Staryu), Sing (Jigglypuff), Hypnosis (Drowzee), Petal Dance (Oddish).
+a Bond move (Bond cost 3 from canon 100 up, else 2), so a tree's big hits can't be spammed. Iconic moves now sit in
+focuses: Spore (Paras), Bonemerang (Cubone), Crabhammer (Krabby), Withdraw (Shellder), Recover (Staryu), Sing
+(Jigglypuff), Petal Dance (Oddish).
 
 | Type | Tree | Lines (first species) |
 |---|---|---|

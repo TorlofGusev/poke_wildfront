@@ -40,7 +40,7 @@
     },
     {
      "stat": "defense",
-     "skill": "skill:withdraw--bond"
+     "skill": "skill:withdraw"
     }
    ]
   },
@@ -56,7 +56,7 @@
     },
     {
      "stat": "attack",
-     "skill": "skill:crabhammer--bond"
+     "skill": "skill:crabhammer"
     },
     {
      "stat": "defense",

@@ -4,7 +4,6 @@ import type { ItemDef, MasteryTree, ProgressionContent, TalentDef } from "../cor
 import type { CampRules, MealDef } from "../core/party";
 import items from "./items.json";
 import progression from "./progression.json";
-import talentData from "./talents.json";
 import typeChart from "./typeChart.json";
 import abilities from "./abilities.json";
 import camp from "./camp.json";
@@ -31,15 +30,16 @@ import { localized } from "./lang";
 export const TYPES: Readonly<Record<string, TypeDef>> = types as Record<string, TypeDef>;
 
 const moves: BattleContent["moves"] = Object.assign({}, masteryMoves as BattleContent["moves"], baseMoves as BattleContent["moves"]);
-const talents: Record<string, TalentDef> = { ...localized("talents.json", talentData) };
+const talents: Record<string, TalentDef> = {};
 
 /**
  * Archetype trees (docs/design/archetype-trees.md): lines grouped by type and role share one tree of rows;
  * each line brings its own Lv 3 focus. Row and focus entries are shared passives (mastery/passives.json),
  * the tree's own capstones, or `skill:<move id>` (a skill that teaches that canon move). Focus skills and the
  * strongest row skills (canon power ≥ progression bondCanonPower) are Bond moves, paid with Bond and hitting
- * harder, so a tree's big hits can't be spammed. A library move turns Bond everywhere (one definition per
- * move); a species' own move (moves.json) stays as it is and the skill teaches its Bond version `<id>--bond`.
+ * harder, so a tree's big hits can't be spammed. Every move has one definition: a tree move turns Bond
+ * everywhere. Pokémon start with a basic attack and one typed move (species.json); every other move comes
+ * from the tree.
  */
 export interface ArchetypeFile {
   readonly id: string;
@@ -59,24 +59,22 @@ export const ARCHETYPES: readonly ArchetypeFile[] = Object.entries(import.meta.g
 Object.assign(talents, localized("mastery/passives.json", passiveData) as Record<string, TalentDef>, ...ARCHETYPES.map((a) => a.passives ?? {}));
 Object.assign(moves, ...ARCHETYPES.map((a) => a.moves ?? {}));
 const SKILL = "skill:";
-const BOND = "--bond";
 const moveOfSkill = (id: string) => (id.startsWith(SKILL) ? id.slice(SKILL.length) : null);
 const strong = (id: string) => (moves[id]?.canonPower ?? 0) >= progression.bondCanonPower;
-/** A species' own move (moves.json) keeps its kind; its Bond version is `<id>--bond`. Library moves turn Bond in place. */
-const bondOf = (id: string) => (id in baseMoves && moves[id]?.kind !== "bond" ? `${id}${BOND}` : id);
-/** The move each skill teaches: focus skills (`skill:<own move>--bond` for a species' own move) and strong row skills teach a Bond move. */
+/** The move each skill teaches; focus skills and strong row skills make it a Bond move. */
 const taught = new Map<string, string>();
 const bonds = new Set<string>();
-const teach = (skill: string, id: string, bond: boolean) => { taught.set(skill, id); if (bond) bonds.add(id); };
 for (const a of ARCHETYPES) {
-  for (const id of [a.rows, ...Object.values(a.forms ?? {}).map((f) => f.rows)].flatMap((r) => Object.values(r).flat())) { const mv = moveOfSkill(id); if (mv) teach(id, strong(mv) ? bondOf(mv) : mv, strong(mv)); }
-  for (const l of a.lines) for (const f of l.focus) { const mv = moveOfSkill(f.skill); if (mv) teach(f.skill, mv.endsWith(BOND) ? mv : bondOf(mv), true); }
+  for (const id of [a.rows, ...Object.values(a.forms ?? {}).map((f) => f.rows)].flatMap((r) => Object.values(r).flat())) {
+    const mv = moveOfSkill(id);
+    if (mv) { taught.set(id, mv); if (strong(mv)) bonds.add(mv); }
+  }
+  for (const l of a.lines) for (const f of l.focus) { const mv = moveOfSkill(f.skill); if (mv) { taught.set(f.skill, mv); bonds.add(mv); } }
 }
 for (const id of bonds) {
-  const def = moves[id.endsWith(BOND) ? id.slice(0, -BOND.length) : id];
-  if (!def || moves[id]?.kind === "bond") continue;
-  const strongMove = (def.canonPower ?? 0) >= progression.bondCanonPower;
-  const bond = { ...def, id, kind: "bond" as const, bondCost: strongMove ? 3 : 2 };
+  const def = moves[id];
+  if (!def || def.kind === "bond") continue;
+  const bond = { ...def, kind: "bond" as const, bondCost: strong(id) ? 3 : 2 };
   delete (bond as { cooldown?: number }).cooldown;
   (moves as Record<string, MoveDef>)[id] = def.canonPower ? { ...bond, power: powerFromCanon(rules.movePower, bond, def.canonPower) } : bond;
 }

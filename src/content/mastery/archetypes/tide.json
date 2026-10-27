@@ -19,7 +19,7 @@
     },
     {
      "stat": "hp",
-     "skill": "skill:recover--bond"
+     "skill": "skill:recover"
     }
    ]
   },

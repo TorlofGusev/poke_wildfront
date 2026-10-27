@@ -13,8 +13,6 @@ const FOCUS_STATS = new Set(["attack", "defense", "hp"]);
 const learn = learnsets as Record<string, string[]>;
 const canon = canonMoves as Record<string, { name: string; type: string } | null>;
 const moveOf = (id: string) => (id.startsWith("skill:") ? id.slice(6) : null);
-/** A focus may take a species' own move (moves.json) as an explicit exception: `skill:<move>--bond`, its Bond version. */
-const OWN_BOND = "--bond";
 /** Every evolution line: first species → members in evolution order (branches side by side). */
 const evolvesInto = (id: string) => { const e = CONTENT.species[id]!.evolution; return e ? (e.choices ?? [e.into]) : []; };
 const evolved = new Set(Object.keys(CONTENT.species).flatMap(evolvesInto));
@@ -49,10 +47,7 @@ describe("archetype trees", () => {
         if (l.focus.length !== 3) at(`${l.line[0]}: three focus options`);
         if (new Set(l.focus.map((f) => f.skill)).size !== l.focus.length) at(`${l.line[0]}: a focus skill twice`);
         for (const f of l.focus) {
-          const own = moveOf(f.skill)?.endsWith(OWN_BOND);
-          const mv = own ? moveOf(f.skill)!.slice(0, -OWN_BOND.length) : moveOf(f.skill);
-          if (own && !(mv! in baseMoves)) at(`${l.line[0]}: ${f.skill} — only a species' own move takes the --bond exception`);
-          if (!own && mv && mv in baseMoves) at(`${l.line[0]}: ${mv} is a species' own move; write it as skill:${mv}--bond`);
+          const mv = moveOf(f.skill);
           if (!FOCUS_STATS.has(f.stat)) at(`${l.line[0]}: focus on ${f.stat}`);
           if (a.mimic) { if (!PROGRESSION.talents[f.skill]) at(`unknown focus ${f.skill}`); continue; }
           if (!mv || !CONTENT.moves[mv]) at(`${l.line[0]}: focus ${f.skill} is not a known move`);
@@ -89,7 +84,19 @@ describe("archetype trees", () => {
     expect(counted.slice().sort()).toEqual(Object.keys(CONTENT.species).sort());
   });
 
-  it("focus skills and the strongest row skills teach Bond moves; a species' own move gets a Bond version", () => {
+  it("a move comes from one place: a line's tree never offers a move its species start with, and every move has one definition", () => {
+    const problems: string[] = [];
+    for (const a of ARCHETYPES) for (const l of a.lines) {
+      const own = new Set(l.line.flatMap((sp) => CONTENT.species[sp]!.moves));
+      const skills = [...Object.values(a.rows).flat(), ...Object.values(a.forms ?? {}).flatMap((f) => Object.values(f.rows).flat()), ...l.focus.map((f) => f.skill)];
+      for (const id of skills) if (own.has(moveOf(id) ?? "")) problems.push(`${a.id}: ${l.line[0]} starts with ${moveOf(id)}`);
+    }
+    const lib = JSON.parse(readFileSync("src/content/mastery/moves.json", "utf8")) as Record<string, unknown>;
+    problems.push(...Object.keys(baseMoves).filter((id) => id in lib).map((id) => `${id} defined twice`));
+    expect(problems).toEqual([]);
+  });
+
+  it("focus skills and the strongest row skills teach Bond moves; starting moves keep their kind", () => {
     const taught = (id: string) => CONTENT.moves[PROGRESSION.talents[id]!.grantsMove!]!;
     const problems: string[] = [];
     for (const a of ARCHETYPES) {

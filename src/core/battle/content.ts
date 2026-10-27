@@ -23,8 +23,6 @@ export interface SpeciesDef {
   readonly moves: readonly string[];
   /** Base capture chance before ball, HP and status modifiers (0–1). */
   readonly captureBase: number;
-  /** Moves learned on reaching a level (in addition to `moves`, known from the start). */
-  readonly learnset?: readonly { readonly level: number; readonly move: string }[];
   /** `choices`: the player picks the form when the level is reached (Eevee); `into` is the default (wild Pokémon). */
   readonly evolution?: { readonly level: number; readonly into: string; readonly choices?: readonly string[] };
   readonly ability?: string;

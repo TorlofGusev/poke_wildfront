@@ -32,11 +32,8 @@ export const basicMoveOf = (content: BattleContent, species: SpeciesDef): string
   return basic;
 };
 
-/** Every move a species knows at a level: its starting moves plus its learnset up to that level. */
-export function movesKnownAt(species: SpeciesDef, level: number): string[] {
-  const learned = (species.learnset ?? []).filter((l) => l.level <= level).map((l) => l.move);
-  return [...new Set([...species.moves, ...learned])];
-}
+/** The moves a species knows without its tree: a basic attack and one typed move (every other move comes from the tree). */
+export const startingMoves = (species: SpeciesDef): string[] => [...species.moves];
 
 /** Default loadout: the most recently learned non-basic moves. */
 export function defaultActiveMoves(content: BattleContent, prog: ProgressionContent, speciesId: string, known: readonly string[]): string[] {
@@ -168,7 +165,7 @@ function evolveInto<T extends Progress>(content: BattleContent, prog: Progressio
 
 function learnLevelMoves<T extends Progress>(content: BattleContent, prog: ProgressionContent, m: T, events: ProgressEvent[]): T {
   let cur = m;
-  for (const move of movesKnownAt(content.species[cur.speciesId]!, cur.level)) {
+  for (const move of startingMoves(content.species[cur.speciesId]!)) {
     if (cur.knownMoves.includes(move)) continue;
     const basic = basicMoveOf(content, content.species[cur.speciesId]!);
     const activate = move !== basic && cur.activeMoves.length < prog.rules.maxActiveMoves;
@@ -210,15 +207,18 @@ export function wildForm(content: BattleContent, speciesId: string, level: numbe
 
 export function wildSetup(content: BattleContent, prog: ProgressionContent, wildSpecies: string, level: number, salt = ""): Omit<UnitSetup, "id" | "side" | "pos"> {
   const speciesId = wildForm(content, wildSpecies, level, salt);
-  const known = movesKnownAt(content.species[speciesId]!, level);
+  const known = startingMoves(content.species[speciesId]!);
   const points = playstylePoints(content, speciesId, (level - 1) * prog.rules.pointsPerLevel);
   const m: Progress = {
-    // Wild Pokémon grow along one of their tree's focuses (the same one for a whole group).
-    speciesId, level, xp: 0, focus: wildFocus(prog, speciesId, level, salt), talents: [], heldItem: null, knownMoves: known,
+    speciesId, level, xp: 0, focus: null, talents: [], heldItem: null, knownMoves: known,
     activeMoves: defaultActiveMoves(content, prog, speciesId, known), hp: Number.MAX_SAFE_INTEGER,
     statPoints: points, unspentPoints: 0,
   };
-  return toUnitSetup(content, prog, m);
+  // Wild Pokémon grow their tree like the player's (moves come only from it): one focus and one pick per row,
+  // chosen from `salt`, so a whole group shares them.
+  const pick = <T>(options: readonly T[], key: string) => options[hash(`${salt}:${key}`) % options.length]!;
+  const grown = developTree(content, prog, m, (o) => pick(o, "focus").skill, (o, row) => pick(o, `row${row}`));
+  return toUnitSetup(content, prog, { ...grown, activeMoves: defaultActiveMoves(content, prog, speciesId, grown.knownMoves) });
 }
 
 /**
@@ -230,21 +230,13 @@ export function trainerSetup(
   mon: { readonly species: string; readonly level: number; readonly focus?: StatName; readonly heldItem?: string; readonly moves?: readonly string[] },
 ): Omit<UnitSetup, "id" | "side" | "pos"> {
   const species = content.species[mon.species]!;
-  const known = movesKnownAt(species, mon.level);
+  const known = startingMoves(species);
   let m: Progress = {
     speciesId: mon.species, level: mon.level, xp: 0, focus: null, talents: [], heldItem: mon.heldItem ?? null, knownMoves: known,
     activeMoves: defaultActiveMoves(content, prog, mon.species, known), hp: Number.MAX_SAFE_INTEGER,
     statPoints: playstylePoints(content, mon.species, (mon.level - 1) * prog.rules.pointsPerLevel), unspentPoints: 0,
   };
-  for (let guard = 0; guard < 40; guard++) {
-    const p = pendingChoice(content, prog, m);
-    if (p === "focus") {
-      const options = focusOptions(prog, m.speciesId);
-      m = chooseFocus(content, prog, m, (options.find((o) => o.stat === mon.focus) ?? options[0]!).skill);
-    } else if (p === "talent") {
-      m = chooseTalent(content, prog, m, talentOptions(content, prog, m)[0]!);
-    } else break;
-  }
+  m = developTree(content, prog, m, (options) => (options.find((o) => o.stat === mon.focus) ?? options[0]!).skill, (options) => options[0]!);
   if (mon.moves) {
     const basic = basicMoveOf(content, species);
     m = { ...m, activeMoves: mon.moves.filter((id) => id !== basic && content.moves[id]).slice(0, prog.rules.maxActiveMoves) };
@@ -300,10 +292,21 @@ export const focusOf = (prog: ProgressionContent, m: Progress): FocusOption | un
   m.focus ? focusOptions(prog, m.speciesId).find((o) => m.talents.includes(o.skill)) : undefined;
 
 /** A wild Pokémon's focus: picked from `salt` so a group shares it, none below the focus level. */
-function wildFocus(prog: ProgressionContent, speciesId: string, level: number, salt: string): StatName | null {
-  const options = focusOptions(prog, speciesId);
-  if (level < prog.rules.focusLevel || !options.length) return null;
-  return options[[...`${salt}:focus`].reduce((h, c) => (h * 31 + c.charCodeAt(0)) >>> 0, 7) % options.length]!.stat;
+const hash = (text: string) => [...text].reduce((h, c) => (h * 31 + c.charCodeAt(0)) >>> 0, 7);
+
+/** Makes every choice a Pokémon's level allows: its focus, then one mastery per reached row. */
+function developTree<T extends Progress>(
+  content: BattleContent, prog: ProgressionContent, start: T,
+  focus: (options: ReturnType<typeof focusOptions>) => string, talent: (options: string[], row: number) => string,
+): T {
+  let m = start;
+  for (let guard = 0; guard < 40; guard++) {
+    const p = pendingChoice(content, prog, m);
+    if (p === "focus") m = chooseFocus(content, prog, m, focus(focusOptions(prog, m.speciesId)));
+    else if (p === "talent") m = chooseTalent(content, prog, m, talent(talentOptions(content, prog, m), guard));
+    else break;
+  }
+  return m;
 }
 
 /** The rows of a species' tree: the line's rows, with its current form's rows replacing them (Eevee's forms). */
@@ -325,7 +328,7 @@ function retrainForm<T extends Progress>(content: BattleContent, prog: Progressi
   const dropped = m.talents.filter((id) => !tree.has(id));
   if (!dropped.length) return m;
   const lost = new Set(dropped.map((id) => prog.talents[id]?.grantsMove).filter((x): x is string => !!x));
-  const natural = new Set(movesKnownAt(content.species[m.speciesId]!, m.level));
+  const natural = new Set(startingMoves(content.species[m.speciesId]!));
   const forget = (mv: string) => lost.has(mv) && !natural.has(mv);
   return {
     ...m,
@@ -385,7 +388,7 @@ export const respecCost = (prog: ProgressionContent, m: Progress): number => pro
 
 /** Forgets the focus and every mastery, with the moves the masteries taught. */
 export function resetMasteries<T extends Progress>(content: BattleContent, m: T): T {
-  const natural = new Set(movesKnownAt(content.species[m.speciesId]!, m.level));
+  const natural = new Set(startingMoves(content.species[m.speciesId]!));
   return { ...m, focus: null, talents: [], knownMoves: m.knownMoves.filter((mv) => natural.has(mv)), activeMoves: m.activeMoves.filter((mv) => natural.has(mv)) };
 }
 

@@ -109,12 +109,12 @@ describe("levels and stats", () => {
     expect(events.filter((e) => e.type === "levelUp")).toHaveLength(2);
   });
 
-  it("learns moves from the learnset and auto-activates while there is room", () => {
-    const m = { ...starter("pidgey", 8), activeMoves: ["whirlwind"] };
+  it("levelling up teaches no moves: they come only from the tree", () => {
+    const m = starter("pidgey", 8);
     const { member, events } = gainXp(CONTENT, PROGRESSION, m, xpToNext(PROGRESSION, 8));
     expect(member.level).toBe(9);
-    expect(events).toContainEqual({ type: "learned", move: "quick-attack", activated: true });
-    expect(member.activeMoves).toEqual(["whirlwind", "quick-attack"]);
+    expect(events.some((e) => e.type === "learned")).toBe(false);
+    expect(member.knownMoves).toEqual(CONTENT.species.pidgey!.moves);
   });
 
   it("evolves at the evolution level and keeps knockouts, focus and talents", () => {
@@ -171,9 +171,9 @@ describe("focus and talents", () => {
 
 describe("move loadout", () => {
   it("allows up to 3 known moves besides the basic attack", () => {
-    const m = starter("geodude", 20);
+    const m = { ...starter("geodude", 20), knownMoves: ["tackle", "smack-down", "rock-throw", "rock-slide", "earthquake"] };
     expect(setActiveMoves(CONTENT, PROGRESSION, m, ["rock-slide", "earthquake"]).activeMoves).toEqual(["rock-slide", "earthquake"]);
-    expect(() => setActiveMoves(CONTENT, PROGRESSION, m, ["rollout", "rock-throw", "rock-slide", "earthquake"])).toThrow(/at most 3/);
+    expect(() => setActiveMoves(CONTENT, PROGRESSION, m, ["smack-down", "rock-throw", "rock-slide", "earthquake"])).toThrow(/at most 3/);
     expect(() => setActiveMoves(CONTENT, PROGRESSION, m, ["thunder"])).toThrow(/does not know/);
     expect(() => setActiveMoves(CONTENT, PROGRESSION, m, ["tackle"])).toThrow(/basic attack/);
     expect(toUnitSetup(CONTENT, PROGRESSION, m).moves![0]).toBe("tackle");
@@ -273,9 +273,11 @@ describe("money, shop and items", () => {
 });
 
 describe("content", () => {
-  it("talents, items and learnsets reference valid data", () => {
+  it("species start with a basic attack and one more move; evolutions and items reference valid data", () => {
     for (const s of Object.values(CONTENT.species)) {
-      for (const l of s.learnset ?? []) expect(CONTENT.moves, `${s.id} learns ${l.move}`).toHaveProperty(l.move);
+      expect(s.moves, s.id).toHaveLength(2);
+      expect(CONTENT.moves[s.moves[0]!]?.kind, s.id).toBe("basic");
+      for (const m of s.moves) expect(CONTENT.moves, `${s.id} starts with ${m}`).toHaveProperty(m);
       if (s.evolution) expect(CONTENT.species, `${s.id} evolves`).toHaveProperty(s.evolution.into);
     }
     for (const b of Object.values(CONTENT.balls)) expect(b.price).toBeGreaterThan(0);

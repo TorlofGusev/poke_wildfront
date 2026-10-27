@@ -9,7 +9,7 @@
    { "stat": "hp", "skill": "skill:wish" } ] },
   { "line": ["jigglypuff", "wigglytuff"], "focus": [
    { "stat": "attack", "skill": "skill:spit-up" },
-   { "stat": "defense", "skill": "skill:sing--bond" },
+   { "stat": "defense", "skill": "skill:sing" },
    { "stat": "hp", "skill": "skill:swallow" } ] }
  ],
  "rows": {

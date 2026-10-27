@@ -53,7 +53,7 @@
     },
     {
      "stat": "defense",
-     "skill": "skill:spore--bond"
+     "skill": "skill:spore"
     },
     {
      "stat": "hp",
@@ -69,7 +69,7 @@
   ],
   "6": [
    "skill:fury-cutter",
-   "skill:cut"
+   "skill:aerial-ace"
   ],
   "9": [
    "pincer",

@@ -3,7 +3,7 @@ import {
   defaultActiveMoves,
   gainXp,
   memberStats,
-  movesKnownAt,
+  startingMoves,
   playstylePoints,
   scaledXp,
   type Progress,
@@ -71,7 +71,7 @@ export function newMember(
   playerSpendsPoints = false,
 ): PartyMember {
   const earned = (level - 1) * prog.rules.pointsPerLevel;
-  const knownMoves = movesKnownAt(content.species[speciesId]!, level);
+  const knownMoves = startingMoves(content.species[speciesId]!);
   const base: PartyMember = {
     uid: `pk${uidNumber}`, speciesId, level, xp: 0, focus: null, talents: [], heldItem: null, knownMoves,
     activeMoves: defaultActiveMoves(content, prog, speciesId, knownMoves), hp: 0, knockouts: 0,

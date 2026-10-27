@@ -2,7 +2,7 @@ import type { BattleContent } from "../battle/content";
 import { KNOCKOUTS_TO_DEATH, MAX_PARTY_SIZE, type GameState, type PartyMember } from "../party/roster";
 
 /** Bump when GameState changes. During the prototype, older saves are discarded rather than migrated. */
-export const SAVE_VERSION = 7;
+export const SAVE_VERSION = 8;
 
 export interface SaveFile {
   readonly version: number;

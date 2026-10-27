@@ -32,7 +32,7 @@
    "focus": [
     {
      "stat": "attack",
-     "skill": "skill:psybeam--bond"
+     "skill": "skill:signal-beam"
     },
     {
      "stat": "defense",
