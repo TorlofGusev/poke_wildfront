@@ -71,7 +71,7 @@ Code licence proposal: **MIT** for original code (simple, community-friendly; no
 ## 4. Proposed directory structure
 
 ```
-pokemon_wildfront/
+poke_wildfront/
 ├─ docs/                    brief, audit, design notes, decisions (ADR)
 ├─ src/
 │  ├─ core/                 pure rules, no Phaser imports (enforced by lint rule)
