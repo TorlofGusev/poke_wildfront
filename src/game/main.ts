@@ -11,7 +11,6 @@ import { ShopScene } from "./scenes/ShopScene";
 import { StarterScene } from "./scenes/StarterScene";
 import { OverworldScene } from "./scenes/OverworldScene";
 import { TitleScene } from "./scenes/TitleScene";
-import { HexLabScene } from "./scenes/HexLabScene";
 
 const game = new Phaser.Game({
   type: Phaser.AUTO,
@@ -24,7 +23,7 @@ const game = new Phaser.Game({
     width: 960,
     height: 540,
   },
-  scene: [BootScene, TitleScene, StarterScene, OverworldScene, PartyScene, PokemonScene, ShopScene, InventoryScene, BattleScene, CreditsScene, HexLabScene],
+  scene: [BootScene, TitleScene, StarterScene, OverworldScene, PartyScene, PokemonScene, ShopScene, InventoryScene, BattleScene, CreditsScene],
 });
 setupRotation(game);
 setupAudio(game);

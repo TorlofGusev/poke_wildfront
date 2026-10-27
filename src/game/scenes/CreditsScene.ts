@@ -1,7 +1,7 @@
 import Phaser from "phaser";
 import { playMusic } from "../music";
 import credits from "../../../CREDITS.md?raw";
-import { DISCLAIMER } from "../../core/version";
+import { DISCLAIMER, LEGAL_NOTICE } from "../../core/version";
 import { Button } from "../ui/Button";
 import { COLORS, FONT, px } from "../ui/theme";
 import { t } from "../i18n";

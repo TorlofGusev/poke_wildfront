@@ -2,7 +2,7 @@ import Phaser from "phaser";
 import { playMusic } from "../music";
 import { playCry } from "../audio";
 import { CONTENT } from "../../content";
-import { PLAYTEST_TEAM, session, STARTERS } from "../session";
+import { session, STARTERS } from "../session";
 import { portraitKey } from "../sprites";
 import { Button } from "../ui/Button";
 import { tag } from "../ui/markup";
@@ -11,7 +11,7 @@ import { RichText } from "../ui/RichText";
 import { FONT, px } from "../ui/theme";
 import { t } from "../i18n";
 
-/** New game: choose one starter (classic), or take the fixed playtest team. */
+/** New game: choose one starter. */
 export class StarterScene extends Phaser.Scene {
   constructor() {
     super("Starter");
@@ -48,10 +48,6 @@ export class StarterScene extends Phaser.Scene {
       }).setHighlighted(true);
     });
 
-    new Button(this, width / 2 - 200, 462, 400, 28, t("Playtest: start with a fixed team of {n}", { n: PLAYTEST_TEAM.length }), () => {
-      session.start(PLAYTEST_TEAM);
-      this.scene.start("Overworld", {});
-    });
     new Button(this, width / 2 - 200, 496, 400, 28, t("← Back"), () => this.scene.start("Title"));
   }
 }

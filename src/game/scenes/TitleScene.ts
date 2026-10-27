@@ -24,7 +24,7 @@ export class TitleScene extends Phaser.Scene {
       .text(width / 2, height / 2 - 110, "Pokémon Wildfront", { fontFamily: "monospace", fontSize: "48px", color: "#f5d76e" })
       .setOrigin(0.5);
     this.add
-      .text(width / 2, height / 2 - 60, t("Tactical prototype"), { fontFamily: "monospace", fontSize: "18px", color: "#c8d0e0" })
+      .text(width / 2, height / 2 - 60, t("Tactical RPG"), { fontFamily: "monospace", fontSize: "18px", color: "#c8d0e0" })
       .setOrigin(0.5);
 
     const hasSave = session.hasSave() && session.load();
@@ -43,9 +43,7 @@ export class TitleScene extends Phaser.Scene {
     });
     y += 42;
     if (addFullscreenButton(this, width / 2 - 140, y, 280)) y += 42;
-    // Credits and the hex prototype share a row.
-    new Button(this, width / 2 - 140, y, 136, 32, t("ⓘ Credits"), () => this.scene.start("Credits"));
-    new Button(this, width / 2 + 4, y, 136, 32, t("⬢ Hex test"), () => this.scene.start("HexLab"));
+    new Button(this, width / 2 - 140, y, 280, 32, t("ⓘ Credits"), () => this.scene.start("Credits"));
     y += 42;
     this.volumeSlider(width / 2 - 140, y + 6, 280);
     y += 32;
