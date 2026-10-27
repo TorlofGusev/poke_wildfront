@@ -67,7 +67,7 @@
    "kind": "bond",
    "category": "physical",
    "bondCost": 2,
-   "power": 85,
+   "power": 75,
    "range": {
     "min": 1,
     "max": 1
@@ -83,7 +83,8 @@
      "amount": 1,
      "when": "knockout"
     }
-   ]
+   ],
+   "canonPower": 70
   },
   "meowth-fake-out": {
    "id": "meowth-fake-out",
@@ -108,7 +109,8 @@
      "status": "slow",
      "duration": 1
     }
-   ]
+   ],
+   "canonPower": 40
   },
   "meowth-hyper-voice": {
    "id": "meowth-hyper-voice",
@@ -117,7 +119,7 @@
    "kind": "bond",
    "category": "special",
    "bondCost": 2,
-   "power": 85,
+   "power": 75,
    "range": {
     "min": 1,
     "max": 3
@@ -126,7 +128,8 @@
    "shape": {
     "kind": "single"
    },
-   "affects": "enemies"
+   "affects": "enemies",
+   "canonPower": 90
   },
   "meowth-bite": {
    "id": "meowth-bite",
@@ -135,7 +138,7 @@
    "kind": "special",
    "category": "physical",
    "cooldown": 2,
-   "power": 55,
+   "power": 60,
    "range": {
     "min": 1,
     "max": 1
@@ -144,7 +147,8 @@
    "shape": {
     "kind": "single"
    },
-   "affects": "enemies"
+   "affects": "enemies",
+   "canonPower": 60
   },
   "meowth-screech": {
    "id": "meowth-screech",
@@ -177,7 +181,7 @@
    "kind": "special",
    "category": "special",
    "cooldown": 3,
-   "power": 60,
+   "power": 55,
    "range": {
     "min": 1,
     "max": 2
@@ -193,7 +197,8 @@
      "status": "slow",
      "duration": 1
     }
-   ]
+   ],
+   "canonPower": 60
   },
   "meowth-play-rough": {
    "id": "meowth-play-rough",
@@ -202,7 +207,7 @@
    "kind": "special",
    "category": "physical",
    "cooldown": 4,
-   "power": 85,
+   "power": 80,
    "range": {
     "min": 1,
     "max": 1
@@ -211,7 +216,8 @@
    "shape": {
     "kind": "single"
    },
-   "affects": "enemies"
+   "affects": "enemies",
+   "canonPower": 90
   },
   "meowth-tri-attack": {
    "id": "meowth-tri-attack",
@@ -220,7 +226,7 @@
    "kind": "special",
    "category": "special",
    "cooldown": 4,
-   "power": 80,
+   "power": 65,
    "range": {
     "min": 1,
     "max": 2
@@ -229,7 +235,8 @@
    "shape": {
     "kind": "single"
    },
-   "affects": "enemies"
+   "affects": "enemies",
+   "canonPower": 80
   },
   "meowth-sucker-punch": {
    "id": "meowth-sucker-punch",
@@ -238,7 +245,7 @@
    "kind": "special",
    "category": "physical",
    "cooldown": 4,
-   "power": 90,
+   "power": 65,
    "range": {
     "min": 1,
     "max": 1
@@ -247,7 +254,8 @@
    "shape": {
     "kind": "single"
    },
-   "affects": "enemies"
+   "affects": "enemies",
+   "canonPower": 70
   },
   "meowth-hyper-beam": {
    "id": "meowth-hyper-beam",
@@ -256,7 +264,7 @@
    "kind": "special",
    "category": "special",
    "cooldown": 5,
-   "power": 100,
+   "power": 95,
    "range": {
     "min": 1,
     "max": 2
@@ -265,7 +273,8 @@
    "shape": {
     "kind": "single"
    },
-   "affects": "enemies"
+   "affects": "enemies",
+   "canonPower": 150
   },
   "meowth-growl": {
    "id": "meowth-growl",
@@ -296,7 +305,7 @@
   "meowth-night-slash": {
    "id": "meowth-night-slash",
    "name": "Night Slash",
-   "description": "Bond skill: a slash from the shadows (Power 85, Attack); a knockout gives back 1 Bond.",
+   "description": "Bond skill: a slash from the shadows (Power 75, Attack); a knockout gives back 1 Bond.",
    "grantsMove": "meowth-night-slash"
   },
   "meowth-fake-out": {
@@ -308,7 +317,7 @@
   "meowth-hyper-voice": {
    "id": "meowth-hyper-voice",
    "name": "Hyper Voice",
-   "description": "Bond skill: a piercing yowl at a foe up to 3 hexes away (Power 85).",
+   "description": "Bond skill: a piercing yowl at a foe up to 3 hexes away (Power 75).",
    "grantsMove": "meowth-hyper-voice"
   },
   "meowth-technician": {
@@ -335,7 +344,7 @@
   "meowth-bite": {
    "id": "meowth-bite",
    "name": "Bite",
-   "description": "New skill: a quick bite with sharp fangs (Power 55).",
+   "description": "New skill: a quick bite with sharp fangs (Power 60).",
    "grantsMove": "meowth-bite"
   },
   "meowth-screech": {
@@ -363,7 +372,7 @@
   "meowth-swift": {
    "id": "meowth-swift",
    "name": "Swift",
-   "description": "New skill: star-shaped rays at a foe up to 2 hexes away (Power 60); Slows 1 turn.",
+   "description": "New skill: star-shaped rays at a foe up to 2 hexes away (Power 55); Slows 1 turn.",
    "grantsMove": "meowth-swift"
   },
   "meowth-opportunist": {
@@ -385,13 +394,13 @@
   "meowth-play-rough": {
    "id": "meowth-play-rough",
    "name": "Play Rough",
-   "description": "New skill: pounces and plays rough with a foe (Power 85).",
+   "description": "New skill: pounces and plays rough with a foe (Power 80).",
    "grantsMove": "meowth-play-rough"
   },
   "meowth-tri-attack": {
    "id": "meowth-tri-attack",
    "name": "Tri Attack",
-   "description": "New skill: a triangle of energy at a foe up to 2 hexes away (Power 80).",
+   "description": "New skill: a triangle of energy at a foe up to 2 hexes away (Power 65).",
    "grantsMove": "meowth-tri-attack"
   },
   "meowth-pounce": {
@@ -414,13 +423,13 @@
   "meowth-sucker-punch": {
    "id": "meowth-sucker-punch",
    "name": "Sucker Punch",
-   "description": "New skill: a sneaky strike before the foe can react (Power 90).",
+   "description": "New skill: a sneaky strike before the foe can react (Power 65).",
    "grantsMove": "meowth-sucker-punch"
   },
   "meowth-hyper-beam": {
    "id": "meowth-hyper-beam",
    "name": "Hyper Beam",
-   "description": "New skill: a devastating beam at a foe up to 2 hexes away (Power 100).",
+   "description": "New skill: a devastating beam at a foe up to 2 hexes away (Power 95).",
    "grantsMove": "meowth-hyper-beam"
   },
   "meowth-relentless-swipes": {

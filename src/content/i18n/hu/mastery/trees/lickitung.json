@@ -13,7 +13,7 @@
    "description": "20%-kal kevesebb sebzést szenved, amíg teljes a HP-ja."
   },
   "lickitung-body-slam": {
-   "description": "Új képesség: teljes súlyával rázuhan egy ellenfélre (Erő 70), 1 körre megbénítja."
+   "description": "Új képesség: teljes súlyával rázuhan egy ellenfélre (Erő 75), 1 körre megbénítja."
   },
   "lickitung-disable": {
    "description": "Új képesség: lezár egy legfeljebb 2 hexnyire lévő ellenfelet, 2 körre Disabled (csak alaptámadás)."
@@ -34,7 +34,7 @@
    "description": "Új képesség: minden erejével nekiront egy ellenfélnek (Erő 100)."
   },
   "lickitung-hyper-beam": {
-   "description": "Új képesség: hatalmas sugár egy 2 hexes vonalban (Erő 90)."
+   "description": "Új képesség: hatalmas sugár egy 2 hexes vonalban (Erő 85)."
   },
   "lickitung-helping-tongue": {
    "description": "A csapat 1 Bondot kap, ha kombót visz be."
@@ -61,10 +61,10 @@
    "description": "Bond képesség: erőt gyűjt a gyomrában; 3 körre Fortified."
   },
   "lickitung-thrash": {
-   "description": "Új képesség: vadul csapkod (Erő 80), minden szomszédos ellenfelet eltalál."
+   "description": "Új képesség: vadul csapkod (Erő 75), minden szomszédos ellenfelet eltalál."
   },
   "lickitung-hyper-voice": {
-   "description": "Új képesség: harsány kiáltás egy 2 hexen belüli ellenfélre (Erő 80)."
+   "description": "Új képesség: harsány kiáltás egy 2 hexen belüli ellenfélre (Erő 70)."
   },
   "lickitung-screech": {
    "description": "Új képesség: fülsértő rikoltás egy max. 2 hexnyi ellenfélre; 2 körre Exposed állapotba kerül."

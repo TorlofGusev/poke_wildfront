@@ -65,6 +65,8 @@ export interface MoveDef {
   readonly kind: MoveKind;
   /** 0 for pure utility moves. */
   readonly power: number;
+  /** Canon power (all hits of a multi-hit move added up); when set, `power` follows from it (see powerFromCanon). */
+  readonly canonPower?: number;
   readonly range: { readonly min: number; readonly max: number };
   readonly requiresLineOfSight: boolean;
   readonly shape: TargetShape;
@@ -121,6 +123,12 @@ export interface BattleRules {
   /** Max HP gained per level above 1, plus a share of Defense (the Pokémon's constitution). */
   readonly hpPerLevel: number;
   readonly hpPerLevelPerDefense: number;
+  /** Move power from canon power: scale × canon^exponent × shape × reach × kind factors, rounded to `round`. */
+  readonly movePower: {
+    readonly scale: number; readonly exponent: number; readonly round: number; readonly max: number;
+    readonly basic: number; readonly paid: number; readonly range2: number; readonly range3: number;
+    readonly burst1: number; readonly burst2: number; readonly line: number;
+  };
   /** Critical hits: chance = base + perPoint × Crit, damage × (damage + damagePerPoint × Crit). */
   readonly crit: { readonly base: number; readonly perPoint: number; readonly damage: number; readonly damagePerPoint: number };
   /** Willpower: Spirit bar gains (× 1 + perPoint × Willpower) and status resistance per point. */

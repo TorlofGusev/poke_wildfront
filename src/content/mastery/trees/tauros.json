@@ -66,7 +66,7 @@
    "kind": "bond",
    "category": "physical",
    "bondCost": 2,
-   "power": 100,
+   "power": 85,
    "range": {
     "min": 1,
     "max": 1
@@ -82,7 +82,8 @@
      "status": "exposed",
      "duration": 1
     }
-   ]
+   ],
+   "canonPower": 90
   },
   "tauros-horn-attack": {
    "id": "tauros-horn-attack",
@@ -91,7 +92,7 @@
    "kind": "bond",
    "category": "physical",
    "bondCost": 1,
-   "power": 60,
+   "power": 65,
    "range": {
     "min": 1,
     "max": 2
@@ -105,7 +106,8 @@
     {
      "kind": "engage"
     }
-   ]
+   ],
+   "canonPower": 65
   },
   "tauros-double-edge": {
    "id": "tauros-double-edge",
@@ -114,7 +116,7 @@
    "kind": "bond",
    "category": "physical",
    "bondCost": 2,
-   "power": 90,
+   "power": 100,
    "range": {
     "min": 1,
     "max": 1
@@ -123,7 +125,8 @@
    "shape": {
     "kind": "single"
    },
-   "affects": "enemies"
+   "affects": "enemies",
+   "canonPower": 120
   },
   "tauros-body-slam": {
    "id": "tauros-body-slam",
@@ -132,7 +135,7 @@
    "kind": "special",
    "category": "physical",
    "cooldown": 3,
-   "power": 70,
+   "power": 75,
    "range": {
     "min": 1,
     "max": 1
@@ -148,7 +151,8 @@
      "status": "paralysis",
      "duration": 1
     }
-   ]
+   ],
+   "canonPower": 85
   },
   "tauros-scary-face": {
    "id": "tauros-scary-face",
@@ -196,7 +200,8 @@
      "kind": "push",
      "distance": 1
     }
-   ]
+   ],
+   "canonPower": 150
   },
   "tauros-iron-head": {
    "id": "tauros-iron-head",
@@ -205,7 +210,7 @@
    "kind": "special",
    "category": "physical",
    "cooldown": 4,
-   "power": 85,
+   "power": 75,
    "range": {
     "min": 1,
     "max": 1
@@ -214,7 +219,8 @@
    "shape": {
     "kind": "single"
    },
-   "affects": "enemies"
+   "affects": "enemies",
+   "canonPower": 80
   },
   "tauros-endure": {
    "id": "tauros-endure",
@@ -247,7 +253,7 @@
    "kind": "special",
    "category": "physical",
    "cooldown": 3,
-   "power": 60,
+   "power": 65,
    "range": {
     "min": 1,
     "max": 1
@@ -256,7 +262,8 @@
    "shape": {
     "kind": "single"
    },
-   "affects": "enemies"
+   "affects": "enemies",
+   "canonPower": 70
   },
   "tauros-head-charge": {
    "id": "tauros-head-charge",
@@ -265,7 +272,7 @@
    "kind": "special",
    "category": "physical",
    "cooldown": 4,
-   "power": 85,
+   "power": 95,
    "range": {
     "min": 1,
     "max": 1
@@ -280,7 +287,8 @@
      "kind": "push",
      "distance": 2
     }
-   ]
+   ],
+   "canonPower": 120
   },
   "tauros-rage": {
    "id": "tauros-rage",
@@ -288,7 +296,7 @@
    "type": "normal",
    "kind": "special",
    "cooldown": 4,
-   "power": 90,
+   "power": 30,
    "category": "physical",
    "range": {
     "min": 1,
@@ -303,26 +311,27 @@
     {
      "kind": "engage"
     }
-   ]
+   ],
+   "canonPower": 20
   }
  },
  "talents": {
   "tauros-raging-bull": {
    "id": "tauros-raging-bull",
    "name": "Raging Bull",
-   "description": "Bond skill: a furious tackle (Power 100, Attack) that leaves the foe Exposed for 1 turn.",
+   "description": "Bond skill: a furious tackle (Power 85, Attack) that leaves the foe Exposed for 1 turn.",
    "grantsMove": "tauros-raging-bull"
   },
   "tauros-horn-attack": {
    "id": "tauros-horn-attack",
    "name": "Horn Attack",
-   "description": "Bond skill: charges up to 2 hexes horns first (Power 60) and engages the foe.",
+   "description": "Bond skill: charges up to 2 hexes horns first (Power 65) and engages the foe.",
    "grantsMove": "tauros-horn-attack"
   },
   "tauros-double-edge": {
    "id": "tauros-double-edge",
    "name": "Double-Edge",
-   "description": "Bond skill: a life-risking full-body charge (Power 90).",
+   "description": "Bond skill: a life-risking full-body charge (Power 100).",
    "grantsMove": "tauros-double-edge"
   },
   "tauros-herd-instinct": {
@@ -360,7 +369,7 @@
   "tauros-body-slam": {
    "id": "tauros-body-slam",
    "name": "Body Slam",
-   "description": "New skill: slams its whole body down (Power 70); Paralyzes the foe for 1 turn.",
+   "description": "New skill: slams its whole body down (Power 75); Paralyzes the foe for 1 turn.",
    "grantsMove": "tauros-body-slam"
   },
   "tauros-scary-face": {
@@ -410,7 +419,7 @@
   "tauros-iron-head": {
    "id": "tauros-iron-head",
    "name": "Iron Head",
-   "description": "New skill: rams a foe with its hard head (Power 85).",
+   "description": "New skill: rams a foe with its hard head (Power 75).",
    "grantsMove": "tauros-iron-head"
   },
   "tauros-herd-leader": {
@@ -459,19 +468,19 @@
   "tauros-headbutt": {
    "id": "tauros-headbutt",
    "name": "Headbutt",
-   "description": "New skill: a hard headbutt (Power 60).",
+   "description": "New skill: a hard headbutt (Power 65).",
    "grantsMove": "tauros-headbutt"
   },
   "tauros-head-charge": {
    "id": "tauros-head-charge",
    "name": "Head Charge",
-   "description": "New skill: charges head first (Power 85), knocking the foe 2 hexes away.",
+   "description": "New skill: charges head first (Power 95), knocking the foe 2 hexes away.",
    "grantsMove": "tauros-head-charge"
   },
   "tauros-rage": {
    "id": "tauros-rage",
    "name": "Rage",
-   "description": "New skill: a furious charge (Power 90) that locks it onto the foe (engages it).",
+   "description": "New skill: a furious charge (Power 30) that locks it onto the foe (engages it).",
    "grantsMove": "tauros-rage"
   }
  }

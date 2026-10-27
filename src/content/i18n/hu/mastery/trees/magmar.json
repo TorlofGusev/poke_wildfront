@@ -1,7 +1,7 @@
 {
  "talents": {
   "magmar-inferno": {
-   "description": "Bond képesség: 3 hexen belüli ellenfelet borít lángba (Erő 100, Sp. Tám.); 3 körre megéget."
+   "description": "Bond képesség: 3 hexen belüli ellenfelet borít lángba (Erő 80, Sp. Tám.); 3 körre megéget."
   },
   "magmar-flare-blitz": {
    "description": "Bond képesség: lángba borulva nekiront egy szomszédos ellenfélnek (Erő 100, Attack)."
@@ -16,7 +16,7 @@
    "description": "Új képesség: kísérteties fény egy 2 hexen belüli ellenfélre: 2 körig Zavarodott."
   },
   "magmar-fire-fang": {
-   "description": "Új képesség: lángoló agyarakkal harap (Erő 55), 1 körre megégeti az ellenfelet."
+   "description": "Új képesség: lángoló agyarakkal harap (Erő 65), 1 körre megégeti az ellenfelet."
   },
   "magmar-searing-fists": {
    "description": "15%-kal többet sebez a szomszédos ellenfelekre."
@@ -34,7 +34,7 @@
    "description": "Minden köre elején a max HP 4%-át gyógyítja."
   },
   "magmar-body-slam": {
-   "description": "Új képesség: testével rácsapódik egy ellenfélre (Erő 80), 1 körre megbénítja."
+   "description": "Új képesség: testével rácsapódik egy ellenfélre (Erő 75), 1 körre megbénítja."
   },
   "magmar-bellows": {
    "description": "Az általa okozott állapotok 1 körrel tovább tartanak."
@@ -43,10 +43,10 @@
    "description": "Fél HP alatt 20%-kal többet sebez."
   },
   "magmar-fire-blast": {
-   "description": "Új képesség: csillag alakú tűz 2 hexen belül (Erő 100); 2 körre megéget."
+   "description": "Új képesség: csillag alakú tűz 2 hexen belül (Erő 80); 2 körre megéget."
   },
   "magmar-mega-kick": {
-   "description": "Új képesség: hatalmas erejű rúgás (Erő 100)."
+   "description": "Új képesség: hatalmas erejű rúgás (Erő 95)."
   },
   "magmar-spreading-flames": {
    "description": "Ha az általa okozott állapotot viselő ellenfél kidől, a szomszédos ellenfelek is elkapják."

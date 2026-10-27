@@ -7,7 +7,7 @@
    "type": "rock",
    "kind": "special",
    "cooldown": 3,
-   "power": 40,
+   "power": 55,
    "range": {
     "min": 1,
     "max": 2
@@ -23,7 +23,8 @@
      "status": "slow",
      "duration": 2
     }
-   ]
+   ],
+   "canonPower": 60
   },
   "stone-edge": {
    "id": "stone-edge",
@@ -31,7 +32,7 @@
    "type": "rock",
    "kind": "special",
    "cooldown": 4,
-   "power": 95,
+   "power": 75,
    "range": {
     "min": 1,
     "max": 2
@@ -40,7 +41,8 @@
    "shape": {
     "kind": "single"
    },
-   "affects": "enemies"
+   "affects": "enemies",
+   "canonPower": 100
   },
   "head-smash": {
    "id": "head-smash",
@@ -50,21 +52,22 @@
    "requiresLineOfSight": false,
    "affects": "enemies",
    "cooldown": 5,
-   "power": 110,
+   "power": 100,
    "range": {
     "min": 1,
     "max": 1
    },
    "shape": {
     "kind": "single"
-   }
+   },
+   "canonPower": 150
   }
  },
  "talents": {
   "rock-skill-rock-throw": {
    "id": "rock-skill-rock-throw",
    "name": "Rock Throw",
-   "description": "New skill: hurls a rock at a foe 2-2 hexes away (Power 45).",
+   "description": "New skill: hurls a rock at a foe 2-2 hexes away (Power 50).",
    "requiresType": "rock",
    "grantsMove": "rock-throw"
   },
@@ -78,7 +81,7 @@
   "rock-skill-stone-edge": {
    "id": "rock-skill-stone-edge",
    "name": "Stone Edge",
-   "description": "New skill: a brutal stone strike on a foe up to 2 hexes away (Power 95).",
+   "description": "New skill: a brutal stone strike on a foe up to 2 hexes away (Power 75).",
    "requiresType": "rock",
    "grantsMove": "stone-edge"
   },
@@ -137,7 +140,7 @@
   "rock-skill-head-smash": {
    "id": "rock-skill-head-smash",
    "name": "Head Smash",
-   "description": "New skill: a crushing headbutt on an adjacent foe (Power 110).",
+   "description": "New skill: a crushing headbutt on an adjacent foe (Power 100).",
    "requiresType": "rock",
    "grantsMove": "head-smash"
   }

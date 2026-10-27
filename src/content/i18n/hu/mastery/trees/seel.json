@@ -4,7 +4,7 @@
    "description": "Bond képesség: 2 körre elalszik, 70 HP-t gyógyul, és leveti az ellenfelek okozta állapotokat."
   },
   "seel-surf": {
-   "description": "Bond képesség: nagy hullám legfeljebb 2 hexnyire, 1 hex körzetben (Power 85)."
+   "description": "Bond képesség: nagy hullám legfeljebb 2 hexnyire, 1 hex körzetben (Power 60)."
   },
   "seel-hydration": {
    "description": "Köre elején lerázza magáról az ellenfelek okozta státuszokat."
@@ -13,7 +13,7 @@
    "description": "10%-kal kevesebb sebzést kap."
   },
   "seel-brine": {
-   "description": "Új képesség: sós vízsugár egy legfeljebb 2 hexnyire lévő ellenfélre (Power 60)."
+   "description": "Új képesség: sós vízsugár egy legfeljebb 2 hexnyire lévő ellenfélre (Power 55)."
   },
   "seel-aqua-jet": {
    "description": "Új képesség: nekilő egy legfeljebb 2 hexnyire lévő ellenfélnek (Power 40), és leköti."
@@ -25,7 +25,7 @@
    "description": "Minden köre elején max HP-ja 3%-át gyógyul."
   },
   "seel-bubble-beam": {
-   "description": "Új képesség: buborékzápor legfeljebb 2 hexre (Power 65), 1 körre Slow-t okoz."
+   "description": "Új képesség: buborékzápor legfeljebb 2 hexre (Power 55), 1 körre Slow-t okoz."
   },
   "seel-diving-hunter": {
    "description": "15%-kal többet sebez a státusszal rendelkező ellenfeleknek."
@@ -34,7 +34,7 @@
    "description": "Teljes HP-n 20%-kal kevesebb sebzést kap."
   },
   "seel-frost-breath": {
-   "description": "Új képesség: jeges lehelet legfeljebb 2 hexre (Power 80), 1 körre Exposed."
+   "description": "Új képesség: jeges lehelet legfeljebb 2 hexre (Power 55), 1 körre Exposed."
   },
   "seel-ice-wall": {
    "description": "Új képesség: jégfal legfeljebb 1 hexnyire, 1 hex körzetben a szövetségesek 2 körre Fortified-ok."
@@ -49,7 +49,7 @@
    "description": "Új képesség: abszolút hideg a szomszédos ellenfélre (Power 90), 1 körre Freeze."
   },
   "seel-whirlpool": {
-   "description": "Új képesség: örvénybe zár egy legfeljebb 2 hexnyire lévő ellenfelet (Power 45), 3 körre Slow."
+   "description": "Új képesség: örvénybe zár egy legfeljebb 2 hexnyire lévő ellenfelet (Power 40), 3 körre Slow."
   },
   "seel-arctic-stamina": {
    "description": "Ha kiüt egy ellenfelet, a max HP 15%-át gyógyítja."

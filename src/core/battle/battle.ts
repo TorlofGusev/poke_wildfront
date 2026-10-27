@@ -504,8 +504,10 @@ function doMove(state: BattleState, content: BattleContent, unitId: string, to: 
     segment = [];
   };
   for (const step of path) {
+    // Any step breaks an engagement, even one that stays next to the partner (no circling around it);
+    // the partner's free attack lands before the unit moves.
     const partner = partnerOf(state, unit);
-    if (partner && gridDistance(partner.pos, step) > 1) {
+    if (partner) {
       flush();
       const canStrike = (!unit.mods.disengage || partner.mods.noEscape) && !partner.statuses.some((st) => content.statuses[st.id]?.noAction);
       if (canStrike) engagementStrike(state, content, partner, unit, events);

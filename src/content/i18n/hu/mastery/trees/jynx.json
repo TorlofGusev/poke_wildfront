@@ -4,7 +4,7 @@
    "description": "Kötelék-képesség: abszolút hideg hulláma max. 3 hexnyire (Erő 100), 1 körre lefagyaszt."
   },
   "jynx-powder-snow": {
-   "description": "Kötelék-képesség: hózápor max. 1 hexnyire (Erő 55), 1 körre lassít egy 1 hex körzetet."
+   "description": "Kötelék-képesség: hózápor max. 1 hexnyire (Erő 40), 1 körre lassít egy 1 hex körzetet."
   },
   "jynx-reflect": {
    "description": "Kötelék-képesség: csillogó fal 2 körre Megerősíti őt és a szomszédos szövetségeseit."
@@ -16,10 +16,10 @@
    "description": "Az általa okozott állapotok 1 körrel tovább tartanak."
   },
   "jynx-confusion": {
-   "description": "Új képesség: gyenge telekinetikus csapás egy legfeljebb 2 hexnyire lévő ellenfélre (Erő 55)."
+   "description": "Új képesség: gyenge telekinetikus csapás egy legfeljebb 2 hexnyire lévő ellenfélre (Erő 50)."
   },
   "jynx-icy-wind": {
-   "description": "Új képesség: dermesztő szél egy legfeljebb 2 hexnyire lévő ellenfélre (Erő 45), 2 körre lelassítja."
+   "description": "Új képesség: dermesztő szél egy legfeljebb 2 hexnyire lévő ellenfélre (Erő 50), 2 körre lelassítja."
   },
   "jynx-glacial-voice": {
    "description": "Jég támadásai 15%-kal többet sebeznek."
@@ -40,10 +40,10 @@
    "description": "20%-kal kevesebb sebzést kap, amíg teljes a HP-ja."
   },
   "jynx-ice-beam": {
-   "description": "Új képesség: jeges sugár egy legfeljebb 2 hexnyire lévő ellenfélre (Erő 85), 1 körre lefagyasztja."
+   "description": "Új képesség: jeges sugár egy legfeljebb 2 hexnyire lévő ellenfélre (Erő 70), 1 körre lefagyasztja."
   },
   "jynx-dream-eater": {
-   "description": "Új képesség: felfalja egy legfeljebb 2 hexnyire lévő ellenfél álmait (Erő 90)."
+   "description": "Új képesség: felfalja egy legfeljebb 2 hexnyire lévő ellenfél álmait (Erő 75)."
   },
   "jynx-snow-veil": {
    "description": "10%-kal kevesebb sebzést szenved el."
@@ -52,10 +52,10 @@
    "description": "2 mozgáspontot visszanyer, ha a saját körében kiüt egy ellenfelet."
   },
   "jynx-freeze-dry": {
-   "description": "Új képesség: villámgyorsan lefagyaszt egy legfeljebb 2 hexnyire lévő ellenfelet (Erő 95)."
+   "description": "Új képesség: villámgyorsan lefagyaszt egy legfeljebb 2 hexnyire lévő ellenfelet (Erő 60)."
   },
   "jynx-psyshock": {
-   "description": "Új képesség: pszichikus hullám egy max. 2 hexnyi ellenfélre (Erő 80); 1 körre Exposed lesz."
+   "description": "Új képesség: pszichikus hullám egy max. 2 hexnyi ellenfélre (Erő 65); 1 körre Exposed lesz."
   },
   "jynx-royal-poise": {
    "description": "Csatánként egyszer 1 HP-val túlél egy kiütő csapást."

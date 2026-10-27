@@ -1,10 +1,10 @@
 {
  "talents": {
   "mew-swift": {
-   "description": "Bond képesség: sosem tévesztő csillagok legfeljebb 3 hexnyire, mások mellett is (Erő 85)."
+   "description": "Bond képesség: sosem tévesztő csillagok legfeljebb 3 hexnyire, mások mellett is (Erő 55)."
   },
   "mew-zen-headbutt": {
-   "description": "Bond képesség: akaraterővel töltött fejelés (Power 100, Attack)."
+   "description": "Bond képesség: akaraterővel töltött fejelés (Power 80, Attack)."
   },
   "mew-baton-pass": {
    "description": "Bond képesség: lendületét átadja egy 3 hexen belüli szövetségesnek: 1 körig Hasted és Focused."
@@ -40,7 +40,7 @@
    "description": "Új képesség: valami csintalanságot eszel ki: 2 körig Focused."
   },
   "mew-iron-tail": {
-   "description": "Új képesség: vaskemény farkával csap (Power 90), az ellenfél 1 körig Exposed."
+   "description": "Új képesség: vaskemény farkával csap (Power 85), az ellenfél 1 körig Exposed."
   },
   "mew-weightless": {
    "description": "A csata fölött lebeg: távolsági támadásai átrepülnek az útban álló Pokémonok fölött."
@@ -49,7 +49,7 @@
    "description": "Szabad ütés nélkül siklik el a vele harcoló ellenfelektől."
   },
   "mew-psyshock": {
-   "description": "Új képesség: pszichikus hullám egy legfeljebb 2 hexnyi ellenfélre (Erő 90)."
+   "description": "Új képesség: pszichikus hullám egy legfeljebb 2 hexnyi ellenfélre (Erő 65)."
   },
   "mew-barrier": {
    "description": "Új képesség: pszichikus gát: ő és az 1 hexen belüli társai 2 körig Fortified."

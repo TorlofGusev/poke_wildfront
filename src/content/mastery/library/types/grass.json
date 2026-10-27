@@ -6,7 +6,7 @@
    "name": "Leaf Storm",
    "type": "grass",
    "kind": "special",
-   "power": 95,
+   "power": 90,
    "range": {
     "min": 1,
     "max": 2
@@ -16,7 +16,8 @@
     "kind": "single"
    },
    "affects": "enemies",
-   "cooldown": 4
+   "cooldown": 4,
+   "canonPower": 130
   },
   "petal-blizzard": {
    "id": "petal-blizzard",
@@ -25,7 +26,7 @@
    "kind": "special",
    "requiresLineOfSight": false,
    "affects": "enemies",
-   "power": 75,
+   "power": 55,
    "range": {
     "min": 0,
     "max": 0
@@ -34,7 +35,8 @@
     "kind": "burst",
     "radius": 2
    },
-   "cooldown": 5
+   "cooldown": 5,
+   "canonPower": 90
   }
  },
  "talents": {
@@ -66,7 +68,7 @@
   "grass-skill-leaf-storm": {
    "id": "grass-skill-leaf-storm",
    "name": "Leaf Storm",
-   "description": "New skill: a storm of leaves hurled at range (Power 95).",
+   "description": "New skill: a storm of leaves hurled at range (Power 90).",
    "requiresType": "grass",
    "grantsMove": "leaf-storm"
   },
@@ -107,7 +109,7 @@
   "grass-skill-petal-blizzard": {
    "id": "grass-skill-petal-blizzard",
    "name": "Petal Blizzard",
-   "description": "New skill: a petal storm (Power 75) hitting all foes within 2 hexes.",
+   "description": "New skill: a petal storm (Power 55) hitting all foes within 2 hexes.",
    "requiresType": "grass",
    "grantsMove": "petal-blizzard"
   }

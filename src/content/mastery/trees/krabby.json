@@ -138,7 +138,7 @@
    "kind": "special",
    "category": "special",
    "cooldown": 3,
-   "power": 50,
+   "power": 55,
    "range": {
     "min": 1,
     "max": 2
@@ -154,7 +154,8 @@
      "status": "slow",
      "duration": 2
     }
-   ]
+   ],
+   "canonPower": 60
   },
   "krabby-metal-claw": {
    "id": "krabby-metal-claw",
@@ -172,7 +173,8 @@
    "shape": {
     "kind": "single"
    },
-   "affects": "enemies"
+   "affects": "enemies",
+   "canonPower": 50
   },
   "krabby-swords-dance": {
    "id": "krabby-swords-dance",
@@ -231,7 +233,7 @@
    "kind": "special",
    "category": "physical",
    "cooldown": 4,
-   "power": 85,
+   "power": 70,
    "range": {
     "min": 1,
     "max": 1
@@ -240,7 +242,8 @@
    "shape": {
     "kind": "single"
    },
-   "affects": "enemies"
+   "affects": "enemies",
+   "canonPower": 75
   },
   "krabby-bubble-beam": {
    "id": "krabby-bubble-beam",
@@ -249,7 +252,7 @@
    "kind": "special",
    "category": "special",
    "cooldown": 4,
-   "power": 65,
+   "power": 50,
    "range": {
     "min": 1,
     "max": 2
@@ -266,7 +269,8 @@
      "status": "slow",
      "duration": 1
     }
-   ]
+   ],
+   "canonPower": 65
   },
   "krabby-double-edge": {
    "id": "krabby-double-edge",
@@ -275,7 +279,7 @@
    "kind": "special",
    "category": "physical",
    "cooldown": 5,
-   "power": 100,
+   "power": 95,
    "range": {
     "min": 1,
     "max": 1
@@ -284,7 +288,8 @@
    "shape": {
     "kind": "single"
    },
-   "affects": "enemies"
+   "affects": "enemies",
+   "canonPower": 120
   },
   "krabby-liquidation": {
    "id": "krabby-liquidation",
@@ -293,7 +298,7 @@
    "kind": "special",
    "category": "physical",
    "cooldown": 5,
-   "power": 85,
+   "power": 75,
    "range": {
     "min": 1,
     "max": 1
@@ -309,7 +314,8 @@
      "status": "exposed",
      "duration": 2
     }
-   ]
+   ],
+   "canonPower": 85
   }
  },
  "talents": {
@@ -350,7 +356,7 @@
   "krabby-water-pulse": {
    "id": "krabby-water-pulse",
    "name": "Water Pulse",
-   "description": "New skill: a pulse of water at a foe up to 2 hexes away (Power 50); Slows 2 turns.",
+   "description": "New skill: a pulse of water at a foe up to 2 hexes away (Power 55); Slows 2 turns.",
    "grantsMove": "krabby-water-pulse"
   },
   "krabby-metal-claw": {
@@ -408,13 +414,13 @@
   "krabby-razor-shell": {
    "id": "krabby-razor-shell",
    "name": "Razor Shell",
-   "description": "New skill: slashes an adjacent foe with a sharp shell (Power 85).",
+   "description": "New skill: slashes an adjacent foe with a sharp shell (Power 70).",
    "grantsMove": "krabby-razor-shell"
   },
   "krabby-bubble-beam": {
    "id": "krabby-bubble-beam",
    "name": "Bubble Beam",
-   "description": "New skill: a spray of bubbles along a 2-hex line (Power 65), Slowing those hit 1 turn.",
+   "description": "New skill: a spray of bubbles along a 2-hex line (Power 50), Slowing those hit 1 turn.",
    "grantsMove": "krabby-bubble-beam"
   },
   "krabby-cornered-crab": {
@@ -436,13 +442,13 @@
   "krabby-double-edge": {
    "id": "krabby-double-edge",
    "name": "Double-Edge",
-   "description": "New skill: a reckless full-body charge into an adjacent foe (Power 100).",
+   "description": "New skill: a reckless full-body charge into an adjacent foe (Power 95).",
    "grantsMove": "krabby-double-edge"
   },
   "krabby-liquidation": {
    "id": "krabby-liquidation",
    "name": "Liquidation",
-   "description": "New skill: a crashing blow of water (Power 85) that Exposes the foe for 2 turns.",
+   "description": "New skill: a crashing blow of water (Power 75) that Exposes the foe for 2 turns.",
    "grantsMove": "krabby-liquidation"
   },
   "krabby-snap-again": {

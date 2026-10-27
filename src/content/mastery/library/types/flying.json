@@ -7,7 +7,7 @@
    "type": "flying",
    "kind": "special",
    "cooldown": 3,
-   "power": 45,
+   "power": 65,
    "range": {
     "min": 1,
     "max": 2
@@ -23,7 +23,8 @@
      "status": "paralysis",
      "duration": 1
     }
-   ]
+   ],
+   "canonPower": 75
   },
   "hurricane": {
    "id": "hurricane",
@@ -31,7 +32,7 @@
    "type": "flying",
    "kind": "special",
    "cooldown": 4,
-   "power": 90,
+   "power": 80,
    "range": {
     "min": 1,
     "max": 2
@@ -46,7 +47,8 @@
      "kind": "push",
      "distance": 2
     }
-   ]
+   ],
+   "canonPower": 110
   },
   "sky-attack": {
    "id": "sky-attack",
@@ -56,21 +58,22 @@
    "requiresLineOfSight": true,
    "affects": "enemies",
    "bondCost": 3,
-   "power": 100,
+   "power": 95,
    "range": {
     "min": 1,
     "max": 3
    },
    "shape": {
     "kind": "single"
-   }
+   },
+   "canonPower": 140
   }
  },
  "talents": {
   "flying-skill-drill-peck": {
    "id": "flying-skill-drill-peck",
    "name": "Drill Peck",
-   "description": "New skill: a spinning melee peck (Power 65).",
+   "description": "New skill: a spinning melee peck (Power 75).",
    "requiresType": "flying",
    "grantsMove": "drill-peck"
   },
@@ -84,7 +87,7 @@
   "flying-skill-hurricane": {
    "id": "flying-skill-hurricane",
    "name": "Hurricane",
-   "description": "New skill: a storm hits a foe up to 2 hexes away and pushes it 2 hexes (Power 90).",
+   "description": "New skill: a storm hits a foe up to 2 hexes away and pushes it 2 hexes (Power 80).",
    "requiresType": "flying",
    "grantsMove": "hurricane"
   },
@@ -158,7 +161,7 @@
   "flying-skill-sky-attack": {
    "id": "flying-skill-sky-attack",
    "name": "Sky Attack",
-   "description": "New Bond skill: a diving strike on a foe up to 3 hexes away (Power 100).",
+   "description": "New Bond skill: a diving strike on a foe up to 3 hexes away (Power 95).",
    "requiresType": "flying",
    "grantsMove": "sky-attack"
   }

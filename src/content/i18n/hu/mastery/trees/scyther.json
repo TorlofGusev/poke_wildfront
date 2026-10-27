@@ -1,7 +1,7 @@
 {
  "talents": {
   "scyther-x-scissor": {
-   "description": "Kötelék-képesség: keresztbe tett kaszáival megvágja egy szomszédos ellenfelet (Erő 100, Támadás)."
+   "description": "Kötelék-képesség: keresztbe tett kaszáival megvágja egy szomszédos ellenfelet (Erő 80, Támadás)."
   },
   "scyther-aerial-ace": {
    "description": "Kötelék-képesség: legfeljebb 2 hexnyire egy ellenfélre villan (Erő 60, Támadás), és leköti."
@@ -28,7 +28,7 @@
    "description": "A tőle elszakadó ellenfelekre mért szabad csapásai 25%-kal többet sebeznek."
   },
   "scyther-razor-wind": {
-   "description": "Új képesség: kaszáival szélpengéket kavar (Erő 65), minden szomszédos ellenfelet eltalálva."
+   "description": "Új képesség: kaszáival szélpengéket kavar (Erő 60), minden szomszédos ellenfelet eltalálva."
   },
   "scyther-bug-bite": {
    "description": "Új képesség: megharap egy szomszédos ellenfelet (Erő 60), 2 körre Megjelölve."
@@ -43,7 +43,7 @@
    "description": "Új képesség: őrült pengetánca 2 körre Összpontosítottá teszi."
   },
   "scyther-acrobatics": {
-   "description": "Új képesség: fürge légi csapás (Erő 85), 1 körre Exposed állapotba hozza az ellenfelet."
+   "description": "Új képesség: fürge légi csapás (Erő 55), 1 körre Exposed állapotba hozza az ellenfelet."
   },
   "scyther-flock-leader": {
    "description": "15%-kal többet sebez azoknak, akik egy szövetségesével vannak lekötve."
@@ -52,7 +52,7 @@
    "description": "20%-kal többet sebez, amíg HP-ja a fele alatt van."
   },
   "scyther-double-hit": {
-   "description": "Új képesség: két gyors kaszacsapás egy szomszédos ellenfélre (Erő 90)."
+   "description": "Új képesség: két gyors kaszacsapás egy szomszédos ellenfélre (Erő 65)."
   },
   "scyther-blade-master": {
    "description": "Ha a saját körében kiüt egy ellenfelet, újra használhatja az alaptámadását."

@@ -96,7 +96,7 @@
    "kind": "bond",
    "category": "physical",
    "bondCost": 2,
-   "power": 95,
+   "power": 65,
    "range": {
     "min": 1,
     "max": 3
@@ -105,7 +105,8 @@
    "shape": {
     "kind": "single"
    },
-   "affects": "enemies"
+   "affects": "enemies",
+   "canonPower": 75
   },
   "shellder-hydro-pump": {
    "id": "shellder-hydro-pump",
@@ -114,7 +115,7 @@
    "kind": "bond",
    "category": "special",
    "bondCost": 3,
-   "power": 100,
+   "power": 85,
    "range": {
     "min": 1,
     "max": 3
@@ -123,7 +124,8 @@
    "shape": {
     "kind": "single"
    },
-   "affects": "enemies"
+   "affects": "enemies",
+   "canonPower": 110
   },
   "shellder-ice-shard": {
    "id": "shellder-ice-shard",
@@ -141,7 +143,8 @@
    "shape": {
     "kind": "single"
    },
-   "affects": "enemies"
+   "affects": "enemies",
+   "canonPower": 40
   },
   "shellder-bubble-beam": {
    "id": "shellder-bubble-beam",
@@ -150,7 +153,7 @@
    "kind": "special",
    "category": "special",
    "cooldown": 3,
-   "power": 60,
+   "power": 55,
    "range": {
     "min": 1,
     "max": 2
@@ -166,7 +169,8 @@
      "status": "slow",
      "duration": 1
     }
-   ]
+   ],
+   "canonPower": 65
   },
   "shellder-protect": {
    "id": "shellder-protect",
@@ -199,7 +203,7 @@
    "kind": "special",
    "category": "physical",
    "cooldown": 3,
-   "power": 65,
+   "power": 70,
    "range": {
     "min": 1,
     "max": 1
@@ -215,7 +219,8 @@
      "status": "exposed",
      "duration": 1
     }
-   ]
+   ],
+   "canonPower": 75
   },
   "shellder-avalanche": {
    "id": "shellder-avalanche",
@@ -224,7 +229,7 @@
    "kind": "special",
    "category": "physical",
    "cooldown": 4,
-   "power": 90,
+   "power": 60,
    "range": {
     "min": 1,
     "max": 1
@@ -233,7 +238,8 @@
    "shape": {
     "kind": "single"
    },
-   "affects": "enemies"
+   "affects": "enemies",
+   "canonPower": 60
   },
   "shellder-freeze-dry": {
    "id": "shellder-freeze-dry",
@@ -242,7 +248,7 @@
    "kind": "special",
    "category": "special",
    "cooldown": 4,
-   "power": 85,
+   "power": 60,
    "range": {
     "min": 1,
     "max": 2
@@ -258,7 +264,8 @@
      "status": "slow",
      "duration": 2
     }
-   ]
+   ],
+   "canonPower": 70
   },
   "shellder-icicle-crash": {
    "id": "shellder-icicle-crash",
@@ -267,7 +274,7 @@
    "kind": "special",
    "category": "physical",
    "cooldown": 5,
-   "power": 95,
+   "power": 70,
    "range": {
     "min": 1,
     "max": 2
@@ -276,7 +283,8 @@
    "shape": {
     "kind": "single"
    },
-   "affects": "enemies"
+   "affects": "enemies",
+   "canonPower": 85
   },
   "shellder-shell-smash": {
    "id": "shellder-shell-smash",
@@ -323,13 +331,13 @@
   "shellder-icicle-spear": {
    "id": "shellder-icicle-spear",
    "name": "Icicle Spear",
-   "description": "Bond skill: fires a volley of icicles at a foe up to 3 hexes away (Power 95, Attack).",
+   "description": "Bond skill: fires a volley of icicles at a foe up to 3 hexes away (Power 65, Attack).",
    "grantsMove": "shellder-icicle-spear"
   },
   "shellder-hydro-pump": {
    "id": "shellder-hydro-pump",
    "name": "Hydro Pump",
-   "description": "Bond skill: a torrent of water at a foe up to 3 hexes away (Power 100).",
+   "description": "Bond skill: a torrent of water at a foe up to 3 hexes away (Power 85).",
    "grantsMove": "shellder-hydro-pump"
   },
   "shellder-shell-armor": {
@@ -357,7 +365,7 @@
   "shellder-bubble-beam": {
    "id": "shellder-bubble-beam",
    "name": "Bubble Beam",
-   "description": "New skill: a spray of bubbles at a foe up to 2 hexes away (Power 60), Slowing it for 1 turn.",
+   "description": "New skill: a spray of bubbles at a foe up to 2 hexes away (Power 55), Slowing it for 1 turn.",
    "grantsMove": "shellder-bubble-beam"
   },
   "shellder-hard-shell": {
@@ -385,7 +393,7 @@
   "shellder-razor-shell": {
    "id": "shellder-razor-shell",
    "name": "Razor Shell",
-   "description": "New skill: slashes a foe with the sharp edge of its shell (Power 65); Exposed 1 turn.",
+   "description": "New skill: slashes a foe with the sharp edge of its shell (Power 70); Exposed 1 turn.",
    "grantsMove": "shellder-razor-shell"
   },
   "shellder-sealed-shell": {
@@ -410,13 +418,13 @@
   "shellder-avalanche": {
    "id": "shellder-avalanche",
    "name": "Avalanche",
-   "description": "New skill: crashes a mass of ice onto the foe (Power 90).",
+   "description": "New skill: crashes a mass of ice onto the foe (Power 60).",
    "grantsMove": "shellder-avalanche"
   },
   "shellder-freeze-dry": {
    "id": "shellder-freeze-dry",
    "name": "Freeze-Dry",
-   "description": "New skill: flash-freezes a foe up to 2 hexes away (Power 85), Slowing it for 2 turns.",
+   "description": "New skill: flash-freezes a foe up to 2 hexes away (Power 60), Slowing it for 2 turns.",
    "grantsMove": "shellder-freeze-dry"
   },
   "shellder-icy-spikes": {
@@ -443,7 +451,7 @@
   "shellder-icicle-crash": {
    "id": "shellder-icicle-crash",
    "name": "Icicle Crash",
-   "description": "New skill: drops huge icicles on a foe up to 2 hexes away (Power 95).",
+   "description": "New skill: drops huge icicles on a foe up to 2 hexes away (Power 70).",
    "grantsMove": "shellder-icicle-crash"
   },
   "shellder-shell-smash": {

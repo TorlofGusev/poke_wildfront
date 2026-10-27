@@ -1,7 +1,7 @@
 {
  "talents": {
   "abra-future-sight": {
-   "description": "Bond képesség: előre látott pszichikus csapás legfeljebb 3 hexre, rálátás nélkül (Power 100)."
+   "description": "Bond képesség: előre látott pszichikus csapás legfeljebb 3 hexre, rálátás nélkül (Power 90)."
   },
   "abra-teleport": {
    "description": "Bond képesség: teleportálva szabad ütés nélkül kiszabadul a lekötésből, 2 körre Hasted lesz."
@@ -28,7 +28,7 @@
    "description": "Szabad ütés nélkül léphet el a vele harcoló ellenfelek mellől."
   },
   "abra-psyshock": {
-   "description": "Új képesség: pszichikus hullám egy legfeljebb 2 hexnyire lévő ellenfélre (Power 75)."
+   "description": "Új képesség: pszichikus hullám egy legfeljebb 2 hexnyire lévő ellenfélre (Power 65)."
   },
   "abra-disable": {
    "description": "Új képesség: lezár egy legfeljebb 2 hexnyire lévő ellenfelet, 2 körre Disabled (csak alaptámadás)."
@@ -40,10 +40,10 @@
    "description": "Teljes HP-n 20%-kal kevesebb sebzést kap."
   },
   "abra-hyper-beam": {
-   "description": "Új képesség: pusztító sugár egy legfeljebb 2 hexnyire lévő ellenfélre (Erő 100)."
+   "description": "Új képesség: pusztító sugár egy legfeljebb 2 hexnyire lévő ellenfélre (Erő 95)."
   },
   "abra-extrasensory": {
-   "description": "Új képesség: különös, láthatatlan erő sújt egy legfeljebb 2 hexnyire lévő ellenfélre (Erő 80)."
+   "description": "Új képesség: különös, láthatatlan erő sújt egy legfeljebb 2 hexnyire lévő ellenfélre (Erő 65)."
   },
   "abra-magic-guard": {
    "description": "Nem kaphat Poison, Burn és Curse státuszt."
@@ -52,7 +52,7 @@
    "description": "25%-kal többet sebez az alvó (Sleep) ellenfeleknek."
   },
   "abra-tri-attack": {
-   "description": "Új képesség: három sugárból álló háromszög egy legfeljebb 2 hexnyire lévő ellenfélre (Erő 90)."
+   "description": "Új képesség: három sugárból álló háromszög egy legfeljebb 2 hexnyire lévő ellenfélre (Erő 65)."
   },
   "abra-telekinesis": {
    "description": "Új képesség: felemel egy ellenfelet 2 hexen belül, 2 hexnyit közelebb húzza, 1 körre Exposed."

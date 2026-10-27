@@ -1,13 +1,13 @@
 {
  "talents": {
   "electabuzz-wild-charge": {
-   "description": "Bond képesség: elektromossággal körbevéve ront az ellenfélre (Erő 90, Támadás)."
+   "description": "Bond képesség: elektromossággal körbevéve ront az ellenfélre (Erő 85, Támadás)."
   },
   "electabuzz-discharge": {
-   "description": "Bond képesség: áramkisülés minden szomszédos ellenfélre (Erő 75, Sp. Tám.); 1 körre megbénít."
+   "description": "Bond képesség: áramkisülés minden szomszédos ellenfélre (Erő 65, Sp. Tám.); 1 körre megbénít."
   },
   "electabuzz-volt-switch": {
-   "description": "Bond képesség: 2 hexen belül megráz egy ellenfelet (Erő 60, Sp. Tám.), és kiszakad a közelharcból."
+   "description": "Bond képesség: 2 hexen belül megráz egy ellenfelet (Erő 65, Sp. Tám.), és kiszakad a közelharcból."
   },
   "electabuzz-high-voltage": {
    "description": "Az Elektromos lépései 15%-kal több sebzést okoznak."
@@ -19,7 +19,7 @@
    "description": "Új képesség: fényfal; ő és a szomszédos szövetségesei 2 körre Fortified."
   },
   "electabuzz-spark": {
-   "description": "Új képesség: elektromos roham egy szomszédos ellenfélre (Erő 55)."
+   "description": "Új képesség: elektromos roham egy szomszédos ellenfélre (Erő 65)."
   },
   "electabuzz-lightning-reflexes": {
    "description": "Szabad ütés nélkül lép el a vele harcban álló ellenfelektől."
@@ -31,7 +31,7 @@
    "description": "Új képesség: szikrázó harapás (Erő 65), amely 1 körre megbénítja az ellenfelet."
   },
   "electabuzz-shock-wave": {
-   "description": "Új képesség: gyors áramütés egy max. 2 hexnyi ellenfélre (Erő 75)."
+   "description": "Új képesség: gyors áramütés egy max. 2 hexnyi ellenfélre (Erő 55)."
   },
   "electabuzz-infighter": {
    "description": "15%-kal többet sebez a szomszédos ellenfelekre."
@@ -52,10 +52,10 @@
    "description": "Teli HP-n 20%-kal kevesebb sebzést kap; nem bénulhat meg."
   },
   "electabuzz-mega-punch": {
-   "description": "Új képesség: teljes erőből bevitt ütés (Erő 95)."
+   "description": "Új képesség: teljes erőből bevitt ütés (Erő 75)."
   },
   "electabuzz-hyper-beam": {
-   "description": "Új képesség: pusztító sugár egy 2 hexen belüli ellenfélre (Erő 100)."
+   "description": "Új képesség: pusztító sugár egy 2 hexen belüli ellenfélre (Erő 95)."
   },
   "electabuzz-static-field": {
    "description": "Szomszédos ellenfeleket érő sebző támadásai 1 körre Paralyzed állapotba teszik őket."

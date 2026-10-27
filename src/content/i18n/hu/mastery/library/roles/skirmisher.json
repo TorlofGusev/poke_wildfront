@@ -16,7 +16,7 @@
    "description": "Új képesség: legfeljebb 2 hexnyire lévő ellenfelet üt, rálátás nélkül is."
   },
   "skill-skirmisher-acrobatics": {
-   "description": "Új képesség: legfeljebb 2 hexnyire üt, és megszünteti a lekötését (Erő 70)."
+   "description": "Új képesség: legfeljebb 2 hexnyire üt, és megszünteti a lekötését (Erő 50)."
   },
   "skirmisher-phantom-step": {
    "description": "Végső. +2 mozgás, ha a saját körében kiüt egy ellenfelet; +15% lekötött ellenfelekre."
@@ -28,7 +28,7 @@
    "description": "+25% sebzés a szövetséges állapotát viselő ellenfelekre; +1 Támadás, +1 Gyorsaság."
   },
   "skill-skirmisher-extreme-speed": {
-   "description": "Új képesség: gyors közelharci ütés, 1 körre Lassít és bontja a lekötést (Erő 80)."
+   "description": "Új képesség: gyors közelharci ütés, 1 körre Lassít és bontja a lekötést (Erő 75)."
   }
  }
 }

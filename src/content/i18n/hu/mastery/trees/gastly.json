@@ -1,13 +1,13 @@
 {
  "talents": {
   "gastly-sludge-bomb": {
-   "description": "Bond képesség: mocskos iszapot dob legfeljebb 3 hexre (Power 90), 2 körre Poisont okoz."
+   "description": "Bond képesség: mocskos iszapot dob legfeljebb 3 hexre (Power 75), 2 körre Poisont okoz."
   },
   "gastly-shadow-sneak": {
-   "description": "Bond képesség: árnyéka lecsap egy legfeljebb 2 hexnyire lévő ellenfélre, rálátás nélkül (Power 60, Attack)."
+   "description": "Bond képesség: árnyéka lecsap egy legfeljebb 2 hexnyire lévő ellenfélre, rálátás nélkül (Power 45, Attack)."
   },
   "gastly-sucker-punch": {
-   "description": "Bond képesség: alattomos ütés az árnyékból (Power 90, Attack)."
+   "description": "Bond képesség: alattomos ütés az árnyékból (Power 75, Attack)."
   },
   "gastly-haunting-aura": {
    "description": "A Ghost típusú támadásai 15%-kal többet sebeznek."
@@ -16,7 +16,7 @@
    "description": "Szabad ütés nélkül léphet el a vele harcoló ellenfelek mellől."
   },
   "gastly-poison-jab": {
-   "description": "Új képesség: mérgező döfés (Power 65), 1 körre Poisont okoz."
+   "description": "Új képesség: mérgező döfés (Power 75), 1 körre Poisont okoz."
   },
   "gastly-malice": {
    "description": "15%-kal többet sebez a státusszal rendelkező ellenfeleknek."
@@ -25,10 +25,10 @@
    "description": "10%-kal kevesebb sebzést kap."
   },
   "gastly-hex": {
-   "description": "Új képesség: rosszindulatú varázslat egy legfeljebb 2 hexnyire lévő ellenfélre (Power 65)."
+   "description": "Új képesség: rosszindulatú varázslat egy legfeljebb 2 hexnyire lévő ellenfélre (Power 55)."
   },
   "gastly-shadow-claw": {
-   "description": "Új képesség: árnykarommal szántja végig az ellenfelet (Power 70)."
+   "description": "Új képesség: árnykarommal szántja végig az ellenfelet (Power 65)."
   },
   "gastly-mean-look": {
    "description": "A vele harcoló ellenfelek nem léphetnek el szabad ütése nélkül."
@@ -37,10 +37,10 @@
    "description": "Ha elájul, a csapata 2 Bondot kap."
   },
   "gastly-sludge-wave": {
-   "description": "Új képesség: iszaphullám legfeljebb 1 hexnyire (Power 85), 1 hex körzetben 1 körre Poison."
+   "description": "Új képesség: iszaphullám legfeljebb 1 hexnyire (Power 65), 1 hex körzetben 1 körre Poison."
   },
   "gastly-phantom-force": {
-   "description": "Új képesség: eltűnik, majd lecsap egy legfeljebb 2 hexnyire lévő ellenfélre (Power 85), és leköti."
+   "description": "Új képesség: eltűnik, majd lecsap egy legfeljebb 2 hexnyire lévő ellenfélre (Power 70), és leköti."
   },
   "gastly-nightmare": {
    "description": "25%-kal többet sebez az alvó (Sleep) ellenfeleknek."
@@ -49,7 +49,7 @@
    "description": "Nem kaphat Slow és Paralysis státuszt."
   },
   "gastly-dark-pulse": {
-   "description": "Új képesség: rémisztő aura egy legfeljebb 2 hexnyire lévő ellenfélre (Power 90)."
+   "description": "Új képesség: rémisztő aura egy legfeljebb 2 hexnyire lévő ellenfélre (Power 65)."
   },
   "gastly-toxic": {
    "description": "Új képesség: 3 körre súlyosan megmérgez (Poison) egy legfeljebb 2 hexnyire álló ellenfelet."

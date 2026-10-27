@@ -16,7 +16,8 @@
     "kind": "single"
    },
    "affects": "enemies",
-   "cooldown": 2
+   "cooldown": 2,
+   "canonPower": 40
   },
   "curse": {
    "id": "curse",
@@ -47,7 +48,7 @@
    "name": "Phantom Force",
    "type": "ghost",
    "kind": "special",
-   "power": 90,
+   "power": 70,
    "range": {
     "min": 1,
     "max": 2
@@ -62,14 +63,15 @@
     {
      "kind": "disengage"
     }
-   ]
+   ],
+   "canonPower": 90
   },
   "poltergeist": {
    "id": "poltergeist",
    "name": "Poltergeist",
    "type": "ghost",
    "kind": "special",
-   "power": 95,
+   "power": 80,
    "range": {
     "min": 1,
     "max": 2
@@ -86,7 +88,8 @@
      "status": "curse",
      "duration": 2
     }
-   ]
+   ],
+   "canonPower": 110
   }
  },
  "talents": {

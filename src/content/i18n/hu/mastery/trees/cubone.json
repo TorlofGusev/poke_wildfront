@@ -1,10 +1,10 @@
 {
  "talents": {
   "cubone-bone-rush": {
-   "description": "Bond képesség: csapások záporát zúdítja csontbunkójával (Erő 95, Támadás)."
+   "description": "Bond képesség: csapások záporát zúdítja csontbunkójával (Erő 75, Támadás)."
   },
   "cubone-skull-bash": {
-   "description": "Bond képesség: koponyasisakját leszegve nekiront (Erő 85, Támadás), 1 hexnyit ellöki."
+   "description": "Bond képesség: koponyasisakját leszegve nekiront (Erő 100, Támadás), 1 hexnyit ellöki."
   },
   "cubone-endure": {
    "description": "Bond képesség: összeszedi magát, hogy kibírjon minden csapást; 1 körre Protected, 2 körre Fortified."
@@ -16,10 +16,10 @@
    "description": "Talaj támadásai 15%-kal többet sebeznek."
   },
   "cubone-headbutt": {
-   "description": "Új képesség: koponyájával fejel (Erő 70), 1 körre lelassítja az ellenfelet."
+   "description": "Új képesség: koponyájával fejel (Erő 65), 1 körre lelassítja az ellenfelet."
   },
   "cubone-mud-slap": {
-   "description": "Új képesség: sarat vág egy legfeljebb 2 hexnyire álló ellenfélre (Erő 40), 2 körre Marked."
+   "description": "Új képesség: sarat vág egy legfeljebb 2 hexnyire álló ellenfélre (Erő 25), 2 körre Marked."
   },
   "cubone-lonely-fury": {
    "description": "25%-kal többet sebez fél HP alatt, és 15%-kal többet, amíg státusz van rajta."
@@ -31,7 +31,7 @@
    "description": "Új képesség: csontját egy legfeljebb 2 hexnyire álló ellenfélhez vágja (Erő 70), 1 körre lelassítja."
   },
   "cubone-rage": {
-   "description": "Új képesség: magányos dühvel csap le egy ellenfélre (Erő 75)."
+   "description": "Új képesség: magányos dühvel csap le egy ellenfélre (Erő 30)."
   },
   "cubone-stubborn-will": {
    "description": "Lekötve minden körben max. HP-ja 4%-át gyógyítja."
@@ -40,10 +40,10 @@
    "description": "Távolsági támadásai 1 hexszel messzebbre érnek."
   },
   "cubone-bulldoze": {
-   "description": "Új képesség: megdöngeti a földet (Erő 80), 1 hexen belül talál és 1 körre lassít."
+   "description": "Új képesség: megdöngeti a földet (Erő 50), 1 hexen belül talál és 1 körre lassít."
   },
   "cubone-dig": {
-   "description": "Új képesség: a föld alá ás, és egy legfeljebb 2 hexnyire álló ellenfél alatt tör elő (Erő 85)."
+   "description": "Új képesség: a föld alá ás, és egy legfeljebb 2 hexnyire álló ellenfél alatt tör elő (Erő 65)."
   },
   "cubone-lightning-rod": {
    "description": "Nem bénulhat meg; a csontja által vonzott villám miatt 10%-kal többet sebez."
@@ -52,10 +52,10 @@
    "description": "20%-kal többet sebez a társai által lekötött ellenfelekre."
   },
   "cubone-double-edge": {
-   "description": "Új képesség: vakmerő, mindent beleadó roham egy ellenfélre (Erő 100)."
+   "description": "Új képesség: vakmerő, mindent beleadó roham egy ellenfélre (Erő 95)."
   },
   "cubone-earth-power": {
-   "description": "Új képesség: kitör a föld egy legfeljebb 2 hexnyire álló ellenfél alatt (Erő 90)."
+   "description": "Új képesség: kitör a föld egy legfeljebb 2 hexnyire álló ellenfél alatt (Erő 70)."
   },
   "cubone-follow-through": {
    "description": "Ha a körében kiüt valakit, újra használhatja alaptámadását, és max HP-ja 15%-át gyógyítja."

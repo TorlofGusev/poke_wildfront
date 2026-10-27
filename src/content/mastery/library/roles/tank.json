@@ -18,7 +18,7 @@
    },
    "affects": "enemies",
    "cooldown": 4,
-   "power": 60,
+   "power": 50,
    "range": {
     "min": 0,
     "max": 0
@@ -29,7 +29,8 @@
      "status": "slow",
      "duration": 1
     }
-   ]
+   ],
+   "canonPower": 65
   }
  },
  "variants": {
@@ -91,7 +92,7 @@
   "skill-tank-body-press": {
    "id": "skill-tank-body-press",
    "name": "Stomp",
-   "description": "New skill: hits all adjacent foes and Slows them 1 turn (Power 60, cooldown 4).",
+   "description": "New skill: hits all adjacent foes and Slows them 1 turn (Power 50, cooldown 4).",
    "grantsMove": "tank-body-press"
   }
  },

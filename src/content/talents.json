@@ -52,7 +52,7 @@
  "skill-mega-punch": {
   "id": "skill-mega-punch",
   "name": "Mega Punch",
-  "description": "New skill: a heavy melee strike (Power 65).",
+  "description": "New skill: a heavy melee strike (Power 75).",
   "grantsMove": "mega-punch"
  },
  "skill-leer": {
@@ -893,7 +893,7 @@
  "skill-psybeam": {
   "id": "skill-psybeam",
   "name": "Psybeam",
-  "description": "New skill: a psychic beam along a line (Power 45); Confused 2 turns.",
+  "description": "New skill: a psychic beam along a line (Power 55); Confused 2 turns.",
   "grantsMove": "psybeam",
   "requiresType": "psychic"
  },

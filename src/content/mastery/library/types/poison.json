@@ -6,7 +6,7 @@
    "name": "Venoshock",
    "type": "poison",
    "kind": "special",
-   "power": 65,
+   "power": 55,
    "range": {
     "min": 1,
     "max": 2
@@ -16,14 +16,15 @@
     "kind": "single"
    },
    "affects": "enemies",
-   "cooldown": 3
+   "cooldown": 3,
+   "canonPower": 65
   },
   "sludge-wave": {
    "id": "sludge-wave",
    "name": "Sludge Wave",
    "type": "poison",
    "kind": "special",
-   "power": 80,
+   "power": 65,
    "range": {
     "min": 1,
     "max": 1
@@ -41,14 +42,15 @@
      "status": "poison",
      "duration": 2
     }
-   ]
+   ],
+   "canonPower": 95
   },
   "gunk-shot": {
    "id": "gunk-shot",
    "name": "Gunk Shot",
    "type": "poison",
    "kind": "special",
-   "power": 100,
+   "power": 85,
    "range": {
     "min": 1,
     "max": 2
@@ -65,7 +67,8 @@
      "status": "poison",
      "duration": 2
     }
-   ]
+   ],
+   "canonPower": 120
   }
  },
  "talents": {

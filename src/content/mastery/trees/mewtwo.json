@@ -66,7 +66,7 @@
    "kind": "bond",
    "category": "special",
    "bondCost": 3,
-   "power": 110,
+   "power": 80,
    "range": {
     "min": 1,
     "max": 3
@@ -75,7 +75,8 @@
    "shape": {
     "kind": "single"
    },
-   "affects": "enemies"
+   "affects": "enemies",
+   "canonPower": 100
   },
   "mewtwo-barrier": {
    "id": "mewtwo-barrier",
@@ -108,7 +109,7 @@
    "kind": "special",
    "category": "physical",
    "cooldown": 2,
-   "power": 75,
+   "power": 65,
    "range": {
     "min": 1,
     "max": 1
@@ -117,7 +118,8 @@
    "shape": {
     "kind": "single"
    },
-   "affects": "enemies"
+   "affects": "enemies",
+   "canonPower": 70
   },
   "mewtwo-future-sight": {
    "id": "mewtwo-future-sight",
@@ -126,7 +128,7 @@
    "kind": "special",
    "category": "special",
    "cooldown": 5,
-   "power": 85,
+   "power": 75,
    "range": {
     "min": 1,
     "max": 1
@@ -136,7 +138,8 @@
     "kind": "burst",
     "radius": 1
    },
-   "affects": "enemies"
+   "affects": "enemies",
+   "canonPower": 120
   },
   "mewtwo-agility": {
    "id": "mewtwo-agility",
@@ -169,7 +172,7 @@
    "kind": "special",
    "category": "special",
    "cooldown": 3,
-   "power": 50,
+   "power": 55,
    "range": {
     "min": 1,
     "max": 2
@@ -185,7 +188,8 @@
      "status": "confused",
      "duration": 2
     }
-   ]
+   ],
+   "canonPower": 65
   },
   "mewtwo-psyshock": {
    "id": "mewtwo-psyshock",
@@ -194,7 +198,7 @@
    "kind": "special",
    "category": "special",
    "cooldown": 3,
-   "power": 75,
+   "power": 65,
    "range": {
     "min": 1,
     "max": 2
@@ -203,7 +207,8 @@
    "shape": {
     "kind": "single"
    },
-   "affects": "enemies"
+   "affects": "enemies",
+   "canonPower": 80
   },
   "mewtwo-extrasensory": {
    "id": "mewtwo-extrasensory",
@@ -212,7 +217,7 @@
    "kind": "special",
    "category": "special",
    "cooldown": 4,
-   "power": 95,
+   "power": 65,
    "range": {
     "min": 1,
     "max": 2
@@ -221,7 +226,8 @@
    "shape": {
     "kind": "single"
    },
-   "affects": "enemies"
+   "affects": "enemies",
+   "canonPower": 80
   },
   "mewtwo-psywave": {
    "id": "mewtwo-psywave",
@@ -294,7 +300,7 @@
   "mewtwo-psystrike": {
    "id": "mewtwo-psystrike",
    "name": "Psystrike",
-   "description": "Bond skill: materialized psychic waves up to 3 hexes away (Power 110).",
+   "description": "Bond skill: materialized psychic waves up to 3 hexes away (Power 80).",
    "grantsMove": "mewtwo-psystrike"
   },
   "mewtwo-barrier": {
@@ -346,7 +352,7 @@
   "mewtwo-psycho-cut": {
    "id": "mewtwo-psycho-cut",
    "name": "Psycho Cut",
-   "description": "New skill: tears at a foe with blades formed by its mind (Power 75).",
+   "description": "New skill: tears at a foe with blades formed by its mind (Power 65).",
    "grantsMove": "mewtwo-psycho-cut"
   },
   "mewtwo-psychic-dominance": {
@@ -376,7 +382,7 @@
   "mewtwo-future-sight": {
    "id": "mewtwo-future-sight",
    "name": "Future Sight",
-   "description": "New skill: foresees a psychic strike on a 1-hex area up to 1 hex away (Power 85).",
+   "description": "New skill: foresees a psychic strike on a 1-hex area up to 1 hex away (Power 75).",
    "grantsMove": "mewtwo-future-sight"
   },
   "mewtwo-merciless-mind": {
@@ -430,19 +436,19 @@
   "mewtwo-psybeam": {
    "id": "mewtwo-psybeam",
    "name": "Psybeam",
-   "description": "New skill: a peculiar ray at a foe up to 2 hexes away (Power 50); Confused 2 turns.",
+   "description": "New skill: a peculiar ray at a foe up to 2 hexes away (Power 55); Confused 2 turns.",
    "grantsMove": "mewtwo-psybeam"
   },
   "mewtwo-psyshock": {
    "id": "mewtwo-psyshock",
    "name": "Psyshock",
-   "description": "New skill: materializes psychic waves at a foe up to 2 hexes away (Power 75).",
+   "description": "New skill: materializes psychic waves at a foe up to 2 hexes away (Power 65).",
    "grantsMove": "mewtwo-psyshock"
   },
   "mewtwo-extrasensory": {
    "id": "mewtwo-extrasensory",
    "name": "Extrasensory",
-   "description": "New skill: an odd, unseen power strikes a foe up to 2 hexes away (Power 95).",
+   "description": "New skill: an odd, unseen power strikes a foe up to 2 hexes away (Power 65).",
    "grantsMove": "mewtwo-extrasensory"
   },
   "mewtwo-psywave": {

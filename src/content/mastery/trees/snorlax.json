@@ -95,7 +95,7 @@
    "kind": "bond",
    "category": "physical",
    "bondCost": 3,
-   "power": 110,
+   "power": 100,
    "range": {
     "min": 1,
     "max": 1
@@ -110,7 +110,8 @@
      "kind": "push",
      "distance": 1
     }
-   ]
+   ],
+   "canonPower": 150
   },
   "snorlax-harden": {
    "id": "snorlax-harden",
@@ -196,7 +197,7 @@
    "kind": "special",
    "category": "physical",
    "cooldown": 3,
-   "power": 80,
+   "power": 75,
    "range": {
     "min": 1,
     "max": 1
@@ -212,7 +213,8 @@
      "status": "exposed",
      "duration": 1
     }
-   ]
+   ],
+   "canonPower": 80
   },
   "snorlax-block": {
    "id": "snorlax-block",
@@ -248,7 +250,7 @@
    "kind": "special",
    "category": "physical",
    "cooldown": 4,
-   "power": 90,
+   "power": 75,
    "range": {
     "min": 1,
     "max": 1
@@ -257,7 +259,8 @@
    "shape": {
     "kind": "single"
    },
-   "affects": "enemies"
+   "affects": "enemies",
+   "canonPower": 80
   },
   "snorlax-work-up": {
    "id": "snorlax-work-up",
@@ -290,7 +293,7 @@
    "kind": "special",
    "category": "physical",
    "cooldown": 5,
-   "power": 85,
+   "power": 75,
    "range": {
     "min": 0,
     "max": 0
@@ -300,7 +303,8 @@
     "kind": "burst",
     "radius": 1
    },
-   "affects": "enemies"
+   "affects": "enemies",
+   "canonPower": 120
   },
   "snorlax-mega-kick": {
    "id": "snorlax-mega-kick",
@@ -324,7 +328,8 @@
      "kind": "push",
      "distance": 1
     }
-   ]
+   ],
+   "canonPower": 120
   },
   "snorlax-heavy-slam": {
    "id": "snorlax-heavy-slam",
@@ -355,7 +360,7 @@
   "snorlax-giga-impact": {
    "id": "snorlax-giga-impact",
    "name": "Giga Impact",
-   "description": "Bond skill: hurls its whole bulk at a foe (Power 110, Attack), knocking it back 1 hex.",
+   "description": "Bond skill: hurls its whole bulk at a foe (Power 100, Attack), knocking it back 1 hex.",
    "grantsMove": "snorlax-giga-impact"
   },
   "snorlax-harden": {
@@ -419,7 +424,7 @@
   "snorlax-crunch": {
    "id": "snorlax-crunch",
    "name": "Crunch",
-   "description": "New skill: chomps down hard (Power 80), leaving the foe Exposed for 1 turn.",
+   "description": "New skill: chomps down hard (Power 75), leaving the foe Exposed for 1 turn.",
    "grantsMove": "snorlax-crunch"
   },
   "snorlax-block": {
@@ -447,7 +452,7 @@
   "snorlax-mega-punch": {
    "id": "snorlax-mega-punch",
    "name": "Mega Punch",
-   "description": "New skill: a heavy, powerful punch at an adjacent foe (Power 90).",
+   "description": "New skill: a heavy, powerful punch at an adjacent foe (Power 75).",
    "grantsMove": "snorlax-mega-punch"
   },
   "snorlax-work-up": {
@@ -459,7 +464,7 @@
   "snorlax-thrash": {
    "id": "snorlax-thrash",
    "name": "Thrash",
-   "description": "New skill: thrashes about, hitting every adjacent foe (Power 85).",
+   "description": "New skill: thrashes about, hitting every adjacent foe (Power 75).",
    "grantsMove": "snorlax-thrash"
   },
   "snorlax-deep-sleeper": {

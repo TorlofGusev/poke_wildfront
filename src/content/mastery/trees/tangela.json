@@ -94,7 +94,7 @@
    "kind": "bond",
    "category": "special",
    "bondCost": 3,
-   "power": 100,
+   "power": 90,
    "range": {
     "min": 1,
     "max": 3
@@ -103,7 +103,8 @@
    "shape": {
     "kind": "single"
    },
-   "affects": "enemies"
+   "affects": "enemies",
+   "canonPower": 120
   },
   "tangela-wring-out": {
    "id": "tangela-wring-out",
@@ -150,7 +151,8 @@
      "kind": "pull",
      "distance": 1
     }
-   ]
+   ],
+   "canonPower": 45
   },
   "tangela-mega-drain": {
    "id": "tangela-mega-drain",
@@ -159,7 +161,7 @@
    "kind": "special",
    "category": "special",
    "cooldown": 3,
-   "power": 60,
+   "power": 40,
    "range": {
     "min": 1,
     "max": 2
@@ -168,7 +170,8 @@
    "shape": {
     "kind": "single"
    },
-   "affects": "enemies"
+   "affects": "enemies",
+   "canonPower": 40
   },
   "tangela-bind": {
    "id": "tangela-bind",
@@ -177,7 +180,7 @@
    "kind": "special",
    "category": "physical",
    "cooldown": 3,
-   "power": 30,
+   "power": 25,
    "range": {
     "min": 1,
     "max": 1
@@ -196,7 +199,8 @@
      "status": "paralysis",
      "duration": 1
     }
-   ]
+   ],
+   "canonPower": 15
   },
   "tangela-growth": {
    "id": "tangela-growth",
@@ -229,6 +233,44 @@
    "kind": "special",
    "category": "special",
    "cooldown": 4,
+   "power": 70,
+   "range": {
+    "min": 1,
+    "max": 2
+   },
+   "requiresLineOfSight": true,
+   "shape": {
+    "kind": "single"
+   },
+   "affects": "enemies",
+   "canonPower": 90
+  },
+  "tangela-power-whip": {
+   "id": "tangela-power-whip",
+   "name": "Power Whip",
+   "type": "grass",
+   "kind": "special",
+   "category": "physical",
+   "cooldown": 5,
+   "power": 85,
+   "range": {
+    "min": 1,
+    "max": 2
+   },
+   "requiresLineOfSight": true,
+   "shape": {
+    "kind": "single"
+   },
+   "affects": "enemies",
+   "canonPower": 120
+  },
+  "tangela-leaf-storm": {
+   "id": "tangela-leaf-storm",
+   "name": "Leaf Storm",
+   "type": "grass",
+   "kind": "special",
+   "category": "special",
+   "cooldown": 4,
    "power": 90,
    "range": {
     "min": 1,
@@ -238,43 +280,8 @@
    "shape": {
     "kind": "single"
    },
-   "affects": "enemies"
-  },
-  "tangela-power-whip": {
-   "id": "tangela-power-whip",
-   "name": "Power Whip",
-   "type": "grass",
-   "kind": "special",
-   "category": "physical",
-   "cooldown": 5,
-   "power": 95,
-   "range": {
-    "min": 1,
-    "max": 2
-   },
-   "requiresLineOfSight": true,
-   "shape": {
-    "kind": "single"
-   },
-   "affects": "enemies"
-  },
-  "tangela-leaf-storm": {
-   "id": "tangela-leaf-storm",
-   "name": "Leaf Storm",
-   "type": "grass",
-   "kind": "special",
-   "category": "special",
-   "cooldown": 4,
-   "power": 100,
-   "range": {
-    "min": 1,
-    "max": 2
-   },
-   "requiresLineOfSight": true,
-   "shape": {
-    "kind": "single"
-   },
-   "affects": "enemies"
+   "affects": "enemies",
+   "canonPower": 130
   },
   "tangela-petal-dance": {
    "id": "tangela-petal-dance",
@@ -292,7 +299,8 @@
    "shape": {
     "kind": "single"
    },
-   "affects": "enemies"
+   "affects": "enemies",
+   "canonPower": 120
   }
  },
  "talents": {
@@ -305,7 +313,7 @@
   "tangela-solar-beam": {
    "id": "tangela-solar-beam",
    "name": "Solar Beam",
-   "description": "Bond skill: a beam of gathered sunlight at a foe up to 3 hexes away (Power 100).",
+   "description": "Bond skill: a beam of gathered sunlight at a foe up to 3 hexes away (Power 90).",
    "grantsMove": "tangela-solar-beam"
   },
   "tangela-wring-out": {
@@ -342,7 +350,7 @@
   "tangela-mega-drain": {
    "id": "tangela-mega-drain",
    "name": "Mega Drain",
-   "description": "New skill: saps a foe up to 2 hexes away with its vines (Power 60).",
+   "description": "New skill: saps a foe up to 2 hexes away with its vines (Power 40).",
    "grantsMove": "tangela-mega-drain"
   },
   "tangela-root-grip": {
@@ -367,7 +375,7 @@
   "tangela-bind": {
    "id": "tangela-bind",
    "name": "Bind",
-   "description": "New skill: binds an adjacent foe (Power 30), engaging it; it can't move for 1 turn.",
+   "description": "New skill: binds an adjacent foe (Power 25), engaging it; it can't move for 1 turn.",
    "grantsMove": "tangela-bind"
   },
   "tangela-growth": {
@@ -397,13 +405,13 @@
   "tangela-energy-ball": {
    "id": "tangela-energy-ball",
    "name": "Energy Ball",
-   "description": "New skill: a ball of nature's energy at a foe up to 2 hexes away (Power 90).",
+   "description": "New skill: a ball of nature's energy at a foe up to 2 hexes away (Power 70).",
    "grantsMove": "tangela-energy-ball"
   },
   "tangela-power-whip": {
    "id": "tangela-power-whip",
    "name": "Power Whip",
-   "description": "New skill: whips a foe up to 2 hexes away with thick vines (Power 95).",
+   "description": "New skill: whips a foe up to 2 hexes away with thick vines (Power 85).",
    "grantsMove": "tangela-power-whip"
   },
   "tangela-regenerator": {
@@ -425,7 +433,7 @@
   "tangela-leaf-storm": {
    "id": "tangela-leaf-storm",
    "name": "Leaf Storm",
-   "description": "New skill: a storm of sharp leaves at a foe up to 2 hexes away (Power 100).",
+   "description": "New skill: a storm of sharp leaves at a foe up to 2 hexes away (Power 90).",
    "grantsMove": "tangela-leaf-storm"
   },
   "tangela-petal-dance": {

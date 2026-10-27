@@ -494,7 +494,7 @@ export class BattleScene extends Phaser.Scene {
     if (!this.state || unit.hp <= 0) return "";
     const partner = partnerOf(this.state, unit);
     if (!partner) return "";
-    return `${t("{engaged} with {name}", { engaged: tag("bad", t("Engaged")), name: CONTENT.species[partner.speciesId]!.name })} ${tag("dim", unit.mods.disengage ? t("(only melee on each other; slips away freely)") : t("(only melee on each other; stepping away draws a free attack)"))}`;
+    return `${t("{engaged} with {name}", { engaged: tag("bad", t("Engaged")), name: CONTENT.species[partner.speciesId]!.name })} ${tag("dim", unit.mods.disengage ? t("(only melee on each other; slips away freely)") : t("(only melee on each other; any step draws a free attack first)"))}`;
   }
 
   /** "Set up for a combo": hitting this foe now gains Bond and triggers combo bonuses. */

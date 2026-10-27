@@ -1,10 +1,10 @@
 {
  "talents": {
   "omanyte-brine": {
-   "description": "Bond képesség: sós vízsugár egy 3 hexen belüli ellenfélre (Erő 85, Sp. Tám.)."
+   "description": "Bond képesség: sós vízsugár egy 3 hexen belüli ellenfélre (Erő 60, Sp. Tám.)."
   },
   "omanyte-rollout": {
-   "description": "Bond képesség: héjában 2 hexen belül begurul (Erő 65, Attack), és lefogja az ellenfelet."
+   "description": "Bond képesség: héjában 2 hexen belül begurul (Erő 40, Attack), és lefogja az ellenfelet."
   },
   "omanyte-shell-smash": {
    "description": "Bond képesség: feltöri a héját, 2 körig Összpontosított és Felgyorsult."
@@ -16,10 +16,10 @@
    "description": "20%-kal többet sebez a Lassú ellenfelekre."
   },
   "omanyte-constrict": {
-   "description": "Új képesség: csápjaival körbefonja az ellenfelet (Erő 40), és lefogja."
+   "description": "Új képesség: csápjaival körbefonja az ellenfelet (Erő 20), és lefogja."
   },
   "omanyte-bubble": {
-   "description": "Új képesség: buborékzápor egy max. 2 hexnyi ellenfélre (Erő 50); 1 körre lassít."
+   "description": "Új képesség: buborékzápor egy max. 2 hexnyi ellenfélre (Erő 40); 1 körre lassít."
   },
   "omanyte-tentacle-grip": {
    "description": "A lefogott ellenfelek távozáskor mindig szabad ütést kapnak, akkor is, ha kiszakadnának."
@@ -40,10 +40,10 @@
    "description": "Közelharcban körönként a max HP további 3%-át gyógyítja."
   },
   "omanyte-scald": {
-   "description": "Új képesség: forró víz egy 2 hexen belüli ellenfélre (Erő 80); 1 körre megéget."
+   "description": "Új képesség: forró víz egy 2 hexen belüli ellenfélre (Erő 65); 1 körre megéget."
   },
   "omanyte-rock-slide": {
-   "description": "Új képesség: sziklákat zúdít egy 1 hexen belüli 1 hex területre (Erő 75)."
+   "description": "Új képesség: sziklákat zúdít egy 1 hexen belüli 1 hex területre (Erő 55)."
   },
   "omanyte-tentacle-lash": {
    "description": "Lekötött ellenfelei 25%-kal több sebzést kapnak társaitól; szabad csapásai 20%-kal erősebbek."
@@ -52,10 +52,10 @@
    "description": "Köre elején lerázza az ellenfelek által rárakott állapotokat."
   },
   "omanyte-power-gem": {
-   "description": "Új képesség: csillogó fénysugár egy max. 2 hexnyi ellenfélre (Erő 90)."
+   "description": "Új képesség: csillogó fénysugár egy max. 2 hexnyi ellenfélre (Erő 65)."
   },
   "omanyte-rock-blast": {
-   "description": "Új képesség: köveket hajít egy max. 2 hexnyi ellenfélre (Erő 80); 1 körre Exposed lesz."
+   "description": "Új képesség: köveket hajít egy max. 2 hexnyi ellenfélre (Erő 65); 1 körre Exposed lesz."
   },
   "omanyte-spike-volley": {
    "description": "20%-kal többet sebez a legalább 2 hexre lévő ellenfelekre."

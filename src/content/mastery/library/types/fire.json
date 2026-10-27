@@ -30,7 +30,7 @@
    "name": "Lava Plume",
    "type": "fire",
    "kind": "special",
-   "power": 50,
+   "power": 60,
    "range": {
     "min": 0,
     "max": 0
@@ -48,14 +48,15 @@
      "status": "burn",
      "duration": 1
     }
-   ]
+   ],
+   "canonPower": 80
   },
   "overheat": {
    "id": "overheat",
    "name": "Overheat",
    "type": "fire",
    "kind": "special",
-   "power": 95,
+   "power": 90,
    "range": {
     "min": 1,
     "max": 2
@@ -72,7 +73,8 @@
      "status": "burn",
      "duration": 1
     }
-   ]
+   ],
+   "canonPower": 130
   },
   "heat-wave": {
    "id": "heat-wave",
@@ -81,7 +83,7 @@
    "kind": "special",
    "requiresLineOfSight": true,
    "affects": "enemies",
-   "power": 80,
+   "power": 65,
    "range": {
     "min": 1,
     "max": 1
@@ -97,7 +99,8 @@
      "status": "burn",
      "duration": 1
     }
-   ]
+   ],
+   "canonPower": 95
   }
  },
  "talents": {
@@ -150,7 +153,7 @@
   "fire-skill-overheat": {
    "id": "fire-skill-overheat",
    "name": "Overheat",
-   "description": "New skill: an all-out blast of fire at range (Power 95) that Burns.",
+   "description": "New skill: an all-out blast of fire at range (Power 90) that Burns.",
    "requiresType": "fire",
    "grantsMove": "overheat"
   },
@@ -192,7 +195,7 @@
   "fire-skill-heat-wave": {
    "id": "fire-skill-heat-wave",
    "name": "Heat Wave",
-   "description": "New skill: a scorching wind at range (Power 80) that Burns a 1-hex area.",
+   "description": "New skill: a scorching wind at range (Power 65) that Burns a 1-hex area.",
    "requiresType": "fire",
    "grantsMove": "heat-wave"
   }

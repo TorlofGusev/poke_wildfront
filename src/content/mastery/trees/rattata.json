@@ -67,7 +67,7 @@
    "kind": "bond",
    "category": "physical",
    "bondCost": 3,
-   "power": 100,
+   "power": 80,
    "range": {
     "min": 1,
     "max": 1
@@ -83,7 +83,8 @@
      "status": "exposed",
      "duration": 2
     }
-   ]
+   ],
+   "canonPower": 80
   },
   "rattata-sucker-punch": {
    "id": "rattata-sucker-punch",
@@ -92,7 +93,7 @@
    "kind": "bond",
    "category": "physical",
    "bondCost": 1,
-   "power": 70,
+   "power": 65,
    "range": {
     "min": 1,
     "max": 2
@@ -106,7 +107,8 @@
     {
      "kind": "engage"
     }
-   ]
+   ],
+   "canonPower": 70
   },
   "rattata-endeavor": {
    "id": "rattata-endeavor",
@@ -157,7 +159,7 @@
    "kind": "special",
    "category": "physical",
    "cooldown": 2,
-   "power": 50,
+   "power": 40,
    "range": {
     "min": 1,
     "max": 2
@@ -171,7 +173,8 @@
     {
      "kind": "engage"
     }
-   ]
+   ],
+   "canonPower": 40
   },
   "rattata-double-edge": {
    "id": "rattata-double-edge",
@@ -180,7 +183,7 @@
    "kind": "special",
    "category": "physical",
    "cooldown": 4,
-   "power": 90,
+   "power": 95,
    "range": {
     "min": 1,
     "max": 1
@@ -189,7 +192,8 @@
    "shape": {
     "kind": "single"
    },
-   "affects": "enemies"
+   "affects": "enemies",
+   "canonPower": 120
   },
   "rattata-giga-impact": {
    "id": "rattata-giga-impact",
@@ -213,7 +217,8 @@
      "kind": "push",
      "distance": 1
     }
-   ]
+   ],
+   "canonPower": 150
   },
   "rattata-super-fang": {
    "id": "rattata-super-fang",
@@ -264,7 +269,7 @@
    "kind": "special",
    "category": "physical",
    "cooldown": 3,
-   "power": 75,
+   "power": 55,
    "range": {
     "min": 1,
     "max": 1
@@ -278,7 +283,8 @@
     {
      "kind": "disengage"
     }
-   ]
+   ],
+   "canonPower": 50
   },
   "rattata-tail-whip": {
    "id": "rattata-tail-whip",
@@ -310,13 +316,13 @@
   "rattata-crunch": {
    "id": "rattata-crunch",
    "name": "Crunch",
-   "description": "Bond skill: crunches a foe with its fangs (Power 100, Attack), leaving it Exposed for 2 turns.",
+   "description": "Bond skill: crunches a foe with its fangs (Power 80, Attack), leaving it Exposed for 2 turns.",
    "grantsMove": "rattata-crunch"
   },
   "rattata-sucker-punch": {
    "id": "rattata-sucker-punch",
    "name": "Sucker Punch",
-   "description": "Bond skill: darts at a foe up to 2 hexes away (Power 70) and engages it.",
+   "description": "Bond skill: darts at a foe up to 2 hexes away (Power 65) and engages it.",
    "grantsMove": "rattata-sucker-punch"
   },
   "rattata-endeavor": {
@@ -350,7 +356,7 @@
   "rattata-pursuit": {
    "id": "rattata-pursuit",
    "name": "Pursuit",
-   "description": "New skill: chases a foe up to 2 hexes away (Power 50) and engages it.",
+   "description": "New skill: chases a foe up to 2 hexes away (Power 40) and engages it.",
    "grantsMove": "rattata-pursuit"
   },
   "rattata-pack-rat": {
@@ -391,7 +397,7 @@
   "rattata-double-edge": {
    "id": "rattata-double-edge",
    "name": "Double-Edge",
-   "description": "New skill: a reckless full-body charge into a foe (Power 90).",
+   "description": "New skill: a reckless full-body charge into a foe (Power 95).",
    "grantsMove": "rattata-double-edge"
   },
   "rattata-cornered-rat": {
@@ -468,7 +474,7 @@
   "rattata-rapid-spin": {
    "id": "rattata-rapid-spin",
    "name": "Rapid Spin",
-   "description": "New skill: spins into a foe (Power 75), then spins free of engagement.",
+   "description": "New skill: spins into a foe (Power 55), then spins free of engagement.",
    "grantsMove": "rattata-rapid-spin"
   },
   "rattata-tail-whip": {

@@ -69,7 +69,7 @@
    "kind": "bond",
    "category": "physical",
    "bondCost": 2,
-   "power": 90,
+   "power": 100,
    "range": {
     "min": 1,
     "max": 1
@@ -85,7 +85,8 @@
      "status": "burn",
      "duration": 2
     }
-   ]
+   ],
+   "canonPower": 120
   },
   "charmander-blast-burn": {
    "id": "charmander-blast-burn",
@@ -94,7 +95,7 @@
    "kind": "bond",
    "category": "special",
    "bondCost": 3,
-   "power": 80,
+   "power": 85,
    "range": {
     "min": 1,
     "max": 2
@@ -104,7 +105,8 @@
     "kind": "burst",
     "radius": 1
    },
-   "affects": "enemies"
+   "affects": "enemies",
+   "canonPower": 150
   },
   "charmander-flame-charge": {
    "id": "charmander-flame-charge",
@@ -127,7 +129,8 @@
      "kind": "engage"
     }
    ],
-   "category": "physical"
+   "category": "physical",
+   "canonPower": 50
   },
   "charmander-slash": {
    "id": "charmander-slash",
@@ -152,7 +155,8 @@
      "duration": 1
     }
    ],
-   "category": "physical"
+   "category": "physical",
+   "canonPower": 70
   },
   "charmander-air-slash": {
    "id": "charmander-air-slash",
@@ -161,24 +165,7 @@
    "kind": "special",
    "category": "special",
    "cooldown": 3,
-   "power": 70,
-   "range": {
-    "min": 1,
-    "max": 2
-   },
-   "requiresLineOfSight": true,
-   "shape": {
-    "kind": "single"
-   },
-   "affects": "enemies"
-  },
-  "charmander-flame-burst": {
-   "id": "charmander-flame-burst",
-   "name": "Flame Burst",
-   "type": "fire",
-   "kind": "special",
-   "cooldown": 3,
-   "power": 50,
+   "power": 65,
    "range": {
     "min": 1,
     "max": 2
@@ -188,7 +175,26 @@
     "kind": "single"
    },
    "affects": "enemies",
-   "category": "special"
+   "canonPower": 75
+  },
+  "charmander-flame-burst": {
+   "id": "charmander-flame-burst",
+   "name": "Flame Burst",
+   "type": "fire",
+   "kind": "special",
+   "cooldown": 3,
+   "power": 60,
+   "range": {
+    "min": 1,
+    "max": 2
+   },
+   "requiresLineOfSight": true,
+   "shape": {
+    "kind": "single"
+   },
+   "affects": "enemies",
+   "category": "special",
+   "canonPower": 70
   },
   "charmander-fire-fang": {
    "id": "charmander-fire-fang",
@@ -197,7 +203,7 @@
    "kind": "special",
    "category": "physical",
    "cooldown": 3,
-   "power": 80,
+   "power": 65,
    "range": {
     "min": 1,
     "max": 1
@@ -206,7 +212,8 @@
    "shape": {
     "kind": "single"
    },
-   "affects": "enemies"
+   "affects": "enemies",
+   "canonPower": 65
   },
   "charmander-sky-drop": {
    "id": "charmander-sky-drop",
@@ -215,7 +222,7 @@
    "kind": "special",
    "category": "physical",
    "cooldown": 4,
-   "power": 85,
+   "power": 60,
    "range": {
     "min": 1,
     "max": 1
@@ -230,7 +237,8 @@
      "kind": "push",
      "distance": 2
     }
-   ]
+   ],
+   "canonPower": 60
   },
   "charmander-leer": {
    "id": "charmander-leer",
@@ -262,13 +270,13 @@
   "charmander-flare-blitz": {
    "id": "charmander-flare-blitz",
    "name": "Flare Blitz",
-   "description": "Bond skill: a blazing tackle (Power 90, Attack) that Burns the foe for 2 turns.",
+   "description": "Bond skill: a blazing tackle (Power 100, Attack) that Burns the foe for 2 turns.",
    "grantsMove": "charmander-flare-blitz"
   },
   "charmander-blast-burn": {
    "id": "charmander-blast-burn",
    "name": "Blast Burn",
-   "description": "Bond skill: an explosion of fire up to 2 hexes away (Power 80) hitting a 1-hex area.",
+   "description": "Bond skill: an explosion of fire up to 2 hexes away (Power 85) hitting a 1-hex area.",
    "grantsMove": "charmander-blast-burn"
   },
   "charmander-flame-charge": {
@@ -311,7 +319,7 @@
   "charmander-air-slash": {
    "id": "charmander-air-slash",
    "name": "Air Slash",
-   "description": "New skill: a blade of air at a foe up to 2 hexes away (Power 70).",
+   "description": "New skill: a blade of air at a foe up to 2 hexes away (Power 65).",
    "grantsMove": "charmander-air-slash"
   },
   "charmander-wingbeat": {
@@ -350,19 +358,19 @@
   "charmander-flame-burst": {
    "id": "charmander-flame-burst",
    "name": "Flame Burst",
-   "description": "New skill: a bursting flame at a foe up to 2 hexes away (Power 50).",
+   "description": "New skill: a bursting flame at a foe up to 2 hexes away (Power 60).",
    "grantsMove": "charmander-flame-burst"
   },
   "charmander-fire-fang": {
    "id": "charmander-fire-fang",
    "name": "Fire Fang",
-   "description": "New skill: bites a foe with flame-wreathed fangs (Power 80).",
+   "description": "New skill: bites a foe with flame-wreathed fangs (Power 65).",
    "grantsMove": "charmander-fire-fang"
   },
   "charmander-sky-drop": {
    "id": "charmander-sky-drop",
    "name": "Sky Drop",
-   "description": "New skill: grabs a foe, flies up and drops it 2 hexes away (Power 85).",
+   "description": "New skill: grabs a foe, flies up and drops it 2 hexes away (Power 60).",
    "grantsMove": "charmander-sky-drop"
   },
   "charmander-leer": {

@@ -53,5 +53,18 @@
   "perPoint": 0.2,
   "pumpedTurns": 1,
   "resistPerPoint": 0.04
+ },
+ "movePower": {
+  "scale": 4.6,
+  "exponent": 0.63,
+  "round": 5,
+  "basic": 0.85,
+  "paid": 1.1,
+  "range2": 0.9,
+  "range3": 0.85,
+  "burst1": 0.8,
+  "burst2": 0.7,
+  "line": 0.85,
+  "max": 100
  }
 }

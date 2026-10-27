@@ -1,13 +1,13 @@
 {
  "talents": {
   "hitmonchan-sky-uppercut": {
-   "description": "Bond képesség: égbe szökő felütés (Erő 95, Támadás), 1 hexnyit hátralöki az ellenfelet."
+   "description": "Bond képesség: égbe szökő felütés (Erő 85, Támadás), 1 hexnyit hátralöki az ellenfelet."
   },
   "hitmonchan-detect": {
    "description": "Bond képesség: minden érkező ütést kiszámít, 1 körre Protected."
   },
   "hitmonchan-mach-punch": {
-   "description": "Bond képesség: hangsebességnél gyorsabb ütés (Erő 60, Támadás)."
+   "description": "Bond képesség: hangsebességnél gyorsabb ütés (Erő 50, Támadás)."
   },
   "hitmonchan-iron-fist": {
    "description": "15%-kal többet sebez a szomszédos ellenfelekre."
@@ -19,7 +19,7 @@
    "description": "Új képesség: villámgyors acélos egyenes (Erő 45)."
   },
   "hitmonchan-vacuum-wave": {
-   "description": "Új képesség: ütés, amely légüres hullámot küld egy legfeljebb 2 hexnyire álló ellenfélre (Erő 45)."
+   "description": "Új képesség: ütés, amely légüres hullámot küld egy legfeljebb 2 hexnyire álló ellenfélre (Erő 40)."
   },
   "hitmonchan-counterpunch": {
    "description": "A szomszédos hexről őt eltaláló ellenfelek 8 sebzést kapnak."
@@ -52,7 +52,7 @@
    "description": "25%-kal többet sebez, amíg HP-ja a fele alatt van."
   },
   "hitmonchan-dynamic-punch": {
-   "description": "Új képesség: teljes erejű ütés (Erő 90), az ellenfél megszédül, 2 körre lelassul."
+   "description": "Új képesség: teljes erejű ütés (Erő 85), az ellenfél megszédül, 2 körre lelassul."
   },
   "hitmonchan-close-combat": {
    "description": "Új képesség: mindent beleadó ütéssorozat leeresztett védelemmel (Erő 95)."

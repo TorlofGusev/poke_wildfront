@@ -4,10 +4,10 @@
    "description": "Bond képesség: hátszelet kavar; ő és a 2 hexen belüli szövetségesek 2 körre Hasted állapotba kerülnek."
   },
   "pidgey-brave-bird": {
-   "description": "Bond képesség: lecsap egy max. 3 hexnyi ellenfélre (Erő 100, Attack), és leköti."
+   "description": "Bond képesség: lecsap egy max. 3 hexnyi ellenfélre (Erő 90, Attack), és leköti."
   },
   "pidgey-hurricane": {
-   "description": "Bond képesség: tomboló szél egy max. 3 hexnyi ellenfélre (Erő 95), 1 hexnyit lökve."
+   "description": "Bond képesség: tomboló szél egy max. 3 hexnyi ellenfélre (Erő 85), 1 hexnyit lökve."
   },
   "pidgey-big-pecks": {
    "description": "Védelme nem gyengíthető: nem lehet Exposed vagy Marked."
@@ -40,7 +40,7 @@
    "description": "Új képesség: izzó zuhanás egy max. 2 hexnyi ellenfélre (Erő 95), amellyel leköti."
   },
   "pidgey-hyper-beam": {
-   "description": "Új képesség: pusztító sugár egy legfeljebb 2 hexnyire lévő ellenfélre (Erő 85)."
+   "description": "Új képesség: pusztító sugár egy legfeljebb 2 hexnyire lévő ellenfélre (Erő 95)."
   },
   "pidgey-birds-eye-view": {
    "description": "Távolsági támadásai átlőnek az útban álló Pokémonok fölött."
@@ -49,7 +49,7 @@
    "description": "15%-kal többet sebez a szövetségesei által lekötött ellenfelekre."
   },
   "pidgey-air-slash": {
-   "description": "Új képesség: légpenge egy max. 2 hexnyi ellenfélre (Erő 85)."
+   "description": "Új képesség: légpenge egy max. 2 hexnyi ellenfélre (Erő 65)."
   },
   "pidgey-double-edge": {
    "description": "Új képesség: vakmerő, teljes testtel mért roham egy ellenfélre (Erő 95)."

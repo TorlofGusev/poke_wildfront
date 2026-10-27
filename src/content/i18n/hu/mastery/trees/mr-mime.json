@@ -1,7 +1,7 @@
 {
  "talents": {
   "mr-mime-future-sight": {
-   "description": "Kötelék-képesség: előre látott pszichikus robbanás legfeljebb 3 hexnyire (Erő 100)."
+   "description": "Kötelék-képesség: előre látott pszichikus robbanás legfeljebb 3 hexnyire (Erő 90)."
   },
   "mr-mime-barrier": {
    "description": "Kötelék-képesség: falat mímel max. 2 hexnyire; az 1 hex körzet szövetségesei 2 körre Fortified."
@@ -28,7 +28,7 @@
    "description": "Új képesség: csalit hagy maga helyett; 2 körre Protected."
   },
   "mr-mime-psyshock": {
-   "description": "Új képesség: pszichikus hullám egy max. 2 hexnyi ellenfélre (Erő 70)."
+   "description": "Új képesség: pszichikus hullám egy max. 2 hexnyi ellenfélre (Erő 65)."
   },
   "mr-mime-mimes-act": {
    "description": "Az általa okozott állapotok 1 körrel tovább tartanak."
@@ -40,7 +40,7 @@
    "description": "Új képesség: gonosz tervet sző, és 2 körre Összpontosított lesz."
   },
   "mr-mime-extrasensory": {
-   "description": "Új képesség: kísérteties pszichikus erő egy max. 2 hexnyi ellenfélre (Erő 95)."
+   "description": "Új képesség: kísérteties pszichikus erő egy max. 2 hexnyi ellenfélre (Erő 65)."
   },
   "mr-mime-unbreakable-act": {
    "description": "Csatánként egyszer 1 HP-val túlél egy kiütő csapást."
@@ -49,7 +49,7 @@
    "description": "20%-kal többet sebez azoknak, akikre egy szövetségese tett állapotot."
   },
   "mr-mime-hyper-voice": {
-   "description": "Új képesség: harsány kiáltás egy max. 2 hexnyi ellenfélre (Erő 90); 1 körre Exposed lesz."
+   "description": "Új képesség: harsány kiáltás egy max. 2 hexnyi ellenfélre (Erő 70); 1 körre Exposed lesz."
   },
   "mr-mime-light-screen": {
    "description": "Új képesség: fényfalat pantomimez; ő és a szomszédos szövetségesei 1 körre Protected."

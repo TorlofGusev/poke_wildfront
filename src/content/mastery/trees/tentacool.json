@@ -94,7 +94,7 @@
    "kind": "bond",
    "category": "special",
    "bondCost": 2,
-   "power": 90,
+   "power": 70,
    "range": {
     "min": 0,
     "max": 0
@@ -111,7 +111,8 @@
      "status": "poison",
      "duration": 2
     }
-   ]
+   ],
+   "canonPower": 95
   },
   "tentacool-rapid-spin": {
    "id": "tentacool-rapid-spin",
@@ -135,7 +136,8 @@
     {
      "kind": "disengage"
     }
-   ]
+   ],
+   "canonPower": 50
   },
   "tentacool-screech": {
    "id": "tentacool-screech",
@@ -168,7 +170,7 @@
    "kind": "special",
    "category": "special",
    "cooldown": 2,
-   "power": 50,
+   "power": 40,
    "range": {
     "min": 1,
     "max": 2
@@ -177,7 +179,8 @@
    "shape": {
     "kind": "single"
    },
-   "affects": "enemies"
+   "affects": "enemies",
+   "canonPower": 40
   },
   "tentacool-barrier": {
    "id": "tentacool-barrier",
@@ -228,7 +231,7 @@
    "kind": "special",
    "category": "special",
    "cooldown": 4,
-   "power": 80,
+   "power": 65,
    "range": {
     "min": 1,
     "max": 2
@@ -244,7 +247,8 @@
      "status": "burn",
      "duration": 2
     }
-   ]
+   ],
+   "canonPower": 80
   },
   "tentacool-toxic": {
    "id": "tentacool-toxic",
@@ -277,7 +281,7 @@
    "kind": "special",
    "category": "special",
    "cooldown": 5,
-   "power": 85,
+   "power": 65,
    "range": {
     "min": 1,
     "max": 1
@@ -287,7 +291,8 @@
     "kind": "line",
     "length": 2
    },
-   "affects": "enemies"
+   "affects": "enemies",
+   "canonPower": 90
   },
   "tentacool-whirlpool": {
    "id": "tentacool-whirlpool",
@@ -296,7 +301,7 @@
    "kind": "special",
    "category": "special",
    "cooldown": 4,
-   "power": 75,
+   "power": 40,
    "range": {
     "min": 1,
     "max": 2
@@ -312,7 +317,8 @@
      "status": "slow",
      "duration": 2
     }
-   ]
+   ],
+   "canonPower": 35
   }
  },
  "talents": {
@@ -325,7 +331,7 @@
   "tentacool-sludge-wave": {
    "id": "tentacool-sludge-wave",
    "name": "Sludge Wave",
-   "description": "Bond skill: a wave of sludge hits every adjacent foe (Power 90) and Poisons them 2 turns.",
+   "description": "Bond skill: a wave of sludge hits every adjacent foe (Power 70) and Poisons them 2 turns.",
    "grantsMove": "tentacool-sludge-wave"
   },
   "tentacool-rapid-spin": {
@@ -366,7 +372,7 @@
   "tentacool-water-gun": {
    "id": "tentacool-water-gun",
    "name": "Water Gun",
-   "description": "New skill: squirts water at a foe up to 2 hexes away (Power 50).",
+   "description": "New skill: squirts water at a foe up to 2 hexes away (Power 40).",
    "grantsMove": "tentacool-water-gun"
   },
   "tentacool-rain-dish": {
@@ -419,7 +425,7 @@
   "tentacool-scald": {
    "id": "tentacool-scald",
    "name": "Scald",
-   "description": "New skill: boiling water at a foe up to 2 hexes away (Power 80), Burning it for 2 turns.",
+   "description": "New skill: boiling water at a foe up to 2 hexes away (Power 65), Burning it for 2 turns.",
    "grantsMove": "tentacool-scald"
   },
   "tentacool-toxic": {
@@ -447,13 +453,13 @@
   "tentacool-surf": {
    "id": "tentacool-surf",
    "name": "Surf",
-   "description": "New skill: a wave crashes down a 2-hex line (Power 85).",
+   "description": "New skill: a wave crashes down a 2-hex line (Power 65).",
    "grantsMove": "tentacool-surf"
   },
   "tentacool-whirlpool": {
    "id": "tentacool-whirlpool",
    "name": "Whirlpool",
-   "description": "New skill: traps a foe up to 2 hexes away in a vortex (Power 75), Slowing it for 2 turns.",
+   "description": "New skill: traps a foe up to 2 hexes away in a vortex (Power 40), Slowing it for 2 turns.",
    "grantsMove": "tentacool-whirlpool"
   },
   "tentacool-toxic-tide": {

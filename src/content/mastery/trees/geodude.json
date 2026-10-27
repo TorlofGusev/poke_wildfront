@@ -78,7 +78,8 @@
     "kind": "burst",
     "radius": 1
    },
-   "affects": "enemies"
+   "affects": "enemies",
+   "canonPower": 250
   },
   "geodude-gyro-ball": {
    "id": "geodude-gyro-ball",
@@ -179,7 +180,7 @@
    "kind": "special",
    "category": "physical",
    "cooldown": 2,
-   "power": 60,
+   "power": 50,
    "range": {
     "min": 1,
     "max": 2
@@ -194,7 +195,8 @@
      "kind": "pull",
      "distance": 1
     }
-   ]
+   ],
+   "canonPower": 50
   },
   "geodude-defense-curl": {
    "id": "geodude-defense-curl",
@@ -228,7 +230,7 @@
    "kind": "special",
    "category": "physical",
    "cooldown": 4,
-   "power": 95,
+   "power": 75,
    "range": {
     "min": 1,
     "max": 2
@@ -237,7 +239,8 @@
    "shape": {
     "kind": "single"
    },
-   "affects": "enemies"
+   "affects": "enemies",
+   "canonPower": 100
   },
   "geodude-heavy-slam": {
    "id": "geodude-heavy-slam",
@@ -264,7 +267,7 @@
    "kind": "special",
    "category": "physical",
    "cooldown": 4,
-   "power": 100,
+   "power": 95,
    "range": {
     "min": 1,
     "max": 2
@@ -273,7 +276,8 @@
    "shape": {
     "kind": "single"
    },
-   "affects": "enemies"
+   "affects": "enemies",
+   "canonPower": 150
   },
   "geodude-high-horsepower": {
    "id": "geodude-high-horsepower",
@@ -282,7 +286,7 @@
    "kind": "special",
    "category": "physical",
    "cooldown": 5,
-   "power": 90,
+   "power": 80,
    "range": {
     "min": 1,
     "max": 1
@@ -297,7 +301,8 @@
      "kind": "push",
      "distance": 1
     }
-   ]
+   ],
+   "canonPower": 95
   }
  },
  "talents": {
@@ -367,7 +372,7 @@
   "geodude-smack-down": {
    "id": "geodude-smack-down",
    "name": "Smack Down",
-   "description": "New skill: hurls a rock at a foe up to 2 hexes away (Power 60), dragging it 1 hex closer.",
+   "description": "New skill: hurls a rock at a foe up to 2 hexes away (Power 50), dragging it 1 hex closer.",
    "grantsMove": "geodude-smack-down"
   },
   "geodude-defense-curl": {
@@ -396,7 +401,7 @@
   "geodude-stone-edge": {
    "id": "geodude-stone-edge",
    "name": "Stone Edge",
-   "description": "New skill: sharp stones burst up under a foe up to 2 hexes away (Power 95).",
+   "description": "New skill: sharp stones burst up under a foe up to 2 hexes away (Power 75).",
    "grantsMove": "geodude-stone-edge"
   },
   "geodude-heavy-slam": {
@@ -427,13 +432,13 @@
   "geodude-rock-wrecker": {
    "id": "geodude-rock-wrecker",
    "name": "Rock Wrecker",
-   "description": "New skill: hurls a huge boulder at a foe up to 2 hexes away (Power 100).",
+   "description": "New skill: hurls a huge boulder at a foe up to 2 hexes away (Power 95).",
    "grantsMove": "geodude-rock-wrecker"
   },
   "geodude-high-horsepower": {
    "id": "geodude-high-horsepower",
    "name": "High Horsepower",
-   "description": "New skill: a crushing stomp (Power 90) that pushes the foe 1 hex.",
+   "description": "New skill: a crushing stomp (Power 80) that pushes the foe 1 hex.",
    "grantsMove": "geodude-high-horsepower"
   },
   "geodude-snowballing-boulder": {

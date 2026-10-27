@@ -10,7 +10,7 @@
    "description": "Új képesség: éles levelek, amelyek egy 2 hexes vonalban mindenkit eltalálnak."
   },
   "grass-skill-leaf-storm": {
-   "description": "Új képesség: levélvihar távolra (Erő 95)."
+   "description": "Új képesség: levélvihar távolra (Erő 90)."
   },
   "grass-harvest": {
    "description": "Csúcsképesség. A fű elszívás 50%-kal többet gyógyít; ellenfél kiütésekor max HP-ja 15%-át gyógyítja."
@@ -22,7 +22,7 @@
    "description": "10%-kal kevesebb sebzést kap; +1 Védekezés."
   },
   "grass-skill-petal-blizzard": {
-   "description": "Új képesség: szirmok vihara (Erő 75), minden ellenfelet eltalál 2 hexen belül."
+   "description": "Új képesség: szirmok vihara (Erő 55), minden ellenfelet eltalál 2 hexen belül."
   }
  }
 }

@@ -67,7 +67,7 @@
    "kind": "bond",
    "category": "special",
    "bondCost": 3,
-   "power": 100,
+   "power": 80,
    "range": {
     "min": 1,
     "max": 3
@@ -83,7 +83,8 @@
      "status": "burn",
      "duration": 2
     }
-   ]
+   ],
+   "canonPower": 100
   },
   "vulpix-feint-attack": {
    "id": "vulpix-feint-attack",
@@ -92,7 +93,7 @@
    "kind": "bond",
    "category": "physical",
    "bondCost": 1,
-   "power": 55,
+   "power": 65,
    "range": {
     "min": 1,
     "max": 1
@@ -108,7 +109,8 @@
      "status": "exposed",
      "duration": 1
     }
-   ]
+   ],
+   "canonPower": 60
   },
   "vulpix-incinerate": {
    "id": "vulpix-incinerate",
@@ -117,7 +119,7 @@
    "kind": "special",
    "category": "special",
    "cooldown": 2,
-   "power": 50,
+   "power": 55,
    "range": {
     "min": 1,
     "max": 2
@@ -126,7 +128,8 @@
    "shape": {
     "kind": "single"
    },
-   "affects": "enemies"
+   "affects": "enemies",
+   "canonPower": 60
   },
   "vulpix-will-o-wisp": {
    "id": "vulpix-will-o-wisp",
@@ -159,7 +162,7 @@
    "kind": "special",
    "category": "special",
    "cooldown": 4,
-   "power": 80,
+   "power": 65,
    "range": {
     "min": 1,
     "max": 1
@@ -169,7 +172,8 @@
     "kind": "burst",
     "radius": 1
    },
-   "affects": "enemies"
+   "affects": "enemies",
+   "canonPower": 95
   },
   "vulpix-overheat": {
    "id": "vulpix-overheat",
@@ -178,7 +182,7 @@
    "kind": "special",
    "category": "special",
    "cooldown": 5,
-   "power": 100,
+   "power": 90,
    "range": {
     "min": 1,
     "max": 2
@@ -187,7 +191,8 @@
    "shape": {
     "kind": "single"
    },
-   "affects": "enemies"
+   "affects": "enemies",
+   "canonPower": 130
   },
   "vulpix-safeguard": {
    "id": "vulpix-safeguard",
@@ -247,7 +252,7 @@
    "kind": "special",
    "category": "special",
    "cooldown": 3,
-   "power": 70,
+   "power": 55,
    "range": {
     "min": 1,
     "max": 2
@@ -256,7 +261,8 @@
    "shape": {
     "kind": "single"
    },
-   "affects": "enemies"
+   "affects": "enemies",
+   "canonPower": 60
   },
   "vulpix-mystical-fire": {
    "id": "vulpix-mystical-fire",
@@ -265,7 +271,7 @@
    "kind": "special",
    "category": "special",
    "cooldown": 4,
-   "power": 80,
+   "power": 65,
    "range": {
     "min": 1,
     "max": 2
@@ -274,7 +280,8 @@
    "shape": {
     "kind": "single"
    },
-   "affects": "enemies"
+   "affects": "enemies",
+   "canonPower": 75
   },
   "vulpix-confuse-ray": {
    "id": "vulpix-confuse-ray",
@@ -305,13 +312,13 @@
   "vulpix-inferno": {
    "id": "vulpix-inferno",
    "name": "Inferno",
-   "description": "Bond skill: engulfs a foe up to 3 hexes away in flame (Power 100), Burning it for 2 turns.",
+   "description": "Bond skill: engulfs a foe up to 3 hexes away in flame (Power 80), Burning it for 2 turns.",
    "grantsMove": "vulpix-inferno"
   },
   "vulpix-feint-attack": {
    "id": "vulpix-feint-attack",
    "name": "Feint Attack",
-   "description": "Bond skill: a sly feint (Power 55) that leaves the foe Exposed for 1 turn.",
+   "description": "Bond skill: a sly feint (Power 65) that leaves the foe Exposed for 1 turn.",
    "grantsMove": "vulpix-feint-attack"
   },
   "vulpix-flash-fire": {
@@ -338,7 +345,7 @@
   "vulpix-incinerate": {
    "id": "vulpix-incinerate",
    "name": "Incinerate",
-   "description": "New skill: scorches a foe up to 2 hexes away (Power 50).",
+   "description": "New skill: scorches a foe up to 2 hexes away (Power 55).",
    "grantsMove": "vulpix-incinerate"
   },
   "vulpix-drought": {
@@ -384,7 +391,7 @@
   "vulpix-heat-wave": {
    "id": "vulpix-heat-wave",
    "name": "Heat Wave",
-   "description": "New skill: a scorching gust hits a 1-hex area up to 1 hex away (Power 80).",
+   "description": "New skill: a scorching gust hits a 1-hex area up to 1 hex away (Power 65).",
    "grantsMove": "vulpix-heat-wave"
   },
   "vulpix-ward-of-nine-tails": {
@@ -410,7 +417,7 @@
   "vulpix-overheat": {
    "id": "vulpix-overheat",
    "name": "Overheat",
-   "description": "New skill: an all-out blast of fire at a foe up to 2 hexes away (Power 100).",
+   "description": "New skill: an all-out blast of fire at a foe up to 2 hexes away (Power 90).",
    "grantsMove": "vulpix-overheat"
   },
   "vulpix-hexing-flames": {
@@ -462,13 +469,13 @@
   "vulpix-swift": {
    "id": "vulpix-swift",
    "name": "Swift",
-   "description": "New skill: star-shaped rays at a foe up to 2 hexes away (Power 70).",
+   "description": "New skill: star-shaped rays at a foe up to 2 hexes away (Power 55).",
    "grantsMove": "vulpix-swift"
   },
   "vulpix-mystical-fire": {
    "id": "vulpix-mystical-fire",
    "name": "Mystical Fire",
-   "description": "New skill: a mystical flame at a foe up to 2 hexes away (Power 80).",
+   "description": "New skill: a mystical flame at a foe up to 2 hexes away (Power 65).",
    "grantsMove": "vulpix-mystical-fire"
   },
   "vulpix-confuse-ray": {

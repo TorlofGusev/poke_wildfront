@@ -1,7 +1,7 @@
 {
  "talents": {
   "caterpie-bug-buzz": {
-   "description": "Bond képesség: szárnyai sebző zúgása egy max. 3 hexnyi ellenfélre (Erő 95)."
+   "description": "Bond képesség: szárnyai sebző zúgása egy max. 3 hexnyi ellenfélre (Erő 75)."
   },
   "caterpie-harden": {
    "description": "Bond képesség: megkeményíti a burkát; 1 körre Protected állapotba kerül."
@@ -19,7 +19,7 @@
    "description": "Új képesség: altatópor, amely egy max. 2 hexnyire lévő ellenfelet 2 körre elaltat (Sleep)."
   },
   "caterpie-psybeam": {
-   "description": "Új képesség: különös sugár egy max. 2 hexnyi ellenfélre (Erő 60)."
+   "description": "Új képesség: különös sugár egy max. 2 hexnyi ellenfélre (Erő 55)."
   },
   "caterpie-poison-scales": {
    "description": "Pikkelyei elnyelik az ártó hatásokat: nem lehet Poisoned, Burned vagy Paralyzed."
@@ -28,7 +28,7 @@
    "description": "Teljes HP-n 20%-kal kevesebb sebzést kap."
   },
   "caterpie-air-slash": {
-   "description": "Új képesség: légpenge egy max. 2 hexnyi ellenfélre (Erő 70)."
+   "description": "Új képesség: légpenge egy max. 2 hexnyi ellenfélre (Erő 65)."
   },
   "caterpie-poison-powder": {
    "description": "Új képesség: mérgező por egy 1 hex körre max 1 hexnyire (Erő 40), 2 körre Poison."
@@ -40,7 +40,7 @@
    "description": "Bug támadásai 15%-kal többet sebeznek."
   },
   "caterpie-hurricane": {
-   "description": "Új képesség: süvítő vihar egy max. 2 hexnyi ellenfélre (Erő 90), amely 1 hexnyit lök rajta."
+   "description": "Új képesség: süvítő vihar egy max. 2 hexnyi ellenfélre (Erő 80), amely 1 hexnyit lök rajta."
   },
   "caterpie-gentle-flutter": {
    "description": "Repülés közben nehéz eltalálni: 10%-kal kevesebb sebzést kap."
@@ -49,10 +49,10 @@
    "description": "Státuszai 1 körrel tovább tartanak; +15% sebzés a társ által rárakott státuszú ellenfélre."
   },
   "caterpie-silver-wind": {
-   "description": "Új képesség: ezüstös pikkelyfelhő egy max. 1 hexnyi, 1 hex területen (Erő 90)."
+   "description": "Új képesség: ezüstös pikkelyfelhő egy max. 1 hexnyi, 1 hex területen (Erő 50)."
   },
   "caterpie-u-turn": {
-   "description": "Új képesség: eltalál egy ellenfelet (Erő 70), majd kiszabadul a lekötésből."
+   "description": "Új képesség: eltalál egy ellenfelet (Erő 65), majd kiszabadul a lekötésből."
   },
   "caterpie-metamorphosis": {
    "description": "2 mozgást visszanyer, ha a saját körében kiüt egy ellenfelet."

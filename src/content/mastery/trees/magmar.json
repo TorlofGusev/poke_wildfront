@@ -69,7 +69,7 @@
    "kind": "bond",
    "category": "special",
    "bondCost": 3,
-   "power": 100,
+   "power": 80,
    "range": {
     "min": 1,
     "max": 3
@@ -85,7 +85,8 @@
      "status": "burn",
      "duration": 3
     }
-   ]
+   ],
+   "canonPower": 100
   },
   "magmar-flare-blitz": {
    "id": "magmar-flare-blitz",
@@ -103,7 +104,8 @@
    "shape": {
     "kind": "single"
    },
-   "affects": "enemies"
+   "affects": "enemies",
+   "canonPower": 120
   },
   "magmar-feint-attack": {
    "id": "magmar-feint-attack",
@@ -126,7 +128,8 @@
     {
      "kind": "engage"
     }
-   ]
+   ],
+   "canonPower": 60
   },
   "magmar-confuse-ray": {
    "id": "magmar-confuse-ray",
@@ -159,7 +162,7 @@
    "kind": "special",
    "category": "physical",
    "cooldown": 2,
-   "power": 55,
+   "power": 65,
    "range": {
     "min": 1,
     "max": 1
@@ -175,7 +178,8 @@
      "status": "burn",
      "duration": 1
     }
-   ]
+   ],
+   "canonPower": 65
   },
   "magmar-fire-spin": {
    "id": "magmar-fire-spin",
@@ -200,7 +204,8 @@
      "status": "burn",
      "duration": 2
     }
-   ]
+   ],
+   "canonPower": 35
   },
   "magmar-mega-punch": {
    "id": "magmar-mega-punch",
@@ -218,7 +223,8 @@
    "shape": {
     "kind": "single"
    },
-   "affects": "enemies"
+   "affects": "enemies",
+   "canonPower": 80
   },
   "magmar-body-slam": {
    "id": "magmar-body-slam",
@@ -227,7 +233,7 @@
    "kind": "special",
    "category": "physical",
    "cooldown": 4,
-   "power": 80,
+   "power": 75,
    "range": {
     "min": 1,
     "max": 1
@@ -243,7 +249,8 @@
      "status": "paralysis",
      "duration": 1
     }
-   ]
+   ],
+   "canonPower": 85
   },
   "magmar-fire-blast": {
    "id": "magmar-fire-blast",
@@ -252,7 +259,7 @@
    "kind": "special",
    "category": "special",
    "cooldown": 5,
-   "power": 100,
+   "power": 80,
    "range": {
     "min": 1,
     "max": 2
@@ -268,7 +275,8 @@
      "status": "burn",
      "duration": 2
     }
-   ]
+   ],
+   "canonPower": 110
   },
   "magmar-mega-kick": {
    "id": "magmar-mega-kick",
@@ -277,7 +285,7 @@
    "kind": "special",
    "category": "physical",
    "cooldown": 5,
-   "power": 100,
+   "power": 95,
    "range": {
     "min": 1,
     "max": 1
@@ -286,7 +294,8 @@
    "shape": {
     "kind": "single"
    },
-   "affects": "enemies"
+   "affects": "enemies",
+   "canonPower": 120
   },
   "magmar-smokescreen": {
    "id": "magmar-smokescreen",
@@ -318,7 +327,7 @@
   "magmar-inferno": {
    "id": "magmar-inferno",
    "name": "Inferno",
-   "description": "Bond skill: engulfs a foe up to 3 hexes away in flames (Power 100); Burns 3 turns.",
+   "description": "Bond skill: engulfs a foe up to 3 hexes away in flames (Power 80); Burns 3 turns.",
    "grantsMove": "magmar-inferno"
   },
   "magmar-flare-blitz": {
@@ -350,7 +359,7 @@
   "magmar-fire-fang": {
    "id": "magmar-fire-fang",
    "name": "Fire Fang",
-   "description": "New skill: bites with flaming fangs (Power 55), Burning the foe for 1 turn.",
+   "description": "New skill: bites with flaming fangs (Power 65), Burning the foe for 1 turn.",
    "grantsMove": "magmar-fire-fang"
   },
   "magmar-searing-fists": {
@@ -394,7 +403,7 @@
   "magmar-body-slam": {
    "id": "magmar-body-slam",
    "name": "Body Slam",
-   "description": "New skill: slams its body into a foe (Power 80), Paralyzing it for 1 turn.",
+   "description": "New skill: slams its body into a foe (Power 75), Paralyzing it for 1 turn.",
    "grantsMove": "magmar-body-slam"
   },
   "magmar-bellows": {
@@ -416,13 +425,13 @@
   "magmar-fire-blast": {
    "id": "magmar-fire-blast",
    "name": "Fire Blast",
-   "description": "New skill: a star of fire at a foe up to 2 hexes away (Power 100); Burns 2 turns.",
+   "description": "New skill: a star of fire at a foe up to 2 hexes away (Power 80); Burns 2 turns.",
    "grantsMove": "magmar-fire-blast"
   },
   "magmar-mega-kick": {
    "id": "magmar-mega-kick",
    "name": "Mega Kick",
-   "description": "New skill: a kick of tremendous force (Power 100).",
+   "description": "New skill: a kick of tremendous force (Power 95).",
    "grantsMove": "magmar-mega-kick"
   },
   "magmar-spreading-flames": {

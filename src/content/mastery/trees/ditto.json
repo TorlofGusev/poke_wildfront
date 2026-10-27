@@ -136,7 +136,7 @@
    "kind": "special",
    "category": "special",
    "cooldown": 5,
-   "power": 100,
+   "power": 95,
    "range": {
     "min": 1,
     "max": 2
@@ -145,7 +145,8 @@
    "shape": {
     "kind": "single"
    },
-   "affects": "enemies"
+   "affects": "enemies",
+   "canonPower": 150
   },
   "ditto-mimic-swift": {
    "id": "ditto-mimic-swift",
@@ -154,7 +155,7 @@
    "kind": "special",
    "category": "special",
    "cooldown": 3,
-   "power": 50,
+   "power": 55,
    "range": {
     "min": 1,
     "max": 2
@@ -163,7 +164,8 @@
    "shape": {
     "kind": "single"
    },
-   "affects": "enemies"
+   "affects": "enemies",
+   "canonPower": 60
   },
   "ditto-mimic-double-slap": {
    "id": "ditto-mimic-double-slap",
@@ -172,7 +174,7 @@
    "kind": "special",
    "category": "physical",
    "cooldown": 2,
-   "power": 55,
+   "power": 50,
    "range": {
     "min": 1,
     "max": 1
@@ -181,7 +183,8 @@
    "shape": {
     "kind": "single"
    },
-   "affects": "enemies"
+   "affects": "enemies",
+   "canonPower": 45
   },
   "ditto-mimic-tri-attack": {
    "id": "ditto-mimic-tri-attack",
@@ -199,7 +202,8 @@
    "shape": {
     "kind": "single"
    },
-   "affects": "enemies"
+   "affects": "enemies",
+   "canonPower": 80
   },
   "ditto-mimic-slash": {
    "id": "ditto-mimic-slash",
@@ -224,7 +228,8 @@
      "status": "exposed",
      "duration": 1
     }
-   ]
+   ],
+   "canonPower": 70
   },
   "ditto-mimic-hyper-voice": {
    "id": "ditto-mimic-hyper-voice",
@@ -233,7 +238,7 @@
    "kind": "special",
    "category": "special",
    "cooldown": 4,
-   "power": 85,
+   "power": 70,
    "range": {
     "min": 1,
     "max": 2
@@ -242,7 +247,8 @@
    "shape": {
     "kind": "single"
    },
-   "affects": "enemies"
+   "affects": "enemies",
+   "canonPower": 90
   },
   "ditto-mimic-thrash": {
    "id": "ditto-mimic-thrash",
@@ -261,7 +267,8 @@
     "kind": "burst",
     "radius": 1
    },
-   "affects": "enemies"
+   "affects": "enemies",
+   "canonPower": 120
   },
   "ditto-mimic-sing": {
    "id": "ditto-mimic-sing",
@@ -303,7 +310,8 @@
    "shape": {
     "kind": "single"
    },
-   "affects": "enemies"
+   "affects": "enemies",
+   "canonPower": 150
   }
  },
  "talents": {
@@ -395,7 +403,7 @@
   "ditto-mimic-hyper-beam": {
    "id": "ditto-mimic-hyper-beam",
    "name": "Mimic: Hyper Beam",
-   "description": "New skill: copies a Hyper Beam at a foe up to 2 hexes away (Power 100).",
+   "description": "New skill: copies a Hyper Beam at a foe up to 2 hexes away (Power 95).",
    "grantsMove": "ditto-mimic-hyper-beam"
   },
   "ditto-shape-memory": {
@@ -435,13 +443,13 @@
   "ditto-mimic-swift": {
    "id": "ditto-mimic-swift",
    "name": "Mimic: Swift",
-   "description": "New skill: copies a Swift at a foe up to 2 hexes away (Power 50).",
+   "description": "New skill: copies a Swift at a foe up to 2 hexes away (Power 55).",
    "grantsMove": "ditto-mimic-swift"
   },
   "ditto-mimic-double-slap": {
    "id": "ditto-mimic-double-slap",
    "name": "Mimic: Double Slap",
-   "description": "New skill: copies a Double Slap on an adjacent foe (Power 55).",
+   "description": "New skill: copies a Double Slap on an adjacent foe (Power 50).",
    "grantsMove": "ditto-mimic-double-slap"
   },
   "ditto-mimic-tri-attack": {
@@ -459,7 +467,7 @@
   "ditto-mimic-hyper-voice": {
    "id": "ditto-mimic-hyper-voice",
    "name": "Mimic: Hyper Voice",
-   "description": "New skill: copies a Hyper Voice at a foe up to 2 hexes away (Power 85).",
+   "description": "New skill: copies a Hyper Voice at a foe up to 2 hexes away (Power 70).",
    "grantsMove": "ditto-mimic-hyper-voice"
   },
   "ditto-mimic-thrash": {

@@ -66,7 +66,7 @@
    "kind": "bond",
    "category": "special",
    "bondCost": 3,
-   "power": 85,
+   "power": 65,
    "range": {
     "min": 1,
     "max": 2
@@ -83,7 +83,8 @@
      "status": "burn",
      "duration": 1
     }
-   ]
+   ],
+   "canonPower": 95
   },
   "moltres-sky-attack": {
    "id": "moltres-sky-attack",
@@ -92,7 +93,7 @@
    "kind": "bond",
    "category": "physical",
    "bondCost": 3,
-   "power": 110,
+   "power": 100,
    "range": {
     "min": 1,
     "max": 1
@@ -101,7 +102,8 @@
    "shape": {
     "kind": "single"
    },
-   "affects": "enemies"
+   "affects": "enemies",
+   "canonPower": 140
   },
   "moltres-roost": {
    "id": "moltres-roost",
@@ -157,7 +159,7 @@
    "kind": "special",
    "category": "special",
    "cooldown": 2,
-   "power": 60,
+   "power": 65,
    "range": {
     "min": 1,
     "max": 2
@@ -166,7 +168,8 @@
    "shape": {
     "kind": "single"
    },
-   "affects": "enemies"
+   "affects": "enemies",
+   "canonPower": 75
   },
   "moltres-incinerate": {
    "id": "moltres-incinerate",
@@ -175,7 +178,7 @@
    "kind": "special",
    "category": "special",
    "cooldown": 3,
-   "power": 60,
+   "power": 50,
    "range": {
     "min": 1,
     "max": 1
@@ -185,7 +188,8 @@
     "kind": "burst",
     "radius": 1
    },
-   "affects": "enemies"
+   "affects": "enemies",
+   "canonPower": 60
   },
   "moltres-steel-wing": {
    "id": "moltres-steel-wing",
@@ -194,7 +198,7 @@
    "kind": "special",
    "category": "physical",
    "cooldown": 2,
-   "power": 70,
+   "power": 65,
    "range": {
     "min": 1,
     "max": 1
@@ -203,7 +207,8 @@
    "shape": {
     "kind": "single"
    },
-   "affects": "enemies"
+   "affects": "enemies",
+   "canonPower": 70
   },
   "moltres-hurricane": {
    "id": "moltres-hurricane",
@@ -212,7 +217,7 @@
    "kind": "special",
    "category": "special",
    "cooldown": 4,
-   "power": 90,
+   "power": 80,
    "range": {
     "min": 1,
     "max": 2
@@ -221,7 +226,8 @@
    "shape": {
     "kind": "single"
    },
-   "affects": "enemies"
+   "affects": "enemies",
+   "canonPower": 110
   },
   "moltres-fly": {
    "id": "moltres-fly",
@@ -230,7 +236,7 @@
    "kind": "special",
    "category": "physical",
    "cooldown": 4,
-   "power": 80,
+   "power": 70,
    "range": {
     "min": 1,
     "max": 2
@@ -244,7 +250,8 @@
     {
      "kind": "engage"
     }
-   ]
+   ],
+   "canonPower": 90
   },
   "moltres-overheat": {
    "id": "moltres-overheat",
@@ -253,7 +260,7 @@
    "kind": "special",
    "category": "special",
    "cooldown": 5,
-   "power": 100,
+   "power": 90,
    "range": {
     "min": 1,
     "max": 2
@@ -262,7 +269,8 @@
    "shape": {
     "kind": "single"
    },
-   "affects": "enemies"
+   "affects": "enemies",
+   "canonPower": 130
   },
   "moltres-giga-impact": {
    "id": "moltres-giga-impact",
@@ -286,20 +294,21 @@
      "kind": "push",
      "distance": 1
     }
-   ]
+   ],
+   "canonPower": 150
   }
  },
  "talents": {
   "moltres-heat-wave": {
    "id": "moltres-heat-wave",
    "name": "Heat Wave",
-   "description": "Bond skill: a scorching wind up to 2 hexes away (Power 85), 1-hex area; Burns 1 turn.",
+   "description": "Bond skill: a scorching wind up to 2 hexes away (Power 65), 1-hex area; Burns 1 turn.",
    "grantsMove": "moltres-heat-wave"
   },
   "moltres-sky-attack": {
    "id": "moltres-sky-attack",
    "name": "Sky Attack",
-   "description": "Bond skill: wreathed in flame, it plunges from the sky into a foe (Power 110, Attack).",
+   "description": "Bond skill: wreathed in flame, it plunges from the sky into a foe (Power 100, Attack).",
    "grantsMove": "moltres-sky-attack"
   },
   "moltres-roost": {
@@ -338,7 +347,7 @@
   "moltres-air-slash": {
    "id": "moltres-air-slash",
    "name": "Air Slash",
-   "description": "New skill: a blade of air at a foe up to 2 hexes away (Power 60).",
+   "description": "New skill: a blade of air at a foe up to 2 hexes away (Power 65).",
    "grantsMove": "moltres-air-slash"
   },
   "moltres-rebirth-flame": {
@@ -360,13 +369,13 @@
   "moltres-incinerate": {
    "id": "moltres-incinerate",
    "name": "Incinerate",
-   "description": "New skill: sprays fire over a 1-hex area up to 1 hex away (Power 60).",
+   "description": "New skill: sprays fire over a 1-hex area up to 1 hex away (Power 50).",
    "grantsMove": "moltres-incinerate"
   },
   "moltres-steel-wing": {
    "id": "moltres-steel-wing",
    "name": "Steel Wing",
-   "description": "New skill: strikes with wings hard as steel (Power 70).",
+   "description": "New skill: strikes with wings hard as steel (Power 65).",
    "grantsMove": "moltres-steel-wing"
   },
   "moltres-searing-trail": {
@@ -380,13 +389,13 @@
   "moltres-hurricane": {
    "id": "moltres-hurricane",
    "name": "Hurricane",
-   "description": "New skill: a fiery gale at a foe up to 2 hexes away (Power 90).",
+   "description": "New skill: a fiery gale at a foe up to 2 hexes away (Power 80).",
    "grantsMove": "moltres-hurricane"
   },
   "moltres-fly": {
    "id": "moltres-fly",
    "name": "Fly",
-   "description": "New skill: soars up and swoops on a foe up to 2 hexes away (Power 80), engaging it.",
+   "description": "New skill: soars up and swoops on a foe up to 2 hexes away (Power 70), engaging it.",
    "grantsMove": "moltres-fly"
   },
   "moltres-cinder-hunt": {
@@ -410,7 +419,7 @@
   "moltres-overheat": {
    "id": "moltres-overheat",
    "name": "Overheat",
-   "description": "New skill: an all-out blast of fire at a foe up to 2 hexes away (Power 100).",
+   "description": "New skill: an all-out blast of fire at a foe up to 2 hexes away (Power 90).",
    "grantsMove": "moltres-overheat"
   },
   "moltres-giga-impact": {

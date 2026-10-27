@@ -83,7 +83,8 @@
      "status": "poison",
      "duration": 2
     }
-   ]
+   ],
+   "canonPower": 120
   },
   "ekans-sucker-punch": {
    "id": "ekans-sucker-punch",
@@ -92,7 +93,7 @@
    "kind": "bond",
    "category": "physical",
    "bondCost": 1,
-   "power": 60,
+   "power": 75,
    "range": {
     "min": 1,
     "max": 1
@@ -101,7 +102,8 @@
    "shape": {
     "kind": "single"
    },
-   "affects": "enemies"
+   "affects": "enemies",
+   "canonPower": 70
   },
   "ekans-coil": {
    "id": "ekans-coil",
@@ -139,7 +141,7 @@
    "kind": "special",
    "category": "physical",
    "cooldown": 2,
-   "power": 50,
+   "power": 25,
    "range": {
     "min": 1,
     "max": 1
@@ -155,7 +157,8 @@
      "status": "poison",
      "duration": 2
     }
-   ]
+   ],
+   "canonPower": 15
   },
   "ekans-screech": {
    "id": "ekans-screech",
@@ -197,7 +200,8 @@
    "shape": {
     "kind": "single"
    },
-   "affects": "enemies"
+   "affects": "enemies",
+   "canonPower": 80
   },
   "ekans-stockpile": {
    "id": "ekans-stockpile",
@@ -230,7 +234,7 @@
    "kind": "special",
    "category": "physical",
    "cooldown": 4,
-   "power": 85,
+   "power": 75,
    "range": {
     "min": 1,
     "max": 1
@@ -246,7 +250,8 @@
      "status": "paralysis",
      "duration": 1
     }
-   ]
+   ],
+   "canonPower": 85
   },
   "ekans-swallow": {
    "id": "ekans-swallow",
@@ -278,7 +283,7 @@
    "kind": "special",
    "category": "physical",
    "cooldown": 5,
-   "power": 90,
+   "power": 65,
    "range": {
     "min": 1,
     "max": 1
@@ -294,7 +299,8 @@
      "status": "exposed",
      "duration": 1
     }
-   ]
+   ],
+   "canonPower": 70
   },
   "ekans-haze": {
    "id": "ekans-haze",
@@ -332,7 +338,7 @@
   "ekans-sucker-punch": {
    "id": "ekans-sucker-punch",
    "name": "Sucker Punch",
-   "description": "Bond skill: lunges before the foe can move (Power 60, Attack).",
+   "description": "Bond skill: lunges before the foe can move (Power 75, Attack).",
    "grantsMove": "ekans-sucker-punch"
   },
   "ekans-coil": {
@@ -362,7 +368,7 @@
   "ekans-poison-sting": {
    "id": "ekans-poison-sting",
    "name": "Poison Sting",
-   "description": "New skill: a toxic stab at an adjacent foe that Poisons it for 2 turns (Power 50).",
+   "description": "New skill: a toxic stab at an adjacent foe that Poisons it for 2 turns (Power 25).",
    "grantsMove": "ekans-poison-sting"
   },
   "ekans-screech": {
@@ -418,7 +424,7 @@
   "ekans-body-slam": {
    "id": "ekans-body-slam",
    "name": "Body Slam",
-   "description": "New skill: drops its full weight on the foe (Power 85), Paralyzing it for 1 turn.",
+   "description": "New skill: drops its full weight on the foe (Power 75), Paralyzing it for 1 turn.",
    "grantsMove": "ekans-body-slam"
   },
   "ekans-swallow": {
@@ -448,7 +454,7 @@
   "ekans-cross-poison": {
    "id": "ekans-cross-poison",
    "name": "Cross Poison",
-   "description": "New skill: a crossing poison slash (Power 90) that leaves the foe Exposed for 1 turn.",
+   "description": "New skill: a crossing poison slash (Power 65) that leaves the foe Exposed for 1 turn.",
    "grantsMove": "ekans-cross-poison"
   },
   "ekans-haze": {

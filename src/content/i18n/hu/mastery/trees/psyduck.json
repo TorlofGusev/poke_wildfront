@@ -1,10 +1,10 @@
 {
  "talents": {
   "psyduck-brine": {
-   "description": "Bond képesség: sós vízsugár egy legfeljebb 3 hexnyi ellenfélre (Erő 90)."
+   "description": "Bond képesség: sós vízsugár egy legfeljebb 3 hexnyi ellenfélre (Erő 60)."
   },
   "psyduck-aqua-jet": {
-   "description": "Bond képesség: gyors vízsugárral csapódik az ellenfélbe (Erő 55, Támadás)."
+   "description": "Bond képesség: gyors vízsugárral csapódik az ellenfélbe (Erő 50, Támadás)."
   },
   "psyduck-aqua-ring": {
    "description": "Bond képesség: vízfátyol veszi körül, 30 HP-t gyógyul."
@@ -16,13 +16,13 @@
    "description": "Szabad csapás nélkül csúszik ki a lekötő ellenfelek közül."
   },
   "psyduck-fury-swipes": {
-   "description": "Új képesség: gyors karmolások sorozata (Erő 45)."
+   "description": "Új képesség: gyors karmolások sorozata (Erő 55)."
   },
   "psyduck-unlocked-mind": {
    "description": "Psychic típusú lépései 20%-kal többet sebeznek."
   },
   "psyduck-aqua-tail": {
-   "description": "Új képesség: hullámként csapja farkát egy szomszédos ellenfélre (Erő 70)."
+   "description": "Új képesség: hullámként csapja farkát egy szomszédos ellenfélre (Erő 80)."
   },
   "psyduck-scald": {
    "description": "Új képesség: forró víz egy legfeljebb 2 hexnyi ellenfélre (Erő 65), 2 körre megégeti."
@@ -34,10 +34,10 @@
    "description": "Egy ellenfél kiütése visszaállítja a képességei újratöltését."
   },
   "psyduck-whirlpool": {
-   "description": "Új képesség: örvény ejt csapdába egy legfeljebb 2 hexnyi ellenfelet (Erő 75), 2 körre Slowed."
+   "description": "Új képesség: örvény ejt csapdába egy legfeljebb 2 hexnyi ellenfelet (Erő 40), 2 körre Slowed."
   },
   "psyduck-double-edge": {
-   "description": "Új képesség: vakmerő, teljes testes roham egy szomszédos ellenfélre (Erő 85)."
+   "description": "Új képesség: vakmerő, teljes testes roham egy szomszédos ellenfélre (Erő 95)."
   },
   "psyduck-streamline": {
    "description": "2 mozgást visszanyer, ha a saját körében kiüt egy ellenfelet."
@@ -46,10 +46,10 @@
    "description": "Pszichikus ereje eltéríti a csapásokat: 10%-kal kevesebb sebzést kap."
   },
   "psyduck-muddy-water": {
-   "description": "Új képesség: sáros áradat minden 2 hexen belüli ellenfelet eltalál (Erő 80)."
+   "description": "Új képesség: sáros áradat minden 2 hexen belüli ellenfelet eltalál (Erő 55)."
   },
   "psyduck-waterfall": {
-   "description": "Új képesség: vízesés erejével ront rá (Erő 95), 1 hexnyire hátralöki az ellenfelet."
+   "description": "Új képesség: vízesés erejével ront rá (Erő 75), 1 hexnyire hátralöki az ellenfelet."
   },
   "psyduck-cruel-insight": {
    "description": "20%-kal többet sebez a bármilyen állapotban lévő ellenfelekre."

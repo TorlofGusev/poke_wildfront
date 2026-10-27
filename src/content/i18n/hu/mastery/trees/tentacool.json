@@ -4,7 +4,7 @@
    "description": "Bond képesség: folyékony testté olvad, 3 körre Megerősített lesz."
   },
   "tentacool-sludge-wave": {
-   "description": "Bond képesség: iszaphullám minden szomszédos ellenfelet eltalál (Erő 90, Kül. Tám.), 2 körre mérgez."
+   "description": "Bond képesség: iszaphullám minden szomszédos ellenfelet eltalál (Erő 70, Kül. Tám.), 2 körre mérgez."
   },
   "tentacool-rapid-spin": {
    "description": "Bond képesség: pörögve minden szomszédos ellenfelet eltalál (Erő 50, Támadás), majd kiszabadul."
@@ -19,7 +19,7 @@
    "description": "Új képesség: fülsértő visítás egy legfeljebb 2 hexre lévő ellenfélre, 2 körre Exposed lesz."
   },
   "tentacool-water-gun": {
-   "description": "Új képesség: vizet spriccel egy legfeljebb 2 hexre lévő ellenfélre (Power 50)."
+   "description": "Új képesség: vizet spriccel egy legfeljebb 2 hexre lévő ellenfélre (Power 40)."
   },
   "tentacool-rain-dish": {
    "description": "Minden köre elején maximális HP-ja 4%-át gyógyítja."
@@ -40,7 +40,7 @@
    "description": "Szabad csapás nélkül léphet el a vele harcban álló ellenfelektől."
   },
   "tentacool-scald": {
-   "description": "Új képesség: forró víz egy legfeljebb 2 hexnyire lévő ellenfélre (Erő 80), 2 körre megégeti."
+   "description": "Új képesség: forró víz egy legfeljebb 2 hexnyire lévő ellenfélre (Erő 65), 2 körre megégeti."
   },
   "tentacool-toxic": {
    "description": "Új képesség: súlyosan megmérgez egy legfeljebb 2 hexnyire lévő ellenfelet 5 körre."
@@ -52,10 +52,10 @@
    "description": "A vele harcban álló ellenfelek mindig kapnak tőle egy szabad csapást, ha ellépnek."
   },
   "tentacool-surf": {
-   "description": "Új képesség: hullám zúdul végig egy 2 hexnyi vonalon (Erő 85)."
+   "description": "Új képesség: hullám zúdul végig egy 2 hexnyi vonalon (Erő 65)."
   },
   "tentacool-whirlpool": {
-   "description": "Új képesség: örvénybe zár egy legfeljebb 2 hexnyire lévő ellenfelet (Erő 75), 2 körre Lelassítja."
+   "description": "Új képesség: örvénybe zár egy legfeljebb 2 hexnyire lévő ellenfelet (Erő 40), 2 körre Lelassítja."
   },
   "tentacool-toxic-tide": {
    "description": "20%-kal többet sebez a státuszos ellenfelekre; nem lehet Poisonnal vagy Paralysisszel sújtani."

@@ -169,7 +169,8 @@
    "shape": {
     "kind": "single"
    },
-   "affects": "enemies"
+   "affects": "enemies",
+   "canonPower": 140
   },
   "eevee-hyper-voice": {
    "id": "eevee-hyper-voice",
@@ -178,7 +179,7 @@
    "kind": "bond",
    "category": "special",
    "bondCost": 2,
-   "power": 75,
+   "power": 60,
    "range": {
     "min": 1,
     "max": 2
@@ -188,7 +189,8 @@
     "kind": "burst",
     "radius": 1
    },
-   "affects": "enemies"
+   "affects": "enemies",
+   "canonPower": 90
   },
   "eevee-extreme-speed": {
    "id": "eevee-extreme-speed",
@@ -197,7 +199,7 @@
    "kind": "bond",
    "category": "physical",
    "bondCost": 1,
-   "power": 60,
+   "power": 70,
    "range": {
     "min": 1,
     "max": 2
@@ -211,7 +213,8 @@
     {
      "kind": "engage"
     }
-   ]
+   ],
+   "canonPower": 80
   },
   "eevee-covet": {
    "id": "eevee-covet",
@@ -236,7 +239,8 @@
      "amount": 1,
      "when": "knockout"
     }
-   ]
+   ],
+   "canonPower": 60
   },
   "eevee-swift": {
    "id": "eevee-swift",
@@ -245,7 +249,7 @@
    "kind": "special",
    "category": "special",
    "cooldown": 3,
-   "power": 60,
+   "power": 55,
    "range": {
     "min": 1,
     "max": 2
@@ -254,7 +258,8 @@
    "shape": {
     "kind": "single"
    },
-   "affects": "enemies"
+   "affects": "enemies",
+   "canonPower": 60
   },
   "eevee-take-down": {
    "id": "eevee-take-down",
@@ -263,7 +268,7 @@
    "kind": "special",
    "category": "physical",
    "cooldown": 3,
-   "power": 75,
+   "power": 80,
    "range": {
     "min": 1,
     "max": 1
@@ -278,7 +283,8 @@
      "kind": "push",
      "distance": 1
     }
-   ]
+   ],
+   "canonPower": 90
   },
   "eevee-wish": {
    "id": "eevee-wish",
@@ -310,7 +316,7 @@
    "kind": "special",
    "category": "physical",
    "cooldown": 4,
-   "power": 90,
+   "power": 95,
    "range": {
     "min": 1,
     "max": 1
@@ -319,7 +325,8 @@
    "shape": {
     "kind": "single"
    },
-   "affects": "enemies"
+   "affects": "enemies",
+   "canonPower": 120
   },
   "eevee-giga-impact": {
    "id": "eevee-giga-impact",
@@ -343,7 +350,8 @@
      "kind": "push",
      "distance": 1
     }
-   ]
+   ],
+   "canonPower": 150
   },
   "eevee-tri-attack": {
    "id": "eevee-tri-attack",
@@ -352,7 +360,7 @@
    "kind": "special",
    "category": "special",
    "cooldown": 4,
-   "power": 80,
+   "power": 65,
    "range": {
     "min": 1,
     "max": 2
@@ -361,7 +369,8 @@
    "shape": {
     "kind": "single"
    },
-   "affects": "enemies"
+   "affects": "enemies",
+   "canonPower": 80
   },
   "eevee-surf": {
    "id": "eevee-surf",
@@ -370,7 +379,7 @@
    "kind": "special",
    "category": "special",
    "cooldown": 4,
-   "power": 85,
+   "power": 65,
    "range": {
     "min": 1,
     "max": 1
@@ -380,7 +389,8 @@
     "kind": "burst",
     "radius": 1
    },
-   "affects": "enemies"
+   "affects": "enemies",
+   "canonPower": 90
   },
   "eevee-aqua-tail": {
    "id": "eevee-aqua-tail",
@@ -389,7 +399,7 @@
    "kind": "special",
    "category": "physical",
    "cooldown": 4,
-   "power": 85,
+   "power": 80,
    "range": {
     "min": 1,
     "max": 1
@@ -398,7 +408,8 @@
    "shape": {
     "kind": "single"
    },
-   "affects": "enemies"
+   "affects": "enemies",
+   "canonPower": 90
   },
   "eevee-muddy-water": {
    "id": "eevee-muddy-water",
@@ -407,7 +418,7 @@
    "kind": "special",
    "category": "special",
    "cooldown": 5,
-   "power": 90,
+   "power": 65,
    "range": {
     "min": 1,
     "max": 1
@@ -424,7 +435,8 @@
      "status": "slow",
      "duration": 1
     }
-   ]
+   ],
+   "canonPower": 90
   },
   "eevee-acid-armor": {
    "id": "eevee-acid-armor",
@@ -457,7 +469,7 @@
    "kind": "special",
    "category": "special",
    "cooldown": 4,
-   "power": 75,
+   "power": 60,
    "range": {
     "min": 0,
     "max": 0
@@ -474,7 +486,8 @@
      "status": "paralysis",
      "duration": 1
     }
-   ]
+   ],
+   "canonPower": 80
   },
   "eevee-thunder-fang": {
    "id": "eevee-thunder-fang",
@@ -483,7 +496,7 @@
    "kind": "special",
    "category": "physical",
    "cooldown": 3,
-   "power": 70,
+   "power": 65,
    "range": {
     "min": 1,
     "max": 1
@@ -499,7 +512,8 @@
      "status": "paralysis",
      "duration": 1
     }
-   ]
+   ],
+   "canonPower": 65
   },
   "eevee-electro-ball": {
    "id": "eevee-electro-ball",
@@ -527,7 +541,7 @@
    "kind": "special",
    "category": "special",
    "cooldown": 3,
-   "power": 70,
+   "power": 60,
    "range": {
     "min": 1,
     "max": 2
@@ -541,7 +555,8 @@
     {
      "kind": "disengage"
     }
-   ]
+   ],
+   "canonPower": 70
   },
   "eevee-flare-blitz": {
    "id": "eevee-flare-blitz",
@@ -559,7 +574,8 @@
    "shape": {
     "kind": "single"
    },
-   "affects": "enemies"
+   "affects": "enemies",
+   "canonPower": 120
   },
   "eevee-lava-plume": {
    "id": "eevee-lava-plume",
@@ -568,7 +584,7 @@
    "kind": "special",
    "category": "special",
    "cooldown": 4,
-   "power": 75,
+   "power": 60,
    "range": {
     "min": 0,
     "max": 0
@@ -585,7 +601,8 @@
      "status": "burn",
      "duration": 1
     }
-   ]
+   ],
+   "canonPower": 80
   },
   "eevee-overheat": {
    "id": "eevee-overheat",
@@ -594,7 +611,7 @@
    "kind": "special",
    "category": "special",
    "cooldown": 5,
-   "power": 100,
+   "power": 90,
    "range": {
     "min": 1,
     "max": 2
@@ -603,7 +620,8 @@
    "shape": {
     "kind": "single"
    },
-   "affects": "enemies"
+   "affects": "enemies",
+   "canonPower": 130
   },
   "eevee-heat-crash": {
    "id": "eevee-heat-crash",
@@ -689,13 +707,13 @@
   "eevee-hyper-voice": {
    "id": "eevee-hyper-voice",
    "name": "Hyper Voice",
-   "description": "Bond skill: a piercing cry up to 2 hexes away (Power 75) hitting a 1-hex area.",
+   "description": "Bond skill: a piercing cry up to 2 hexes away (Power 60) hitting a 1-hex area.",
    "grantsMove": "eevee-hyper-voice"
   },
   "eevee-extreme-speed": {
    "id": "eevee-extreme-speed",
    "name": "Extreme Speed",
-   "description": "Bond skill: a blurring dash up to 2 hexes into a foe (Power 60) that engages it.",
+   "description": "Bond skill: a blurring dash up to 2 hexes into a foe (Power 70) that engages it.",
    "grantsMove": "eevee-extreme-speed"
   },
   "eevee-run-away": {
@@ -742,13 +760,13 @@
   "eevee-swift": {
    "id": "eevee-swift",
    "name": "Swift",
-   "description": "New skill: stars that never miss a foe up to 2 hexes away, even around others (Power 60).",
+   "description": "New skill: stars that never miss a foe up to 2 hexes away, even around others (Power 55).",
    "grantsMove": "eevee-swift"
   },
   "eevee-take-down": {
    "id": "eevee-take-down",
    "name": "Take Down",
-   "description": "New skill: a reckless body slam (Power 75) that knocks the foe back 1 hex.",
+   "description": "New skill: a reckless body slam (Power 80) that knocks the foe back 1 hex.",
    "grantsMove": "eevee-take-down"
   },
   "eevee-wish": {
@@ -776,7 +794,7 @@
   "eevee-double-edge": {
    "id": "eevee-double-edge",
    "name": "Double-Edge",
-   "description": "New skill: a life-risking tackle with everything it has (Power 90).",
+   "description": "New skill: a life-risking tackle with everything it has (Power 95).",
    "grantsMove": "eevee-double-edge"
   },
   "eevee-endure": {
@@ -804,7 +822,7 @@
   "eevee-tri-attack": {
    "id": "eevee-tri-attack",
    "name": "Tri Attack",
-   "description": "New skill: three linked beams at a foe up to 2 hexes away (Power 80).",
+   "description": "New skill: three linked beams at a foe up to 2 hexes away (Power 65).",
    "grantsMove": "eevee-tri-attack"
   },
   "eevee-cheerful": {
@@ -867,13 +885,13 @@
   "eevee-surf": {
    "id": "eevee-surf",
    "name": "Surf",
-   "description": "New skill: a wave crashing up to 1 hex away (Power 85) hitting a 1-hex area.",
+   "description": "New skill: a wave crashing up to 1 hex away (Power 65) hitting a 1-hex area.",
    "grantsMove": "eevee-surf"
   },
   "eevee-aqua-tail": {
    "id": "eevee-aqua-tail",
    "name": "Aqua Tail",
-   "description": "New skill: lashes with its finned tail like a crashing wave (Power 85).",
+   "description": "New skill: lashes with its finned tail like a crashing wave (Power 80).",
    "grantsMove": "eevee-aqua-tail"
   },
   "eevee-melt-away": {
@@ -897,7 +915,7 @@
   "eevee-muddy-water": {
    "id": "eevee-muddy-water",
    "name": "Muddy Water",
-   "description": "New skill: a muddy surge up to 1 hex away (Power 90, 1-hex area) that Slows for 1 turn.",
+   "description": "New skill: a muddy surge up to 1 hex away (Power 65, 1-hex area) that Slows for 1 turn.",
    "grantsMove": "eevee-muddy-water"
   },
   "eevee-acid-armor": {
@@ -961,13 +979,13 @@
   "eevee-discharge": {
    "id": "eevee-discharge",
    "name": "Discharge",
-   "description": "New skill: releases electricity on all adjacent foes (Power 75), Paralyzing for 1 turn.",
+   "description": "New skill: releases electricity on all adjacent foes (Power 60), Paralyzing for 1 turn.",
    "grantsMove": "eevee-discharge"
   },
   "eevee-thunder-fang": {
    "id": "eevee-thunder-fang",
    "name": "Thunder Fang",
-   "description": "New skill: an electrified bite (Power 70) that Paralyzes the foe for 1 turn.",
+   "description": "New skill: an electrified bite (Power 65) that Paralyzes the foe for 1 turn.",
    "grantsMove": "eevee-thunder-fang"
   },
   "eevee-charge": {
@@ -997,7 +1015,7 @@
   "eevee-volt-switch": {
    "id": "eevee-volt-switch",
    "name": "Volt Switch",
-   "description": "New skill: a jolt at a foe up to 2 hexes away (Power 70), then it slips out of engagement.",
+   "description": "New skill: a jolt at a foe up to 2 hexes away (Power 60), then it slips out of engagement.",
    "grantsMove": "eevee-volt-switch"
   },
   "eevee-pent-up-static": {
@@ -1064,7 +1082,7 @@
   "eevee-lava-plume": {
    "id": "eevee-lava-plume",
    "name": "Lava Plume",
-   "description": "New skill: scarlet flames on all adjacent foes (Power 75), Burning for 1 turn.",
+   "description": "New skill: scarlet flames on all adjacent foes (Power 60), Burning for 1 turn.",
    "grantsMove": "eevee-lava-plume"
   },
   "eevee-inner-furnace": {
@@ -1090,7 +1108,7 @@
   "eevee-overheat": {
    "id": "eevee-overheat",
    "name": "Overheat",
-   "description": "New skill: a full-power blast of fire at a foe up to 2 hexes away (Power 100).",
+   "description": "New skill: a full-power blast of fire at a foe up to 2 hexes away (Power 90).",
    "grantsMove": "eevee-overheat"
   },
   "eevee-ember-heart": {

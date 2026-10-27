@@ -1,10 +1,10 @@
 {
  "talents": {
   "kabuto-night-slash": {
-   "description": "Bond képesség: vágás az árnyékból (Erő 95, Támadás)."
+   "description": "Bond képesség: vágás az árnyékból (Erő 75, Támadás)."
   },
   "kabuto-aqua-jet": {
-   "description": "Bond képesség: 2 hexen belül vízsugárként csapódik az ellenfélbe (Erő 55, Támadás), és lefogja."
+   "description": "Bond képesség: 2 hexen belül vízsugárként csapódik az ellenfélbe (Erő 45, Támadás), és lefogja."
   },
   "kabuto-endure": {
    "description": "Bond képesség: megfeszül a páncéljában, 1 körre Védett lesz."
@@ -19,7 +19,7 @@
    "description": "Új képesség: fenyegető pillantása egy max. 2 hexnyi ellenfelet 2 körre Exposed állapotba hoz."
   },
   "kabuto-rock-tomb": {
-   "description": "Új képesség: köveket zúdít egy 2 hexen belüli ellenfélre (Erő 50); 2 körig Lassú."
+   "description": "Új képesség: köveket zúdít egy 2 hexen belüli ellenfélre (Erő 55); 2 körig Lassú."
   },
   "kabuto-fossil-hunter": {
    "description": "10%-kal többet sebez, az állapottal sújtott ellenfelekre további 10%-kal többet."
@@ -28,10 +28,10 @@
    "description": "A szomszédos hexről őt ütő ellenfelek 6 sebzést kapnak."
   },
   "kabuto-razor-shell": {
-   "description": "Új képesség: éles páncélszélével megvág egy szomszédos ellenfelet (Erő 60)."
+   "description": "Új képesség: éles páncélszélével megvág egy szomszédos ellenfelet (Erő 70)."
   },
   "kabuto-rapid-spin": {
-   "description": "Új képesség: pörögve nekiront (Erő 40), és kiszakad a közelharcból."
+   "description": "Új képesség: pörögve nekiront (Erő 55), és kiszakad a közelharcból."
   },
   "kabuto-scythe-arms": {
    "description": "Minden egymás utáni ütés ugyanarra az ellenfélre 10%-kal többet sebez (max 3)."
@@ -40,10 +40,10 @@
    "description": "Közelharcban körönként a max HP további 3%-át gyógyítja."
   },
   "kabuto-rock-slide": {
-   "description": "Új képesség: sziklákat zúdít egy legfeljebb 1 hexnyire lévő 1 hexes körzetre (Erő 70)."
+   "description": "Új képesség: sziklákat zúdít egy legfeljebb 1 hexnyire lévő 1 hexes körzetre (Erő 55)."
   },
   "kabuto-waterfall": {
-   "description": "Új képesség: vízesésként ront az ellenfélre (Erő 80), és 1 hexnyit hátralöki."
+   "description": "Új képesség: vízesésként ront az ellenfélre (Erő 75), és 1 hexnyit hátralöki."
   },
   "kabuto-ambush-predator": {
    "description": "20%-kal többet sebez a teljes HP-jú ellenfelekre."
@@ -52,7 +52,7 @@
    "description": "Az elszakadó ellenfelekre mért szabad ütései 30%-kal erősebbek."
   },
   "kabuto-stone-edge": {
-   "description": "Új képesség: éles kővel döf az ellenfélbe (Erő 100)."
+   "description": "Új képesség: éles kővel döf az ellenfélbe (Erő 85)."
   },
   "kabuto-swords-dance": {
    "description": "Új képesség: harci tánc, amitől 3 körig Összpontosított."

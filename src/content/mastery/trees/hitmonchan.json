@@ -69,7 +69,7 @@
    "kind": "bond",
    "category": "physical",
    "bondCost": 2,
-   "power": 95,
+   "power": 85,
    "range": {
     "min": 1,
     "max": 1
@@ -84,7 +84,8 @@
      "kind": "push",
      "distance": 1
     }
-   ]
+   ],
+   "canonPower": 85
   },
   "hitmonchan-detect": {
    "id": "hitmonchan-detect",
@@ -118,7 +119,7 @@
    "kind": "bond",
    "category": "physical",
    "bondCost": 1,
-   "power": 60,
+   "power": 50,
    "range": {
     "min": 1,
     "max": 1
@@ -127,7 +128,8 @@
    "shape": {
     "kind": "single"
    },
-   "affects": "enemies"
+   "affects": "enemies",
+   "canonPower": 40
   },
   "hitmonchan-bullet-punch": {
    "id": "hitmonchan-bullet-punch",
@@ -145,7 +147,8 @@
    "shape": {
     "kind": "single"
    },
-   "affects": "enemies"
+   "affects": "enemies",
+   "canonPower": 40
   },
   "hitmonchan-vacuum-wave": {
    "id": "hitmonchan-vacuum-wave",
@@ -154,7 +157,7 @@
    "kind": "special",
    "category": "special",
    "cooldown": 3,
-   "power": 45,
+   "power": 40,
    "range": {
     "min": 1,
     "max": 2
@@ -163,7 +166,8 @@
    "shape": {
     "kind": "single"
    },
-   "affects": "enemies"
+   "affects": "enemies",
+   "canonPower": 40
   },
   "hitmonchan-agility": {
    "id": "hitmonchan-agility",
@@ -230,7 +234,8 @@
    "shape": {
     "kind": "single"
    },
-   "affects": "enemies"
+   "affects": "enemies",
+   "canonPower": 150
   },
   "hitmonchan-quick-guard": {
    "id": "hitmonchan-quick-guard",
@@ -265,7 +270,7 @@
    "kind": "special",
    "category": "physical",
    "cooldown": 5,
-   "power": 90,
+   "power": 85,
    "range": {
     "min": 1,
     "max": 1
@@ -281,7 +286,8 @@
      "status": "slow",
      "duration": 2
     }
-   ]
+   ],
+   "canonPower": 100
   },
   "hitmonchan-close-combat": {
    "id": "hitmonchan-close-combat",
@@ -299,14 +305,15 @@
    "shape": {
     "kind": "single"
    },
-   "affects": "enemies"
+   "affects": "enemies",
+   "canonPower": 120
   }
  },
  "talents": {
   "hitmonchan-sky-uppercut": {
    "id": "hitmonchan-sky-uppercut",
    "name": "Sky Uppercut",
-   "description": "Bond skill: a soaring uppercut (Power 95, Attack) that knocks the foe back 1 hex.",
+   "description": "Bond skill: a soaring uppercut (Power 85, Attack) that knocks the foe back 1 hex.",
    "grantsMove": "hitmonchan-sky-uppercut"
   },
   "hitmonchan-detect": {
@@ -318,7 +325,7 @@
   "hitmonchan-mach-punch": {
    "id": "hitmonchan-mach-punch",
    "name": "Mach Punch",
-   "description": "Bond skill: a punch faster than sound (Power 60, Attack).",
+   "description": "Bond skill: a punch faster than sound (Power 50, Attack).",
    "grantsMove": "hitmonchan-mach-punch"
   },
   "hitmonchan-iron-fist": {
@@ -346,7 +353,7 @@
   "hitmonchan-vacuum-wave": {
    "id": "hitmonchan-vacuum-wave",
    "name": "Vacuum Wave",
-   "description": "New skill: a punch that sends a vacuum wave at a foe up to 2 hexes away (Power 45).",
+   "description": "New skill: a punch that sends a vacuum wave at a foe up to 2 hexes away (Power 40).",
    "grantsMove": "hitmonchan-vacuum-wave"
   },
   "hitmonchan-counterpunch": {
@@ -424,7 +431,7 @@
   "hitmonchan-dynamic-punch": {
    "id": "hitmonchan-dynamic-punch",
    "name": "Dynamic Punch",
-   "description": "New skill: a punch with all its might (Power 90) that dazes the foe, Slowing it 2 turns.",
+   "description": "New skill: a punch with all its might (Power 85) that dazes the foe, Slowing it 2 turns.",
    "grantsMove": "hitmonchan-dynamic-punch"
   },
   "hitmonchan-close-combat": {

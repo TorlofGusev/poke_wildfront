@@ -1,10 +1,10 @@
 {
  "talents": {
   "venonat-bug-buzz": {
-   "description": "Bond képesség: rezgő szárnyzúgás egy legfeljebb 3 hexnyi ellenfélre (Erő 90)."
+   "description": "Bond képesség: rezgő szárnyzúgás egy legfeljebb 3 hexnyi ellenfélre (Erő 75)."
   },
   "venonat-u-turn": {
-   "description": "Bond képesség: lecsap és visszaröppen (Erő 60, Attack), megszünteti a lekötést."
+   "description": "Bond képesség: lecsap és visszaröppen (Erő 75, Attack), megszünteti a lekötést."
   },
   "venonat-quiver-dance": {
    "description": "Bond képesség: misztikus tánc: 1 körre Fortified, 2 körre Hasted állapotba kerül."
@@ -16,7 +16,7 @@
    "description": "Szabad csapás nélkül menekül el a lekötő ellenfelektől."
   },
   "venonat-signal-beam": {
-   "description": "Új képesség: baljós fénysugár egy legfeljebb 2 hexnyi ellenfélre (Erő 55), 1 körre lelassítja."
+   "description": "Új képesség: baljós fénysugár egy legfeljebb 2 hexnyi ellenfélre (Erő 65), 1 körre lelassítja."
   },
   "venonat-venom-feeder": {
    "description": "20%-kal többet sebez a megmérgezett ellenfelekre."
@@ -25,7 +25,7 @@
    "description": "Pikkelyporos szárnyai elmossák az alakját: 10%-kal kevesebb sebzést kap."
   },
   "venonat-venoshock": {
-   "description": "Új képesség: mérgező folyadékkal áraszt el egy legfeljebb 2 hexnyi ellenfelet (Erő 65)."
+   "description": "Új képesség: mérgező folyadékkal áraszt el egy legfeljebb 2 hexnyi ellenfelet (Erő 55)."
   },
   "venonat-bug-bite": {
    "description": "Új képesség: gyors, éles harapás (Erő 60)."
@@ -37,10 +37,10 @@
    "description": "15%-kal többet sebez a szövetségesei által lekötött ellenfelekre."
   },
   "venonat-poison-fang": {
-   "description": "Új képesség: mérges fogait mélyeszti az ellenfélbe (Erő 80), 2 körre megmérgezi."
+   "description": "Új képesség: mérges fogait mélyeszti az ellenfélbe (Erő 55), 2 körre megmérgezi."
   },
   "venonat-silver-wind": {
-   "description": "Új képesség: pikkelyporos fuvallat egy max. 2 hexnyi ellenfélre (Erő 80)."
+   "description": "Új képesség: pikkelyporos fuvallat egy max. 2 hexnyi ellenfélre (Erő 55)."
   },
   "venonat-scale-shed": {
    "description": "Köre elején lerázza az ellenfelek okozta állapotokat."
@@ -49,10 +49,10 @@
    "description": "20%-kal többet sebez a bármilyen állapotban lévő ellenfelekre."
   },
   "venonat-sludge-bomb": {
-   "description": "Új képesség: iszapbombát hajít legfeljebb 2 hexnyire (Erő 90), 2 körre megmérgezi az ellenfelet."
+   "description": "Új képesség: iszapbombát hajít legfeljebb 2 hexnyire (Erő 70), 2 körre megmérgezi az ellenfelet."
   },
   "venonat-pollen-puff": {
-   "description": "Új képesség: szétpukkanó virágporgömb egy max. 2 hexnyi ellenfélre (Erő 85)."
+   "description": "Új képesség: szétpukkanó virágporgömb egy max. 2 hexnyi ellenfélre (Erő 70)."
   },
   "venonat-potent-powders": {
    "description": "Az általa okozott állapotok 1 körrel tovább tartanak."

@@ -47,7 +47,7 @@
    },
    "affects": "enemies",
    "cooldown": 5,
-   "power": 40,
+   "power": 65,
    "range": {
     "min": 1,
     "max": 1
@@ -62,7 +62,8 @@
      "status": "exposed",
      "duration": 2
     }
-   ]
+   ],
+   "canonPower": 90
   }
  },
  "variants": {
@@ -159,7 +160,7 @@
   "skill-controller-hyper-voice": {
    "id": "skill-controller-hyper-voice",
    "name": "Hyper Voice",
-   "description": "New skill: pushes foes in an area 1 hex away and Exposes them for 2 turns (Power 40).",
+   "description": "New skill: pushes foes in an area 1 hex away and Exposes them for 2 turns (Power 65).",
    "grantsMove": "controller-hyper-voice"
   }
  },

@@ -67,7 +67,7 @@
    "kind": "bond",
    "category": "special",
    "bondCost": 3,
-   "power": 80,
+   "power": 60,
    "range": {
     "min": 0,
     "max": 0
@@ -77,7 +77,8 @@
     "kind": "burst",
     "radius": 2
    },
-   "affects": "enemies"
+   "affects": "enemies",
+   "canonPower": 90
   },
   "staryu-rapid-spin": {
    "id": "staryu-rapid-spin",
@@ -102,7 +103,8 @@
      "kind": "push",
      "distance": 1
     }
-   ]
+   ],
+   "canonPower": 50
   },
   "staryu-minimize": {
    "id": "staryu-minimize",
@@ -135,7 +137,7 @@
    "kind": "special",
    "category": "special",
    "cooldown": 2,
-   "power": 60,
+   "power": 55,
    "range": {
     "min": 1,
     "max": 2
@@ -144,7 +146,8 @@
    "shape": {
     "kind": "single"
    },
-   "affects": "enemies"
+   "affects": "enemies",
+   "canonPower": 65
   },
   "staryu-flash": {
    "id": "staryu-flash",
@@ -178,7 +181,7 @@
    "kind": "special",
    "category": "special",
    "cooldown": 3,
-   "power": 60,
+   "power": 55,
    "range": {
     "min": 1,
     "max": 2
@@ -194,7 +197,8 @@
      "status": "confused",
      "duration": 2
     }
-   ]
+   ],
+   "canonPower": 65
   },
   "staryu-hypnosis": {
    "id": "staryu-hypnosis",
@@ -227,7 +231,7 @@
    "kind": "special",
    "category": "special",
    "cooldown": 4,
-   "power": 85,
+   "power": 65,
    "range": {
     "min": 1,
     "max": 2
@@ -236,7 +240,8 @@
    "shape": {
     "kind": "single"
    },
-   "affects": "enemies"
+   "affects": "enemies",
+   "canonPower": 80
   },
   "staryu-light-screen": {
    "id": "staryu-light-screen",
@@ -270,7 +275,7 @@
    "kind": "special",
    "category": "special",
    "cooldown": 4,
-   "power": 90,
+   "power": 65,
    "range": {
     "min": 1,
     "max": 2
@@ -286,7 +291,8 @@
      "status": "burn",
      "duration": 1
     }
-   ]
+   ],
+   "canonPower": 80
   },
   "staryu-extrasensory": {
    "id": "staryu-extrasensory",
@@ -295,7 +301,7 @@
    "kind": "special",
    "category": "special",
    "cooldown": 4,
-   "power": 90,
+   "power": 65,
    "range": {
     "min": 1,
     "max": 2
@@ -311,14 +317,15 @@
      "status": "slow",
      "duration": 1
     }
-   ]
+   ],
+   "canonPower": 80
   }
  },
  "talents": {
   "staryu-surf": {
    "id": "staryu-surf",
    "name": "Surf",
-   "description": "Bond skill: a great wave hits every foe within 2 hexes of it (Power 80).",
+   "description": "Bond skill: a great wave hits every foe within 2 hexes of it (Power 60).",
    "grantsMove": "staryu-surf"
   },
   "staryu-rapid-spin": {
@@ -352,7 +359,7 @@
   "staryu-brine": {
    "id": "staryu-brine",
    "name": "Brine",
-   "description": "New skill: a spray of salt water at a foe up to 2 hexes away (Power 60).",
+   "description": "New skill: a spray of salt water at a foe up to 2 hexes away (Power 55).",
    "grantsMove": "staryu-brine"
   },
   "staryu-flash": {
@@ -380,7 +387,7 @@
   "staryu-psybeam": {
    "id": "staryu-psybeam",
    "name": "Psybeam",
-   "description": "New skill: a peculiar ray at a foe up to 2 hexes away (Power 60); Confused 2 turns.",
+   "description": "New skill: a peculiar ray at a foe up to 2 hexes away (Power 55); Confused 2 turns.",
    "grantsMove": "staryu-psybeam"
   },
   "staryu-hypnosis": {
@@ -408,7 +415,7 @@
   "staryu-psyshock": {
    "id": "staryu-psyshock",
    "name": "Psyshock",
-   "description": "New skill: a psychic wave at a foe up to 2 hexes away (Power 85).",
+   "description": "New skill: a psychic wave at a foe up to 2 hexes away (Power 65).",
    "grantsMove": "staryu-psyshock"
   },
   "staryu-light-screen": {
@@ -438,13 +445,13 @@
   "staryu-scald": {
    "id": "staryu-scald",
    "name": "Scald",
-   "description": "New skill: boiling water at a foe up to 2 hexes away (Power 90); Burns it 1 turn.",
+   "description": "New skill: boiling water at a foe up to 2 hexes away (Power 65); Burns it 1 turn.",
    "grantsMove": "staryu-scald"
   },
   "staryu-extrasensory": {
    "id": "staryu-extrasensory",
    "name": "Extrasensory",
-   "description": "New skill: an eerie psychic force at a foe up to 2 hexes away (Power 90); Slows 1 turn.",
+   "description": "New skill: an eerie psychic force at a foe up to 2 hexes away (Power 65); Slows 1 turn.",
    "grantsMove": "staryu-extrasensory"
   },
   "staryu-psychic-resonance": {

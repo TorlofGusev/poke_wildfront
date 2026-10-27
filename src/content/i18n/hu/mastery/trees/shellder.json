@@ -4,10 +4,10 @@
    "description": "Bond képesség: vasként megkeményíti a héját: 1 körre Védett, 3 körre Megerősített."
   },
   "shellder-icicle-spear": {
-   "description": "Bond képesség: jégcsapsorozatot lő egy legfeljebb 3 hexnyire lévő ellenfélre (Erő 95, Támadás)."
+   "description": "Bond képesség: jégcsapsorozatot lő egy legfeljebb 3 hexnyire lévő ellenfélre (Erő 65, Támadás)."
   },
   "shellder-hydro-pump": {
-   "description": "Bond képesség: hatalmas vízsugár egy legfeljebb 3 hexnyire lévő ellenfélre (Erő 100, Kül. Tám.)."
+   "description": "Bond képesség: hatalmas vízsugár egy legfeljebb 3 hexnyire lévő ellenfélre (Erő 85, Kül. Tám.)."
   },
   "shellder-shell-armor": {
    "description": "10%-kal kevesebb sebzést kap."
@@ -19,7 +19,7 @@
    "description": "Új képesség: gyors jégdarabot pöccint egy legfeljebb 2 hexnyire lévő ellenfélre (Erő 40)."
   },
   "shellder-bubble-beam": {
-   "description": "Új képesség: buborékzápor egy legfeljebb 2 hexnyire lévő ellenfélre (Erő 60), 1 körre Lelassítja."
+   "description": "Új képesség: buborékzápor egy legfeljebb 2 hexnyire lévő ellenfélre (Erő 55), 1 körre Lelassítja."
   },
   "shellder-hard-shell": {
    "description": "20%-kal kevesebb sebzést kap teljes HP-n."
@@ -31,7 +31,7 @@
    "description": "Új képesség: becsukja a héját, 1 körre Védett lesz."
   },
   "shellder-razor-shell": {
-   "description": "Új skill: héja éles peremével vág (Erő 65); 1 körre Exposed."
+   "description": "Új skill: héja éles peremével vág (Erő 70); 1 körre Exposed."
   },
   "shellder-sealed-shell": {
    "description": "Nem lehet megégetni vagy megmérgezni."
@@ -40,10 +40,10 @@
    "description": "A kiszakadó ellenfelekre mért szabad csapásai 25%-kal többet sebeznek."
   },
   "shellder-avalanche": {
-   "description": "Új képesség: jégtömeget zúdít az ellenfélre (Erő 90)."
+   "description": "Új képesség: jégtömeget zúdít az ellenfélre (Erő 60)."
   },
   "shellder-freeze-dry": {
-   "description": "Új képesség: villámgyorsan lefagyaszt egy legfeljebb 2 hexnyire lévő ellenfelet (Erő 85), 2 körre Lelassítja."
+   "description": "Új képesség: villámgyorsan lefagyaszt egy legfeljebb 2 hexnyire lévő ellenfelet (Erő 60), 2 körre Lelassítja."
   },
   "shellder-icy-spikes": {
    "description": "Szomszédos ellenfeleken landolt találatai 1 körre Lelassítják őket."
@@ -52,7 +52,7 @@
    "description": "Jég mozdulatai 15%-kal többet sebeznek."
   },
   "shellder-icicle-crash": {
-   "description": "Új képesség: hatalmas jégcsapokat ejt egy legfeljebb 2 hexnyire lévő ellenfélre (Erő 95)."
+   "description": "Új képesség: hatalmas jégcsapokat ejt egy legfeljebb 2 hexnyire lévő ellenfélre (Erő 70)."
   },
   "shellder-shell-smash": {
    "description": "Új képesség: feltöri a héját: 2 körre Fókuszált és Felgyorsult, de 2 körre Kitett is."

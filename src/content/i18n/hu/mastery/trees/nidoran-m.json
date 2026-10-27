@@ -1,10 +1,10 @@
 {
  "talents": {
   "nidoran-m-sludge-bomb": {
-   "description": "Bond képesség: iszapbombát hajít legfeljebb 3 hexnyire (Erő 90), 2 körre megmérgez."
+   "description": "Bond képesség: iszapbombát hajít legfeljebb 3 hexnyire (Erő 75), 2 körre megmérgez."
   },
   "nidoran-m-poison-jab": {
-   "description": "Bond képesség: legfeljebb 2 hexnyit ugrik egy ellenfélhez (Erő 60), leköti; 1 körre megmérgez."
+   "description": "Bond képesség: legfeljebb 2 hexnyit ugrik egy ellenfélhez (Erő 70), leköti; 1 körre megmérgez."
   },
   "nidoran-m-poison-point": {
    "description": "Szomszédos ellenfelekre mért sebző találatai 1 körre megmérgezik őket."
@@ -22,7 +22,7 @@
    "description": "Szabad csapás nélkül léphet el a lekötő ellenfelektől."
   },
   "nidoran-m-iron-tail": {
-   "description": "Új képesség: megkeményített farkával csap le (Erő 75)."
+   "description": "Új képesség: megkeményített farkával csap le (Erő 85)."
   },
   "nidoran-m-rampage": {
    "description": "Minden kiütéskor +1 Támadást kap a csata végéig (max. +3)."
@@ -37,10 +37,10 @@
    "description": "A vele lekötött ellenfelek távozáskor mindig szabad csapást kapnak; szabad csapásai +25%."
   },
   "nidoran-m-earth-power": {
-   "description": "Új képesség: a föld kitör egy legfeljebb 2 hexnyi ellenfél alatt (Erő 90)."
+   "description": "Új képesség: a föld kitör egy legfeljebb 2 hexnyi ellenfél alatt (Erő 70)."
   },
   "nidoran-m-drill-run": {
-   "description": "Új képesség: szarvával fúróként átvágja magát egy 2 hexnyi vonalon (Erő 90)."
+   "description": "Új képesség: szarvával fúróként átvágja magát egy 2 hexnyi vonalon (Erő 60)."
   },
   "nidoran-m-pack-leader": {
    "description": "20%-kal többet sebez azokra, akikre egy szövetségese tett állapotot."
@@ -58,16 +58,16 @@
    "description": "Bond képesség: forgó szarvát az ellenfélbe fúrja (Erő 100, Támadás)."
   },
   "nidoran-m-poison-tail": {
-   "description": "Új képesség: gyors csapás mérgező farkával (Erő 45)."
+   "description": "Új képesség: gyors csapás mérgező farkával (Erő 55)."
   },
   "nidoran-m-mud-shot": {
-   "description": "Új képesség: sarat hajít egy 2 hexen belüli ellenfélre (Erő 70), 1 körig Slow."
+   "description": "Új képesség: sarat hajít egy 2 hexen belüli ellenfélre (Erő 50), 1 körig Slow."
   },
   "nidoran-m-sludge-wave": {
-   "description": "Új képesség: iszaphullám minden szomszédos ellenfélre (Erő 80), 1 körre Poison."
+   "description": "Új képesség: iszaphullám minden szomszédos ellenfélre (Erő 65), 1 körre Poison."
   },
   "nidoran-m-stomping-tantrum": {
-   "description": "Új képesség: dühösen rátapos az ellenfélre (Erő 80)."
+   "description": "Új képesség: dühösen rátapos az ellenfélre (Erő 70)."
   }
  }
 }

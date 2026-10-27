@@ -1,7 +1,7 @@
 {
  "talents": {
   "porygon-techno-blast": {
-   "description": "Bond képesség: nyers adatnyaláb egy max. 3 hexnyi ellenfélre (Erő 100)."
+   "description": "Bond képesség: nyers adatnyaláb egy max. 3 hexnyi ellenfélre (Erő 90)."
   },
   "porygon-conversion-2": {
    "description": "Bond képesség: átírja a típusát, hogy ellenálljon: 2 körre Protected."
@@ -25,7 +25,7 @@
    "description": "20%-kal többet sebez a legalább 2 hexre lévő ellenfelekre."
   },
   "porygon-swift": {
-   "description": "Új képesség: csillag alakú sugarak egy max. 2 hexnyi ellenfélre (Erő 65); 1 körre lassít."
+   "description": "Új képesség: csillag alakú sugarak egy max. 2 hexnyi ellenfélre (Erő 55); 1 körre lassít."
   },
   "porygon-conversion": {
    "description": "Új képesség: típusát az ellenfelekhez igazítja: 2 körig Megerősített."
@@ -37,7 +37,7 @@
    "description": "15%-kal többet sebez az állapottal sújtott ellenfelekre."
   },
   "porygon-hyper-voice": {
-   "description": "Új képesség: torz sikoly egy max. 2 hexnyi ellenfélre (Erő 85); 1 körre Exposed lesz."
+   "description": "Új képesség: torz sikoly egy max. 2 hexnyi ellenfélre (Erő 70); 1 körre Exposed lesz."
   },
   "porygon-sharpen": {
    "description": "Új képesség: kiélezi éleit; 2 körre Focused állapotba kerül."
@@ -49,10 +49,10 @@
    "description": "A csapat 1 Bondot kap, amikor kombót ér el."
   },
   "porygon-hyper-beam": {
-   "description": "Új képesség: pusztító sugár egy 2 hexen belüli ellenfélre (Erő 100)."
+   "description": "Új képesség: pusztító sugár egy 2 hexen belüli ellenfélre (Erő 95)."
   },
   "porygon-boomburst": {
-   "description": "Új képesség: fülsiketítő robbanás, amely az 1 hexen belüli ellenfeleket éri (Erő 90)."
+   "description": "Új képesség: fülsiketítő robbanás, amely az 1 hexen belüli ellenfeleket éri (Erő 85)."
   },
   "porygon-overclock": {
    "description": "Ha a saját körében kiüt egy ellenfelet, 2 mozgáspontot visszakap."

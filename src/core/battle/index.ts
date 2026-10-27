@@ -6,3 +6,4 @@ export * from "./battle";
 export * from "./deployment";
 export * from "./species";
 export * from "./preview";
+export * from "./movePower";

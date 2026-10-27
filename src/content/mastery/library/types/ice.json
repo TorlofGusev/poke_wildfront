@@ -23,7 +23,8 @@
      "status": "slow",
      "duration": 1
     }
-   ]
+   ],
+   "canonPower": 40
   },
   "icy-wind": {
    "id": "icy-wind",
@@ -31,7 +32,7 @@
    "type": "ice",
    "kind": "special",
    "cooldown": 3,
-   "power": 35,
+   "power": 50,
    "range": {
     "min": 1,
     "max": 1
@@ -48,7 +49,8 @@
      "status": "slow",
      "duration": 2
     }
-   ]
+   ],
+   "canonPower": 55
   },
   "sheer-cold": {
    "id": "sheer-cold",
@@ -82,7 +84,7 @@
    "requiresLineOfSight": true,
    "affects": "enemies",
    "cooldown": 5,
-   "power": 75,
+   "power": 70,
    "range": {
     "min": 1,
     "max": 1
@@ -97,7 +99,8 @@
      "status": "freeze",
      "duration": 1
     }
-   ]
+   ],
+   "canonPower": 110
   }
  },
  "talents": {
@@ -194,7 +197,7 @@
   "ice-skill-blizzard": {
    "id": "ice-skill-blizzard",
    "name": "Blizzard",
-   "description": "New skill: a blizzard hits an area 1 hex away and Freezes it (Power 75).",
+   "description": "New skill: a blizzard hits an area 1 hex away and Freezes it (Power 70).",
    "requiresType": "ice",
    "grantsMove": "blizzard"
   }

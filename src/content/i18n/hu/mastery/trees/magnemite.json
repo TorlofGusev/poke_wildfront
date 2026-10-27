@@ -1,7 +1,7 @@
 {
  "talents": {
   "magnemite-zap-cannon": {
-   "description": "Bond képesség: elektromos ágyúlövés legfeljebb 3 hexnyire (Erő 100, Kül. Tám.), 1 körre megbénít."
+   "description": "Bond képesség: elektromos ágyúlövés legfeljebb 3 hexnyire (Erő 90, Kül. Tám.), 1 körre megbénít."
   },
   "magnemite-gyro-ball": {
    "description": "Bond képesség: acéltestét megpörgetve az ellenfélnek csapódik (Erő 80)."
@@ -25,7 +25,7 @@
    "description": "Szomszédos ellenfeleken landolt találatai 1 körre megbénítják őket."
   },
   "magnemite-flash-cannon": {
-   "description": "Új képesség: fényenergia-villanás egy legfeljebb 2 hexnyire lévő ellenfélre (Erő 75)."
+   "description": "Új képesség: fényenergia-villanás egy legfeljebb 2 hexnyire lévő ellenfélre (Erő 65)."
   },
   "magnemite-tri-unit-focus": {
    "description": "A legalább 2 hexes hatótávú mozdulatai 1 hexszel messzebbre érnek."
@@ -34,7 +34,7 @@
    "description": "15%-kal többet sebez a szövetségeseivel harcban álló ellenfelekre."
   },
   "magnemite-discharge": {
-   "description": "Új képesség: szétsugárzó elektromosság minden szomszédos ellenfelet eltalál (Erő 85)."
+   "description": "Új képesség: szétsugárzó elektromosság minden szomszédos ellenfelet eltalál (Erő 60)."
   },
   "magnemite-analytic": {
    "description": "15%-kal többet sebez a legalább 2 hexnyire lévő ellenfelekre."
@@ -43,10 +43,10 @@
    "description": "A csapat 1 Kötelék pontot kap, ha kombót ér el."
   },
   "magnemite-steel-beam": {
-   "description": "Új képesség: acélsugarat lő egy legfeljebb 2 hexnyire lévő ellenfélre (Erő 100)."
+   "description": "Új képesség: acélsugarat lő egy legfeljebb 2 hexnyire lévő ellenfélre (Erő 95)."
   },
   "magnemite-volt-switch": {
-   "description": "Új képesség: megráz egy legfeljebb 2 hexnyire lévő ellenfelet (Erő 75), és kilép a saját harcából."
+   "description": "Új képesség: megráz egy legfeljebb 2 hexnyire lévő ellenfelet (Erő 60), és kilép a saját harcából."
   },
   "magnemite-magnet-rise": {
    "description": "Nem lehet Lelassítani: mágnesesen lebeg."
@@ -67,7 +67,7 @@
    "description": "Új képesség: fülsértő csikorgás; a szomszédos ellenfelek 2 körre Exposed állapotba kerülnek."
   },
   "magnemite-swift": {
-   "description": "Új képesség: csillag alakú sugarak egy max. 2 hexnyi ellenfélre, rálátás nélkül is (Erő 80)."
+   "description": "Új képesség: csillag alakú sugarak egy max. 2 hexnyi ellenfélre, rálátás nélkül is (Erő 55)."
   }
  }
 }

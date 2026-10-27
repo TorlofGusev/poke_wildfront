@@ -1,7 +1,7 @@
 {
  "talents": {
   "oddish-solar-beam": {
-   "description": "Bond képesség: összegyűjtött napfény sugara egy max. 3 hexnyi ellenfélre (Erő 110)."
+   "description": "Bond képesség: összegyűjtött napfény sugara egy max. 3 hexnyi ellenfélre (Erő 90)."
   },
   "oddish-grassy-terrain": {
    "description": "Bond képesség: dús fű legfeljebb 2 hexnyire, 1 hexes körzetben 30 HP-t gyógyítja a szövetségeseket."
@@ -19,7 +19,7 @@
    "description": "Új képesség: altatópor, amely egy max. 2 hexnyire lévő ellenfelet 2 körre elaltat (Sleep)."
   },
   "oddish-mega-drain": {
-   "description": "Új képesség: kiszívja egy max. 2 hexnyi ellenfél erejét (Erő 55), a sebzés egy részét visszagyógyítva."
+   "description": "Új képesség: kiszívja egy max. 2 hexnyi ellenfél erejét (Erő 40), a sebzés egy részét visszagyógyítva."
   },
   "oddish-thick-petals": {
    "description": "10%-kal kevesebb sebzést kap."
@@ -37,16 +37,16 @@
    "description": "Grass támadásai a sebzés további 10%-át szívják el HP-ként."
   },
   "oddish-sludge-bomb": {
-   "description": "Új képesség: mérgező iszapot hajít egy max. 2 hexnyi ellenfélre (Erő 85), 2 körre megmérgezve."
+   "description": "Új képesség: mérgező iszapot hajít egy max. 2 hexnyi ellenfélre (Erő 70), 2 körre megmérgezve."
   },
   "oddish-energy-ball": {
-   "description": "Új képesség: a természet energiájából gyúrt gömb robban egy max. 1 hexnyi, 1 hex területen (Erő 85)."
+   "description": "Új képesség: a természet energiájából gyúrt gömb robban egy max. 1 hexnyi, 1 hex területen (Erő 65)."
   },
   "oddish-night-sap": {
    "description": "Kiütéskor max HP-ja 10%-át gyógyítja."
   },
   "oddish-leaf-storm": {
-   "description": "Új képesség: éles levelek vihara egy max. 2 hexnyi ellenfélre (Erő 100)."
+   "description": "Új képesség: éles levelek vihara egy max. 2 hexnyi ellenfélre (Erő 90)."
   },
   "oddish-aromatherapy": {
    "description": "Új képesség: illat leveszi a ránk tett státuszokat, 40 HP-t gyógyít rajta és a szomszéd társakon."

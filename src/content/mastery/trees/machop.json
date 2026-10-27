@@ -68,7 +68,7 @@
    "kind": "bond",
    "category": "physical",
    "bondCost": 2,
-   "power": 100,
+   "power": 90,
    "range": {
     "min": 1,
     "max": 1
@@ -84,7 +84,8 @@
      "status": "slow",
      "duration": 2
     }
-   ]
+   ],
+   "canonPower": 100
   },
   "machop-seismic-toss": {
    "id": "machop-seismic-toss",
@@ -142,7 +143,7 @@
    "kind": "special",
    "category": "physical",
    "cooldown": 2,
-   "power": 50,
+   "power": 45,
    "range": {
     "min": 1,
     "max": 1
@@ -158,7 +159,8 @@
      "status": "exposed",
      "duration": 1
     }
-   ]
+   ],
+   "canonPower": 40
   },
   "machop-low-sweep": {
    "id": "machop-low-sweep",
@@ -167,7 +169,7 @@
    "kind": "special",
    "category": "physical",
    "cooldown": 3,
-   "power": 50,
+   "power": 65,
    "range": {
     "min": 1,
     "max": 1
@@ -183,7 +185,8 @@
      "status": "slow",
      "duration": 2
     }
-   ]
+   ],
+   "canonPower": 65
   },
   "machop-vital-throw": {
    "id": "machop-vital-throw",
@@ -192,7 +195,7 @@
    "kind": "special",
    "category": "physical",
    "cooldown": 3,
-   "power": 70,
+   "power": 65,
    "range": {
     "min": 1,
     "max": 1
@@ -207,7 +210,8 @@
      "kind": "push",
      "distance": 1
     }
-   ]
+   ],
+   "canonPower": 70
   },
   "machop-bulk-up": {
    "id": "machop-bulk-up",
@@ -245,7 +249,7 @@
    "kind": "special",
    "category": "physical",
    "cooldown": 4,
-   "power": 95,
+   "power": 75,
    "range": {
     "min": 1,
     "max": 1
@@ -254,7 +258,8 @@
    "shape": {
     "kind": "single"
    },
-   "affects": "enemies"
+   "affects": "enemies",
+   "canonPower": 80
   },
   "machop-brick-break": {
    "id": "machop-brick-break",
@@ -263,7 +268,7 @@
    "kind": "special",
    "category": "physical",
    "cooldown": 4,
-   "power": 80,
+   "power": 70,
    "range": {
     "min": 1,
     "max": 1
@@ -279,7 +284,8 @@
      "status": "exposed",
      "duration": 1
     }
-   ]
+   ],
+   "canonPower": 75
   },
   "machop-superpower": {
    "id": "machop-superpower",
@@ -288,7 +294,7 @@
    "kind": "special",
    "category": "physical",
    "cooldown": 5,
-   "power": 100,
+   "power": 95,
    "range": {
     "min": 1,
     "max": 1
@@ -297,7 +303,8 @@
    "shape": {
     "kind": "single"
    },
-   "affects": "enemies"
+   "affects": "enemies",
+   "canonPower": 120
   },
   "machop-hammer-arm": {
    "id": "machop-hammer-arm",
@@ -306,7 +313,7 @@
    "kind": "special",
    "category": "physical",
    "cooldown": 5,
-   "power": 90,
+   "power": 85,
    "range": {
     "min": 1,
     "max": 1
@@ -321,14 +328,15 @@
      "kind": "push",
      "distance": 1
     }
-   ]
+   ],
+   "canonPower": 100
   }
  },
  "talents": {
   "machop-dynamic-punch": {
    "id": "machop-dynamic-punch",
    "name": "Dynamic Punch",
-   "description": "Bond skill: an all-out punch (Power 100, Attack) that leaves the foe reeling (Slow) for 2 turns.",
+   "description": "Bond skill: an all-out punch (Power 90, Attack) that leaves the foe reeling (Slow) for 2 turns.",
    "grantsMove": "machop-dynamic-punch"
   },
   "machop-seismic-toss": {
@@ -362,13 +370,13 @@
   "machop-rock-smash": {
    "id": "machop-rock-smash",
    "name": "Rock Smash",
-   "description": "New skill: a rock-breaking punch (Power 50) that leaves the foe Exposed for 1 turn.",
+   "description": "New skill: a rock-breaking punch (Power 45) that leaves the foe Exposed for 1 turn.",
    "grantsMove": "machop-rock-smash"
   },
   "machop-low-sweep": {
    "id": "machop-low-sweep",
    "name": "Low Sweep",
-   "description": "New skill: a low sweeping kick (Power 50) that Slows the foe for 2 turns.",
+   "description": "New skill: a low sweeping kick (Power 65) that Slows the foe for 2 turns.",
    "grantsMove": "machop-low-sweep"
   },
   "machop-endure": {
@@ -390,7 +398,7 @@
   "machop-vital-throw": {
    "id": "machop-vital-throw",
    "name": "Vital Throw",
-   "description": "New skill: a sure-footed throw (Power 70) that sends the foe 1 hex back.",
+   "description": "New skill: a sure-footed throw (Power 65) that sends the foe 1 hex back.",
    "grantsMove": "machop-vital-throw"
   },
   "machop-bulk-up": {
@@ -418,13 +426,13 @@
   "machop-submission": {
    "id": "machop-submission",
    "name": "Submission",
-   "description": "New skill: a reckless body slam (Power 95).",
+   "description": "New skill: a reckless body slam (Power 75).",
    "grantsMove": "machop-submission"
   },
   "machop-brick-break": {
    "id": "machop-brick-break",
    "name": "Brick Break",
-   "description": "New skill: a guard-breaking karate chop (Power 80); the foe is Exposed for 1 turn.",
+   "description": "New skill: a guard-breaking karate chop (Power 70); the foe is Exposed for 1 turn.",
    "grantsMove": "machop-brick-break"
   },
   "machop-no-guard": {
@@ -447,13 +455,13 @@
   "machop-superpower": {
    "id": "machop-superpower",
    "name": "Superpower",
-   "description": "New skill: an attack of tremendous strength (Power 100).",
+   "description": "New skill: an attack of tremendous strength (Power 95).",
    "grantsMove": "machop-superpower"
   },
   "machop-hammer-arm": {
    "id": "machop-hammer-arm",
    "name": "Hammer Arm",
-   "description": "New skill: swings a heavy fist (Power 90), knocking the foe back 1 hex.",
+   "description": "New skill: swings a heavy fist (Power 85), knocking the foe back 1 hex.",
    "grantsMove": "machop-hammer-arm"
   },
   "machop-moxie-drive": {

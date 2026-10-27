@@ -67,7 +67,7 @@
    "kind": "bond",
    "category": "special",
    "bondCost": 2,
-   "power": 90,
+   "power": 75,
    "range": {
     "min": 1,
     "max": 3
@@ -76,7 +76,8 @@
    "shape": {
     "kind": "single"
    },
-   "affects": "enemies"
+   "affects": "enemies",
+   "canonPower": 90
   },
   "venonat-u-turn": {
    "id": "venonat-u-turn",
@@ -85,7 +86,7 @@
    "kind": "bond",
    "category": "physical",
    "bondCost": 1,
-   "power": 60,
+   "power": 75,
    "range": {
     "min": 1,
     "max": 1
@@ -99,7 +100,8 @@
     {
      "kind": "disengage"
     }
-   ]
+   ],
+   "canonPower": 70
   },
   "venonat-quiver-dance": {
    "id": "venonat-quiver-dance",
@@ -137,7 +139,7 @@
    "kind": "special",
    "category": "special",
    "cooldown": 3,
-   "power": 55,
+   "power": 65,
    "range": {
     "min": 1,
     "max": 2
@@ -153,7 +155,8 @@
      "status": "slow",
      "duration": 1
     }
-   ]
+   ],
+   "canonPower": 75
   },
   "venonat-venoshock": {
    "id": "venonat-venoshock",
@@ -162,7 +165,7 @@
    "kind": "special",
    "category": "special",
    "cooldown": 3,
-   "power": 65,
+   "power": 55,
    "range": {
     "min": 1,
     "max": 2
@@ -171,7 +174,8 @@
    "shape": {
     "kind": "single"
    },
-   "affects": "enemies"
+   "affects": "enemies",
+   "canonPower": 65
   },
   "venonat-bug-bite": {
    "id": "venonat-bug-bite",
@@ -189,7 +193,8 @@
    "shape": {
     "kind": "single"
    },
-   "affects": "enemies"
+   "affects": "enemies",
+   "canonPower": 60
   },
   "venonat-poison-fang": {
    "id": "venonat-poison-fang",
@@ -198,7 +203,7 @@
    "kind": "special",
    "category": "physical",
    "cooldown": 4,
-   "power": 80,
+   "power": 55,
    "range": {
     "min": 1,
     "max": 1
@@ -214,7 +219,8 @@
      "status": "poison",
      "duration": 2
     }
-   ]
+   ],
+   "canonPower": 50
   },
   "venonat-silver-wind": {
    "id": "venonat-silver-wind",
@@ -223,7 +229,7 @@
    "kind": "special",
    "category": "special",
    "cooldown": 4,
-   "power": 80,
+   "power": 55,
    "range": {
     "min": 1,
     "max": 2
@@ -232,7 +238,8 @@
    "shape": {
     "kind": "single"
    },
-   "affects": "enemies"
+   "affects": "enemies",
+   "canonPower": 60
   },
   "venonat-sludge-bomb": {
    "id": "venonat-sludge-bomb",
@@ -241,7 +248,7 @@
    "kind": "special",
    "category": "special",
    "cooldown": 5,
-   "power": 90,
+   "power": 70,
    "range": {
     "min": 1,
     "max": 2
@@ -257,7 +264,8 @@
      "status": "poison",
      "duration": 2
     }
-   ]
+   ],
+   "canonPower": 90
   },
   "venonat-pollen-puff": {
    "id": "venonat-pollen-puff",
@@ -266,7 +274,7 @@
    "kind": "special",
    "category": "special",
    "cooldown": 4,
-   "power": 85,
+   "power": 70,
    "range": {
     "min": 1,
     "max": 2
@@ -275,7 +283,8 @@
    "shape": {
     "kind": "single"
    },
-   "affects": "enemies"
+   "affects": "enemies",
+   "canonPower": 90
   },
   "venonat-disable": {
    "id": "venonat-disable",
@@ -306,13 +315,13 @@
   "venonat-bug-buzz": {
    "id": "venonat-bug-buzz",
    "name": "Bug Buzz",
-   "description": "Bond skill: a damaging buzz from its wings at a foe up to 3 hexes away (Power 90).",
+   "description": "Bond skill: a damaging buzz from its wings at a foe up to 3 hexes away (Power 75).",
    "grantsMove": "venonat-bug-buzz"
   },
   "venonat-u-turn": {
    "id": "venonat-u-turn",
    "name": "U-turn",
-   "description": "Bond skill: strikes and darts back (Power 60, Attack), ending its engagement.",
+   "description": "Bond skill: strikes and darts back (Power 75, Attack), ending its engagement.",
    "grantsMove": "venonat-u-turn"
   },
   "venonat-quiver-dance": {
@@ -340,7 +349,7 @@
   "venonat-signal-beam": {
    "id": "venonat-signal-beam",
    "name": "Signal Beam",
-   "description": "New skill: a sinister beam at a foe up to 2 hexes away (Power 55) that Slows it for 1 turn.",
+   "description": "New skill: a sinister beam at a foe up to 2 hexes away (Power 65) that Slows it for 1 turn.",
    "grantsMove": "venonat-signal-beam"
   },
   "venonat-venom-feeder": {
@@ -364,7 +373,7 @@
   "venonat-venoshock": {
    "id": "venonat-venoshock",
    "name": "Venoshock",
-   "description": "New skill: drenches a foe up to 2 hexes away in a toxic liquid (Power 65).",
+   "description": "New skill: drenches a foe up to 2 hexes away in a toxic liquid (Power 55).",
    "grantsMove": "venonat-venoshock"
   },
   "venonat-bug-bite": {
@@ -396,13 +405,13 @@
   "venonat-poison-fang": {
    "id": "venonat-poison-fang",
    "name": "Poison Fang",
-   "description": "New skill: sinks venomous fangs into a foe (Power 80), Poisoning it for 2 turns.",
+   "description": "New skill: sinks venomous fangs into a foe (Power 55), Poisoning it for 2 turns.",
    "grantsMove": "venonat-poison-fang"
   },
   "venonat-silver-wind": {
    "id": "venonat-silver-wind",
    "name": "Silver Wind",
-   "description": "New skill: a gust of scale dust at a foe up to 2 hexes away (Power 80).",
+   "description": "New skill: a gust of scale dust at a foe up to 2 hexes away (Power 55).",
    "grantsMove": "venonat-silver-wind"
   },
   "venonat-scale-shed": {
@@ -424,13 +433,13 @@
   "venonat-sludge-bomb": {
    "id": "venonat-sludge-bomb",
    "name": "Sludge Bomb",
-   "description": "New skill: lobs sludge up to 2 hexes away (Power 90), Poisoning the foe for 2 turns.",
+   "description": "New skill: lobs sludge up to 2 hexes away (Power 70), Poisoning the foe for 2 turns.",
    "grantsMove": "venonat-sludge-bomb"
   },
   "venonat-pollen-puff": {
    "id": "venonat-pollen-puff",
    "name": "Pollen Puff",
-   "description": "New skill: a bursting ball of pollen at a foe up to 2 hexes away (Power 85).",
+   "description": "New skill: a bursting ball of pollen at a foe up to 2 hexes away (Power 70).",
    "grantsMove": "venonat-pollen-puff"
   },
   "venonat-potent-powders": {

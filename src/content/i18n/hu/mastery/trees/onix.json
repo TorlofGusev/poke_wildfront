@@ -4,10 +4,10 @@
    "description": "Bond képesség: teljes sziklatömegével rázuhan egy ellenfélre (Erő 85, Támadás), 1 hexnyit ellöki."
   },
   "onix-stone-edge": {
-   "description": "Bond képesség: éles kövek törnek fel egy legfeljebb 2 hexnyire álló ellenfél alatt (Erő 100, Támadás), 1 körre Exposed."
+   "description": "Bond képesség: éles kövek törnek fel egy legfeljebb 2 hexnyire álló ellenfél alatt (Erő 85, Támadás), 1 körre Exposed."
   },
   "onix-bind": {
-   "description": "Új képesség: rátekeredik egy ellenfélre (Erő 40), leköti és 2 körre lelassítja."
+   "description": "Új képesség: rátekeredik egy ellenfélre (Erő 25), leköti és 2 körre lelassítja."
   },
   "onix-hard-stone": {
    "description": "Rock támadásai 25%-kal több sebzést okoznak."
@@ -16,7 +16,7 @@
    "description": "10%-kal kevesebb sebzést szenved."
   },
   "onix-rock-tomb": {
-   "description": "Új képesség: sziklákat hajít egy legfeljebb 2 hexnyire álló ellenfélre (Erő 60), 2 körre lelassítja."
+   "description": "Új képesség: sziklákat hajít egy legfeljebb 2 hexnyire álló ellenfélre (Erő 55), 2 körre lelassítja."
   },
   "onix-sand-force": {
    "description": "Ground támadásai 15%-kal erősebbek; 20%-kal többet sebez a sárban álló ellenfelekre."
@@ -25,7 +25,7 @@
    "description": "A szomszédos hexről őt eltaláló ellenfelek 6 sebzést kapnak."
   },
   "onix-iron-tail": {
-   "description": "Új képesség: megkeményedett farkával lesújt egy ellenfélre (Erő 75), amely 1 körre Exposed lesz."
+   "description": "Új képesség: megkeményedett farkával lesújt egy ellenfélre (Erő 85), amely 1 körre Exposed lesz."
   },
   "onix-rock-polish": {
    "description": "Új képesség: simára csiszolja sziklatestét, 2 körre Hasted lesz."
@@ -37,7 +37,7 @@
    "description": "Az általa lekötött ellenfelek 15%-kal több sebzést kapnak a társaitól."
   },
   "onix-smack-down": {
-   "description": "Új képesség: sziklát hajít egy legfeljebb 2 hexnyi ellenfélre (Erő 80), 1 körre Slowed."
+   "description": "Új képesség: sziklát hajít egy legfeljebb 2 hexnyi ellenfélre (Erő 50), 1 körre Slowed."
   },
   "onix-sandstorm": {
    "description": "Új képesség: homokvihart kavar maga körül (Erő 60), 1 körre lelassítja a szomszédos ellenfeleket."
@@ -64,7 +64,7 @@
    "description": "Mesterfokozat. Csatánként egyszer 1 HP-val túlél egy kiütő csapást; a lekötött ellenfelek mindig szabad csapást kapnak."
   },
   "onix-dig": {
-   "description": "Bond képesség: max. 2 hexnyire alagutat ás egy ellenfélhez (Erő 65, Támadás), és leköti."
+   "description": "Bond képesség: max. 2 hexnyire alagutat ás egy ellenfélhez (Erő 70, Támadás), és leköti."
   },
   "onix-rock-head": {
    "description": "Kőkemény feje miatt nem lehet lelassítani vagy Exposed állapotba hozni."

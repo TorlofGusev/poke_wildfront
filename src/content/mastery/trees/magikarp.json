@@ -67,7 +67,7 @@
    "kind": "bond",
    "category": "physical",
    "bondCost": 2,
-   "power": 90,
+   "power": 85,
    "range": {
     "min": 1,
     "max": 1
@@ -76,7 +76,8 @@
    "shape": {
     "kind": "single"
    },
-   "affects": "enemies"
+   "affects": "enemies",
+   "canonPower": 90
   },
   "magikarp-bounce": {
    "id": "magikarp-bounce",
@@ -85,7 +86,7 @@
    "kind": "bond",
    "category": "physical",
    "bondCost": 1,
-   "power": 60,
+   "power": 75,
    "range": {
     "min": 1,
     "max": 2
@@ -101,7 +102,8 @@
      "status": "paralysis",
      "duration": 1
     }
-   ]
+   ],
+   "canonPower": 85
   },
   "magikarp-rest": {
    "id": "magikarp-rest",
@@ -156,7 +158,7 @@
    "kind": "special",
    "category": "special",
    "cooldown": 3,
-   "power": 40,
+   "power": 35,
    "range": {
     "min": 1,
     "max": 1
@@ -166,7 +168,8 @@
     "kind": "burst",
     "radius": 1
    },
-   "affects": "enemies"
+   "affects": "enemies",
+   "canonPower": 35
   },
   "magikarp-headbutt": {
    "id": "magikarp-headbutt",
@@ -191,7 +194,8 @@
      "status": "slow",
      "duration": 1
     }
-   ]
+   ],
+   "canonPower": 70
   },
   "magikarp-brine": {
    "id": "magikarp-brine",
@@ -200,7 +204,7 @@
    "kind": "special",
    "category": "special",
    "cooldown": 3,
-   "power": 75,
+   "power": 55,
    "range": {
     "min": 1,
     "max": 2
@@ -209,7 +213,8 @@
    "shape": {
     "kind": "single"
    },
-   "affects": "enemies"
+   "affects": "enemies",
+   "canonPower": 65
   },
   "magikarp-hurricane": {
    "id": "magikarp-hurricane",
@@ -218,7 +223,7 @@
    "kind": "special",
    "category": "special",
    "cooldown": 4,
-   "power": 90,
+   "power": 80,
    "range": {
     "min": 1,
     "max": 2
@@ -227,7 +232,8 @@
    "shape": {
     "kind": "single"
    },
-   "affects": "enemies"
+   "affects": "enemies",
+   "canonPower": 110
   },
   "magikarp-crunch": {
    "id": "magikarp-crunch",
@@ -236,7 +242,7 @@
    "kind": "special",
    "category": "physical",
    "cooldown": 4,
-   "power": 85,
+   "power": 75,
    "range": {
     "min": 1,
     "max": 1
@@ -252,7 +258,8 @@
      "status": "exposed",
      "duration": 1
     }
-   ]
+   ],
+   "canonPower": 80
   },
   "magikarp-swords-dance": {
    "id": "magikarp-swords-dance",
@@ -285,7 +292,7 @@
    "kind": "special",
    "category": "physical",
    "cooldown": 5,
-   "power": 100,
+   "power": 95,
    "range": {
     "min": 1,
     "max": 1
@@ -294,20 +301,21 @@
    "shape": {
     "kind": "single"
    },
-   "affects": "enemies"
+   "affects": "enemies",
+   "canonPower": 120
   }
  },
  "talents": {
   "magikarp-aqua-tail": {
    "id": "magikarp-aqua-tail",
    "name": "Aqua Tail",
-   "description": "Bond skill: lashes a foe with its tail like a crashing wave (Power 90, Attack).",
+   "description": "Bond skill: lashes a foe with its tail like a crashing wave (Power 85, Attack).",
    "grantsMove": "magikarp-aqua-tail"
   },
   "magikarp-bounce": {
    "id": "magikarp-bounce",
    "name": "Bounce",
-   "description": "Bond skill: springs onto a foe up to 2 hexes away (Power 60, Attack); Paralyzes 1 turn.",
+   "description": "Bond skill: springs onto a foe up to 2 hexes away (Power 75, Attack); Paralyzes 1 turn.",
    "grantsMove": "magikarp-bounce"
   },
   "magikarp-rest": {
@@ -341,7 +349,7 @@
   "magikarp-whirlpool": {
    "id": "magikarp-whirlpool",
    "name": "Whirlpool",
-   "description": "New skill: a swirling vortex on a 1-hex area up to 1 hex away (Power 40).",
+   "description": "New skill: a swirling vortex on a 1-hex area up to 1 hex away (Power 35).",
    "grantsMove": "magikarp-whirlpool"
   },
   "magikarp-rattled": {
@@ -369,7 +377,7 @@
   "magikarp-brine": {
    "id": "magikarp-brine",
    "name": "Brine",
-   "description": "New skill: a jet of salt water at a foe up to 2 hexes away (Power 75).",
+   "description": "New skill: a jet of salt water at a foe up to 2 hexes away (Power 55).",
    "grantsMove": "magikarp-brine"
   },
   "magikarp-furious-rampage": {
@@ -391,13 +399,13 @@
   "magikarp-hurricane": {
    "id": "magikarp-hurricane",
    "name": "Hurricane",
-   "description": "New skill: a raging wind at a foe up to 2 hexes away (Power 90).",
+   "description": "New skill: a raging wind at a foe up to 2 hexes away (Power 80).",
    "grantsMove": "magikarp-hurricane"
   },
   "magikarp-crunch": {
    "id": "magikarp-crunch",
    "name": "Crunch",
-   "description": "New skill: crunches with its jaws (Power 85), leaving the foe Exposed for 1 turn.",
+   "description": "New skill: crunches with its jaws (Power 75), leaving the foe Exposed for 1 turn.",
    "grantsMove": "magikarp-crunch"
   },
   "magikarp-tyrant-s-gaze": {
@@ -425,7 +433,7 @@
   "magikarp-thrash": {
    "id": "magikarp-thrash",
    "name": "Thrash",
-   "description": "New skill: thrashes wildly at an adjacent foe (Power 100).",
+   "description": "New skill: thrashes wildly at an adjacent foe (Power 95).",
    "grantsMove": "magikarp-thrash"
   },
   "magikarp-destructive-rampage": {

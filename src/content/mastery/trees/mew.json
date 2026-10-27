@@ -66,7 +66,7 @@
    "kind": "bond",
    "category": "special",
    "bondCost": 2,
-   "power": 85,
+   "power": 55,
    "range": {
     "min": 1,
     "max": 3
@@ -75,7 +75,8 @@
    "shape": {
     "kind": "single"
    },
-   "affects": "enemies"
+   "affects": "enemies",
+   "canonPower": 60
   },
   "mew-zen-headbutt": {
    "id": "mew-zen-headbutt",
@@ -84,7 +85,7 @@
    "kind": "bond",
    "category": "physical",
    "bondCost": 2,
-   "power": 100,
+   "power": 80,
    "range": {
     "min": 1,
     "max": 1
@@ -93,7 +94,8 @@
    "shape": {
     "kind": "single"
    },
-   "affects": "enemies"
+   "affects": "enemies",
+   "canonPower": 80
   },
   "mew-baton-pass": {
    "id": "mew-baton-pass",
@@ -182,7 +184,8 @@
     "kind": "burst",
     "radius": 1
    },
-   "affects": "enemies"
+   "affects": "enemies",
+   "canonPower": 80
   },
   "mew-dizzy-punch": {
    "id": "mew-dizzy-punch",
@@ -207,7 +210,8 @@
      "status": "confused",
      "duration": 2
     }
-   ]
+   ],
+   "canonPower": 70
   },
   "mew-nasty-plot": {
    "id": "mew-nasty-plot",
@@ -240,7 +244,7 @@
    "kind": "special",
    "category": "physical",
    "cooldown": 4,
-   "power": 90,
+   "power": 85,
    "range": {
     "min": 1,
     "max": 1
@@ -256,7 +260,8 @@
      "status": "exposed",
      "duration": 1
     }
-   ]
+   ],
+   "canonPower": 100
   },
   "mew-psyshock": {
    "id": "mew-psyshock",
@@ -265,7 +270,7 @@
    "kind": "special",
    "category": "special",
    "cooldown": 4,
-   "power": 90,
+   "power": 65,
    "range": {
     "min": 1,
     "max": 2
@@ -274,7 +279,8 @@
    "shape": {
     "kind": "single"
    },
-   "affects": "enemies"
+   "affects": "enemies",
+   "canonPower": 80
   },
   "mew-barrier": {
    "id": "mew-barrier",
@@ -306,13 +312,13 @@
   "mew-swift": {
    "id": "mew-swift",
    "name": "Swift",
-   "description": "Bond skill: never-missing stars up to 3 hexes away, even around others (Power 85).",
+   "description": "Bond skill: never-missing stars up to 3 hexes away, even around others (Power 55).",
    "grantsMove": "mew-swift"
   },
   "mew-zen-headbutt": {
    "id": "mew-zen-headbutt",
    "name": "Zen Headbutt",
-   "description": "Bond skill: a headbutt charged with willpower (Power 100, Attack).",
+   "description": "Bond skill: a headbutt charged with willpower (Power 80, Attack).",
    "grantsMove": "mew-zen-headbutt"
   },
   "mew-baton-pass": {
@@ -396,7 +402,7 @@
   "mew-iron-tail": {
    "id": "mew-iron-tail",
    "name": "Iron Tail",
-   "description": "New skill: whips its tail hard as iron (Power 90), leaving the foe Exposed 1 turn.",
+   "description": "New skill: whips its tail hard as iron (Power 85), leaving the foe Exposed 1 turn.",
    "grantsMove": "mew-iron-tail"
   },
   "mew-weightless": {
@@ -418,7 +424,7 @@
   "mew-psyshock": {
    "id": "mew-psyshock",
    "name": "Psyshock",
-   "description": "New skill: a psychic wave at a foe up to 2 hexes away (Power 90).",
+   "description": "New skill: a psychic wave at a foe up to 2 hexes away (Power 65).",
    "grantsMove": "mew-psyshock"
   },
   "mew-barrier": {

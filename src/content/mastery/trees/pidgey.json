@@ -93,7 +93,7 @@
    "kind": "bond",
    "category": "physical",
    "bondCost": 3,
-   "power": 100,
+   "power": 90,
    "range": {
     "min": 1,
     "max": 3
@@ -107,7 +107,8 @@
     {
      "kind": "engage"
     }
-   ]
+   ],
+   "canonPower": 120
   },
   "pidgey-hurricane": {
    "id": "pidgey-hurricane",
@@ -116,7 +117,7 @@
    "kind": "bond",
    "category": "special",
    "bondCost": 3,
-   "power": 95,
+   "power": 85,
    "range": {
     "min": 1,
     "max": 3
@@ -131,7 +132,8 @@
      "kind": "push",
      "distance": 1
     }
-   ]
+   ],
+   "canonPower": 110
   },
   "pidgey-agility": {
    "id": "pidgey-agility",
@@ -173,7 +175,8 @@
    "shape": {
     "kind": "single"
    },
-   "affects": "enemies"
+   "affects": "enemies",
+   "canonPower": 70
   },
   "pidgey-air-cutter": {
    "id": "pidgey-air-cutter",
@@ -192,7 +195,8 @@
     "kind": "burst",
     "radius": 1
    },
-   "affects": "enemies"
+   "affects": "enemies",
+   "canonPower": 60
   },
   "pidgey-sky-attack": {
    "id": "pidgey-sky-attack",
@@ -215,7 +219,8 @@
     {
      "kind": "engage"
     }
-   ]
+   ],
+   "canonPower": 140
   },
   "pidgey-hyper-beam": {
    "id": "pidgey-hyper-beam",
@@ -224,7 +229,7 @@
    "kind": "special",
    "category": "special",
    "cooldown": 4,
-   "power": 85,
+   "power": 95,
    "range": {
     "min": 1,
     "max": 2
@@ -233,7 +238,8 @@
    "shape": {
     "kind": "single"
    },
-   "affects": "enemies"
+   "affects": "enemies",
+   "canonPower": 150
   },
   "pidgey-air-slash": {
    "id": "pidgey-air-slash",
@@ -242,7 +248,7 @@
    "kind": "special",
    "category": "special",
    "cooldown": 4,
-   "power": 85,
+   "power": 65,
    "range": {
     "min": 1,
     "max": 2
@@ -251,7 +257,8 @@
    "shape": {
     "kind": "single"
    },
-   "affects": "enemies"
+   "affects": "enemies",
+   "canonPower": 75
   },
   "pidgey-double-edge": {
    "id": "pidgey-double-edge",
@@ -269,7 +276,8 @@
    "shape": {
     "kind": "single"
    },
-   "affects": "enemies"
+   "affects": "enemies",
+   "canonPower": 120
   },
   "pidgey-sand-attack": {
    "id": "pidgey-sand-attack",
@@ -306,13 +314,13 @@
   "pidgey-brave-bird": {
    "id": "pidgey-brave-bird",
    "name": "Brave Bird",
-   "description": "Bond skill: dives at a foe up to 3 hexes away (Power 100, Attack) and engages it.",
+   "description": "Bond skill: dives at a foe up to 3 hexes away (Power 90, Attack) and engages it.",
    "grantsMove": "pidgey-brave-bird"
   },
   "pidgey-hurricane": {
    "id": "pidgey-hurricane",
    "name": "Hurricane",
-   "description": "Bond skill: a raging wind at a foe up to 3 hexes away (Power 95), pushing it 1 hex.",
+   "description": "Bond skill: a raging wind at a foe up to 3 hexes away (Power 85), pushing it 1 hex.",
    "grantsMove": "pidgey-hurricane"
   },
   "pidgey-big-pecks": {
@@ -393,7 +401,7 @@
   "pidgey-hyper-beam": {
    "id": "pidgey-hyper-beam",
    "name": "Hyper Beam",
-   "description": "New skill: a devastating beam at a foe up to 2 hexes away (Power 85).",
+   "description": "New skill: a devastating beam at a foe up to 2 hexes away (Power 95).",
    "grantsMove": "pidgey-hyper-beam"
   },
   "pidgey-birds-eye-view": {
@@ -415,7 +423,7 @@
   "pidgey-air-slash": {
    "id": "pidgey-air-slash",
    "name": "Air Slash",
-   "description": "New skill: a blade of air at a foe up to 2 hexes away (Power 85).",
+   "description": "New skill: a blade of air at a foe up to 2 hexes away (Power 65).",
    "grantsMove": "pidgey-air-slash"
   },
   "pidgey-double-edge": {

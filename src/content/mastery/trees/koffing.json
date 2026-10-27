@@ -70,7 +70,7 @@
    "kind": "bond",
    "category": "special",
    "bondCost": 2,
-   "power": 90,
+   "power": 75,
    "range": {
     "min": 1,
     "max": 3
@@ -86,7 +86,8 @@
      "status": "poison",
      "duration": 2
     }
-   ]
+   ],
+   "canonPower": 90
   },
   "koffing-smokescreen": {
    "id": "koffing-smokescreen",
@@ -153,7 +154,8 @@
    "shape": {
     "kind": "single"
    },
-   "affects": "enemies"
+   "affects": "enemies",
+   "canonPower": 50
   },
   "koffing-scary-face": {
    "id": "koffing-scary-face",
@@ -202,7 +204,8 @@
      "status": "exposed",
      "duration": 1
     }
-   ]
+   ],
+   "canonPower": 60
   },
   "koffing-venoshock": {
    "id": "koffing-venoshock",
@@ -211,7 +214,7 @@
    "kind": "special",
    "category": "special",
    "cooldown": 3,
-   "power": 65,
+   "power": 55,
    "range": {
     "min": 1,
     "max": 2
@@ -220,7 +223,8 @@
    "shape": {
     "kind": "single"
    },
-   "affects": "enemies"
+   "affects": "enemies",
+   "canonPower": 65
   },
   "koffing-sludge-wave": {
    "id": "koffing-sludge-wave",
@@ -229,7 +233,7 @@
    "kind": "special",
    "category": "special",
    "cooldown": 4,
-   "power": 75,
+   "power": 65,
    "range": {
     "min": 0,
     "max": 0
@@ -246,7 +250,8 @@
      "status": "poison",
      "duration": 1
     }
-   ]
+   ],
+   "canonPower": 95
   },
   "koffing-dark-pulse": {
    "id": "koffing-dark-pulse",
@@ -255,7 +260,7 @@
    "kind": "special",
    "category": "special",
    "cooldown": 4,
-   "power": 80,
+   "power": 65,
    "range": {
     "min": 1,
     "max": 2
@@ -264,7 +269,8 @@
    "shape": {
     "kind": "single"
    },
-   "affects": "enemies"
+   "affects": "enemies",
+   "canonPower": 80
   },
   "koffing-belch": {
    "id": "koffing-belch",
@@ -273,7 +279,7 @@
    "kind": "special",
    "category": "special",
    "cooldown": 5,
-   "power": 90,
+   "power": 85,
    "range": {
     "min": 1,
     "max": 2
@@ -282,7 +288,8 @@
    "shape": {
     "kind": "single"
    },
-   "affects": "enemies"
+   "affects": "enemies",
+   "canonPower": 120
   },
   "koffing-explosion": {
    "id": "koffing-explosion",
@@ -301,14 +308,15 @@
     "kind": "burst",
     "radius": 1
    },
-   "affects": "enemies"
+   "affects": "enemies",
+   "canonPower": 250
   }
  },
  "talents": {
   "koffing-sludge-bomb": {
    "id": "koffing-sludge-bomb",
    "name": "Sludge Bomb",
-   "description": "Bond skill: hurls sludge at a foe up to 3 hexes away (Power 90), Poisoning it 2 turns.",
+   "description": "Bond skill: hurls sludge at a foe up to 3 hexes away (Power 75), Poisoning it 2 turns.",
    "grantsMove": "koffing-sludge-bomb"
   },
   "koffing-smokescreen": {
@@ -378,7 +386,7 @@
   "koffing-venoshock": {
    "id": "koffing-venoshock",
    "name": "Venoshock",
-   "description": "New skill: drenches a foe up to 2 hexes away in toxic liquid (Power 65).",
+   "description": "New skill: drenches a foe up to 2 hexes away in toxic liquid (Power 55).",
    "grantsMove": "koffing-venoshock"
   },
   "koffing-gas-leak": {
@@ -406,13 +414,13 @@
   "koffing-sludge-wave": {
    "id": "koffing-sludge-wave",
    "name": "Sludge Wave",
-   "description": "New skill: a wave of sludge around itself (Power 75), Poisoning adjacent foes 1 turn.",
+   "description": "New skill: a wave of sludge around itself (Power 65), Poisoning adjacent foes 1 turn.",
    "grantsMove": "koffing-sludge-wave"
   },
   "koffing-dark-pulse": {
    "id": "koffing-dark-pulse",
    "name": "Dark Pulse",
-   "description": "New skill: a horrible aura at a foe up to 2 hexes away (Power 80).",
+   "description": "New skill: a horrible aura at a foe up to 2 hexes away (Power 65).",
    "grantsMove": "koffing-dark-pulse"
   },
   "koffing-spreading-fumes": {
@@ -434,7 +442,7 @@
   "koffing-belch": {
    "id": "koffing-belch",
    "name": "Belch",
-   "description": "New skill: a foul gas belch at a foe up to 2 hexes away (Power 90).",
+   "description": "New skill: a foul gas belch at a foe up to 2 hexes away (Power 85).",
    "grantsMove": "koffing-belch"
   },
   "koffing-explosion": {

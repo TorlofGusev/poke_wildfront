@@ -81,7 +81,8 @@
     {
      "kind": "engage"
     }
-   ]
+   ],
+   "canonPower": 50
   },
   "ponyta-flare-blitz": {
    "id": "ponyta-flare-blitz",
@@ -106,7 +107,8 @@
      "status": "burn",
      "duration": 2
     }
-   ]
+   ],
+   "canonPower": 120
   },
   "ponyta-fire-blast": {
    "id": "ponyta-fire-blast",
@@ -115,7 +117,7 @@
    "kind": "bond",
    "category": "special",
    "bondCost": 3,
-   "power": 100,
+   "power": 85,
    "range": {
     "min": 1,
     "max": 3
@@ -131,7 +133,8 @@
      "status": "burn",
      "duration": 2
     }
-   ]
+   ],
+   "canonPower": 110
   },
   "ponyta-horn-attack": {
    "id": "ponyta-horn-attack",
@@ -140,7 +143,7 @@
    "kind": "special",
    "category": "physical",
    "cooldown": 2,
-   "power": 55,
+   "power": 65,
    "range": {
     "min": 1,
     "max": 1
@@ -149,7 +152,8 @@
    "shape": {
     "kind": "single"
    },
-   "affects": "enemies"
+   "affects": "enemies",
+   "canonPower": 65
   },
   "ponyta-flame-wheel": {
    "id": "ponyta-flame-wheel",
@@ -174,7 +178,8 @@
      "status": "burn",
      "duration": 1
     }
-   ]
+   ],
+   "canonPower": 60
   },
   "ponyta-incinerate": {
    "id": "ponyta-incinerate",
@@ -183,7 +188,7 @@
    "kind": "special",
    "category": "special",
    "cooldown": 3,
-   "power": 60,
+   "power": 50,
    "range": {
     "min": 1,
     "max": 1
@@ -193,7 +198,8 @@
     "kind": "burst",
     "radius": 1
    },
-   "affects": "enemies"
+   "affects": "enemies",
+   "canonPower": 60
   },
   "ponyta-inferno": {
    "id": "ponyta-inferno",
@@ -202,7 +208,7 @@
    "kind": "special",
    "category": "special",
    "cooldown": 5,
-   "power": 90,
+   "power": 75,
    "range": {
     "min": 1,
     "max": 2
@@ -218,7 +224,8 @@
      "status": "burn",
      "duration": 3
     }
-   ]
+   ],
+   "canonPower": 100
   },
   "ponyta-extreme-speed": {
    "id": "ponyta-extreme-speed",
@@ -227,7 +234,7 @@
    "kind": "special",
    "category": "physical",
    "cooldown": 4,
-   "power": 80,
+   "power": 65,
    "range": {
     "min": 1,
     "max": 2
@@ -241,7 +248,8 @@
     {
      "kind": "engage"
     }
-   ]
+   ],
+   "canonPower": 80
   },
   "ponyta-double-edge": {
    "id": "ponyta-double-edge",
@@ -259,7 +267,8 @@
    "shape": {
     "kind": "single"
    },
-   "affects": "enemies"
+   "affects": "enemies",
+   "canonPower": 120
   },
   "ponyta-overheat": {
    "id": "ponyta-overheat",
@@ -268,7 +277,7 @@
    "kind": "special",
    "category": "special",
    "cooldown": 5,
-   "power": 100,
+   "power": 90,
    "range": {
     "min": 1,
     "max": 2
@@ -277,7 +286,8 @@
    "shape": {
     "kind": "single"
    },
-   "affects": "enemies"
+   "affects": "enemies",
+   "canonPower": 130
   },
   "ponyta-growl": {
    "id": "ponyta-growl",
@@ -320,7 +330,7 @@
   "ponyta-fire-blast": {
    "id": "ponyta-fire-blast",
    "name": "Fire Blast",
-   "description": "Bond skill: a star of fire up to 3 hexes away (Power 100) that Burns the foe 2 turns.",
+   "description": "Bond skill: a star of fire up to 3 hexes away (Power 85) that Burns the foe 2 turns.",
    "grantsMove": "ponyta-fire-blast"
   },
   "ponyta-flash-fire": {
@@ -347,7 +357,7 @@
   "ponyta-horn-attack": {
    "id": "ponyta-horn-attack",
    "name": "Horn Attack",
-   "description": "New skill: jabs the foe with its sharp horn (Power 55).",
+   "description": "New skill: jabs the foe with its sharp horn (Power 65).",
    "grantsMove": "ponyta-horn-attack"
   },
   "ponyta-flame-body": {
@@ -378,7 +388,7 @@
   "ponyta-incinerate": {
    "id": "ponyta-incinerate",
    "name": "Incinerate",
-   "description": "New skill: a burst of flame up to 1 hex away (Power 60) hitting a 1-hex area.",
+   "description": "New skill: a burst of flame up to 1 hex away (Power 50) hitting a 1-hex area.",
    "grantsMove": "ponyta-incinerate"
   },
   "ponyta-pace-setter": {
@@ -392,13 +402,13 @@
   "ponyta-inferno": {
    "id": "ponyta-inferno",
    "name": "Inferno",
-   "description": "New skill: engulfs a foe up to 2 hexes away in fire (Power 90), Burning it for 3 turns.",
+   "description": "New skill: engulfs a foe up to 2 hexes away in fire (Power 75), Burning it for 3 turns.",
    "grantsMove": "ponyta-inferno"
   },
   "ponyta-extreme-speed": {
    "id": "ponyta-extreme-speed",
    "name": "Extreme Speed",
-   "description": "New skill: dashes at a foe up to 2 hexes away (Power 80) and engages it.",
+   "description": "New skill: dashes at a foe up to 2 hexes away (Power 65) and engages it.",
    "grantsMove": "ponyta-extreme-speed"
   },
   "ponyta-unicorn-horn": {
@@ -426,7 +436,7 @@
   "ponyta-overheat": {
    "id": "ponyta-overheat",
    "name": "Overheat",
-   "description": "New skill: unleashes all its heat at a foe up to 2 hexes away (Power 100).",
+   "description": "New skill: unleashes all its heat at a foe up to 2 hexes away (Power 90).",
    "grantsMove": "ponyta-overheat"
   },
   "ponyta-wildfire-run": {

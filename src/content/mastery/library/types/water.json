@@ -6,7 +6,7 @@
    "name": "Whirlpool",
    "type": "water",
    "kind": "special",
-   "power": 35,
+   "power": 40,
    "range": {
     "min": 2,
     "max": 2
@@ -27,7 +27,8 @@
      "status": "slow",
      "duration": 1
     }
-   ]
+   ],
+   "canonPower": 35
   },
   "hydro-cannon": {
    "id": "hydro-cannon",
@@ -50,7 +51,8 @@
      "kind": "push",
      "distance": 2
     }
-   ]
+   ],
+   "canonPower": 150
   },
   "muddy-water": {
    "id": "muddy-water",
@@ -59,7 +61,7 @@
    "kind": "special",
    "requiresLineOfSight": true,
    "affects": "enemies",
-   "power": 75,
+   "power": 65,
    "range": {
     "min": 1,
     "max": 1
@@ -75,7 +77,8 @@
      "status": "slow",
      "duration": 2
     }
-   ]
+   ],
+   "canonPower": 90
   }
  },
  "talents": {
@@ -147,7 +150,7 @@
   "water-skill-muddy-water": {
    "id": "water-skill-muddy-water",
    "name": "Muddy Water",
-   "description": "New skill: a muddy wave at range (Power 75) that Slows a 1-hex area for 2 turns.",
+   "description": "New skill: a muddy wave at range (Power 65) that Slows a 1-hex area for 2 turns.",
    "requiresType": "water",
    "grantsMove": "muddy-water"
   }

@@ -6,7 +6,7 @@
    "name": "Electroweb",
    "type": "electric",
    "kind": "special",
-   "power": 35,
+   "power": 45,
    "range": {
     "min": 1,
     "max": 1
@@ -24,14 +24,15 @@
      "status": "slow",
      "duration": 2
     }
-   ]
+   ],
+   "canonPower": 55
   },
   "zap-cannon": {
    "id": "zap-cannon",
    "name": "Zap Cannon",
    "type": "electric",
    "kind": "special",
-   "power": 90,
+   "power": 85,
    "range": {
     "min": 1,
     "max": 2
@@ -48,7 +49,8 @@
      "status": "paralysis",
      "duration": 1
     }
-   ]
+   ],
+   "canonPower": 120
   },
   "wild-charge": {
    "id": "wild-charge",
@@ -57,7 +59,7 @@
    "kind": "special",
    "requiresLineOfSight": true,
    "affects": "enemies",
-   "power": 100,
+   "power": 80,
    "range": {
     "min": 1,
     "max": 1
@@ -72,7 +74,8 @@
      "status": "paralysis",
      "duration": 1
     }
-   ]
+   ],
+   "canonPower": 90
   }
  },
  "talents": {
@@ -86,7 +89,7 @@
   "electric-skill-thunderbolt": {
    "id": "electric-skill-thunderbolt",
    "name": "Thunderbolt",
-   "description": "New skill: a strong bolt at range (Power 55).",
+   "description": "New skill: a strong bolt at range (Power 70).",
    "requiresType": "electric",
    "grantsMove": "thunderbolt"
   },
@@ -100,7 +103,7 @@
   "electric-skill-zap-cannon": {
    "id": "electric-skill-zap-cannon",
    "name": "Zap Cannon",
-   "description": "New skill: a huge electric orb at range (Power 90) that Paralyzes.",
+   "description": "New skill: a huge electric orb at range (Power 85) that Paralyzes.",
    "requiresType": "electric",
    "grantsMove": "zap-cannon"
   },
@@ -137,7 +140,7 @@
   "electric-skill-wild-charge": {
    "id": "electric-skill-wild-charge",
    "name": "Wild Charge",
-   "description": "New skill: a crackling tackle (Power 100) that Paralyzes the foe.",
+   "description": "New skill: a crackling tackle (Power 80) that Paralyzes the foe.",
    "requiresType": "electric",
    "grantsMove": "wild-charge"
   }

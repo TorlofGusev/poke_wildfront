@@ -90,7 +90,7 @@
    "kind": "bond",
    "category": "physical",
    "bondCost": 3,
-   "power": 100,
+   "power": 85,
    "range": {
     "min": 1,
     "max": 2
@@ -106,7 +106,8 @@
      "status": "exposed",
      "duration": 1
     }
-   ]
+   ],
+   "canonPower": 100
   },
   "onix-bind": {
    "id": "onix-bind",
@@ -114,7 +115,7 @@
    "type": "normal",
    "kind": "special",
    "category": "physical",
-   "power": 40,
+   "power": 25,
    "range": {
     "min": 1,
     "max": 1
@@ -134,7 +135,8 @@
      "duration": 2
     }
    ],
-   "cooldown": 3
+   "cooldown": 3,
+   "canonPower": 15
   },
   "onix-rock-tomb": {
    "id": "onix-rock-tomb",
@@ -143,7 +145,7 @@
    "kind": "special",
    "category": "physical",
    "cooldown": 3,
-   "power": 60,
+   "power": 55,
    "range": {
     "min": 1,
     "max": 2
@@ -159,7 +161,8 @@
      "status": "slow",
      "duration": 2
     }
-   ]
+   ],
+   "canonPower": 60
   },
   "onix-iron-tail": {
    "id": "onix-iron-tail",
@@ -168,7 +171,7 @@
    "kind": "special",
    "category": "physical",
    "cooldown": 3,
-   "power": 75,
+   "power": 85,
    "range": {
     "min": 1,
     "max": 1
@@ -184,7 +187,8 @@
      "status": "exposed",
      "duration": 1
     }
-   ]
+   ],
+   "canonPower": 100
   },
   "onix-rock-polish": {
    "id": "onix-rock-polish",
@@ -217,7 +221,7 @@
    "kind": "special",
    "category": "physical",
    "cooldown": 4,
-   "power": 80,
+   "power": 50,
    "range": {
     "min": 1,
     "max": 2
@@ -233,7 +237,8 @@
      "status": "slow",
      "duration": 1
     }
-   ]
+   ],
+   "canonPower": 50
   },
   "onix-sandstorm": {
    "id": "onix-sandstorm",
@@ -277,7 +282,8 @@
    "shape": {
     "kind": "single"
    },
-   "affects": "enemies"
+   "affects": "enemies",
+   "canonPower": 120
   },
   "onix-stealth-rock": {
    "id": "onix-stealth-rock",
@@ -312,7 +318,7 @@
    "kind": "bond",
    "category": "physical",
    "bondCost": 1,
-   "power": 65,
+   "power": 70,
    "range": {
     "min": 1,
     "max": 2
@@ -326,7 +332,8 @@
     {
      "kind": "engage"
     }
-   ]
+   ],
+   "canonPower": 80
   }
  },
  "talents": {
@@ -339,13 +346,13 @@
   "onix-stone-edge": {
    "id": "onix-stone-edge",
    "name": "Stone Edge",
-   "description": "Bond skill: jagged stones erupt under a foe 2 hexes away (Power 100, Attack), Exposing it 1 turn.",
+   "description": "Bond skill: jagged stones erupt under a foe 2 hexes away (Power 85, Attack), Exposing it 1 turn.",
    "grantsMove": "onix-stone-edge"
   },
   "onix-bind": {
    "id": "onix-bind",
    "name": "Bind",
-   "description": "New skill: coils around a foe (Power 40), engaging it and Slowing it for 2 turns.",
+   "description": "New skill: coils around a foe (Power 25), engaging it and Slowing it for 2 turns.",
    "grantsMove": "onix-bind"
   },
   "onix-hard-stone": {
@@ -369,7 +376,7 @@
   "onix-rock-tomb": {
    "id": "onix-rock-tomb",
    "name": "Rock Tomb",
-   "description": "New skill: hurls boulders at a foe up to 2 hexes away (Power 60), Slowing it for 2 turns.",
+   "description": "New skill: hurls boulders at a foe up to 2 hexes away (Power 55), Slowing it for 2 turns.",
    "grantsMove": "onix-rock-tomb"
   },
   "onix-sand-force": {
@@ -394,7 +401,7 @@
   "onix-iron-tail": {
    "id": "onix-iron-tail",
    "name": "Iron Tail",
-   "description": "New skill: swings its hardened tail into a foe (Power 75), leaving it Exposed for 1 turn.",
+   "description": "New skill: swings its hardened tail into a foe (Power 85), leaving it Exposed for 1 turn.",
    "grantsMove": "onix-iron-tail"
   },
   "onix-rock-polish": {
@@ -422,7 +429,7 @@
   "onix-smack-down": {
    "id": "onix-smack-down",
    "name": "Smack Down",
-   "description": "New skill: throws a rock at a foe up to 2 hexes away (Power 80), Slowing it for 1 turn.",
+   "description": "New skill: throws a rock at a foe up to 2 hexes away (Power 50), Slowing it for 1 turn.",
    "grantsMove": "onix-smack-down"
   },
   "onix-sandstorm": {
@@ -488,7 +495,7 @@
   "onix-dig": {
    "id": "onix-dig",
    "name": "Dig",
-   "description": "Bond skill: tunnels up to 2 hexes to a foe (Power 65, Attack) and engages it.",
+   "description": "Bond skill: tunnels up to 2 hexes to a foe (Power 70, Attack) and engages it.",
    "grantsMove": "onix-dig"
   },
   "onix-rock-head": {

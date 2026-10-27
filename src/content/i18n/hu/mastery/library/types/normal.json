@@ -4,7 +4,7 @@
    "description": "Új képesség: egy terület ellenfelei 2 körig 25%-kal több sebzést kapnak."
   },
   "normal-skill-tri-attack": {
-   "description": "Új képesség: hármas sugár távolra (Erő 60), amely megéget."
+   "description": "Új képesség: hármas sugár távolra (Erő 65), amely megéget."
   },
   "normal-skill-giga-impact": {
    "description": "Új képesség: teljes erejű roham (Erő 100), amely 1 hexszel hátralöki az ellenfelet."
@@ -19,7 +19,7 @@
    "description": "Az általa okozott állapotok 1 körrel tovább tartanak."
   },
   "normal-skill-hyper-voice": {
-   "description": "Új képesség: fülsiketítő kiáltás (Erő 80), egy 2 hexes vonalban mindent eltalál."
+   "description": "Új képesség: fülsiketítő kiáltás (Erő 60), egy 2 hexes vonalban mindent eltalál."
   }
  }
 }

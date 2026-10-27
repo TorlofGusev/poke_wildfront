@@ -90,7 +90,7 @@
    "kind": "bond",
    "category": "physical",
    "bondCost": 2,
-   "power": 90,
+   "power": 85,
    "range": {
     "min": 1,
     "max": 1
@@ -99,7 +99,8 @@
    "shape": {
     "kind": "single"
    },
-   "affects": "enemies"
+   "affects": "enemies",
+   "canonPower": 90
   },
   "jigglypuff-hyper-voice": {
    "id": "jigglypuff-hyper-voice",
@@ -108,7 +109,7 @@
    "kind": "bond",
    "category": "special",
    "bondCost": 3,
-   "power": 80,
+   "power": 60,
    "range": {
     "min": 0,
     "max": 0
@@ -118,7 +119,8 @@
     "kind": "burst",
     "radius": 2
    },
-   "affects": "enemies"
+   "affects": "enemies",
+   "canonPower": 90
   },
   "jigglypuff-disarming-voice": {
    "id": "jigglypuff-disarming-voice",
@@ -136,7 +138,8 @@
    "shape": {
     "kind": "single"
    },
-   "affects": "enemies"
+   "affects": "enemies",
+   "canonPower": 40
   },
   "jigglypuff-headbutt": {
    "id": "jigglypuff-headbutt",
@@ -145,7 +148,7 @@
    "kind": "special",
    "category": "physical",
    "cooldown": 3,
-   "power": 50,
+   "power": 65,
    "range": {
     "min": 1,
     "max": 1
@@ -160,7 +163,8 @@
      "kind": "push",
      "distance": 1
     }
-   ]
+   ],
+   "canonPower": 70
   },
   "jigglypuff-disable": {
    "id": "jigglypuff-disable",
@@ -193,7 +197,7 @@
    "kind": "special",
    "category": "physical",
    "cooldown": 3,
-   "power": 70,
+   "power": 75,
    "range": {
     "min": 1,
     "max": 1
@@ -202,7 +206,8 @@
    "shape": {
     "kind": "single"
    },
-   "affects": "enemies"
+   "affects": "enemies",
+   "canonPower": 80
   },
   "jigglypuff-dazzling-gleam": {
    "id": "jigglypuff-dazzling-gleam",
@@ -211,7 +216,7 @@
    "kind": "special",
    "category": "special",
    "cooldown": 4,
-   "power": 80,
+   "power": 60,
    "range": {
     "min": 1,
     "max": 1
@@ -221,7 +226,8 @@
     "kind": "burst",
     "radius": 1
    },
-   "affects": "enemies"
+   "affects": "enemies",
+   "canonPower": 80
   },
   "jigglypuff-slam": {
    "id": "jigglypuff-slam",
@@ -230,7 +236,7 @@
    "kind": "special",
    "category": "physical",
    "cooldown": 4,
-   "power": 80,
+   "power": 75,
    "range": {
     "min": 1,
     "max": 1
@@ -239,7 +245,8 @@
    "shape": {
     "kind": "single"
    },
-   "affects": "enemies"
+   "affects": "enemies",
+   "canonPower": 80
   },
   "jigglypuff-moonblast": {
    "id": "jigglypuff-moonblast",
@@ -248,7 +255,7 @@
    "kind": "special",
    "category": "special",
    "cooldown": 5,
-   "power": 95,
+   "power": 75,
    "range": {
     "min": 1,
     "max": 2
@@ -257,7 +264,8 @@
    "shape": {
     "kind": "single"
    },
-   "affects": "enemies"
+   "affects": "enemies",
+   "canonPower": 95
   },
   "jigglypuff-giga-impact": {
    "id": "jigglypuff-giga-impact",
@@ -275,7 +283,8 @@
    "shape": {
     "kind": "single"
    },
-   "affects": "enemies"
+   "affects": "enemies",
+   "canonPower": 150
   }
  },
  "talents": {
@@ -288,13 +297,13 @@
   "jigglypuff-play-rough": {
    "id": "jigglypuff-play-rough",
    "name": "Play Rough",
-   "description": "Bond skill: a rough-and-tumble scuffle with a foe (Power 90, Attack).",
+   "description": "Bond skill: a rough-and-tumble scuffle with a foe (Power 85, Attack).",
    "grantsMove": "jigglypuff-play-rough"
   },
   "jigglypuff-hyper-voice": {
    "id": "jigglypuff-hyper-voice",
    "name": "Hyper Voice",
-   "description": "Bond skill: a booming song hits all foes within 2 hexes (Power 80).",
+   "description": "Bond skill: a booming song hits all foes within 2 hexes (Power 60).",
    "grantsMove": "jigglypuff-hyper-voice"
   },
   "jigglypuff-cute-charm": {
@@ -325,7 +334,7 @@
   "jigglypuff-headbutt": {
    "id": "jigglypuff-headbutt",
    "name": "Headbutt",
-   "description": "New skill: butts the foe with its round head (Power 50), pushing it 1 hex.",
+   "description": "New skill: butts the foe with its round head (Power 65), pushing it 1 hex.",
    "grantsMove": "jigglypuff-headbutt"
   },
   "jigglypuff-soft-body": {
@@ -353,7 +362,7 @@
   "jigglypuff-mega-punch": {
    "id": "jigglypuff-mega-punch",
    "name": "Mega Punch",
-   "description": "New skill: a surprisingly hard punch (Power 70).",
+   "description": "New skill: a surprisingly hard punch (Power 75).",
    "grantsMove": "jigglypuff-mega-punch"
   },
   "jigglypuff-gentle-heart": {
@@ -375,13 +384,13 @@
   "jigglypuff-dazzling-gleam": {
    "id": "jigglypuff-dazzling-gleam",
    "name": "Dazzling Gleam",
-   "description": "New skill: a dazzling flash hits a 1-hex area up to 1 hex away (Power 80).",
+   "description": "New skill: a dazzling flash hits a 1-hex area up to 1 hex away (Power 60).",
    "grantsMove": "jigglypuff-dazzling-gleam"
   },
   "jigglypuff-slam": {
    "id": "jigglypuff-slam",
    "name": "Slam",
-   "description": "New skill: slams its round body into a foe (Power 80).",
+   "description": "New skill: slams its round body into a foe (Power 75).",
    "grantsMove": "jigglypuff-slam"
   },
   "jigglypuff-fluffy-fur": {
@@ -403,7 +412,7 @@
   "jigglypuff-moonblast": {
    "id": "jigglypuff-moonblast",
    "name": "Moonblast",
-   "description": "New skill: draws on the moon's power to blast a foe up to 2 hexes away (Power 95).",
+   "description": "New skill: draws on the moon's power to blast a foe up to 2 hexes away (Power 75).",
    "grantsMove": "jigglypuff-moonblast"
   },
   "jigglypuff-giga-impact": {

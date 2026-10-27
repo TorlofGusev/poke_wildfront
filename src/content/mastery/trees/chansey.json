@@ -117,7 +117,7 @@
    "kind": "bond",
    "category": "special",
    "bondCost": 2,
-   "power": 80,
+   "power": 60,
    "range": {
     "min": 1,
     "max": 2
@@ -127,7 +127,8 @@
     "kind": "burst",
     "radius": 1
    },
-   "affects": "enemies"
+   "affects": "enemies",
+   "canonPower": 90
   },
   "chansey-tail-whip": {
    "id": "chansey-tail-whip",
@@ -160,7 +161,7 @@
    "kind": "special",
    "category": "physical",
    "cooldown": 3,
-   "power": 60,
+   "power": 75,
    "range": {
     "min": 1,
     "max": 1
@@ -169,7 +170,8 @@
    "shape": {
     "kind": "single"
    },
-   "affects": "enemies"
+   "affects": "enemies",
+   "canonPower": 85
   },
   "chansey-growl": {
    "id": "chansey-growl",
@@ -203,7 +205,7 @@
    "kind": "special",
    "category": "special",
    "cooldown": 3,
-   "power": 70,
+   "power": 40,
    "range": {
     "min": 1,
     "max": 2
@@ -212,7 +214,8 @@
    "shape": {
     "kind": "single"
    },
-   "affects": "enemies"
+   "affects": "enemies",
+   "canonPower": 40
   },
   "chansey-heal-bell": {
    "id": "chansey-heal-bell",
@@ -244,7 +247,7 @@
    "kind": "special",
    "category": "special",
    "cooldown": 4,
-   "power": 85,
+   "power": 65,
    "range": {
     "min": 1,
     "max": 2
@@ -260,7 +263,8 @@
      "status": "paralysis",
      "duration": 1
     }
-   ]
+   ],
+   "canonPower": 80
   },
   "chansey-hyper-beam": {
    "id": "chansey-hyper-beam",
@@ -269,7 +273,7 @@
    "kind": "special",
    "category": "special",
    "cooldown": 5,
-   "power": 100,
+   "power": 95,
    "range": {
     "min": 1,
     "max": 2
@@ -278,7 +282,8 @@
    "shape": {
     "kind": "single"
    },
-   "affects": "enemies"
+   "affects": "enemies",
+   "canonPower": 150
   },
   "chansey-egg-bomb": {
    "id": "chansey-egg-bomb",
@@ -287,7 +292,7 @@
    "kind": "special",
    "category": "physical",
    "cooldown": 5,
-   "power": 90,
+   "power": 75,
    "range": {
     "min": 1,
     "max": 2
@@ -296,7 +301,8 @@
    "shape": {
     "kind": "single"
    },
-   "affects": "enemies"
+   "affects": "enemies",
+   "canonPower": 100
   }
  },
  "talents": {
@@ -315,7 +321,7 @@
   "chansey-hyper-voice": {
    "id": "chansey-hyper-voice",
    "name": "Hyper Voice",
-   "description": "Bond skill: a booming cry up to 2 hexes away (Power 80) hitting a 1-hex area.",
+   "description": "Bond skill: a booming cry up to 2 hexes away (Power 60) hitting a 1-hex area.",
    "grantsMove": "chansey-hyper-voice"
   },
   "chansey-egg-padding": {
@@ -343,7 +349,7 @@
   "chansey-body-slam": {
    "id": "chansey-body-slam",
    "name": "Body Slam",
-   "description": "New skill: flops its whole body onto an adjacent foe (Power 60).",
+   "description": "New skill: flops its whole body onto an adjacent foe (Power 75).",
    "grantsMove": "chansey-body-slam"
   },
   "chansey-egg-reserve": {
@@ -371,7 +377,7 @@
   "chansey-echoed-voice": {
    "id": "chansey-echoed-voice",
    "name": "Echoed Voice",
-   "description": "New skill: an echoing cry at a foe up to 2 hexes away (Power 70).",
+   "description": "New skill: an echoing cry at a foe up to 2 hexes away (Power 40).",
    "grantsMove": "chansey-echoed-voice"
   },
   "chansey-steady-nerves": {
@@ -402,7 +408,7 @@
   "chansey-tri-attack": {
    "id": "chansey-tri-attack",
    "name": "Tri Attack",
-   "description": "New skill: a triangle of energy at a foe up to 2 hexes away (Power 85); Paralyzes it 1 turn.",
+   "description": "New skill: a triangle of energy at a foe up to 2 hexes away (Power 65); Paralyzes it 1 turn.",
    "grantsMove": "chansey-tri-attack"
   },
   "chansey-unbreakable": {
@@ -425,13 +431,13 @@
   "chansey-hyper-beam": {
    "id": "chansey-hyper-beam",
    "name": "Hyper Beam",
-   "description": "New skill: a devastating beam at a foe up to 2 hexes away (Power 100).",
+   "description": "New skill: a devastating beam at a foe up to 2 hexes away (Power 95).",
    "grantsMove": "chansey-hyper-beam"
   },
   "chansey-egg-bomb": {
    "id": "chansey-egg-bomb",
    "name": "Egg Bomb",
-   "description": "New skill: hurls a big egg at a foe up to 2 hexes away (Power 90).",
+   "description": "New skill: hurls a big egg at a foe up to 2 hexes away (Power 75).",
    "grantsMove": "chansey-egg-bomb"
   },
   "chansey-lucky-charm": {

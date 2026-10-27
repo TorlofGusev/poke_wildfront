@@ -70,7 +70,7 @@
    "kind": "bond",
    "category": "special",
    "bondCost": 3,
-   "power": 100,
+   "power": 90,
    "range": {
     "min": 1,
     "max": 3
@@ -79,7 +79,8 @@
    "shape": {
     "kind": "single"
    },
-   "affects": "enemies"
+   "affects": "enemies",
+   "canonPower": 120
   },
   "drowzee-calm-mind": {
    "id": "drowzee-calm-mind",
@@ -118,7 +119,7 @@
    "kind": "bond",
    "category": "physical",
    "bondCost": 2,
-   "power": 90,
+   "power": 80,
    "range": {
     "min": 1,
     "max": 1
@@ -127,7 +128,8 @@
    "shape": {
     "kind": "single"
    },
-   "affects": "enemies"
+   "affects": "enemies",
+   "canonPower": 80
   },
   "drowzee-poison-gas": {
    "id": "drowzee-poison-gas",
@@ -162,7 +164,7 @@
    "kind": "special",
    "category": "physical",
    "cooldown": 3,
-   "power": 60,
+   "power": 65,
    "range": {
     "min": 1,
     "max": 1
@@ -178,7 +180,8 @@
      "status": "slow",
      "duration": 1
     }
-   ]
+   ],
+   "canonPower": 70
   },
   "drowzee-psyshock": {
    "id": "drowzee-psyshock",
@@ -187,7 +190,7 @@
    "kind": "special",
    "category": "special",
    "cooldown": 3,
-   "power": 70,
+   "power": 65,
    "range": {
     "min": 1,
     "max": 2
@@ -196,7 +199,8 @@
    "shape": {
     "kind": "single"
    },
-   "affects": "enemies"
+   "affects": "enemies",
+   "canonPower": 80
   },
   "drowzee-disable": {
    "id": "drowzee-disable",
@@ -255,7 +259,7 @@
    "kind": "special",
    "category": "physical",
    "cooldown": 4,
-   "power": 85,
+   "power": 75,
    "range": {
     "min": 1,
     "max": 1
@@ -264,7 +268,8 @@
    "shape": {
     "kind": "single"
    },
-   "affects": "enemies"
+   "affects": "enemies",
+   "canonPower": 80
   },
   "drowzee-hyper-beam": {
    "id": "drowzee-hyper-beam",
@@ -273,7 +278,7 @@
    "kind": "special",
    "category": "special",
    "cooldown": 5,
-   "power": 100,
+   "power": 95,
    "range": {
     "min": 1,
     "max": 2
@@ -282,7 +287,8 @@
    "shape": {
     "kind": "single"
    },
-   "affects": "enemies"
+   "affects": "enemies",
+   "canonPower": 150
   },
   "drowzee-body-slam": {
    "id": "drowzee-body-slam",
@@ -291,7 +297,7 @@
    "kind": "special",
    "category": "physical",
    "cooldown": 4,
-   "power": 85,
+   "power": 75,
    "range": {
     "min": 1,
     "max": 1
@@ -307,14 +313,15 @@
      "status": "paralysis",
      "duration": 1
     }
-   ]
+   ],
+   "canonPower": 85
   }
  },
  "talents": {
   "drowzee-future-sight": {
    "id": "drowzee-future-sight",
    "name": "Future Sight",
-   "description": "Bond skill: a foreseen psychic blast at a foe up to 3 hexes away (Power 100).",
+   "description": "Bond skill: a foreseen psychic blast at a foe up to 3 hexes away (Power 90).",
    "grantsMove": "drowzee-future-sight"
   },
   "drowzee-calm-mind": {
@@ -326,7 +333,7 @@
   "drowzee-zen-headbutt": {
    "id": "drowzee-zen-headbutt",
    "name": "Zen Headbutt",
-   "description": "Bond skill: a headbutt charged with willpower (Power 90, Attack).",
+   "description": "Bond skill: a headbutt charged with willpower (Power 80, Attack).",
    "grantsMove": "drowzee-zen-headbutt"
   },
   "drowzee-swinging-pendulum": {
@@ -356,7 +363,7 @@
   "drowzee-headbutt": {
    "id": "drowzee-headbutt",
    "name": "Headbutt",
-   "description": "New skill: rams its head into a foe (Power 60), Slowing it for 1 turn.",
+   "description": "New skill: rams its head into a foe (Power 65), Slowing it for 1 turn.",
    "grantsMove": "drowzee-headbutt"
   },
   "drowzee-clear-mind": {
@@ -378,7 +385,7 @@
   "drowzee-psyshock": {
    "id": "drowzee-psyshock",
    "name": "Psyshock",
-   "description": "New skill: a psychic wave at a foe up to 2 hexes away (Power 70).",
+   "description": "New skill: a psychic wave at a foe up to 2 hexes away (Power 65).",
    "grantsMove": "drowzee-psyshock"
   },
   "drowzee-disable": {
@@ -412,7 +419,7 @@
   "drowzee-mega-punch": {
    "id": "drowzee-mega-punch",
    "name": "Mega Punch",
-   "description": "New skill: a powerful punch at an adjacent foe (Power 85).",
+   "description": "New skill: a powerful punch at an adjacent foe (Power 75).",
    "grantsMove": "drowzee-mega-punch"
   },
   "drowzee-spreading-drowsiness": {
@@ -434,13 +441,13 @@
   "drowzee-hyper-beam": {
    "id": "drowzee-hyper-beam",
    "name": "Hyper Beam",
-   "description": "New skill: a devastating beam at a foe up to 2 hexes away (Power 100).",
+   "description": "New skill: a devastating beam at a foe up to 2 hexes away (Power 95).",
    "grantsMove": "drowzee-hyper-beam"
   },
   "drowzee-body-slam": {
    "id": "drowzee-body-slam",
    "name": "Body Slam",
-   "description": "New skill: slams its body into a foe (Power 85), Paralyzing it for 1 turn.",
+   "description": "New skill: slams its body into a foe (Power 75), Paralyzing it for 1 turn.",
    "grantsMove": "drowzee-body-slam"
   },
   "drowzee-hypnotic-rhythm": {

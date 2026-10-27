@@ -10,7 +10,7 @@
    "description": "Max HP-ja 20%-át gyógyítja, amikor kiüt egy ellenfelet; +1 HP."
   },
   "skill-striker-giga-impact": {
-   "description": "Új képesség: mindent bele közelharci csapás (Erő 90, 4 kör alatt töltődik)."
+   "description": "Új képesség: mindent bele közelharci csapás (Erő 100, 4 kör alatt töltődik)."
   },
   "striker-endure": {
    "description": "Csatánként egyszer 1 HP-val túléli a kiütő csapást; +1 HP."
@@ -19,7 +19,7 @@
    "description": "+25% sebzés a Védtelen ellenfelek ellen; +1 Támadás, +1 HP."
   },
   "skill-striker-double-edge": {
-   "description": "Új képesség: zúzó közelharci csapás, 2 körre Védtelenné teszi a célt (Erő 80, 4 kör töltés)."
+   "description": "Új képesség: zúzó közelharci csapás, 2 körre Védtelenné teszi a célt (Erő 95, 4 kör töltés)."
   }
  }
 }

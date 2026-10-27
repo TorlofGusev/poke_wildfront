@@ -1,13 +1,13 @@
 {
  "talents": {
   "dragon-skill-dragon-claw": {
-   "description": "Új képesség: vad közelharci karmolás (Erő 70)."
+   "description": "Új képesség: vad közelharci karmolás (Erő 75)."
   },
   "dragon-skill-dragon-tail": {
-   "description": "Új képesség: farokcsapás, amely egy szomszédos ellenfelet 1 hexnyit hátralök (Erő 45)."
+   "description": "Új képesség: farokcsapás, amely egy szomszédos ellenfelet 1 hexnyit hátralök (Erő 60)."
   },
   "dragon-skill-draco-meteor": {
-   "description": "Új képesség: meteorok csapódnak be egy 1 hexnyire lévő területre (Erő 90)."
+   "description": "Új képesség: meteorok csapódnak be egy 1 hexnyire lévő területre (Erő 80)."
   },
   "dragon-berserk": {
    "description": "+25% sebzés, amíg HP-ja a fele alatt van."
@@ -22,7 +22,7 @@
    "description": "15%-kal kevesebb sebzést kap; +2 HP."
   },
   "dragon-skill-dragon-rush": {
-   "description": "Új képesség: nekiront egy szomszédos ellenfélnek, 1 hexnyit hátralökve (Erő 105)."
+   "description": "Új képesség: nekiront egy szomszédos ellenfélnek, 1 hexnyit hátralökve (Erő 85)."
   }
  }
 }

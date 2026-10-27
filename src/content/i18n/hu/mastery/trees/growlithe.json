@@ -1,10 +1,10 @@
 {
  "talents": {
   "growlithe-fire-fang": {
-   "description": "Bond képesség: lángba burkolt fogakkal harap (Erő 85, Támadás), 2 körre megégeti az ellenfelet."
+   "description": "Bond képesség: lángba burkolt fogakkal harap (Erő 70, Támadás), 2 körre megégeti az ellenfelet."
   },
   "growlithe-extreme-speed": {
-   "description": "Bond képesség: vakítóan gyors roham (Erő 70, Támadás)."
+   "description": "Bond képesség: vakítóan gyors roham (Erő 80, Támadás)."
   },
   "growlithe-morning-sun": {
    "description": "Bond képesség: meleg fényben sütkérezik, és 40 HP-t gyógyít magán."
@@ -19,7 +19,7 @@
    "description": "Új képesség: buzdító üvöltés 1 körre Focused állapotba hozza őt és a szomszédos szövetségeseit."
   },
   "growlithe-flame-wheel": {
-   "description": "Új képesség: lángba burkolózva ront rá (Erő 55), 1 körre megégeti az ellenfelet."
+   "description": "Új képesség: lángba burkolózva ront rá (Erő 60), 1 körre megégeti az ellenfelet."
   },
   "growlithe-flash-fire": {
    "description": "Égés ellen immunis; Fire típusú lépései 10%-kal többet sebeznek."
@@ -28,7 +28,7 @@
    "description": "Bozontos sörénye tompítja a csapásokat: 10%-kal kevesebb sebzést kap."
   },
   "growlithe-crunch": {
-   "description": "Új képesség: erősen ráharap (Erő 70), 1 körre Exposed állapotba teszi az ellenfelet."
+   "description": "Új képesség: erősen ráharap (Erő 75), 1 körre Exposed állapotba teszi az ellenfelet."
   },
   "growlithe-roar": {
    "description": "Új képesség: hatalmas üvöltés 1 hexnyire hátraűz egy szomszédos ellenfelet."
@@ -40,10 +40,10 @@
    "description": "A vele lekötött ellenfelek távozáskor mindig szabad csapást kapnak, akkor is, ha fürgék."
   },
   "growlithe-flare-blitz": {
-   "description": "Új képesség: lángba burkolózva nekiront egy ellenfélnek (Erő 90)."
+   "description": "Új képesség: lángba burkolózva nekiront egy ellenfélnek (Erő 95)."
   },
   "growlithe-body-slam": {
-   "description": "Új képesség: teljes súlyával ráveti magát (Erő 85), 1 körre Paralysis."
+   "description": "Új képesség: teljes súlyával ráveti magát (Erő 75), 1 körre Paralysis."
   },
   "growlithe-agile-bound": {
    "description": "Szabad csapás nélkül szökken el a lekötő ellenfelektől; 15%-kal többet sebez a szomszédosakra."
@@ -55,7 +55,7 @@
    "description": "Új képesség: vad tombolással támad egy ellenfélre (Erő 95)."
   },
   "growlithe-raging-fury": {
-   "description": "Új képesség: dühödt lángroham egy szomszédos ellenfélre (Erő 90), 2 körre megégeti."
+   "description": "Új képesség: dühödt lángroham egy szomszédos ellenfélre (Erő 95), 2 körre megégeti."
   },
   "growlithe-legendary-pride": {
    "description": "Minden kiütéskor +1 Támadást kap a csata végéig (max. +3)."

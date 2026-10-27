@@ -1,13 +1,13 @@
 {
  "talents": {
   "diglett-night-slash": {
-   "description": "Bond képesség: előbukkan és megvágja az ellenfelet (Power 90, Attack), 1 körre Exposed lesz."
+   "description": "Bond képesség: előbukkan és megvágja az ellenfelet (Power 75, Attack), 1 körre Exposed lesz."
   },
   "diglett-earth-power": {
-   "description": "Bond képesség: kitör a föld egy legfeljebb 3 hexnyire lévő ellenfél alatt, rálátás nélkül (Power 85)."
+   "description": "Bond képesség: kitör a föld egy legfeljebb 3 hexnyire lévő ellenfél alatt, rálátás nélkül (Power 75)."
   },
   "diglett-sucker-punch": {
-   "description": "Bond képesség: alulról, elsőként csap le (Power 60, Attack)."
+   "description": "Bond képesség: alulról, elsőként csap le (Power 75, Attack)."
   },
   "diglett-sand-force": {
    "description": "20%-kal többet sebez a sárban álló ellenfeleknek."
@@ -28,10 +28,10 @@
    "description": "Teljes HP-n 20%-kal kevesebb sebzést kap."
   },
   "diglett-slash": {
-   "description": "Új képesség: éles karmokkal megvág egy szomszédos ellenfelet (Erő 70)."
+   "description": "Új képesség: éles karmokkal megvág egy szomszédos ellenfelet (Erő 65)."
   },
   "diglett-scorching-sands": {
-   "description": "Új képesség: forró homokot szór egy legfeljebb 2 hexnyire lévő ellenfélre (Power 70), 1 körre Burn."
+   "description": "Új képesség: forró homokot szór egy legfeljebb 2 hexnyire lévő ellenfélre (Power 60), 1 körre Burn."
   },
   "diglett-ambush": {
    "description": "20%-kal többet sebez a teljes HP-n lévő ellenfeleknek."
@@ -40,10 +40,10 @@
    "description": "Ha a saját körében kiüt egy ellenfelet, 2 mozgáspontot visszanyer."
   },
   "diglett-drill-run": {
-   "description": "Új képesség: a földet fúrva egy szomszédos ellenfélbe csapódik (Erő 95)."
+   "description": "Új képesség: a földet fúrva egy szomszédos ellenfélbe csapódik (Erő 75)."
   },
   "diglett-mud-bomb": {
-   "description": "Új képesség: sárlabda legfeljebb 1 hexnyire, 1 hex körzetben (Power 80)."
+   "description": "Új képesség: sárlabda legfeljebb 1 hexnyire, 1 hex körzetben (Power 50)."
   },
   "diglett-dust-off": {
    "description": "Köre elején lerázza magáról az ellenfelek okozta státuszokat."
@@ -55,7 +55,7 @@
    "description": "Új képesség: 2 hex hosszú vonalban hasítja ketté a földet (Power 95)."
   },
   "diglett-bulldoze": {
-   "description": "Új képesség: megrázza a földet legfeljebb 1 hexnyire (Power 60), 1 hex körzetben 2 körre Slow."
+   "description": "Új képesség: megrázza a földet legfeljebb 1 hexnyire (Power 50), 1 hex körzetben 2 körre Slow."
   },
   "diglett-tunnel-ambush": {
    "description": "15%-kal többet sebez a szomszédos ellenfeleknek."

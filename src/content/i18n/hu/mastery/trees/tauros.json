@@ -1,13 +1,13 @@
 {
  "talents": {
   "tauros-raging-bull": {
-   "description": "Bond képesség: dühödt roham (Erő 100, Támadás); az ellenfél 1 körre Kitett lesz."
+   "description": "Bond képesség: dühödt roham (Erő 85, Támadás); az ellenfél 1 körre Kitett lesz."
   },
   "tauros-horn-attack": {
-   "description": "Bond képesség: 2 hexen belül szarvakkal előre ront rá (Erő 60), és lefogja."
+   "description": "Bond képesség: 2 hexen belül szarvakkal előre ront rá (Erő 65), és lefogja."
   },
   "tauros-double-edge": {
-   "description": "Bond képesség: életét kockáztató teljes testes roham (Erő 90)."
+   "description": "Bond képesség: életét kockáztató teljes testes roham (Erő 100)."
   },
   "tauros-herd-instinct": {
    "description": "15%-kal többet sebez a szövetségeseivel harcban álló ellenfelekre."
@@ -22,7 +22,7 @@
    "description": "Ha a saját körében kiüt egy ellenfelet, 2 mozgáspontot visszakap."
   },
   "tauros-body-slam": {
-   "description": "Új képesség: teljes testével rázuhan (Erő 70); 1 körre megbénítja az ellenfelet."
+   "description": "Új képesség: teljes testével rázuhan (Erő 75); 1 körre megbénítja az ellenfelet."
   },
   "tauros-scary-face": {
    "description": "Új képesség: ijesztő nézés egy 2 hexen belüli ellenfélre: 2 körig Lassú."
@@ -43,7 +43,7 @@
    "description": "Új képesség: mindenét beleadva ront rá (Erő 100), és 1 hexnyit hátralöki."
   },
   "tauros-iron-head": {
-   "description": "Új képesség: kemény fejével kos az ellenfélbe (Erő 85)."
+   "description": "Új képesség: kemény fejével kos az ellenfélbe (Erő 75)."
   },
   "tauros-herd-leader": {
    "description": "Minden kiütése 1 Bondot ad a csapatnak."
@@ -61,13 +61,13 @@
    "description": "Új képesség: összeszedi magát, hogy kitartson; 1 körre Protected."
   },
   "tauros-headbutt": {
-   "description": "Új képesség: erős fejelés (Erő 60)."
+   "description": "Új képesség: erős fejelés (Erő 65)."
   },
   "tauros-head-charge": {
-   "description": "Új képesség: fejjel előre ront (Erő 85), 2 hexnyire repíti az ellenfelet."
+   "description": "Új képesség: fejjel előre ront (Erő 95), 2 hexnyire repíti az ellenfelet."
   },
   "tauros-rage": {
-   "description": "Új képesség: dühödt roham (Erő 90), amellyel rátapad az ellenfélre (leköti)."
+   "description": "Új képesség: dühödt roham (Erő 30), amellyel rátapad az ellenfélre (leköti)."
   }
  }
 }

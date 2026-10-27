@@ -22,7 +22,8 @@
      "kind": "push",
      "distance": 1
     }
-   ]
+   ],
+   "canonPower": 150
   },
   "hyper-voice": {
    "id": "hyper-voice",
@@ -31,7 +32,7 @@
    "kind": "special",
    "requiresLineOfSight": false,
    "affects": "enemies",
-   "power": 80,
+   "power": 60,
    "range": {
     "min": 1,
     "max": 2
@@ -40,7 +41,8 @@
     "kind": "line",
     "length": 2
    },
-   "cooldown": 4
+   "cooldown": 4,
+   "canonPower": 90
   }
  },
  "talents": {
@@ -54,7 +56,7 @@
   "normal-skill-tri-attack": {
    "id": "normal-skill-tri-attack",
    "name": "Tri Attack",
-   "description": "New skill: a triple beam at range (Power 60) that Burns.",
+   "description": "New skill: a triple beam at range (Power 65) that Burns.",
    "requiresType": "normal",
    "grantsMove": "tri-attack"
   },
@@ -99,7 +101,7 @@
   "normal-skill-hyper-voice": {
    "id": "normal-skill-hyper-voice",
    "name": "Hyper Voice",
-   "description": "New skill: a deafening shout (Power 80) hitting everything in a 2-hex line.",
+   "description": "New skill: a deafening shout (Power 60) hitting everything in a 2-hex line.",
    "requiresType": "normal",
    "grantsMove": "hyper-voice"
   }

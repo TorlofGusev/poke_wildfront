@@ -4,7 +4,6 @@
  "{engaged} with {name}": "{engaged}: {name}",
  "Engaged": "Lekötve",
  "(only melee on each other; slips away freely)": "(csak egymást üthetik közelről; szabadon kiléphet)",
- "(only melee on each other; stepping away draws a free attack)": "(csak egymást üthetik közelről; kilépéskor ingyen támadást kap)",
  "Combo target": "Kombó célpont",
  "an ally has engaged it: hit it for +1 Bond and combo bonuses": "egy társad leköti: üsd meg +1 Bondért és kombó bónuszokért",
  "it carries an ally's status: hit it for +1 Bond and combo bonuses": "egy társad állapota van rajta: üsd meg +1 Bondért és kombó bónuszokért",
@@ -263,5 +262,6 @@
  "Gives:": "Ad:",
  "Highlighted stats are offered this level and cost no EV. Hover a stat for details.": "A kiemelt statok ezen a szinten felajánlottak, nem kerülnek EV-be. Vidd fölé az egeret a részletekért.",
  "Each level-up point offers 3 stats for free; one marked ★ gives +2.": "Minden szintlépési pont 3 statot ajánl fel ingyen; a ★-gal jelölt +2-t ad.",
- "With EV you choose: switch to +2 and a point gives +2 ({up} EV more), or pick a stat that was not offered ({off} EV).": "EV-vel te döntesz: +2-re kapcsolva a pont +2-t ad (+{up} EV), vagy nem felajánlott statot is választhatsz ({off} EV)."
+ "With EV you choose: switch to +2 and a point gives +2 ({up} EV more), or pick a stat that was not offered ({off} EV).": "EV-vel te döntesz: +2-re kapcsolva a pont +2-t ad (+{up} EV), vagy nem felajánlott statot is választhatsz ({off} EV).",
+ "(only melee on each other; any step draws a free attack first)": "(csak közelharcban egymásra; bármilyen lépés előtt szabad ütést kap)"
 }

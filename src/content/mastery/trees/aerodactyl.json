@@ -66,7 +66,7 @@
    "kind": "bond",
    "category": "physical",
    "bondCost": 2,
-   "power": 100,
+   "power": 85,
    "range": {
     "min": 1,
     "max": 2
@@ -82,7 +82,8 @@
      "status": "exposed",
      "duration": 1
     }
-   ]
+   ],
+   "canonPower": 100
   },
   "aerodactyl-aerial-ace": {
    "id": "aerodactyl-aerial-ace",
@@ -91,7 +92,7 @@
    "kind": "bond",
    "category": "physical",
    "bondCost": 1,
-   "power": 65,
+   "power": 60,
    "range": {
     "min": 1,
     "max": 2
@@ -105,7 +106,8 @@
     {
      "kind": "engage"
     }
-   ]
+   ],
+   "canonPower": 60
   },
   "aerodactyl-wide-guard": {
    "id": "aerodactyl-wide-guard",
@@ -139,7 +141,7 @@
    "kind": "special",
    "category": "physical",
    "cooldown": 3,
-   "power": 60,
+   "power": 55,
    "range": {
     "min": 1,
     "max": 1
@@ -149,7 +151,8 @@
     "kind": "burst",
     "radius": 1
    },
-   "affects": "enemies"
+   "affects": "enemies",
+   "canonPower": 75
   },
   "aerodactyl-roar": {
    "id": "aerodactyl-roar",
@@ -181,7 +184,7 @@
    "kind": "special",
    "category": "physical",
    "cooldown": 3,
-   "power": 80,
+   "power": 75,
    "range": {
     "min": 1,
     "max": 1
@@ -197,7 +200,8 @@
      "status": "exposed",
      "duration": 1
     }
-   ]
+   ],
+   "canonPower": 80
   },
   "aerodactyl-tailwind": {
    "id": "aerodactyl-tailwind",
@@ -231,7 +235,7 @@
    "kind": "special",
    "category": "physical",
    "cooldown": 4,
-   "power": 85,
+   "power": 75,
    "range": {
     "min": 1,
     "max": 1
@@ -240,7 +244,8 @@
    "shape": {
     "kind": "single"
    },
-   "affects": "enemies"
+   "affects": "enemies",
+   "canonPower": 80
   },
   "aerodactyl-scary-face": {
    "id": "aerodactyl-scary-face",
@@ -273,7 +278,7 @@
    "kind": "special",
    "category": "physical",
    "cooldown": 4,
-   "power": 100,
+   "power": 95,
    "range": {
     "min": 1,
     "max": 2
@@ -282,7 +287,8 @@
    "shape": {
     "kind": "single"
    },
-   "affects": "enemies"
+   "affects": "enemies",
+   "canonPower": 140
   },
   "aerodactyl-rock-tomb": {
    "id": "aerodactyl-rock-tomb",
@@ -291,7 +297,7 @@
    "kind": "special",
    "category": "physical",
    "cooldown": 4,
-   "power": 70,
+   "power": 55,
    "range": {
     "min": 1,
     "max": 2
@@ -307,20 +313,21 @@
      "status": "slow",
      "duration": 2
     }
-   ]
+   ],
+   "canonPower": 60
   }
  },
  "talents": {
   "aerodactyl-stone-edge": {
    "id": "aerodactyl-stone-edge",
    "name": "Stone Edge",
-   "description": "Bond skill: sharp stones at a foe up to 2 hexes away (Power 100, Attack); Exposed 1 turn.",
+   "description": "Bond skill: sharp stones at a foe up to 2 hexes away (Power 85, Attack); Exposed 1 turn.",
    "grantsMove": "aerodactyl-stone-edge"
   },
   "aerodactyl-aerial-ace": {
    "id": "aerodactyl-aerial-ace",
    "name": "Aerial Ace",
-   "description": "Bond skill: swoops up to 2 hexes onto a foe (Power 65, Attack) and engages it.",
+   "description": "Bond skill: swoops up to 2 hexes onto a foe (Power 60, Attack) and engages it.",
    "grantsMove": "aerodactyl-aerial-ace"
   },
   "aerodactyl-wide-guard": {
@@ -348,7 +355,7 @@
   "aerodactyl-rock-slide": {
    "id": "aerodactyl-rock-slide",
    "name": "Rock Slide",
-   "description": "New skill: hurls boulders at a 1-hex area up to 1 hex away (Power 60).",
+   "description": "New skill: hurls boulders at a 1-hex area up to 1 hex away (Power 55).",
    "grantsMove": "aerodactyl-rock-slide"
   },
   "aerodactyl-roar": {
@@ -376,7 +383,7 @@
   "aerodactyl-crunch": {
    "id": "aerodactyl-crunch",
    "name": "Crunch",
-   "description": "New skill: crushing fangs (Power 80) that leave the foe Exposed for 1 turn.",
+   "description": "New skill: crushing fangs (Power 75) that leave the foe Exposed for 1 turn.",
    "grantsMove": "aerodactyl-crunch"
   },
   "aerodactyl-tailwind": {
@@ -404,7 +411,7 @@
   "aerodactyl-iron-head": {
    "id": "aerodactyl-iron-head",
    "name": "Iron Head",
-   "description": "New skill: rams with its steel-hard skull (Power 85).",
+   "description": "New skill: rams with its steel-hard skull (Power 75).",
    "grantsMove": "aerodactyl-iron-head"
   },
   "aerodactyl-scary-face": {
@@ -432,13 +439,13 @@
   "aerodactyl-sky-attack": {
    "id": "aerodactyl-sky-attack",
    "name": "Sky Attack",
-   "description": "New skill: a plummeting strike on a foe up to 2 hexes away (Power 100).",
+   "description": "New skill: a plummeting strike on a foe up to 2 hexes away (Power 95).",
    "grantsMove": "aerodactyl-sky-attack"
   },
   "aerodactyl-rock-tomb": {
    "id": "aerodactyl-rock-tomb",
    "name": "Rock Tomb",
-   "description": "New skill: boulders on a foe up to 2 hexes away (Power 70) that Slow it for 2 turns.",
+   "description": "New skill: boulders on a foe up to 2 hexes away (Power 55) that Slow it for 2 turns.",
    "grantsMove": "aerodactyl-rock-tomb"
   },
   "aerodactyl-pursuit-instinct": {

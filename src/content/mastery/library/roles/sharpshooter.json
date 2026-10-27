@@ -33,7 +33,7 @@
    },
    "affects": "enemies",
    "cooldown": 4,
-   "power": 60,
+   "power": 65,
    "range": {
     "min": 2,
     "max": 2
@@ -48,7 +48,8 @@
      "status": "marked",
      "duration": 2
     }
-   ]
+   ],
+   "canonPower": 80
   }
  },
  "variants": {

@@ -68,7 +68,7 @@
    "kind": "bond",
    "category": "physical",
    "bondCost": 3,
-   "power": 100,
+   "power": 90,
    "range": {
     "min": 1,
     "max": 1
@@ -84,7 +84,8 @@
      "status": "slow",
      "duration": 2
     }
-   ]
+   ],
+   "canonPower": 100
   },
   "poliwag-body-press": {
    "id": "poliwag-body-press",
@@ -103,7 +104,8 @@
    "shape": {
     "kind": "single"
    },
-   "affects": "enemies"
+   "affects": "enemies",
+   "canonPower": 80
   },
   "poliwag-liquidation": {
    "id": "poliwag-liquidation",
@@ -112,7 +114,7 @@
    "kind": "bond",
    "category": "physical",
    "bondCost": 1,
-   "power": 65,
+   "power": 75,
    "range": {
     "min": 1,
     "max": 2
@@ -131,7 +133,8 @@
      "status": "exposed",
      "duration": 1
     }
-   ]
+   ],
+   "canonPower": 85
   },
   "poliwag-waterfall": {
    "id": "poliwag-waterfall",
@@ -140,7 +143,7 @@
    "kind": "special",
    "category": "physical",
    "cooldown": 4,
-   "power": 80,
+   "power": 75,
    "range": {
     "min": 1,
     "max": 1
@@ -155,7 +158,8 @@
      "kind": "push",
      "distance": 1
     }
-   ]
+   ],
+   "canonPower": 80
   },
   "poliwag-submission": {
    "id": "poliwag-submission",
@@ -164,7 +168,7 @@
    "kind": "special",
    "category": "physical",
    "cooldown": 5,
-   "power": 95,
+   "power": 75,
    "range": {
     "min": 1,
     "max": 1
@@ -173,7 +177,8 @@
    "shape": {
     "kind": "single"
    },
-   "affects": "enemies"
+   "affects": "enemies",
+   "canonPower": 80
   },
   "poliwag-circle-throw": {
    "id": "poliwag-circle-throw",
@@ -182,7 +187,7 @@
    "kind": "special",
    "category": "physical",
    "cooldown": 4,
-   "power": 85,
+   "power": 60,
    "range": {
     "min": 1,
     "max": 1
@@ -197,7 +202,8 @@
      "kind": "push",
      "distance": 2
     }
-   ]
+   ],
+   "canonPower": 60
   },
   "poliwag-water-pulse": {
    "id": "poliwag-water-pulse",
@@ -206,7 +212,7 @@
    "kind": "special",
    "category": "special",
    "cooldown": 3,
-   "power": 45,
+   "power": 55,
    "range": {
     "min": 1,
     "max": 2
@@ -222,7 +228,8 @@
      "status": "slow",
      "duration": 1
     }
-   ]
+   ],
+   "canonPower": 60
   },
   "poliwag-mach-punch": {
    "id": "poliwag-mach-punch",
@@ -231,7 +238,7 @@
    "kind": "special",
    "category": "physical",
    "cooldown": 2,
-   "power": 55,
+   "power": 45,
    "range": {
     "min": 1,
     "max": 1
@@ -240,7 +247,8 @@
    "shape": {
     "kind": "single"
    },
-   "affects": "enemies"
+   "affects": "enemies",
+   "canonPower": 40
   },
   "poliwag-low-sweep": {
    "id": "poliwag-low-sweep",
@@ -249,7 +257,7 @@
    "kind": "special",
    "category": "physical",
    "cooldown": 3,
-   "power": 55,
+   "power": 65,
    "range": {
     "min": 1,
     "max": 1
@@ -265,7 +273,8 @@
      "status": "slow",
      "duration": 1
     }
-   ]
+   ],
+   "canonPower": 65
   },
   "poliwag-muddy-water": {
    "id": "poliwag-muddy-water",
@@ -274,7 +283,7 @@
    "kind": "special",
    "category": "special",
    "cooldown": 4,
-   "power": 80,
+   "power": 65,
    "range": {
     "min": 1,
     "max": 1
@@ -284,7 +293,8 @@
     "kind": "burst",
     "radius": 1
    },
-   "affects": "enemies"
+   "affects": "enemies",
+   "canonPower": 90
   },
   "poliwag-amnesia": {
    "id": "poliwag-amnesia",
@@ -315,7 +325,7 @@
   "poliwag-dynamic-punch": {
    "id": "poliwag-dynamic-punch",
    "name": "Dynamic Punch",
-   "description": "Bond skill: a full-force punch (Power 100, Attack) that leaves the foe dazed and Slowed for 2 turns.",
+   "description": "Bond skill: a full-force punch (Power 90, Attack) that leaves the foe dazed and Slowed for 2 turns.",
    "grantsMove": "poliwag-dynamic-punch"
   },
   "poliwag-body-press": {
@@ -327,7 +337,7 @@
   "poliwag-liquidation": {
    "id": "poliwag-liquidation",
    "name": "Liquidation",
-   "description": "Bond skill: surges up to 2 hexes into a foe (Power 65), engaging it; Exposed 1 turn.",
+   "description": "Bond skill: surges up to 2 hexes into a foe (Power 75), engaging it; Exposed 1 turn.",
    "grantsMove": "poliwag-liquidation"
   },
   "poliwag-water-absorb": {
@@ -381,7 +391,7 @@
   "poliwag-waterfall": {
    "id": "poliwag-waterfall",
    "name": "Waterfall",
-   "description": "New skill: charges with the force of a waterfall (Power 80), knocking the foe 1 hex back.",
+   "description": "New skill: charges with the force of a waterfall (Power 75), knocking the foe 1 hex back.",
    "grantsMove": "poliwag-waterfall"
   },
   "poliwag-vital-spirit": {
@@ -406,13 +416,13 @@
   "poliwag-submission": {
    "id": "poliwag-submission",
    "name": "Submission",
-   "description": "New skill: grapples a foe and slams it down (Power 95).",
+   "description": "New skill: grapples a foe and slams it down (Power 75).",
    "grantsMove": "poliwag-submission"
   },
   "poliwag-circle-throw": {
    "id": "poliwag-circle-throw",
    "name": "Circle Throw",
-   "description": "New skill: hurls an adjacent foe 2 hexes away (Power 85).",
+   "description": "New skill: hurls an adjacent foe 2 hexes away (Power 60).",
    "grantsMove": "poliwag-circle-throw"
   },
   "poliwag-spiral-momentum": {
@@ -455,25 +465,25 @@
   "poliwag-water-pulse": {
    "id": "poliwag-water-pulse",
    "name": "Water Pulse",
-   "description": "New skill: a pulse of water at a foe up to 2 hexes away (Power 45), Slowing it 1 turn.",
+   "description": "New skill: a pulse of water at a foe up to 2 hexes away (Power 55), Slowing it 1 turn.",
    "grantsMove": "poliwag-water-pulse"
   },
   "poliwag-mach-punch": {
    "id": "poliwag-mach-punch",
    "name": "Mach Punch",
-   "description": "New skill: a lightning-fast punch (Power 55).",
+   "description": "New skill: a lightning-fast punch (Power 45).",
    "grantsMove": "poliwag-mach-punch"
   },
   "poliwag-low-sweep": {
    "id": "poliwag-low-sweep",
    "name": "Low Sweep",
-   "description": "New skill: a low sweeping kick (Power 55) that Slows the foe for 1 turn.",
+   "description": "New skill: a low sweeping kick (Power 65) that Slows the foe for 1 turn.",
    "grantsMove": "poliwag-low-sweep"
   },
   "poliwag-muddy-water": {
    "id": "poliwag-muddy-water",
    "name": "Muddy Water",
-   "description": "New skill: a muddy surge hits a 1-hex area up to 1 hex away (Power 80).",
+   "description": "New skill: a muddy surge hits a 1-hex area up to 1 hex away (Power 65).",
    "grantsMove": "poliwag-muddy-water"
   },
   "poliwag-amnesia": {

@@ -1,13 +1,13 @@
 {
  "talents": {
   "sandshrew-take-down": {
-   "description": "Bond képesség: vakmerő roham, amely egy 3 hexes vonalban talál (Erő 60)."
+   "description": "Bond képesség: vakmerő roham, amely egy 3 hexes vonalban talál (Erő 75)."
   },
   "sandshrew-crush-claw": {
-   "description": "Bond képesség: belemar az ellenfélbe (Erő 85, Támadás), és 2 körre Exposed állapotba teszi."
+   "description": "Bond képesség: belemar az ellenfélbe (Erő 75, Támadás), és 2 körre Exposed állapotba teszi."
   },
   "sandshrew-rapid-spin": {
-   "description": "Bond képesség: pörgő csapás (Erő 50, Támadás), amely kiszabadítja a lekötésből."
+   "description": "Bond képesség: pörgő csapás (Erő 60, Támadás), amely kiszabadítja a lekötésből."
   },
   "sandshrew-sand-veil": {
    "description": "A bundájára tapadó homok elmossa az alakját: 10%-kal kevesebb sebzést kap."
@@ -16,10 +16,10 @@
    "description": "15%-kal többet sebez a szomszédos ellenfelekre."
   },
   "sandshrew-sand-tomb": {
-   "description": "Új képesség: legfeljebb 2 hexnyire örvénylő homokba zár egy ellenfelet (Erő 35), 2 körre lelassítja."
+   "description": "Új képesség: legfeljebb 2 hexnyire örvénylő homokba zár egy ellenfelet (Erő 40), 2 körre lelassítja."
   },
   "sandshrew-metal-claw": {
-   "description": "Új képesség: gyors, acélkemény karmolás (Erő 50)."
+   "description": "Új képesség: gyors, acélkemény karmolás (Erő 55)."
   },
   "sandshrew-spiked-back": {
    "description": "A szomszédos hexről őt eltaláló ellenfelek 8 sebzést kapnak a tüskéitől."
@@ -31,7 +31,7 @@
    "description": "Új képesség: vad harci tánc: 2 körig Focused."
   },
   "sandshrew-poison-sting": {
-   "description": "Új képesség: mérgező szúrás (Erő 45), amely 2 körre megmérgezi az ellenfelet."
+   "description": "Új képesség: mérgező szúrás (Erő 25), amely 2 körre megmérgezi az ellenfelet."
   },
   "sandshrew-burrowed-stance": {
    "description": "Minden körben max HP-ja 4%-át gyógyul, amíg ellenféllel van lekötve."
@@ -40,7 +40,7 @@
    "description": "Ugyanarra az ellenfélre mért minden egymást követő találat 15%-kal többet sebez (max. 3-szor)."
   },
   "sandshrew-drill-run": {
-   "description": "Új képesség: fúróként pörögve átvágja magát egy 2 hexnyi vonalon (Erő 80)."
+   "description": "Új képesség: fúróként pörögve átvágja magát egy 2 hexnyi vonalon (Erő 60)."
   },
   "sandshrew-magnitude": {
    "description": "Új képesség: földrengés, amely az 1 hexen belüli ellenfeleket éri (Erő 70)."
@@ -52,10 +52,10 @@
    "description": "Csatánként egyszer 1 HP-val túlél egy kiütő csapást."
   },
   "sandshrew-high-horsepower": {
-   "description": "Új képesség: zúzó dobbantás egy szomszédos ellenfélre (Erő 95)."
+   "description": "Új képesség: zúzó dobbantás egy szomszédos ellenfélre (Erő 80)."
   },
   "sandshrew-swift": {
-   "description": "Új képesség: csillag alakú sugarak minden 2 hexen belüli ellenfelet eltalálnak (Erő 50)."
+   "description": "Új képesség: csillag alakú sugarak minden 2 hexen belüli ellenfelet eltalálnak (Erő 40)."
   },
   "sandshrew-ambush-from-below": {
    "description": "A menekülő ellenfelekre mért szabad csapásai 25%-kal többet sebeznek."

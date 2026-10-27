@@ -66,7 +66,7 @@
    "kind": "bond",
    "category": "special",
    "bondCost": 3,
-   "power": 100,
+   "power": 90,
    "range": {
     "min": 1,
     "max": 3
@@ -75,7 +75,8 @@
    "shape": {
     "kind": "single"
    },
-   "affects": "enemies"
+   "affects": "enemies",
+   "canonPower": 120
   },
   "mr-mime-barrier": {
    "id": "mr-mime-barrier",
@@ -118,7 +119,8 @@
    "shape": {
     "kind": "single"
    },
-   "affects": "enemies"
+   "affects": "enemies",
+   "canonPower": 60
   },
   "mr-mime-psywave": {
    "id": "mr-mime-psywave",
@@ -193,7 +195,7 @@
    "kind": "special",
    "category": "special",
    "cooldown": 3,
-   "power": 70,
+   "power": 65,
    "range": {
     "min": 1,
     "max": 2
@@ -202,7 +204,8 @@
    "shape": {
     "kind": "single"
    },
-   "affects": "enemies"
+   "affects": "enemies",
+   "canonPower": 80
   },
   "mr-mime-nasty-plot": {
    "id": "mr-mime-nasty-plot",
@@ -235,7 +238,7 @@
    "kind": "special",
    "category": "special",
    "cooldown": 5,
-   "power": 95,
+   "power": 65,
    "range": {
     "min": 1,
     "max": 2
@@ -244,7 +247,8 @@
    "shape": {
     "kind": "single"
    },
-   "affects": "enemies"
+   "affects": "enemies",
+   "canonPower": 80
   },
   "mr-mime-hyper-voice": {
    "id": "mr-mime-hyper-voice",
@@ -253,7 +257,7 @@
    "kind": "special",
    "category": "special",
    "cooldown": 4,
-   "power": 90,
+   "power": 70,
    "range": {
     "min": 1,
     "max": 2
@@ -269,7 +273,8 @@
      "status": "exposed",
      "duration": 1
     }
-   ]
+   ],
+   "canonPower": 90
   },
   "mr-mime-light-screen": {
    "id": "mr-mime-light-screen",
@@ -301,7 +306,7 @@
   "mr-mime-future-sight": {
    "id": "mr-mime-future-sight",
    "name": "Future Sight",
-   "description": "Bond skill: a foreseen psychic blast at a foe up to 3 hexes away (Power 100).",
+   "description": "Bond skill: a foreseen psychic blast at a foe up to 3 hexes away (Power 90).",
    "grantsMove": "mr-mime-future-sight"
   },
   "mr-mime-barrier": {
@@ -363,7 +368,7 @@
   "mr-mime-psyshock": {
    "id": "mr-mime-psyshock",
    "name": "Psyshock",
-   "description": "New skill: a psychic wave at a foe up to 2 hexes away (Power 70).",
+   "description": "New skill: a psychic wave at a foe up to 2 hexes away (Power 65).",
    "grantsMove": "mr-mime-psyshock"
   },
   "mr-mime-mimes-act": {
@@ -391,7 +396,7 @@
   "mr-mime-extrasensory": {
    "id": "mr-mime-extrasensory",
    "name": "Extrasensory",
-   "description": "New skill: an eerie psychic force at a foe up to 2 hexes away (Power 95).",
+   "description": "New skill: an eerie psychic force at a foe up to 2 hexes away (Power 65).",
    "grantsMove": "mr-mime-extrasensory"
   },
   "mr-mime-unbreakable-act": {
@@ -413,7 +418,7 @@
   "mr-mime-hyper-voice": {
    "id": "mr-mime-hyper-voice",
    "name": "Hyper Voice",
-   "description": "New skill: a booming shout at a foe up to 2 hexes away (Power 90); Exposes it 1 turn.",
+   "description": "New skill: a booming shout at a foe up to 2 hexes away (Power 70); Exposes it 1 turn.",
    "grantsMove": "mr-mime-hyper-voice"
   },
   "mr-mime-light-screen": {

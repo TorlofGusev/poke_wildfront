@@ -67,7 +67,7 @@
    "kind": "bond",
    "category": "physical",
    "bondCost": 2,
-   "power": 95,
+   "power": 75,
    "range": {
     "min": 1,
     "max": 1
@@ -76,7 +76,8 @@
    "shape": {
     "kind": "single"
    },
-   "affects": "enemies"
+   "affects": "enemies",
+   "canonPower": 75
   },
   "cubone-skull-bash": {
    "id": "cubone-skull-bash",
@@ -85,7 +86,7 @@
    "kind": "bond",
    "category": "physical",
    "bondCost": 2,
-   "power": 85,
+   "power": 100,
    "range": {
     "min": 1,
     "max": 1
@@ -100,7 +101,8 @@
      "kind": "push",
      "distance": 1
     }
-   ]
+   ],
+   "canonPower": 130
   },
   "cubone-endure": {
    "id": "cubone-endure",
@@ -138,7 +140,7 @@
    "kind": "special",
    "category": "physical",
    "cooldown": 3,
-   "power": 70,
+   "power": 65,
    "range": {
     "min": 1,
     "max": 1
@@ -154,7 +156,8 @@
      "status": "slow",
      "duration": 1
     }
-   ]
+   ],
+   "canonPower": 70
   },
   "cubone-mud-slap": {
    "id": "cubone-mud-slap",
@@ -163,7 +166,7 @@
    "kind": "special",
    "category": "special",
    "cooldown": 3,
-   "power": 40,
+   "power": 25,
    "range": {
     "min": 1,
     "max": 2
@@ -179,7 +182,8 @@
      "status": "marked",
      "duration": 2
     }
-   ]
+   ],
+   "canonPower": 20
   },
   "cubone-fling": {
    "id": "cubone-fling",
@@ -213,7 +217,7 @@
    "kind": "special",
    "category": "physical",
    "cooldown": 3,
-   "power": 75,
+   "power": 30,
    "range": {
     "min": 1,
     "max": 1
@@ -222,7 +226,8 @@
    "shape": {
     "kind": "single"
    },
-   "affects": "enemies"
+   "affects": "enemies",
+   "canonPower": 20
   },
   "cubone-bulldoze": {
    "id": "cubone-bulldoze",
@@ -231,7 +236,7 @@
    "kind": "special",
    "category": "physical",
    "cooldown": 4,
-   "power": 80,
+   "power": 50,
    "range": {
     "min": 0,
     "max": 0
@@ -248,7 +253,8 @@
      "status": "slow",
      "duration": 1
     }
-   ]
+   ],
+   "canonPower": 60
   },
   "cubone-dig": {
    "id": "cubone-dig",
@@ -257,7 +263,7 @@
    "kind": "special",
    "category": "physical",
    "cooldown": 4,
-   "power": 85,
+   "power": 65,
    "range": {
     "min": 1,
     "max": 2
@@ -266,7 +272,8 @@
    "shape": {
     "kind": "single"
    },
-   "affects": "enemies"
+   "affects": "enemies",
+   "canonPower": 80
   },
   "cubone-double-edge": {
    "id": "cubone-double-edge",
@@ -275,7 +282,7 @@
    "kind": "special",
    "category": "physical",
    "cooldown": 4,
-   "power": 100,
+   "power": 95,
    "range": {
     "min": 1,
     "max": 1
@@ -284,7 +291,8 @@
    "shape": {
     "kind": "single"
    },
-   "affects": "enemies"
+   "affects": "enemies",
+   "canonPower": 120
   },
   "cubone-earth-power": {
    "id": "cubone-earth-power",
@@ -293,7 +301,7 @@
    "kind": "special",
    "category": "special",
    "cooldown": 4,
-   "power": 90,
+   "power": 70,
    "range": {
     "min": 1,
     "max": 2
@@ -302,20 +310,21 @@
    "shape": {
     "kind": "single"
    },
-   "affects": "enemies"
+   "affects": "enemies",
+   "canonPower": 90
   }
  },
  "talents": {
   "cubone-bone-rush": {
    "id": "cubone-bone-rush",
    "name": "Bone Rush",
-   "description": "Bond skill: a flurry of blows with its bone club (Power 95, Attack).",
+   "description": "Bond skill: a flurry of blows with its bone club (Power 75, Attack).",
    "grantsMove": "cubone-bone-rush"
   },
   "cubone-skull-bash": {
    "id": "cubone-skull-bash",
    "name": "Skull Bash",
-   "description": "Bond skill: rams a foe with its skull helmet (Power 85, Attack), pushing it 1 hex.",
+   "description": "Bond skill: rams a foe with its skull helmet (Power 100, Attack), pushing it 1 hex.",
    "grantsMove": "cubone-skull-bash"
   },
   "cubone-endure": {
@@ -345,13 +354,13 @@
   "cubone-headbutt": {
    "id": "cubone-headbutt",
    "name": "Headbutt",
-   "description": "New skill: butts a foe with its skull (Power 70), Slowing it for 1 turn.",
+   "description": "New skill: butts a foe with its skull (Power 65), Slowing it for 1 turn.",
    "grantsMove": "cubone-headbutt"
   },
   "cubone-mud-slap": {
    "id": "cubone-mud-slap",
    "name": "Mud-Slap",
-   "description": "New skill: flings mud at a foe up to 2 hexes away (Power 40), Marking it for 2 turns.",
+   "description": "New skill: flings mud at a foe up to 2 hexes away (Power 25), Marking it for 2 turns.",
    "grantsMove": "cubone-mud-slap"
   },
   "cubone-lonely-fury": {
@@ -380,7 +389,7 @@
   "cubone-rage": {
    "id": "cubone-rage",
    "name": "Rage",
-   "description": "New skill: lashes out at a foe in a lonely rage (Power 75).",
+   "description": "New skill: lashes out at a foe in a lonely rage (Power 30).",
    "grantsMove": "cubone-rage"
   },
   "cubone-stubborn-will": {
@@ -402,13 +411,13 @@
   "cubone-bulldoze": {
    "id": "cubone-bulldoze",
    "name": "Bulldoze",
-   "description": "New skill: stomps the ground (Power 80), hitting foes within 1 hex and Slowing them 1 turn.",
+   "description": "New skill: stomps the ground (Power 50), hitting foes within 1 hex and Slowing them 1 turn.",
    "grantsMove": "cubone-bulldoze"
   },
   "cubone-dig": {
    "id": "cubone-dig",
    "name": "Dig",
-   "description": "New skill: burrows and bursts up under a foe up to 2 hexes away (Power 85).",
+   "description": "New skill: burrows and bursts up under a foe up to 2 hexes away (Power 65).",
    "grantsMove": "cubone-dig"
   },
   "cubone-lightning-rod": {
@@ -433,13 +442,13 @@
   "cubone-double-edge": {
    "id": "cubone-double-edge",
    "name": "Double-Edge",
-   "description": "New skill: a reckless all-out charge into a foe (Power 100).",
+   "description": "New skill: a reckless all-out charge into a foe (Power 95).",
    "grantsMove": "cubone-double-edge"
   },
   "cubone-earth-power": {
    "id": "cubone-earth-power",
    "name": "Earth Power",
-   "description": "New skill: the ground erupts under a foe up to 2 hexes away (Power 90).",
+   "description": "New skill: the ground erupts under a foe up to 2 hexes away (Power 70).",
    "grantsMove": "cubone-earth-power"
   },
   "cubone-follow-through": {

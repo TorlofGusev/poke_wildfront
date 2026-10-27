@@ -7,7 +7,7 @@
    "type": "dragon",
    "kind": "special",
    "cooldown": 2,
-   "power": 70,
+   "power": 75,
    "range": {
     "min": 1,
     "max": 1
@@ -16,7 +16,8 @@
    "shape": {
     "kind": "single"
    },
-   "affects": "enemies"
+   "affects": "enemies",
+   "canonPower": 80
   },
   "dragon-tail": {
    "id": "dragon-tail",
@@ -24,7 +25,7 @@
    "type": "dragon",
    "kind": "special",
    "cooldown": 3,
-   "power": 45,
+   "power": 60,
    "range": {
     "min": 1,
     "max": 1
@@ -39,7 +40,8 @@
      "kind": "push",
      "distance": 2
     }
-   ]
+   ],
+   "canonPower": 60
   },
   "draco-meteor": {
    "id": "draco-meteor",
@@ -47,7 +49,7 @@
    "type": "dragon",
    "kind": "special",
    "cooldown": 4,
-   "power": 90,
+   "power": 80,
    "range": {
     "min": 1,
     "max": 1
@@ -57,7 +59,8 @@
     "kind": "burst",
     "radius": 1
    },
-   "affects": "enemies"
+   "affects": "enemies",
+   "canonPower": 130
   },
   "dragon-rush": {
    "id": "dragon-rush",
@@ -67,7 +70,7 @@
    "requiresLineOfSight": false,
    "affects": "enemies",
    "cooldown": 5,
-   "power": 105,
+   "power": 85,
    "range": {
     "min": 1,
     "max": 1
@@ -80,28 +83,29 @@
      "kind": "push",
      "distance": 1
     }
-   ]
+   ],
+   "canonPower": 100
   }
  },
  "talents": {
   "dragon-skill-dragon-claw": {
    "id": "dragon-skill-dragon-claw",
    "name": "Dragon Claw",
-   "description": "New skill: a fierce melee claw (Power 70).",
+   "description": "New skill: a fierce melee claw (Power 75).",
    "requiresType": "dragon",
    "grantsMove": "dragon-claw"
   },
   "dragon-skill-dragon-tail": {
    "id": "dragon-skill-dragon-tail",
    "name": "Dragon Tail",
-   "description": "New skill: a tail sweep that knocks an adjacent foe 2 hexes back (Power 45).",
+   "description": "New skill: a tail sweep that knocks an adjacent foe 2 hexes back (Power 60).",
    "requiresType": "dragon",
    "grantsMove": "dragon-tail"
   },
   "dragon-skill-draco-meteor": {
    "id": "dragon-skill-draco-meteor",
    "name": "Draco Meteor",
-   "description": "New skill: meteors strike an area 1 hex away (Power 90).",
+   "description": "New skill: meteors strike an area 1 hex away (Power 80).",
    "requiresType": "dragon",
    "grantsMove": "draco-meteor"
   },
@@ -158,7 +162,7 @@
   "dragon-skill-dragon-rush": {
    "id": "dragon-skill-dragon-rush",
    "name": "Dragon Rush",
-   "description": "New skill: rams an adjacent foe and knocks it 1 hex back (Power 105).",
+   "description": "New skill: rams an adjacent foe and knocks it 1 hex back (Power 85).",
    "requiresType": "dragon",
    "grantsMove": "dragon-rush"
   }

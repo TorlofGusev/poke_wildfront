@@ -27,7 +27,7 @@
    "requiresLineOfSight": false,
    "affects": "enemies",
    "bondCost": 3,
-   "power": 90,
+   "power": 65,
    "range": {
     "min": 0,
     "max": 0
@@ -35,7 +35,8 @@
    "shape": {
     "kind": "burst",
     "radius": 3
-   }
+   },
+   "canonPower": 100
   }
  },
  "talents": {
@@ -49,7 +50,7 @@
   "ground-skill-bonemerang": {
    "id": "ground-skill-bonemerang",
    "name": "Bonemerang",
-   "description": "New skill: throws a bone at a foe up to 2 hexes away (Power 55).",
+   "description": "New skill: throws a bone at a foe up to 2 hexes away (Power 75).",
    "requiresType": "ground",
    "grantsMove": "bonemerang"
   },
@@ -120,7 +121,7 @@
   "ground-skill-earthquake": {
    "id": "ground-skill-earthquake",
    "name": "Earthquake",
-   "description": "New Bond skill: a quake hits every foe within 3 hexes of it (Power 90).",
+   "description": "New Bond skill: a quake hits every foe within 3 hexes of it (Power 65).",
    "requiresType": "ground",
    "grantsMove": "earthquake"
   }

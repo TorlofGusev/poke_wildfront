@@ -1,10 +1,10 @@
 {
  "talents": {
   "farfetchd-acrobatics": {
-   "description": "Bond képesség: legfeljebb 2 hexnyit röppen egy ellenfélhez (Erő 60) és leköti."
+   "description": "Bond képesség: legfeljebb 2 hexnyit röppen egy ellenfélhez (Erő 55) és leköti."
   },
   "farfetchd-air-slash": {
-   "description": "Bond képesség: légpenge egy legfeljebb 3 hexnyire lévő ellenfélre (Erő 85, Kül. Tám.)."
+   "description": "Bond képesség: légpenge egy legfeljebb 3 hexnyire lévő ellenfélre (Erő 65, Kül. Tám.)."
   },
   "farfetchd-defiant": {
    "description": "20%-kal többet sebez, amíg 2 vagy több ellenfél áll mellette."
@@ -25,7 +25,7 @@
    "description": "Minden egymást követő találat ugyanazon az ellenfélen 10%-kal többet sebez, legfeljebb 3-szor."
   },
   "farfetchd-night-slash": {
-   "description": "Új képesség: gyors vágás egy résen át (Erő 70), 1 körre Kitetté teszi az ellenfelet."
+   "description": "Új képesség: gyors vágás egy résen át (Erő 65), 1 körre Kitetté teszi az ellenfelet."
   },
   "farfetchd-stick-fighter": {
    "description": "15%-kal többet sebez a szomszédos ellenfelekre."
@@ -34,10 +34,10 @@
    "description": "2 mozgáspontot kap vissza, ha saját körében kiüt egy ellenfelet."
   },
   "farfetchd-brave-bird": {
-   "description": "Új képesség: vakmerő zuhanórepülés (Erő 100)."
+   "description": "Új képesség: vakmerő zuhanórepülés (Erő 95)."
   },
   "farfetchd-hurricane": {
-   "description": "Új képesség: süvítő szélvihar legfeljebb 1 hexnyire (Erő 90), 1 hex körzetet talál el."
+   "description": "Új képesség: süvítő szélvihar legfeljebb 1 hexnyire (Erő 70), 1 hex körzetet talál el."
   },
   "farfetchd-inner-focus": {
    "description": "Nem lehet elaltatni vagy megbénítani."
@@ -46,7 +46,7 @@
    "description": "20%-kal többet sebez a teljes HP-jú ellenfelekre."
   },
   "farfetchd-sky-attack": {
-   "description": "Új képesség: a magasból lecsap egy legfeljebb 2 hexnyire lévő ellenfélre (Erő 100)."
+   "description": "Új képesség: a magasból lecsap egy legfeljebb 2 hexnyire lévő ellenfélre (Erő 95)."
   },
   "farfetchd-leek-combo": {
    "description": "Ha saját körében kiüt egy ellenfelet, újra használhatja alaptámadását."
@@ -61,10 +61,10 @@
    "description": "Capstone. 20%-kal többet sebez az Exposed ellenfeleknek; Flying támadásai 15%-kal többet sebeznek."
   },
   "farfetchd-double-edge": {
-   "description": "Bond képesség: vakmerő roham póréhagymával előre (Erő 95, Támadás)."
+   "description": "Bond képesség: vakmerő roham póréhagymával előre (Erő 100, Támadás)."
   },
   "farfetchd-razor-wind": {
-   "description": "Új képesség: szárnycsapásai szélpengéket küldenek minden szomszédos ellenfélre (Erő 85)."
+   "description": "Új képesség: szárnycsapásai szélpengéket küldenek minden szomszédos ellenfélre (Erő 60)."
   },
   "farfetchd-leer": {
    "description": "Új képesség: éles pillantás, amely 2 körre Marked állapotba hozza a szomszédos ellenfeleket."

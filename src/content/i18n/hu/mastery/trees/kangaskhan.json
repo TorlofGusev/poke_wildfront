@@ -1,13 +1,13 @@
 {
  "talents": {
   "kangaskhan-dizzy-punch": {
-   "description": "Kötelék-képesség: ritmikus ütés (Erő 85, Támadás), az ellenfél 2 körig Zavarodott."
+   "description": "Kötelék-képesség: ritmikus ütés (Erő 75, Támadás), az ellenfél 2 körig Zavarodott."
   },
   "kangaskhan-endeavor": {
    "description": "Kötelék-képesség: elkeseredett, mindent bele csapás egy szomszédos ellenfélre (Erő 85)."
   },
   "kangaskhan-fake-out": {
-   "description": "Kötelék-képesség: villámgyors csapás (Erő 40), amely 1 körre megdermeszti az ellenfelet."
+   "description": "Kötelék-képesség: villámgyors csapás (Erő 50), amely 1 körre megdermeszti az ellenfelet."
   },
   "kangaskhan-early-bird": {
    "description": "Nem lehet elaltatni."
@@ -49,25 +49,25 @@
    "description": "Csúcs. A kicsinye is beszáll: minden egymás utáni találat egy ellenfélen 15%-kal több (max 3); kiütés után újra használhatja az alaptámadását."
   },
   "kangaskhan-headbutt": {
-   "description": "Új képesség: erős fejelés (Erő 60), 1 hexnyit hátralöki az ellenfelet."
+   "description": "Új képesség: erős fejelés (Erő 65), 1 hexnyit hátralöki az ellenfelet."
   },
   "kangaskhan-double-hit": {
-   "description": "Új képesség: anya és kicsinye együtt üt (Erő 70), az ellenfél 1 körre Kitett."
+   "description": "Új képesség: anya és kicsinye együtt üt (Erő 65), az ellenfél 1 körre Kitett."
   },
   "kangaskhan-mega-kick": {
-   "description": "Új képesség: hatalmas rúgás egy szomszédos ellenfélre (Erő 100)."
+   "description": "Új képesség: hatalmas rúgás egy szomszédos ellenfélre (Erő 95)."
   },
   "kangaskhan-double-edge": {
    "description": "Új képesség: vakmerő, teljes testes roham (Erő 95)."
   },
   "kangaskhan-strength": {
-   "description": "Új képesség: teljes erejével meglöki az ellenfelet (Erő 70), 2 hexnyire repíti."
+   "description": "Új képesség: teljes erejével meglöki az ellenfelet (Erő 75), 2 hexnyire repíti."
   },
   "kangaskhan-leer": {
    "description": "Új képesség: védelmező pillantás, amely 2 körre Marked állapotba hozza a szomszédos ellenfeleket."
   },
   "kangaskhan-rage": {
-   "description": "Új képesség: dühödt csapás (Erő 85), amellyel rátapad az ellenfélre (leköti)."
+   "description": "Új képesség: dühödt csapás (Erő 30), amellyel rátapad az ellenfélre (leköti)."
   }
  }
 }

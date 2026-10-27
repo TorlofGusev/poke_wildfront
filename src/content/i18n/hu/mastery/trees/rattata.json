@@ -1,10 +1,10 @@
 {
  "talents": {
   "rattata-crunch": {
-   "description": "Bond képesség: agyarával összeroppant egy ellenfelet (Erő 100, Attack), 2 körre Exposed állapotba hozva."
+   "description": "Bond képesség: agyarával összeroppant egy ellenfelet (Erő 80, Attack), 2 körre Exposed állapotba hozva."
   },
   "rattata-sucker-punch": {
-   "description": "Bond képesség: rárontó támadás egy max. 2 hexnyi ellenfélre (Erő 70), majd leköti."
+   "description": "Bond képesség: rárontó támadás egy max. 2 hexnyi ellenfélre (Erő 65), majd leköti."
   },
   "rattata-endeavor": {
    "description": "Bond képesség: elszánt, mindent beleadó támadás egy ellenfélre (Erő 80)."
@@ -19,7 +19,7 @@
    "description": "Új képesség: mély levegőt vesz; 2 körre Focused állapotba kerül."
   },
   "rattata-pursuit": {
-   "description": "Új képesség: üldözőbe vesz egy max. 2 hexnyi ellenfelet (Erő 50), és leköti."
+   "description": "Új képesség: üldözőbe vesz egy max. 2 hexnyi ellenfelet (Erő 40), és leköti."
   },
   "rattata-pack-rat": {
    "description": "15%-kal többet sebez a szövetségesei által lekötött ellenfelekre."
@@ -34,7 +34,7 @@
    "description": "Nem lehet elaltatni (Sleep) vagy lelassítani (Slow)."
   },
   "rattata-double-edge": {
-   "description": "Új képesség: vakmerő, teljes testtel mért roham egy ellenfélre (Erő 90)."
+   "description": "Új képesség: vakmerő, teljes testtel mért roham egy ellenfélre (Erő 95)."
   },
   "rattata-cornered-rat": {
    "description": "20%-kal többet sebez, amíg legalább 2 ellenfél áll mellette."
@@ -64,7 +64,7 @@
    "description": "Új képesség: összeszedi magát, hogy kitartson; 1 körre Protected."
   },
   "rattata-rapid-spin": {
-   "description": "Új képesség: pörögve nekiront (Erő 75), majd kipörög a lekötésből."
+   "description": "Új képesség: pörögve nekiront (Erő 55), majd kipörög a lekötésből."
   },
   "rattata-tail-whip": {
    "description": "Új képesség: csóválja a farkát, hogy lankadjon a figyelem; a szomszédos ellenfelek 2 körre Marked állapotba kerülnek."

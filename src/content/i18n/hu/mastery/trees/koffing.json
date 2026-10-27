@@ -1,7 +1,7 @@
 {
  "talents": {
   "koffing-sludge-bomb": {
-   "description": "Bond képesség: iszapot hajít egy legfeljebb 3 hexnyire álló ellenfélre (Erő 90), 2 körre megmérgezi."
+   "description": "Bond képesség: iszapot hajít egy legfeljebb 3 hexnyire álló ellenfélre (Erő 75), 2 körre megmérgezi."
   },
   "koffing-smokescreen": {
    "description": "Bond képesség: füst takar el egy legfeljebb 2 hexnyire álló társat és szomszédait, 1 körre Fortified."
@@ -31,7 +31,7 @@
    "description": "Új képesség: rosszindulatú öklelés (Erő 60), az ellenfél 1 körre Exposed."
   },
   "koffing-venoshock": {
-   "description": "Új képesség: mérgező folyadékkal áraszt el egy legfeljebb 2 hexnyire álló ellenfelet (Erő 65)."
+   "description": "Új képesség: mérgező folyadékkal áraszt el egy legfeljebb 2 hexnyire álló ellenfelet (Erő 55)."
   },
   "koffing-gas-leak": {
    "description": "Szomszédos ellenfelekre mért sebző találatai 2 körre megmérgezik őket."
@@ -40,10 +40,10 @@
    "description": "Nem lassítható és nem bénítható meg."
   },
   "koffing-sludge-wave": {
-   "description": "Új képesség: iszaphullám maga körül (Erő 75), 1 körre megmérgezi a szomszédos ellenfeleket."
+   "description": "Új képesség: iszaphullám maga körül (Erő 65), 1 körre megmérgezi a szomszédos ellenfeleket."
   },
   "koffing-dark-pulse": {
-   "description": "Új képesség: rettenetes aura egy legfeljebb 2 hexnyire álló ellenfélre (Erő 80)."
+   "description": "Új képesség: rettenetes aura egy legfeljebb 2 hexnyire álló ellenfélre (Erő 65)."
   },
   "koffing-spreading-fumes": {
    "description": "Ha egy általa sújtott ellenfél elájul, a mellette állók elkapják az állapotot."
@@ -52,7 +52,7 @@
    "description": "20%-kal kevesebb sebzést szenved, amíg teljes a HP-ja."
   },
   "koffing-belch": {
-   "description": "Új képesség: bűzös gázböfögés egy legfeljebb 2 hexnyire álló ellenfélre (Erő 90)."
+   "description": "Új képesség: bűzös gázböfögés egy legfeljebb 2 hexnyire álló ellenfélre (Erő 85)."
   },
   "koffing-explosion": {
    "description": "Új képesség: berobbantja a gázait, minden szomszédos ellenfelet eltalál (Power 100)."

@@ -68,7 +68,7 @@
    "kind": "bond",
    "category": "special",
    "bondCost": 3,
-   "power": 105,
+   "power": 100,
    "range": {
     "min": 1,
     "max": 3
@@ -77,7 +77,8 @@
    "shape": {
     "kind": "single"
    },
-   "affects": "enemies"
+   "affects": "enemies",
+   "canonPower": 150
   },
   "bulbasaur-protect": {
    "id": "bulbasaur-protect",
@@ -159,7 +160,7 @@
    "kind": "special",
    "category": "special",
    "cooldown": 2,
-   "power": 60,
+   "power": 55,
    "range": {
     "min": 1,
     "max": 2
@@ -168,7 +169,8 @@
    "shape": {
     "kind": "single"
    },
-   "affects": "enemies"
+   "affects": "enemies",
+   "canonPower": 60
   },
   "bulbasaur-sludge-bomb": {
    "id": "bulbasaur-sludge-bomb",
@@ -177,7 +179,7 @@
    "kind": "special",
    "category": "special",
    "cooldown": 3,
-   "power": 75,
+   "power": 70,
    "range": {
     "min": 1,
     "max": 2
@@ -193,7 +195,8 @@
      "status": "poison",
      "duration": 2
     }
-   ]
+   ],
+   "canonPower": 90
   },
   "bulbasaur-growth": {
    "id": "bulbasaur-growth",
@@ -227,7 +230,7 @@
    "kind": "special",
    "category": "special",
    "cooldown": 4,
-   "power": 85,
+   "power": 65,
    "range": {
     "min": 1,
     "max": 2
@@ -236,7 +239,8 @@
    "shape": {
     "kind": "single"
    },
-   "affects": "enemies"
+   "affects": "enemies",
+   "canonPower": 75
   },
   "bulbasaur-sludge-wave": {
    "id": "bulbasaur-sludge-wave",
@@ -245,7 +249,7 @@
    "kind": "special",
    "category": "special",
    "cooldown": 4,
-   "power": 75,
+   "power": 55,
    "range": {
     "min": 0,
     "max": 0
@@ -262,7 +266,8 @@
      "status": "poison",
      "duration": 1
     }
-   ]
+   ],
+   "canonPower": 95
   },
   "bulbasaur-leaf-storm": {
    "id": "bulbasaur-leaf-storm",
@@ -271,7 +276,7 @@
    "kind": "special",
    "category": "special",
    "cooldown": 5,
-   "power": 100,
+   "power": 90,
    "range": {
     "min": 1,
     "max": 2
@@ -280,7 +285,8 @@
    "shape": {
     "kind": "single"
    },
-   "affects": "enemies"
+   "affects": "enemies",
+   "canonPower": 130
   },
   "bulbasaur-synthesis": {
    "id": "bulbasaur-synthesis",
@@ -312,7 +318,7 @@
   "bulbasaur-frenzy-plant": {
    "id": "bulbasaur-frenzy-plant",
    "name": "Frenzy Plant",
-   "description": "Bond skill: colossal roots smash a foe up to 3 hexes away (Power 105).",
+   "description": "Bond skill: colossal roots smash a foe up to 3 hexes away (Power 100).",
    "grantsMove": "bulbasaur-frenzy-plant"
   },
   "bulbasaur-protect": {
@@ -360,7 +366,7 @@
   "bulbasaur-magical-leaf": {
    "id": "bulbasaur-magical-leaf",
    "name": "Magical Leaf",
-   "description": "New skill: homing leaves strike a foe up to 2 hexes away (Power 60), even without line of sight.",
+   "description": "New skill: homing leaves strike a foe up to 2 hexes away (Power 55), even without line of sight.",
    "grantsMove": "bulbasaur-magical-leaf"
   },
   "bulbasaur-venomous-bloom": {
@@ -376,7 +382,7 @@
   "bulbasaur-sludge-bomb": {
    "id": "bulbasaur-sludge-bomb",
    "name": "Sludge Bomb",
-   "description": "New skill: hurls toxic sludge at a foe up to 2 hexes away (Power 75), Poisoning it for 2 turns.",
+   "description": "New skill: hurls toxic sludge at a foe up to 2 hexes away (Power 70), Poisoning it for 2 turns.",
    "grantsMove": "bulbasaur-sludge-bomb"
   },
   "bulbasaur-growth": {
@@ -404,13 +410,13 @@
   "bulbasaur-giga-drain": {
    "id": "bulbasaur-giga-drain",
    "name": "Giga Drain",
-   "description": "New skill: drains a foe up to 2 hexes away (Power 85), healing by part of the damage.",
+   "description": "New skill: drains a foe up to 2 hexes away (Power 65), healing by part of the damage.",
    "grantsMove": "bulbasaur-giga-drain"
   },
   "bulbasaur-sludge-wave": {
    "id": "bulbasaur-sludge-wave",
    "name": "Sludge Wave",
-   "description": "New skill: a toxic wave hits every foe within 2 hexes (Power 75) and Poisons them for 1 turn.",
+   "description": "New skill: a toxic wave hits every foe within 2 hexes (Power 55) and Poisons them for 1 turn.",
    "grantsMove": "bulbasaur-sludge-wave"
   },
   "bulbasaur-corrosive-sap": {
@@ -435,7 +441,7 @@
   "bulbasaur-leaf-storm": {
    "id": "bulbasaur-leaf-storm",
    "name": "Leaf Storm",
-   "description": "New skill: a storm of sharp leaves at a foe up to 2 hexes away (Power 100).",
+   "description": "New skill: a storm of sharp leaves at a foe up to 2 hexes away (Power 90).",
    "grantsMove": "bulbasaur-leaf-storm"
   },
   "bulbasaur-synthesis": {

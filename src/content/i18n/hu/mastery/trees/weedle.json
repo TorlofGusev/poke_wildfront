@@ -1,10 +1,10 @@
 {
  "talents": {
   "weedle-poison-jab": {
-   "description": "Bond képesség: mérges fullánkszúrás (Power 90, Attack), 2 körre Poisont okoz."
+   "description": "Bond képesség: mérges fullánkszúrás (Power 80, Attack), 2 körre Poisont okoz."
   },
   "weedle-u-turn": {
-   "description": "Bond képesség: lecsap egy ellenfélre (Power 60, Attack), majd szabad ütés nélkül elröppen."
+   "description": "Bond képesség: lecsap egy ellenfélre (Power 75, Attack), majd szabad ütés nélkül elröppen."
   },
   "weedle-harden": {
    "description": "Bond képesség: megkeményíti a páncélját, 2 körre Fortified lesz."
@@ -28,7 +28,7 @@
    "description": "Teljes HP-n 20%-kal kevesebb sebzést kap."
   },
   "weedle-pin-missile": {
-   "description": "Új képesség: tüskezápor egy legfeljebb 2 hexnyire lévő ellenfélre (Power 70)."
+   "description": "Új képesség: tüskezápor egy legfeljebb 2 hexnyire lévő ellenfélre (Power 65)."
   },
   "weedle-agility": {
    "description": "Új képesség: ellazítja a testét, 2 körre Hasted lesz."
@@ -40,7 +40,7 @@
    "description": "6 sebzést ad vissza a szomszédos hexről őt eltaláló ellenfeleknek."
   },
   "weedle-x-scissor": {
-   "description": "Új képesség: ollóként keresztezi a fullánkjait (Power 85), az ellenfél 1 körre Exposed lesz."
+   "description": "Új képesség: ollóként keresztezi a fullánkjait (Power 75), az ellenfél 1 körre Exposed lesz."
   },
   "weedle-focus-energy": {
    "description": "Új képesség: felpörgeti magát, 2 körre Focused lesz."
@@ -52,7 +52,7 @@
    "description": "Az általa lekötött ellenfelek 15%-kal több sebzést kapnak a szövetségeseitől."
   },
   "weedle-fell-stinger": {
-   "description": "Új képesség: végső szúrás (Power 90); ha ezzel üt ki, a csapat 1 Bondot kap."
+   "description": "Új képesség: végső szúrás (Power 55); ha ezzel üt ki, a csapat 1 Bondot kap."
   },
   "weedle-poison-gas": {
    "description": "Új képesség: mérgező felhő legfeljebb 1 hexnyire, 1 hex körzetben 2 körre Poisont okoz."

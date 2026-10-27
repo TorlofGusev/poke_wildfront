@@ -1,7 +1,7 @@
 {
  "talents": {
   "psychic-skill-psybeam": {
-   "description": "Új képesség: pszichikus sugár egy vonal mentén (Erő 45); 2 körig Zavarodott."
+   "description": "Új képesség: pszichikus sugár egy vonal mentén (Erő 55); 2 körig Zavarodott."
   },
   "psychic-magic-guard": {
    "description": "Immunis a Poison és a Burn ellen; +1 Willpower."

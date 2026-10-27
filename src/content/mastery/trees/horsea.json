@@ -70,7 +70,7 @@
    "kind": "bond",
    "category": "special",
    "bondCost": 2,
-   "power": 80,
+   "power": 60,
    "range": {
     "min": 1,
     "max": 3
@@ -86,7 +86,8 @@
      "status": "marked",
      "duration": 2
     }
-   ]
+   ],
+   "canonPower": 65
   },
   "horsea-smokescreen": {
    "id": "horsea-smokescreen",
@@ -120,7 +121,7 @@
    "kind": "special",
    "category": "special",
    "cooldown": 3,
-   "power": 65,
+   "power": 55,
    "range": {
     "min": 1,
     "max": 2
@@ -136,7 +137,8 @@
      "status": "slow",
      "duration": 1
     }
-   ]
+   ],
+   "canonPower": 65
   },
   "horsea-leer": {
    "id": "horsea-leer",
@@ -193,7 +195,7 @@
    "kind": "special",
    "category": "special",
    "cooldown": 4,
-   "power": 55,
+   "power": 40,
    "range": {
     "min": 1,
     "max": 2
@@ -209,7 +211,8 @@
      "status": "paralysis",
      "duration": 2
     }
-   ]
+   ],
+   "canonPower": 35
   },
   "horsea-surf": {
    "id": "horsea-surf",
@@ -218,7 +221,7 @@
    "kind": "special",
    "category": "special",
    "cooldown": 4,
-   "power": 90,
+   "power": 65,
    "range": {
     "min": 0,
     "max": 0
@@ -228,7 +231,8 @@
     "kind": "burst",
     "radius": 1
    },
-   "affects": "enemies"
+   "affects": "enemies",
+   "canonPower": 90
   },
   "horsea-agility": {
    "id": "horsea-agility",
@@ -261,7 +265,7 @@
    "kind": "special",
    "category": "special",
    "cooldown": 3,
-   "power": 65,
+   "power": 55,
    "range": {
     "min": 1,
     "max": 2
@@ -270,7 +274,8 @@
    "shape": {
     "kind": "single"
    },
-   "affects": "enemies"
+   "affects": "enemies",
+   "canonPower": 65
   },
   "horsea-muddy-water": {
    "id": "horsea-muddy-water",
@@ -279,7 +284,7 @@
    "kind": "special",
    "category": "special",
    "cooldown": 4,
-   "power": 90,
+   "power": 70,
    "range": {
     "min": 1,
     "max": 2
@@ -295,7 +300,8 @@
      "status": "slow",
      "duration": 1
     }
-   ]
+   ],
+   "canonPower": 90
   },
   "horsea-hyper-beam": {
    "id": "horsea-hyper-beam",
@@ -313,14 +319,15 @@
    "shape": {
     "kind": "single"
    },
-   "affects": "enemies"
+   "affects": "enemies",
+   "canonPower": 150
   }
  },
  "talents": {
   "horsea-octazooka": {
    "id": "horsea-octazooka",
    "name": "Octazooka",
-   "description": "Bond skill: blasts ink at a foe up to 3 hexes away (Power 80), Marking it 2 turns.",
+   "description": "Bond skill: blasts ink at a foe up to 3 hexes away (Power 60), Marking it 2 turns.",
    "grantsMove": "horsea-octazooka"
   },
   "horsea-smokescreen": {
@@ -332,7 +339,7 @@
   "horsea-bubble-beam": {
    "id": "horsea-bubble-beam",
    "name": "Bubble Beam",
-   "description": "New skill: a spray of bubbles at a foe up to 2 hexes away (Power 65), Slowing it 1 turn.",
+   "description": "New skill: a spray of bubbles at a foe up to 2 hexes away (Power 55), Slowing it 1 turn.",
    "grantsMove": "horsea-bubble-beam"
   },
   "horsea-leer": {
@@ -384,7 +391,7 @@
   "horsea-whirlpool": {
    "id": "horsea-whirlpool",
    "name": "Whirlpool",
-   "description": "New skill: traps a foe up to 2 hexes away in a whirlpool (Power 55); it can't move 2 turns.",
+   "description": "New skill: traps a foe up to 2 hexes away in a whirlpool (Power 40); it can't move 2 turns.",
    "grantsMove": "horsea-whirlpool"
   },
   "horsea-swift-current": {
@@ -406,7 +413,7 @@
   "horsea-surf": {
    "id": "horsea-surf",
    "name": "Surf",
-   "description": "New skill: a great wave crashes over every foe within 1 hex of it (Power 90).",
+   "description": "New skill: a great wave crashes over every foe within 1 hex of it (Power 65).",
    "grantsMove": "horsea-surf"
   },
   "horsea-rough-waters": {
@@ -470,13 +477,13 @@
   "horsea-brine": {
    "id": "horsea-brine",
    "name": "Brine",
-   "description": "New skill: a jet of salt water at a foe up to 2 hexes away (Power 65).",
+   "description": "New skill: a jet of salt water at a foe up to 2 hexes away (Power 55).",
    "grantsMove": "horsea-brine"
   },
   "horsea-muddy-water": {
    "id": "horsea-muddy-water",
    "name": "Muddy Water",
-   "description": "New skill: a muddy surge at a foe up to 2 hexes away (Power 90) that Slows it 1 turn.",
+   "description": "New skill: a muddy surge at a foe up to 2 hexes away (Power 70) that Slows it 1 turn.",
    "grantsMove": "horsea-muddy-water"
   },
   "horsea-hyper-beam": {

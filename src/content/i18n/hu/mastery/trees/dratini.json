@@ -4,10 +4,10 @@
    "description": "Bond képesség: tombolva ront az ellenfélre (Power 100, Attack)."
   },
   "dratini-dragon-pulse": {
-   "description": "Bond képesség: lökéshullám a szájából egy legfeljebb 3 hexnyire lévő ellenfélre (Power 85)."
+   "description": "Bond képesség: lökéshullám a szájából egy legfeljebb 3 hexnyire lévő ellenfélre (Power 70)."
   },
   "dratini-extreme-speed": {
-   "description": "Bond képesség: villámgyors roham egy max. 2 hexnyi ellenfélre (Power 60, Attack), leköti."
+   "description": "Bond képesség: villámgyors roham egy max. 2 hexnyi ellenfélre (Power 70, Attack), leköti."
   },
   "dratini-dragon-blood": {
    "description": "A Dragon típusú támadásai 15%-kal többet sebeznek."
@@ -19,7 +19,7 @@
    "description": "Új képesség: fenyegető pillantás: minden szomszédos ellenfél 2 körre Exposed."
   },
   "dratini-slam": {
-   "description": "Új képesség: hosszú testével rácsap egy szomszédos ellenfélre (Erő 70)."
+   "description": "Új képesség: hosszú testével rácsap egy szomszédos ellenfélre (Erő 75)."
   },
   "dratini-constrictor": {
    "description": "A menekülő ellenfelekre mért szabad ütései 25%-kal többet sebeznek."
@@ -31,7 +31,7 @@
    "description": "Új képesség: misztikus tánc, 1 körre Focused és 2 körre Hasted lesz."
   },
   "dratini-dragon-breath": {
-   "description": "Új képesség: sárkánylehelet egy max. 2 hexnyi ellenfélre (Erő 70), 1 körre megbénítja."
+   "description": "Új képesség: sárkánylehelet egy max. 2 hexnyi ellenfélre (Erő 55), 1 körre megbénítja."
   },
   "dratini-crystal-orbs": {
    "description": "Az általa okozott státuszok 1 körrel tovább tartanak."
@@ -40,10 +40,10 @@
    "description": "Minden köre elején a max HP 4%-át gyógyítja."
   },
   "dratini-dragon-rush": {
-   "description": "Új képesség: fenyegetően ront egy legfeljebb 2 hexnyire lévő ellenfélre (Power 95), és leköti."
+   "description": "Új képesség: fenyegetően ront egy legfeljebb 2 hexnyire lévő ellenfélre (Power 75), és leköti."
   },
   "dratini-hurricane": {
-   "description": "Új képesség: tomboló szél egy max. 2 hexnyi ellenfélre (Erő 90)."
+   "description": "Új képesség: tomboló szél egy max. 2 hexnyi ellenfélre (Erő 80)."
   },
   "dratini-battle-hunger": {
    "description": "Minden kiütéssel 1 Attackot kap erre a csatára (legfeljebb +3)."
@@ -52,10 +52,10 @@
    "description": "Ha a saját körében kiüt egy ellenfelet, 2 mozgáspontot visszanyer."
   },
   "dratini-dragon-tail": {
-   "description": "Új képesség: söprő farokcsapás (Erő 85), amely 2 hexnyit lök az ellenfélen."
+   "description": "Új képesség: söprő farokcsapás (Erő 60), amely 2 hexnyit lök az ellenfélen."
   },
   "dratini-air-slash": {
-   "description": "Új képesség: vágó légpenge egy max. 2 hexnyi ellenfélre (Erő 90); 1 körre lassít."
+   "description": "Új képesség: vágó légpenge egy max. 2 hexnyi ellenfélre (Erő 65); 1 körre lassít."
   },
   "dratini-multiscale": {
    "description": "Teljes HP-n 25%-kal kevesebb sebzést kap."

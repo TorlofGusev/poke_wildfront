@@ -4,10 +4,10 @@
    "description": "Bond képesség: lustálkodik egyet, és 40 HP-t gyógyul."
   },
   "slowpoke-psyshock": {
-   "description": "Bond képesség: pszichikus hullám egy legfeljebb 3 hexnyire lévő ellenfélre (Erő 90, Kül. Tám.)."
+   "description": "Bond képesség: pszichikus hullám egy legfeljebb 3 hexnyire lévő ellenfélre (Erő 70, Kül. Tám.)."
   },
   "slowpoke-aqua-tail": {
-   "description": "Bond képesség: nehéz, vizes farkával lecsap egy szomszédos ellenfélre (Erő 80)."
+   "description": "Bond képesség: nehéz, vizes farkával lecsap egy szomszédos ellenfélre (Erő 85)."
   },
   "slowpoke-regenerator": {
    "description": "Minden köre elején maximális HP-ja 4%-át gyógyítja."
@@ -16,7 +16,7 @@
    "description": "Nem lehet Lelassítani: a saját tempójában halad."
   },
   "slowpoke-zen-headbutt": {
-   "description": "Új képesség: akaraterővel feltöltött fejelés (Erő 70)."
+   "description": "Új képesség: akaraterővel feltöltött fejelés (Erő 75)."
   },
   "slowpoke-delayed-pain": {
    "description": "20%-kal kevesebb sebzést kap teljes HP-n: későn veszi észre a fájdalmat."
@@ -28,7 +28,7 @@
    "description": "Új képesség: kiüríti az elméjét, 3 körre Megerősített lesz."
   },
   "slowpoke-water-gun": {
-   "description": "Új képesség: vizet spriccel egy legfeljebb 2 hexnyire lévő ellenfélre (Erő 60)."
+   "description": "Új képesség: vizet spriccel egy legfeljebb 2 hexnyire lévő ellenfélre (Erő 40)."
   },
   "slowpoke-unbothered": {
    "description": "Körönként maximális HP-ja 3%-át gyógyítja, amíg ellenféllel harcban áll."
@@ -37,10 +37,10 @@
    "description": "A csapat 1 Kötelék pontot kap, ha kombót ér el."
   },
   "slowpoke-iron-tail": {
-   "description": "Új képesség: megkeményített farkával csap le (Erő 90), 1 körre Kitetté teszi az ellenfelet."
+   "description": "Új képesség: megkeményített farkával csap le (Erő 85), 1 körre Kitetté teszi az ellenfelet."
   },
   "slowpoke-muddy-water": {
-   "description": "Új képesség: sáros hullám egy max. 2 hexnyi ellenfélre (Erő 85); 2 körre lassít."
+   "description": "Új képesség: sáros hullám egy max. 2 hexnyi ellenfélre (Erő 70); 2 körre lassít."
   },
   "slowpoke-shellder-bite": {
    "description": "15%-kal többet sebez a szomszédos ellenfelekre: a farkán lógó Shellder is harap."
@@ -49,10 +49,10 @@
    "description": "Pszichikus mozdulatai 15%-kal többet sebeznek."
   },
   "slowpoke-hydro-pump": {
-   "description": "Új képesség: hatalmas vízsugár egy legfeljebb 2 hexnyire lévő ellenfélre (Erő 95)."
+   "description": "Új képesség: hatalmas vízsugár egy legfeljebb 2 hexnyire lévő ellenfélre (Erő 80)."
   },
   "slowpoke-expanding-force": {
-   "description": "Új képesség: pszichikus erő tör ki, az 1 hexen belüli ellenfeleket éri (Erő 85)."
+   "description": "Új képesség: pszichikus erő tör ki, az 1 hexen belüli ellenfeleket éri (Erő 60)."
   },
   "slowpoke-stubborn": {
    "description": "Csatánként egyszer 1 HP-val túlél egy kiütő csapást."

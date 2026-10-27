@@ -4,7 +4,7 @@
    "description": "Bond képesség: mocskos szemetet zúdít az ellenfélre (Power 100, Attack), 2 körre Poison."
   },
   "ekans-sucker-punch": {
-   "description": "Bond képesség: lecsap, mielőtt az ellenfél mozdulhatna (Power 60, Attack)."
+   "description": "Bond képesség: lecsap, mielőtt az ellenfél mozdulhatna (Power 75, Attack)."
   },
   "ekans-coil": {
    "description": "Bond képesség: szorosan feltekeredik, 1 körre Fortified és Focused lesz."
@@ -16,7 +16,7 @@
    "description": "10%-kal kevesebb sebzést kap: az ellenfelek visszafogják magukat a tekintetétől."
   },
   "ekans-poison-sting": {
-   "description": "Új képesség: mérgező szúrás egy szomszédos ellenfélbe, 2 körre Poison-t okoz (Power 50)."
+   "description": "Új képesség: mérgező szúrás egy szomszédos ellenfélbe, 2 körre Poison-t okoz (Power 25)."
   },
   "ekans-screech": {
    "description": "Új képesség: fülsértő sikoly egy legfeljebb 2 hexnyire lévő ellenfélre, 2 körre Exposed."
@@ -40,7 +40,7 @@
    "description": "Minden köre elején a max HP 4%-át gyógyítja."
   },
   "ekans-body-slam": {
-   "description": "Új képesség: teljes súlyával az ellenfélre veti magát (Erő 85), 1 körre Paralysis."
+   "description": "Új képesség: teljes súlyával az ellenfélre veti magát (Erő 75), 1 körre Paralysis."
   },
   "ekans-swallow": {
    "description": "Új képesség: lenyeli a felhalmozott erőt, 60 HP-t gyógyul."
@@ -52,7 +52,7 @@
    "description": "A vele harcoló ellenfelek nem léphetnek el szabad ütése nélkül."
   },
   "ekans-cross-poison": {
-   "description": "Új képesség: keresztben vágó mérges csapás (Erő 90), 1 körre Exposed lesz az ellenfél."
+   "description": "Új képesség: keresztben vágó mérges csapás (Erő 65), 1 körre Exposed lesz az ellenfél."
   },
   "ekans-haze": {
    "description": "Új képesség: fekete köd legfeljebb 1 hexnyire, 1 hex körzetben 2 körre Slow."

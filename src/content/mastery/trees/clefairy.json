@@ -97,7 +97,7 @@
    "kind": "bond",
    "category": "special",
    "bondCost": 2,
-   "power": 90,
+   "power": 75,
    "range": {
     "min": 1,
     "max": 3
@@ -106,7 +106,8 @@
    "shape": {
     "kind": "single"
    },
-   "affects": "enemies"
+   "affects": "enemies",
+   "canonPower": 95
   },
   "clefairy-light-screen": {
    "id": "clefairy-light-screen",
@@ -150,7 +151,8 @@
     "kind": "burst",
     "radius": 1
    },
-   "affects": "enemies"
+   "affects": "enemies",
+   "canonPower": 40
   },
   "clefairy-minimize": {
    "id": "clefairy-minimize",
@@ -208,7 +210,7 @@
    "kind": "special",
    "category": "special",
    "cooldown": 2,
-   "power": 60,
+   "power": 55,
    "range": {
     "min": 1,
     "max": 2
@@ -217,7 +219,8 @@
    "shape": {
     "kind": "single"
    },
-   "affects": "enemies"
+   "affects": "enemies",
+   "canonPower": 60
   },
   "clefairy-tri-attack": {
    "id": "clefairy-tri-attack",
@@ -226,7 +229,7 @@
    "kind": "special",
    "category": "special",
    "cooldown": 4,
-   "power": 85,
+   "power": 65,
    "range": {
     "min": 1,
     "max": 2
@@ -235,7 +238,8 @@
    "shape": {
     "kind": "single"
    },
-   "affects": "enemies"
+   "affects": "enemies",
+   "canonPower": 80
   },
   "clefairy-yawn": {
    "id": "clefairy-yawn",
@@ -268,7 +272,7 @@
    "kind": "special",
    "category": "special",
    "cooldown": 5,
-   "power": 85,
+   "power": 65,
    "range": {
     "min": 1,
     "max": 1
@@ -278,7 +282,8 @@
     "kind": "burst",
     "radius": 1
    },
-   "affects": "enemies"
+   "affects": "enemies",
+   "canonPower": 90
   },
   "clefairy-wish": {
    "id": "clefairy-wish",
@@ -314,7 +319,7 @@
   "clefairy-moonblast": {
    "id": "clefairy-moonblast",
    "name": "Moonblast",
-   "description": "Bond skill: borrows the moon's power against a foe up to 3 hexes away (Power 90).",
+   "description": "Bond skill: borrows the moon's power against a foe up to 3 hexes away (Power 75).",
    "grantsMove": "clefairy-moonblast"
   },
   "clefairy-light-screen": {
@@ -376,7 +381,7 @@
   "clefairy-swift": {
    "id": "clefairy-swift",
    "name": "Swift",
-   "description": "New skill: star-shaped rays at a foe up to 2 hexes away, no line of sight (Power 60).",
+   "description": "New skill: star-shaped rays at a foe up to 2 hexes away, no line of sight (Power 55).",
    "grantsMove": "clefairy-swift"
   },
   "clefairy-sweet-dreams": {
@@ -400,7 +405,7 @@
   "clefairy-tri-attack": {
    "id": "clefairy-tri-attack",
    "name": "Tri Attack",
-   "description": "New skill: a triangle of three beams at a foe up to 2 hexes away (Power 85).",
+   "description": "New skill: a triangle of three beams at a foe up to 2 hexes away (Power 65).",
    "grantsMove": "clefairy-tri-attack"
   },
   "clefairy-yawn": {
@@ -431,7 +436,7 @@
   "clefairy-hyper-voice": {
    "id": "clefairy-hyper-voice",
    "name": "Hyper Voice",
-   "description": "New skill: a booming shout at foes in a 1-hex area up to 1 hex away, no line of sight (Power 85).",
+   "description": "New skill: a booming shout at foes in a 1-hex area up to 1 hex away, no line of sight (Power 65).",
    "grantsMove": "clefairy-hyper-voice"
   },
   "clefairy-wish": {

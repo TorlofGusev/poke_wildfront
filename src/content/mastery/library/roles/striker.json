@@ -16,11 +16,12 @@
    },
    "affects": "enemies",
    "cooldown": 4,
-   "power": 90,
+   "power": 100,
    "range": {
     "min": 1,
     "max": 1
-   }
+   },
+   "canonPower": 150
   },
   "striker-double-edge": {
    "id": "striker-double-edge",
@@ -33,7 +34,7 @@
    },
    "affects": "enemies",
    "cooldown": 4,
-   "power": 80,
+   "power": 95,
    "range": {
     "min": 1,
     "max": 1
@@ -44,7 +45,8 @@
      "status": "exposed",
      "duration": 2
     }
-   ]
+   ],
+   "canonPower": 120
   }
  },
  "variants": {
@@ -123,7 +125,7 @@
   "skill-striker-giga-impact": {
    "id": "skill-striker-giga-impact",
    "name": "Giga Impact",
-   "description": "New skill: an all-out melee strike (Power 90, recharges in 4 turns).",
+   "description": "New skill: an all-out melee strike (Power 100, recharges in 4 turns).",
    "grantsMove": "striker-giga-impact"
   },
   "striker-endure": {
@@ -154,7 +156,7 @@
   "skill-striker-double-edge": {
    "id": "skill-striker-double-edge",
    "name": "Double-Edge",
-   "description": "New skill: a crushing melee hit that Exposes the foe for 2 turns (Power 80, cooldown 4).",
+   "description": "New skill: a crushing melee hit that Exposes the foe for 2 turns (Power 95, cooldown 4).",
    "grantsMove": "striker-double-edge"
   }
  },

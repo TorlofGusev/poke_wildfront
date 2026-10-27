@@ -73,7 +73,7 @@
    "kind": "bond",
    "category": "special",
    "bondCost": 2,
-   "power": 95,
+   "power": 75,
    "range": {
     "min": 1,
     "max": 3
@@ -82,7 +82,8 @@
    "shape": {
     "kind": "single"
    },
-   "affects": "enemies"
+   "affects": "enemies",
+   "canonPower": 90
   },
   "caterpie-harden": {
    "id": "caterpie-harden",
@@ -169,7 +170,7 @@
    "kind": "special",
    "category": "special",
    "cooldown": 2,
-   "power": 60,
+   "power": 55,
    "range": {
     "min": 1,
     "max": 2
@@ -178,7 +179,8 @@
    "shape": {
     "kind": "single"
    },
-   "affects": "enemies"
+   "affects": "enemies",
+   "canonPower": 65
   },
   "caterpie-air-slash": {
    "id": "caterpie-air-slash",
@@ -187,7 +189,7 @@
    "kind": "special",
    "category": "special",
    "cooldown": 3,
-   "power": 70,
+   "power": 65,
    "range": {
     "min": 1,
     "max": 2
@@ -196,7 +198,8 @@
    "shape": {
     "kind": "single"
    },
-   "affects": "enemies"
+   "affects": "enemies",
+   "canonPower": 75
   },
   "caterpie-poison-powder": {
    "id": "caterpie-poison-powder",
@@ -231,7 +234,7 @@
    "kind": "special",
    "category": "special",
    "cooldown": 4,
-   "power": 90,
+   "power": 80,
    "range": {
     "min": 1,
     "max": 2
@@ -246,7 +249,8 @@
      "kind": "push",
      "distance": 1
     }
-   ]
+   ],
+   "canonPower": 110
   },
   "caterpie-silver-wind": {
    "id": "caterpie-silver-wind",
@@ -255,7 +259,7 @@
    "kind": "special",
    "category": "special",
    "cooldown": 5,
-   "power": 90,
+   "power": 50,
    "range": {
     "min": 1,
     "max": 1
@@ -265,7 +269,8 @@
     "kind": "burst",
     "radius": 1
    },
-   "affects": "enemies"
+   "affects": "enemies",
+   "canonPower": 60
   },
   "caterpie-u-turn": {
    "id": "caterpie-u-turn",
@@ -274,7 +279,7 @@
    "kind": "special",
    "category": "physical",
    "cooldown": 3,
-   "power": 70,
+   "power": 65,
    "range": {
     "min": 1,
     "max": 1
@@ -288,7 +293,8 @@
     {
      "kind": "disengage"
     }
-   ]
+   ],
+   "canonPower": 70
   },
   "caterpie-supersonic": {
    "id": "caterpie-supersonic",
@@ -320,7 +326,7 @@
   "caterpie-bug-buzz": {
    "id": "caterpie-bug-buzz",
    "name": "Bug Buzz",
-   "description": "Bond skill: a damaging buzz of its wings at a foe up to 3 hexes away (Power 95).",
+   "description": "Bond skill: a damaging buzz of its wings at a foe up to 3 hexes away (Power 75).",
    "grantsMove": "caterpie-bug-buzz"
   },
   "caterpie-harden": {
@@ -360,7 +366,7 @@
   "caterpie-psybeam": {
    "id": "caterpie-psybeam",
    "name": "Psybeam",
-   "description": "New skill: a peculiar ray at a foe up to 2 hexes away (Power 60).",
+   "description": "New skill: a peculiar ray at a foe up to 2 hexes away (Power 55).",
    "grantsMove": "caterpie-psybeam"
   },
   "caterpie-poison-scales": {
@@ -386,7 +392,7 @@
   "caterpie-air-slash": {
    "id": "caterpie-air-slash",
    "name": "Air Slash",
-   "description": "New skill: a blade of air at a foe up to 2 hexes away (Power 70).",
+   "description": "New skill: a blade of air at a foe up to 2 hexes away (Power 65).",
    "grantsMove": "caterpie-air-slash"
   },
   "caterpie-poison-powder": {
@@ -416,7 +422,7 @@
   "caterpie-hurricane": {
    "id": "caterpie-hurricane",
    "name": "Hurricane",
-   "description": "New skill: a howling gale at a foe up to 2 hexes away (Power 90) that pushes it 1 hex.",
+   "description": "New skill: a howling gale at a foe up to 2 hexes away (Power 80) that pushes it 1 hex.",
    "grantsMove": "caterpie-hurricane"
   },
   "caterpie-gentle-flutter": {
@@ -439,13 +445,13 @@
   "caterpie-silver-wind": {
    "id": "caterpie-silver-wind",
    "name": "Silver Wind",
-   "description": "New skill: a gust of silvery scales on a 1-hex area up to 1 hex away (Power 90).",
+   "description": "New skill: a gust of silvery scales on a 1-hex area up to 1 hex away (Power 50).",
    "grantsMove": "caterpie-silver-wind"
   },
   "caterpie-u-turn": {
    "id": "caterpie-u-turn",
    "name": "U-turn",
-   "description": "New skill: hits a foe (Power 70), then darts free of engagement.",
+   "description": "New skill: hits a foe (Power 65), then darts free of engagement.",
    "grantsMove": "caterpie-u-turn"
   },
   "caterpie-metamorphosis": {

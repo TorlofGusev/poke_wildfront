@@ -1,10 +1,10 @@
 {
  "talents": {
   "zubat-cross-poison": {
-   "description": "Bond képesség: keresztben mért mérgező vágás (Erő 95, Attack), amely 2 körre megmérgez."
+   "description": "Bond képesség: keresztben mért mérgező vágás (Erő 75, Attack), amely 2 körre megmérgez."
   },
   "zubat-acrobatics": {
-   "description": "Bond képesség: rácikázik egy max. 3 hexnyi ellenfélre (Erő 75, Attack), majd kiszabadul."
+   "description": "Bond képesség: rácikázik egy max. 3 hexnyi ellenfélre (Erő 55, Attack), majd kiszabadul."
   },
   "zubat-roost": {
    "description": "Bond képesség: fejjel lefelé lógva pihen, és 40 HP-t gyógyul."
@@ -40,10 +40,10 @@
    "description": "10%-kal kevesebb sebzést kap."
   },
   "zubat-poison-jab": {
-   "description": "Új képesség: mérgező döfés (Erő 85), amely 1 körre megmérgezi az ellenfelet."
+   "description": "Új képesség: mérgező döfés (Erő 75), amely 1 körre megmérgezi az ellenfelet."
   },
   "zubat-air-slash": {
-   "description": "Új képesség: légpenge egy legfeljebb 2 hexnyi ellenfélre (Erő 75)."
+   "description": "Új képesség: légpenge egy legfeljebb 2 hexnyi ellenfélre (Erő 65)."
   },
   "zubat-persistent-bat": {
    "description": "A vele lekötött ellenfelek mindig kapnak tőle szabad csapást, ha ellépnek."
@@ -55,7 +55,7 @@
    "description": "Új képesség: vakmerő, teljes sebességű zuhanórepülés egy ellenfélre (Erő 95)."
   },
   "zubat-leech-life": {
-   "description": "Új képesség: éles agyaraival megharap egy szomszédos ellenfelet (Erő 80)."
+   "description": "Új képesség: éles agyaraival megharap egy szomszédos ellenfelet (Erő 75)."
   },
   "zubat-feeding-frenzy": {
    "description": "Prédájából táplálkozik: minden körben max HP-ja 5%-át gyógyítja, amíg ellenféllel van lekötve."

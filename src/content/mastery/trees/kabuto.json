@@ -67,7 +67,7 @@
    "kind": "bond",
    "category": "physical",
    "bondCost": 2,
-   "power": 95,
+   "power": 75,
    "range": {
     "min": 1,
     "max": 1
@@ -76,7 +76,8 @@
    "shape": {
     "kind": "single"
    },
-   "affects": "enemies"
+   "affects": "enemies",
+   "canonPower": 70
   },
   "kabuto-aqua-jet": {
    "id": "kabuto-aqua-jet",
@@ -85,7 +86,7 @@
    "kind": "bond",
    "category": "physical",
    "bondCost": 1,
-   "power": 55,
+   "power": 45,
    "range": {
     "min": 1,
     "max": 2
@@ -99,7 +100,8 @@
     {
      "kind": "engage"
     }
-   ]
+   ],
+   "canonPower": 40
   },
   "kabuto-endure": {
    "id": "kabuto-endure",
@@ -156,7 +158,7 @@
    "kind": "special",
    "category": "physical",
    "cooldown": 3,
-   "power": 50,
+   "power": 55,
    "range": {
     "min": 1,
     "max": 2
@@ -172,7 +174,8 @@
      "status": "slow",
      "duration": 2
     }
-   ]
+   ],
+   "canonPower": 60
   },
   "kabuto-razor-shell": {
    "id": "kabuto-razor-shell",
@@ -181,7 +184,7 @@
    "kind": "special",
    "category": "physical",
    "cooldown": 3,
-   "power": 60,
+   "power": 70,
    "range": {
     "min": 1,
     "max": 1
@@ -190,7 +193,8 @@
    "shape": {
     "kind": "single"
    },
-   "affects": "enemies"
+   "affects": "enemies",
+   "canonPower": 75
   },
   "kabuto-rapid-spin": {
    "id": "kabuto-rapid-spin",
@@ -199,7 +203,7 @@
    "kind": "special",
    "category": "physical",
    "cooldown": 2,
-   "power": 40,
+   "power": 55,
    "range": {
     "min": 1,
     "max": 1
@@ -213,7 +217,8 @@
     {
      "kind": "disengage"
     }
-   ]
+   ],
+   "canonPower": 50
   },
   "kabuto-rock-slide": {
    "id": "kabuto-rock-slide",
@@ -222,7 +227,7 @@
    "kind": "special",
    "category": "physical",
    "cooldown": 4,
-   "power": 70,
+   "power": 55,
    "range": {
     "min": 1,
     "max": 1
@@ -232,7 +237,8 @@
     "kind": "burst",
     "radius": 1
    },
-   "affects": "enemies"
+   "affects": "enemies",
+   "canonPower": 75
   },
   "kabuto-waterfall": {
    "id": "kabuto-waterfall",
@@ -241,7 +247,7 @@
    "kind": "special",
    "category": "physical",
    "cooldown": 4,
-   "power": 80,
+   "power": 75,
    "range": {
     "min": 1,
     "max": 1
@@ -256,7 +262,8 @@
      "kind": "push",
      "distance": 1
     }
-   ]
+   ],
+   "canonPower": 80
   },
   "kabuto-stone-edge": {
    "id": "kabuto-stone-edge",
@@ -265,7 +272,7 @@
    "kind": "special",
    "category": "physical",
    "cooldown": 5,
-   "power": 100,
+   "power": 85,
    "range": {
     "min": 1,
     "max": 1
@@ -274,7 +281,8 @@
    "shape": {
     "kind": "single"
    },
-   "affects": "enemies"
+   "affects": "enemies",
+   "canonPower": 100
   },
   "kabuto-swords-dance": {
    "id": "kabuto-swords-dance",
@@ -305,13 +313,13 @@
   "kabuto-night-slash": {
    "id": "kabuto-night-slash",
    "name": "Night Slash",
-   "description": "Bond skill: a slash from the shadows (Power 95, Attack).",
+   "description": "Bond skill: a slash from the shadows (Power 75, Attack).",
    "grantsMove": "kabuto-night-slash"
   },
   "kabuto-aqua-jet": {
    "id": "kabuto-aqua-jet",
    "name": "Aqua Jet",
-   "description": "Bond skill: jets up to 2 hexes into a foe (Power 55, Attack) and engages it.",
+   "description": "Bond skill: jets up to 2 hexes into a foe (Power 45, Attack) and engages it.",
    "grantsMove": "kabuto-aqua-jet"
   },
   "kabuto-endure": {
@@ -345,7 +353,7 @@
   "kabuto-rock-tomb": {
    "id": "kabuto-rock-tomb",
    "name": "Rock Tomb",
-   "description": "New skill: drops rocks on a foe up to 2 hexes away (Power 50); Slow for 2 turns.",
+   "description": "New skill: drops rocks on a foe up to 2 hexes away (Power 55); Slow for 2 turns.",
    "grantsMove": "kabuto-rock-tomb"
   },
   "kabuto-fossil-hunter": {
@@ -368,13 +376,13 @@
   "kabuto-razor-shell": {
    "id": "kabuto-razor-shell",
    "name": "Razor Shell",
-   "description": "New skill: slashes an adjacent foe with its sharp shell edge (Power 60).",
+   "description": "New skill: slashes an adjacent foe with its sharp shell edge (Power 70).",
    "grantsMove": "kabuto-razor-shell"
   },
   "kabuto-rapid-spin": {
    "id": "kabuto-rapid-spin",
    "name": "Rapid Spin",
-   "description": "New skill: spins into a foe (Power 40) and breaks off from engaged foes.",
+   "description": "New skill: spins into a foe (Power 55) and breaks off from engaged foes.",
    "grantsMove": "kabuto-rapid-spin"
   },
   "kabuto-scythe-arms": {
@@ -396,13 +404,13 @@
   "kabuto-rock-slide": {
    "id": "kabuto-rock-slide",
    "name": "Rock Slide",
-   "description": "New skill: drops rocks on a 1-hex area up to 1 hex away (Power 70).",
+   "description": "New skill: drops rocks on a 1-hex area up to 1 hex away (Power 55).",
    "grantsMove": "kabuto-rock-slide"
   },
   "kabuto-waterfall": {
    "id": "kabuto-waterfall",
    "name": "Waterfall",
-   "description": "New skill: charges up a torrent into a foe (Power 80), pushing it back 1 hex.",
+   "description": "New skill: charges up a torrent into a foe (Power 75), pushing it back 1 hex.",
    "grantsMove": "kabuto-waterfall"
   },
   "kabuto-ambush-predator": {
@@ -424,7 +432,7 @@
   "kabuto-stone-edge": {
    "id": "kabuto-stone-edge",
    "name": "Stone Edge",
-   "description": "New skill: stabs a foe with jagged stone (Power 100).",
+   "description": "New skill: stabs a foe with jagged stone (Power 85).",
    "grantsMove": "kabuto-stone-edge"
   },
   "kabuto-swords-dance": {

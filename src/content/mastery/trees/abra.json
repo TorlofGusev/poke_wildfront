@@ -68,7 +68,7 @@
    "kind": "bond",
    "category": "special",
    "bondCost": 3,
-   "power": 100,
+   "power": 90,
    "range": {
     "min": 1,
     "max": 3
@@ -77,7 +77,8 @@
    "shape": {
     "kind": "single"
    },
-   "affects": "enemies"
+   "affects": "enemies",
+   "canonPower": 120
   },
   "abra-teleport": {
    "id": "abra-teleport",
@@ -185,7 +186,7 @@
    "kind": "special",
    "category": "special",
    "cooldown": 3,
-   "power": 75,
+   "power": 65,
    "range": {
     "min": 1,
     "max": 2
@@ -194,7 +195,8 @@
    "shape": {
     "kind": "single"
    },
-   "affects": "enemies"
+   "affects": "enemies",
+   "canonPower": 80
   },
   "abra-disable": {
    "id": "abra-disable",
@@ -227,7 +229,7 @@
    "kind": "special",
    "category": "special",
    "cooldown": 5,
-   "power": 100,
+   "power": 95,
    "range": {
     "min": 1,
     "max": 2
@@ -236,7 +238,8 @@
    "shape": {
     "kind": "single"
    },
-   "affects": "enemies"
+   "affects": "enemies",
+   "canonPower": 150
   },
   "abra-extrasensory": {
    "id": "abra-extrasensory",
@@ -245,7 +248,7 @@
    "kind": "special",
    "category": "special",
    "cooldown": 4,
-   "power": 80,
+   "power": 65,
    "range": {
     "min": 1,
     "max": 2
@@ -254,7 +257,8 @@
    "shape": {
     "kind": "single"
    },
-   "affects": "enemies"
+   "affects": "enemies",
+   "canonPower": 80
   },
   "abra-tri-attack": {
    "id": "abra-tri-attack",
@@ -263,7 +267,7 @@
    "kind": "special",
    "category": "special",
    "cooldown": 5,
-   "power": 90,
+   "power": 65,
    "range": {
     "min": 1,
     "max": 2
@@ -272,7 +276,8 @@
    "shape": {
     "kind": "single"
    },
-   "affects": "enemies"
+   "affects": "enemies",
+   "canonPower": 80
   },
   "abra-telekinesis": {
    "id": "abra-telekinesis",
@@ -307,7 +312,7 @@
   "abra-future-sight": {
    "id": "abra-future-sight",
    "name": "Future Sight",
-   "description": "Bond skill: a foreseen psychic strike up to 3 hexes away, no line of sight (Power 100).",
+   "description": "Bond skill: a foreseen psychic strike up to 3 hexes away, no line of sight (Power 90).",
    "grantsMove": "abra-future-sight"
   },
   "abra-teleport": {
@@ -371,7 +376,7 @@
   "abra-psyshock": {
    "id": "abra-psyshock",
    "name": "Psyshock",
-   "description": "New skill: a psychic wave at a foe up to 2 hexes away (Power 75).",
+   "description": "New skill: a psychic wave at a foe up to 2 hexes away (Power 65).",
    "grantsMove": "abra-psyshock"
   },
   "abra-disable": {
@@ -399,13 +404,13 @@
   "abra-hyper-beam": {
    "id": "abra-hyper-beam",
    "name": "Hyper Beam",
-   "description": "New skill: a devastating beam at a foe up to 2 hexes away (Power 100).",
+   "description": "New skill: a devastating beam at a foe up to 2 hexes away (Power 95).",
    "grantsMove": "abra-hyper-beam"
   },
   "abra-extrasensory": {
    "id": "abra-extrasensory",
    "name": "Extrasensory",
-   "description": "New skill: an odd, unseeable power strikes a foe up to 2 hexes away (Power 80).",
+   "description": "New skill: an odd, unseeable power strikes a foe up to 2 hexes away (Power 65).",
    "grantsMove": "abra-extrasensory"
   },
   "abra-magic-guard": {
@@ -433,7 +438,7 @@
   "abra-tri-attack": {
    "id": "abra-tri-attack",
    "name": "Tri Attack",
-   "description": "New skill: a triangle of three beams at a foe up to 2 hexes away (Power 90).",
+   "description": "New skill: a triangle of three beams at a foe up to 2 hexes away (Power 65).",
    "grantsMove": "abra-tri-attack"
   },
   "abra-telekinesis": {

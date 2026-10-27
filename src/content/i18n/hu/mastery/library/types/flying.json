@@ -1,13 +1,13 @@
 {
  "talents": {
   "flying-skill-drill-peck": {
-   "description": "Új képesség: pörgő közelharci csípés (Erő 65)."
+   "description": "Új képesség: pörgő közelharci csípés (Erő 75)."
   },
   "flying-skill-air-slash": {
    "description": "Új képesség: légpenge talál el egy max. 2 hexnyi ellenfelet, 1 körre megbénítva."
   },
   "flying-skill-hurricane": {
-   "description": "Új képesség: vihar sújt egy max. 2 hexnyi ellenfelet és 2 hexnyit löki (Erő 90)."
+   "description": "Új képesség: vihar sújt egy max. 2 hexnyi ellenfelet és 2 hexnyit löki (Erő 80)."
   },
   "flying-take-off": {
    "description": "Szabad csapás nélkül lép el a lekötött ellenfelek mellől."
@@ -25,7 +25,7 @@
    "description": "+25% sebzés bénult ellenfelekre; +1 Attack."
   },
   "flying-skill-sky-attack": {
-   "description": "Új Bond képesség: zuhanó csapás egy max. 3 hexnyi ellenfélre (Erő 100)."
+   "description": "Új Bond képesség: zuhanó csapás egy max. 3 hexnyi ellenfélre (Erő 95)."
   }
  }
 }

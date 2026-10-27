@@ -22,7 +22,7 @@
    "description": "Lökései és húzásai 1 hexszel messzebbre mozgatják az ellenfelet."
   },
   "water-skill-muddy-water": {
-   "description": "Új képesség: sáros hullám távolra (Erő 75), 2 körre lelassít egy 1 hexes területet."
+   "description": "Új képesség: sáros hullám távolra (Erő 65), 2 körre lelassít egy 1 hexes területet."
   }
  }
 }

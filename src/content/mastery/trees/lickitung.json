@@ -90,7 +90,7 @@
    "kind": "special",
    "category": "physical",
    "cooldown": 3,
-   "power": 70,
+   "power": 75,
    "range": {
     "min": 1,
     "max": 1
@@ -106,7 +106,8 @@
      "status": "paralysis",
      "duration": 1
     }
-   ]
+   ],
+   "canonPower": 85
   },
   "lickitung-disable": {
    "id": "lickitung-disable",
@@ -148,7 +149,8 @@
    "shape": {
     "kind": "single"
    },
-   "affects": "enemies"
+   "affects": "enemies",
+   "canonPower": 150
   },
   "lickitung-hyper-beam": {
    "id": "lickitung-hyper-beam",
@@ -157,7 +159,7 @@
    "kind": "special",
    "category": "special",
    "cooldown": 5,
-   "power": 90,
+   "power": 85,
    "range": {
     "min": 1,
     "max": 2
@@ -167,7 +169,8 @@
     "kind": "line",
     "length": 2
    },
-   "affects": "enemies"
+   "affects": "enemies",
+   "canonPower": 150
   },
   "lickitung-recover": {
    "id": "lickitung-recover",
@@ -208,7 +211,8 @@
    "shape": {
     "kind": "single"
    },
-   "affects": "enemies"
+   "affects": "enemies",
+   "canonPower": 120
   },
   "lickitung-stockpile": {
    "id": "lickitung-stockpile",
@@ -241,7 +245,7 @@
    "kind": "special",
    "category": "physical",
    "cooldown": 4,
-   "power": 80,
+   "power": 75,
    "range": {
     "min": 0,
     "max": 0
@@ -251,7 +255,8 @@
     "kind": "burst",
     "radius": 1
    },
-   "affects": "enemies"
+   "affects": "enemies",
+   "canonPower": 120
   },
   "lickitung-hyper-voice": {
    "id": "lickitung-hyper-voice",
@@ -260,7 +265,7 @@
    "kind": "special",
    "category": "special",
    "cooldown": 4,
-   "power": 80,
+   "power": 70,
    "range": {
     "min": 1,
     "max": 2
@@ -269,7 +274,8 @@
    "shape": {
     "kind": "single"
    },
-   "affects": "enemies"
+   "affects": "enemies",
+   "canonPower": 90
   },
   "lickitung-screech": {
    "id": "lickitung-screech",
@@ -333,7 +339,7 @@
   "lickitung-body-slam": {
    "id": "lickitung-body-slam",
    "name": "Body Slam",
-   "description": "New skill: drops its full weight on a foe (Power 70), Paralyzing it for 1 turn.",
+   "description": "New skill: drops its full weight on a foe (Power 75), Paralyzing it for 1 turn.",
    "grantsMove": "lickitung-body-slam"
   },
   "lickitung-disable": {
@@ -385,7 +391,7 @@
   "lickitung-hyper-beam": {
    "id": "lickitung-hyper-beam",
    "name": "Hyper Beam",
-   "description": "New skill: a mighty beam along a 2-hex line (Power 90).",
+   "description": "New skill: a mighty beam along a 2-hex line (Power 85).",
    "grantsMove": "lickitung-hyper-beam"
   },
   "lickitung-helping-tongue": {
@@ -454,13 +460,13 @@
   "lickitung-thrash": {
    "id": "lickitung-thrash",
    "name": "Thrash",
-   "description": "New skill: thrashes about (Power 80), hitting all adjacent foes.",
+   "description": "New skill: thrashes about (Power 75), hitting all adjacent foes.",
    "grantsMove": "lickitung-thrash"
   },
   "lickitung-hyper-voice": {
    "id": "lickitung-hyper-voice",
    "name": "Hyper Voice",
-   "description": "New skill: a booming yell at a foe up to 2 hexes away (Power 80).",
+   "description": "New skill: a booming yell at a foe up to 2 hexes away (Power 70).",
    "grantsMove": "lickitung-hyper-voice"
   },
   "lickitung-screech": {

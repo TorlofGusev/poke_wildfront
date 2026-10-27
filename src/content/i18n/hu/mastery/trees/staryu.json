@@ -1,7 +1,7 @@
 {
  "talents": {
   "staryu-surf": {
-   "description": "Kötelék-képesség: hatalmas hullám minden 2 hexen belüli ellenfelet eltalál (Erő 80)."
+   "description": "Kötelék-képesség: hatalmas hullám minden 2 hexen belüli ellenfelet eltalál (Erő 60)."
   },
   "staryu-rapid-spin": {
    "description": "Kötelék-képesség: pörögve a szomszédos ellenfeleknek csapódik (Erő 50, Attack), 1 hexnyit lökve."
@@ -16,7 +16,7 @@
    "description": "15%-kal többet sebez a legalább 2 hexnyire lévő ellenfeleknek."
   },
   "staryu-brine": {
-   "description": "Új képesség: sós vízsugár egy legfeljebb 2 hexnyire lévő ellenfélre (Erő 60)."
+   "description": "Új képesség: sós vízsugár egy legfeljebb 2 hexnyire lévő ellenfélre (Erő 55)."
   },
   "staryu-flash": {
    "description": "Új képesség: magja felvillan: max. 1 hexnyire egy 1 hex körzet ellenfelei 2 körre Marked."
@@ -28,7 +28,7 @@
    "description": "20%-kal kevesebb sebzést kap, amíg teljes a HP-ja."
   },
   "staryu-psybeam": {
-   "description": "Új képesség: különös sugár egy max. 2 hexnyi ellenfélre (Erő 60); 2 körig Zavarodott."
+   "description": "Új képesség: különös sugár egy max. 2 hexnyi ellenfélre (Erő 55); 2 körig Zavarodott."
   },
   "staryu-hypnosis": {
    "description": "Új képesség: hipnotikus fények 2 körre elaltatnak egy max. 2 hexnyi ellenfelet."
@@ -40,7 +40,7 @@
    "description": "2 mozgáspontot visszanyer, ha a saját körében kiüt egy ellenfelet."
   },
   "staryu-psyshock": {
-   "description": "Új képesség: pszichikus hullám egy legfeljebb 2 hexnyire lévő ellenfélre (Erő 85)."
+   "description": "Új képesség: pszichikus hullám egy legfeljebb 2 hexnyire lévő ellenfélre (Erő 65)."
   },
   "staryu-light-screen": {
    "description": "Új képesség: fényfal max. 1 hexnyire: egy 1 hex körzet szövetségesei 2 körre Fortified."
@@ -52,10 +52,10 @@
    "description": "Csatánként egyszer 1 HP-val túlél egy kiütő csapást: csak a magjának kell kitartania."
   },
   "staryu-scald": {
-   "description": "Új képesség: forró víz egy max. 2 hexnyi ellenfélre (Erő 90); 1 körre megégeti."
+   "description": "Új képesség: forró víz egy max. 2 hexnyi ellenfélre (Erő 65); 1 körre megégeti."
   },
   "staryu-extrasensory": {
-   "description": "Új képesség: kísérteties pszichikus erő egy max. 2 hexnyi ellenfélre (Erő 90); 1 körre lassít."
+   "description": "Új képesség: kísérteties pszichikus erő egy max. 2 hexnyi ellenfélre (Erő 65); 1 körre lassít."
   },
   "staryu-psychic-resonance": {
    "description": "Az általa okozott állapotok 1 körrel tovább tartanak."

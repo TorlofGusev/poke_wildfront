@@ -4,7 +4,7 @@
    "description": "Bond képesség: nyugtató csengőszó leveszi az ellenfelek okozta státuszokat róla és a szomszédos társakról, 25 HP-t gyógyítva."
   },
   "clefairy-moonblast": {
-   "description": "Bond képesség: a hold erejével sújt egy legfeljebb 3 hexnyire lévő ellenfélre (Power 90)."
+   "description": "Bond képesség: a hold erejével sújt egy legfeljebb 3 hexnyire lévő ellenfélre (Power 75)."
   },
   "clefairy-light-screen": {
    "description": "Bond képesség: fényfal legfeljebb 2 hexnyire, 1 hexes körzetben a szövetségesek 2 körre Fortified-ok."
@@ -31,7 +31,7 @@
    "description": "Új képesség: aranyos morgás, a szomszédos ellenfelek 1 körre Weakened-ek lesznek."
   },
   "clefairy-swift": {
-   "description": "Új képesség: csillag alakú sugarak egy legfeljebb 2 hexnyire lévő ellenfélre, rálátás nélkül (Power 60)."
+   "description": "Új képesség: csillag alakú sugarak egy legfeljebb 2 hexnyire lévő ellenfélre, rálátás nélkül (Power 55)."
   },
   "clefairy-sweet-dreams": {
    "description": "25%-kal többet sebez az alvó (Sleep) ellenfeleknek."
@@ -40,7 +40,7 @@
    "description": "Teljes HP-n 20%-kal kevesebb sebzést kap."
   },
   "clefairy-tri-attack": {
-   "description": "Új képesség: három sugárból álló háromszög egy legfeljebb 2 hexnyire lévő ellenfélre (Erő 85)."
+   "description": "Új képesség: három sugárból álló háromszög egy legfeljebb 2 hexnyire lévő ellenfélre (Erő 65)."
   },
   "clefairy-yawn": {
    "description": "Új képesség: hatalmas ásítás 1 körre elaltat egy legfeljebb 2 hexnyire lévő ellenfelet."
@@ -52,7 +52,7 @@
    "description": "20%-kal többet sebez azoknak, akikre egy szövetségese tett státuszt."
   },
   "clefairy-hyper-voice": {
-   "description": "Új képesség: harsány kiáltás legfeljebb 1 hexnyire, 1 hex körzetben, rálátás nélkül (Power 85)."
+   "description": "Új képesség: harsány kiáltás legfeljebb 1 hexnyire, 1 hex körzetben, rálátás nélkül (Power 65)."
   },
   "clefairy-wish": {
    "description": "Új képesség: kívánságával 50 HP-t gyógyít magán vagy egy legfeljebb 2 hexnyire lévő szövetségesén."

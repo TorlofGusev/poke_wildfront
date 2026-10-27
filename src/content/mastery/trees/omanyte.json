@@ -67,7 +67,7 @@
    "kind": "bond",
    "category": "special",
    "bondCost": 2,
-   "power": 85,
+   "power": 60,
    "range": {
     "min": 1,
     "max": 3
@@ -76,7 +76,8 @@
    "shape": {
     "kind": "single"
    },
-   "affects": "enemies"
+   "affects": "enemies",
+   "canonPower": 65
   },
   "omanyte-rollout": {
    "id": "omanyte-rollout",
@@ -85,7 +86,7 @@
    "kind": "bond",
    "category": "physical",
    "bondCost": 1,
-   "power": 65,
+   "power": 40,
    "range": {
     "min": 1,
     "max": 2
@@ -99,7 +100,8 @@
     {
      "kind": "engage"
     }
-   ]
+   ],
+   "canonPower": 30
   },
   "omanyte-shell-smash": {
    "id": "omanyte-shell-smash",
@@ -137,7 +139,7 @@
    "kind": "special",
    "category": "physical",
    "cooldown": 2,
-   "power": 40,
+   "power": 20,
    "range": {
     "min": 1,
     "max": 1
@@ -151,7 +153,8 @@
     {
      "kind": "engage"
     }
-   ]
+   ],
+   "canonPower": 10
   },
   "omanyte-bubble": {
    "id": "omanyte-bubble",
@@ -160,7 +163,7 @@
    "kind": "special",
    "category": "special",
    "cooldown": 3,
-   "power": 50,
+   "power": 40,
    "range": {
     "min": 1,
     "max": 2
@@ -176,7 +179,8 @@
      "status": "slow",
      "duration": 1
     }
-   ]
+   ],
+   "canonPower": 40
   },
   "omanyte-muddy-water": {
    "id": "omanyte-muddy-water",
@@ -195,7 +199,8 @@
     "kind": "burst",
     "radius": 1
    },
-   "affects": "enemies"
+   "affects": "enemies",
+   "canonPower": 90
   },
   "omanyte-protect": {
    "id": "omanyte-protect",
@@ -228,7 +233,7 @@
    "kind": "special",
    "category": "special",
    "cooldown": 4,
-   "power": 80,
+   "power": 65,
    "range": {
     "min": 1,
     "max": 2
@@ -244,7 +249,8 @@
      "status": "burn",
      "duration": 1
     }
-   ]
+   ],
+   "canonPower": 80
   },
   "omanyte-rock-slide": {
    "id": "omanyte-rock-slide",
@@ -253,7 +259,7 @@
    "kind": "special",
    "category": "physical",
    "cooldown": 4,
-   "power": 75,
+   "power": 55,
    "range": {
     "min": 1,
     "max": 1
@@ -263,7 +269,8 @@
     "kind": "burst",
     "radius": 1
    },
-   "affects": "enemies"
+   "affects": "enemies",
+   "canonPower": 75
   },
   "omanyte-power-gem": {
    "id": "omanyte-power-gem",
@@ -272,7 +279,7 @@
    "kind": "special",
    "category": "special",
    "cooldown": 5,
-   "power": 90,
+   "power": 65,
    "range": {
     "min": 1,
     "max": 2
@@ -281,7 +288,8 @@
    "shape": {
     "kind": "single"
    },
-   "affects": "enemies"
+   "affects": "enemies",
+   "canonPower": 80
   },
   "omanyte-rock-blast": {
    "id": "omanyte-rock-blast",
@@ -290,7 +298,7 @@
    "kind": "special",
    "category": "physical",
    "cooldown": 5,
-   "power": 80,
+   "power": 65,
    "range": {
     "min": 1,
     "max": 2
@@ -306,20 +314,21 @@
      "status": "exposed",
      "duration": 1
     }
-   ]
+   ],
+   "canonPower": 75
   }
  },
  "talents": {
   "omanyte-brine": {
    "id": "omanyte-brine",
    "name": "Brine",
-   "description": "Bond skill: a blast of brine at a foe up to 3 hexes away (Power 85).",
+   "description": "Bond skill: a blast of brine at a foe up to 3 hexes away (Power 60).",
    "grantsMove": "omanyte-brine"
   },
   "omanyte-rollout": {
    "id": "omanyte-rollout",
    "name": "Rollout",
-   "description": "Bond skill: rolls up to 2 hexes in its shell (Power 65, Attack), engaging the foe.",
+   "description": "Bond skill: rolls up to 2 hexes in its shell (Power 40, Attack), engaging the foe.",
    "grantsMove": "omanyte-rollout"
   },
   "omanyte-shell-smash": {
@@ -349,13 +358,13 @@
   "omanyte-constrict": {
    "id": "omanyte-constrict",
    "name": "Constrict",
-   "description": "New skill: wraps a foe in its tentacles (Power 40) and engages it.",
+   "description": "New skill: wraps a foe in its tentacles (Power 20) and engages it.",
    "grantsMove": "omanyte-constrict"
   },
   "omanyte-bubble": {
    "id": "omanyte-bubble",
    "name": "Bubble",
-   "description": "New skill: a spray of bubbles at a foe up to 2 hexes away (Power 50); Slows 1 turn.",
+   "description": "New skill: a spray of bubbles at a foe up to 2 hexes away (Power 40); Slows 1 turn.",
    "grantsMove": "omanyte-bubble"
   },
   "omanyte-tentacle-grip": {
@@ -405,13 +414,13 @@
   "omanyte-scald": {
    "id": "omanyte-scald",
    "name": "Scald",
-   "description": "New skill: scalding water at a foe up to 2 hexes away (Power 80); Burns 1 turn.",
+   "description": "New skill: scalding water at a foe up to 2 hexes away (Power 65); Burns 1 turn.",
    "grantsMove": "omanyte-scald"
   },
   "omanyte-rock-slide": {
    "id": "omanyte-rock-slide",
    "name": "Rock Slide",
-   "description": "New skill: hurls boulders on a 1-hex area up to 1 hex away (Power 75).",
+   "description": "New skill: hurls boulders on a 1-hex area up to 1 hex away (Power 55).",
    "grantsMove": "omanyte-rock-slide"
   },
   "omanyte-tentacle-lash": {
@@ -434,13 +443,13 @@
   "omanyte-power-gem": {
    "id": "omanyte-power-gem",
    "name": "Power Gem",
-   "description": "New skill: a ray of gleaming light at a foe up to 2 hexes away (Power 90).",
+   "description": "New skill: a ray of gleaming light at a foe up to 2 hexes away (Power 65).",
    "grantsMove": "omanyte-power-gem"
   },
   "omanyte-rock-blast": {
    "id": "omanyte-rock-blast",
    "name": "Rock Blast",
-   "description": "New skill: hurls rocks at a foe up to 2 hexes away (Power 80); leaves it Exposed 1 turn.",
+   "description": "New skill: hurls rocks at a foe up to 2 hexes away (Power 65); leaves it Exposed 1 turn.",
    "grantsMove": "omanyte-rock-blast"
   },
   "omanyte-spike-volley": {

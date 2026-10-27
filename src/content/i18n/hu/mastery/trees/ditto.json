@@ -34,7 +34,7 @@
    "description": "Teljes HP-n 20%-kal kevesebb sebzést kap."
   },
   "ditto-mimic-hyper-beam": {
-   "description": "Új képesség: Hyper Beam-et másol egy 2 hexen belüli ellenfélre (Erő 100)."
+   "description": "Új képesség: Hyper Beam-et másol egy 2 hexen belüli ellenfélre (Erő 95)."
   },
   "ditto-shape-memory": {
    "description": "Ha kiüt egy ellenfelet, képességei azonnal újratöltődnek."
@@ -49,10 +49,10 @@
    "description": "Csúcstudás. 15%-kal kevesebb sebzést kap; a szomszédos hexről őt ütő ellenfelek 8 sebzést kapnak."
   },
   "ditto-mimic-swift": {
-   "description": "Új képesség: Swift-et másol egy 2 hexen belüli ellenfélre (Erő 50)."
+   "description": "Új képesség: Swift-et másol egy 2 hexen belüli ellenfélre (Erő 55)."
   },
   "ditto-mimic-double-slap": {
-   "description": "Új képesség: Double Slap-et másol egy szomszédos ellenfélre (Erő 55)."
+   "description": "Új képesség: Double Slap-et másol egy szomszédos ellenfélre (Erő 50)."
   },
   "ditto-mimic-tri-attack": {
    "description": "Új képesség: Tri Attack-ot másol egy 2 hexen belüli ellenfélre (Erő 65)."
@@ -61,7 +61,7 @@
    "description": "Új képesség: Slash-t másol (Erő 65); az ellenfél 1 körre Kitett lesz."
   },
   "ditto-mimic-hyper-voice": {
-   "description": "Új képesség: Hyper Voice-t másol egy 2 hexen belüli ellenfélre (Erő 85)."
+   "description": "Új képesség: Hyper Voice-t másol egy 2 hexen belüli ellenfélre (Erő 70)."
   },
   "ditto-mimic-thrash": {
    "description": "Új képesség: Thrash-t másol, minden szomszédos ellenfelet eltalál (Erő 75)."

@@ -70,7 +70,7 @@
    "kind": "bond",
    "category": "physical",
    "bondCost": 2,
-   "power": 60,
+   "power": 75,
    "range": {
     "min": 1,
     "max": 1
@@ -80,7 +80,8 @@
     "kind": "line",
     "length": 3
    },
-   "affects": "enemies"
+   "affects": "enemies",
+   "canonPower": 90
   },
   "sandshrew-crush-claw": {
    "id": "sandshrew-crush-claw",
@@ -89,7 +90,7 @@
    "kind": "bond",
    "category": "physical",
    "bondCost": 2,
-   "power": 85,
+   "power": 75,
    "range": {
     "min": 1,
     "max": 1
@@ -105,7 +106,8 @@
      "status": "exposed",
      "duration": 2
     }
-   ]
+   ],
+   "canonPower": 75
   },
   "sandshrew-rapid-spin": {
    "id": "sandshrew-rapid-spin",
@@ -114,7 +116,7 @@
    "kind": "bond",
    "category": "physical",
    "bondCost": 1,
-   "power": 50,
+   "power": 60,
    "range": {
     "min": 1,
     "max": 1
@@ -128,7 +130,8 @@
     {
      "kind": "disengage"
     }
-   ]
+   ],
+   "canonPower": 50
   },
   "sandshrew-sand-tomb": {
    "id": "sandshrew-sand-tomb",
@@ -137,7 +140,7 @@
    "kind": "special",
    "category": "physical",
    "cooldown": 3,
-   "power": 35,
+   "power": 40,
    "range": {
     "min": 1,
     "max": 2
@@ -153,7 +156,8 @@
      "status": "slow",
      "duration": 2
     }
-   ]
+   ],
+   "canonPower": 35
   },
   "sandshrew-metal-claw": {
    "id": "sandshrew-metal-claw",
@@ -162,7 +166,7 @@
    "kind": "special",
    "category": "physical",
    "cooldown": 2,
-   "power": 50,
+   "power": 55,
    "range": {
     "min": 1,
     "max": 1
@@ -171,7 +175,8 @@
    "shape": {
     "kind": "single"
    },
-   "affects": "enemies"
+   "affects": "enemies",
+   "canonPower": 50
   },
   "sandshrew-swords-dance": {
    "id": "sandshrew-swords-dance",
@@ -204,7 +209,7 @@
    "kind": "special",
    "category": "physical",
    "cooldown": 2,
-   "power": 45,
+   "power": 25,
    "range": {
     "min": 1,
     "max": 1
@@ -220,7 +225,8 @@
      "status": "poison",
      "duration": 2
     }
-   ]
+   ],
+   "canonPower": 15
   },
   "sandshrew-drill-run": {
    "id": "sandshrew-drill-run",
@@ -229,7 +235,7 @@
    "kind": "special",
    "category": "physical",
    "cooldown": 4,
-   "power": 80,
+   "power": 60,
    "range": {
     "min": 1,
     "max": 1
@@ -239,7 +245,8 @@
     "kind": "line",
     "length": 2
    },
-   "affects": "enemies"
+   "affects": "enemies",
+   "canonPower": 80
   },
   "sandshrew-magnitude": {
    "id": "sandshrew-magnitude",
@@ -267,7 +274,7 @@
    "kind": "special",
    "category": "physical",
    "cooldown": 5,
-   "power": 95,
+   "power": 80,
    "range": {
     "min": 1,
     "max": 1
@@ -276,7 +283,8 @@
    "shape": {
     "kind": "single"
    },
-   "affects": "enemies"
+   "affects": "enemies",
+   "canonPower": 95
   },
   "sandshrew-swift": {
    "id": "sandshrew-swift",
@@ -285,7 +293,7 @@
    "kind": "special",
    "category": "special",
    "cooldown": 5,
-   "power": 50,
+   "power": 40,
    "range": {
     "min": 0,
     "max": 0
@@ -295,26 +303,27 @@
     "kind": "burst",
     "radius": 2
    },
-   "affects": "enemies"
+   "affects": "enemies",
+   "canonPower": 60
   }
  },
  "talents": {
   "sandshrew-take-down": {
    "id": "sandshrew-take-down",
    "name": "Take Down",
-   "description": "Bond skill: a reckless charge hitting foes in a 3-hex line (Power 60).",
+   "description": "Bond skill: a reckless charge hitting foes in a 3-hex line (Power 75).",
    "grantsMove": "sandshrew-take-down"
   },
   "sandshrew-crush-claw": {
    "id": "sandshrew-crush-claw",
    "name": "Crush Claw",
-   "description": "Bond skill: tears into a foe (Power 85, Attack), leaving it Exposed for 2 turns.",
+   "description": "Bond skill: tears into a foe (Power 75, Attack), leaving it Exposed for 2 turns.",
    "grantsMove": "sandshrew-crush-claw"
   },
   "sandshrew-rapid-spin": {
    "id": "sandshrew-rapid-spin",
    "name": "Rapid Spin",
-   "description": "Bond skill: a spinning strike (Power 50, Attack) that frees it from engagement.",
+   "description": "Bond skill: a spinning strike (Power 60, Attack) that frees it from engagement.",
    "grantsMove": "sandshrew-rapid-spin"
   },
   "sandshrew-sand-veil": {
@@ -336,13 +345,13 @@
   "sandshrew-sand-tomb": {
    "id": "sandshrew-sand-tomb",
    "name": "Sand Tomb",
-   "description": "New skill: traps a foe up to 2 hexes away in whirling sand (Power 35), Slowing it for 2 turns.",
+   "description": "New skill: traps a foe up to 2 hexes away in whirling sand (Power 40), Slowing it for 2 turns.",
    "grantsMove": "sandshrew-sand-tomb"
   },
   "sandshrew-metal-claw": {
    "id": "sandshrew-metal-claw",
    "name": "Metal Claw",
-   "description": "New skill: a quick, steel-hard claw (Power 50).",
+   "description": "New skill: a quick, steel-hard claw (Power 55).",
    "grantsMove": "sandshrew-metal-claw"
   },
   "sandshrew-spiked-back": {
@@ -373,7 +382,7 @@
   "sandshrew-poison-sting": {
    "id": "sandshrew-poison-sting",
    "name": "Poison Sting",
-   "description": "New skill: a venomous jab (Power 45) that Poisons the foe for 2 turns.",
+   "description": "New skill: a venomous jab (Power 25) that Poisons the foe for 2 turns.",
    "grantsMove": "sandshrew-poison-sting"
   },
   "sandshrew-burrowed-stance": {
@@ -395,7 +404,7 @@
   "sandshrew-drill-run": {
    "id": "sandshrew-drill-run",
    "name": "Drill Run",
-   "description": "New skill: spins like a drill through a 2-hex line (Power 80).",
+   "description": "New skill: spins like a drill through a 2-hex line (Power 60).",
    "grantsMove": "sandshrew-drill-run"
   },
   "sandshrew-magnitude": {
@@ -423,13 +432,13 @@
   "sandshrew-high-horsepower": {
    "id": "sandshrew-high-horsepower",
    "name": "High Horsepower",
-   "description": "New skill: a crushing stomp on an adjacent foe (Power 95).",
+   "description": "New skill: a crushing stomp on an adjacent foe (Power 80).",
    "grantsMove": "sandshrew-high-horsepower"
   },
   "sandshrew-swift": {
    "id": "sandshrew-swift",
    "name": "Swift",
-   "description": "New skill: star-shaped rays hit every foe within 2 hexes (Power 50).",
+   "description": "New skill: star-shaped rays hit every foe within 2 hexes (Power 40).",
    "grantsMove": "sandshrew-swift"
   },
   "sandshrew-ambush-from-below": {

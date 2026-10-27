@@ -1,13 +1,13 @@
 {
  "talents": {
   "meowth-night-slash": {
-   "description": "Bond képesség: vágás az árnyékból (Erő 85, Támadás); kiütés esetén 1 Bond visszajár."
+   "description": "Bond képesség: vágás az árnyékból (Erő 75, Támadás); kiütés esetén 1 Bond visszajár."
   },
   "meowth-fake-out": {
    "description": "Bond képesség: meghökkentő nyitócsapás (Erő 50, Támadás), 1 körre lelassítja az ellenfelet."
   },
   "meowth-hyper-voice": {
-   "description": "Bond képesség: fülsiketítő nyávogás egy max. 3 hexnyi ellenfélre (Erő 85)."
+   "description": "Bond képesség: fülsiketítő nyávogás egy max. 3 hexnyi ellenfélre (Erő 75)."
   },
   "meowth-technician": {
    "description": "Normal típusú lépései 15%-kal többet sebeznek."
@@ -16,7 +16,7 @@
    "description": "Hajlékony testét nem lehet megbénítani: immunis a bénulásra és a lassításra."
   },
   "meowth-bite": {
-   "description": "Új képesség: gyors harapás éles fogakkal (Erő 55)."
+   "description": "Új képesség: gyors harapás éles fogakkal (Erő 60)."
   },
   "meowth-screech": {
    "description": "Új képesség: fülsiketítő visítás 2 körre Exposed állapotba tesz egy legfeljebb 2 hexnyi ellenfelet."
@@ -28,7 +28,7 @@
    "description": "Szabad csapás nélkül oson el a lekötő ellenfelektől."
   },
   "meowth-swift": {
-   "description": "Új képesség: csillag alakú sugarak egy max. 2 hexnyi ellenfélre (Erő 60); 1 körre lassít."
+   "description": "Új képesség: csillag alakú sugarak egy max. 2 hexnyi ellenfélre (Erő 55); 1 körre lassít."
   },
   "meowth-opportunist": {
    "description": "20%-kal többet sebez a szövetségesei által lekötött ellenfelekre."
@@ -37,10 +37,10 @@
    "description": "Kitekeredik a csapások elől: 10%-kal kevesebb sebzést kap."
   },
   "meowth-play-rough": {
-   "description": "Új képesség: ráveti magát egy ellenfélre és vadul elbánik vele (Erő 85)."
+   "description": "Új képesség: ráveti magát egy ellenfélre és vadul elbánik vele (Erő 80)."
   },
   "meowth-tri-attack": {
-   "description": "Új képesség: háromszög alakú energia egy max. 2 hexnyi ellenfélre (Erő 80)."
+   "description": "Új képesség: háromszög alakú energia egy max. 2 hexnyi ellenfélre (Erő 65)."
   },
   "meowth-pounce": {
    "description": "A menekülő ellenfelekre mért szabad csapásai 25%-kal többet sebeznek."
@@ -49,10 +49,10 @@
    "description": "A csapat minden csatát 1 extra Bonddal kezd."
   },
   "meowth-sucker-punch": {
-   "description": "Új képesség: alattomos csapás, mielőtt az ellenfél reagálhatna (Erő 90)."
+   "description": "Új képesség: alattomos csapás, mielőtt az ellenfél reagálhatna (Erő 65)."
   },
   "meowth-hyper-beam": {
-   "description": "Új képesség: pusztító sugár egy legfeljebb 2 hexnyi ellenfélre (Erő 100)."
+   "description": "Új képesség: pusztító sugár egy legfeljebb 2 hexnyi ellenfélre (Erő 95)."
   },
   "meowth-relentless-swipes": {
    "description": "Ugyanarra az ellenfélre mért minden egymást követő találata 10%-kal többet sebez (max. 3-szor)."

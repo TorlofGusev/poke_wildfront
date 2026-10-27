@@ -101,7 +101,8 @@
    "shape": {
     "kind": "single"
    },
-   "affects": "enemies"
+   "affects": "enemies",
+   "canonPower": 120
   },
   "nidoran-f-sludge-wave": {
    "id": "nidoran-f-sludge-wave",
@@ -110,7 +111,7 @@
    "kind": "bond",
    "category": "special",
    "bondCost": 3,
-   "power": 75,
+   "power": 60,
    "range": {
     "min": 0,
     "max": 0
@@ -127,7 +128,8 @@
      "status": "poison",
      "duration": 1
     }
-   ]
+   ],
+   "canonPower": 95
   },
   "nidoran-f-fury-swipes": {
    "id": "nidoran-f-fury-swipes",
@@ -136,7 +138,7 @@
    "kind": "special",
    "category": "physical",
    "cooldown": 2,
-   "power": 45,
+   "power": 55,
    "range": {
     "min": 1,
     "max": 1
@@ -145,7 +147,8 @@
    "shape": {
     "kind": "single"
    },
-   "affects": "enemies"
+   "affects": "enemies",
+   "canonPower": 54
   },
   "nidoran-f-acid": {
    "id": "nidoran-f-acid",
@@ -170,7 +173,8 @@
      "status": "marked",
      "duration": 2
     }
-   ]
+   ],
+   "canonPower": 40
   },
   "nidoran-f-sludge": {
    "id": "nidoran-f-sludge",
@@ -179,7 +183,7 @@
    "kind": "special",
    "category": "special",
    "cooldown": 3,
-   "power": 60,
+   "power": 55,
    "range": {
     "min": 1,
     "max": 2
@@ -195,7 +199,8 @@
      "status": "poison",
      "duration": 2
     }
-   ]
+   ],
+   "canonPower": 65
   },
   "nidoran-f-crunch": {
    "id": "nidoran-f-crunch",
@@ -204,7 +209,7 @@
    "kind": "special",
    "category": "physical",
    "cooldown": 4,
-   "power": 80,
+   "power": 75,
    "range": {
     "min": 1,
     "max": 1
@@ -220,7 +225,8 @@
      "status": "exposed",
      "duration": 1
     }
-   ]
+   ],
+   "canonPower": 80
   },
   "nidoran-f-mud-shot": {
    "id": "nidoran-f-mud-shot",
@@ -229,7 +235,7 @@
    "kind": "special",
    "category": "special",
    "cooldown": 4,
-   "power": 75,
+   "power": 50,
    "range": {
     "min": 1,
     "max": 2
@@ -245,7 +251,8 @@
      "status": "slow",
      "duration": 1
     }
-   ]
+   ],
+   "canonPower": 55
   },
   "nidoran-f-earth-power": {
    "id": "nidoran-f-earth-power",
@@ -254,7 +261,7 @@
    "kind": "special",
    "category": "special",
    "cooldown": 4,
-   "power": 90,
+   "power": 70,
    "range": {
     "min": 1,
     "max": 2
@@ -263,7 +270,8 @@
    "shape": {
     "kind": "single"
    },
-   "affects": "enemies"
+   "affects": "enemies",
+   "canonPower": 90
   },
   "nidoran-f-stomping-tantrum": {
    "id": "nidoran-f-stomping-tantrum",
@@ -272,7 +280,7 @@
    "kind": "special",
    "category": "physical",
    "cooldown": 5,
-   "power": 85,
+   "power": 55,
    "range": {
     "min": 0,
     "max": 0
@@ -282,7 +290,8 @@
     "kind": "burst",
     "radius": 1
    },
-   "affects": "enemies"
+   "affects": "enemies",
+   "canonPower": 75
   },
   "nidoran-f-growl": {
    "id": "nidoran-f-growl",
@@ -325,7 +334,7 @@
   "nidoran-f-sludge-wave": {
    "id": "nidoran-f-sludge-wave",
    "name": "Sludge Wave",
-   "description": "Bond skill: a wave of sludge hits all foes within 2 hexes (Power 75), Poisoning for 1 turn.",
+   "description": "Bond skill: a wave of sludge hits all foes within 2 hexes (Power 60), Poisoning for 1 turn.",
    "grantsMove": "nidoran-f-sludge-wave"
   },
   "nidoran-f-hustle": {
@@ -351,7 +360,7 @@
   "nidoran-f-fury-swipes": {
    "id": "nidoran-f-fury-swipes",
    "name": "Fury Swipes",
-   "description": "New skill: a flurry of quick scratches (Power 45).",
+   "description": "New skill: a flurry of quick scratches (Power 55).",
    "grantsMove": "nidoran-f-fury-swipes"
   },
   "nidoran-f-acid": {
@@ -381,19 +390,19 @@
   "nidoran-f-sludge": {
    "id": "nidoran-f-sludge",
    "name": "Sludge",
-   "description": "New skill: hurls toxic sludge up to 2 hexes away (Power 60), Poisoning the foe for 2 turns.",
+   "description": "New skill: hurls toxic sludge up to 2 hexes away (Power 55), Poisoning the foe for 2 turns.",
    "grantsMove": "nidoran-f-sludge"
   },
   "nidoran-f-crunch": {
    "id": "nidoran-f-crunch",
    "name": "Crunch",
-   "description": "New skill: bites down hard (Power 80), leaving the foe Exposed for 1 turn.",
+   "description": "New skill: bites down hard (Power 75), leaving the foe Exposed for 1 turn.",
    "grantsMove": "nidoran-f-crunch"
   },
   "nidoran-f-mud-shot": {
    "id": "nidoran-f-mud-shot",
    "name": "Mud Shot",
-   "description": "New skill: hurls mud at a foe up to 2 hexes away (Power 75) that Slows it for 1 turn.",
+   "description": "New skill: hurls mud at a foe up to 2 hexes away (Power 50) that Slows it for 1 turn.",
    "grantsMove": "nidoran-f-mud-shot"
   },
   "nidoran-f-sheer-force": {
@@ -417,13 +426,13 @@
   "nidoran-f-earth-power": {
    "id": "nidoran-f-earth-power",
    "name": "Earth Power",
-   "description": "New skill: the ground erupts under a foe up to 2 hexes away (Power 90).",
+   "description": "New skill: the ground erupts under a foe up to 2 hexes away (Power 70).",
    "grantsMove": "nidoran-f-earth-power"
   },
   "nidoran-f-stomping-tantrum": {
    "id": "nidoran-f-stomping-tantrum",
    "name": "Stomping Tantrum",
-   "description": "New skill: stomps furiously, hitting all adjacent foes (Power 85).",
+   "description": "New skill: stomps furiously, hitting all adjacent foes (Power 55).",
    "grantsMove": "nidoran-f-stomping-tantrum"
   },
   "nidoran-f-matriarch": {

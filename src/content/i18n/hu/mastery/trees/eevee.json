@@ -4,10 +4,10 @@
    "description": "Bond képesség: az adu, egy teljes erejű rohamtámadás (Power 100, Attack)."
   },
   "eevee-hyper-voice": {
-   "description": "Bond képesség: átható kiáltás legfeljebb 2 hexnyire (Power 75), 1 hex körzetben."
+   "description": "Bond képesség: átható kiáltás legfeljebb 2 hexnyire (Power 60), 1 hex körzetben."
   },
   "eevee-extreme-speed": {
-   "description": "Bond képesség: villámgyors roham legfeljebb 2 hexnyire (Power 60), lekötve az ellenfelet."
+   "description": "Bond képesség: villámgyors roham legfeljebb 2 hexnyire (Power 70), lekötve az ellenfelet."
   },
   "eevee-run-away": {
    "description": "Szabad ütés nélkül lép el a lekötő ellenfelektől; 15%-kal többet sebez a szomszédos ellenfélre."
@@ -25,10 +25,10 @@
    "description": "15%-kal többet sebez azokra, akiket a szövetségesei lekötnek."
   },
   "eevee-swift": {
-   "description": "Új képesség: sosem tévesztő csillagok legfeljebb 2 hexnyire, mások mögé is (Power 60)."
+   "description": "Új képesség: sosem tévesztő csillagok legfeljebb 2 hexnyire, mások mögé is (Power 55)."
   },
   "eevee-take-down": {
-   "description": "Új képesség: vakmerő testtámadás (Power 75), amely 1 hexnyit hátralöki az ellenfelet."
+   "description": "Új képesség: vakmerő testtámadás (Power 80), amely 1 hexnyit hátralöki az ellenfelet."
   },
   "eevee-wish": {
    "description": "Új képesség: kívánságot tesz, ami önmagát vagy egy legfeljebb 2 hexnyire lévő társát 30 HP-val gyógyítja."
@@ -40,7 +40,7 @@
    "description": "Minden kiütése 1 Bondot ad a csapatnak."
   },
   "eevee-double-edge": {
-   "description": "Új képesség: mindent beleadó, életveszélyes rohamtámadás (Power 90)."
+   "description": "Új képesség: mindent beleadó, életveszélyes rohamtámadás (Power 95)."
   },
   "eevee-endure": {
    "description": "Csatánként egyszer 1 HP-val túlél egy kiütő csapást."
@@ -52,7 +52,7 @@
    "description": "Új képesség: teljes testével ront rá (Power 100), és 1 hexnyit hátralöki az ellenfelet."
   },
   "eevee-tri-attack": {
-   "description": "Új képesség: három összefonódó sugár egy legfeljebb 2 hexnyi ellenfélre (Power 80)."
+   "description": "Új képesség: három összefonódó sugár egy legfeljebb 2 hexnyi ellenfélre (Power 65)."
   },
   "eevee-cheerful": {
    "description": "Minden kombója 1 Bondot ad a csapatnak."
@@ -73,10 +73,10 @@
    "description": "Vízfátyol borítja a testét: nem lehet megégetni."
   },
   "eevee-surf": {
-   "description": "Új képesség: legfeljebb 1 hexnyire becsapódó hullám (Power 85), 1 hex körzetben."
+   "description": "Új képesség: legfeljebb 1 hexnyire becsapódó hullám (Power 65), 1 hex körzetben."
   },
   "eevee-aqua-tail": {
-   "description": "Új képesség: uszonyos farkával csap le, mint egy hullám (Power 85)."
+   "description": "Új képesség: uszonyos farkával csap le, mint egy hullám (Power 80)."
   },
   "eevee-melt-away": {
    "description": "Sejtjei a vízbe olvadnak: 10%-kal kevesebb sebzést kap."
@@ -85,7 +85,7 @@
    "description": "Water támadásai 15%-kal többet sebeznek."
   },
   "eevee-muddy-water": {
-   "description": "Új képesség: sáros áradat legfeljebb 1 hexnyire (Power 90, 1 hex körzet), 1 körre lassít."
+   "description": "Új képesség: sáros áradat legfeljebb 1 hexnyire (Power 65, 1 hex körzet), 1 körre lassít."
   },
   "eevee-acid-armor": {
    "description": "Új képesség: testét folyékonnyá teszi: 3 körig Fortified."
@@ -109,10 +109,10 @@
    "description": "Felborzolt tűi 6 sebzést okoznak a szomszédos hexről őt ütő ellenfeleknek."
   },
   "eevee-discharge": {
-   "description": "Új képesség: áramot ereszt minden szomszédos ellenfélre (Power 75), 1 körre megbénítva őket."
+   "description": "Új képesség: áramot ereszt minden szomszédos ellenfélre (Power 60), 1 körre megbénítva őket."
   },
   "eevee-thunder-fang": {
-   "description": "Új képesség: elektromos harapás (Power 70), amely 1 körre megbénítja az ellenfelet."
+   "description": "Új képesség: elektromos harapás (Power 65), amely 1 körre megbénítja az ellenfelet."
   },
   "eevee-charge": {
    "description": "Elektromosságot gyűjt: Electric támadásai 15%-kal többet sebeznek."
@@ -124,7 +124,7 @@
    "description": "Új képesség: elektromos gömb legfeljebb 2 hexnyire (Power 80), Speed alapján sebez."
   },
   "eevee-volt-switch": {
-   "description": "Új képesség: áramütés legfeljebb 2 hexnyire (Power 70), majd kiszabadul a lekötésből."
+   "description": "Új képesség: áramütés legfeljebb 2 hexnyire (Power 60), majd kiszabadul a lekötésből."
   },
   "eevee-pent-up-static": {
    "description": "Az általa okozott állapotok 1 körrel tovább tartanak."
@@ -148,7 +148,7 @@
    "description": "Új képesség: lángoló, teljes testes roham (Power 95)."
   },
   "eevee-lava-plume": {
-   "description": "Új képesség: skarlát lángok minden szomszédos ellenfélre (Power 75), 1 körre megégetve."
+   "description": "Új képesség: skarlát lángok minden szomszédos ellenfélre (Power 60), 1 körre megégetve."
   },
   "eevee-inner-furnace": {
    "description": "Fire támadásai 25%-kal többet sebeznek, amíg HP-ja a fele alatt van."
@@ -157,7 +157,7 @@
    "description": "20%-kal többet sebez a megégett ellenfelekre."
   },
   "eevee-overheat": {
-   "description": "Új képesség: teljes erejű tűzcsapás egy legfeljebb 2 hexnyi ellenfélre (Power 100)."
+   "description": "Új képesség: teljes erejű tűzcsapás egy legfeljebb 2 hexnyi ellenfélre (Power 90)."
   },
   "eevee-ember-heart": {
    "description": "Kiütéskor max. HP-ja 15%-át gyógyítja."

@@ -111,7 +111,7 @@
    "kind": "bond",
    "category": "physical",
    "bondCost": 1,
-   "power": 60,
+   "power": 70,
    "range": {
     "min": 1,
     "max": 2
@@ -125,7 +125,8 @@
     {
      "kind": "engage"
     }
-   ]
+   ],
+   "canonPower": 80
   },
   "pinsir-bind": {
    "id": "pinsir-bind",
@@ -153,7 +154,8 @@
      "status": "slow",
      "duration": 2
     }
-   ]
+   ],
+   "canonPower": 15
   },
   "pinsir-bug-bite": {
    "id": "pinsir-bug-bite",
@@ -162,7 +164,7 @@
    "kind": "special",
    "category": "physical",
    "cooldown": 2,
-   "power": 55,
+   "power": 60,
    "range": {
     "min": 1,
     "max": 1
@@ -178,7 +180,8 @@
      "status": "exposed",
      "duration": 1
     }
-   ]
+   ],
+   "canonPower": 60
   },
   "pinsir-fury-cutter": {
    "id": "pinsir-fury-cutter",
@@ -187,7 +190,7 @@
    "kind": "special",
    "category": "physical",
    "cooldown": 3,
-   "power": 75,
+   "power": 45,
    "range": {
     "min": 1,
     "max": 1
@@ -196,7 +199,8 @@
    "shape": {
     "kind": "single"
    },
-   "affects": "enemies"
+   "affects": "enemies",
+   "canonPower": 40
   },
   "pinsir-swords-dance": {
    "id": "pinsir-swords-dance",
@@ -229,7 +233,7 @@
    "kind": "special",
    "category": "physical",
    "cooldown": 4,
-   "power": 80,
+   "power": 75,
    "range": {
     "min": 1,
     "max": 1
@@ -238,7 +242,8 @@
    "shape": {
     "kind": "single"
    },
-   "affects": "enemies"
+   "affects": "enemies",
+   "canonPower": 80
   },
   "pinsir-pin-missile": {
    "id": "pinsir-pin-missile",
@@ -247,7 +252,7 @@
    "kind": "special",
    "category": "physical",
    "cooldown": 4,
-   "power": 70,
+   "power": 55,
    "range": {
     "min": 1,
     "max": 1
@@ -257,7 +262,8 @@
     "kind": "burst",
     "radius": 1
    },
-   "affects": "enemies"
+   "affects": "enemies",
+   "canonPower": 75
   },
   "pinsir-double-edge": {
    "id": "pinsir-double-edge",
@@ -266,7 +272,7 @@
    "kind": "special",
    "category": "physical",
    "cooldown": 5,
-   "power": 100,
+   "power": 95,
    "range": {
     "min": 1,
     "max": 1
@@ -275,7 +281,8 @@
    "shape": {
     "kind": "single"
    },
-   "affects": "enemies"
+   "affects": "enemies",
+   "canonPower": 120
   },
   "pinsir-thrash": {
    "id": "pinsir-thrash",
@@ -284,7 +291,7 @@
    "kind": "special",
    "category": "physical",
    "cooldown": 5,
-   "power": 80,
+   "power": 75,
    "range": {
     "min": 0,
     "max": 0
@@ -294,7 +301,8 @@
     "kind": "burst",
     "radius": 1
    },
-   "affects": "enemies"
+   "affects": "enemies",
+   "canonPower": 120
   }
  },
  "talents": {
@@ -313,7 +321,7 @@
   "pinsir-x-scissor": {
    "id": "pinsir-x-scissor",
    "name": "X-Scissor",
-   "description": "Bond skill: lunges up to 2 hexes and slashes crosswise (Power 60, Attack), engaging the foe.",
+   "description": "Bond skill: lunges up to 2 hexes and slashes crosswise (Power 70, Attack), engaging the foe.",
    "grantsMove": "pinsir-x-scissor"
   },
   "pinsir-moxie": {
@@ -341,7 +349,7 @@
   "pinsir-bug-bite": {
    "id": "pinsir-bug-bite",
    "name": "Bug Bite",
-   "description": "New skill: a crunching bite that breaks guards (Power 55), leaving the foe Exposed for 1 turn.",
+   "description": "New skill: a crunching bite that breaks guards (Power 60), leaving the foe Exposed for 1 turn.",
    "grantsMove": "pinsir-bug-bite"
   },
   "pinsir-iron-grip": {
@@ -355,7 +363,7 @@
   "pinsir-fury-cutter": {
    "id": "pinsir-fury-cutter",
    "name": "Fury Cutter",
-   "description": "New skill: slashes with its pincers again and again (Power 75).",
+   "description": "New skill: slashes with its pincers again and again (Power 45).",
    "grantsMove": "pinsir-fury-cutter"
   },
   "pinsir-swords-dance": {
@@ -383,13 +391,13 @@
   "pinsir-lunge": {
    "id": "pinsir-lunge",
    "name": "Lunge",
-   "description": "New skill: lunges at an adjacent foe with all its might (Power 80).",
+   "description": "New skill: lunges at an adjacent foe with all its might (Power 75).",
    "grantsMove": "pinsir-lunge"
   },
   "pinsir-pin-missile": {
    "id": "pinsir-pin-missile",
    "name": "Pin Missile",
-   "description": "New skill: fires sharp spikes on a 1-hex area up to 1 hex away (Power 70).",
+   "description": "New skill: fires sharp spikes on a 1-hex area up to 1 hex away (Power 55).",
    "grantsMove": "pinsir-pin-missile"
   },
   "pinsir-pincer-hold": {
@@ -413,13 +421,13 @@
   "pinsir-double-edge": {
    "id": "pinsir-double-edge",
    "name": "Double-Edge",
-   "description": "New skill: a reckless full-body charge at an adjacent foe (Power 100).",
+   "description": "New skill: a reckless full-body charge at an adjacent foe (Power 95).",
    "grantsMove": "pinsir-double-edge"
   },
   "pinsir-thrash": {
    "id": "pinsir-thrash",
    "name": "Thrash",
-   "description": "New skill: thrashes about, hitting every adjacent foe (Power 80).",
+   "description": "New skill: thrashes about, hitting every adjacent foe (Power 75).",
    "grantsMove": "pinsir-thrash"
   },
   "pinsir-hunter-s-focus": {

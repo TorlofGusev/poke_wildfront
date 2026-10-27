@@ -21,7 +21,7 @@
   "description": "Új képesség: +50% sebzés a következő körében."
  },
  "skill-mega-punch": {
-  "description": "Új képesség: erős közelharci csapás (Power 65)."
+  "description": "Új képesség: erős közelharci csapás (Power 75)."
  },
  "skill-leer": {
   "description": "Új képesség: egy terület ellenfelei 2 körig 25%-kal több sebzést kapnak."
@@ -240,7 +240,7 @@
   "description": "A távolsági támadások 1 hexszel messzebbre érnek (legfeljebb 3-ig; Bond támadásoknál nincs korlát), és átrepülnek az útban álló Pokémonokon."
  },
  "skill-psybeam": {
-  "description": "Új képesség: pszichikus sugár egy vonal mentén (Erő 45); 2 körig Zavarodott."
+  "description": "Új képesség: pszichikus sugár egy vonal mentén (Erő 55); 2 körig Zavarodott."
  },
  "calm-mind": {
   "description": "Immunis a Poisonra és a Burnre."

@@ -66,7 +66,7 @@
    "kind": "bond",
    "category": "special",
    "bondCost": 3,
-   "power": 80,
+   "power": 65,
    "range": {
     "min": 1,
     "max": 3
@@ -82,7 +82,8 @@
      "status": "freeze",
      "duration": 1
     }
-   ]
+   ],
+   "canonPower": 70
   },
   "articuno-aurora-veil": {
    "id": "articuno-aurora-veil",
@@ -158,7 +159,8 @@
      "status": "slow",
      "duration": 1
     }
-   ]
+   ],
+   "canonPower": 40
   },
   "articuno-mind-reader": {
    "id": "articuno-mind-reader",
@@ -191,7 +193,7 @@
    "kind": "special",
    "category": "special",
    "cooldown": 3,
-   "power": 55,
+   "power": 45,
    "range": {
     "min": 1,
     "max": 2
@@ -208,7 +210,8 @@
      "status": "slow",
      "duration": 2
     }
-   ]
+   ],
+   "canonPower": 55
   },
   "articuno-hail": {
    "id": "articuno-hail",
@@ -236,7 +239,7 @@
    "kind": "special",
    "category": "special",
    "cooldown": 4,
-   "power": 90,
+   "power": 80,
    "range": {
     "min": 1,
     "max": 2
@@ -245,7 +248,8 @@
    "shape": {
     "kind": "single"
    },
-   "affects": "enemies"
+   "affects": "enemies",
+   "canonPower": 110
   },
   "articuno-frost-breath": {
    "id": "articuno-frost-breath",
@@ -254,7 +258,7 @@
    "kind": "special",
    "category": "special",
    "cooldown": 3,
-   "power": 60,
+   "power": 55,
    "range": {
     "min": 1,
     "max": 2
@@ -270,7 +274,8 @@
      "status": "exposed",
      "duration": 1
     }
-   ]
+   ],
+   "canonPower": 60
   },
   "articuno-sheer-cold": {
    "id": "articuno-sheer-cold",
@@ -304,7 +309,7 @@
    "kind": "special",
    "category": "physical",
    "cooldown": 5,
-   "power": 90,
+   "power": 95,
    "range": {
     "min": 1,
     "max": 2
@@ -313,14 +318,15 @@
    "shape": {
     "kind": "single"
    },
-   "affects": "enemies"
+   "affects": "enemies",
+   "canonPower": 140
   }
  },
  "talents": {
   "articuno-freeze-dry": {
    "id": "articuno-freeze-dry",
    "name": "Freeze-Dry",
-   "description": "Bond skill: a flash-freeze up to 3 hexes away (Power 80) that Freezes for 1 turn.",
+   "description": "Bond skill: a flash-freeze up to 3 hexes away (Power 65) that Freezes for 1 turn.",
    "grantsMove": "articuno-freeze-dry"
   },
   "articuno-aurora-veil": {
@@ -382,7 +388,7 @@
   "articuno-icy-wind": {
    "id": "articuno-icy-wind",
    "name": "Icy Wind",
-   "description": "New skill: a freezing wind along a 2-hex line (Power 55) that Slows for 2 turns.",
+   "description": "New skill: a freezing wind along a 2-hex line (Power 45) that Slows for 2 turns.",
    "grantsMove": "articuno-icy-wind"
   },
   "articuno-hail": {
@@ -412,13 +418,13 @@
   "articuno-hurricane": {
    "id": "articuno-hurricane",
    "name": "Hurricane",
-   "description": "New skill: a howling storm at a foe up to 2 hexes away (Power 90).",
+   "description": "New skill: a howling storm at a foe up to 2 hexes away (Power 80).",
    "grantsMove": "articuno-hurricane"
   },
   "articuno-frost-breath": {
    "id": "articuno-frost-breath",
    "name": "Frost Breath",
-   "description": "New skill: always-critical icy breath up to 2 hexes away (Power 60); Exposed 1 turn.",
+   "description": "New skill: always-critical icy breath up to 2 hexes away (Power 55); Exposed 1 turn.",
    "grantsMove": "articuno-frost-breath"
   },
   "articuno-lofty-glide": {
@@ -448,7 +454,7 @@
   "articuno-sky-attack": {
    "id": "articuno-sky-attack",
    "name": "Sky Attack",
-   "description": "New skill: dives from the sky onto a foe up to 2 hexes away (Power 90).",
+   "description": "New skill: dives from the sky onto a foe up to 2 hexes away (Power 95).",
    "grantsMove": "articuno-sky-attack"
   },
   "articuno-diamond-dust": {

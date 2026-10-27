@@ -67,7 +67,7 @@
    "kind": "bond",
    "category": "physical",
    "bondCost": 2,
-   "power": 100,
+   "power": 85,
    "range": {
     "min": 1,
     "max": 1
@@ -76,7 +76,8 @@
    "shape": {
     "kind": "single"
    },
-   "affects": "enemies"
+   "affects": "enemies",
+   "canonPower": 85
   },
   "goldeen-upstream-charge": {
    "id": "goldeen-upstream-charge",
@@ -132,7 +133,7 @@
    "kind": "special",
    "category": "special",
    "cooldown": 2,
-   "power": 60,
+   "power": 55,
    "range": {
     "min": 1,
     "max": 2
@@ -141,7 +142,8 @@
    "shape": {
     "kind": "single"
    },
-   "affects": "enemies"
+   "affects": "enemies",
+   "canonPower": 60
   },
   "goldeen-flail": {
    "id": "goldeen-flail",
@@ -168,7 +170,7 @@
    "kind": "special",
    "category": "physical",
    "cooldown": 4,
-   "power": 80,
+   "power": 65,
    "range": {
     "min": 1,
     "max": 1
@@ -178,7 +180,8 @@
     "kind": "line",
     "length": 2
    },
-   "affects": "enemies"
+   "affects": "enemies",
+   "canonPower": 90
   },
   "goldeen-soak": {
    "id": "goldeen-soak",
@@ -211,7 +214,7 @@
    "kind": "special",
    "category": "physical",
    "cooldown": 4,
-   "power": 85,
+   "power": 95,
    "range": {
     "min": 1,
     "max": 1
@@ -220,7 +223,8 @@
    "shape": {
     "kind": "single"
    },
-   "affects": "enemies"
+   "affects": "enemies",
+   "canonPower": 120
   },
   "goldeen-hydro-pump": {
    "id": "goldeen-hydro-pump",
@@ -229,7 +233,7 @@
    "kind": "special",
    "category": "special",
    "cooldown": 5,
-   "power": 95,
+   "power": 80,
    "range": {
     "min": 1,
     "max": 2
@@ -238,7 +242,8 @@
    "shape": {
     "kind": "single"
    },
-   "affects": "enemies"
+   "affects": "enemies",
+   "canonPower": 110
   },
   "goldeen-horn-drill": {
    "id": "goldeen-horn-drill",
@@ -265,7 +270,7 @@
    "kind": "special",
    "category": "physical",
    "cooldown": 4,
-   "power": 85,
+   "power": 80,
    "range": {
     "min": 1,
     "max": 1
@@ -280,14 +285,15 @@
      "kind": "push",
      "distance": 1
     }
-   ]
+   ],
+   "canonPower": 90
   }
  },
  "talents": {
   "goldeen-liquidation": {
    "id": "goldeen-liquidation",
    "name": "Liquidation",
-   "description": "Bond skill: crashes into an adjacent foe in a burst of water (Power 100, Attack).",
+   "description": "Bond skill: crashes into an adjacent foe in a burst of water (Power 85, Attack).",
    "grantsMove": "goldeen-liquidation"
   },
   "goldeen-upstream-charge": {
@@ -323,7 +329,7 @@
   "goldeen-water-pulse": {
    "id": "goldeen-water-pulse",
    "name": "Water Pulse",
-   "description": "New skill: a pulsing ring of water at a foe up to 2 hexes away (Power 60).",
+   "description": "New skill: a pulsing ring of water at a foe up to 2 hexes away (Power 55).",
    "grantsMove": "goldeen-water-pulse"
   },
   "goldeen-flail": {
@@ -351,7 +357,7 @@
   "goldeen-take-down": {
    "id": "goldeen-take-down",
    "name": "Take Down",
-   "description": "New skill: charges horn-first through 2 hexes in a line (Power 80).",
+   "description": "New skill: charges horn-first through 2 hexes in a line (Power 65).",
    "grantsMove": "goldeen-take-down"
   },
   "goldeen-soak": {
@@ -379,13 +385,13 @@
   "goldeen-double-edge": {
    "id": "goldeen-double-edge",
    "name": "Double-Edge",
-   "description": "New skill: a reckless full-body charge at an adjacent foe (Power 85).",
+   "description": "New skill: a reckless full-body charge at an adjacent foe (Power 95).",
    "grantsMove": "goldeen-double-edge"
   },
   "goldeen-hydro-pump": {
    "id": "goldeen-hydro-pump",
    "name": "Hydro Pump",
-   "description": "New skill: a high-pressure blast of water at a foe up to 2 hexes away (Power 95).",
+   "description": "New skill: a high-pressure blast of water at a foe up to 2 hexes away (Power 80).",
    "grantsMove": "goldeen-hydro-pump"
   },
   "goldeen-ornate-fins": {
@@ -413,7 +419,7 @@
   "goldeen-aqua-tail": {
    "id": "goldeen-aqua-tail",
    "name": "Aqua Tail",
-   "description": "New skill: lashes an adjacent foe with its tail (Power 85), pushing it 1 hex.",
+   "description": "New skill: lashes an adjacent foe with its tail (Power 80), pushing it 1 hex.",
    "grantsMove": "goldeen-aqua-tail"
   },
   "goldeen-pinning-horn": {

@@ -68,7 +68,7 @@
    "kind": "bond",
    "category": "physical",
    "bondCost": 2,
-   "power": 100,
+   "power": 95,
    "range": {
     "min": 1,
     "max": 2
@@ -77,7 +77,8 @@
    "shape": {
     "kind": "single"
    },
-   "affects": "enemies"
+   "affects": "enemies",
+   "canonPower": 120
   },
   "bellsprout-sludge-bomb": {
    "id": "bellsprout-sludge-bomb",
@@ -86,7 +87,7 @@
    "kind": "bond",
    "category": "special",
    "bondCost": 2,
-   "power": 90,
+   "power": 75,
    "range": {
     "min": 1,
     "max": 3
@@ -102,7 +103,8 @@
      "status": "poison",
      "duration": 2
     }
-   ]
+   ],
+   "canonPower": 90
   },
   "bellsprout-grassy-glide": {
    "id": "bellsprout-grassy-glide",
@@ -125,7 +127,8 @@
     {
      "kind": "engage"
     }
-   ]
+   ],
+   "canonPower": 55
   },
   "bellsprout-knock-off": {
    "id": "bellsprout-knock-off",
@@ -143,7 +146,8 @@
    "shape": {
     "kind": "single"
    },
-   "affects": "enemies"
+   "affects": "enemies",
+   "canonPower": 65
   },
   "bellsprout-poison-jab": {
    "id": "bellsprout-poison-jab",
@@ -152,7 +156,7 @@
    "kind": "special",
    "category": "physical",
    "cooldown": 3,
-   "power": 70,
+   "power": 75,
    "range": {
     "min": 1,
     "max": 1
@@ -168,7 +172,8 @@
      "status": "poison",
      "duration": 2
     }
-   ]
+   ],
+   "canonPower": 80
   },
   "bellsprout-magical-leaf": {
    "id": "bellsprout-magical-leaf",
@@ -177,7 +182,7 @@
    "kind": "special",
    "category": "special",
    "cooldown": 2,
-   "power": 60,
+   "power": 55,
    "range": {
     "min": 1,
     "max": 2
@@ -186,7 +191,8 @@
    "shape": {
     "kind": "single"
    },
-   "affects": "enemies"
+   "affects": "enemies",
+   "canonPower": 60
   },
   "bellsprout-leaf-blade": {
    "id": "bellsprout-leaf-blade",
@@ -195,7 +201,7 @@
    "kind": "special",
    "category": "physical",
    "cooldown": 4,
-   "power": 90,
+   "power": 80,
    "range": {
     "min": 1,
     "max": 1
@@ -204,7 +210,8 @@
    "shape": {
     "kind": "single"
    },
-   "affects": "enemies"
+   "affects": "enemies",
+   "canonPower": 90
   },
   "bellsprout-leaf-storm": {
    "id": "bellsprout-leaf-storm",
@@ -213,7 +220,7 @@
    "kind": "special",
    "category": "special",
    "cooldown": 5,
-   "power": 85,
+   "power": 80,
    "range": {
     "min": 1,
     "max": 1
@@ -223,7 +230,8 @@
     "kind": "burst",
     "radius": 1
    },
-   "affects": "enemies"
+   "affects": "enemies",
+   "canonPower": 130
   },
   "bellsprout-seed-bomb": {
    "id": "bellsprout-seed-bomb",
@@ -232,7 +240,7 @@
    "kind": "special",
    "category": "physical",
    "cooldown": 4,
-   "power": 85,
+   "power": 65,
    "range": {
     "min": 1,
     "max": 2
@@ -241,7 +249,8 @@
    "shape": {
     "kind": "single"
    },
-   "affects": "enemies"
+   "affects": "enemies",
+   "canonPower": 80
   },
   "bellsprout-spit-up": {
    "id": "bellsprout-spit-up",
@@ -290,13 +299,13 @@
   "bellsprout-power-whip": {
    "id": "bellsprout-power-whip",
    "name": "Power Whip",
-   "description": "Bond skill: lashes a foe up to 2 hexes away with a heavy vine (Power 100, Attack).",
+   "description": "Bond skill: lashes a foe up to 2 hexes away with a heavy vine (Power 95, Attack).",
    "grantsMove": "bellsprout-power-whip"
   },
   "bellsprout-sludge-bomb": {
    "id": "bellsprout-sludge-bomb",
    "name": "Sludge Bomb",
-   "description": "Bond skill: lobs sludge up to 3 hexes away (Power 90), Poisoning the foe for 2 turns.",
+   "description": "Bond skill: lobs sludge up to 3 hexes away (Power 75), Poisoning the foe for 2 turns.",
    "grantsMove": "bellsprout-sludge-bomb"
   },
   "bellsprout-grassy-glide": {
@@ -351,13 +360,13 @@
   "bellsprout-poison-jab": {
    "id": "bellsprout-poison-jab",
    "name": "Poison Jab",
-   "description": "New skill: stabs with a venomous vine tip (Power 70), Poisoning the foe for 2 turns.",
+   "description": "New skill: stabs with a venomous vine tip (Power 75), Poisoning the foe for 2 turns.",
    "grantsMove": "bellsprout-poison-jab"
   },
   "bellsprout-magical-leaf": {
    "id": "bellsprout-magical-leaf",
    "name": "Magical Leaf",
-   "description": "New skill: homing leaves at a foe up to 2 hexes away (Power 60).",
+   "description": "New skill: homing leaves at a foe up to 2 hexes away (Power 55).",
    "grantsMove": "bellsprout-magical-leaf"
   },
   "bellsprout-swallow": {
@@ -379,13 +388,13 @@
   "bellsprout-leaf-blade": {
    "id": "bellsprout-leaf-blade",
    "name": "Leaf Blade",
-   "description": "New skill: slashes with a razor-edged leaf (Power 90).",
+   "description": "New skill: slashes with a razor-edged leaf (Power 80).",
    "grantsMove": "bellsprout-leaf-blade"
   },
   "bellsprout-leaf-storm": {
    "id": "bellsprout-leaf-storm",
    "name": "Leaf Storm",
-   "description": "New skill: a storm of leaves up to 1 hex away (Power 85) hitting a 1-hex area.",
+   "description": "New skill: a storm of leaves up to 1 hex away (Power 80) hitting a 1-hex area.",
    "grantsMove": "bellsprout-leaf-storm"
   },
   "bellsprout-venom-pool": {
@@ -407,7 +416,7 @@
   "bellsprout-seed-bomb": {
    "id": "bellsprout-seed-bomb",
    "name": "Seed Bomb",
-   "description": "New skill: hurls a hard seed at a foe up to 2 hexes away (Power 85).",
+   "description": "New skill: hurls a hard seed at a foe up to 2 hexes away (Power 65).",
    "grantsMove": "bellsprout-seed-bomb"
   },
   "bellsprout-spit-up": {

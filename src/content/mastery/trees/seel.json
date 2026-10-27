@@ -101,7 +101,7 @@
    "kind": "bond",
    "category": "special",
    "bondCost": 3,
-   "power": 85,
+   "power": 60,
    "range": {
     "min": 1,
     "max": 2
@@ -111,7 +111,8 @@
     "kind": "burst",
     "radius": 1
    },
-   "affects": "enemies"
+   "affects": "enemies",
+   "canonPower": 90
   },
   "seel-brine": {
    "id": "seel-brine",
@@ -120,7 +121,7 @@
    "kind": "special",
    "category": "special",
    "cooldown": 2,
-   "power": 60,
+   "power": 55,
    "range": {
     "min": 1,
     "max": 2
@@ -129,7 +130,8 @@
    "shape": {
     "kind": "single"
    },
-   "affects": "enemies"
+   "affects": "enemies",
+   "canonPower": 65
   },
   "seel-aqua-jet": {
    "id": "seel-aqua-jet",
@@ -152,7 +154,8 @@
     {
      "kind": "engage"
     }
-   ]
+   ],
+   "canonPower": 40
   },
   "seel-bubble-beam": {
    "id": "seel-bubble-beam",
@@ -161,7 +164,7 @@
    "kind": "special",
    "category": "special",
    "cooldown": 3,
-   "power": 65,
+   "power": 55,
    "range": {
     "min": 1,
     "max": 2
@@ -177,7 +180,8 @@
      "status": "slow",
      "duration": 1
     }
-   ]
+   ],
+   "canonPower": 65
   },
   "seel-frost-breath": {
    "id": "seel-frost-breath",
@@ -186,7 +190,7 @@
    "kind": "special",
    "category": "special",
    "cooldown": 4,
-   "power": 80,
+   "power": 55,
    "range": {
     "min": 1,
     "max": 2
@@ -202,7 +206,8 @@
      "status": "exposed",
      "duration": 1
     }
-   ]
+   ],
+   "canonPower": 60
   },
   "seel-ice-wall": {
    "id": "seel-ice-wall",
@@ -261,7 +266,7 @@
    "kind": "special",
    "category": "special",
    "cooldown": 4,
-   "power": 45,
+   "power": 40,
    "range": {
     "min": 1,
     "max": 2
@@ -277,7 +282,8 @@
      "status": "slow",
      "duration": 3
     }
-   ]
+   ],
+   "canonPower": 35
   },
   "seel-safeguard": {
    "id": "seel-safeguard",
@@ -337,7 +343,7 @@
   "seel-surf": {
    "id": "seel-surf",
    "name": "Surf",
-   "description": "Bond skill: a big wave up to 2 hexes away hitting foes in a 1-hex area (Power 85).",
+   "description": "Bond skill: a big wave up to 2 hexes away hitting foes in a 1-hex area (Power 60).",
    "grantsMove": "seel-surf"
   },
   "seel-hydration": {
@@ -359,7 +365,7 @@
   "seel-brine": {
    "id": "seel-brine",
    "name": "Brine",
-   "description": "New skill: a jet of salt water at a foe up to 2 hexes away (Power 60).",
+   "description": "New skill: a jet of salt water at a foe up to 2 hexes away (Power 55).",
    "grantsMove": "seel-brine"
   },
   "seel-aqua-jet": {
@@ -389,7 +395,7 @@
   "seel-bubble-beam": {
    "id": "seel-bubble-beam",
    "name": "Bubble Beam",
-   "description": "New skill: a spray of bubbles up to 2 hexes away (Power 65) that Slows the foe for 1 turn.",
+   "description": "New skill: a spray of bubbles up to 2 hexes away (Power 55) that Slows the foe for 1 turn.",
    "grantsMove": "seel-bubble-beam"
   },
   "seel-diving-hunter": {
@@ -411,7 +417,7 @@
   "seel-frost-breath": {
    "id": "seel-frost-breath",
    "name": "Frost Breath",
-   "description": "New skill: icy breath at a foe up to 2 hexes away (Power 80), leaving it Exposed for 1 turn.",
+   "description": "New skill: icy breath at a foe up to 2 hexes away (Power 55), leaving it Exposed for 1 turn.",
    "grantsMove": "seel-frost-breath"
   },
   "seel-ice-wall": {
@@ -450,7 +456,7 @@
   "seel-whirlpool": {
    "id": "seel-whirlpool",
    "name": "Whirlpool",
-   "description": "New skill: traps a foe up to 2 hexes away in a vortex (Power 45), Slowing it 3 turns.",
+   "description": "New skill: traps a foe up to 2 hexes away in a vortex (Power 40), Slowing it 3 turns.",
    "grantsMove": "seel-whirlpool"
   },
   "seel-arctic-stamina": {

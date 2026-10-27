@@ -1,7 +1,7 @@
 {
  "talents": {
   "machop-dynamic-punch": {
-   "description": "Bond képesség: teljes erejű ütés (Erő 100, Támadás), az ellenfél 2 körre Lelassul."
+   "description": "Bond képesség: teljes erejű ütés (Erő 90, Támadás), az ellenfél 2 körre Lelassul."
   },
   "machop-seismic-toss": {
    "description": "Bond képesség: megragad egy ellenfelet és 1 hexnyire hajítja (Erő 75, Támadás)."
@@ -16,10 +16,10 @@
    "description": "10%-kal kevesebb sebzést kap: az edzés minden izmát megkeményíti."
   },
   "machop-rock-smash": {
-   "description": "Új képesség: sziklatörő ütés (Erő 50), az ellenfél 1 körre Kitett lesz."
+   "description": "Új képesség: sziklatörő ütés (Erő 45), az ellenfél 1 körre Kitett lesz."
   },
   "machop-low-sweep": {
-   "description": "Új képesség: alacsony söprő rúgás (Erő 50), 2 körre lelassítja az ellenfelet."
+   "description": "Új képesség: alacsony söprő rúgás (Erő 65), 2 körre lelassítja az ellenfelet."
   },
   "machop-endure": {
    "description": "Csatánként egyszer 1 HP-val túlél egy kiütő csapást."
@@ -28,7 +28,7 @@
    "description": "Minden egymást követő találat ugyanazon az ellenfélen 10%-kal többet sebez, legfeljebb 3-szor."
   },
   "machop-vital-throw": {
-   "description": "Új képesség: biztos dobás (Erő 70), amely 1 hexnyit hátralöki az ellenfelet."
+   "description": "Új képesség: biztos dobás (Erő 65), amely 1 hexnyit hátralöki az ellenfelet."
   },
   "machop-bulk-up": {
    "description": "Új képesség: megfeszíti izmait, 2 körre Fókuszált és Megerősített lesz."
@@ -40,10 +40,10 @@
    "description": "20%-kal többet sebez, amíg 2 vagy több ellenfél áll mellette."
   },
   "machop-submission": {
-   "description": "Új képesség: vakmerő testsúlyos rohamütés (Erő 95)."
+   "description": "Új képesség: vakmerő testsúlyos rohamütés (Erő 75)."
   },
   "machop-brick-break": {
-   "description": "Új képesség: védelmet áttörő karateütés (Erő 80); az ellenfél 1 körre Exposed."
+   "description": "Új képesség: védelmet áttörő karateütés (Erő 70); az ellenfél 1 körre Exposed."
   },
   "machop-no-guard": {
    "description": "15%-kal többet sebez, de 10%-kal több sebzést is kap."
@@ -52,10 +52,10 @@
    "description": "A vele harcban álló ellenfelek mindig kapnak tőle egy szabad csapást, ha ellépnek."
   },
   "machop-superpower": {
-   "description": "Új képesség: elsöprő erejű támadás (Erő 100)."
+   "description": "Új képesség: elsöprő erejű támadás (Erő 95)."
   },
   "machop-hammer-arm": {
-   "description": "Új képesség: nehéz öklével lesújt (Erő 90), 1 hexnyit hátralökve az ellenfelet."
+   "description": "Új képesség: nehéz öklével lesújt (Erő 85), 1 hexnyit hátralökve az ellenfelet."
   },
   "machop-moxie-drive": {
    "description": "Minden kiütés 1-gyel növeli a Támadását a csata végéig (legfeljebb +3)."

@@ -91,7 +91,7 @@
    "kind": "bond",
    "category": "special",
    "bondCost": 1,
-   "power": 55,
+   "power": 40,
    "range": {
     "min": 1,
     "max": 1
@@ -108,7 +108,8 @@
      "status": "slow",
      "duration": 1
     }
-   ]
+   ],
+   "canonPower": 40
   },
   "jynx-reflect": {
    "id": "jynx-reflect",
@@ -142,7 +143,7 @@
    "kind": "special",
    "category": "special",
    "cooldown": 2,
-   "power": 55,
+   "power": 50,
    "range": {
     "min": 1,
     "max": 2
@@ -151,7 +152,8 @@
    "shape": {
     "kind": "single"
    },
-   "affects": "enemies"
+   "affects": "enemies",
+   "canonPower": 50
   },
   "jynx-icy-wind": {
    "id": "jynx-icy-wind",
@@ -160,7 +162,7 @@
    "kind": "special",
    "category": "special",
    "cooldown": 3,
-   "power": 45,
+   "power": 50,
    "range": {
     "min": 1,
     "max": 2
@@ -176,7 +178,8 @@
      "status": "slow",
      "duration": 2
     }
-   ]
+   ],
+   "canonPower": 55
   },
   "jynx-psybeam": {
    "id": "jynx-psybeam",
@@ -201,7 +204,8 @@
      "status": "confused",
      "duration": 2
     }
-   ]
+   ],
+   "canonPower": 65
   },
   "jynx-calm-mind": {
    "id": "jynx-calm-mind",
@@ -234,7 +238,7 @@
    "kind": "special",
    "category": "special",
    "cooldown": 4,
-   "power": 85,
+   "power": 70,
    "range": {
     "min": 1,
     "max": 2
@@ -250,7 +254,8 @@
      "status": "freeze",
      "duration": 1
     }
-   ]
+   ],
+   "canonPower": 90
   },
   "jynx-dream-eater": {
    "id": "jynx-dream-eater",
@@ -259,7 +264,7 @@
    "kind": "special",
    "category": "special",
    "cooldown": 4,
-   "power": 90,
+   "power": 75,
    "range": {
     "min": 1,
     "max": 2
@@ -268,7 +273,8 @@
    "shape": {
     "kind": "single"
    },
-   "affects": "enemies"
+   "affects": "enemies",
+   "canonPower": 100
   },
   "jynx-freeze-dry": {
    "id": "jynx-freeze-dry",
@@ -277,7 +283,7 @@
    "kind": "special",
    "category": "special",
    "cooldown": 5,
-   "power": 95,
+   "power": 60,
    "range": {
     "min": 1,
     "max": 2
@@ -286,7 +292,8 @@
    "shape": {
     "kind": "single"
    },
-   "affects": "enemies"
+   "affects": "enemies",
+   "canonPower": 70
   },
   "jynx-psyshock": {
    "id": "jynx-psyshock",
@@ -295,7 +302,7 @@
    "kind": "special",
    "category": "special",
    "cooldown": 4,
-   "power": 80,
+   "power": 65,
    "range": {
     "min": 1,
     "max": 2
@@ -311,7 +318,8 @@
      "status": "exposed",
      "duration": 1
     }
-   ]
+   ],
+   "canonPower": 80
   }
  },
  "talents": {
@@ -324,7 +332,7 @@
   "jynx-powder-snow": {
    "id": "jynx-powder-snow",
    "name": "Powder Snow",
-   "description": "Bond skill: a flurry up to 1 hex away (Power 55) Slows a 1-hex area 1 turn.",
+   "description": "Bond skill: a flurry up to 1 hex away (Power 40) Slows a 1-hex area 1 turn.",
    "grantsMove": "jynx-powder-snow"
   },
   "jynx-reflect": {
@@ -352,13 +360,13 @@
   "jynx-confusion": {
    "id": "jynx-confusion",
    "name": "Confusion",
-   "description": "New skill: a weak telekinetic blow at a foe up to 2 hexes away (Power 55).",
+   "description": "New skill: a weak telekinetic blow at a foe up to 2 hexes away (Power 50).",
    "grantsMove": "jynx-confusion"
   },
   "jynx-icy-wind": {
    "id": "jynx-icy-wind",
    "name": "Icy Wind",
-   "description": "New skill: a chilling wind at a foe up to 2 hexes away (Power 45), Slowing it 2 turns.",
+   "description": "New skill: a chilling wind at a foe up to 2 hexes away (Power 50), Slowing it 2 turns.",
    "grantsMove": "jynx-icy-wind"
   },
   "jynx-glacial-voice": {
@@ -412,13 +420,13 @@
   "jynx-ice-beam": {
    "id": "jynx-ice-beam",
    "name": "Ice Beam",
-   "description": "New skill: an icy beam at a foe up to 2 hexes away (Power 85) that Freezes it 1 turn.",
+   "description": "New skill: an icy beam at a foe up to 2 hexes away (Power 70) that Freezes it 1 turn.",
    "grantsMove": "jynx-ice-beam"
   },
   "jynx-dream-eater": {
    "id": "jynx-dream-eater",
    "name": "Dream Eater",
-   "description": "New skill: devours the dreams of a foe up to 2 hexes away (Power 90).",
+   "description": "New skill: devours the dreams of a foe up to 2 hexes away (Power 75).",
    "grantsMove": "jynx-dream-eater"
   },
   "jynx-snow-veil": {
@@ -440,13 +448,13 @@
   "jynx-freeze-dry": {
    "id": "jynx-freeze-dry",
    "name": "Freeze-Dry",
-   "description": "New skill: flash-freezes a foe up to 2 hexes away (Power 95).",
+   "description": "New skill: flash-freezes a foe up to 2 hexes away (Power 60).",
    "grantsMove": "jynx-freeze-dry"
   },
   "jynx-psyshock": {
    "id": "jynx-psyshock",
    "name": "Psyshock",
-   "description": "New skill: a psychic wave at a foe up to 2 hexes away (Power 80); leaves it Exposed 1 turn.",
+   "description": "New skill: a psychic wave at a foe up to 2 hexes away (Power 65); leaves it Exposed 1 turn.",
    "grantsMove": "jynx-psyshock"
   },
   "jynx-royal-poise": {

@@ -1,13 +1,13 @@
 {
  "talents": {
   "horsea-octazooka": {
-   "description": "Kötelék-képesség: tintát lő egy legfeljebb 3 hexnyire lévő ellenfélre (Erő 80), 2 körre Megjelöli."
+   "description": "Kötelék-képesség: tintát lő egy legfeljebb 3 hexnyire lévő ellenfélre (Erő 60), 2 körre Megjelöli."
   },
   "horsea-smokescreen": {
    "description": "Kötelék-képesség: tintafelhő rejti el őt és a szomszédos szövetségeseit, 2 körre Megerősítve őket."
   },
   "horsea-bubble-beam": {
-   "description": "Új képesség: buborékzápor egy legfeljebb 2 hexnyire lévő ellenfélre (Erő 65), 1 körre lelassítja."
+   "description": "Új képesség: buborékzápor egy legfeljebb 2 hexnyire lévő ellenfélre (Erő 55), 1 körre lelassítja."
   },
   "horsea-leer": {
    "description": "Új képesség: szúrós tekintete 1 körre Sebezhetővé tesz egy legfeljebb 2 hexnyire lévő ellenfelet."
@@ -28,7 +28,7 @@
    "description": "A szomszédos hexről őt megütő ellenfelek 8 sebzést kapnak."
   },
   "horsea-whirlpool": {
-   "description": "Új képesség: örvénybe zár egy legfeljebb 2 hexnyire lévő ellenfelet (Erő 55); 2 körig nem mozoghat."
+   "description": "Új képesség: örvénybe zár egy legfeljebb 2 hexnyire lévő ellenfelet (Erő 40); 2 körig nem mozoghat."
   },
   "horsea-swift-current": {
    "description": "Szabad csapás nélkül lép el a lekötött ellenfelektől."
@@ -37,7 +37,7 @@
    "description": "10%-kal kevesebb sebzést szenved el."
   },
   "horsea-surf": {
-   "description": "Új képesség: hatalmas hullám csap le minden 1 hexen belüli ellenfélre (Erő 90)."
+   "description": "Új képesség: hatalmas hullám csap le minden 1 hexen belüli ellenfélre (Erő 65)."
   },
   "horsea-rough-waters": {
    "description": "20%-kal többet sebez azoknak, akikre egy szövetségese tett állapotot."
@@ -61,10 +61,10 @@
    "description": "Bond képesség: villámgyorsan cikázik a vízben; 3 körre Hasted."
   },
   "horsea-brine": {
-   "description": "Új képesség: sós vízsugár egy 2 hexen belüli ellenfélre (Erő 65)."
+   "description": "Új képesség: sós vízsugár egy 2 hexen belüli ellenfélre (Erő 55)."
   },
   "horsea-muddy-water": {
-   "description": "Új képesség: iszapos áradat egy 2 hexen belüli ellenfélre (Erő 90), 1 körig Slow."
+   "description": "Új képesség: iszapos áradat egy 2 hexen belüli ellenfélre (Erő 70), 1 körig Slow."
   },
   "horsea-hyper-beam": {
    "description": "Új képesség: hatalmas sugár egy 2 hexen belüli ellenfélre (Erő 95)."

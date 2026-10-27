@@ -1,7 +1,7 @@
 {
  "talents": {
   "bulbasaur-frenzy-plant": {
-   "description": "Bond képesség: hatalmas gyökerek zúznak össze egy max. 3 hexnyire lévő ellenfelet (Erő 105)."
+   "description": "Bond képesség: hatalmas gyökerek zúznak össze egy max. 3 hexnyire lévő ellenfelet (Erő 100)."
   },
   "bulbasaur-protect": {
    "description": "Bond képesség: hagymája mögé húzódik, és 1 körre Protected lesz."
@@ -22,13 +22,13 @@
    "description": "Új képesség: altatópor, amely egy max. 2 hexnyire lévő ellenfelet 2 körre elaltat (Sleep)."
   },
   "bulbasaur-magical-leaf": {
-   "description": "Új képesség: célkövető levelek egy max. 2 hexnyi ellenfélre (Erő 60), rálátás nélkül is."
+   "description": "Új képesség: célkövető levelek egy max. 2 hexnyi ellenfélre (Erő 55), rálátás nélkül is."
   },
   "bulbasaur-venomous-bloom": {
    "description": "20%-kal többet sebez a megmérgezett (Poison) ellenfelekre."
   },
   "bulbasaur-sludge-bomb": {
-   "description": "Új képesség: mérgező iszapot hajít egy max. 2 hexnyi ellenfélre (Erő 75), 2 körre megmérgezve."
+   "description": "Új képesség: mérgező iszapot hajít egy max. 2 hexnyi ellenfélre (Erő 70), 2 körre megmérgezve."
   },
   "bulbasaur-growth": {
    "description": "Új képesség: növénye erőre kap; 2 körre Focused állapotba kerül."
@@ -40,10 +40,10 @@
    "description": "A szomszédos hexről támadó ellenfelek 6 sebzést kapnak tüskés indáitól."
   },
   "bulbasaur-giga-drain": {
-   "description": "Új képesség: kiszívja egy max. 2 hexnyi ellenfél erejét (Erő 85), a sebzés egy részét visszagyógyítva."
+   "description": "Új képesség: kiszívja egy max. 2 hexnyi ellenfél erejét (Erő 65), a sebzés egy részét visszagyógyítva."
   },
   "bulbasaur-sludge-wave": {
-   "description": "Új képesség: mérges hullám minden 2 hexen belüli ellenfelet eltalál (Erő 75), 1 körre megmérgezve."
+   "description": "Új képesség: mérges hullám minden 2 hexen belüli ellenfelet eltalál (Erő 55), 1 körre megmérgezve."
   },
   "bulbasaur-corrosive-sap": {
    "description": "Szomszédos ellenfelekre mért sebző találatai 2 körre megmérgezik őket (Poison)."
@@ -52,7 +52,7 @@
    "description": "Hatalmas virága védi a testét: 10%-kal kevesebb sebzést kap."
   },
   "bulbasaur-leaf-storm": {
-   "description": "Új képesség: éles levelek vihara egy max. 2 hexnyi ellenfélre (Erő 100)."
+   "description": "Új képesség: éles levelek vihara egy max. 2 hexnyi ellenfélre (Erő 90)."
   },
   "bulbasaur-synthesis": {
    "description": "Új képesség: a napfényt energiává alakítja; ő és szomszédos társai 50 HP-t gyógyulnak."

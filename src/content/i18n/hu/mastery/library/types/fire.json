@@ -16,7 +16,7 @@
    "description": "Új képesség: perzselő láva tör ki körülötte, megégetve a szomszédos ellenfeleket."
   },
   "fire-skill-overheat": {
-   "description": "Új képesség: teljes erejű tűzrobbanás távolra (Erő 95), amely megéget."
+   "description": "Új képesség: teljes erejű tűzrobbanás távolra (Erő 90), amely megéget."
   },
   "fire-inferno": {
    "description": "Csúcsképesség. +25% sebzés megégett ellenfelekre; tűz támadásai 15%-kal többet sebeznek."
@@ -28,7 +28,7 @@
    "description": "Nem lehet megfagyasztani; 10%-kal kevesebb sebzést kap."
   },
   "fire-skill-heat-wave": {
-   "description": "Új képesség: perzselő szél távolra (Erő 80), amely 1 hex területen megéget."
+   "description": "Új képesség: perzselő szél távolra (Erő 65), amely 1 hex területen megéget."
   }
  }
 }

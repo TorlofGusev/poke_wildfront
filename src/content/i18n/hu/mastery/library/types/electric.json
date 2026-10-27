@@ -4,13 +4,13 @@
    "description": "Új képesség: áramütés, amely 2 körre lelassít egy távoli ellenfelet."
   },
   "electric-skill-thunderbolt": {
-   "description": "Új képesség: erős villám távolra (Erő 55)."
+   "description": "Új képesség: erős villám távolra (Erő 70)."
   },
   "electric-skill-electroweb": {
    "description": "Új képesség: elektromos háló, amely 2 körre lelassítja a terület ellenfeleit."
   },
   "electric-skill-zap-cannon": {
-   "description": "Új képesség: hatalmas elektromos gömb távolra (Erő 90), amely megbénít."
+   "description": "Új képesség: hatalmas elektromos gömb távolra (Erő 85), amely megbénít."
   },
   "electric-surge": {
    "description": "Csúcsképesség. Elektromos támadásai 20%-kal többet sebeznek; nem sebző képességei 1 körrel hamarabb töltődnek."
@@ -22,7 +22,7 @@
    "description": "+20% sebzés olyan ellenfelekre, akikre egy szövetséges állapotot tett."
   },
   "electric-skill-wild-charge": {
-   "description": "Új képesség: szikrázó roham (Erő 100), amely megbénítja az ellenfelet."
+   "description": "Új képesség: szikrázó roham (Erő 80), amely megbénítja az ellenfelet."
   }
  }
 }

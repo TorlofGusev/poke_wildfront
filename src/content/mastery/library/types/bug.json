@@ -31,7 +31,7 @@
    "name": "Bug Buzz",
    "type": "bug",
    "kind": "special",
-   "power": 85,
+   "power": 65,
    "range": {
     "min": 1,
     "max": 1
@@ -43,14 +43,15 @@
    },
    "affects": "enemies",
    "cooldown": 4,
-   "category": "special"
+   "category": "special",
+   "canonPower": 90
   },
   "megahorn": {
    "id": "megahorn",
    "name": "Megahorn",
    "type": "bug",
    "kind": "special",
-   "power": 100,
+   "power": 95,
    "range": {
     "min": 1,
     "max": 1
@@ -66,7 +67,8 @@
      "kind": "push",
      "distance": 1
     }
-   ]
+   ],
+   "canonPower": 120
   }
  },
  "talents": {

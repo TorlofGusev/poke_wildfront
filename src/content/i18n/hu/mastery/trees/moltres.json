@@ -1,10 +1,10 @@
 {
  "talents": {
   "moltres-heat-wave": {
-   "description": "Bond képesség: perzselő szél legfeljebb 2 hexnyire (Power 85), 1 hex körzet; 1 körre éget."
+   "description": "Bond képesség: perzselő szél legfeljebb 2 hexnyire (Power 65), 1 hex körzet; 1 körre éget."
   },
   "moltres-sky-attack": {
-   "description": "Bond képesség: lángba burkolózva zuhan le az égből egy ellenfélre (Power 110, Attack)."
+   "description": "Bond képesség: lángba burkolózva zuhan le az égből egy ellenfélre (Power 100, Attack)."
   },
   "moltres-roost": {
    "description": "Bond képesség: leszáll pihentetni a szárnyait, és 40 HP-t gyógyul."
@@ -19,7 +19,7 @@
    "description": "Új képesség: ellazítja a testét, hogy gyorsabb legyen, 2 körre Hasted lesz."
   },
   "moltres-air-slash": {
-   "description": "Új képesség: légpenge egy legfeljebb 2 hexnyi ellenfélre (Power 60)."
+   "description": "Új képesség: légpenge egy legfeljebb 2 hexnyi ellenfélre (Power 65)."
   },
   "moltres-rebirth-flame": {
    "description": "Tüze újra fellobban: kiütéskor max. HP-ja 15%-át gyógyítja."
@@ -28,19 +28,19 @@
    "description": "Izzó tollazata 6 sebzést okoz a szomszédos hexről őt ütő ellenfeleknek."
   },
   "moltres-incinerate": {
-   "description": "Új képesség: tüzet szór egy legfeljebb 1 hexnyi, 1 hex körzetre (Power 60)."
+   "description": "Új képesség: tüzet szór egy legfeljebb 1 hexnyi, 1 hex körzetre (Power 50)."
   },
   "moltres-steel-wing": {
-   "description": "Új képesség: acélkemény szárnyakkal csap (Power 70)."
+   "description": "Új képesség: acélkemény szárnyakkal csap (Power 65)."
   },
   "moltres-searing-trail": {
    "description": "A tőle elszakadó ellenfelekre mért szabad ütései 25%-kal többet sebeznek."
   },
   "moltres-hurricane": {
-   "description": "Új képesség: tüzes vihar egy legfeljebb 2 hexnyi ellenfélre (Power 90)."
+   "description": "Új képesség: tüzes vihar egy legfeljebb 2 hexnyi ellenfélre (Power 80)."
   },
   "moltres-fly": {
-   "description": "Új képesség: felszáll, majd lecsap egy legfeljebb 2 hexnyi ellenfélre (Power 80), lekötve azt."
+   "description": "Új képesség: felszáll, majd lecsap egy legfeljebb 2 hexnyi ellenfélre (Power 70), lekötve azt."
   },
   "moltres-cinder-hunt": {
    "description": "20%-kal többet sebez a megégett ellenfelekre."
@@ -49,7 +49,7 @@
    "description": "Szabad ütés nélkül köröz el a vele harcoló ellenfelektől."
   },
   "moltres-overheat": {
-   "description": "Új képesség: teljes erejű tűzcsapás egy legfeljebb 2 hexnyi ellenfélre (Power 100)."
+   "description": "Új képesség: teljes erejű tűzcsapás egy legfeljebb 2 hexnyi ellenfélre (Power 90)."
   },
   "moltres-giga-impact": {
    "description": "Új képesség: teljes erejével nekiront (Power 100), 1 hexnyit hátralökve az ellenfelet."

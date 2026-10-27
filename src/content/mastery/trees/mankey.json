@@ -67,7 +67,7 @@
    "kind": "bond",
    "category": "physical",
    "bondCost": 3,
-   "power": 105,
+   "power": 100,
    "range": {
     "min": 1,
     "max": 1
@@ -76,7 +76,8 @@
    "shape": {
     "kind": "single"
    },
-   "affects": "enemies"
+   "affects": "enemies",
+   "canonPower": 120
   },
   "mankey-fury-swipes": {
    "id": "mankey-fury-swipes",
@@ -85,7 +86,7 @@
    "kind": "bond",
    "category": "physical",
    "bondCost": 1,
-   "power": 70,
+   "power": 60,
    "range": {
     "min": 1,
     "max": 1
@@ -101,7 +102,8 @@
      "status": "exposed",
      "duration": 1
     }
-   ]
+   ],
+   "canonPower": 54
   },
   "mankey-bulk-up": {
    "id": "mankey-bulk-up",
@@ -139,7 +141,7 @@
    "kind": "special",
    "category": "physical",
    "cooldown": 2,
-   "power": 55,
+   "power": 65,
    "range": {
     "min": 1,
     "max": 1
@@ -155,7 +157,8 @@
      "status": "slow",
      "duration": 2
     }
-   ]
+   ],
+   "canonPower": 65
   },
   "mankey-seismic-toss": {
    "id": "mankey-seismic-toss",
@@ -188,7 +191,7 @@
    "kind": "special",
    "category": "physical",
    "cooldown": 3,
-   "power": 70,
+   "power": 75,
    "range": {
     "min": 0,
     "max": 0
@@ -198,7 +201,8 @@
     "kind": "burst",
     "radius": 1
    },
-   "affects": "enemies"
+   "affects": "enemies",
+   "canonPower": 120
   },
   "mankey-focus-energy": {
    "id": "mankey-focus-energy",
@@ -240,7 +244,8 @@
    "shape": {
     "kind": "single"
    },
-   "affects": "enemies"
+   "affects": "enemies",
+   "canonPower": 120
   },
   "mankey-screech": {
    "id": "mankey-screech",
@@ -283,7 +288,8 @@
    "shape": {
     "kind": "single"
    },
-   "affects": "enemies"
+   "affects": "enemies",
+   "canonPower": 150
   },
   "mankey-circle-throw": {
    "id": "mankey-circle-throw",
@@ -292,7 +298,7 @@
    "kind": "special",
    "category": "physical",
    "cooldown": 3,
-   "power": 75,
+   "power": 60,
    "range": {
     "min": 1,
     "max": 1
@@ -307,20 +313,21 @@
      "kind": "push",
      "distance": 2
     }
-   ]
+   ],
+   "canonPower": 60
   }
  },
  "talents": {
   "mankey-close-combat": {
    "id": "mankey-close-combat",
    "name": "Close Combat",
-   "description": "Bond skill: an all-out flurry of blows on a foe (Power 105, Attack).",
+   "description": "Bond skill: an all-out flurry of blows on a foe (Power 100, Attack).",
    "grantsMove": "mankey-close-combat"
   },
   "mankey-fury-swipes": {
    "id": "mankey-fury-swipes",
    "name": "Fury Swipes",
-   "description": "Bond skill: a frenzy of scratches (Power 70, Attack) that leaves the foe Exposed 1 turn.",
+   "description": "Bond skill: a frenzy of scratches (Power 60, Attack) that leaves the foe Exposed 1 turn.",
    "grantsMove": "mankey-fury-swipes"
   },
   "mankey-bulk-up": {
@@ -351,7 +358,7 @@
   "mankey-low-sweep": {
    "id": "mankey-low-sweep",
    "name": "Low Sweep",
-   "description": "New skill: a sweeping kick at the legs (Power 55) that Slows the foe for 2 turns.",
+   "description": "New skill: a sweeping kick at the legs (Power 65) that Slows the foe for 2 turns.",
    "grantsMove": "mankey-low-sweep"
   },
   "mankey-seismic-toss": {
@@ -379,7 +386,7 @@
   "mankey-thrash": {
    "id": "mankey-thrash",
    "name": "Thrash",
-   "description": "New skill: thrashes about wildly, hitting every foe next to it (Power 70).",
+   "description": "New skill: thrashes about wildly, hitting every foe next to it (Power 75).",
    "grantsMove": "mankey-thrash"
   },
   "mankey-focus-energy": {
@@ -441,7 +448,7 @@
   "mankey-circle-throw": {
    "id": "mankey-circle-throw",
    "name": "Circle Throw",
-   "description": "New skill: hurls a foe (Power 75), throwing it 2 hexes away.",
+   "description": "New skill: hurls a foe (Power 60), throwing it 2 hexes away.",
    "grantsMove": "mankey-circle-throw"
   },
   "mankey-furious-frenzy": {

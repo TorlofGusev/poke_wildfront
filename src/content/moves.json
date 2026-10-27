@@ -13,7 +13,8 @@
   "shape": {
    "kind": "single"
   },
-  "affects": "enemies"
+  "affects": "enemies",
+  "canonPower": 40
  },
  "scratch": {
   "id": "scratch",
@@ -29,7 +30,8 @@
   "shape": {
    "kind": "single"
   },
-  "affects": "enemies"
+  "affects": "enemies",
+  "canonPower": 40
  },
  "karate-chop": {
   "id": "karate-chop",
@@ -45,14 +47,15 @@
   "shape": {
    "kind": "single"
   },
-  "affects": "enemies"
+  "affects": "enemies",
+  "canonPower": 50
  },
  "vine-whip": {
   "id": "vine-whip",
   "name": "Vine Whip",
   "type": "grass",
   "kind": "basic",
-  "power": 35,
+  "power": 40,
   "range": {
    "min": 1,
    "max": 2
@@ -61,14 +64,15 @@
   "shape": {
    "kind": "single"
   },
-  "affects": "enemies"
+  "affects": "enemies",
+  "canonPower": 45
  },
  "absorb": {
   "id": "absorb",
   "name": "Absorb",
   "type": "grass",
   "kind": "basic",
-  "power": 30,
+  "power": 25,
   "range": {
    "min": 1,
    "max": 2
@@ -77,7 +81,8 @@
   "shape": {
    "kind": "single"
   },
-  "affects": "enemies"
+  "affects": "enemies",
+  "canonPower": 20
  },
  "ember": {
   "id": "ember",
@@ -93,7 +98,8 @@
   "shape": {
    "kind": "single"
   },
-  "affects": "enemies"
+  "affects": "enemies",
+  "canonPower": 40
  },
  "water-gun": {
   "id": "water-gun",
@@ -109,7 +115,8 @@
   "shape": {
    "kind": "single"
   },
-  "affects": "enemies"
+  "affects": "enemies",
+  "canonPower": 40
  },
  "thunder-shock": {
   "id": "thunder-shock",
@@ -125,14 +132,15 @@
   "shape": {
    "kind": "single"
   },
-  "affects": "enemies"
+  "affects": "enemies",
+  "canonPower": 40
  },
  "gust": {
   "id": "gust",
   "name": "Gust",
   "type": "flying",
   "kind": "basic",
-  "power": 40,
+  "power": 35,
   "range": {
    "min": 1,
    "max": 2
@@ -147,14 +155,15 @@
     "kind": "push",
     "distance": 1
    }
-  ]
+  ],
+  "canonPower": 40
  },
  "poison-sting": {
   "id": "poison-sting",
   "name": "Poison Sting",
   "type": "poison",
   "kind": "basic",
-  "power": 15,
+  "power": 20,
   "range": {
    "min": 1,
    "max": 2
@@ -170,7 +179,8 @@
     "status": "poison",
     "duration": 2
    }
-  ]
+  ],
+  "canonPower": 15
  },
  "poison-powder": {
   "id": "poison-powder",
@@ -203,7 +213,7 @@
   "type": "fire",
   "kind": "special",
   "cooldown": 3,
-  "power": 45,
+  "power": 60,
   "range": {
    "min": 1,
    "max": 2
@@ -213,7 +223,8 @@
    "kind": "line",
    "length": 2
   },
-  "affects": "enemies"
+  "affects": "enemies",
+  "canonPower": 90
  },
  "bubble": {
   "id": "bubble",
@@ -221,7 +232,7 @@
   "type": "water",
   "kind": "special",
   "cooldown": 3,
-  "power": 25,
+  "power": 40,
   "range": {
    "min": 1,
    "max": 1
@@ -238,7 +249,8 @@
     "status": "slow",
     "duration": 1
    }
-  ]
+  ],
+  "canonPower": 40
  },
  "thunder-wave": {
   "id": "thunder-wave",
@@ -270,7 +282,7 @@
   "type": "rock",
   "kind": "special",
   "cooldown": 2,
-  "power": 30,
+  "power": 40,
   "range": {
    "min": 1,
    "max": 1
@@ -285,7 +297,8 @@
     "kind": "push",
     "distance": 2
    }
-  ]
+  ],
+  "canonPower": 30
  },
  "rock-throw": {
   "id": "rock-throw",
@@ -293,7 +306,7 @@
   "type": "rock",
   "kind": "special",
   "cooldown": 2,
-  "power": 45,
+  "power": 50,
   "range": {
    "min": 2,
    "max": 2
@@ -302,7 +315,8 @@
   "shape": {
    "kind": "single"
   },
-  "affects": "enemies"
+  "affects": "enemies",
+  "canonPower": 50
  },
  "whirlwind": {
   "id": "whirlwind",
@@ -342,7 +356,8 @@
   "shape": {
    "kind": "single"
   },
-  "affects": "enemies"
+  "affects": "enemies",
+  "canonPower": 40
  },
  "supersonic": {
   "id": "supersonic",
@@ -396,7 +411,7 @@
   "name": "Solar Beam",
   "type": "grass",
   "kind": "bond",
-  "power": 70,
+  "power": 75,
   "range": {
    "min": 1,
    "max": 3
@@ -407,14 +422,15 @@
    "length": 3
   },
   "affects": "enemies",
-  "bondCost": 3
+  "bondCost": 3,
+  "canonPower": 120
  },
  "hydro-pump": {
   "id": "hydro-pump",
   "name": "Hydro Pump",
   "type": "water",
   "kind": "bond",
-  "power": 60,
+  "power": 100,
   "range": {
    "min": 1,
    "max": 1
@@ -430,14 +446,15 @@
     "distance": 3
    }
   ],
-  "bondCost": 2
+  "bondCost": 2,
+  "canonPower": 110
  },
  "thunder": {
   "id": "thunder",
   "name": "Thunder",
   "type": "electric",
   "kind": "bond",
-  "power": 60,
+  "power": 70,
   "range": {
    "min": 2,
    "max": 2
@@ -448,14 +465,15 @@
    "radius": 1
   },
   "affects": "enemies",
-  "bondCost": 3
+  "bondCost": 3,
+  "canonPower": 110
  },
  "bug-bite": {
   "id": "bug-bite",
   "name": "Bug Bite",
   "type": "bug",
   "kind": "basic",
-  "power": 40,
+  "power": 50,
   "range": {
    "min": 1,
    "max": 1
@@ -464,7 +482,8 @@
   "shape": {
    "kind": "single"
   },
-  "affects": "enemies"
+  "affects": "enemies",
+  "canonPower": 60
  },
  "peck": {
   "id": "peck",
@@ -480,14 +499,15 @@
   "shape": {
    "kind": "single"
   },
-  "affects": "enemies"
+  "affects": "enemies",
+  "canonPower": 35
  },
  "mud-slap": {
   "id": "mud-slap",
   "name": "Mud-Slap",
   "type": "ground",
   "kind": "basic",
-  "power": 20,
+  "power": 25,
   "range": {
    "min": 1,
    "max": 2
@@ -503,7 +523,8 @@
     "status": "slow",
     "duration": 1
    }
-  ]
+  ],
+  "canonPower": 20
  },
  "string-shot": {
   "id": "string-shot",
@@ -535,7 +556,7 @@
   "type": "normal",
   "kind": "special",
   "cooldown": 2,
-  "power": 55,
+  "power": 50,
   "range": {
    "min": 1,
    "max": 1
@@ -544,7 +565,8 @@
   "shape": {
    "kind": "single"
   },
-  "affects": "enemies"
+  "affects": "enemies",
+  "canonPower": 45
  },
  "razor-leaf": {
   "id": "razor-leaf",
@@ -562,7 +584,8 @@
    "length": 2
   },
   "affects": "enemies",
-  "cooldown": 2
+  "cooldown": 2,
+  "canonPower": 55
  },
  "stun-spore": {
   "id": "stun-spore",
@@ -594,7 +617,7 @@
   "name": "Bite",
   "type": "normal",
   "kind": "basic",
-  "power": 45,
+  "power": 50,
   "range": {
    "min": 1,
    "max": 1
@@ -603,14 +626,15 @@
   "shape": {
    "kind": "single"
   },
-  "affects": "enemies"
+  "affects": "enemies",
+  "canonPower": 60
  },
  "hyper-fang": {
   "id": "hyper-fang",
   "name": "Hyper Fang",
   "type": "normal",
   "kind": "special",
-  "power": 70,
+  "power": 75,
   "range": {
    "min": 1,
    "max": 1
@@ -627,14 +651,15 @@
     "amount": 1,
     "when": "knockout"
    }
-  ]
+  ],
+  "canonPower": 80
  },
  "wing-attack": {
   "id": "wing-attack",
   "name": "Wing Attack",
   "type": "flying",
   "kind": "basic",
-  "power": 40,
+  "power": 45,
   "range": {
    "min": 1,
    "max": 2
@@ -643,14 +668,15 @@
   "shape": {
    "kind": "single"
   },
-  "affects": "enemies"
+  "affects": "enemies",
+  "canonPower": 60
  },
  "drill-peck": {
   "id": "drill-peck",
   "name": "Drill Peck",
   "type": "flying",
   "kind": "special",
-  "power": 65,
+  "power": 75,
   "range": {
    "min": 1,
    "max": 1
@@ -660,7 +686,8 @@
    "kind": "single"
   },
   "affects": "enemies",
-  "cooldown": 2
+  "cooldown": 2,
+  "canonPower": 80
  },
  "confusion": {
   "id": "confusion",
@@ -676,14 +703,15 @@
   "shape": {
    "kind": "single"
   },
-  "affects": "enemies"
+  "affects": "enemies",
+  "canonPower": 50
  },
  "twineedle": {
   "id": "twineedle",
   "name": "Twineedle",
   "type": "bug",
   "kind": "special",
-  "power": 45,
+  "power": 40,
   "range": {
    "min": 1,
    "max": 2
@@ -701,14 +729,15 @@
     "status": "poison",
     "duration": 2
    }
-  ]
+  ],
+  "canonPower": 50
  },
  "dig": {
   "id": "dig",
   "name": "Dig",
   "type": "ground",
   "kind": "special",
-  "power": 50,
+  "power": 65,
   "range": {
    "min": 1,
    "max": 2
@@ -718,14 +747,15 @@
    "kind": "single"
   },
   "affects": "enemies",
-  "cooldown": 3
+  "cooldown": 3,
+  "canonPower": 80
  },
  "earthquake": {
   "id": "earthquake",
   "name": "Earthquake",
   "type": "ground",
   "kind": "ultimate",
-  "power": 60,
+  "power": 65,
   "range": {
    "min": 0,
    "max": 0
@@ -735,14 +765,15 @@
    "kind": "burst",
    "radius": 2
   },
-  "affects": "enemies"
+  "affects": "enemies",
+  "canonPower": 100
  },
  "rock-slide": {
   "id": "rock-slide",
   "name": "Rock Slide",
   "type": "rock",
   "kind": "special",
-  "power": 45,
+  "power": 55,
   "range": {
    "min": 1,
    "max": 1
@@ -753,14 +784,15 @@
    "radius": 1
   },
   "affects": "enemies",
-  "cooldown": 3
+  "cooldown": 3,
+  "canonPower": 75
  },
  "cross-chop": {
   "id": "cross-chop",
   "name": "Cross Chop",
   "type": "fighting",
   "kind": "special",
-  "power": 70,
+  "power": 85,
   "range": {
    "min": 1,
    "max": 1
@@ -770,7 +802,8 @@
    "kind": "single"
   },
   "affects": "enemies",
-  "cooldown": 3
+  "cooldown": 3,
+  "canonPower": 100
  },
  "acid": {
   "id": "acid",
@@ -786,14 +819,15 @@
   "shape": {
    "kind": "single"
   },
-  "affects": "enemies"
+  "affects": "enemies",
+  "canonPower": 40
  },
  "thunderbolt": {
   "id": "thunderbolt",
   "name": "Thunderbolt",
   "type": "electric",
   "kind": "special",
-  "power": 55,
+  "power": 70,
   "range": {
    "min": 1,
    "max": 2
@@ -803,14 +837,15 @@
    "kind": "single"
   },
   "affects": "enemies",
-  "cooldown": 2
+  "cooldown": 2,
+  "canonPower": 90
  },
  "water-pulse": {
   "id": "water-pulse",
   "name": "Water Pulse",
   "type": "water",
   "kind": "special",
-  "power": 50,
+  "power": 55,
   "range": {
    "min": 1,
    "max": 2
@@ -827,7 +862,8 @@
     "status": "slow",
     "duration": 1
    }
-  ]
+  ],
+  "canonPower": 60
  },
  "fire-blast": {
   "id": "fire-blast",
@@ -845,7 +881,8 @@
    "radius": 1
   },
   "affects": "enemies",
-  "bondCost": 3
+  "bondCost": 3,
+  "canonPower": 110
  },
  "protect": {
   "id": "protect",
@@ -949,7 +986,7 @@
   "type": "normal",
   "kind": "special",
   "cooldown": 2,
-  "power": 65,
+  "power": 75,
   "range": {
    "min": 1,
    "max": 1
@@ -958,7 +995,8 @@
   "shape": {
    "kind": "single"
   },
-  "affects": "enemies"
+  "affects": "enemies",
+  "canonPower": 80
  },
  "leer": {
   "id": "leer",
@@ -1039,7 +1077,7 @@
   "type": "normal",
   "kind": "bond",
   "bondCost": 1,
-  "power": 50,
+  "power": 35,
   "range": {
    "min": 1,
    "max": 1
@@ -1048,7 +1086,8 @@
   "shape": {
    "kind": "single"
   },
-  "affects": "enemies"
+  "affects": "enemies",
+  "canonPower": 20
  },
  "swift": {
   "id": "swift",
@@ -1056,7 +1095,7 @@
   "type": "normal",
   "kind": "special",
   "cooldown": 3,
-  "power": 45,
+  "power": 55,
   "range": {
    "min": 2,
    "max": 2
@@ -1065,7 +1104,8 @@
   "shape": {
    "kind": "single"
   },
-  "affects": "enemies"
+  "affects": "enemies",
+  "canonPower": 60
  },
  "body-slam": {
   "id": "body-slam",
@@ -1073,7 +1113,7 @@
   "type": "normal",
   "kind": "special",
   "cooldown": 3,
-  "power": 70,
+  "power": 75,
   "range": {
    "min": 1,
    "max": 1
@@ -1089,7 +1129,8 @@
     "status": "paralysis",
     "duration": 1
    }
-  ]
+  ],
+  "canonPower": 85
  },
  "fire-spin": {
   "id": "fire-spin",
@@ -1107,7 +1148,8 @@
    "kind": "burst",
    "radius": 1
   },
-  "affects": "enemies"
+  "affects": "enemies",
+  "canonPower": 35
  },
  "surf": {
   "id": "surf",
@@ -1115,7 +1157,7 @@
   "type": "water",
   "kind": "special",
   "cooldown": 3,
-  "power": 55,
+  "power": 65,
   "range": {
    "min": 1,
    "max": 1
@@ -1125,7 +1167,8 @@
    "kind": "line",
    "length": 2
   },
-  "affects": "enemies"
+  "affects": "enemies",
+  "canonPower": 90
  },
  "giga-drain": {
   "id": "giga-drain",
@@ -1133,7 +1176,7 @@
   "type": "grass",
   "kind": "special",
   "cooldown": 3,
-  "power": 60,
+  "power": 65,
   "range": {
    "min": 1,
    "max": 2
@@ -1142,7 +1185,8 @@
   "shape": {
    "kind": "single"
   },
-  "affects": "enemies"
+  "affects": "enemies",
+  "canonPower": 75
  },
  "discharge": {
   "id": "discharge",
@@ -1150,7 +1194,7 @@
   "type": "electric",
   "kind": "special",
   "cooldown": 3,
-  "power": 45,
+  "power": 60,
   "range": {
    "min": 0,
    "max": 0
@@ -1160,7 +1204,8 @@
    "kind": "burst",
    "radius": 1
   },
-  "affects": "enemies"
+  "affects": "enemies",
+  "canonPower": 80
  },
  "ice-beam": {
   "id": "ice-beam",
@@ -1168,7 +1213,7 @@
   "type": "ice",
   "kind": "special",
   "cooldown": 3,
-  "power": 60,
+  "power": 65,
   "range": {
    "min": 1,
    "max": 1
@@ -1178,7 +1223,8 @@
    "kind": "line",
    "length": 2
   },
-  "affects": "enemies"
+  "affects": "enemies",
+  "canonPower": 90
  },
  "close-combat": {
   "id": "close-combat",
@@ -1195,7 +1241,8 @@
   "shape": {
    "kind": "single"
   },
-  "affects": "enemies"
+  "affects": "enemies",
+  "canonPower": 120
  },
  "toxic": {
   "id": "toxic",
@@ -1227,7 +1274,7 @@
   "type": "ground",
   "kind": "special",
   "cooldown": 3,
-  "power": 40,
+  "power": 50,
   "range": {
    "min": 0,
    "max": 0
@@ -1244,7 +1291,8 @@
     "status": "slow",
     "duration": 2
    }
-  ]
+  ],
+  "canonPower": 60
  },
  "aerial-ace": {
   "id": "aerial-ace",
@@ -1252,7 +1300,7 @@
   "type": "flying",
   "kind": "special",
   "cooldown": 2,
-  "power": 60,
+  "power": 55,
   "range": {
    "min": 1,
    "max": 2
@@ -1261,7 +1309,8 @@
   "shape": {
    "kind": "single"
   },
-  "affects": "enemies"
+  "affects": "enemies",
+  "canonPower": 60
  },
  "psybeam": {
   "id": "psybeam",
@@ -1269,7 +1318,7 @@
   "type": "psychic",
   "kind": "special",
   "cooldown": 3,
-  "power": 45,
+  "power": 55,
   "range": {
    "min": 1,
    "max": 1
@@ -1286,7 +1335,8 @@
     "status": "confused",
     "duration": 2
    }
-  ]
+  ],
+  "canonPower": 65
  },
  "pin-missile": {
   "id": "pin-missile",
@@ -1294,7 +1344,7 @@
   "type": "bug",
   "kind": "special",
   "cooldown": 2,
-  "power": 45,
+  "power": 65,
   "range": {
    "min": 1,
    "max": 2
@@ -1303,7 +1353,8 @@
   "shape": {
    "kind": "single"
   },
-  "affects": "enemies"
+  "affects": "enemies",
+  "canonPower": 75
  },
  "ancient-power": {
   "id": "ancient-power",
@@ -1320,7 +1371,8 @@
   "shape": {
    "kind": "single"
   },
-  "affects": "enemies"
+  "affects": "enemies",
+  "canonPower": 60
  },
  "shadow-ball": {
   "id": "shadow-ball",
@@ -1337,7 +1389,8 @@
   "shape": {
    "kind": "single"
   },
-  "affects": "enemies"
+  "affects": "enemies",
+  "canonPower": 80
  },
  "dragon-rage": {
   "id": "dragon-rage",
@@ -1400,7 +1453,7 @@
   "type": "normal",
   "kind": "special",
   "cooldown": 3,
-  "power": 45,
+  "power": 55,
   "range": {
    "min": 1,
    "max": 1
@@ -1414,7 +1467,8 @@
    {
     "kind": "disengage"
    }
-  ]
+  ],
+  "canonPower": 50
  },
  "teleport": {
   "id": "teleport",
@@ -1476,14 +1530,15 @@
   "shape": {
    "kind": "single"
   },
-  "affects": "enemies"
+  "affects": "enemies",
+  "canonPower": 40
  },
  "headbutt": {
   "id": "headbutt",
   "name": "Headbutt",
   "type": "normal",
   "kind": "basic",
-  "power": 45,
+  "power": 55,
   "range": {
    "min": 1,
    "max": 1
@@ -1492,12 +1547,30 @@
   "shape": {
    "kind": "single"
   },
-  "affects": "enemies"
+  "affects": "enemies",
+  "canonPower": 70
  },
  "wrap": {
   "id": "wrap",
   "name": "Wrap",
   "type": "normal",
+  "kind": "basic",
+  "power": 20,
+  "range": {
+   "min": 1,
+   "max": 1
+  },
+  "requiresLineOfSight": false,
+  "shape": {
+   "kind": "single"
+  },
+  "affects": "enemies",
+  "canonPower": 15
+ },
+ "lick": {
+  "id": "lick",
+  "name": "Lick",
+  "type": "ghost",
   "kind": "basic",
   "power": 35,
   "range": {
@@ -1508,23 +1581,8 @@
   "shape": {
    "kind": "single"
   },
-  "affects": "enemies"
- },
- "lick": {
-  "id": "lick",
-  "name": "Lick",
-  "type": "ghost",
-  "kind": "basic",
-  "power": 30,
-  "range": {
-   "min": 1,
-   "max": 1
-  },
-  "requiresLineOfSight": false,
-  "shape": {
-   "kind": "single"
-  },
-  "affects": "enemies"
+  "affects": "enemies",
+  "canonPower": 30
  },
  "night-shade": {
   "id": "night-shade",
@@ -1547,7 +1605,7 @@
   "name": "Leech Life",
   "type": "bug",
   "kind": "basic",
-  "power": 35,
+  "power": 60,
   "range": {
    "min": 1,
    "max": 1
@@ -1556,7 +1614,8 @@
   "shape": {
    "kind": "single"
   },
-  "affects": "enemies"
+  "affects": "enemies",
+  "canonPower": 80
  },
  "aurora-beam": {
   "id": "aurora-beam",
@@ -1564,7 +1623,7 @@
   "type": "ice",
   "kind": "special",
   "cooldown": 3,
-  "power": 45,
+  "power": 55,
   "range": {
    "min": 1,
    "max": 2
@@ -1573,7 +1632,8 @@
   "shape": {
    "kind": "single"
   },
-  "affects": "enemies"
+  "affects": "enemies",
+  "canonPower": 65
  },
  "sing": {
   "id": "sing",
@@ -1685,14 +1745,15 @@
   "shape": {
    "kind": "single"
   },
-  "affects": "enemies"
+  "affects": "enemies",
+  "canonPower": 90
  },
  "dream-eater": {
   "id": "dream-eater",
   "name": "Dream Eater",
   "type": "psychic",
   "kind": "bond",
-  "power": 90,
+  "power": 80,
   "range": {
    "min": 1,
    "max": 3
@@ -1702,14 +1763,15 @@
    "kind": "single"
   },
   "affects": "enemies",
-  "bondCost": 2
+  "bondCost": 2,
+  "canonPower": 100
  },
  "hyper-beam": {
   "id": "hyper-beam",
   "name": "Hyper Beam",
   "type": "normal",
   "kind": "bond",
-  "power": 90,
+  "power": 85,
   "range": {
    "min": 1,
    "max": 3
@@ -1720,14 +1782,15 @@
    "length": 3
   },
   "affects": "enemies",
-  "bondCost": 3
+  "bondCost": 3,
+  "canonPower": 150
  },
  "blizzard": {
   "id": "blizzard",
   "name": "Blizzard",
   "type": "ice",
   "kind": "bond",
-  "power": 60,
+  "power": 70,
   "range": {
    "min": 2,
    "max": 2
@@ -1738,7 +1801,8 @@
    "radius": 1
   },
   "affects": "enemies",
-  "bondCost": 3
+  "bondCost": 3,
+  "canonPower": 110
  },
  "petal-dance": {
   "id": "petal-dance",
@@ -1746,6 +1810,42 @@
   "type": "grass",
   "kind": "special",
   "cooldown": 3,
+  "power": 95,
+  "range": {
+   "min": 1,
+   "max": 1
+  },
+  "requiresLineOfSight": false,
+  "shape": {
+   "kind": "single"
+  },
+  "affects": "enemies",
+  "canonPower": 120
+ },
+ "skull-bash": {
+  "id": "skull-bash",
+  "name": "Skull Bash",
+  "type": "normal",
+  "kind": "special",
+  "cooldown": 4,
+  "power": 100,
+  "range": {
+   "min": 1,
+   "max": 1
+  },
+  "requiresLineOfSight": false,
+  "shape": {
+   "kind": "single"
+  },
+  "affects": "enemies",
+  "canonPower": 130
+ },
+ "thunder-punch": {
+  "id": "thunder-punch",
+  "name": "Thunder Punch",
+  "type": "electric",
+  "kind": "special",
+  "cooldown": 2,
   "power": 70,
   "range": {
    "min": 1,
@@ -1755,48 +1855,15 @@
   "shape": {
    "kind": "single"
   },
-  "affects": "enemies"
- },
- "skull-bash": {
-  "id": "skull-bash",
-  "name": "Skull Bash",
-  "type": "normal",
-  "kind": "special",
-  "cooldown": 4,
-  "power": 80,
-  "range": {
-   "min": 1,
-   "max": 1
-  },
-  "requiresLineOfSight": false,
-  "shape": {
-   "kind": "single"
-  },
-  "affects": "enemies"
- },
- "thunder-punch": {
-  "id": "thunder-punch",
-  "name": "Thunder Punch",
-  "type": "electric",
-  "kind": "special",
-  "cooldown": 2,
-  "power": 60,
-  "range": {
-   "min": 1,
-   "max": 1
-  },
-  "requiresLineOfSight": false,
-  "shape": {
-   "kind": "single"
-  },
-  "affects": "enemies"
+  "affects": "enemies",
+  "canonPower": 75
  },
  "double-kick": {
   "id": "double-kick",
   "name": "Double Kick",
   "type": "fighting",
   "kind": "basic",
-  "power": 40,
+  "power": 50,
   "range": {
    "min": 1,
    "max": 1
@@ -1805,14 +1872,15 @@
   "shape": {
    "kind": "single"
   },
-  "affects": "enemies"
+  "affects": "enemies",
+  "canonPower": 60
  },
  "horn-attack": {
   "id": "horn-attack",
   "name": "Horn Attack",
   "type": "normal",
   "kind": "basic",
-  "power": 45,
+  "power": 55,
   "range": {
    "min": 1,
    "max": 1
@@ -1821,14 +1889,15 @@
   "shape": {
    "kind": "single"
   },
-  "affects": "enemies"
+  "affects": "enemies",
+  "canonPower": 65
  },
  "clamp": {
   "id": "clamp",
   "name": "Clamp",
   "type": "water",
   "kind": "basic",
-  "power": 40,
+  "power": 35,
   "range": {
    "min": 1,
    "max": 1
@@ -1837,14 +1906,15 @@
   "shape": {
    "kind": "single"
   },
-  "affects": "enemies"
+  "affects": "enemies",
+  "canonPower": 35
  },
  "bone-club": {
   "id": "bone-club",
   "name": "Bone Club",
   "type": "ground",
   "kind": "basic",
-  "power": 40,
+  "power": 55,
   "range": {
    "min": 1,
    "max": 1
@@ -1853,14 +1923,15 @@
   "shape": {
    "kind": "single"
   },
-  "affects": "enemies"
+  "affects": "enemies",
+  "canonPower": 65
  },
  "smog": {
   "id": "smog",
   "name": "Smog",
   "type": "poison",
   "kind": "basic",
-  "power": 20,
+  "power": 30,
   "range": {
    "min": 1,
    "max": 2
@@ -1876,14 +1947,15 @@
     "status": "poison",
     "duration": 2
    }
-  ]
+  ],
+  "canonPower": 30
  },
  "comet-punch": {
   "id": "comet-punch",
   "name": "Comet Punch",
   "type": "normal",
   "kind": "basic",
-  "power": 40,
+  "power": 50,
   "range": {
    "min": 1,
    "max": 1
@@ -1892,11 +1964,29 @@
   "shape": {
    "kind": "single"
   },
-  "affects": "enemies"
+  "affects": "enemies",
+  "canonPower": 54
  },
  "vice-grip": {
   "id": "vice-grip",
   "name": "Vice Grip",
+  "type": "normal",
+  "kind": "basic",
+  "power": 50,
+  "range": {
+   "min": 1,
+   "max": 1
+  },
+  "requiresLineOfSight": false,
+  "shape": {
+   "kind": "single"
+  },
+  "affects": "enemies",
+  "canonPower": 55
+ },
+ "cut": {
+  "id": "cut",
+  "name": "Cut",
   "type": "normal",
   "kind": "basic",
   "power": 45,
@@ -1908,23 +1998,8 @@
   "shape": {
    "kind": "single"
   },
-  "affects": "enemies"
- },
- "cut": {
-  "id": "cut",
-  "name": "Cut",
-  "type": "normal",
-  "kind": "basic",
-  "power": 40,
-  "range": {
-   "min": 1,
-   "max": 1
-  },
-  "requiresLineOfSight": false,
-  "shape": {
-   "kind": "single"
-  },
-  "affects": "enemies"
+  "affects": "enemies",
+  "canonPower": 50
  },
  "pay-day": {
   "id": "pay-day",
@@ -1940,14 +2015,15 @@
   "shape": {
    "kind": "single"
   },
-  "affects": "enemies"
+  "affects": "enemies",
+  "canonPower": 40
  },
  "constrict": {
   "id": "constrict",
   "name": "Constrict",
   "type": "normal",
   "kind": "basic",
-  "power": 30,
+  "power": 15,
   "range": {
    "min": 1,
    "max": 1
@@ -1963,7 +2039,8 @@
     "status": "slow",
     "duration": 1
    }
-  ]
+  ],
+  "canonPower": 10
  },
  "fire-punch": {
   "id": "fire-punch",
@@ -1971,7 +2048,7 @@
   "type": "fire",
   "kind": "special",
   "cooldown": 2,
-  "power": 60,
+  "power": 70,
   "range": {
    "min": 1,
    "max": 1
@@ -1980,7 +2057,8 @@
   "shape": {
    "kind": "single"
   },
-  "affects": "enemies"
+  "affects": "enemies",
+  "canonPower": 75
  },
  "ice-punch": {
   "id": "ice-punch",
@@ -1988,7 +2066,7 @@
   "type": "ice",
   "kind": "special",
   "cooldown": 2,
-  "power": 55,
+  "power": 70,
   "range": {
    "min": 1,
    "max": 1
@@ -2004,7 +2082,8 @@
     "status": "slow",
     "duration": 1
    }
-  ]
+  ],
+  "canonPower": 75
  },
  "jump-kick": {
   "id": "jump-kick",
@@ -2012,23 +2091,6 @@
   "type": "fighting",
   "kind": "special",
   "cooldown": 2,
-  "power": 60,
-  "range": {
-   "min": 1,
-   "max": 2
-  },
-  "requiresLineOfSight": false,
-  "shape": {
-   "kind": "single"
-  },
-  "affects": "enemies"
- },
- "hi-jump-kick": {
-  "id": "hi-jump-kick",
-  "name": "Hi Jump Kick",
-  "type": "fighting",
-  "kind": "special",
-  "cooldown": 3,
   "power": 75,
   "range": {
    "min": 1,
@@ -2038,7 +2100,26 @@
   "shape": {
    "kind": "single"
   },
-  "affects": "enemies"
+  "affects": "enemies",
+  "canonPower": 100
+ },
+ "hi-jump-kick": {
+  "id": "hi-jump-kick",
+  "name": "Hi Jump Kick",
+  "type": "fighting",
+  "kind": "special",
+  "cooldown": 3,
+  "power": 90,
+  "range": {
+   "min": 1,
+   "max": 2
+  },
+  "requiresLineOfSight": false,
+  "shape": {
+   "kind": "single"
+  },
+  "affects": "enemies",
+  "canonPower": 130
  },
  "stomp": {
   "id": "stomp",
@@ -2046,47 +2127,6 @@
   "type": "normal",
   "kind": "special",
   "cooldown": 2,
-  "power": 50,
-  "range": {
-   "min": 1,
-   "max": 1
-  },
-  "requiresLineOfSight": false,
-  "shape": {
-   "kind": "single"
-  },
-  "affects": "enemies",
-  "effects": [
-   {
-    "kind": "status",
-    "status": "slow",
-    "duration": 1
-   }
-  ]
- },
- "slam": {
-  "id": "slam",
-  "name": "Slam",
-  "type": "normal",
-  "kind": "special",
-  "cooldown": 2,
-  "power": 55,
-  "range": {
-   "min": 1,
-   "max": 1
-  },
-  "requiresLineOfSight": false,
-  "shape": {
-   "kind": "single"
-  },
-  "affects": "enemies"
- },
- "take-down": {
-  "id": "take-down",
-  "name": "Take Down",
-  "type": "normal",
-  "kind": "special",
-  "cooldown": 3,
   "power": 65,
   "range": {
    "min": 1,
@@ -2099,34 +2139,19 @@
   "affects": "enemies",
   "effects": [
    {
-    "kind": "push",
-    "distance": 1
+    "kind": "status",
+    "status": "slow",
+    "duration": 1
    }
-  ]
+  ],
+  "canonPower": 65
  },
- "thrash": {
-  "id": "thrash",
-  "name": "Thrash",
+ "slam": {
+  "id": "slam",
+  "name": "Slam",
   "type": "normal",
   "kind": "special",
-  "cooldown": 3,
-  "power": 70,
-  "range": {
-   "min": 1,
-   "max": 1
-  },
-  "requiresLineOfSight": false,
-  "shape": {
-   "kind": "single"
-  },
-  "affects": "enemies"
- },
- "mega-kick": {
-  "id": "mega-kick",
-  "name": "Mega Kick",
-  "type": "normal",
-  "kind": "special",
-  "cooldown": 3,
+  "cooldown": 2,
   "power": 75,
   "range": {
    "min": 1,
@@ -2136,15 +2161,16 @@
   "shape": {
    "kind": "single"
   },
-  "affects": "enemies"
+  "affects": "enemies",
+  "canonPower": 80
  },
- "strength": {
-  "id": "strength",
-  "name": "Strength",
+ "take-down": {
+  "id": "take-down",
+  "name": "Take Down",
   "type": "normal",
   "kind": "special",
   "cooldown": 3,
-  "power": 60,
+  "power": 80,
   "range": {
    "min": 1,
    "max": 1
@@ -2159,7 +2185,68 @@
     "kind": "push",
     "distance": 1
    }
-  ]
+  ],
+  "canonPower": 90
+ },
+ "thrash": {
+  "id": "thrash",
+  "name": "Thrash",
+  "type": "normal",
+  "kind": "special",
+  "cooldown": 3,
+  "power": 95,
+  "range": {
+   "min": 1,
+   "max": 1
+  },
+  "requiresLineOfSight": false,
+  "shape": {
+   "kind": "single"
+  },
+  "affects": "enemies",
+  "canonPower": 120
+ },
+ "mega-kick": {
+  "id": "mega-kick",
+  "name": "Mega Kick",
+  "type": "normal",
+  "kind": "special",
+  "cooldown": 3,
+  "power": 95,
+  "range": {
+   "min": 1,
+   "max": 1
+  },
+  "requiresLineOfSight": false,
+  "shape": {
+   "kind": "single"
+  },
+  "affects": "enemies",
+  "canonPower": 120
+ },
+ "strength": {
+  "id": "strength",
+  "name": "Strength",
+  "type": "normal",
+  "kind": "special",
+  "cooldown": 3,
+  "power": 75,
+  "range": {
+   "min": 1,
+   "max": 1
+  },
+  "requiresLineOfSight": false,
+  "shape": {
+   "kind": "single"
+  },
+  "affects": "enemies",
+  "effects": [
+   {
+    "kind": "push",
+    "distance": 1
+   }
+  ],
+  "canonPower": 80
  },
  "slash": {
   "id": "slash",
@@ -2167,7 +2254,7 @@
   "type": "normal",
   "kind": "special",
   "cooldown": 2,
-  "power": 60,
+  "power": 65,
   "range": {
    "min": 1,
    "max": 1
@@ -2176,7 +2263,8 @@
   "shape": {
    "kind": "single"
   },
-  "affects": "enemies"
+  "affects": "enemies",
+  "canonPower": 70
  },
  "fury-swipes": {
   "id": "fury-swipes",
@@ -2184,7 +2272,7 @@
   "type": "normal",
   "kind": "special",
   "cooldown": 2,
-  "power": 50,
+  "power": 55,
   "range": {
    "min": 1,
    "max": 1
@@ -2193,7 +2281,8 @@
   "shape": {
    "kind": "single"
   },
-  "affects": "enemies"
+  "affects": "enemies",
+  "canonPower": 54
  },
  "double-slap": {
   "id": "double-slap",
@@ -2210,7 +2299,8 @@
   "shape": {
    "kind": "single"
   },
-  "affects": "enemies"
+  "affects": "enemies",
+  "canonPower": 45
  },
  "egg-bomb": {
   "id": "egg-bomb",
@@ -2218,7 +2308,7 @@
   "type": "normal",
   "kind": "special",
   "cooldown": 3,
-  "power": 55,
+  "power": 75,
   "range": {
    "min": 2,
    "max": 2
@@ -2227,7 +2317,8 @@
   "shape": {
    "kind": "single"
   },
-  "affects": "enemies"
+  "affects": "enemies",
+  "canonPower": 100
  },
  "spike-cannon": {
   "id": "spike-cannon",
@@ -2235,7 +2326,7 @@
   "type": "normal",
   "kind": "special",
   "cooldown": 2,
-  "power": 45,
+  "power": 55,
   "range": {
    "min": 1,
    "max": 2
@@ -2244,7 +2335,8 @@
   "shape": {
    "kind": "single"
   },
-  "affects": "enemies"
+  "affects": "enemies",
+  "canonPower": 60
  },
  "tri-attack": {
   "id": "tri-attack",
@@ -2252,7 +2344,7 @@
   "type": "normal",
   "kind": "special",
   "cooldown": 3,
-  "power": 60,
+  "power": 65,
   "range": {
    "min": 1,
    "max": 2
@@ -2268,7 +2360,8 @@
     "status": "burn",
     "duration": 1
    }
-  ]
+  ],
+  "canonPower": 80
  },
  "bubble-beam": {
   "id": "bubble-beam",
@@ -2276,7 +2369,7 @@
   "type": "water",
   "kind": "special",
   "cooldown": 2,
-  "power": 50,
+  "power": 55,
   "range": {
    "min": 1,
    "max": 2
@@ -2292,7 +2385,8 @@
     "status": "slow",
     "duration": 1
    }
-  ]
+  ],
+  "canonPower": 65
  },
  "crabhammer": {
   "id": "crabhammer",
@@ -2300,7 +2394,7 @@
   "type": "water",
   "kind": "special",
   "cooldown": 2,
-  "power": 65,
+  "power": 85,
   "range": {
    "min": 1,
    "max": 1
@@ -2309,7 +2403,8 @@
   "shape": {
    "kind": "single"
   },
-  "affects": "enemies"
+  "affects": "enemies",
+  "canonPower": 100
  },
  "waterfall": {
   "id": "waterfall",
@@ -2317,7 +2412,7 @@
   "type": "water",
   "kind": "special",
   "cooldown": 2,
-  "power": 60,
+  "power": 75,
   "range": {
    "min": 1,
    "max": 1
@@ -2332,7 +2427,8 @@
     "kind": "push",
     "distance": 1
    }
-  ]
+  ],
+  "canonPower": 80
  },
  "sludge": {
   "id": "sludge",
@@ -2340,7 +2436,7 @@
   "type": "poison",
   "kind": "special",
   "cooldown": 2,
-  "power": 50,
+  "power": 55,
   "range": {
    "min": 1,
    "max": 2
@@ -2356,7 +2452,8 @@
     "status": "poison",
     "duration": 2
    }
-  ]
+  ],
+  "canonPower": 65
  },
  "poison-gas": {
   "id": "poison-gas",
@@ -2389,7 +2486,7 @@
   "type": "ground",
   "kind": "special",
   "cooldown": 2,
-  "power": 55,
+  "power": 75,
   "range": {
    "min": 1,
    "max": 2
@@ -2398,7 +2495,8 @@
   "shape": {
    "kind": "single"
   },
-  "affects": "enemies"
+  "affects": "enemies",
+  "canonPower": 100
  },
  "sand-attack": {
   "id": "sand-attack",
@@ -2430,7 +2528,7 @@
   "type": "flying",
   "kind": "special",
   "cooldown": 3,
-  "power": 60,
+  "power": 70,
   "range": {
    "min": 1,
    "max": 2
@@ -2439,7 +2537,8 @@
   "shape": {
    "kind": "single"
   },
-  "affects": "enemies"
+  "affects": "enemies",
+  "canonPower": 90
  },
  "sleep-powder": {
   "id": "sleep-powder",
@@ -2684,7 +2783,7 @@
   "name": "Double-Edge",
   "type": "normal",
   "kind": "bond",
-  "power": 85,
+  "power": 100,
   "range": {
    "min": 1,
    "max": 1
@@ -2694,14 +2793,15 @@
    "kind": "single"
   },
   "affects": "enemies",
-  "bondCost": 2
+  "bondCost": 2,
+  "canonPower": 120
  },
  "self-destruct": {
   "id": "self-destruct",
   "name": "Self-Destruct",
   "type": "normal",
   "kind": "bond",
-  "power": 80,
+  "power": 100,
   "range": {
    "min": 0,
    "max": 0
@@ -2712,6 +2812,7 @@
    "radius": 1
   },
   "affects": "enemies",
-  "bondCost": 2
+  "bondCost": 2,
+  "canonPower": 200
  }
 }

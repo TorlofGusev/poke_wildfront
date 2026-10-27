@@ -67,7 +67,7 @@
    "kind": "bond",
    "category": "special",
    "bondCost": 2,
-   "power": 90,
+   "power": 60,
    "range": {
     "min": 1,
     "max": 3
@@ -76,7 +76,8 @@
    "shape": {
     "kind": "single"
    },
-   "affects": "enemies"
+   "affects": "enemies",
+   "canonPower": 65
   },
   "psyduck-aqua-jet": {
    "id": "psyduck-aqua-jet",
@@ -85,7 +86,7 @@
    "kind": "bond",
    "category": "physical",
    "bondCost": 1,
-   "power": 55,
+   "power": 50,
    "range": {
     "min": 1,
     "max": 1
@@ -94,7 +95,8 @@
    "shape": {
     "kind": "single"
    },
-   "affects": "enemies"
+   "affects": "enemies",
+   "canonPower": 40
   },
   "psyduck-aqua-ring": {
    "id": "psyduck-aqua-ring",
@@ -126,7 +128,7 @@
    "kind": "special",
    "category": "physical",
    "cooldown": 2,
-   "power": 45,
+   "power": 55,
    "range": {
     "min": 1,
     "max": 1
@@ -135,7 +137,8 @@
    "shape": {
     "kind": "single"
    },
-   "affects": "enemies"
+   "affects": "enemies",
+   "canonPower": 54
   },
   "psyduck-aqua-tail": {
    "id": "psyduck-aqua-tail",
@@ -144,7 +147,7 @@
    "kind": "special",
    "category": "physical",
    "cooldown": 3,
-   "power": 70,
+   "power": 80,
    "range": {
     "min": 1,
     "max": 1
@@ -153,7 +156,8 @@
    "shape": {
     "kind": "single"
    },
-   "affects": "enemies"
+   "affects": "enemies",
+   "canonPower": 90
   },
   "psyduck-scald": {
    "id": "psyduck-scald",
@@ -178,7 +182,8 @@
      "status": "burn",
      "duration": 2
     }
-   ]
+   ],
+   "canonPower": 80
   },
   "psyduck-whirlpool": {
    "id": "psyduck-whirlpool",
@@ -187,7 +192,7 @@
    "kind": "special",
    "category": "special",
    "cooldown": 5,
-   "power": 75,
+   "power": 40,
    "range": {
     "min": 1,
     "max": 2
@@ -203,7 +208,8 @@
      "status": "slow",
      "duration": 2
     }
-   ]
+   ],
+   "canonPower": 35
   },
   "psyduck-double-edge": {
    "id": "psyduck-double-edge",
@@ -212,7 +218,7 @@
    "kind": "special",
    "category": "physical",
    "cooldown": 4,
-   "power": 85,
+   "power": 95,
    "range": {
     "min": 1,
     "max": 1
@@ -221,7 +227,8 @@
    "shape": {
     "kind": "single"
    },
-   "affects": "enemies"
+   "affects": "enemies",
+   "canonPower": 120
   },
   "psyduck-muddy-water": {
    "id": "psyduck-muddy-water",
@@ -230,7 +237,7 @@
    "kind": "special",
    "category": "special",
    "cooldown": 5,
-   "power": 80,
+   "power": 55,
    "range": {
     "min": 0,
     "max": 0
@@ -240,7 +247,8 @@
     "kind": "burst",
     "radius": 2
    },
-   "affects": "enemies"
+   "affects": "enemies",
+   "canonPower": 90
   },
   "psyduck-waterfall": {
    "id": "psyduck-waterfall",
@@ -249,7 +257,7 @@
    "kind": "special",
    "category": "physical",
    "cooldown": 4,
-   "power": 95,
+   "power": 75,
    "range": {
     "min": 1,
     "max": 1
@@ -264,7 +272,8 @@
      "kind": "push",
      "distance": 1
     }
-   ]
+   ],
+   "canonPower": 80
   },
   "psyduck-disable": {
    "id": "psyduck-disable",
@@ -295,13 +304,13 @@
   "psyduck-brine": {
    "id": "psyduck-brine",
    "name": "Brine",
-   "description": "Bond skill: a jet of salty water at a foe up to 3 hexes away (Power 90).",
+   "description": "Bond skill: a jet of salty water at a foe up to 3 hexes away (Power 60).",
    "grantsMove": "psyduck-brine"
   },
   "psyduck-aqua-jet": {
    "id": "psyduck-aqua-jet",
    "name": "Aqua Jet",
-   "description": "Bond skill: a swift jet of water slams a foe (Power 55, Attack).",
+   "description": "Bond skill: a swift jet of water slams a foe (Power 50, Attack).",
    "grantsMove": "psyduck-aqua-jet"
   },
   "psyduck-aqua-ring": {
@@ -329,7 +338,7 @@
   "psyduck-fury-swipes": {
    "id": "psyduck-fury-swipes",
    "name": "Fury Swipes",
-   "description": "New skill: a flurry of quick scratches (Power 45).",
+   "description": "New skill: a flurry of quick scratches (Power 55).",
    "grantsMove": "psyduck-fury-swipes"
   },
   "psyduck-unlocked-mind": {
@@ -345,7 +354,7 @@
   "psyduck-aqua-tail": {
    "id": "psyduck-aqua-tail",
    "name": "Aqua Tail",
-   "description": "New skill: swings its tail like a wave at an adjacent foe (Power 70).",
+   "description": "New skill: swings its tail like a wave at an adjacent foe (Power 80).",
    "grantsMove": "psyduck-aqua-tail"
   },
   "psyduck-scald": {
@@ -373,13 +382,13 @@
   "psyduck-whirlpool": {
    "id": "psyduck-whirlpool",
    "name": "Whirlpool",
-   "description": "New skill: a whirlpool traps a foe up to 2 hexes away (Power 75), Slowing it for 2 turns.",
+   "description": "New skill: a whirlpool traps a foe up to 2 hexes away (Power 40), Slowing it for 2 turns.",
    "grantsMove": "psyduck-whirlpool"
   },
   "psyduck-double-edge": {
    "id": "psyduck-double-edge",
    "name": "Double-Edge",
-   "description": "New skill: a reckless full-body charge at an adjacent foe (Power 85).",
+   "description": "New skill: a reckless full-body charge at an adjacent foe (Power 95).",
    "grantsMove": "psyduck-double-edge"
   },
   "psyduck-streamline": {
@@ -401,13 +410,13 @@
   "psyduck-muddy-water": {
    "id": "psyduck-muddy-water",
    "name": "Muddy Water",
-   "description": "New skill: a muddy flood hits all foes within 2 hexes (Power 80).",
+   "description": "New skill: a muddy flood hits all foes within 2 hexes (Power 55).",
    "grantsMove": "psyduck-muddy-water"
   },
   "psyduck-waterfall": {
    "id": "psyduck-waterfall",
    "name": "Waterfall",
-   "description": "New skill: charges with the force of a waterfall (Power 95), knocking the foe 1 hex back.",
+   "description": "New skill: charges with the force of a waterfall (Power 75), knocking the foe 1 hex back.",
    "grantsMove": "psyduck-waterfall"
   },
   "psyduck-cruel-insight": {

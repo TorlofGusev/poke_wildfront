@@ -51,7 +51,8 @@
      "kind": "push",
      "distance": 1
     }
-   ]
+   ],
+   "canonPower": 150
   }
  },
  "talents": {

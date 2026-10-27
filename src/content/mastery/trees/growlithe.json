@@ -67,7 +67,7 @@
    "kind": "bond",
    "category": "physical",
    "bondCost": 2,
-   "power": 85,
+   "power": 70,
    "range": {
     "min": 1,
     "max": 1
@@ -83,7 +83,8 @@
      "status": "burn",
      "duration": 2
     }
-   ]
+   ],
+   "canonPower": 65
   },
   "growlithe-extreme-speed": {
    "id": "growlithe-extreme-speed",
@@ -92,7 +93,7 @@
    "kind": "bond",
    "category": "physical",
    "bondCost": 2,
-   "power": 70,
+   "power": 80,
    "range": {
     "min": 1,
     "max": 1
@@ -101,7 +102,8 @@
    "shape": {
     "kind": "single"
    },
-   "affects": "enemies"
+   "affects": "enemies",
+   "canonPower": 80
   },
   "growlithe-morning-sun": {
    "id": "growlithe-morning-sun",
@@ -158,7 +160,7 @@
    "kind": "special",
    "category": "physical",
    "cooldown": 3,
-   "power": 55,
+   "power": 60,
    "range": {
     "min": 1,
     "max": 1
@@ -174,7 +176,8 @@
      "status": "burn",
      "duration": 1
     }
-   ]
+   ],
+   "canonPower": 60
   },
   "growlithe-crunch": {
    "id": "growlithe-crunch",
@@ -183,7 +186,7 @@
    "kind": "special",
    "category": "physical",
    "cooldown": 3,
-   "power": 70,
+   "power": 75,
    "range": {
     "min": 1,
     "max": 1
@@ -199,7 +202,8 @@
      "status": "exposed",
      "duration": 1
     }
-   ]
+   ],
+   "canonPower": 80
   },
   "growlithe-roar": {
    "id": "growlithe-roar",
@@ -231,7 +235,7 @@
    "kind": "special",
    "category": "physical",
    "cooldown": 4,
-   "power": 90,
+   "power": 95,
    "range": {
     "min": 1,
     "max": 1
@@ -240,7 +244,8 @@
    "shape": {
     "kind": "single"
    },
-   "affects": "enemies"
+   "affects": "enemies",
+   "canonPower": 120
   },
   "growlithe-body-slam": {
    "id": "growlithe-body-slam",
@@ -249,7 +254,7 @@
    "kind": "special",
    "category": "physical",
    "cooldown": 4,
-   "power": 85,
+   "power": 75,
    "range": {
     "min": 1,
     "max": 1
@@ -265,7 +270,8 @@
      "status": "paralysis",
      "duration": 1
     }
-   ]
+   ],
+   "canonPower": 85
   },
   "growlithe-thrash": {
    "id": "growlithe-thrash",
@@ -283,7 +289,8 @@
    "shape": {
     "kind": "single"
    },
-   "affects": "enemies"
+   "affects": "enemies",
+   "canonPower": 120
   },
   "growlithe-raging-fury": {
    "id": "growlithe-raging-fury",
@@ -292,7 +299,7 @@
    "kind": "special",
    "category": "physical",
    "cooldown": 5,
-   "power": 90,
+   "power": 95,
    "range": {
     "min": 1,
     "max": 1
@@ -308,20 +315,21 @@
      "status": "burn",
      "duration": 2
     }
-   ]
+   ],
+   "canonPower": 120
   }
  },
  "talents": {
   "growlithe-fire-fang": {
    "id": "growlithe-fire-fang",
    "name": "Fire Fang",
-   "description": "Bond skill: bites with flame-wrapped fangs (Power 85, Attack), Burning the foe for 2 turns.",
+   "description": "Bond skill: bites with flame-wrapped fangs (Power 70, Attack), Burning the foe for 2 turns.",
    "grantsMove": "growlithe-fire-fang"
   },
   "growlithe-extreme-speed": {
    "id": "growlithe-extreme-speed",
    "name": "Extreme Speed",
-   "description": "Bond skill: a blindingly fast rush (Power 70, Attack).",
+   "description": "Bond skill: a blindingly fast rush (Power 80, Attack).",
    "grantsMove": "growlithe-extreme-speed"
   },
   "growlithe-morning-sun": {
@@ -355,7 +363,7 @@
   "growlithe-flame-wheel": {
    "id": "growlithe-flame-wheel",
    "name": "Flame Wheel",
-   "description": "New skill: charges wrapped in fire (Power 55), Burning the foe for 1 turn.",
+   "description": "New skill: charges wrapped in fire (Power 60), Burning the foe for 1 turn.",
    "grantsMove": "growlithe-flame-wheel"
   },
   "growlithe-flash-fire": {
@@ -382,7 +390,7 @@
   "growlithe-crunch": {
    "id": "growlithe-crunch",
    "name": "Crunch",
-   "description": "New skill: bites down hard (Power 70), leaving the foe Exposed for 1 turn.",
+   "description": "New skill: bites down hard (Power 75), leaving the foe Exposed for 1 turn.",
    "grantsMove": "growlithe-crunch"
   },
   "growlithe-roar": {
@@ -410,13 +418,13 @@
   "growlithe-flare-blitz": {
    "id": "growlithe-flare-blitz",
    "name": "Flare Blitz",
-   "description": "New skill: cloaked in fire, it charges into a foe (Power 90).",
+   "description": "New skill: cloaked in fire, it charges into a foe (Power 95).",
    "grantsMove": "growlithe-flare-blitz"
   },
   "growlithe-body-slam": {
    "id": "growlithe-body-slam",
    "name": "Body Slam",
-   "description": "New skill: pounces with its full weight (Power 85), Paralyzing the foe for 1 turn.",
+   "description": "New skill: pounces with its full weight (Power 75), Paralyzing the foe for 1 turn.",
    "grantsMove": "growlithe-body-slam"
   },
   "growlithe-agile-bound": {
@@ -445,7 +453,7 @@
   "growlithe-raging-fury": {
    "id": "growlithe-raging-fury",
    "name": "Raging Fury",
-   "description": "New skill: a furious fiery rampage at an adjacent foe (Power 90) that Burns it for 2 turns.",
+   "description": "New skill: a furious fiery rampage at an adjacent foe (Power 95) that Burns it for 2 turns.",
    "grantsMove": "growlithe-raging-fury"
   },
   "growlithe-legendary-pride": {

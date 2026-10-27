@@ -66,7 +66,7 @@
    "kind": "bond",
    "category": "physical",
    "bondCost": 2,
-   "power": 90,
+   "power": 85,
    "range": {
     "min": 1,
     "max": 1
@@ -75,7 +75,8 @@
    "shape": {
     "kind": "single"
    },
-   "affects": "enemies"
+   "affects": "enemies",
+   "canonPower": 90
   },
   "electabuzz-discharge": {
    "id": "electabuzz-discharge",
@@ -84,7 +85,7 @@
    "kind": "bond",
    "category": "special",
    "bondCost": 3,
-   "power": 75,
+   "power": 65,
    "range": {
     "min": 0,
     "max": 0
@@ -101,7 +102,8 @@
      "status": "paralysis",
      "duration": 1
     }
-   ]
+   ],
+   "canonPower": 80
   },
   "electabuzz-volt-switch": {
    "id": "electabuzz-volt-switch",
@@ -110,7 +112,7 @@
    "kind": "bond",
    "category": "special",
    "bondCost": 1,
-   "power": 60,
+   "power": 65,
    "range": {
     "min": 1,
     "max": 2
@@ -124,7 +126,8 @@
     {
      "kind": "disengage"
     }
-   ]
+   ],
+   "canonPower": 70
   },
   "electabuzz-light-screen": {
    "id": "electabuzz-light-screen",
@@ -158,7 +161,7 @@
    "kind": "special",
    "category": "physical",
    "cooldown": 2,
-   "power": 55,
+   "power": 65,
    "range": {
     "min": 1,
     "max": 1
@@ -167,7 +170,8 @@
    "shape": {
     "kind": "single"
    },
-   "affects": "enemies"
+   "affects": "enemies",
+   "canonPower": 65
   },
   "electabuzz-thunder-fang": {
    "id": "electabuzz-thunder-fang",
@@ -192,7 +196,8 @@
      "status": "paralysis",
      "duration": 1
     }
-   ]
+   ],
+   "canonPower": 65
   },
   "electabuzz-shock-wave": {
    "id": "electabuzz-shock-wave",
@@ -201,7 +206,7 @@
    "kind": "special",
    "category": "special",
    "cooldown": 3,
-   "power": 75,
+   "power": 55,
    "range": {
     "min": 1,
     "max": 2
@@ -210,7 +215,8 @@
    "shape": {
     "kind": "single"
    },
-   "affects": "enemies"
+   "affects": "enemies",
+   "canonPower": 60
   },
   "electabuzz-body-slam": {
    "id": "electabuzz-body-slam",
@@ -235,7 +241,8 @@
      "status": "paralysis",
      "duration": 1
     }
-   ]
+   ],
+   "canonPower": 85
   },
   "electabuzz-electro-ball": {
    "id": "electabuzz-electro-ball",
@@ -263,7 +270,7 @@
    "kind": "special",
    "category": "physical",
    "cooldown": 4,
-   "power": 95,
+   "power": 75,
    "range": {
     "min": 1,
     "max": 1
@@ -272,7 +279,8 @@
    "shape": {
     "kind": "single"
    },
-   "affects": "enemies"
+   "affects": "enemies",
+   "canonPower": 80
   },
   "electabuzz-hyper-beam": {
    "id": "electabuzz-hyper-beam",
@@ -281,7 +289,7 @@
    "kind": "special",
    "category": "special",
    "cooldown": 5,
-   "power": 100,
+   "power": 95,
    "range": {
     "min": 1,
     "max": 2
@@ -290,26 +298,27 @@
    "shape": {
     "kind": "single"
    },
-   "affects": "enemies"
+   "affects": "enemies",
+   "canonPower": 150
   }
  },
  "talents": {
   "electabuzz-wild-charge": {
    "id": "electabuzz-wild-charge",
    "name": "Wild Charge",
-   "description": "Bond skill: crashes into a foe wrapped in electricity (Power 90, Attack).",
+   "description": "Bond skill: crashes into a foe wrapped in electricity (Power 85, Attack).",
    "grantsMove": "electabuzz-wild-charge"
   },
   "electabuzz-discharge": {
    "id": "electabuzz-discharge",
    "name": "Discharge",
-   "description": "Bond skill: a burst of electricity on every adjacent foe (Power 75); Paralyzes 1 turn.",
+   "description": "Bond skill: a burst of electricity on every adjacent foe (Power 65); Paralyzes 1 turn.",
    "grantsMove": "electabuzz-discharge"
   },
   "electabuzz-volt-switch": {
    "id": "electabuzz-volt-switch",
    "name": "Volt Switch",
-   "description": "Bond skill: zaps a foe up to 2 hexes away (Power 60) and breaks off from engaged foes.",
+   "description": "Bond skill: zaps a foe up to 2 hexes away (Power 65) and breaks off from engaged foes.",
    "grantsMove": "electabuzz-volt-switch"
   },
   "electabuzz-high-voltage": {
@@ -339,7 +348,7 @@
   "electabuzz-spark": {
    "id": "electabuzz-spark",
    "name": "Spark",
-   "description": "New skill: an electrified tackle into an adjacent foe (Power 55).",
+   "description": "New skill: an electrified tackle into an adjacent foe (Power 65).",
    "grantsMove": "electabuzz-spark"
   },
   "electabuzz-lightning-reflexes": {
@@ -369,7 +378,7 @@
   "electabuzz-shock-wave": {
    "id": "electabuzz-shock-wave",
    "name": "Shock Wave",
-   "description": "New skill: a swift jolt at a foe up to 2 hexes away (Power 75).",
+   "description": "New skill: a swift jolt at a foe up to 2 hexes away (Power 55).",
    "grantsMove": "electabuzz-shock-wave"
   },
   "electabuzz-infighter": {
@@ -424,13 +433,13 @@
   "electabuzz-mega-punch": {
    "id": "electabuzz-mega-punch",
    "name": "Mega Punch",
-   "description": "New skill: a punch thrown with all its might (Power 95).",
+   "description": "New skill: a punch thrown with all its might (Power 75).",
    "grantsMove": "electabuzz-mega-punch"
   },
   "electabuzz-hyper-beam": {
    "id": "electabuzz-hyper-beam",
    "name": "Hyper Beam",
-   "description": "New skill: a devastating beam at a foe up to 2 hexes away (Power 100).",
+   "description": "New skill: a devastating beam at a foe up to 2 hexes away (Power 95).",
    "grantsMove": "electabuzz-hyper-beam"
   },
   "electabuzz-static-field": {

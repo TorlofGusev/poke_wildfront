@@ -91,7 +91,7 @@
    "kind": "bond",
    "category": "physical",
    "bondCost": 2,
-   "power": 100,
+   "power": 95,
    "range": {
     "min": 1,
     "max": 2
@@ -107,7 +107,8 @@
      "status": "poison",
      "duration": 3
     }
-   ]
+   ],
+   "canonPower": 120
   },
   "grimer-sludge-bomb": {
    "id": "grimer-sludge-bomb",
@@ -116,7 +117,7 @@
    "kind": "bond",
    "category": "special",
    "bondCost": 2,
-   "power": 90,
+   "power": 60,
    "range": {
     "min": 1,
     "max": 2
@@ -126,7 +127,8 @@
     "kind": "burst",
     "radius": 1
    },
-   "affects": "enemies"
+   "affects": "enemies",
+   "canonPower": 90
   },
   "grimer-disable": {
    "id": "grimer-disable",
@@ -183,7 +185,7 @@
    "kind": "special",
    "category": "special",
    "cooldown": 4,
-   "power": 85,
+   "power": 65,
    "range": {
     "min": 0,
     "max": 0
@@ -200,7 +202,8 @@
      "status": "poison",
      "duration": 1
     }
-   ]
+   ],
+   "canonPower": 95
   },
   "grimer-poison-jab": {
    "id": "grimer-poison-jab",
@@ -209,7 +212,7 @@
    "kind": "special",
    "category": "physical",
    "cooldown": 4,
-   "power": 85,
+   "power": 75,
    "range": {
     "min": 1,
     "max": 1
@@ -225,7 +228,8 @@
      "status": "poison",
      "duration": 2
     }
-   ]
+   ],
+   "canonPower": 80
   },
   "grimer-acid-spray": {
    "id": "grimer-acid-spray",
@@ -234,7 +238,7 @@
    "kind": "special",
    "category": "special",
    "cooldown": 2,
-   "power": 45,
+   "power": 40,
    "range": {
     "min": 1,
     "max": 2
@@ -250,7 +254,8 @@
      "status": "marked",
      "duration": 1
     }
-   ]
+   ],
+   "canonPower": 40
   },
   "grimer-wrap": {
    "id": "grimer-wrap",
@@ -259,7 +264,7 @@
    "kind": "special",
    "category": "physical",
    "cooldown": 2,
-   "power": 45,
+   "power": 25,
    "range": {
     "min": 1,
     "max": 1
@@ -278,7 +283,8 @@
      "status": "slow",
      "duration": 1
     }
-   ]
+   ],
+   "canonPower": 15
   },
   "grimer-body-slam": {
    "id": "grimer-body-slam",
@@ -287,7 +293,7 @@
    "kind": "special",
    "category": "physical",
    "cooldown": 4,
-   "power": 90,
+   "power": 75,
    "range": {
     "min": 1,
     "max": 1
@@ -303,7 +309,8 @@
      "status": "paralysis",
      "duration": 1
     }
-   ]
+   ],
+   "canonPower": 85
   },
   "grimer-belch": {
    "id": "grimer-belch",
@@ -312,7 +319,7 @@
    "kind": "special",
    "category": "special",
    "cooldown": 5,
-   "power": 95,
+   "power": 85,
    "range": {
     "min": 1,
     "max": 2
@@ -321,7 +328,8 @@
    "shape": {
     "kind": "single"
    },
-   "affects": "enemies"
+   "affects": "enemies",
+   "canonPower": 120
   }
  },
  "talents": {
@@ -334,13 +342,13 @@
   "grimer-gunk-shot": {
    "id": "grimer-gunk-shot",
    "name": "Gunk Shot",
-   "description": "Bond skill: hurls filthy garbage at a foe up to 2 hexes away (Power 100, Attack), Poisoning 3 turns.",
+   "description": "Bond skill: hurls filthy garbage at a foe up to 2 hexes away (Power 95, Attack), Poisoning 3 turns.",
    "grantsMove": "grimer-gunk-shot"
   },
   "grimer-sludge-bomb": {
    "id": "grimer-sludge-bomb",
    "name": "Sludge Bomb",
-   "description": "Bond skill: lobs sludge up to 2 hexes away (Power 90) hitting a 1-hex area.",
+   "description": "Bond skill: lobs sludge up to 2 hexes away (Power 60) hitting a 1-hex area.",
    "grantsMove": "grimer-sludge-bomb"
   },
   "grimer-poison-touch": {
@@ -413,13 +421,13 @@
   "grimer-sludge-wave": {
    "id": "grimer-sludge-wave",
    "name": "Sludge Wave",
-   "description": "New skill: a wave of sludge hits every adjacent foe (Power 85), Poisoning them for 1 turn.",
+   "description": "New skill: a wave of sludge hits every adjacent foe (Power 65), Poisoning them for 1 turn.",
    "grantsMove": "grimer-sludge-wave"
   },
   "grimer-poison-jab": {
    "id": "grimer-poison-jab",
    "name": "Poison Jab",
-   "description": "New skill: jabs with a toxic, sludgy arm (Power 85), Poisoning the foe for 2 turns.",
+   "description": "New skill: jabs with a toxic, sludgy arm (Power 75), Poisoning the foe for 2 turns.",
    "grantsMove": "grimer-poison-jab"
   },
   "grimer-stench-cloud": {
@@ -478,25 +486,25 @@
   "grimer-acid-spray": {
    "id": "grimer-acid-spray",
    "name": "Acid Spray",
-   "description": "New skill: sprays acid at a foe up to 2 hexes away (Power 45), Marking it for 1 turn.",
+   "description": "New skill: sprays acid at a foe up to 2 hexes away (Power 40), Marking it for 1 turn.",
    "grantsMove": "grimer-acid-spray"
   },
   "grimer-wrap": {
    "id": "grimer-wrap",
    "name": "Wrap",
-   "description": "New skill: wraps an adjacent foe in sludge (Power 45), engaging it; Slow 1 turn.",
+   "description": "New skill: wraps an adjacent foe in sludge (Power 25), engaging it; Slow 1 turn.",
    "grantsMove": "grimer-wrap"
   },
   "grimer-body-slam": {
    "id": "grimer-body-slam",
    "name": "Body Slam",
-   "description": "New skill: flops its sludgy bulk onto a foe (Power 90), Paralyzing it for 1 turn.",
+   "description": "New skill: flops its sludgy bulk onto a foe (Power 75), Paralyzing it for 1 turn.",
    "grantsMove": "grimer-body-slam"
   },
   "grimer-belch": {
    "id": "grimer-belch",
    "name": "Belch",
-   "description": "New skill: a foul belch at a foe up to 2 hexes away (Power 95).",
+   "description": "New skill: a foul belch at a foe up to 2 hexes away (Power 85).",
    "grantsMove": "grimer-belch"
   }
  }

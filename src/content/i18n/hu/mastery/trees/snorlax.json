@@ -4,7 +4,7 @@
    "description": "Bond képesség: lenyeli a felhalmozott ételt: 40 HP-t gyógyul, és 1 körig Fortified."
   },
   "snorlax-giga-impact": {
-   "description": "Bond képesség: teljes tömegével ront egy ellenfélre (Power 110, Attack), 1 hexnyit hátralökve."
+   "description": "Bond képesség: teljes tömegével ront egy ellenfélre (Power 100, Attack), 1 hexnyit hátralökve."
   },
   "snorlax-harden": {
    "description": "Bond képesség: megfeszíti hatalmas testét: 3 körig Fortified."
@@ -28,7 +28,7 @@
    "description": "Elállja az utat: az általa lekötött ellenfelek 15%-kal több sebzést kapnak a társaitól."
   },
   "snorlax-crunch": {
-   "description": "Új képesség: nagyot harap (Power 80), az ellenfél 1 körig Exposed."
+   "description": "Új képesség: nagyot harap (Power 75), az ellenfél 1 körig Exposed."
   },
   "snorlax-block": {
    "description": "Új képesség: testével elállja egy szomszédos ellenfél útját: leköti és 1 körre lassítja."
@@ -40,13 +40,13 @@
    "description": "Teljes HP-n 20%-kal kevesebb sebzést kap."
   },
   "snorlax-mega-punch": {
-   "description": "Új képesség: súlyos, erős ütés egy szomszédos ellenfélre (Erő 90)."
+   "description": "Új képesség: súlyos, erős ütés egy szomszédos ellenfélre (Erő 75)."
   },
   "snorlax-work-up": {
    "description": "Új képesség: felpörgeti magát a harcra: 2 körig Focused."
   },
   "snorlax-thrash": {
-   "description": "Új képesség: tombolva minden szomszédos ellenfelet eltalál (Erő 85)."
+   "description": "Új képesség: tombolva minden szomszédos ellenfelet eltalál (Erő 75)."
   },
   "snorlax-deep-sleeper": {
    "description": "Köre elején leveti az ellenfelek által rárakott állapotokat."

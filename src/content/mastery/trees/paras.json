@@ -67,7 +67,7 @@
    "kind": "bond",
    "category": "physical",
    "bondCost": 2,
-   "power": 90,
+   "power": 80,
    "range": {
     "min": 1,
     "max": 1
@@ -76,7 +76,8 @@
    "shape": {
     "kind": "single"
    },
-   "affects": "enemies"
+   "affects": "enemies",
+   "canonPower": 80
   },
   "paras-mushroom-shield": {
    "id": "paras-mushroom-shield",
@@ -132,7 +133,7 @@
    "kind": "special",
    "category": "physical",
    "cooldown": 3,
-   "power": 70,
+   "power": 65,
    "range": {
     "min": 1,
     "max": 1
@@ -141,7 +142,8 @@
    "shape": {
     "kind": "single"
    },
-   "affects": "enemies"
+   "affects": "enemies",
+   "canonPower": 70
   },
   "paras-growth": {
    "id": "paras-growth",
@@ -174,7 +176,7 @@
    "kind": "special",
    "category": "physical",
    "cooldown": 4,
-   "power": 80,
+   "power": 60,
    "range": {
     "min": 1,
     "max": 1
@@ -184,7 +186,8 @@
     "kind": "burst",
     "radius": 1
    },
-   "affects": "enemies"
+   "affects": "enemies",
+   "canonPower": 80
   },
   "paras-sleep-powder": {
    "id": "paras-sleep-powder",
@@ -241,7 +244,7 @@
    "kind": "special",
    "category": "physical",
    "cooldown": 2,
-   "power": 45,
+   "power": 60,
    "range": {
     "min": 1,
     "max": 1
@@ -250,7 +253,8 @@
    "shape": {
     "kind": "single"
    },
-   "affects": "enemies"
+   "affects": "enemies",
+   "canonPower": 60
   },
   "paras-string-shot": {
    "id": "paras-string-shot",
@@ -283,7 +287,7 @@
    "kind": "special",
    "category": "physical",
    "cooldown": 4,
-   "power": 90,
+   "power": 75,
    "range": {
     "min": 1,
     "max": 1
@@ -292,14 +296,15 @@
    "shape": {
     "kind": "single"
    },
-   "affects": "enemies"
+   "affects": "enemies",
+   "canonPower": 80
   }
  },
  "talents": {
   "paras-x-scissor": {
    "id": "paras-x-scissor",
    "name": "X-Scissor",
-   "description": "Bond skill: slashes with both claws crossed (Power 90, Attack).",
+   "description": "Bond skill: slashes with both claws crossed (Power 80, Attack).",
    "grantsMove": "paras-x-scissor"
   },
   "paras-mushroom-shield": {
@@ -345,7 +350,7 @@
   "paras-slash": {
    "id": "paras-slash",
    "name": "Slash",
-   "description": "New skill: a raking claw strike (Power 70).",
+   "description": "New skill: a raking claw strike (Power 65).",
    "grantsMove": "paras-slash"
   },
   "paras-growth": {
@@ -373,7 +378,7 @@
   "paras-seed-bomb": {
    "id": "paras-seed-bomb",
    "name": "Seed Bomb",
-   "description": "New skill: a hard seed bursts on a 1-hex area up to 1 hex away (Power 80).",
+   "description": "New skill: a hard seed bursts on a 1-hex area up to 1 hex away (Power 60).",
    "grantsMove": "paras-seed-bomb"
   },
   "paras-sleep-powder": {
@@ -445,7 +450,7 @@
   "paras-bug-bite": {
    "id": "paras-bug-bite",
    "name": "Bug Bite",
-   "description": "New skill: bites a foe with its pincers (Power 45).",
+   "description": "New skill: bites a foe with its pincers (Power 60).",
    "grantsMove": "paras-bug-bite"
   },
   "paras-effect-spore": {
@@ -468,7 +473,7 @@
   "paras-lunge": {
    "id": "paras-lunge",
    "name": "Lunge",
-   "description": "New skill: lunges at a foe with all its might (Power 90).",
+   "description": "New skill: lunges at a foe with all its might (Power 75).",
    "grantsMove": "paras-lunge"
   }
  }

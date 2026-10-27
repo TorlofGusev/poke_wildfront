@@ -68,7 +68,7 @@
    "kind": "bond",
    "category": "special",
    "bondCost": 2,
-   "power": 90,
+   "power": 75,
    "range": {
     "min": 1,
     "max": 3
@@ -84,7 +84,8 @@
      "status": "poison",
      "duration": 2
     }
-   ]
+   ],
+   "canonPower": 90
   },
   "nidoran-m-poison-jab": {
    "id": "nidoran-m-poison-jab",
@@ -93,7 +94,7 @@
    "kind": "bond",
    "category": "physical",
    "bondCost": 1,
-   "power": 60,
+   "power": 70,
    "range": {
     "min": 1,
     "max": 2
@@ -112,7 +113,8 @@
      "status": "poison",
      "duration": 1
     }
-   ]
+   ],
+   "canonPower": 80
   },
   "nidoran-m-focus-energy": {
    "id": "nidoran-m-focus-energy",
@@ -145,7 +147,7 @@
    "kind": "special",
    "category": "physical",
    "cooldown": 3,
-   "power": 75,
+   "power": 85,
    "range": {
     "min": 1,
     "max": 1
@@ -154,7 +156,8 @@
    "shape": {
     "kind": "single"
    },
-   "affects": "enemies"
+   "affects": "enemies",
+   "canonPower": 100
   },
   "nidoran-m-earth-power": {
    "id": "nidoran-m-earth-power",
@@ -163,7 +166,7 @@
    "kind": "special",
    "category": "special",
    "cooldown": 4,
-   "power": 90,
+   "power": 70,
    "range": {
     "min": 1,
     "max": 2
@@ -172,7 +175,8 @@
    "shape": {
     "kind": "single"
    },
-   "affects": "enemies"
+   "affects": "enemies",
+   "canonPower": 90
   },
   "nidoran-m-drill-run": {
    "id": "nidoran-m-drill-run",
@@ -181,7 +185,7 @@
    "kind": "special",
    "category": "physical",
    "cooldown": 5,
-   "power": 90,
+   "power": 60,
    "range": {
     "min": 1,
     "max": 1
@@ -191,7 +195,8 @@
     "kind": "line",
     "length": 2
    },
-   "affects": "enemies"
+   "affects": "enemies",
+   "canonPower": 80
   },
   "nidoran-m-horn-drill": {
    "id": "nidoran-m-horn-drill",
@@ -218,7 +223,7 @@
    "kind": "special",
    "category": "physical",
    "cooldown": 2,
-   "power": 45,
+   "power": 55,
    "range": {
     "min": 1,
     "max": 1
@@ -227,7 +232,8 @@
    "shape": {
     "kind": "single"
    },
-   "affects": "enemies"
+   "affects": "enemies",
+   "canonPower": 50
   },
   "nidoran-m-mud-shot": {
    "id": "nidoran-m-mud-shot",
@@ -236,7 +242,7 @@
    "kind": "special",
    "category": "special",
    "cooldown": 3,
-   "power": 70,
+   "power": 50,
    "range": {
     "min": 1,
     "max": 2
@@ -252,7 +258,8 @@
      "status": "slow",
      "duration": 1
     }
-   ]
+   ],
+   "canonPower": 55
   },
   "nidoran-m-sludge-wave": {
    "id": "nidoran-m-sludge-wave",
@@ -261,7 +268,7 @@
    "kind": "special",
    "category": "special",
    "cooldown": 4,
-   "power": 80,
+   "power": 65,
    "range": {
     "min": 0,
     "max": 0
@@ -278,7 +285,8 @@
      "status": "poison",
      "duration": 1
     }
-   ]
+   ],
+   "canonPower": 95
   },
   "nidoran-m-stomping-tantrum": {
    "id": "nidoran-m-stomping-tantrum",
@@ -287,7 +295,7 @@
    "kind": "special",
    "category": "physical",
    "cooldown": 4,
-   "power": 80,
+   "power": 70,
    "range": {
     "min": 1,
     "max": 1
@@ -296,20 +304,21 @@
    "shape": {
     "kind": "single"
    },
-   "affects": "enemies"
+   "affects": "enemies",
+   "canonPower": 75
   }
  },
  "talents": {
   "nidoran-m-sludge-bomb": {
    "id": "nidoran-m-sludge-bomb",
    "name": "Sludge Bomb",
-   "description": "Bond skill: lobs sludge up to 3 hexes away (Power 90), Poisoning the foe for 2 turns.",
+   "description": "Bond skill: lobs sludge up to 3 hexes away (Power 75), Poisoning the foe for 2 turns.",
    "grantsMove": "nidoran-m-sludge-bomb"
   },
   "nidoran-m-poison-jab": {
    "id": "nidoran-m-poison-jab",
    "name": "Poison Jab",
-   "description": "Bond skill: darts up to 2 hexes into a foe (Power 60), engaging it; Poisons 1 turn.",
+   "description": "Bond skill: darts up to 2 hexes into a foe (Power 70), engaging it; Poisons 1 turn.",
    "grantsMove": "nidoran-m-poison-jab"
   },
   "nidoran-m-poison-point": {
@@ -359,7 +368,7 @@
   "nidoran-m-iron-tail": {
    "id": "nidoran-m-iron-tail",
    "name": "Iron Tail",
-   "description": "New skill: slams a foe with its hardened tail (Power 75).",
+   "description": "New skill: slams a foe with its hardened tail (Power 85).",
    "grantsMove": "nidoran-m-iron-tail"
   },
   "nidoran-m-rampage": {
@@ -401,13 +410,13 @@
   "nidoran-m-earth-power": {
    "id": "nidoran-m-earth-power",
    "name": "Earth Power",
-   "description": "New skill: the ground erupts under a foe up to 2 hexes away (Power 90).",
+   "description": "New skill: the ground erupts under a foe up to 2 hexes away (Power 70).",
    "grantsMove": "nidoran-m-earth-power"
   },
   "nidoran-m-drill-run": {
    "id": "nidoran-m-drill-run",
    "name": "Drill Run",
-   "description": "New skill: drills horn-first through a 2-hex line (Power 90).",
+   "description": "New skill: drills horn-first through a 2-hex line (Power 60).",
    "grantsMove": "nidoran-m-drill-run"
   },
   "nidoran-m-pack-leader": {
@@ -452,25 +461,25 @@
   "nidoran-m-poison-tail": {
    "id": "nidoran-m-poison-tail",
    "name": "Poison Tail",
-   "description": "New skill: a quick lash of its venomous tail (Power 45).",
+   "description": "New skill: a quick lash of its venomous tail (Power 55).",
    "grantsMove": "nidoran-m-poison-tail"
   },
   "nidoran-m-mud-shot": {
    "id": "nidoran-m-mud-shot",
    "name": "Mud Shot",
-   "description": "New skill: hurls mud at a foe up to 2 hexes away (Power 70), Slowing it for 1 turn.",
+   "description": "New skill: hurls mud at a foe up to 2 hexes away (Power 50), Slowing it for 1 turn.",
    "grantsMove": "nidoran-m-mud-shot"
   },
   "nidoran-m-sludge-wave": {
    "id": "nidoran-m-sludge-wave",
    "name": "Sludge Wave",
-   "description": "New skill: a wave of sludge hits every adjacent foe (Power 80), Poisoning for 1 turn.",
+   "description": "New skill: a wave of sludge hits every adjacent foe (Power 65), Poisoning for 1 turn.",
    "grantsMove": "nidoran-m-sludge-wave"
   },
   "nidoran-m-stomping-tantrum": {
    "id": "nidoran-m-stomping-tantrum",
    "name": "Stomping Tantrum",
-   "description": "New skill: stomps furiously on a foe (Power 80).",
+   "description": "New skill: stomps furiously on a foe (Power 70).",
    "grantsMove": "nidoran-m-stomping-tantrum"
   }
  }

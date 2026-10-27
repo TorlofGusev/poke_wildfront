@@ -66,7 +66,7 @@
    "kind": "bond",
    "category": "physical",
    "bondCost": 1,
-   "power": 60,
+   "power": 55,
    "range": {
     "min": 1,
     "max": 2
@@ -80,7 +80,8 @@
     {
      "kind": "engage"
     }
-   ]
+   ],
+   "canonPower": 55
   },
   "farfetchd-air-slash": {
    "id": "farfetchd-air-slash",
@@ -89,7 +90,7 @@
    "kind": "bond",
    "category": "special",
    "bondCost": 2,
-   "power": 85,
+   "power": 65,
    "range": {
     "min": 1,
     "max": 3
@@ -98,7 +99,8 @@
    "shape": {
     "kind": "single"
    },
-   "affects": "enemies"
+   "affects": "enemies",
+   "canonPower": 75
   },
   "farfetchd-swords-dance": {
    "id": "farfetchd-swords-dance",
@@ -140,7 +142,8 @@
    "shape": {
     "kind": "single"
    },
-   "affects": "enemies"
+   "affects": "enemies",
+   "canonPower": 60
   },
   "farfetchd-night-slash": {
    "id": "farfetchd-night-slash",
@@ -149,7 +152,7 @@
    "kind": "special",
    "category": "physical",
    "cooldown": 3,
-   "power": 70,
+   "power": 65,
    "range": {
     "min": 1,
     "max": 1
@@ -165,7 +168,8 @@
      "status": "exposed",
      "duration": 1
     }
-   ]
+   ],
+   "canonPower": 70
   },
   "farfetchd-brave-bird": {
    "id": "farfetchd-brave-bird",
@@ -174,61 +178,6 @@
    "kind": "special",
    "category": "physical",
    "cooldown": 5,
-   "power": 100,
-   "range": {
-    "min": 1,
-    "max": 1
-   },
-   "requiresLineOfSight": false,
-   "shape": {
-    "kind": "single"
-   },
-   "affects": "enemies"
-  },
-  "farfetchd-hurricane": {
-   "id": "farfetchd-hurricane",
-   "name": "Hurricane",
-   "type": "flying",
-   "kind": "special",
-   "category": "special",
-   "cooldown": 5,
-   "power": 90,
-   "range": {
-    "min": 1,
-    "max": 1
-   },
-   "requiresLineOfSight": true,
-   "shape": {
-    "kind": "burst",
-    "radius": 1
-   },
-   "affects": "enemies"
-  },
-  "farfetchd-sky-attack": {
-   "id": "farfetchd-sky-attack",
-   "name": "Sky Attack",
-   "type": "flying",
-   "kind": "special",
-   "category": "physical",
-   "cooldown": 5,
-   "power": 100,
-   "range": {
-    "min": 1,
-    "max": 2
-   },
-   "requiresLineOfSight": true,
-   "shape": {
-    "kind": "single"
-   },
-   "affects": "enemies"
-  },
-  "farfetchd-double-edge": {
-   "id": "farfetchd-double-edge",
-   "name": "Double-Edge",
-   "type": "normal",
-   "kind": "bond",
-   "category": "physical",
-   "bondCost": 2,
    "power": 95,
    "range": {
     "min": 1,
@@ -238,7 +187,66 @@
    "shape": {
     "kind": "single"
    },
-   "affects": "enemies"
+   "affects": "enemies",
+   "canonPower": 120
+  },
+  "farfetchd-hurricane": {
+   "id": "farfetchd-hurricane",
+   "name": "Hurricane",
+   "type": "flying",
+   "kind": "special",
+   "category": "special",
+   "cooldown": 5,
+   "power": 70,
+   "range": {
+    "min": 1,
+    "max": 1
+   },
+   "requiresLineOfSight": true,
+   "shape": {
+    "kind": "burst",
+    "radius": 1
+   },
+   "affects": "enemies",
+   "canonPower": 110
+  },
+  "farfetchd-sky-attack": {
+   "id": "farfetchd-sky-attack",
+   "name": "Sky Attack",
+   "type": "flying",
+   "kind": "special",
+   "category": "physical",
+   "cooldown": 5,
+   "power": 95,
+   "range": {
+    "min": 1,
+    "max": 2
+   },
+   "requiresLineOfSight": true,
+   "shape": {
+    "kind": "single"
+   },
+   "affects": "enemies",
+   "canonPower": 140
+  },
+  "farfetchd-double-edge": {
+   "id": "farfetchd-double-edge",
+   "name": "Double-Edge",
+   "type": "normal",
+   "kind": "bond",
+   "category": "physical",
+   "bondCost": 2,
+   "power": 100,
+   "range": {
+    "min": 1,
+    "max": 1
+   },
+   "requiresLineOfSight": false,
+   "shape": {
+    "kind": "single"
+   },
+   "affects": "enemies",
+   "canonPower": 120
   },
   "farfetchd-razor-wind": {
    "id": "farfetchd-razor-wind",
@@ -247,7 +255,7 @@
    "kind": "special",
    "category": "special",
    "cooldown": 5,
-   "power": 85,
+   "power": 60,
    "range": {
     "min": 0,
     "max": 0
@@ -257,7 +265,8 @@
     "kind": "burst",
     "radius": 1
    },
-   "affects": "enemies"
+   "affects": "enemies",
+   "canonPower": 80
   },
   "farfetchd-leer": {
    "id": "farfetchd-leer",
@@ -289,13 +298,13 @@
   "farfetchd-acrobatics": {
    "id": "farfetchd-acrobatics",
    "name": "Acrobatics",
-   "description": "Bond skill: flits up to 2 hexes into a foe (Power 60) and engages it.",
+   "description": "Bond skill: flits up to 2 hexes into a foe (Power 55) and engages it.",
    "grantsMove": "farfetchd-acrobatics"
   },
   "farfetchd-air-slash": {
    "id": "farfetchd-air-slash",
    "name": "Air Slash",
-   "description": "Bond skill: a blade of air at a foe up to 3 hexes away (Power 85).",
+   "description": "Bond skill: a blade of air at a foe up to 3 hexes away (Power 65).",
    "grantsMove": "farfetchd-air-slash"
   },
   "farfetchd-defiant": {
@@ -345,7 +354,7 @@
   "farfetchd-night-slash": {
    "id": "farfetchd-night-slash",
    "name": "Night Slash",
-   "description": "New skill: a swift slash at an opening (Power 70) that Exposes the foe for 1 turn.",
+   "description": "New skill: a swift slash at an opening (Power 65) that Exposes the foe for 1 turn.",
    "grantsMove": "farfetchd-night-slash"
   },
   "farfetchd-stick-fighter": {
@@ -367,13 +376,13 @@
   "farfetchd-brave-bird": {
    "id": "farfetchd-brave-bird",
    "name": "Brave Bird",
-   "description": "New skill: a reckless diving charge (Power 100).",
+   "description": "New skill: a reckless diving charge (Power 95).",
    "grantsMove": "farfetchd-brave-bird"
   },
   "farfetchd-hurricane": {
    "id": "farfetchd-hurricane",
    "name": "Hurricane",
-   "description": "New skill: a howling gale up to 1 hex away (Power 90) hitting a 1-hex area.",
+   "description": "New skill: a howling gale up to 1 hex away (Power 70) hitting a 1-hex area.",
    "grantsMove": "farfetchd-hurricane"
   },
   "farfetchd-inner-focus": {
@@ -398,7 +407,7 @@
   "farfetchd-sky-attack": {
    "id": "farfetchd-sky-attack",
    "name": "Sky Attack",
-   "description": "New skill: dives from above at a foe up to 2 hexes away (Power 100).",
+   "description": "New skill: dives from above at a foe up to 2 hexes away (Power 95).",
    "grantsMove": "farfetchd-sky-attack"
   },
   "farfetchd-leek-combo": {
@@ -442,13 +451,13 @@
   "farfetchd-double-edge": {
    "id": "farfetchd-double-edge",
    "name": "Double-Edge",
-   "description": "Bond skill: a reckless leek-first charge (Power 95, Attack).",
+   "description": "Bond skill: a reckless leek-first charge (Power 100, Attack).",
    "grantsMove": "farfetchd-double-edge"
   },
   "farfetchd-razor-wind": {
    "id": "farfetchd-razor-wind",
    "name": "Razor Wind",
-   "description": "New skill: beats its wings into blades of wind at every adjacent foe (Power 85).",
+   "description": "New skill: beats its wings into blades of wind at every adjacent foe (Power 60).",
    "grantsMove": "farfetchd-razor-wind"
   },
   "farfetchd-leer": {

@@ -63,10 +63,13 @@ describe("engagement (one on one)", () => {
     expect(unitById(s1, "f").engagedWith).toBeNull();
   });
 
-  it("stepping away draws one free attack from the partner and ends the engagement", () => {
+  it("any step draws one free attack from the partner, before the move, and ends the engagement", () => {
     const s1 = hit(start([u("p", "fast", "player", 2, 2), u("e", "mid", "enemy", 3, 2)]), "p", "tackle", 3, 2).state;
-    const stay = applyAction(s1, content, { type: "move", unitId: "p", to: { x: 3, y: 1 } });
-    expect(stay.events.some((e) => e.type === "engagementStrike")).toBe(false);
+    // Even a step that stays next to the partner breaks away: no circling around it.
+    const around = applyAction(s1, content, { type: "move", unitId: "p", to: { x: 3, y: 1 } });
+    expect(around.events.filter((e) => e.type === "engagementStrike")).toHaveLength(1);
+    const types = around.events.map((e) => e.type);
+    expect(types.indexOf("engagementStrike")).toBeLessThan(types.indexOf("moved"));
     const away = applyAction(s1, content, { type: "move", unitId: "p", to: { x: 0, y: 2 } });
     expect(away.events.filter((e) => e.type === "engagementStrike")).toEqual([{ type: "engagementStrike", unitId: "e", targetId: "p" }]);
     expect(away.events).toContainEqual(expect.objectContaining({ type: "damaged", unitId: "p" }));
@@ -145,5 +148,19 @@ describe("combos", () => {
     const s = { ...s0, units: s0.units.map((x) => (x.id === "e" ? { ...x, statuses: [{ id: "poison", turnsLeft: 3, sourceId: "p2" }] } : x)) };
     const r = applyAction(s, content, { type: "useMove", unitId: "p1", moveId: "zap", target: { x: 2, y: 0 } });
     expect(r.events).toContainEqual(expect.objectContaining({ type: "combo", unitId: "p1", targetId: "e", setup: "status" }));
+  });
+});
+
+describe("AI and engagement", () => {
+  it("an engaged AI Pokémon at full HP fights its partner instead of stepping around it", async () => {
+    const { planTurn } = await import("../../src/core/ai");
+    let s = start([u("p", "mid", "player", 2, 2), u("e", "fast", "enemy", 3, 2)]);
+    while (s.turn?.unitId !== "p") s = applyAction(s, content, { type: "endTurn", unitId: s.turn!.unitId }).state;
+    s = applyAction(s, content, { type: "useMove", unitId: "p", moveId: "tackle", target: { x: 3, y: 2 } }).state;
+    while (s.turn?.unitId !== "e") s = applyAction(s, content, { type: "endTurn", unitId: s.turn!.unitId }).state;
+    expect(unitById(s, "e").engagedWith).toBe("p");
+    const plan = planTurn(s, content);
+    expect(plan.some((a) => a.type === "move")).toBe(false);
+    expect(plan.some((a) => a.type === "useMove")).toBe(true);
   });
 });

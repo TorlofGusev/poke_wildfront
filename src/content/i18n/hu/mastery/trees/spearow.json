@@ -28,7 +28,7 @@
    "description": "Új képesség: könnyedebbé válik, 2 körre Hasted lesz."
   },
   "spearow-steel-wing": {
-   "description": "Új képesség: acélkemény szárnycsapás (Power 70)."
+   "description": "Új képesség: acélkemény szárnycsapás (Power 65)."
   },
   "spearow-pursuit": {
    "description": "A menekülő ellenfelekre mért szabad ütései 25%-kal többet sebeznek."
@@ -49,7 +49,7 @@
    "description": "Minden kiütése 1 Bondot ad a csapatnak."
   },
   "spearow-sky-attack": {
-   "description": "Új képesség: izzó zuhanórepülés egy legfeljebb 2 hexnyire lévő ellenfélre, akadályokon át (Power 90), 1 körig Exposed."
+   "description": "Új képesség: izzó zuhanórepülés egy legfeljebb 2 hexnyire lévő ellenfélre, akadályokon át (Power 95), 1 körig Exposed."
   },
   "spearow-fury-pecking": {
    "description": "Ugyanazon ellenfélre mért minden egymást követő találat 10%-kal többet sebez, legfeljebb 3-szor."
@@ -64,7 +64,7 @@
    "description": "Csúcs. 15%-kal többet sebez a társai által lekötött ellenfelekre; minden kombó 1 Bondot ad a csapatnak."
   },
   "spearow-fly": {
-   "description": "Bond képesség: magasba száll, majd lecsap az ellenfélre (Erő 90, Támadás)."
+   "description": "Bond képesség: magasba száll, majd lecsap az ellenfélre (Erő 85, Támadás)."
   },
   "spearow-growl": {
    "description": "Új képesség: éles rikoltás 1 körre Weakened állapotba teszi a 2 hexen belüli ellenfeleket."

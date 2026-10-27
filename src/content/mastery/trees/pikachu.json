@@ -86,7 +86,7 @@
    "kind": "bond",
    "category": "special",
    "bondCost": 1,
-   "power": 70,
+   "power": 50,
    "range": {
     "min": 1,
     "max": 1
@@ -103,7 +103,8 @@
      "status": "slow",
      "duration": 1
     }
-   ]
+   ],
+   "canonPower": 55
   },
   "pikachu-volt-tackle": {
    "id": "pikachu-volt-tackle",
@@ -128,7 +129,8 @@
      "status": "paralysis",
      "duration": 1
     }
-   ]
+   ],
+   "canonPower": 120
   },
   "pikachu-iron-tail": {
    "id": "pikachu-iron-tail",
@@ -137,7 +139,7 @@
    "kind": "special",
    "category": "physical",
    "cooldown": 3,
-   "power": 70,
+   "power": 85,
    "range": {
     "min": 1,
     "max": 1
@@ -153,7 +155,8 @@
      "status": "exposed",
      "duration": 1
     }
-   ]
+   ],
+   "canonPower": 100
   },
   "pikachu-agility": {
    "id": "pikachu-agility",
@@ -186,7 +189,7 @@
    "kind": "special",
    "category": "special",
    "cooldown": 2,
-   "power": 55,
+   "power": 60,
    "range": {
     "min": 1,
     "max": 2
@@ -200,7 +203,8 @@
     {
      "kind": "disengage"
     }
-   ]
+   ],
+   "canonPower": 70
   },
   "pikachu-wild-charge": {
    "id": "pikachu-wild-charge",
@@ -209,7 +213,7 @@
    "kind": "special",
    "category": "physical",
    "cooldown": 4,
-   "power": 90,
+   "power": 80,
    "range": {
     "min": 1,
     "max": 1
@@ -223,7 +227,8 @@
     {
      "kind": "engage"
     }
-   ]
+   ],
+   "canonPower": 90
   },
   "pikachu-swift": {
    "id": "pikachu-swift",
@@ -232,7 +237,7 @@
    "kind": "special",
    "category": "special",
    "cooldown": 4,
-   "power": 80,
+   "power": 50,
    "range": {
     "min": 1,
     "max": 1
@@ -242,7 +247,8 @@
     "kind": "burst",
     "radius": 1
    },
-   "affects": "enemies"
+   "affects": "enemies",
+   "canonPower": 60
   },
   "pikachu-slam": {
    "id": "pikachu-slam",
@@ -251,7 +257,7 @@
    "kind": "special",
    "category": "physical",
    "cooldown": 4,
-   "power": 90,
+   "power": 75,
    "range": {
     "min": 1,
     "max": 1
@@ -260,7 +266,8 @@
    "shape": {
     "kind": "single"
    },
-   "affects": "enemies"
+   "affects": "enemies",
+   "canonPower": 80
   },
   "pikachu-zap-cannon": {
    "id": "pikachu-zap-cannon",
@@ -269,7 +276,7 @@
    "kind": "special",
    "category": "special",
    "cooldown": 5,
-   "power": 95,
+   "power": 85,
    "range": {
     "min": 1,
     "max": 2
@@ -278,7 +285,8 @@
    "shape": {
     "kind": "single"
    },
-   "affects": "enemies"
+   "affects": "enemies",
+   "canonPower": 120
   },
   "pikachu-growl": {
    "id": "pikachu-growl",
@@ -315,7 +323,7 @@
   "pikachu-electroweb": {
    "id": "pikachu-electroweb",
    "name": "Electroweb",
-   "description": "Bond skill: an electric net on a 1-hex area up to 1 hex away (Power 70); Slows 1 turn.",
+   "description": "Bond skill: an electric net on a 1-hex area up to 1 hex away (Power 50); Slows 1 turn.",
    "grantsMove": "pikachu-electroweb"
   },
   "pikachu-volt-tackle": {
@@ -345,7 +353,7 @@
   "pikachu-iron-tail": {
    "id": "pikachu-iron-tail",
    "name": "Iron Tail",
-   "description": "New skill: a steel-hard tail strike (Power 70) that leaves the foe Exposed for 1 turn.",
+   "description": "New skill: a steel-hard tail strike (Power 85) that leaves the foe Exposed for 1 turn.",
    "grantsMove": "pikachu-iron-tail"
   },
   "pikachu-agility": {
@@ -375,7 +383,7 @@
   "pikachu-volt-switch": {
    "id": "pikachu-volt-switch",
    "name": "Volt Switch",
-   "description": "New skill: zaps a foe up to 2 hexes away (Power 55), then breaks free of engagement.",
+   "description": "New skill: zaps a foe up to 2 hexes away (Power 60), then breaks free of engagement.",
    "grantsMove": "pikachu-volt-switch"
   },
   "pikachu-point-blank-spark": {
@@ -397,13 +405,13 @@
   "pikachu-wild-charge": {
    "id": "pikachu-wild-charge",
    "name": "Wild Charge",
-   "description": "New skill: a crackling charge into a foe (Power 90) that engages it.",
+   "description": "New skill: a crackling charge into a foe (Power 80) that engages it.",
    "grantsMove": "pikachu-wild-charge"
   },
   "pikachu-swift": {
    "id": "pikachu-swift",
    "name": "Swift",
-   "description": "New skill: star-shaped rays on a 1-hex area up to 1 hex away (Power 80).",
+   "description": "New skill: star-shaped rays on a 1-hex area up to 1 hex away (Power 50).",
    "grantsMove": "pikachu-swift"
   },
   "pikachu-lightning-reflexes": {
@@ -425,13 +433,13 @@
   "pikachu-slam": {
    "id": "pikachu-slam",
    "name": "Slam",
-   "description": "New skill: slams its tail into a foe (Power 90).",
+   "description": "New skill: slams its tail into a foe (Power 75).",
    "grantsMove": "pikachu-slam"
   },
   "pikachu-zap-cannon": {
    "id": "pikachu-zap-cannon",
    "name": "Zap Cannon",
-   "description": "New skill: an electric cannon blast at a foe up to 2 hexes away (Power 95).",
+   "description": "New skill: an electric cannon blast at a foe up to 2 hexes away (Power 85).",
    "grantsMove": "pikachu-zap-cannon"
   },
   "pikachu-light-ball": {

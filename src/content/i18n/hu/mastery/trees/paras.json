@@ -1,7 +1,7 @@
 {
  "talents": {
   "paras-x-scissor": {
-   "description": "Bond képesség: keresztbe tett ollóival vág (Power 90, Attack)."
+   "description": "Bond képesség: keresztbe tett ollóival vág (Power 80, Attack)."
   },
   "paras-mushroom-shield": {
    "description": "Bond képesség: kemény kalapja alá húzódik, 2 körre Fortified lesz."
@@ -19,7 +19,7 @@
    "description": "Lekötve körönként további 3%-ot gyógyul a max HP-jából."
   },
   "paras-slash": {
-   "description": "Új képesség: széles ollócsapás (Power 70)."
+   "description": "Új képesség: széles ollócsapás (Power 65)."
   },
   "paras-growth": {
    "description": "Új képesség: gombája megduzzad, 2 körre Focused állapotba kerül."
@@ -31,7 +31,7 @@
    "description": "Teljes HP-n 20%-kal kevesebb sebzést kap."
   },
   "paras-seed-bomb": {
-   "description": "Új képesség: kemény mag robban egy legfeljebb 1 hexnyire lévő, 1 hex körzetben (Power 80)."
+   "description": "Új képesség: kemény mag robban egy legfeljebb 1 hexnyire lévő, 1 hex körzetben (Power 60)."
   },
   "paras-sleep-powder": {
    "description": "Új képesség: spórafelhő legfeljebb 1 hexnyire, 1 hex körzetben 2 körre elaltat (Sleep)."
@@ -58,7 +58,7 @@
    "description": "Capstone. Csatánként egyszer 1 HP-val túlél egy kiütő csapást; 15%-kal kevesebb sebzést kap."
   },
   "paras-bug-bite": {
-   "description": "Új képesség: ollóival megharap egy ellenfelet (Erő 45)."
+   "description": "Új képesség: ollóival megharap egy ellenfelet (Erő 60)."
   },
   "paras-effect-spore": {
    "description": "Szomszédos ellenfelekre mért sebző találatai 1 körre megbénítják őket (Paralysis)."
@@ -67,7 +67,7 @@
    "description": "Új képesség: ragadós selyem egy 2 hexen belüli ellenfélre, 2 körig Slow."
   },
   "paras-lunge": {
-   "description": "Új képesség: teljes erejéből rávetődik az ellenfélre (Erő 90)."
+   "description": "Új képesség: teljes erejéből rávetődik az ellenfélre (Erő 75)."
   }
  }
 }

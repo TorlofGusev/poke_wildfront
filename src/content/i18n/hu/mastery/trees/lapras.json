@@ -28,7 +28,7 @@
    "description": "Teljes HP-n 20%-kal kevesebb sebzést kap."
   },
   "lapras-water-pulse": {
-   "description": "Új képesség: vízlökés egy 2 hexen belüli ellenfélre (Erő 65)."
+   "description": "Új képesség: vízlökés egy 2 hexen belüli ellenfélre (Erő 55)."
   },
   "lapras-aqua-ring": {
    "description": "Új képesség: vízfátyol veszi körül, 45 HP-t gyógyul."
@@ -40,16 +40,16 @@
    "description": "20%-kal többet sebez a Lassú ellenfelekre."
   },
   "lapras-hydro-pump": {
-   "description": "Új képesség: hatalmas vízsugár egy 2 hexen belüli ellenfélre (Erő 95)."
+   "description": "Új képesség: hatalmas vízsugár egy 2 hexen belüli ellenfélre (Erő 80)."
   },
   "lapras-freeze-dry": {
-   "description": "Új képesség: villámgyorsan lefagyaszt egy 2 hexen belüli ellenfelet (Erő 70); 1 körre megfagy."
+   "description": "Új képesség: villámgyorsan lefagyaszt egy 2 hexen belüli ellenfelet (Erő 60); 1 körre megfagy."
   },
   "lapras-steadfast-heart": {
    "description": "Csatánként egyszer 1 HP-val túlél egy kiütő csapást."
   },
   "lapras-surf": {
-   "description": "Új képesség: hatalmas hullám minden 2 hexen belüli ellenfelet eltalál (Erő 85)."
+   "description": "Új képesség: hatalmas hullám minden 2 hexen belüli ellenfelet eltalál (Erő 55)."
   },
   "lapras-mist": {
    "description": "Új képesség: fehér köd, ő és a szomszédos szövetségesek 2 körig Megerősítettek."

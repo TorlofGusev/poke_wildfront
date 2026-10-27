@@ -79,7 +79,8 @@
    "shape": {
     "kind": "single"
    },
-   "affects": "enemies"
+   "affects": "enemies",
+   "canonPower": 60
   },
   "spearow-roost": {
    "id": "spearow-roost",
@@ -149,7 +150,8 @@
     {
      "kind": "engage"
     }
-   ]
+   ],
+   "canonPower": 40
   },
   "spearow-agility": {
    "id": "spearow-agility",
@@ -182,7 +184,7 @@
    "kind": "special",
    "category": "physical",
    "cooldown": 3,
-   "power": 70,
+   "power": 65,
    "range": {
     "min": 1,
     "max": 1
@@ -191,7 +193,8 @@
    "shape": {
     "kind": "single"
    },
-   "affects": "enemies"
+   "affects": "enemies",
+   "canonPower": 70
   },
   "spearow-brave-bird": {
    "id": "spearow-brave-bird",
@@ -209,7 +212,8 @@
    "shape": {
     "kind": "single"
    },
-   "affects": "enemies"
+   "affects": "enemies",
+   "canonPower": 120
   },
   "spearow-tailwind": {
    "id": "spearow-tailwind",
@@ -243,7 +247,7 @@
    "kind": "special",
    "category": "physical",
    "cooldown": 5,
-   "power": 90,
+   "power": 95,
    "range": {
     "min": 1,
     "max": 2
@@ -259,7 +263,8 @@
      "status": "exposed",
      "duration": 1
     }
-   ]
+   ],
+   "canonPower": 140
   },
   "spearow-fly": {
    "id": "spearow-fly",
@@ -268,7 +273,7 @@
    "kind": "bond",
    "category": "physical",
    "bondCost": 2,
-   "power": 90,
+   "power": 85,
    "range": {
     "min": 1,
     "max": 1
@@ -277,7 +282,8 @@
    "shape": {
     "kind": "single"
    },
-   "affects": "enemies"
+   "affects": "enemies",
+   "canonPower": 90
   },
   "spearow-growl": {
    "id": "spearow-growl",
@@ -373,7 +379,7 @@
   "spearow-steel-wing": {
    "id": "spearow-steel-wing",
    "name": "Steel Wing",
-   "description": "New skill: strikes with wings hard as steel (Power 70).",
+   "description": "New skill: strikes with wings hard as steel (Power 65).",
    "grantsMove": "spearow-steel-wing"
   },
   "spearow-pursuit": {
@@ -423,7 +429,7 @@
   "spearow-sky-attack": {
    "id": "spearow-sky-attack",
    "name": "Sky Attack",
-   "description": "New skill: a glowing dive on a foe up to 2 hexes away, over obstacles (Power 90); Exposed 1 turn.",
+   "description": "New skill: a glowing dive on a foe up to 2 hexes away, over obstacles (Power 95); Exposed 1 turn.",
    "grantsMove": "spearow-sky-attack"
   },
   "spearow-fury-pecking": {
@@ -463,7 +469,7 @@
   "spearow-fly": {
    "id": "spearow-fly",
    "name": "Fly",
-   "description": "Bond skill: soars high, then dives into a foe (Power 90, Attack).",
+   "description": "Bond skill: soars high, then dives into a foe (Power 85, Attack).",
    "grantsMove": "spearow-fly"
   },
   "spearow-growl": {

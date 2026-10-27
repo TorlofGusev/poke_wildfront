@@ -109,7 +109,7 @@
    "kind": "bond",
    "category": "physical",
    "bondCost": 3,
-   "power": 90,
+   "power": 100,
    "range": {
     "min": 1,
     "max": 3
@@ -118,7 +118,8 @@
    "shape": {
     "kind": "single"
    },
-   "affects": "enemies"
+   "affects": "enemies",
+   "canonPower": 150
   },
   "rhyhorn-bulldoze": {
    "id": "rhyhorn-bulldoze",
@@ -127,7 +128,7 @@
    "kind": "special",
    "category": "physical",
    "cooldown": 3,
-   "power": 60,
+   "power": 50,
    "range": {
     "min": 0,
     "max": 0
@@ -144,7 +145,8 @@
      "status": "slow",
      "duration": 1
     }
-   ]
+   ],
+   "canonPower": 60
   },
   "rhyhorn-leer": {
    "id": "rhyhorn-leer",
@@ -177,7 +179,7 @@
    "kind": "special",
    "category": "physical",
    "cooldown": 4,
-   "power": 80,
+   "power": 60,
    "range": {
     "min": 1,
     "max": 1
@@ -187,7 +189,8 @@
     "kind": "line",
     "length": 2
    },
-   "affects": "enemies"
+   "affects": "enemies",
+   "canonPower": 80
   },
   "rhyhorn-harden": {
    "id": "rhyhorn-harden",
@@ -220,7 +223,7 @@
    "kind": "special",
    "category": "physical",
    "cooldown": 4,
-   "power": 90,
+   "power": 85,
    "range": {
     "min": 1,
     "max": 1
@@ -236,7 +239,8 @@
      "status": "exposed",
      "duration": 1
     }
-   ]
+   ],
+   "canonPower": 100
   },
   "rhyhorn-wide-guard": {
    "id": "rhyhorn-wide-guard",
@@ -279,7 +283,8 @@
    "shape": {
     "kind": "single"
    },
-   "affects": "enemies"
+   "affects": "enemies",
+   "canonPower": 150
   },
   "rhyhorn-giga-impact": {
    "id": "rhyhorn-giga-impact",
@@ -288,7 +293,7 @@
    "kind": "special",
    "category": "physical",
    "cooldown": 5,
-   "power": 95,
+   "power": 100,
    "range": {
     "min": 1,
     "max": 1
@@ -297,7 +302,8 @@
    "shape": {
     "kind": "single"
    },
-   "affects": "enemies"
+   "affects": "enemies",
+   "canonPower": 150
   }
  },
  "talents": {
@@ -316,7 +322,7 @@
   "rhyhorn-rock-wrecker": {
    "id": "rhyhorn-rock-wrecker",
    "name": "Rock Wrecker",
-   "description": "Bond skill: hurls a huge boulder at a foe up to 3 hexes away (Power 90, Attack).",
+   "description": "Bond skill: hurls a huge boulder at a foe up to 3 hexes away (Power 100, Attack).",
    "grantsMove": "rhyhorn-rock-wrecker"
   },
   "rhyhorn-reckless": {
@@ -338,7 +344,7 @@
   "rhyhorn-bulldoze": {
    "id": "rhyhorn-bulldoze",
    "name": "Bulldoze",
-   "description": "New skill: stomps the ground (Power 60), hitting adjacent foes and Slowing them 1 turn.",
+   "description": "New skill: stomps the ground (Power 50), hitting adjacent foes and Slowing them 1 turn.",
    "grantsMove": "rhyhorn-bulldoze"
   },
   "rhyhorn-leer": {
@@ -366,7 +372,7 @@
   "rhyhorn-drill-run": {
    "id": "rhyhorn-drill-run",
    "name": "Drill Run",
-   "description": "New skill: spins its horn like a drill through 2 hexes in a line (Power 80).",
+   "description": "New skill: spins its horn like a drill through 2 hexes in a line (Power 60).",
    "grantsMove": "rhyhorn-drill-run"
   },
   "rhyhorn-harden": {
@@ -394,7 +400,7 @@
   "rhyhorn-stone-edge": {
    "id": "rhyhorn-stone-edge",
    "name": "Stone Edge",
-   "description": "New skill: drives jagged stone into an adjacent foe (Power 90), leaving it Exposed 1 turn.",
+   "description": "New skill: drives jagged stone into an adjacent foe (Power 85), leaving it Exposed 1 turn.",
    "grantsMove": "rhyhorn-stone-edge"
   },
   "rhyhorn-wide-guard": {
@@ -428,7 +434,7 @@
   "rhyhorn-giga-impact": {
    "id": "rhyhorn-giga-impact",
    "name": "Giga Impact",
-   "description": "New skill: crashes into the foe with all its might (Power 95).",
+   "description": "New skill: crashes into the foe with all its might (Power 100).",
    "grantsMove": "rhyhorn-giga-impact"
   },
   "rhyhorn-rampage": {

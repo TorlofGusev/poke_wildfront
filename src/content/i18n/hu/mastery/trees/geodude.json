@@ -28,7 +28,7 @@
    "description": "10%-kal többet sebez a szomszédos, 25%-kal többet a sárban álló ellenfelekre."
   },
   "geodude-smack-down": {
-   "description": "Új képesség: követ hajít egy max. 2 hexnyi ellenfélre (Erő 60), 1 hexnyit közelebb rántva."
+   "description": "Új képesség: követ hajít egy max. 2 hexnyi ellenfélre (Erő 50), 1 hexnyit közelebb rántva."
   },
   "geodude-defense-curl": {
    "description": "Új képesség: gombóccá gömbölyödik; 2 körre Fortified állapotba kerül."
@@ -40,7 +40,7 @@
    "description": "Minden köre elején max HP-ja 3%-át gyógyítja."
   },
   "geodude-stone-edge": {
-   "description": "Új képesség: éles kövek törnek fel egy max. 2 hexnyi ellenfél alatt (Erő 95)."
+   "description": "Új képesség: éles kövek törnek fel egy max. 2 hexnyi ellenfél alatt (Erő 75)."
   },
   "geodude-heavy-slam": {
    "description": "Új képesség: teljes súlyával rázuhan egy ellenfélre (Erő 85)."
@@ -52,10 +52,10 @@
    "description": "Nem lehet lelassítani (Slow) vagy megbénítani (Paralysis)."
   },
   "geodude-rock-wrecker": {
-   "description": "Új képesség: hatalmas sziklát hajít egy max. 2 hexnyi ellenfélre (Erő 100)."
+   "description": "Új képesség: hatalmas sziklát hajít egy max. 2 hexnyi ellenfélre (Erő 95)."
   },
   "geodude-high-horsepower": {
-   "description": "Új képesség: zúzó dobbantás (Erő 90), amely 1 hexnyit lök az ellenfélen."
+   "description": "Új képesség: zúzó dobbantás (Erő 80), amely 1 hexnyit lök az ellenfélen."
   },
   "geodude-snowballing-boulder": {
    "description": "Minden kiütésnél +1 Attackot kap a csata végéig (max +3)."

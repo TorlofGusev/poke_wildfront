@@ -72,7 +72,7 @@
    "kind": "bond",
    "category": "physical",
    "bondCost": 2,
-   "power": 95,
+   "power": 75,
    "range": {
     "min": 1,
     "max": 1
@@ -88,7 +88,8 @@
      "status": "poison",
      "duration": 2
     }
-   ]
+   ],
+   "canonPower": 70
   },
   "zubat-acrobatics": {
    "id": "zubat-acrobatics",
@@ -97,7 +98,7 @@
    "kind": "bond",
    "category": "physical",
    "bondCost": 2,
-   "power": 75,
+   "power": 55,
    "range": {
     "min": 1,
     "max": 3
@@ -111,7 +112,8 @@
     {
      "kind": "disengage"
     }
-   ]
+   ],
+   "canonPower": 55
   },
   "zubat-roost": {
    "id": "zubat-roost",
@@ -184,7 +186,8 @@
      "status": "poison",
      "duration": 2
     }
-   ]
+   ],
+   "canonPower": 50
   },
   "zubat-toxic": {
    "id": "zubat-toxic",
@@ -242,7 +245,7 @@
    "kind": "special",
    "category": "physical",
    "cooldown": 4,
-   "power": 85,
+   "power": 75,
    "range": {
     "min": 1,
     "max": 1
@@ -258,7 +261,8 @@
      "status": "poison",
      "duration": 1
     }
-   ]
+   ],
+   "canonPower": 80
   },
   "zubat-air-slash": {
    "id": "zubat-air-slash",
@@ -267,7 +271,7 @@
    "kind": "special",
    "category": "special",
    "cooldown": 4,
-   "power": 75,
+   "power": 65,
    "range": {
     "min": 1,
     "max": 2
@@ -276,7 +280,8 @@
    "shape": {
     "kind": "single"
    },
-   "affects": "enemies"
+   "affects": "enemies",
+   "canonPower": 75
   },
   "zubat-brave-bird": {
    "id": "zubat-brave-bird",
@@ -294,7 +299,8 @@
    "shape": {
     "kind": "single"
    },
-   "affects": "enemies"
+   "affects": "enemies",
+   "canonPower": 120
   },
   "zubat-leech-life": {
    "id": "zubat-leech-life",
@@ -303,7 +309,7 @@
    "kind": "special",
    "category": "physical",
    "cooldown": 3,
-   "power": 80,
+   "power": 75,
    "range": {
     "min": 1,
     "max": 1
@@ -312,20 +318,21 @@
    "shape": {
     "kind": "single"
    },
-   "affects": "enemies"
+   "affects": "enemies",
+   "canonPower": 80
   }
  },
  "talents": {
   "zubat-cross-poison": {
    "id": "zubat-cross-poison",
    "name": "Cross Poison",
-   "description": "Bond skill: a crossing slash of venom (Power 95, Attack) that Poisons the foe for 2 turns.",
+   "description": "Bond skill: a crossing slash of venom (Power 75, Attack) that Poisons the foe for 2 turns.",
    "grantsMove": "zubat-cross-poison"
   },
   "zubat-acrobatics": {
    "id": "zubat-acrobatics",
    "name": "Acrobatics",
-   "description": "Bond skill: darts at a foe up to 3 hexes away (Power 75, Attack), then breaks free.",
+   "description": "Bond skill: darts at a foe up to 3 hexes away (Power 55, Attack), then breaks free.",
    "grantsMove": "zubat-acrobatics"
   },
   "zubat-roost": {
@@ -414,13 +421,13 @@
   "zubat-poison-jab": {
    "id": "zubat-poison-jab",
    "name": "Poison Jab",
-   "description": "New skill: a venomous jab (Power 85) that Poisons the foe for 1 turn.",
+   "description": "New skill: a venomous jab (Power 75) that Poisons the foe for 1 turn.",
    "grantsMove": "zubat-poison-jab"
   },
   "zubat-air-slash": {
    "id": "zubat-air-slash",
    "name": "Air Slash",
-   "description": "New skill: a blade of air at a foe up to 2 hexes away (Power 75).",
+   "description": "New skill: a blade of air at a foe up to 2 hexes away (Power 65).",
    "grantsMove": "zubat-air-slash"
   },
   "zubat-persistent-bat": {
@@ -448,7 +455,7 @@
   "zubat-leech-life": {
    "id": "zubat-leech-life",
    "name": "Leech Life",
-   "description": "New skill: bites an adjacent foe with its sharp fangs (Power 80).",
+   "description": "New skill: bites an adjacent foe with its sharp fangs (Power 75).",
    "grantsMove": "zubat-leech-life"
   },
   "zubat-feeding-frenzy": {

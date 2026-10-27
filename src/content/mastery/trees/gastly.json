@@ -68,7 +68,7 @@
    "kind": "bond",
    "category": "special",
    "bondCost": 2,
-   "power": 90,
+   "power": 75,
    "range": {
     "min": 1,
     "max": 3
@@ -84,7 +84,8 @@
      "status": "poison",
      "duration": 2
     }
-   ]
+   ],
+   "canonPower": 90
   },
   "gastly-shadow-sneak": {
    "id": "gastly-shadow-sneak",
@@ -93,7 +94,7 @@
    "kind": "bond",
    "category": "physical",
    "bondCost": 1,
-   "power": 60,
+   "power": 45,
    "range": {
     "min": 1,
     "max": 2
@@ -102,7 +103,8 @@
    "shape": {
     "kind": "single"
    },
-   "affects": "enemies"
+   "affects": "enemies",
+   "canonPower": 40
   },
   "gastly-sucker-punch": {
    "id": "gastly-sucker-punch",
@@ -111,7 +113,7 @@
    "kind": "bond",
    "category": "physical",
    "bondCost": 2,
-   "power": 90,
+   "power": 75,
    "range": {
     "min": 1,
     "max": 1
@@ -120,7 +122,8 @@
    "shape": {
     "kind": "single"
    },
-   "affects": "enemies"
+   "affects": "enemies",
+   "canonPower": 70
   },
   "gastly-poison-jab": {
    "id": "gastly-poison-jab",
@@ -129,7 +132,7 @@
    "kind": "special",
    "category": "physical",
    "cooldown": 3,
-   "power": 65,
+   "power": 75,
    "range": {
     "min": 1,
     "max": 1
@@ -145,7 +148,8 @@
      "status": "poison",
      "duration": 1
     }
-   ]
+   ],
+   "canonPower": 80
   },
   "gastly-hex": {
    "id": "gastly-hex",
@@ -154,7 +158,7 @@
    "kind": "special",
    "category": "special",
    "cooldown": 2,
-   "power": 65,
+   "power": 55,
    "range": {
     "min": 1,
     "max": 2
@@ -163,7 +167,8 @@
    "shape": {
     "kind": "single"
    },
-   "affects": "enemies"
+   "affects": "enemies",
+   "canonPower": 65
   },
   "gastly-shadow-claw": {
    "id": "gastly-shadow-claw",
@@ -172,7 +177,7 @@
    "kind": "special",
    "category": "physical",
    "cooldown": 3,
-   "power": 70,
+   "power": 65,
    "range": {
     "min": 1,
     "max": 1
@@ -181,7 +186,8 @@
    "shape": {
     "kind": "single"
    },
-   "affects": "enemies"
+   "affects": "enemies",
+   "canonPower": 70
   },
   "gastly-sludge-wave": {
    "id": "gastly-sludge-wave",
@@ -190,7 +196,7 @@
    "kind": "special",
    "category": "special",
    "cooldown": 5,
-   "power": 85,
+   "power": 65,
    "range": {
     "min": 1,
     "max": 1
@@ -207,7 +213,8 @@
      "status": "poison",
      "duration": 1
     }
-   ]
+   ],
+   "canonPower": 95
   },
   "gastly-phantom-force": {
    "id": "gastly-phantom-force",
@@ -216,7 +223,7 @@
    "kind": "special",
    "category": "physical",
    "cooldown": 4,
-   "power": 85,
+   "power": 70,
    "range": {
     "min": 1,
     "max": 2
@@ -230,7 +237,8 @@
     {
      "kind": "engage"
     }
-   ]
+   ],
+   "canonPower": 90
   },
   "gastly-dark-pulse": {
    "id": "gastly-dark-pulse",
@@ -239,7 +247,7 @@
    "kind": "special",
    "category": "special",
    "cooldown": 5,
-   "power": 90,
+   "power": 65,
    "range": {
     "min": 1,
     "max": 2
@@ -248,7 +256,8 @@
    "shape": {
     "kind": "single"
    },
-   "affects": "enemies"
+   "affects": "enemies",
+   "canonPower": 80
   },
   "gastly-toxic": {
    "id": "gastly-toxic",
@@ -304,19 +313,19 @@
   "gastly-sludge-bomb": {
    "id": "gastly-sludge-bomb",
    "name": "Sludge Bomb",
-   "description": "Bond skill: hurls filthy sludge up to 3 hexes away (Power 90) that Poisons for 2 turns.",
+   "description": "Bond skill: hurls filthy sludge up to 3 hexes away (Power 75) that Poisons for 2 turns.",
    "grantsMove": "gastly-sludge-bomb"
   },
   "gastly-shadow-sneak": {
    "id": "gastly-shadow-sneak",
    "name": "Shadow Sneak",
-   "description": "Bond skill: its shadow strikes a foe up to 2 hexes away, no line of sight (Power 60, Attack).",
+   "description": "Bond skill: its shadow strikes a foe up to 2 hexes away, no line of sight (Power 45, Attack).",
    "grantsMove": "gastly-shadow-sneak"
   },
   "gastly-sucker-punch": {
    "id": "gastly-sucker-punch",
    "name": "Sucker Punch",
-   "description": "Bond skill: a sneaky punch from the shadows (Power 90, Attack).",
+   "description": "Bond skill: a sneaky punch from the shadows (Power 75, Attack).",
    "grantsMove": "gastly-sucker-punch"
   },
   "gastly-haunting-aura": {
@@ -340,7 +349,7 @@
   "gastly-poison-jab": {
    "id": "gastly-poison-jab",
    "name": "Poison Jab",
-   "description": "New skill: a toxic jab (Power 65) that Poisons the foe for 1 turn.",
+   "description": "New skill: a toxic jab (Power 75) that Poisons the foe for 1 turn.",
    "grantsMove": "gastly-poison-jab"
   },
   "gastly-malice": {
@@ -362,13 +371,13 @@
   "gastly-hex": {
    "id": "gastly-hex",
    "name": "Hex",
-   "description": "New skill: a malicious spell at a foe up to 2 hexes away (Power 65).",
+   "description": "New skill: a malicious spell at a foe up to 2 hexes away (Power 55).",
    "grantsMove": "gastly-hex"
   },
   "gastly-shadow-claw": {
    "id": "gastly-shadow-claw",
    "name": "Shadow Claw",
-   "description": "New skill: rakes a foe with a claw of shadow (Power 70).",
+   "description": "New skill: rakes a foe with a claw of shadow (Power 65).",
    "grantsMove": "gastly-shadow-claw"
   },
   "gastly-mean-look": {
@@ -390,13 +399,13 @@
   "gastly-sludge-wave": {
    "id": "gastly-sludge-wave",
    "name": "Sludge Wave",
-   "description": "New skill: a wave of sludge up to 1 hex away (Power 85) Poisoning foes in a 1-hex area.",
+   "description": "New skill: a wave of sludge up to 1 hex away (Power 65) Poisoning foes in a 1-hex area.",
    "grantsMove": "gastly-sludge-wave"
   },
   "gastly-phantom-force": {
    "id": "gastly-phantom-force",
    "name": "Phantom Force",
-   "description": "New skill: vanishes and strikes a foe up to 2 hexes away (Power 85), engaging it.",
+   "description": "New skill: vanishes and strikes a foe up to 2 hexes away (Power 70), engaging it.",
    "grantsMove": "gastly-phantom-force"
   },
   "gastly-nightmare": {
@@ -423,7 +432,7 @@
   "gastly-dark-pulse": {
    "id": "gastly-dark-pulse",
    "name": "Dark Pulse",
-   "description": "New skill: a horrible aura at a foe up to 2 hexes away (Power 90).",
+   "description": "New skill: a horrible aura at a foe up to 2 hexes away (Power 65).",
    "grantsMove": "gastly-dark-pulse"
   },
   "gastly-toxic": {

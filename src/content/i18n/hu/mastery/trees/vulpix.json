@@ -1,10 +1,10 @@
 {
  "talents": {
   "vulpix-inferno": {
-   "description": "Bond képesség: lángba borít egy legfeljebb 3 hexnyi ellenfelet (Erő 100), 2 körre megégeti."
+   "description": "Bond képesség: lángba borít egy legfeljebb 3 hexnyi ellenfelet (Erő 80), 2 körre megégeti."
   },
   "vulpix-feint-attack": {
-   "description": "Bond képesség: ravasz csel (Erő 55), 1 körre Exposed állapotba teszi az ellenfelet."
+   "description": "Bond képesség: ravasz csel (Erő 65), 1 körre Exposed állapotba teszi az ellenfelet."
   },
   "vulpix-flash-fire": {
    "description": "Égés ellen immunis; Fire típusú lépései 10%-kal többet sebeznek."
@@ -13,7 +13,7 @@
    "description": "Ragyogó bundája miatt 10%-kal kevesebb sebzést kap."
   },
   "vulpix-incinerate": {
-   "description": "Új képesség: megperzsel egy legfeljebb 2 hexnyi ellenfelet (Erő 50)."
+   "description": "Új képesség: megperzsel egy legfeljebb 2 hexnyi ellenfelet (Erő 55)."
   },
   "vulpix-drought": {
    "description": "Perzselő napfénye miatt 20%-kal többet sebez az égő ellenfelekre."
@@ -31,7 +31,7 @@
    "description": "Minden köre elején a max. HP-ja 4%-át gyógyítja."
   },
   "vulpix-heat-wave": {
-   "description": "Új képesség: perzselő forróság egy legfeljebb 1 hexnyi 1 hex területre (Erő 80)."
+   "description": "Új képesség: perzselő forróság egy legfeljebb 1 hexnyi 1 hex területre (Erő 65)."
   },
   "vulpix-ward-of-nine-tails": {
    "description": "Immunis az alvásra, bénulásra és fagyásra."
@@ -40,7 +40,7 @@
    "description": "Szabad csapás nélkül siklik el a lekötő ellenfelektől."
   },
   "vulpix-overheat": {
-   "description": "Új képesség: teljes erejű tűzcsapás egy legfeljebb 2 hexnyi ellenfélre (Erő 100)."
+   "description": "Új képesség: teljes erejű tűzcsapás egy legfeljebb 2 hexnyi ellenfélre (Erő 90)."
   },
   "vulpix-hexing-flames": {
    "description": "20%-kal többet sebez a bármilyen állapotban lévő ellenfelekre."
@@ -61,10 +61,10 @@
    "description": "Új képesség: vad üvöltés egy 2 hexen belüli ellenfelet 2 hexnyit hátraküld."
   },
   "vulpix-swift": {
-   "description": "Új képesség: csillag alakú sugarak egy 2 hexen belüli ellenfélre (Erő 70)."
+   "description": "Új képesség: csillag alakú sugarak egy 2 hexen belüli ellenfélre (Erő 55)."
   },
   "vulpix-mystical-fire": {
-   "description": "Új képesség: misztikus láng egy 2 hexen belüli ellenfélre (Erő 80)."
+   "description": "Új képesség: misztikus láng egy 2 hexen belüli ellenfélre (Erő 65)."
   },
   "vulpix-confuse-ray": {
    "description": "Új képesség: kísérteties fény egy 2 hexen belüli ellenfélre: 2 körig Zavarodott."
