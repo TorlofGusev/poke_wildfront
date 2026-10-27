@@ -67,6 +67,8 @@ export class PokemonScene extends Phaser.Scene {
 
   /** The EV explanation, reopened with "?". */
   private evHelp = false;
+  /** Level-up points: the +1 / +2 switch (+2 costs EV unless the offer is a lucky one). */
+  private plusTwo = false;
 
   init(data: { uid: string; tab?: Tab }): void {
     this.message = "";
@@ -185,87 +187,119 @@ export class PokemonScene extends Phaser.Scene {
     else this.renderStats(m, y, add);
   }
 
-  /** Where every stat comes from (species, focus growth, points, talents), then the stat points to spend. */
+  /**
+   * The stats, one row each; hovering (or tapping) a row explains what it does and where it comes from.
+   * While level-up points wait, every row gets a button: offered stats are free (★ ones give +2), the others
+   * cost EV; the +1 / +2 switch sets what a point should give, and every button shows its price.
+   */
   private renderStats(m: PartyMember, y: number, add: <T extends Phaser.GameObjects.GameObject>(o: T) => T): void {
-    const s = CONTENT.species[m.speciesId]!;
-    const { stats, maxHp } = memberStats(CONTENT, PROGRESSION, m);
-    const growth = focusGrowth(PROGRESSION, m.focus, m.level);
-    const fromTalents = (st: StatName) => m.talents.reduce((sum, t) => sum + (PROGRESSION.talents[t]?.stats?.[st] ?? 0), 0);
-    const cols = [0, 150, 260, 380, 490, 600];
-    const head = [t("Stat"), t("Species"), t("Focus growth"), t("Points"), t("Masteries"), t("Total")];
-    head.forEach((h, i) => add(new RichText(this, DETAIL_X + cols[i]!, y, 140, 12)).setMarkup(tag("dim", h)));
-    y += 20;
-    for (const st of STAT_NAMES) {
-      const cells = [STAT_LABEL[st], `${s.stats[st]}`, growth[st] ? tag("good", `+${growth[st]}`) : tag("dim", "–"),
-        m.statPoints[st] ? `+${m.statPoints[st]}` : tag("dim", "–"), fromTalents(st) ? `+${fromTalents(st)}` : tag("dim", "–"), tag("num", `${stats[st]}`)];
-      cells.forEach((c, i) => add(new RichText(this, DETAIL_X + cols[i]!, y, 140, 13)).setMarkup(c));
-      y += 20;
+    const { stats } = memberStats(CONTENT, PROGRESSION, m);
+    const points = m.unspentPoints > 0;
+    const ev = session.game.ev ?? 0;
+    const r = PROGRESSION.rules.ev;
+    if (points) y = this.renderEvHelp(y, add);
+    if (points) {
+      add(new RichText(this, DETAIL_X, y + 5, 300, 13)).setMarkup(
+        `${tag("num", m.unspentPoints > 1 ? t("★ {n} stat points to spend", { n: m.unspentPoints }) : t("★ {n} stat point to spend", { n: m.unspentPoints }))}  ${tag("dim", `EV ${ev}`)}`);
+      add(new RichText(this, DETAIL_X + 300, y + 5, 60, 12)).setMarkup(tag("dim", t("Gives:")));
+      add(new Button(this, DETAIL_X + 350, y, 44, 24, "+1", () => ((this.plusTwo = false), this.render())).centerLabel().setHighlighted(!this.plusTwo));
+      add(new Button(this, DETAIL_X + 398, y, 44, 24, "+2", () => ((this.plusTwo = true), this.render())).centerLabel().setHighlighted(this.plusTwo));
+      y += 32;
     }
-    const r = CONTENT.rules;
-    y += 4 + add(new RichText(this, DETAIL_X, y + 4, DETAIL_W, 12)).setMarkup([
-      t("Max HP {max} = {base} + {perPoint} × HP + Lv growth ({perLevel} + {perDef} × species Def per level)", { max: tag("num", maxHp), base: r.hpBase, perPoint: r.hpPerPoint, perLevel: r.hpPerLevel, perDef: r.hpPerLevelPerDefense }),
-    ].join("\n")) + 10;
-    this.renderPoints(m, y, add);
+    const rowW = points ? 450 : 300;
+    const tipX = DETAIL_X + rowW + 20;
+    const tipW = DETAIL_W - rowW - 20;
+    const tip = add(this.add.container(tipX, y).setVisible(false));
+    const show = (st: StatName, gain = 0) => {
+      tip.removeAll(true);
+      const text = new RichText(this, 10, 8, tipW - 20, 12);
+      const preview = gain ? `\n${tag("good", `${STAT_LABEL[st]} ${stats[st]} → ${stats[st] + gain}`)}` : "";
+      const h = text.setMarkup(this.statTooltip(m, st) + preview);
+      tip.add([this.add.rectangle(0, 0, tipW, h + 16, 0x1c2433, 0.97).setOrigin(0).setStrokeStyle(1, 0x3a4560), text]);
+      this.root.bringToTop(tip);
+      tip.setVisible(true);
+    };
+    const offers = points ? statOffer(CONTENT, PROGRESSION, m) : [];
+    const max = Math.max(10, ...STAT_NAMES.map((st) => stats[st]));
+    for (const st of STAT_NAMES) {
+      const offer = offers.find((o) => o.stat === st);
+      const hit = add(this.add.rectangle(DETAIL_X, y - 2, 300, 22, 0xffffff, offer ? 0.05 : 0.001).setOrigin(0).setInteractive({ useHandCursor: true }));
+      hit.on("pointerover", () => (hit.setFillStyle(0xffffff, 0.08), show(st)));
+      hit.on("pointerout", () => (hit.setFillStyle(0xffffff, offer ? 0.05 : 0.001), tip.setVisible(false)));
+      hit.on("pointerdown", () => show(st));
+      add(new RichText(this, DETAIL_X + 6, y, 120, 13)).setMarkup(`${STAT_LABEL[st]}${m.focus === st ? ` ${tag("good", "★")}` : ""}`);
+      add(new RichText(this, DETAIL_X + 130, y, 40, 13)).setMarkup(tag("num", `${stats[st]}`));
+      add(this.add.rectangle(DETAIL_X + 172, y + 7, 120, 5, 0x10141c).setOrigin(0, 0.5));
+      add(this.add.rectangle(DETAIL_X + 172, y + 7, Math.max(2, (120 * stats[st]) / max), 5, 0x7ed321).setOrigin(0, 0.5));
+      if (points) {
+        // What a point gives here and what it costs: offered stats are free at their +1 (or lucky +2).
+        const lucky = offer?.plus === 2;
+        const gain = this.plusTwo || lucky ? 2 : 1;
+        const upgrade = this.plusTwo && !lucky;
+        const cost = (offer ? 0 : r.offerCost) + (upgrade ? r.upgradeCost : 0);
+        const label = `+${gain}${lucky ? " ★" : ""}${cost ? ` · ${cost} EV` : ""}`;
+        add(new Button(this, DETAIL_X + 310, y - 3, 130, 22, label, () =>
+          this.act(() => session.update(allocatePoint(CONTENT, PROGRESSION, session.game, m.uid, st, upgrade))))
+          .setEnabled(ev >= cost).setHighlighted(!!offer).onHover((over) => (over ? show(st, gain) : tip.setVisible(false))));
+      }
+      y += 24;
+    }
+    add(new RichText(this, DETAIL_X, y + 2, rowW, 11)).setMarkup(tag("dim", points
+      ? t("Highlighted stats are offered this level and cost no EV. Hover a stat for details.")
+      : t("Hover or tap a stat for details.")));
   }
 
-  /** Stat points block (only when points are waiting). Returns the y below it. */
-  private renderPoints(m: PartyMember, y: number, add: <T extends Phaser.GameObjects.GameObject>(o: T) => T): number {
-    // Stat points: each level offers 3 stats (one may be ++); EV turns a +1 into +2.
-    if (m.unspentPoints > 0) {
-      const ev = session.game.ev ?? 0;
-      // What EV is: shown by itself the first time, then behind the "?" button.
-      const helpSeen = session.game.flags?.includes(EV_HELP_FLAG) ?? false;
-      if (!helpSeen || this.evHelp) {
-        const r = PROGRESSION.rules.ev;
-        const box = add(new RichText(this, DETAIL_X + 8, y + 6, DETAIL_W - 16, 12));
-        const h = box.setMarkup([
-          tag("title", t("Effort (EV)")),
-          t("Each level-up point offers 3 stats; one marked ★ gives +2."),
-          t("Spend EV to grow it your way: {up} EV turns a +1 into +2, {off} EV picks a stat that was not offered.", { up: r.upgradeCost, off: r.offerCost }),
-          t("EV comes from winning: wild battle +{wild}, trainer +{trainer}, badge +{badge}, helping people +{quest}.", { wild: r.wildWin, trainer: r.trainerWin, badge: r.badge, quest: r.quest }),
-        ].join("\n"));
-        add(this.add.rectangle(DETAIL_X, y, DETAIL_W, h + 42, 0x1c2433, 0.95).setOrigin(0).setStrokeStyle(1, 0xf5d76e));
-        this.root.bringToTop(box);
-        add(new Button(this, DETAIL_X + 8, y + h + 12, 120, 24, t("Got it"), () => {
-          this.evHelp = false;
-          if (!helpSeen) session.update({ ...session.game, flags: [...(session.game.flags ?? []), EV_HELP_FLAG] });
-          this.render();
-        }));
-        y += h + 50;
-      } else {
-        add(new Button(this, DETAIL_X + DETAIL_W - 28, y, 28, 18, "?", () => ((this.evHelp = true), this.render())));
-      }
-      const { upgradeCost: cost, offerCost } = PROGRESSION.rules.ev;
-      y += add(new RichText(this, DETAIL_X, y, DETAIL_W, 13)).setMarkup(
-        `${tag("num", m.unspentPoints > 1 ? t("★ {n} stat points to spend", { n: m.unspentPoints }) : t("★ {n} stat point to spend", { n: m.unspentPoints }))}  ${tag("dim", t("EV {ev} · {cost} EV makes a +1 a +2 · other stats +{off} EV", { ev, cost, off: offerCost }))}`) + 4;
-      const labels = STAT_SHORT;
-      const offers = statOffer(CONTENT, PROGRESSION, m);
-      const w = Math.floor((DETAIL_W - 6 * (offers.length - 1)) / offers.length);
-      offers.forEach((o, i) => {
-        const x = DETAIL_X + i * (w + 6);
-        add(new Button(this, x, y, w, 24, `+${o.plus} ${labels[o.stat]}${o.plus === 2 ? " ★" : ""}`, () =>
-          this.act(() => session.update(allocatePoint(CONTENT, PROGRESSION, session.game, m.uid, o.stat)))));
-        if (o.plus === 1) {
-          add(new Button(this, x, y + 27, w, 22, t("+2 {stat} ({cost} EV)", { stat: labels[o.stat], cost }), () =>
-            this.act(() => session.update(allocatePoint(CONTENT, PROGRESSION, session.game, m.uid, o.stat, true))))).setEnabled(ev >= cost);
-        }
-      });
-      y += 56;
-      // Stats not offered: bought with EV.
-      const others = STAT_NAMES.filter((st) => !offers.some((o) => o.stat === st));
-      const ow = Math.floor((DETAIL_W - 6 * (others.length - 1)) / others.length);
-      others.forEach((stat, i) => {
-        const x = DETAIL_X + i * (ow + 6);
-        add(new Button(this, x, y, ow, 22, t("+1 {stat} ({cost} EV)", { stat: labels[stat], cost: offerCost }), () =>
-          this.act(() => session.update(allocatePoint(CONTENT, PROGRESSION, session.game, m.uid, stat))))).setEnabled(ev >= offerCost);
-        add(new Button(this, x, y + 25, ow, 22, t("+2 {stat} ({cost} EV)", { stat: labels[stat], cost: offerCost + cost }), () =>
-          this.act(() => session.update(allocatePoint(CONTENT, PROGRESSION, session.game, m.uid, stat, true))))).setEnabled(ev >= offerCost + cost);
-      });
-      y += 54;
-      y += add(new RichText(this, DETAIL_X, y, DETAIL_W, 11)).setMarkup(tag("dim",
-        t("Vit: +{hp} max HP per point · Atk/Def: damage dealt/taken · Speed: movement {steps}, acts earlier · Will: fills Spirit faster, resists statuses · Crit: critical hit chance and damage", { hp: CONTENT.rules.hpPerPoint, steps: CONTENT.rules.moveBySpeed.map((s) => `${s.speed}+ → ${s.move}`).join(", ") }))) + 6;
+  /** What a stat does in battle right now, and where its value comes from. */
+  private statTooltip(m: PartyMember, st: StatName): string {
+    const s = CONTENT.species[m.speciesId]!;
+    const { stats, maxHp } = memberStats(CONTENT, PROGRESSION, m);
+    const growth = focusGrowth(PROGRESSION, m.focus, m.level)[st];
+    const talents = m.talents.reduce((sum, id) => sum + (PROGRESSION.talents[id]?.stats?.[st] ?? 0), 0);
+    const r = CONTENT.rules;
+    const pct = (x: number) => `${Math.round(x * 100)}%`;
+    const what: Record<StatName, string> = {
+      hp: t("Max HP: +{n} per point. Now {max} HP; sturdier species also gain more HP per level.", { n: r.hpPerPoint, max: tag("num", maxHp) }),
+      attack: t("Raises the damage of every move."),
+      defense: t("Lowers the damage of every move that hits it."),
+      speed: t("Movement: {steps} hexes. Past {last} Speed it hits harder after moving (momentum).", {
+        steps: r.moveBySpeed.map((x) => `${x.speed}+ → ${x.move}`).join(", "), last: r.moveBySpeed[r.moveBySpeed.length - 1]!.speed }),
+      willpower: t("Fills the Spirit bar faster (full: Pumped, more damage and +1 move) and shrugs off statuses foes inflict: {n} chance now.", {
+        n: tag("num", pct(Math.min(0.5, r.willpower.resistPerPoint * stats.willpower))) }),
+      crit: t("Critical hits: {c} chance, ×{x} damage now.", {
+        c: tag("num", pct(r.crit.base + r.crit.perPoint * stats.crit)), x: tag("num", (r.crit.damage + r.crit.damagePerPoint * stats.crit).toFixed(2)) }),
+    };
+    const parts = [
+      t("Species {n}", { n: s.stats[st] }),
+      ...(growth ? [tag("good", t("Focus +{n}", { n: growth }))] : []),
+      ...(m.statPoints[st] ? [t("Points +{n}", { n: m.statPoints[st] })] : []),
+      ...(talents ? [t("Masteries +{n}", { n: talents })] : []),
+    ];
+    return [`${tag("title", STAT_LABEL[st])}  ${tag("num", stats[st])}`, what[st], tag("dim", parts.join(" · "))].join("\n");
+  }
+
+  /** What EV is: shown by itself the first time points wait, then behind the "?" button. Returns the y below. */
+  private renderEvHelp(y: number, add: <T extends Phaser.GameObjects.GameObject>(o: T) => T): number {
+    const helpSeen = session.game.flags?.includes(EV_HELP_FLAG) ?? false;
+    if (helpSeen && !this.evHelp) {
+      add(new Button(this, DETAIL_X + DETAIL_W - 28, y, 28, 22, "?", () => ((this.evHelp = true), this.render())));
+      return y;
     }
-    return y;
+    const r = PROGRESSION.rules.ev;
+    const box = add(new RichText(this, DETAIL_X + 8, y + 6, DETAIL_W - 16, 12));
+    const h = box.setMarkup([
+      tag("title", t("Effort (EV)")),
+      t("Each level-up point offers 3 stats for free; one marked ★ gives +2."),
+      t("With EV you choose: switch to +2 and a point gives +2 ({up} EV more), or pick a stat that was not offered ({off} EV).", { up: r.upgradeCost, off: r.offerCost }),
+      t("EV comes from winning: wild battle +{wild}, trainer +{trainer}, badge +{badge}, helping people +{quest}.", { wild: r.wildWin, trainer: r.trainerWin, badge: r.badge, quest: r.quest }),
+    ].join("\n"));
+    add(this.add.rectangle(DETAIL_X, y, DETAIL_W, h + 42, 0x1c2433, 0.95).setOrigin(0).setStrokeStyle(1, 0xf5d76e));
+    this.root.bringToTop(box);
+    add(new Button(this, DETAIL_X + 8, y + h + 12, 120, 24, t("Got it"), () => {
+      this.evHelp = false;
+      if (!helpSeen) session.update({ ...session.game, flags: [...(session.game.flags ?? []), EV_HELP_FLAG] });
+      this.render();
+    }));
+    return y + h + 50;
   }
 
   /** Moves: the basic attack, then the toggleable moves (left); the selected move's exact rules (right). */
@@ -393,7 +427,7 @@ ${into.types.map((ty) => tag(ty, ty)).join("/")}`);
       const fx = rowX(focuses.length, focusW) + i * (focusW + 6);
       cell(fx, cy, focusW, PROGRESSION.talents[f.skill]?.name ?? f.skill, `focus:${f.skill}`, state, skillType(f.skill));
       // Under the skill: what the pick adds to its stat.
-      add(new RichText(this, fx, cy + 26, focusW, 11)).setMarkup(tag("good", `+${PROGRESSION.rules.focusBonus} ${STAT_LABEL[f.stat]}`));
+      add(this.add.text(fx + focusW / 2, cy + 26, `+${PROGRESSION.rules.focusBonus} ${STAT_LABEL[f.stat]}`, { fontFamily: FONT, fontSize: px(11), color: "#7ed321" }).setOrigin(0.5, 0));
     });
     cy += rowH + 14;
 
