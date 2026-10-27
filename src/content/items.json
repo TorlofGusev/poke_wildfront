@@ -225,6 +225,42 @@
    }
   }
  },
+ "black-glasses": {
+  "id": "black-glasses",
+  "name": "Black Glasses",
+  "description": "Dark moves deal 20% more damage.",
+  "kind": "held",
+  "price": 500,
+  "mods": {
+   "typeDamage": {
+    "dark": 1.2
+   }
+  }
+ },
+ "metal-coat": {
+  "id": "metal-coat",
+  "name": "Metal Coat",
+  "description": "Steel moves deal 20% more damage.",
+  "kind": "held",
+  "price": 500,
+  "mods": {
+   "typeDamage": {
+    "steel": 1.2
+   }
+  }
+ },
+ "fairy-feather": {
+  "id": "fairy-feather",
+  "name": "Fairy Feather",
+  "description": "Fairy moves deal 20% more damage.",
+  "kind": "held",
+  "price": 500,
+  "mods": {
+   "typeDamage": {
+    "fairy": 1.2
+   }
+  }
+ },
  "shell-bell": {
   "id": "shell-bell",
   "name": "Shell Bell",

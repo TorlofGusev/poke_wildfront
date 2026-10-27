@@ -1,0 +1,6 @@
+{
+ "passives": {
+  "brawler-intimidate": { "description": "A szomszédos találatai 1 körre gyengítik az ellenfelet, és 10%-kal kevesebb sebzést kap." },
+  "brawler-sheer-force": { "description": "Minden támadása 20%-kal többet sebez." }
+ }
+}

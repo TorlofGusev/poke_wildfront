@@ -1,0 +1,10 @@
+{
+ "passives": {
+  "nido-sheer-force": {
+   "description": "Minden támadása 20%-kal többet sebez."
+  },
+  "nido-rivalry": {
+   "description": "+15% sebzés a szomszédos ellenfelekre és +15% a szövetségeseivel harcban álló ellenfelekre."
+  }
+ }
+}

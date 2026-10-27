@@ -1,0 +1,262 @@
+{
+ "id": "ditto",
+ "name": "Copycat",
+ "type": "normal",
+ "mimic": true,
+ "rows": {
+  "4": [
+   "ditto-rubbery-body",
+   "ditto-copycat-instinct"
+  ],
+  "6": [
+   "skill:swift",
+   "skill:double-slap"
+  ],
+  "9": [
+   "ditto-gooey-grip",
+   "ditto-puddle-regrowth"
+  ],
+  "12": [
+   "skill:tri-attack",
+   "skill:slash"
+  ],
+  "15": [
+   "ditto-elastic-form",
+   "ditto-studied-foe"
+  ],
+  "18": [
+   "skill:hyper-voice",
+   "skill:thrash",
+   "skill:sing"
+  ],
+  "21": [
+   "ditto-perfect-copy",
+   "ditto-squishy"
+  ],
+  "24": [
+   "skill:hyper-beam",
+   "skill:giga-impact"
+  ],
+  "27": [
+   "ditto-shape-memory",
+   "ditto-sticky-body"
+  ],
+  "30": [
+   "ditto-imposter",
+   "ditto-living-mirror"
+  ]
+ },
+ "lines": [
+  {
+   "line": [
+    "ditto"
+   ],
+   "focus": [
+    {
+     "stat": "attack",
+     "skill": "ditto-transform"
+    },
+    {
+     "stat": "hp",
+     "skill": "ditto-envelop"
+    },
+    {
+     "stat": "defense",
+     "skill": "ditto-shapeshift-dash"
+    }
+   ]
+  }
+ ],
+ "passives": {
+  "ditto-transform": {
+   "id": "ditto-transform",
+   "name": "Transform",
+   "description": "Bond skill: turns into a copy of its foe and strikes with its power (Power 85, Attack).",
+   "grantsMove": "ditto-transform"
+  },
+  "ditto-envelop": {
+   "id": "ditto-envelop",
+   "name": "Envelop",
+   "description": "Bond skill: smothers a foe in goo (Power 70), engaging it; Slow 2 turns.",
+   "grantsMove": "ditto-envelop"
+  },
+  "ditto-shapeshift-dash": {
+   "id": "ditto-shapeshift-dash",
+   "name": "Shapeshift Dash",
+   "description": "Bond skill: streams up to 2 hexes into a foe (Power 60) and engages it.",
+   "grantsMove": "ditto-shapeshift-dash"
+  },
+  "ditto-rubbery-body": {
+   "id": "ditto-rubbery-body",
+   "name": "Rubbery Body",
+   "description": "Takes 10% less damage.",
+   "mods": {
+    "damageTaken": 0.9
+   }
+  },
+  "ditto-copycat-instinct": {
+   "id": "ditto-copycat-instinct",
+   "name": "Copycat Instinct",
+   "description": "Deals 15% more damage to foes engaged with one of its allies.",
+   "mods": {
+    "vsEngagedDamage": 1.15
+   }
+  },
+  "ditto-gooey-grip": {
+   "id": "ditto-gooey-grip",
+   "name": "Gooey Grip",
+   "description": "Foes it hits from an adjacent hex become Slow for 1 turn.",
+   "mods": {
+    "contactStatus": {
+     "status": "slow",
+     "duration": 1
+    }
+   }
+  },
+  "ditto-puddle-regrowth": {
+   "id": "ditto-puddle-regrowth",
+   "name": "Puddle Regrowth",
+   "description": "Heals 4% of max HP at the start of each turn.",
+   "mods": {
+    "healPerTurn": 0.04
+   }
+  },
+  "ditto-elastic-form": {
+   "id": "ditto-elastic-form",
+   "name": "Elastic Form",
+   "description": "Steps away from engaged foes without drawing free strikes.",
+   "mods": {
+    "disengage": true
+   }
+  },
+  "ditto-studied-foe": {
+   "id": "ditto-studied-foe",
+   "name": "Studied Foe",
+   "description": "Deals 20% more damage to foes at full HP.",
+   "mods": {
+    "fullHpTargetDamage": 1.2
+   }
+  },
+  "ditto-perfect-copy": {
+   "id": "ditto-perfect-copy",
+   "name": "Perfect Copy",
+   "description": "Deals 20% more damage to foes carrying a status an ally applied.",
+   "mods": {
+    "vsSetupDamage": 1.2
+   }
+  },
+  "ditto-squishy": {
+   "id": "ditto-squishy",
+   "name": "Squishy",
+   "description": "Takes 20% less damage while at full HP.",
+   "mods": {
+    "fullHpDamageTaken": 0.8
+   }
+  },
+  "ditto-shape-memory": {
+   "id": "ditto-shape-memory",
+   "name": "Shape Memory",
+   "description": "Knocking out a foe resets its skill cooldowns.",
+   "mods": {
+    "koResetCooldowns": true
+   }
+  },
+  "ditto-sticky-body": {
+   "id": "ditto-sticky-body",
+   "name": "Sticky Body",
+   "description": "Foes it engages always draw its free strike when leaving, even if they disengage.",
+   "mods": {
+    "noEscape": true
+   }
+  },
+  "ditto-imposter": {
+   "id": "ditto-imposter",
+   "name": "Imposter",
+   "description": "Capstone. +1 Attack for the battle per knockout (max +3); statuses it inflicts last 1 turn longer.",
+   "mods": {
+    "koAttackBoost": 1,
+    "statusDurationBonus": 1
+   }
+  },
+  "ditto-living-mirror": {
+   "id": "ditto-living-mirror",
+   "name": "Living Mirror",
+   "description": "Capstone. Takes 15% less damage; foes that hit it from an adjacent hex take 8 damage.",
+   "mods": {
+    "damageTaken": 0.85,
+    "thorns": 8
+   }
+  }
+ },
+ "moves": {
+  "ditto-transform": {
+   "id": "ditto-transform",
+   "name": "Transform",
+   "type": "normal",
+   "kind": "bond",
+   "category": "physical",
+   "bondCost": 2,
+   "power": 85,
+   "range": {
+    "min": 1,
+    "max": 1
+   },
+   "requiresLineOfSight": false,
+   "shape": {
+    "kind": "single"
+   },
+   "affects": "enemies"
+  },
+  "ditto-envelop": {
+   "id": "ditto-envelop",
+   "name": "Envelop",
+   "type": "normal",
+   "kind": "bond",
+   "category": "physical",
+   "bondCost": 2,
+   "power": 70,
+   "range": {
+    "min": 1,
+    "max": 1
+   },
+   "requiresLineOfSight": false,
+   "shape": {
+    "kind": "single"
+   },
+   "affects": "enemies",
+   "effects": [
+    {
+     "kind": "engage"
+    },
+    {
+     "kind": "status",
+     "status": "slow",
+     "duration": 2
+    }
+   ]
+  },
+  "ditto-shapeshift-dash": {
+   "id": "ditto-shapeshift-dash",
+   "name": "Shapeshift Dash",
+   "type": "normal",
+   "kind": "bond",
+   "category": "physical",
+   "bondCost": 1,
+   "power": 60,
+   "range": {
+    "min": 1,
+    "max": 2
+   },
+   "requiresLineOfSight": false,
+   "shape": {
+    "kind": "single"
+   },
+   "affects": "enemies",
+   "effects": [
+    {
+     "kind": "engage"
+    }
+   ]
+  }
+ }
+}

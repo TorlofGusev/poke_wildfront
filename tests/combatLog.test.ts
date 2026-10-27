@@ -12,6 +12,7 @@ const ctx: LogContext = {
   ballName: () => "Poké Ball",
   abilityName: () => "Static",
   bondName: "Bond",
+  comboName: (id: string) => id,
   typeOf: (id) => (id === "p" ? "fire" : "grass"),
 };
 

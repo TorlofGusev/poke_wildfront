@@ -1,0 +1,10 @@
+{
+ "passives": {
+  "tide-swift-swim": {
+   "description": "1-gyel többet mozog, és a Víz támadásai 10%-kal többet sebeznek."
+  },
+  "tide-water-absorb": {
+   "description": "Minden kör elején a maximális HP 5%-át gyógyítja, és 10%-kal kevesebb sebzést kap."
+  }
+ }
+}

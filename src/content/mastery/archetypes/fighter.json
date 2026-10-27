@@ -1,0 +1,147 @@
+{
+ "id": "fighter",
+ "name": "Fighter",
+ "type": "fighting",
+ "lines": [
+  {
+   "line": [
+    "machop",
+    "machoke",
+    "machamp"
+   ],
+   "focus": [
+    {
+     "stat": "attack",
+     "skill": "skill:darkest-lariat"
+    },
+    {
+     "stat": "attack",
+     "skill": "skill:submission"
+    },
+    {
+     "stat": "defense",
+     "skill": "skill:vital-throw"
+    }
+   ]
+  },
+  {
+   "line": [
+    "mankey",
+    "primeape"
+   ],
+   "focus": [
+    {
+     "stat": "attack",
+     "skill": "skill:lash-out"
+    },
+    {
+     "stat": "attack",
+     "skill": "skill:dual-chop"
+    },
+    {
+     "stat": "defense",
+     "skill": "skill:taunt"
+    }
+   ]
+  },
+  {
+   "line": [
+    "hitmonchan"
+   ],
+   "focus": [
+    {
+     "stat": "attack",
+     "skill": "skill:mach-punch"
+    },
+    {
+     "stat": "attack",
+     "skill": "skill:sky-uppercut"
+    },
+    {
+     "stat": "hp",
+     "skill": "skill:drain-punch"
+    }
+   ]
+  },
+  {
+   "line": [
+    "hitmonlee"
+   ],
+   "focus": [
+    {
+     "stat": "attack",
+     "skill": "skill:high-jump-kick"
+    },
+    {
+     "stat": "attack",
+     "skill": "skill:blaze-kick"
+    },
+    {
+     "stat": "defense",
+     "skill": "skill:rolling-kick"
+    }
+   ]
+  }
+ ],
+ "rows": {
+  "4": [
+   "guts",
+   "tough-claws"
+  ],
+  "6": [
+   "skill:rock-smash",
+   "skill:low-kick"
+  ],
+  "9": [
+   "fighting-power",
+   "first-strike"
+  ],
+  "12": [
+   "skill:brick-break",
+   "skill:bulk-up"
+  ],
+  "15": [
+   "follow-through",
+   "cornered"
+  ],
+  "18": [
+   "skill:dynamic-punch",
+   "skill:seismic-toss"
+  ],
+  "21": [
+   "moxie",
+   "relentless"
+  ],
+  "24": [
+   "skill:close-combat",
+   "skill:focus-punch"
+  ],
+  "27": [
+   "hustle",
+   "battle-high"
+  ],
+  "30": [
+   "fighter-iron-fist",
+   "fighter-no-guard"
+  ]
+ },
+ "passives": {
+  "fighter-iron-fist": {
+   "id": "fighter-iron-fist",
+   "name": "Iron Fist",
+   "description": "Its close-range hits deal 20% more damage.",
+   "mods": {
+    "closeDamage": 1.2
+   }
+  },
+  "fighter-no-guard": {
+   "id": "fighter-no-guard",
+   "name": "No Guard",
+   "description": "It deals 25% more damage but takes 10% more.",
+   "mods": {
+    "damageDealt": 1.25,
+    "damageTaken": 1.1
+   }
+  }
+ }
+}

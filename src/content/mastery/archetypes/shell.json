@@ -1,0 +1,148 @@
+{
+ "id": "shell",
+ "name": "Shell",
+ "type": "water",
+ "lines": [
+  {
+   "line": [
+    "squirtle",
+    "wartortle",
+    "blastoise"
+   ],
+   "focus": [
+    {
+     "stat": "attack",
+     "skill": "skill:hydro-cannon"
+    },
+    {
+     "stat": "defense",
+     "skill": "skill:rapid-spin"
+    },
+    {
+     "stat": "hp",
+     "skill": "skill:aqua-ring"
+    }
+   ]
+  },
+  {
+   "line": [
+    "shellder",
+    "cloyster"
+   ],
+   "focus": [
+    {
+     "stat": "attack",
+     "skill": "skill:icicle-crash"
+    },
+    {
+     "stat": "attack",
+     "skill": "skill:shell-smash"
+    },
+    {
+     "stat": "defense",
+     "skill": "skill:withdraw--bond"
+    }
+   ]
+  },
+  {
+   "line": [
+    "krabby",
+    "kingler"
+   ],
+   "focus": [
+    {
+     "stat": "attack",
+     "skill": "skill:guillotine"
+    },
+    {
+     "stat": "attack",
+     "skill": "skill:crabhammer--bond"
+    },
+    {
+     "stat": "defense",
+     "skill": "skill:wide-guard"
+    }
+   ]
+  },
+  {
+   "line": [
+    "slowpoke",
+    "slowbro"
+   ],
+   "focus": [
+    {
+     "stat": "attack",
+     "skill": "skill:future-sight"
+    },
+    {
+     "stat": "attack",
+     "skill": "skill:psyshock"
+    },
+    {
+     "stat": "hp",
+     "skill": "skill:slack-off"
+    }
+   ]
+  }
+ ],
+ "rows": {
+  "4": [
+   "thick-hide",
+   "water-power"
+  ],
+  "6": [
+   "skill:water-pulse",
+   "skill:headbutt"
+  ],
+  "9": [
+   "sturdy",
+   "defense-training"
+  ],
+  "12": [
+   "skill:bubble-beam",
+   "skill:iron-defense"
+  ],
+  "15": [
+   "torrent",
+   "vitality-training"
+  ],
+  "18": [
+   "skill:liquidation",
+   "skill:surf"
+  ],
+  "21": [
+   "rough-skin",
+   "second-wind"
+  ],
+  "24": [
+   "skill:hydro-pump",
+   "skill:giga-impact"
+  ],
+  "27": [
+   "multiscale",
+   "natural-recovery"
+  ],
+  "30": [
+   "shell-shell-armor",
+   "shell-rain-dish"
+  ]
+ },
+ "passives": {
+  "shell-shell-armor": {
+   "id": "shell-shell-armor",
+   "name": "Shell Armor",
+   "description": "Takes 20% less damage.",
+   "mods": {
+    "damageTaken": 0.8
+   }
+  },
+  "shell-rain-dish": {
+   "id": "shell-rain-dish",
+   "name": "Rain Dish",
+   "description": "Heals 6% of max HP at the start of each turn.",
+   "mods": {
+    "healPerTurn": 0.06
+   }
+  }
+ }
+}

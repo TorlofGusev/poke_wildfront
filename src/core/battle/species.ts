@@ -26,6 +26,8 @@ export interface TypeMoveMechanic {
   readonly swarmBonus?: number;
   /** Turns the target's tile into this terrain character (floor and grass only). */
   readonly terrainOnHit?: string;
+  /** Damage multiplier against a target below half HP or carrying a harmful status (Dark). */
+  readonly vsHurt?: number;
 }
 
 /** What a Pokémon of this type can do on the battlefield. */
@@ -36,6 +38,8 @@ export interface TypeUnitTraits {
   readonly phases?: boolean;
   /** Cannot be pushed or pulled. */
   readonly immovable?: boolean;
+  /** Multiplies all damage it takes (Steel). */
+  readonly damageTaken?: number;
 }
 
 export interface TypeDef extends TypeProfile {

@@ -1,0 +1,150 @@
+{
+ "id": "tide",
+ "name": "Tide",
+ "type": "water",
+ "lines": [
+  {
+   "line": [
+    "staryu",
+    "starmie"
+   ],
+   "focus": [
+    {
+     "stat": "attack",
+     "skill": "skill:power-gem"
+    },
+    {
+     "stat": "defense",
+     "skill": "skill:cosmic-power"
+    },
+    {
+     "stat": "hp",
+     "skill": "skill:recover--bond"
+    }
+   ]
+  },
+  {
+   "line": [
+    "lapras"
+   ],
+   "focus": [
+    {
+     "stat": "attack",
+     "skill": "skill:freeze-dry"
+    },
+    {
+     "stat": "defense",
+     "skill": "skill:haze"
+    },
+    {
+     "stat": "hp",
+     "skill": "skill:life-dew"
+    }
+   ]
+  },
+  {
+   "line": [
+    "seel",
+    "dewgong"
+   ],
+   "focus": [
+    {
+     "stat": "attack",
+     "skill": "skill:fake-out"
+    },
+    {
+     "stat": "defense",
+     "skill": "skill:encore"
+    },
+    {
+     "stat": "defense",
+     "skill": "skill:perish-song"
+    }
+   ]
+  },
+  {
+   "line": [
+    "tentacool",
+    "tentacruel"
+   ],
+   "focus": [
+    {
+     "stat": "attack",
+     "skill": "skill:wring-out"
+    },
+    {
+     "stat": "attack",
+     "skill": "skill:cross-poison"
+    },
+    {
+     "stat": "defense",
+     "skill": "skill:toxic-spikes"
+    }
+   ]
+  }
+ ],
+ "rows": {
+  "4": [
+   "water-power",
+   "long-reach"
+  ],
+  "6": [
+   "skill:chilling-water",
+   "skill:aurora-beam"
+  ],
+  "9": [
+   "keen-eye",
+   "water-veil"
+  ],
+  "12": [
+   "skill:brine",
+   "skill:whirlpool"
+  ],
+  "15": [
+   "torrent",
+   "lingering-effects"
+  ],
+  "18": [
+   "skill:surf",
+   "skill:liquidation"
+  ],
+  "21": [
+   "teamwork",
+   "willpower-training"
+  ],
+  "24": [
+   "skill:hydro-pump",
+   "skill:blizzard"
+  ],
+  "27": [
+   "natural-recovery",
+   "leader"
+  ],
+  "30": [
+   "tide-swift-swim",
+   "tide-water-absorb"
+  ]
+ },
+ "passives": {
+  "tide-swift-swim": {
+   "id": "tide-swift-swim",
+   "name": "Swift Swim",
+   "description": "Gains 1 more movement, and its Water moves deal 10% more damage.",
+   "mods": {
+    "moveBonus": 1,
+    "typeDamage": {
+     "water": 1.1
+    }
+   }
+  },
+  "tide-water-absorb": {
+   "id": "tide-water-absorb",
+   "name": "Water Absorb",
+   "description": "Heals 5% of max HP at the start of each turn and takes 10% less damage.",
+   "mods": {
+    "healPerTurn": 0.05,
+    "damageTaken": 0.9
+   }
+  }
+ }
+}

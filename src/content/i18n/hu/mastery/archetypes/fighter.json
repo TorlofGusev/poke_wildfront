@@ -1,0 +1,10 @@
+{
+ "passives": {
+  "fighter-iron-fist": {
+   "description": "Közelharci találatai 20%-kal többet sebeznek."
+  },
+  "fighter-no-guard": {
+   "description": "25%-kal többet sebez, de 10%-kal több sebzést kap."
+  }
+ }
+}

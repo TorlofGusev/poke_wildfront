@@ -123,6 +123,12 @@ export interface BattleRules {
   /** Max HP gained per level above 1, plus a share of Defense (the Pokémon's constitution). */
   readonly hpPerLevel: number;
   readonly hpPerLevelPerDefense: number;
+  /**
+   * Named combos, checked in order: hitting a foe an ally set up (engaged with it, or carrying a status it
+   * applied) multiplies the damage; some use the status up. `status` limits a combo to one status; one without
+   * `status` or `engaged` takes any ally-applied status.
+   */
+  readonly combos: Readonly<Record<string, { readonly name: string; readonly damage: number; readonly engaged?: boolean; readonly status?: string; readonly consumes?: boolean }>>;
   /** Move power from canon power: scale × canon^exponent × shape × reach × kind factors, rounded to `round`. */
   readonly movePower: {
     readonly scale: number; readonly exponent: number; readonly round: number; readonly max: number;

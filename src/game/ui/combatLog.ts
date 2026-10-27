@@ -17,6 +17,8 @@ export interface LogContext {
   statusName(statusId: string): string;
   ballName(ballId: string): string;
   abilityName(abilityId: string): string;
+  /** Display name of a named combo (rules.combos). */
+  comboName(comboId: string): string;
   /** Display name of the team resource (a content term). */
   readonly bondName: string;
   /** Primary type of the unit, or null while it is hidden. */
@@ -39,15 +41,8 @@ export function formatEvent(e: BattleEvent, ctx: LogContext): LogEntry | null {
     }
     case "engagementStrike":
       return { text: t("{unit} strikes {target} as it breaks away", { unit: name(e.unitId), target: name(e.targetId) }), tone: side(e.unitId) };
-    case "combo": {
-      const vars = { combo: tag("good", t("Combo!")), unit: name(e.unitId), target: name(e.targetId) };
-      return {
-        text: e.setup === "engaged"
-          ? t("{combo} {unit} exploits an ally's engagement on {target}", vars)
-          : t("{combo} {unit} exploits an ally's setup on {target}", vars),
-        tone: side(e.unitId),
-      };
-    }
+    case "combo":
+      return { text: t("{combo} {unit} exploits an ally's setup on {target}", { combo: tag("good", `${ctx.comboName(e.combo)}!`), unit: name(e.unitId), target: name(e.targetId) }), tone: side(e.unitId) };
     case "engaged":
       return { text: t("{unit} and {target} are {x}", { unit: name(e.unitId), target: name(e.targetId), x: tag("bad", t("engaged")) }), tone: "info" };
     case "disengaged":

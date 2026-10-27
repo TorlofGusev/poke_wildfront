@@ -1,0 +1,133 @@
+{
+ "id": "swarm",
+ "name": "Swarm",
+ "type": "bug",
+ "lines": [
+  {
+   "line": [
+    "weedle",
+    "kakuna",
+    "beedrill"
+   ],
+   "focus": [
+    {
+     "stat": "attack",
+     "skill": "skill:fell-stinger"
+    },
+    {
+     "stat": "attack",
+     "skill": "skill:poison-jab"
+    },
+    {
+     "stat": "defense",
+     "skill": "skill:toxic-spikes"
+    }
+   ]
+  },
+  {
+   "line": [
+    "venonat",
+    "venomoth"
+   ],
+   "focus": [
+    {
+     "stat": "attack",
+     "skill": "skill:psybeam--bond"
+    },
+    {
+     "stat": "defense",
+     "skill": "skill:rage-powder"
+    },
+    {
+     "stat": "hp",
+     "skill": "skill:morning-sun"
+    }
+   ]
+  },
+  {
+   "line": [
+    "caterpie",
+    "metapod",
+    "butterfree"
+   ],
+   "focus": [
+    {
+     "stat": "attack",
+     "skill": "skill:hurricane"
+    },
+    {
+     "stat": "defense",
+     "skill": "skill:quiver-dance"
+    },
+    {
+     "stat": "hp",
+     "skill": "skill:morning-sun"
+    }
+   ]
+  }
+ ],
+ "rows": {
+  "4": [
+   "swarm",
+   "bug-power"
+  ],
+  "6": [
+   "skill:bug-bite",
+   "skill:string-shot"
+  ],
+  "9": [
+   "swarm-tactics",
+   "teamwork"
+  ],
+  "12": [
+   "skill:silver-wind",
+   "skill:struggle-bug"
+  ],
+  "15": [
+   "shed-skin",
+   "speed-training"
+  ],
+  "18": [
+   "skill:bug-buzz",
+   "skill:u-turn"
+  ],
+  "21": [
+   "battle-bond",
+   "flanker"
+  ],
+  "24": [
+   "skill:giga-impact",
+   "skill:tailwind"
+  ],
+  "27": [
+   "leader",
+   "run-away"
+  ],
+  "30": [
+   "swarm-compound-eyes",
+   "swarm-shield-dust"
+  ]
+ },
+ "passives": {
+  "swarm-compound-eyes": {
+   "id": "swarm-compound-eyes",
+   "name": "Compound Eyes",
+   "description": "+1 range on ranged moves, and its Bug moves deal 15% more damage.",
+   "mods": {
+    "rangeBonus": 1,
+    "typeDamage": {
+     "bug": 1.15
+    }
+   }
+  },
+  "swarm-shield-dust": {
+   "id": "swarm-shield-dust",
+   "name": "Shield Dust",
+   "description": "It takes 15% less damage and gains more from allies that swarm its target.",
+   "mods": {
+    "damageTaken": 0.85,
+    "swarmBonus": 0.1
+   }
+  }
+ }
+}

@@ -1,0 +1,10 @@
+{
+ "passives": {
+  "blaze-flash-fire": {
+   "description": "Tűz támadásai 25%-kal többet sebeznek, és 10%-kal kevesebb sebzést kap."
+  },
+  "blaze-intimidate": {
+   "description": "A szomszédos találatai 1 körre gyengítik az ellenfelet, és 10%-kal kevesebb sebzést kap."
+  }
+ }
+}

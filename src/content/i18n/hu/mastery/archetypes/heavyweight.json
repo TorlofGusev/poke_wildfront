@@ -1,0 +1,6 @@
+{
+ "passives": {
+  "heavyweight-thick-fat": { "description": "15%-kal kevesebb sebzést kap." },
+  "heavyweight-gluttony": { "description": "Minden körben a maximális HP-ja 6%-át gyógyítja." }
+ }
+}

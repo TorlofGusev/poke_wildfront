@@ -1,0 +1,171 @@
+{
+ "id": "water-striker",
+ "name": "Water Striker",
+ "type": "water",
+ "lines": [
+  {
+   "line": [
+    "magikarp",
+    "gyarados"
+   ],
+   "focus": [
+    {
+     "stat": "attack",
+     "skill": "skill:dragon-dance"
+    },
+    {
+     "stat": "attack",
+     "skill": "skill:outrage"
+    },
+    {
+     "stat": "attack",
+     "skill": "skill:bounce"
+    }
+   ]
+  },
+  {
+   "line": [
+    "goldeen",
+    "seaking"
+   ],
+   "focus": [
+    {
+     "stat": "attack",
+     "skill": "skill:megahorn"
+    },
+    {
+     "stat": "attack",
+     "skill": "skill:horn-drill"
+    },
+    {
+     "stat": "defense",
+     "skill": "skill:soak"
+    }
+   ]
+  },
+  {
+   "line": [
+    "horsea",
+    "seadra"
+   ],
+   "focus": [
+    {
+     "stat": "attack",
+     "skill": "skill:dragon-pulse"
+    },
+    {
+     "stat": "attack",
+     "skill": "skill:twister"
+    },
+    {
+     "stat": "defense",
+     "skill": "skill:smokescreen"
+    }
+   ]
+  },
+  {
+   "line": [
+    "poliwag",
+    "poliwhirl",
+    "poliwrath"
+   ],
+   "focus": [
+    {
+     "stat": "attack",
+     "skill": "skill:belly-drum"
+    },
+    {
+     "stat": "defense",
+     "skill": "skill:circle-throw"
+    },
+    {
+     "stat": "hp",
+     "skill": "skill:amnesia"
+    }
+   ]
+  },
+  {
+   "line": [
+    "psyduck",
+    "golduck"
+   ],
+   "focus": [
+    {
+     "stat": "attack",
+     "skill": "skill:psychic-noise"
+    },
+    {
+     "stat": "defense",
+     "skill": "skill:disable"
+    },
+    {
+     "stat": "attack",
+     "skill": "skill:synchronoise"
+    }
+   ]
+  }
+ ],
+ "rows": {
+  "4": [
+   "water-power",
+   "first-strike"
+  ],
+  "6": [
+   "skill:water-pulse",
+   "skill:headbutt"
+  ],
+  "9": [
+   "pursuit-instinct",
+   "attack-training"
+  ],
+  "12": [
+   "skill:scald",
+   "skill:take-down"
+  ],
+  "15": [
+   "torrent",
+   "hustle"
+  ],
+  "18": [
+   "skill:waterfall",
+   "skill:muddy-water"
+  ],
+  "21": [
+   "moxie",
+   "exploit-opening"
+  ],
+  "24": [
+   "skill:hydro-pump",
+   "skill:skull-bash"
+  ],
+  "27": [
+   "speed-training",
+   "crit-training"
+  ],
+  "30": [
+   "water-striker-swift-swim",
+   "water-striker-sheer-force"
+  ]
+ },
+ "passives": {
+  "water-striker-swift-swim": {
+   "id": "water-striker-swift-swim",
+   "name": "Swift Swim",
+   "description": "Gains 1 more movement, and its Water moves deal 10% more damage.",
+   "mods": {
+    "moveBonus": 1,
+    "typeDamage": {
+     "water": 1.1
+    }
+   }
+  },
+  "water-striker-sheer-force": {
+   "id": "water-striker-sheer-force",
+   "name": "Sheer Force",
+   "description": "All its moves deal 20% more damage.",
+   "mods": {
+    "damageDealt": 1.2
+   }
+  }
+ }
+}

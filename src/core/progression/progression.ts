@@ -280,8 +280,8 @@ export function gainXp<T extends Progress>(content: BattleContent, prog: Progres
 }
 
 /**
- * The mastery tree, as in Wartales: one hand-made tree per evolution line (src/content/mastery/trees,
- * docs/design/mastery-trees.md). At the focus level the Pokémon picks one of three focuses = a stat that
+ * The mastery tree, as in Wartales: hand-made archetype trees shared by evolution lines of one type and role
+ * (src/content/mastery/archetypes, docs/design/archetype-trees.md). At the focus level the Pokémon picks one of three focuses = a stat that
  * grows every level + a Bond skill that scales with it; then each row offers 2–3 skills or 2–3 passives.
  */
 export interface GridRow {

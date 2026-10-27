@@ -615,7 +615,7 @@
  "bite": {
   "id": "bite",
   "name": "Bite",
-  "type": "normal",
+  "type": "dark",
   "kind": "basic",
   "power": 50,
   "range": {
@@ -911,7 +911,7 @@
  "iron-defense": {
   "id": "iron-defense",
   "name": "Harden",
-  "type": "normal",
+  "type": "steel",
   "kind": "special",
   "cooldown": 3,
   "power": 0,
@@ -959,7 +959,7 @@
  "agility": {
   "id": "agility",
   "name": "Agility",
-  "type": "normal",
+  "type": "psychic",
   "kind": "special",
   "cooldown": 3,
   "power": 0,
@@ -1050,7 +1050,7 @@
  "feint-attack": {
   "id": "feint-attack",
   "name": "Sonic Boom",
-  "type": "normal",
+  "type": "dark",
   "kind": "special",
   "cooldown": 2,
   "power": 45,
@@ -1450,7 +1450,7 @@
  "u-turn": {
   "id": "u-turn",
   "name": "Rapid Spin",
-  "type": "normal",
+  "type": "bug",
   "kind": "special",
   "cooldown": 3,
   "power": 55,
@@ -1473,7 +1473,7 @@
  "teleport": {
   "id": "teleport",
   "name": "Fall Back",
-  "type": "normal",
+  "type": "psychic",
   "kind": "special",
   "cooldown": 3,
   "power": 0,
@@ -1710,7 +1710,7 @@
  "moonlight": {
   "id": "moonlight",
   "name": "Moonlight",
-  "type": "normal",
+  "type": "fairy",
   "kind": "special",
   "cooldown": 3,
   "power": 0,
@@ -2688,7 +2688,7 @@
  "splash": {
   "id": "splash",
   "name": "Splash",
-  "type": "water",
+  "type": "normal",
   "kind": "special",
   "cooldown": 3,
   "power": 0,

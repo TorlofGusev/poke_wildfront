@@ -1,0 +1,10 @@
+{
+ "passives": {
+  "ghost-cursed-body": {
+   "description": "A szomszédos találatai 1 körre letiltják az ellenfelet, és aki szomszédból megüti, 6 sebzést kap."
+  },
+  "ghost-shadow-tag": {
+   "description": "A vele harcban álló ellenfelek nem léphetnek el szabad támadása nélkül, és +20% sebzést okoz a szövetségeseivel harcban álló ellenfeleknek."
+  }
+ }
+}

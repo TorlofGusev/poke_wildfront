@@ -1,0 +1,148 @@
+{
+ "id": "earth",
+ "name": "Earth",
+ "type": "ground",
+ "lines": [
+  {
+   "line": [
+    "cubone",
+    "marowak"
+   ],
+   "focus": [
+    {
+     "stat": "attack",
+     "skill": "skill:outrage"
+    },
+    {
+     "stat": "attack",
+     "skill": "skill:bonemerang--bond"
+    },
+    {
+     "stat": "defense",
+     "skill": "skill:detect"
+    }
+   ]
+  },
+  {
+   "line": [
+    "diglett",
+    "dugtrio"
+   ],
+   "focus": [
+    {
+     "stat": "attack",
+     "skill": "skill:magnitude"
+    },
+    {
+     "stat": "attack",
+     "skill": "skill:sucker-punch"
+    },
+    {
+     "stat": "defense",
+     "skill": "skill:sand-tomb"
+    }
+   ]
+  },
+  {
+   "line": [
+    "rhyhorn",
+    "rhydon"
+   ],
+   "focus": [
+    {
+     "stat": "attack",
+     "skill": "skill:megahorn"
+    },
+    {
+     "stat": "attack",
+     "skill": "skill:horn-drill"
+    },
+    {
+     "stat": "defense",
+     "skill": "skill:metal-burst"
+    }
+   ]
+  },
+  {
+   "line": [
+    "sandshrew",
+    "sandslash"
+   ],
+   "focus": [
+    {
+     "stat": "attack",
+     "skill": "skill:crush-claw"
+    },
+    {
+     "stat": "attack",
+     "skill": "skill:steel-roller"
+    },
+    {
+     "stat": "defense",
+     "skill": "skill:rapid-spin"
+    }
+   ]
+  }
+ ],
+ "rows": {
+  "4": [
+   "sand-force",
+   "thick-hide"
+  ],
+  "6": [
+   "skill:mud-slap",
+   "skill:bulldoze"
+  ],
+  "9": [
+   "ground-power",
+   "keen-eye"
+  ],
+  "12": [
+   "skill:dig",
+   "skill:scorching-sands"
+  ],
+  "15": [
+   "bulldozer",
+   "first-strike"
+  ],
+  "18": [
+   "skill:earth-power",
+   "skill:stone-edge"
+  ],
+  "21": [
+   "hunter",
+   "pin-down"
+  ],
+  "24": [
+   "skill:earthquake",
+   "skill:fissure"
+  ],
+  "27": [
+   "relentless",
+   "tough-claws"
+  ],
+  "30": [
+   "earth-arena-trap",
+   "earth-sand-veil"
+  ]
+ },
+ "passives": {
+  "earth-arena-trap": {
+   "id": "earth-arena-trap",
+   "name": "Arena Trap",
+   "description": "Foes engaged with it cannot escape, and it deals 15% more damage to engaged foes.",
+   "mods": {
+    "noEscape": true,
+    "vsEngagedDamage": 1.15
+   }
+  },
+  "earth-sand-veil": {
+   "id": "earth-sand-veil",
+   "name": "Sand Veil",
+   "description": "It takes 15% less damage.",
+   "mods": {
+    "damageTaken": 0.85
+   }
+  }
+ }
+}

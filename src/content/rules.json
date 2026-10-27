@@ -66,5 +66,39 @@
   "burst2": 0.7,
   "line": 0.85,
   "max": 100
+ },
+ "combos": {
+  "pincer": {
+   "name": "Pincer",
+   "engaged": true,
+   "damage": 1.2
+  },
+  "wake-up-slap": {
+   "name": "Wake-Up Slap",
+   "status": "sleep",
+   "damage": 2,
+   "consumes": true
+  },
+  "shatter": {
+   "name": "Shatter",
+   "status": "freeze",
+   "damage": 1.5,
+   "consumes": true
+  },
+  "smelling-salts": {
+   "name": "Smelling Salts",
+   "status": "paralysis",
+   "damage": 1.5,
+   "consumes": true
+  },
+  "venoshock": {
+   "name": "Venoshock",
+   "status": "poison",
+   "damage": 1.5
+  },
+  "hex": {
+   "name": "Hex",
+   "damage": 1.3
+  }
  }
 }

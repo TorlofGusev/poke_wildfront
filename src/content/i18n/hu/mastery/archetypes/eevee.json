@@ -1,0 +1,9 @@
+{
+ "passives": {
+  "eevee-adaptability": { "description": "Minden támadása 20%-kal többet sebez." },
+  "eevee-anticipation": { "description": "15%-kal kevesebb sebzést kap." },
+  "eevee-water-absorb": { "description": "Minden körben a maximális HP-ja 6%-át gyógyítja." },
+  "eevee-volt-absorb": { "description": "Nem bénítható és nem lassítható, és minden körben a maximális HP-ja 4%-át gyógyítja." },
+  "eevee-flash-fire": { "description": "Nem égethető meg, és minden támadása 15%-kal többet sebez." }
+ }
+}

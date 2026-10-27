@@ -1,0 +1,93 @@
+{
+ "id": "dragon",
+ "name": "Dragon",
+ "type": "dragon",
+ "lines": [
+  {
+   "line": [
+    "dratini",
+    "dragonair",
+    "dragonite"
+   ],
+   "focus": [
+    {
+     "stat": "attack",
+     "skill": "skill:extreme-speed"
+    },
+    {
+     "stat": "defense",
+     "skill": "skill:dragon-tail"
+    },
+    {
+     "stat": "hp",
+     "skill": "skill:heal-bell"
+    }
+   ]
+  }
+ ],
+ "rows": {
+  "4": [
+   "dragon-power",
+   "thick-hide"
+  ],
+  "6": [
+   "skill:dragon-breath",
+   "skill:thunder-wave"
+  ],
+  "9": [
+   "shed-skin",
+   "attack-training"
+  ],
+  "12": [
+   "skill:slam",
+   "skill:iron-head"
+  ],
+  "15": [
+   "vitality-training",
+   "moxie"
+  ],
+  "18": [
+   "skill:dragon-rush",
+   "skill:scale-shot"
+  ],
+  "21": [
+   "multiscale",
+   "battle-high"
+  ],
+  "24": [
+   "skill:draco-meteor",
+   "skill:iron-tail"
+  ],
+  "27": [
+   "leader",
+   "relentless"
+  ],
+  "30": [
+   "dragon-multiscale",
+   "dragon-inner-focus"
+  ]
+ },
+ "passives": {
+  "dragon-multiscale": {
+   "id": "dragon-multiscale",
+   "name": "Multiscale",
+   "description": "Takes 35% less damage while at full HP.",
+   "mods": {
+    "fullHpDamageTaken": 0.65
+   }
+  },
+  "dragon-inner-focus": {
+   "id": "dragon-inner-focus",
+   "name": "Inner Focus",
+   "description": "Its Dragon moves deal 20% more damage, and it cannot be Confused.",
+   "mods": {
+    "typeDamage": {
+     "dragon": 1.2
+    },
+    "statusImmune": [
+     "confused"
+    ]
+   }
+  }
+ }
+}

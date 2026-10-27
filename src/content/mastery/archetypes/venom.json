@@ -1,0 +1,154 @@
+{
+ "id": "venom",
+ "name": "Venom",
+ "type": "poison",
+ "lines": [
+  {
+   "line": [
+    "ekans",
+    "arbok"
+   ],
+   "focus": [
+    {
+     "stat": "attack",
+     "skill": "skill:gunk-shot"
+    },
+    {
+     "stat": "defense",
+     "skill": "skill:coil"
+    },
+    {
+     "stat": "hp",
+     "skill": "skill:swallow"
+    }
+   ]
+  },
+  {
+   "line": [
+    "grimer",
+    "muk"
+   ],
+   "focus": [
+    {
+     "stat": "attack",
+     "skill": "skill:sludge-wave"
+    },
+    {
+     "stat": "defense",
+     "skill": "skill:acid-armor"
+    },
+    {
+     "stat": "hp",
+     "skill": "skill:drain-punch"
+    }
+   ]
+  },
+  {
+   "line": [
+    "koffing",
+    "weezing"
+   ],
+   "focus": [
+    {
+     "stat": "attack",
+     "skill": "skill:explosion"
+    },
+    {
+     "stat": "defense",
+     "skill": "skill:smokescreen"
+    },
+    {
+     "stat": "hp",
+     "skill": "skill:pain-split"
+    }
+   ]
+  },
+  {
+   "line": [
+    "zubat",
+    "golbat"
+   ],
+   "focus": [
+    {
+     "stat": "attack",
+     "skill": "skill:cross-poison"
+    },
+    {
+     "stat": "defense",
+     "skill": "skill:mean-look"
+    },
+    {
+     "stat": "hp",
+     "skill": "skill:roost"
+    }
+   ]
+  }
+ ],
+ "rows": {
+  "4": [
+   "poison-point",
+   "thick-hide"
+  ],
+  "6": [
+   "skill:venoshock",
+   "skill:payback"
+  ],
+  "9": [
+   "merciless",
+   "opportunist"
+  ],
+  "12": [
+   "skill:toxic",
+   "skill:substitute"
+  ],
+  "15": [
+   "lingering-effects",
+   "shed-skin"
+  ],
+  "18": [
+   "skill:sludge-bomb",
+   "skill:take-down"
+  ],
+  "21": [
+   "lingering-aroma",
+   "natural-recovery"
+  ],
+  "24": [
+   "skill:hyper-beam",
+   "skill:curse"
+  ],
+  "27": [
+   "poison-power",
+   "hustle"
+  ],
+  "30": [
+   "venom-stench",
+   "venom-corrosion"
+  ]
+ },
+ "passives": {
+  "venom-stench": {
+   "id": "venom-stench",
+   "name": "Stench",
+   "description": "Its hits on adjacent foes Weaken them for 2 turns, and foes that hit it from an adjacent hex take 6 damage.",
+   "mods": {
+    "contactStatus": {
+     "status": "weakened",
+     "duration": 2
+    },
+    "thorns": 6
+   }
+  },
+  "venom-corrosion": {
+   "id": "venom-corrosion",
+   "name": "Corrosion",
+   "description": "+30% damage to Poisoned foes, and statuses it inflicts last 1 turn longer.",
+   "mods": {
+    "vsStatusIdDamage": {
+     "poison": 1.3
+    },
+    "statusDurationBonus": 1
+   }
+  }
+ }
+}

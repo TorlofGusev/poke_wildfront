@@ -1,0 +1,128 @@
+{
+ "id": "spark",
+ "name": "Spark",
+ "type": "electric",
+ "lines": [
+  {
+   "line": [
+    "pikachu",
+    "raichu"
+   ],
+   "focus": [
+    {
+     "stat": "attack",
+     "skill": "skill:volt-tackle"
+    },
+    {
+     "stat": "defense",
+     "skill": "skill:nuzzle"
+    },
+    {
+     "stat": "hp",
+     "skill": "skill:wish"
+    }
+   ]
+  },
+  {
+   "line": [
+    "electabuzz"
+   ],
+   "focus": [
+    {
+     "stat": "attack",
+     "skill": "skill:electroweb"
+    },
+    {
+     "stat": "defense",
+     "skill": "skill:light-screen"
+    },
+    {
+     "stat": "defense",
+     "skill": "skill:screech"
+    }
+   ]
+  },
+  {
+   "line": [
+    "zapdos"
+   ],
+   "focus": [
+    {
+     "stat": "attack",
+     "skill": "skill:hurricane"
+    },
+    {
+     "stat": "defense",
+     "skill": "skill:detect"
+    },
+    {
+     "stat": "hp",
+     "skill": "skill:roost"
+    }
+   ]
+  }
+ ],
+ "rows": {
+  "4": [
+   "static",
+   "keen-eye"
+  ],
+  "6": [
+   "skill:charge",
+   "skill:shock-wave"
+  ],
+  "9": [
+   "shock-exploit",
+   "long-reach"
+  ],
+  "12": [
+   "skill:volt-switch",
+   "skill:thunder-wave"
+  ],
+  "15": [
+   "speed-boost",
+   "prankster"
+  ],
+  "18": [
+   "skill:thunderbolt",
+   "skill:discharge"
+  ],
+  "21": [
+   "follow-through",
+   "battle-high"
+  ],
+  "24": [
+   "skill:thunder",
+   "skill:wild-charge"
+  ],
+  "27": [
+   "electric-power",
+   "hustle"
+  ],
+  "30": [
+   "spark-lightning-rod",
+   "spark-motor-drive"
+  ]
+ },
+ "passives": {
+  "spark-lightning-rod": {
+   "id": "spark-lightning-rod",
+   "name": "Lightning Rod",
+   "description": "Its Electric moves deal 25% more damage.",
+   "mods": {
+    "typeDamage": {
+     "electric": 1.25
+    }
+   }
+  },
+  "spark-motor-drive": {
+   "id": "spark-motor-drive",
+   "name": "Motor Drive",
+   "description": "+1 movement, and knocking out a foe on its turn gives 2 more movement.",
+   "mods": {
+    "moveBonus": 1,
+    "koMove": 2
+   }
+  }
+ }
+}

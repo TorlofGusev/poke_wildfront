@@ -1,0 +1,127 @@
+{
+ "id": "blade",
+ "name": "Blade",
+ "type": "bug",
+ "lines": [
+  {
+   "line": [
+    "scyther"
+   ],
+   "focus": [
+    {
+     "stat": "attack",
+     "skill": "skill:x-scissor"
+    },
+    {
+     "stat": "defense",
+     "skill": "skill:detect"
+    },
+    {
+     "stat": "hp",
+     "skill": "skill:morning-sun"
+    }
+   ]
+  },
+  {
+   "line": [
+    "pinsir"
+   ],
+   "focus": [
+    {
+     "stat": "attack",
+     "skill": "skill:guillotine"
+    },
+    {
+     "stat": "attack",
+     "skill": "skill:superpower"
+    },
+    {
+     "stat": "defense",
+     "skill": "skill:harden"
+    }
+   ]
+  },
+  {
+   "line": [
+    "paras",
+    "parasect"
+   ],
+   "focus": [
+    {
+     "stat": "attack",
+     "skill": "skill:cross-poison"
+    },
+    {
+     "stat": "defense",
+     "skill": "skill:spore--bond"
+    },
+    {
+     "stat": "hp",
+     "skill": "skill:synthesis"
+    }
+   ]
+  }
+ ],
+ "rows": {
+  "4": [
+   "swarm",
+   "tough-claws"
+  ],
+  "6": [
+   "skill:fury-cutter",
+   "skill:cut"
+  ],
+  "9": [
+   "pincer",
+   "pursuit-instinct"
+  ],
+  "12": [
+   "skill:slash",
+   "skill:brick-break"
+  ],
+  "15": [
+   "crit-training",
+   "guts"
+  ],
+  "18": [
+   "skill:knock-off",
+   "skill:double-edge"
+  ],
+  "21": [
+   "moxie",
+   "flanker"
+  ],
+  "24": [
+   "skill:swords-dance",
+   "skill:false-swipe"
+  ],
+  "27": [
+   "relentless",
+   "exploit-opening"
+  ],
+  "30": [
+   "blade-technician",
+   "blade-hyper-cutter"
+  ]
+ },
+ "passives": {
+  "blade-technician": {
+   "id": "blade-technician",
+   "name": "Technician",
+   "description": "Its moves deal 20% more damage to foes engaged with an ally, and 10% more to adjacent foes.",
+   "mods": {
+    "vsEngagedDamage": 1.2,
+    "closeDamage": 1.1
+   }
+  },
+  "blade-hyper-cutter": {
+   "id": "blade-hyper-cutter",
+   "name": "Hyper Cutter",
+   "description": "Its moves deal 15% more damage, and 15% more to foes with a status.",
+   "mods": {
+    "damageDealt": 1.15,
+    "vsStatusDamage": 1.15
+   }
+  }
+ }
+}

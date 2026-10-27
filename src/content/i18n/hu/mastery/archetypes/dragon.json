@@ -1,0 +1,10 @@
+{
+ "passives": {
+  "dragon-multiscale": {
+   "description": "Teljes HP mellett 35%-kal kevesebb sebzést kap."
+  },
+  "dragon-inner-focus": {
+   "description": "A Sárkány támadásai 20%-kal többet sebeznek, és nem lehet Zavarodott."
+  }
+ }
+}

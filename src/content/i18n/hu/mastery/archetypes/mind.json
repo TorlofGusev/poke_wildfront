@@ -1,0 +1,10 @@
+{
+ "passives": {
+  "mind-magic-guard": {
+   "description": "Nem mérgezhető és nem égethető meg, és 10%-kal kevesebb sebzést kap."
+  },
+  "mind-pressure": {
+   "description": "+1 hatótáv a legalább 2 mezőre érő támadásokon, és +15% sebzés a legalább 2 mezőre lévő ellenfelekre."
+  }
+ }
+}

@@ -11,7 +11,8 @@ export type BattleEvent =
   | { type: "engagementStrike"; unitId: string; targetId: string }
   | { type: "engaged"; unitId: string; targetId: string }
   /** A hit exploited an ally's setup (engagement or status): the team gains Bond. */
-  | { type: "combo"; unitId: string; targetId: string; setup: "engaged" | "status" }
+  /** A named combo (rules.combos): the hit exploited an ally's engagement or status. */
+  | { type: "combo"; unitId: string; targetId: string; combo: string }
   | { type: "disengaged"; unitId: string; targetId: string }
   | { type: "damaged"; unitId: string; amount: number; hp: number; source: "move" | "status" | "impact" | "thorns"; effectiveness?: number }
   | { type: "healed"; unitId: string; amount: number; hp: number }

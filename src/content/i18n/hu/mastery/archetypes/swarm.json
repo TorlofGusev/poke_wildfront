@@ -1,0 +1,10 @@
+{
+ "passives": {
+  "swarm-compound-eyes": {
+   "description": "+1 hatótáv a távolsági támadásokon, és Bogár támadásai 15%-kal többet sebeznek."
+  },
+  "swarm-shield-dust": {
+   "description": "15%-kal kevesebb sebzést kap, és többet nyer, ha a társai is a célpontját támadják."
+  }
+ }
+}

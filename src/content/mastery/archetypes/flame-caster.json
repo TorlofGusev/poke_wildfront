@@ -1,0 +1,132 @@
+{
+ "id": "flame-caster",
+ "name": "Flame Caster",
+ "type": "fire",
+ "lines": [
+  {
+   "line": [
+    "vulpix",
+    "ninetales"
+   ],
+   "focus": [
+    {
+     "stat": "attack",
+     "skill": "skill:inferno"
+    },
+    {
+     "stat": "defense",
+     "skill": "skill:confuse-ray"
+    },
+    {
+     "stat": "hp",
+     "skill": "skill:pain-split"
+    }
+   ]
+  },
+  {
+   "line": [
+    "magmar"
+   ],
+   "focus": [
+    {
+     "stat": "attack",
+     "skill": "skill:lava-plume"
+    },
+    {
+     "stat": "attack",
+     "skill": "skill:focus-blast"
+    },
+    {
+     "stat": "defense",
+     "skill": "skill:smokescreen"
+    }
+   ]
+  },
+  {
+   "line": [
+    "moltres"
+   ],
+   "focus": [
+    {
+     "stat": "attack",
+     "skill": "skill:burn-up"
+    },
+    {
+     "stat": "attack",
+     "skill": "skill:hurricane"
+    },
+    {
+     "stat": "hp",
+     "skill": "skill:morning-sun"
+    }
+   ]
+  }
+ ],
+ "rows": {
+  "4": [
+   "blaze",
+   "fire-power"
+  ],
+  "6": [
+   "skill:ember",
+   "skill:incinerate"
+  ],
+  "9": [
+   "flame-body",
+   "long-reach"
+  ],
+  "12": [
+   "skill:flamethrower",
+   "skill:will-o-wisp"
+  ],
+  "15": [
+   "lingering-effects",
+   "keen-eye"
+  ],
+  "18": [
+   "skill:heat-wave",
+   "skill:scorching-sands"
+  ],
+  "21": [
+   "battle-high",
+   "overhead-shot"
+  ],
+  "24": [
+   "skill:burning-jealousy",
+   "skill:hyper-beam"
+  ],
+  "27": [
+   "forceful",
+   "willpower-training"
+  ],
+  "30": [
+   "flame-caster-drought",
+   "flame-caster-magma-armor"
+  ]
+ },
+ "passives": {
+  "flame-caster-drought": {
+   "id": "flame-caster-drought",
+   "name": "Drought",
+   "description": "Its Fire moves deal 20% more damage and the statuses it inflicts last 1 turn longer.",
+   "mods": {
+    "typeDamage": {
+     "fire": 1.2
+    },
+    "statusDurationBonus": 1
+   }
+  },
+  "flame-caster-magma-armor": {
+   "id": "flame-caster-magma-armor",
+   "name": "Magma Armor",
+   "description": "It takes 15% less damage, and its hits on adjacent foes Burn them for 1 turn.",
+   "mods": {
+    "damageTaken": 0.85,
+    "contactStatus": {
+     "status": "burn",
+     "duration": 1
+    }
+   }
+  }
+ }
+}

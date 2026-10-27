@@ -1,0 +1,27 @@
+{
+ "id": "oddball",
+ "name": "Oddball",
+ "type": "normal",
+ "lines": [
+  { "line": ["porygon"], "focus": [
+   { "stat": "attack", "skill": "skill:charge-beam" },
+   { "stat": "defense", "skill": "skill:conversion-2" },
+   { "stat": "hp", "skill": "skill:pain-split" } ] }
+ ],
+ "rows": {
+  "4": ["keen-eye", "thick-hide"],
+  "6": ["skill:swift", "skill:thunder-shock"],
+  "9": ["long-reach", "lingering-effects"],
+  "12": ["skill:psybeam", "skill:icy-wind"],
+  "15": ["prankster", "natural-recovery"],
+  "18": ["skill:thunderbolt", "skill:shadow-ball"],
+  "21": ["battle-high", "bond-focus"],
+  "24": ["skill:hyper-beam", "skill:blizzard"],
+  "27": ["normal-power", "hustle"],
+  "30": ["oddball-download", "oddball-adaptability"]
+ },
+ "passives": {
+  "oddball-download": { "id": "oddball-download", "name": "Download", "description": "All its moves deal 15% more damage, and +15% more against foes at full HP.", "mods": { "damageDealt": 1.15, "fullHpTargetDamage": 1.15 } },
+  "oddball-adaptability": { "id": "oddball-adaptability", "name": "Adaptability", "description": "Takes 10% less damage and shakes off foes' statuses at the start of its turn.", "mods": { "damageTaken": 0.9, "shedStatuses": true } }
+ }
+}

@@ -1,0 +1,108 @@
+{
+ "id": "boulder",
+ "name": "Boulder",
+ "type": "rock",
+ "lines": [
+  {
+   "line": [
+    "geodude",
+    "graveler",
+    "golem"
+   ],
+   "focus": [
+    {
+     "stat": "attack",
+     "skill": "skill:explosion"
+    },
+    {
+     "stat": "attack",
+     "skill": "skill:hammer-arm"
+    },
+    {
+     "stat": "defense",
+     "skill": "skill:harden"
+    }
+   ]
+  },
+  {
+   "line": [
+    "onix"
+   ],
+   "focus": [
+    {
+     "stat": "attack",
+     "skill": "skill:head-smash"
+    },
+    {
+     "stat": "defense",
+     "skill": "skill:bind"
+    },
+    {
+     "stat": "defense",
+     "skill": "skill:dragon-tail"
+    }
+   ]
+  }
+ ],
+ "rows": {
+  "4": [
+   "sturdy",
+   "thick-hide"
+  ],
+  "6": [
+   "skill:rock-throw",
+   "skill:defense-curl"
+  ],
+  "9": [
+   "rock-power",
+   "defense-training"
+  ],
+  "12": [
+   "skill:body-press",
+   "skill:stomping-tantrum"
+  ],
+  "15": [
+   "sand-force",
+   "rough-skin"
+  ],
+  "18": [
+   "skill:rock-slide",
+   "skill:heavy-slam"
+  ],
+  "21": [
+   "bulldozer",
+   "forceful"
+  ],
+  "24": [
+   "skill:stone-edge",
+   "skill:double-edge"
+  ],
+  "27": [
+   "relentless",
+   "cornered"
+  ],
+  "30": [
+   "boulder-rock-head",
+   "boulder-solid-rock"
+  ]
+ },
+ "passives": {
+  "boulder-rock-head": {
+   "id": "boulder-rock-head",
+   "name": "Rock Head",
+   "description": "It deals 10% more damage and takes 10% less.",
+   "mods": {
+    "damageDealt": 1.1,
+    "damageTaken": 0.9
+   }
+  },
+  "boulder-solid-rock": {
+   "id": "boulder-solid-rock",
+   "name": "Solid Rock",
+   "description": "It takes 20% less damage.",
+   "mods": {
+    "damageTaken": 0.8
+   }
+  }
+ }
+}

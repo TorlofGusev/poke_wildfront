@@ -118,11 +118,11 @@ describe("levels and stats", () => {
   });
 
   it("evolves at the evolution level and keeps knockouts, focus and talents", () => {
-    const m = { ...starter("charmander", 15), knockouts: 2, focus: "attack" as const, talents: ["fire-blaze"] };
+    const m = { ...starter("charmander", 15), knockouts: 2, focus: "attack" as const, talents: ["blaze"] };
     const { member, events } = gainXp(CONTENT, PROGRESSION, m, xpToNext(PROGRESSION, 15));
     expect(member.speciesId).toBe("charmeleon");
     expect(events).toContainEqual({ type: "evolved", from: "charmander", into: "charmeleon" });
-    expect(member).toMatchObject({ knockouts: 2, focus: "attack", talents: ["fire-blaze"] });
+    expect(member).toMatchObject({ knockouts: 2, focus: "attack", talents: ["blaze"] });
   });
 
   it("evolution adds free points and raises current HP by the max HP gained, but never revives", () => {
@@ -141,11 +141,11 @@ describe("focus and talents", () => {
     expect(pendingChoice(CONTENT, PROGRESSION, m)).toBeNull();
     m = { ...m, level: 3 };
     expect(pendingChoice(CONTENT, PROGRESSION, m)).toBe("focus");
-    expect(() => chooseFocus(CONTENT, PROGRESSION, m, "bulbasaur-body-press")).toThrow();
-    m = chooseFocus(CONTENT, PROGRESSION, m, "charmander-flare-blitz") as typeof m;
+    expect(() => chooseFocus(CONTENT, PROGRESSION, m, "skill:frenzy-plant")).toThrow();
+    m = chooseFocus(CONTENT, PROGRESSION, m, "skill:flare-blitz") as typeof m;
     expect(m.focus).toBe("attack");
-    expect(m.talents).toEqual(["charmander-flare-blitz"]);
-    expect(m.knownMoves).toContain("charmander-flare-blitz");
+    expect(m.talents).toEqual(["skill:flare-blitz"]);
+    expect(m.knownMoves).toContain("flare-blitz");
     expect(pendingChoice(CONTENT, PROGRESSION, m)).toBeNull();
     m = { ...m, level: 4 };
     const [a, b] = talentOptions(CONTENT, PROGRESSION, m);
@@ -283,10 +283,10 @@ describe("content", () => {
 });
 
 describe("mastery grid", () => {
-  const charmander = (level: number, talents: string[] = []) => ({ ...starter("charmander", level), focus: "attack" as const, talents: ["charmander-flare-blitz", ...talents] });
+  const charmander = (level: number, talents: string[] = []) => ({ ...starter("charmander", level), focus: "attack" as const, talents: ["skill:flare-blitz", ...talents] });
 
   it("each line has one hand-made tree: three focuses, then the same rows whatever the focus", () => {
-    expect(focusOptions(PROGRESSION, "charmeleon").map((f) => f.stat)).toEqual(["attack", "attack", "defense"]);
+    expect(focusOptions(PROGRESSION, "charmeleon").map((f) => f.stat)).toEqual(["attack", "defense", "attack"]);
     expect(masteryGrid(PROGRESSION, "charizard").map((r) => r.level)).toEqual([4, 6, 9, 12, 15, 18, 21, 24, 27, 30]);
     expect(masteryGrid(PROGRESSION, "charmander")).toEqual(masteryGrid(PROGRESSION, "charizard"));
   });

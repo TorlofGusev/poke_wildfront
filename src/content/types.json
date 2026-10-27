@@ -220,5 +220,50 @@
   "move": {
    "ignoresDefense": true
   }
+ },
+ "dark": {
+  "profile": {
+   "hp": 5,
+   "attack": 8,
+   "defense": 4,
+   "speed": 6,
+   "willpower": 3,
+   "crit": 4
+  },
+  "summary": "Opportunist. Dark moves deal +30% to foes below half HP or carrying a status.",
+  "move": {
+   "vsHurt": 1.3
+  }
+ },
+ "steel": {
+  "profile": {
+   "hp": 6,
+   "attack": 6,
+   "defense": 9,
+   "speed": 2,
+   "willpower": 5,
+   "crit": 2
+  },
+  "summary": "Bulwark. Steel Pokémon take 15% less damage from every hit.",
+  "unit": {
+   "damageTaken": 0.85
+  }
+ },
+ "fairy": {
+  "profile": {
+   "hp": 5,
+   "attack": 6,
+   "defense": 5,
+   "speed": 4,
+   "willpower": 6,
+   "crit": 4
+  },
+  "summary": "Charmer. Fairy moves Weaken: the target deals 30% less damage on its next turn.",
+  "move": {
+   "appliesStatus": {
+    "status": "weakened",
+    "duration": 1
+   }
+  }
  }
 }

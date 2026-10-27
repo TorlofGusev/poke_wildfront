@@ -128,7 +128,7 @@ describe("combos", () => {
     const s = setupEngaged();
     expect(s.turn?.unitId).toBe("p2");
     const r = applyAction(s, content, { type: "useMove", unitId: "p2", moveId: "tackle", target: { x: 3, y: 2 } });
-    expect(r.events).toContainEqual({ type: "combo", unitId: "p2", targetId: "e", setup: "engaged" });
+    expect(r.events).toContainEqual({ type: "combo", unitId: "p2", targetId: "e", combo: "pincer" });
     expect(r.state.bond.player).toBe(s.bond.player);
     const sb = setupEngaged({ comboBond: 1 } as UnitSetup["mods"]);
     expect(applyAction(sb, content, { type: "useMove", unitId: "p2", moveId: "tackle", target: { x: 3, y: 2 } }).state.bond.player).toBe(sb.bond.player + 1);
@@ -147,7 +147,7 @@ describe("combos", () => {
     const s0 = start([u("p1", "fast", "player", 0, 0), u("e", "slow", "enemy", 2, 0), u("p2", "mid", "player", 4, 4)]);
     const s = { ...s0, units: s0.units.map((x) => (x.id === "e" ? { ...x, statuses: [{ id: "poison", turnsLeft: 3, sourceId: "p2" }] } : x)) };
     const r = applyAction(s, content, { type: "useMove", unitId: "p1", moveId: "zap", target: { x: 2, y: 0 } });
-    expect(r.events).toContainEqual(expect.objectContaining({ type: "combo", unitId: "p1", targetId: "e", setup: "status" }));
+    expect(r.events).toContainEqual(expect.objectContaining({ type: "combo", unitId: "p1", targetId: "e", combo: "hex" }));
   });
 });
 

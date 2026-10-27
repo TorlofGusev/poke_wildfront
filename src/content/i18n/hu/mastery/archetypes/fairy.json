@@ -1,0 +1,6 @@
+{
+ "passives": {
+  "fairy-cute-charm": { "description": "A szomszédos találatai 1 körre gyengítik az ellenfelet." },
+  "fairy-magic-guard": { "description": "Nem mérgezhető és nem égethető meg, és 10%-kal kevesebb sebzést kap." }
+ }
+}

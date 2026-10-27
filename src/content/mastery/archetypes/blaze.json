@@ -1,0 +1,135 @@
+{
+ "id": "blaze",
+ "name": "Blaze",
+ "type": "fire",
+ "lines": [
+  {
+   "line": [
+    "charmander",
+    "charmeleon",
+    "charizard"
+   ],
+   "focus": [
+    {
+     "stat": "attack",
+     "skill": "skill:blast-burn"
+    },
+    {
+     "stat": "defense",
+     "skill": "skill:dragon-tail"
+    },
+    {
+     "stat": "attack",
+     "skill": "skill:flare-blitz"
+    }
+   ]
+  },
+  {
+   "line": [
+    "growlithe",
+    "arcanine"
+   ],
+   "focus": [
+    {
+     "stat": "attack",
+     "skill": "skill:extreme-speed"
+    },
+    {
+     "stat": "defense",
+     "skill": "skill:snarl"
+    },
+    {
+     "stat": "hp",
+     "skill": "skill:morning-sun"
+    }
+   ]
+  },
+  {
+   "line": [
+    "ponyta",
+    "rapidash"
+   ],
+   "focus": [
+    {
+     "stat": "attack",
+     "skill": "skill:megahorn"
+    },
+    {
+     "stat": "defense",
+     "skill": "skill:charm"
+    },
+    {
+     "stat": "hp",
+     "skill": "skill:morning-sun"
+    }
+   ]
+  }
+ ],
+ "rows": {
+  "4": [
+   "blaze",
+   "fire-power"
+  ],
+  "6": [
+   "skill:flame-charge",
+   "skill:headbutt"
+  ],
+  "9": [
+   "flame-body",
+   "first-strike"
+  ],
+  "12": [
+   "skill:fire-spin",
+   "skill:take-down"
+  ],
+  "15": [
+   "guts",
+   "attack-training"
+  ],
+  "18": [
+   "skill:fire-blast",
+   "skill:double-edge"
+  ],
+  "21": [
+   "moxie",
+   "follow-through"
+  ],
+  "24": [
+   "skill:overheat",
+   "skill:giga-impact"
+  ],
+  "27": [
+   "relentless",
+   "hustle"
+  ],
+  "30": [
+   "blaze-flash-fire",
+   "blaze-intimidate"
+  ]
+ },
+ "passives": {
+  "blaze-flash-fire": {
+   "id": "blaze-flash-fire",
+   "name": "Flash Fire",
+   "description": "Its Fire moves deal 25% more damage and it takes 10% less damage.",
+   "mods": {
+    "typeDamage": {
+     "fire": 1.25
+    },
+    "damageTaken": 0.9
+   }
+  },
+  "blaze-intimidate": {
+   "id": "blaze-intimidate",
+   "name": "Intimidate",
+   "description": "Its hits on adjacent foes Weaken them for 1 turn, and it takes 10% less damage.",
+   "mods": {
+    "contactStatus": {
+     "status": "weakened",
+     "duration": 1
+    },
+    "damageTaken": 0.9
+   }
+  }
+ }
+}

@@ -1,4 +1,4 @@
-import { speciesStats, type BaseStats, type BattleContent, type BattleScenario, type SpeciesDef, type TypeDef } from "../core/battle";
+import { powerFromCanon, speciesStats, type BaseStats, type BattleContent, type BattleScenario, type MoveDef, type SpeciesDef, type TypeDef } from "../core/battle";
 import type { BiomeDef, FatigueRules, WorldContent, WorldDef } from "../core/expedition";
 import type { ItemDef, MasteryTree, ProgressionContent, TalentDef } from "../core/progression";
 import type { CampRules, MealDef } from "../core/party";
@@ -18,7 +18,8 @@ import type { StoryStep } from "../core/story";
 import capture from "./capture.json";
 import fatigue from "./fatigue.json";
 import baseMoves from "./moves.json";
-import skillVariants from "./skillVariants.json";
+import masteryMoves from "./mastery/moves.json";
+import passiveData from "./mastery/passives.json";
 import route2 from "./worlds/route-2.json";
 import rules from "./rules.json";
 import speciesData from "./species.json";
@@ -29,32 +30,64 @@ import { localized } from "./lang";
 
 export const TYPES: Readonly<Record<string, TypeDef>> = types as Record<string, TypeDef>;
 
-/**
- * Mastery content (docs/design/mastery-trees.md): the library (mastery/library/**) holds shared skills and
- * passives with their moves; each tree file (mastery/trees/*.json) is one evolution line's hand-made tree and
- * may define its own line-unique moves and talents.
- */
-interface MasteryFile {
-  readonly moves?: Readonly<Record<string, unknown>>;
-  readonly talents?: Readonly<Record<string, TalentDef>>;
-  readonly variants?: Readonly<Record<string, Record<string, string>>>;
-}
-const LIBRARY = Object.entries(import.meta.glob(["./mastery/library/*/*.json"], { eager: true, import: "default" }) as Record<string, MasteryFile>)
-  .map(([path, f]) => localized(path.slice(2), f));
-const TREES = Object.entries(import.meta.glob("./mastery/trees/*.json", { eager: true, import: "default" }) as Record<string, MasteryFile & MasteryTree>)
-  .map(([path, f]) => localized(path.slice(2), f));
-const MASTERY_FILES: readonly MasteryFile[] = [...LIBRARY, ...TREES];
+const moves: BattleContent["moves"] = Object.assign({}, masteryMoves as BattleContent["moves"], baseMoves as BattleContent["moves"]);
+const talents: Record<string, TalentDef> = { ...localized("talents.json", talentData) };
 
-/** Library skills may come in a version per type (skillVariants.json: base move → type → name), ids `base--type`. */
-const VARIANTS: Record<string, Record<string, string>> = Object.assign({}, skillVariants as Record<string, Record<string, string>>, ...MASTERY_FILES.map((k) => k.variants ?? {}));
-const variantId = (base: string, type: string) => `${base}--${type}`;
-const moves: BattleContent["moves"] = Object.assign({}, baseMoves as BattleContent["moves"], ...MASTERY_FILES.map((k) => k.moves ?? {}));
-for (const [base, byType] of Object.entries(VARIANTS)) {
-  const def = moves[base]!;
-  for (const [type, name] of Object.entries(byType))
-    (moves as Record<string, unknown>)[variantId(base, type)] = { ...def, id: variantId(base, type), name, type: (def.power ?? 0) > 0 ? type : def.type };
+/**
+ * Archetype trees (docs/design/archetype-trees.md): lines grouped by type and role share one tree of rows;
+ * each line brings its own Lv 3 focus. Row and focus entries are shared passives (mastery/passives.json),
+ * the tree's own capstones, or `skill:<move id>` (a skill that teaches that canon move). Focus skills and the
+ * strongest row skills (canon power ≥ progression bondCanonPower) are Bond moves, paid with Bond and hitting
+ * harder, so a tree's big hits can't be spammed. A library move turns Bond everywhere (one definition per
+ * move); a species' own move (moves.json) stays as it is and the skill teaches its Bond version `<id>--bond`.
+ */
+export interface ArchetypeFile {
+  readonly id: string;
+  readonly name: string;
+  readonly type: string;
+  readonly rows: Readonly<Record<string, readonly string[]>>;
+  readonly lines: readonly { readonly line: readonly string[]; readonly focus: MasteryTree["focus"] }[];
+  readonly forms?: MasteryTree["forms"];
+  readonly passives?: Readonly<Record<string, TalentDef>>;
+  /** The tree's own moves (Ditto's). */
+  readonly moves?: Readonly<Record<string, MoveDef>>;
+  /** Copies any move (Ditto): its row skills need not be learnable. */
+  readonly mimic?: boolean;
 }
-const talents: Record<string, TalentDef> = Object.assign({}, localized("talents.json", talentData), ...MASTERY_FILES.map((k) => k.talents ?? {}));
+export const ARCHETYPES: readonly ArchetypeFile[] = Object.entries(import.meta.glob("./mastery/archetypes/*.json", { eager: true, import: "default" }) as Record<string, ArchetypeFile>)
+  .map(([path, f]) => localized(path.slice(2), f));
+Object.assign(talents, localized("mastery/passives.json", passiveData) as Record<string, TalentDef>, ...ARCHETYPES.map((a) => a.passives ?? {}));
+Object.assign(moves, ...ARCHETYPES.map((a) => a.moves ?? {}));
+const SKILL = "skill:";
+const BOND = "--bond";
+const moveOfSkill = (id: string) => (id.startsWith(SKILL) ? id.slice(SKILL.length) : null);
+const strong = (id: string) => (moves[id]?.canonPower ?? 0) >= progression.bondCanonPower;
+/** A species' own move (moves.json) keeps its kind; its Bond version is `<id>--bond`. Library moves turn Bond in place. */
+const bondOf = (id: string) => (id in baseMoves && moves[id]?.kind !== "bond" ? `${id}${BOND}` : id);
+/** The move each skill teaches: focus skills (`skill:<own move>--bond` for a species' own move) and strong row skills teach a Bond move. */
+const taught = new Map<string, string>();
+const bonds = new Set<string>();
+const teach = (skill: string, id: string, bond: boolean) => { taught.set(skill, id); if (bond) bonds.add(id); };
+for (const a of ARCHETYPES) {
+  for (const id of [a.rows, ...Object.values(a.forms ?? {}).map((f) => f.rows)].flatMap((r) => Object.values(r).flat())) { const mv = moveOfSkill(id); if (mv) teach(id, strong(mv) ? bondOf(mv) : mv, strong(mv)); }
+  for (const l of a.lines) for (const f of l.focus) { const mv = moveOfSkill(f.skill); if (mv) teach(f.skill, mv.endsWith(BOND) ? mv : bondOf(mv), true); }
+}
+for (const id of bonds) {
+  const def = moves[id.endsWith(BOND) ? id.slice(0, -BOND.length) : id];
+  if (!def || moves[id]?.kind === "bond") continue;
+  const strongMove = (def.canonPower ?? 0) >= progression.bondCanonPower;
+  const bond = { ...def, id, kind: "bond" as const, bondCost: strongMove ? 3 : 2 };
+  delete (bond as { cooldown?: number }).cooldown;
+  (moves as Record<string, MoveDef>)[id] = def.canonPower ? { ...bond, power: powerFromCanon(rules.movePower, bond, def.canonPower) } : bond;
+}
+for (const [skill, id] of taught) {
+  const move = moves[id];
+  if (move && !talents[skill]) talents[skill] = { id: skill, name: move.name, description: "", grantsMove: move.id };
+}
+const ARCHETYPE_TREES: [string, MasteryTree][] = ARCHETYPES.flatMap((a) => a.lines.flatMap((l) => {
+  const tree: MasteryTree = { line: l.line, focus: l.focus, rows: a.rows, ...(a.forms && { forms: a.forms }) };
+  return l.line.map((id) => [id, tree] as [string, MasteryTree]);
+}));
 
 /** Species with level-1 stats derived from their types' playstyles plus a small nudge. */
 const species: Record<string, SpeciesDef> = Object.fromEntries(
@@ -104,7 +137,7 @@ const WORLD_FILES = import.meta.glob("./worlds/*.json", { eager: true, import: "
 export const WORLDS: Readonly<Record<string, WorldDef>> = Object.fromEntries(Object.entries(WORLD_FILES).map(([path, w]) => [w.id, localized(path.slice(2), w)]));
 
 export const PROGRESSION: ProgressionContent = {
-  trees: Object.fromEntries(TREES.flatMap((t) => t.line.map((id) => [id, t as MasteryTree]))),
+  trees: Object.fromEntries(ARCHETYPE_TREES),
   talents,
   keyItems: localized("keyItems.json", keyItems),
   items: localized("items.json", items) as unknown as Record<string, ItemDef>,

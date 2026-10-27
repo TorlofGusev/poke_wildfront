@@ -1,0 +1,108 @@
+{
+ "id": "frost",
+ "name": "Frost",
+ "type": "ice",
+ "lines": [
+  {
+   "line": [
+    "articuno"
+   ],
+   "focus": [
+    {
+     "stat": "attack",
+     "skill": "skill:hurricane"
+    },
+    {
+     "stat": "attack",
+     "skill": "skill:sheer-cold"
+    },
+    {
+     "stat": "defense",
+     "skill": "skill:mist"
+    }
+   ]
+  },
+  {
+   "line": [
+    "jynx"
+   ],
+   "focus": [
+    {
+     "stat": "attack",
+     "skill": "skill:nasty-plot"
+    },
+    {
+     "stat": "attack",
+     "skill": "skill:heart-stamp"
+    },
+    {
+     "stat": "defense",
+     "skill": "skill:magic-room"
+    }
+   ]
+  }
+ ],
+ "rows": {
+  "4": [
+   "ice-power",
+   "long-reach"
+  ],
+  "6": [
+   "skill:powder-snow",
+   "skill:frost-breath"
+  ],
+  "9": [
+   "keen-eye",
+   "lingering-effects"
+  ],
+  "12": [
+   "skill:icy-wind",
+   "skill:aurora-veil"
+  ],
+  "15": [
+   "willpower-training",
+   "opportunist"
+  ],
+  "18": [
+   "skill:ice-beam",
+   "skill:triple-axel"
+  ],
+  "21": [
+   "merciless",
+   "second-wind"
+  ],
+  "24": [
+   "skill:blizzard",
+   "skill:hyper-beam"
+  ],
+  "27": [
+   "crit-training",
+   "natural-recovery"
+  ],
+  "30": [
+   "frost-ice-body",
+   "frost-snow-cloak"
+  ]
+ },
+ "passives": {
+  "frost-ice-body": {
+   "id": "frost-ice-body",
+   "name": "Ice Body",
+   "description": "Heals 5% of max HP at the start of each turn.",
+   "mods": {
+    "healPerTurn": 0.05
+   }
+  },
+  "frost-snow-cloak": {
+   "id": "frost-snow-cloak",
+   "name": "Snow Cloak",
+   "description": "Takes 15% less damage, and its Ice moves deal 10% more damage.",
+   "mods": {
+    "damageTaken": 0.85,
+    "typeDamage": {
+     "ice": 1.1
+    }
+   }
+  }
+ }
+}

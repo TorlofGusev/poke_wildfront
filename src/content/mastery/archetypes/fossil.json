@@ -1,0 +1,126 @@
+{
+ "id": "fossil",
+ "name": "Fossil",
+ "type": "rock",
+ "lines": [
+  {
+   "line": [
+    "omanyte",
+    "omastar"
+   ],
+   "focus": [
+    {
+     "stat": "attack",
+     "skill": "skill:mud-shot"
+    },
+    {
+     "stat": "attack",
+     "skill": "skill:shell-smash"
+    },
+    {
+     "stat": "defense",
+     "skill": "skill:tickle"
+    }
+   ]
+  },
+  {
+   "line": [
+    "kabuto",
+    "kabutops"
+   ],
+   "focus": [
+    {
+     "stat": "attack",
+     "skill": "skill:razor-shell"
+    },
+    {
+     "stat": "attack",
+     "skill": "skill:aqua-jet"
+    },
+    {
+     "stat": "hp",
+     "skill": "skill:mega-drain"
+    }
+   ]
+  },
+  {
+   "line": [
+    "aerodactyl"
+   ],
+   "focus": [
+    {
+     "stat": "attack",
+     "skill": "skill:sky-attack"
+    },
+    {
+     "stat": "attack",
+     "skill": "skill:dragon-claw"
+    },
+    {
+     "stat": "hp",
+     "skill": "skill:roost"
+    }
+   ]
+  }
+ ],
+ "rows": {
+  "4": [
+   "thick-hide",
+   "sturdy"
+  ],
+  "6": [
+   "skill:ancient-power",
+   "skill:smack-down"
+  ],
+  "9": [
+   "rock-power",
+   "keen-eye"
+  ],
+  "12": [
+   "skill:rock-blast",
+   "skill:rock-tomb"
+  ],
+  "15": [
+   "sand-force",
+   "first-strike"
+  ],
+  "18": [
+   "skill:stone-edge",
+   "skill:rock-slide"
+  ],
+  "21": [
+   "relentless",
+   "hunter"
+  ],
+  "24": [
+   "skill:meteor-beam",
+   "skill:double-edge"
+  ],
+  "27": [
+   "battle-high",
+   "speed-boost"
+  ],
+  "30": [
+   "fossil-swift-swim",
+   "fossil-battle-armor"
+  ]
+ },
+ "passives": {
+  "fossil-swift-swim": {
+   "id": "fossil-swift-swim",
+   "name": "Swift Swim",
+   "description": "It moves 1 extra tile each turn.",
+   "mods": {
+    "moveBonus": 1
+   }
+  },
+  "fossil-battle-armor": {
+   "id": "fossil-battle-armor",
+   "name": "Battle Armor",
+   "description": "It takes 15% less damage.",
+   "mods": {
+    "damageTaken": 0.85
+   }
+  }
+ }
+}

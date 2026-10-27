@@ -1,0 +1,765 @@
+{
+ "thick-hide": {
+  "id": "thick-hide",
+  "name": "Thick Hide",
+  "description": "Takes 10% less damage.",
+  "mods": {
+   "damageTaken": 0.9
+  }
+ },
+ "multiscale": {
+  "id": "multiscale",
+  "name": "Multiscale",
+  "description": "Takes 20% less damage while at full HP.",
+  "mods": {
+   "fullHpDamageTaken": 0.8
+  }
+ },
+ "sturdy": {
+  "id": "sturdy",
+  "name": "Sturdy",
+  "description": "Once per battle it holds on with 1 HP after a knockout blow.",
+  "mods": {
+   "sturdy": true
+  }
+ },
+ "rough-skin": {
+  "id": "rough-skin",
+  "name": "Rough Skin",
+  "description": "Foes that hit it from an adjacent hex take 8 damage.",
+  "mods": {
+   "thorns": 8
+  }
+ },
+ "shed-skin": {
+  "id": "shed-skin",
+  "name": "Shed Skin",
+  "description": "Shakes off foes' statuses at the start of its turn.",
+  "mods": {
+   "shedStatuses": true
+  }
+ },
+ "natural-recovery": {
+  "id": "natural-recovery",
+  "name": "Natural Recovery",
+  "description": "Heals 4% of max HP at the start of each turn.",
+  "mods": {
+   "healPerTurn": 0.04
+  }
+ },
+ "ingrain-grip": {
+  "id": "ingrain-grip",
+  "name": "Rooted Grip",
+  "description": "Heals 4% of max HP each turn while engaged.",
+  "mods": {
+   "healWhileEngaged": 0.04
+  }
+ },
+ "second-wind": {
+  "id": "second-wind",
+  "name": "Second Wind",
+  "description": "Heals 15% of max HP when it knocks out a foe.",
+  "mods": {
+   "koHeal": 0.15
+  }
+ },
+ "run-away": {
+  "id": "run-away",
+  "name": "Run Away",
+  "description": "Steps away from engaged foes without free attacks.",
+  "mods": {
+   "disengage": true
+  }
+ },
+ "mean-look": {
+  "id": "mean-look",
+  "name": "Mean Look",
+  "description": "Foes engaged with it cannot slip away without its free attack.",
+  "mods": {
+   "noEscape": true
+  }
+ },
+ "pursuit-instinct": {
+  "id": "pursuit-instinct",
+  "name": "Pursuit Instinct",
+  "description": "Its free attacks on fleeing foes deal 25% more damage.",
+  "mods": {
+   "strikeDamage": 1.25
+  }
+ },
+ "pin-down": {
+  "id": "pin-down",
+  "name": "Pin Down",
+  "description": "Foes engaged with it take 15% more damage from its allies.",
+  "mods": {
+   "pinDamage": 1.15
+  }
+ },
+ "flanker": {
+  "id": "flanker",
+  "name": "Flanker",
+  "description": "+15% damage to foes engaged with one of its allies.",
+  "mods": {
+   "vsEngagedDamage": 1.15
+  }
+ },
+ "tough-claws": {
+  "id": "tough-claws",
+  "name": "Tough Claws",
+  "description": "+15% damage to adjacent foes.",
+  "mods": {
+   "closeDamage": 1.15
+  }
+ },
+ "long-reach": {
+  "id": "long-reach",
+  "name": "Long Reach",
+  "description": "+15% damage to foes 2 or more hexes away.",
+  "mods": {
+   "farDamage": 1.15
+  }
+ },
+ "keen-eye": {
+  "id": "keen-eye",
+  "name": "Keen Eye",
+  "description": "+1 range on moves that already reach 2 or more hexes.",
+  "mods": {
+   "rangeBonus": 1
+  }
+ },
+ "overhead-shot": {
+  "id": "overhead-shot",
+  "name": "Overhead Shot",
+  "description": "Its ranged moves fire over other Pokémon.",
+  "mods": {
+   "shootOver": true
+  }
+ },
+ "first-strike": {
+  "id": "first-strike",
+  "name": "First Strike",
+  "description": "+20% damage to foes at full HP.",
+  "mods": {
+   "fullHpTargetDamage": 1.2
+  }
+ },
+ "opportunist": {
+  "id": "opportunist",
+  "name": "Opportunist",
+  "description": "+15% damage to foes carrying any status.",
+  "mods": {
+   "vsStatusDamage": 1.15
+  }
+ },
+ "exploit-opening": {
+  "id": "exploit-opening",
+  "name": "Exploit Opening",
+  "description": "+20% damage to foes carrying a status an ally applied.",
+  "mods": {
+   "vsSetupDamage": 1.2
+  }
+ },
+ "guts": {
+  "id": "guts",
+  "name": "Guts",
+  "description": "+20% damage while it carries a status.",
+  "mods": {
+   "statusedDamage": 1.2
+  }
+ },
+ "quick-feet": {
+  "id": "quick-feet",
+  "name": "Quick Feet",
+  "description": "+2 movement while it carries a status.",
+  "mods": {
+   "statusedMove": 2
+  }
+ },
+ "desperation": {
+  "id": "desperation",
+  "name": "Desperation",
+  "description": "+20% damage while below half HP.",
+  "mods": {
+   "lowHpDamage": 1.2
+  }
+ },
+ "cornered": {
+  "id": "cornered",
+  "name": "Cornered",
+  "description": "+20% damage while two or more foes stand next to it.",
+  "mods": {
+   "surroundedDamage": 1.2
+  }
+ },
+ "hustle": {
+  "id": "hustle",
+  "name": "Hustle",
+  "description": "All its moves deal 10% more damage.",
+  "mods": {
+   "damageDealt": 1.1
+  }
+ },
+ "relentless": {
+  "id": "relentless",
+  "name": "Relentless",
+  "description": "+10% damage per hit in a row on the same foe (up to 3).",
+  "mods": {
+   "furyCutter": 0.1
+  }
+ },
+ "moxie": {
+  "id": "moxie",
+  "name": "Moxie",
+  "description": "Knocking out a foe raises its Attack for the battle (up to +3).",
+  "mods": {
+   "koAttackBoost": 1
+  }
+ },
+ "speed-boost": {
+  "id": "speed-boost",
+  "name": "Speed Boost",
+  "description": "Knocking out a foe on its turn gives 2 more movement.",
+  "mods": {
+   "koMove": 2
+  }
+ },
+ "follow-through": {
+  "id": "follow-through",
+  "name": "Follow Through",
+  "description": "Knocking out a foe on its turn lets it use its basic attack again.",
+  "mods": {
+   "koRefreshBasic": true
+  }
+ },
+ "battle-high": {
+  "id": "battle-high",
+  "name": "Battle High",
+  "description": "Knocking out a foe resets its move cooldowns.",
+  "mods": {
+   "koResetCooldowns": true
+  }
+ },
+ "battle-bond": {
+  "id": "battle-bond",
+  "name": "Battle Bond",
+  "description": "+1 team Bond when it knocks out a foe.",
+  "mods": {
+   "bondOnKo": 1
+  }
+ },
+ "teamwork": {
+  "id": "teamwork",
+  "name": "Teamwork",
+  "description": "+1 team Bond when it lands a combo.",
+  "mods": {
+   "comboBond": 1
+  }
+ },
+ "aftermath": {
+  "id": "aftermath",
+  "name": "Aftermath",
+  "description": "+2 team Bond when it faints.",
+  "mods": {
+   "bondOnFaint": 2
+  }
+ },
+ "bond-focus": {
+  "id": "bond-focus",
+  "name": "Bond Focus",
+  "description": "Its Bond moves cost 1 less (at least 1).",
+  "mods": {
+   "bondCostReduction": 1
+  }
+ },
+ "leader": {
+  "id": "leader",
+  "name": "Leader",
+  "description": "While deployed, the team starts battles with +1 Bond.",
+  "team": {
+   "startBond": 1
+  }
+ },
+ "lingering-effects": {
+  "id": "lingering-effects",
+  "name": "Lingering Effects",
+  "description": "Statuses it inflicts last 1 turn longer.",
+  "mods": {
+   "statusDurationBonus": 1
+  }
+ },
+ "prankster": {
+  "id": "prankster",
+  "name": "Prankster",
+  "description": "Its non-damaging moves recharge 1 turn faster.",
+  "mods": {
+   "statusCooldownReduction": 1
+  }
+ },
+ "lingering-aroma": {
+  "id": "lingering-aroma",
+  "name": "Lingering Aroma",
+  "description": "Statuses it put on a fainted foe spread to that foe's neighbours.",
+  "mods": {
+   "statusSpreadOnKo": true
+  }
+ },
+ "static": {
+  "id": "static",
+  "name": "Static",
+  "description": "Its damaging hits on adjacent foes Paralyze them for 1 turn.",
+  "mods": {
+   "contactStatus": {
+    "status": "paralysis",
+    "duration": 1
+   }
+  }
+ },
+ "poison-point": {
+  "id": "poison-point",
+  "name": "Poison Point",
+  "description": "Its damaging hits on adjacent foes Poison them for 2 turns.",
+  "mods": {
+   "contactStatus": {
+    "status": "poison",
+    "duration": 2
+   }
+  }
+ },
+ "flame-body": {
+  "id": "flame-body",
+  "name": "Flame Body",
+  "description": "Its damaging hits on adjacent foes Burn them for 1 turn.",
+  "mods": {
+   "contactStatus": {
+    "status": "burn",
+    "duration": 1
+   }
+  }
+ },
+ "gooey": {
+  "id": "gooey",
+  "name": "Gooey",
+  "description": "Its damaging hits on adjacent foes Slow them for 1 turn.",
+  "mods": {
+   "contactStatus": {
+    "status": "slow",
+    "duration": 1
+   }
+  }
+ },
+ "limber": {
+  "id": "limber",
+  "name": "Limber",
+  "description": "Cannot be Paralyzed or Slowed.",
+  "mods": {
+   "statusImmune": [
+    "paralysis",
+    "slow"
+   ]
+  }
+ },
+ "water-veil": {
+  "id": "water-veil",
+  "name": "Water Veil",
+  "description": "Cannot be Burned.",
+  "mods": {
+   "statusImmune": [
+    "burn"
+   ]
+  }
+ },
+ "immunity": {
+  "id": "immunity",
+  "name": "Immunity",
+  "description": "Cannot be Poisoned.",
+  "mods": {
+   "statusImmune": [
+    "poison"
+   ]
+  }
+ },
+ "insomnia": {
+  "id": "insomnia",
+  "name": "Insomnia",
+  "description": "Cannot fall asleep.",
+  "mods": {
+   "statusImmune": [
+    "sleep"
+   ]
+  }
+ },
+ "own-tempo": {
+  "id": "own-tempo",
+  "name": "Own Tempo",
+  "description": "Cannot be Confused.",
+  "mods": {
+   "statusImmune": [
+    "confused"
+   ]
+  }
+ },
+ "bad-dreams": {
+  "id": "bad-dreams",
+  "name": "Bad Dreams",
+  "description": "+25% damage to sleeping foes.",
+  "mods": {
+   "vsStatusIdDamage": {
+    "sleep": 1.25
+   }
+  }
+ },
+ "merciless": {
+  "id": "merciless",
+  "name": "Merciless",
+  "description": "+20% damage to Poisoned foes.",
+  "mods": {
+   "vsStatusIdDamage": {
+    "poison": 1.2
+   }
+  }
+ },
+ "shock-exploit": {
+  "id": "shock-exploit",
+  "name": "Shock Exploit",
+  "description": "+25% damage to Paralyzed foes.",
+  "mods": {
+   "vsStatusIdDamage": {
+    "paralysis": 1.25
+   }
+  }
+ },
+ "hunter": {
+  "id": "hunter",
+  "name": "Hunter",
+  "description": "+20% damage to Slowed foes.",
+  "mods": {
+   "vsStatusIdDamage": {
+    "slow": 1.2
+   }
+  }
+ },
+ "sand-force": {
+  "id": "sand-force",
+  "name": "Sand Force",
+  "description": "+20% damage to foes standing on mud.",
+  "mods": {
+   "vsMudDamage": 1.2
+  }
+ },
+ "forceful": {
+  "id": "forceful",
+  "name": "Forceful",
+  "description": "Its pushes move foes 1 more hex.",
+  "mods": {
+   "pushBonus": 1
+  }
+ },
+ "magnet-pull": {
+  "id": "magnet-pull",
+  "name": "Magnet Pull",
+  "description": "Its pulls move foes 1 more hex.",
+  "mods": {
+   "pullBonus": 1
+  }
+ },
+ "bulldozer": {
+  "id": "bulldozer",
+  "name": "Bulldozer",
+  "description": "Pushing a foe into an obstacle deals 10 more damage.",
+  "mods": {
+   "impactBonus": 10
+  }
+ },
+ "big-root": {
+  "id": "big-root",
+  "name": "Big Root",
+  "description": "Its draining moves heal 20% more of the damage.",
+  "mods": {
+   "drainBonus": 0.2
+  }
+ },
+ "pincer": {
+  "id": "pincer",
+  "name": "Pincer",
+  "description": "+20% to its flank bonus when an ally also stands next to the target.",
+  "mods": {
+   "flankBonus": 0.2
+  }
+ },
+ "swarm-tactics": {
+  "id": "swarm-tactics",
+  "name": "Swarm Tactics",
+  "description": "+15% to its swarm bonus per ally next to the target.",
+  "mods": {
+   "swarmBonus": 0.15
+  }
+ },
+ "blaze": {
+  "id": "blaze",
+  "name": "Blaze",
+  "description": "Fire moves deal 25% more damage while below half HP.",
+  "mods": {
+   "lowHpTypeDamage": {
+    "fire": 1.25
+   }
+  }
+ },
+ "overgrow": {
+  "id": "overgrow",
+  "name": "Overgrow",
+  "description": "Grass moves deal 25% more damage while below half HP.",
+  "mods": {
+   "lowHpTypeDamage": {
+    "grass": 1.25
+   }
+  }
+ },
+ "torrent": {
+  "id": "torrent",
+  "name": "Torrent",
+  "description": "Water moves deal 25% more damage while below half HP.",
+  "mods": {
+   "lowHpTypeDamage": {
+    "water": 1.25
+   }
+  }
+ },
+ "swarm": {
+  "id": "swarm",
+  "name": "Swarm",
+  "description": "Bug moves deal 25% more damage while below half HP.",
+  "mods": {
+   "lowHpTypeDamage": {
+    "bug": 1.25
+   }
+  }
+ },
+ "attack-training": {
+  "id": "attack-training",
+  "name": "Attack Training",
+  "description": "+1 Attack.",
+  "stats": {
+   "attack": 1
+  }
+ },
+ "defense-training": {
+  "id": "defense-training",
+  "name": "Defense Training",
+  "description": "+1 Defense.",
+  "stats": {
+   "defense": 1
+  }
+ },
+ "vitality-training": {
+  "id": "vitality-training",
+  "name": "Vitality Training",
+  "description": "+1 Vitality.",
+  "stats": {
+   "hp": 1
+  }
+ },
+ "speed-training": {
+  "id": "speed-training",
+  "name": "Speed Training",
+  "description": "+1 Speed.",
+  "stats": {
+   "speed": 1
+  }
+ },
+ "willpower-training": {
+  "id": "willpower-training",
+  "name": "Willpower Training",
+  "description": "+1 Willpower.",
+  "stats": {
+   "willpower": 1
+  }
+ },
+ "crit-training": {
+  "id": "crit-training",
+  "name": "Crit Training",
+  "description": "+1 Crit.",
+  "stats": {
+   "crit": 1
+  }
+ },
+ "normal-power": {
+  "id": "normal-power",
+  "name": "Normal Power",
+  "description": "Normal moves deal 15% more damage.",
+  "mods": {
+   "typeDamage": {
+    "normal": 1.15
+   }
+  }
+ },
+ "fire-power": {
+  "id": "fire-power",
+  "name": "Fire Power",
+  "description": "Fire moves deal 15% more damage.",
+  "mods": {
+   "typeDamage": {
+    "fire": 1.15
+   }
+  }
+ },
+ "water-power": {
+  "id": "water-power",
+  "name": "Water Power",
+  "description": "Water moves deal 15% more damage.",
+  "mods": {
+   "typeDamage": {
+    "water": 1.15
+   }
+  }
+ },
+ "grass-power": {
+  "id": "grass-power",
+  "name": "Grass Power",
+  "description": "Grass moves deal 15% more damage.",
+  "mods": {
+   "typeDamage": {
+    "grass": 1.15
+   }
+  }
+ },
+ "electric-power": {
+  "id": "electric-power",
+  "name": "Electric Power",
+  "description": "Electric moves deal 15% more damage.",
+  "mods": {
+   "typeDamage": {
+    "electric": 1.15
+   }
+  }
+ },
+ "ice-power": {
+  "id": "ice-power",
+  "name": "Ice Power",
+  "description": "Ice moves deal 15% more damage.",
+  "mods": {
+   "typeDamage": {
+    "ice": 1.15
+   }
+  }
+ },
+ "fighting-power": {
+  "id": "fighting-power",
+  "name": "Fighting Power",
+  "description": "Fighting moves deal 15% more damage.",
+  "mods": {
+   "typeDamage": {
+    "fighting": 1.15
+   }
+  }
+ },
+ "poison-power": {
+  "id": "poison-power",
+  "name": "Poison Power",
+  "description": "Poison moves deal 15% more damage.",
+  "mods": {
+   "typeDamage": {
+    "poison": 1.15
+   }
+  }
+ },
+ "ground-power": {
+  "id": "ground-power",
+  "name": "Ground Power",
+  "description": "Ground moves deal 15% more damage.",
+  "mods": {
+   "typeDamage": {
+    "ground": 1.15
+   }
+  }
+ },
+ "flying-power": {
+  "id": "flying-power",
+  "name": "Flying Power",
+  "description": "Flying moves deal 15% more damage.",
+  "mods": {
+   "typeDamage": {
+    "flying": 1.15
+   }
+  }
+ },
+ "psychic-power": {
+  "id": "psychic-power",
+  "name": "Psychic Power",
+  "description": "Psychic moves deal 15% more damage.",
+  "mods": {
+   "typeDamage": {
+    "psychic": 1.15
+   }
+  }
+ },
+ "bug-power": {
+  "id": "bug-power",
+  "name": "Bug Power",
+  "description": "Bug moves deal 15% more damage.",
+  "mods": {
+   "typeDamage": {
+    "bug": 1.15
+   }
+  }
+ },
+ "rock-power": {
+  "id": "rock-power",
+  "name": "Rock Power",
+  "description": "Rock moves deal 15% more damage.",
+  "mods": {
+   "typeDamage": {
+    "rock": 1.15
+   }
+  }
+ },
+ "ghost-power": {
+  "id": "ghost-power",
+  "name": "Ghost Power",
+  "description": "Ghost moves deal 15% more damage.",
+  "mods": {
+   "typeDamage": {
+    "ghost": 1.15
+   }
+  }
+ },
+ "dragon-power": {
+  "id": "dragon-power",
+  "name": "Dragon Power",
+  "description": "Dragon moves deal 15% more damage.",
+  "mods": {
+   "typeDamage": {
+    "dragon": 1.15
+   }
+  }
+ },
+ "dark-power": {
+  "id": "dark-power",
+  "name": "Dark Power",
+  "description": "Dark moves deal 15% more damage.",
+  "mods": {
+   "typeDamage": {
+    "dark": 1.15
+   }
+  }
+ },
+ "steel-power": {
+  "id": "steel-power",
+  "name": "Steel Power",
+  "description": "Steel moves deal 15% more damage.",
+  "mods": {
+   "typeDamage": {
+    "steel": 1.15
+   }
+  }
+ },
+ "fairy-power": {
+  "id": "fairy-power",
+  "name": "Fairy Power",
+  "description": "Fairy moves deal 15% more damage.",
+  "mods": {
+   "typeDamage": {
+    "fairy": 1.15
+   }
+  }
+ }
+}

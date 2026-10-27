@@ -1,0 +1,107 @@
+{
+ "id": "trickster",
+ "name": "Trickster",
+ "type": "psychic",
+ "lines": [
+  {
+   "line": [
+    "drowzee",
+    "hypno"
+   ],
+   "focus": [
+    {
+     "stat": "attack",
+     "skill": "skill:nightmare"
+    },
+    {
+     "stat": "defense",
+     "skill": "skill:hypnosis--bond"
+    },
+    {
+     "stat": "hp",
+     "skill": "skill:drain-punch"
+    }
+   ]
+  },
+  {
+   "line": [
+    "mr-mime"
+   ],
+   "focus": [
+    {
+     "stat": "attack",
+     "skill": "skill:fake-out"
+    },
+    {
+     "stat": "defense",
+     "skill": "skill:barrier"
+    },
+    {
+     "stat": "hp",
+     "skill": "skill:misty-terrain"
+    }
+   ]
+  }
+ ],
+ "rows": {
+  "4": [
+   "insomnia",
+   "own-tempo"
+  ],
+  "6": [
+   "skill:psybeam",
+   "skill:psych-up"
+  ],
+  "9": [
+   "bad-dreams",
+   "opportunist"
+  ],
+  "12": [
+   "skill:hypnosis",
+   "skill:swagger"
+  ],
+  "15": [
+   "lingering-effects",
+   "prankster"
+  ],
+  "18": [
+   "skill:psychic",
+   "skill:dazzling-gleam"
+  ],
+  "21": [
+   "exploit-opening",
+   "teamwork"
+  ],
+  "24": [
+   "skill:dream-eater",
+   "skill:shadow-ball"
+  ],
+  "27": [
+   "psychic-power",
+   "lingering-aroma"
+  ],
+  "30": [
+   "trickster-filter",
+   "trickster-forewarn"
+  ]
+ },
+ "passives": {
+  "trickster-filter": {
+   "id": "trickster-filter",
+   "name": "Filter",
+   "description": "Takes 15% less damage.",
+   "mods": {
+    "damageTaken": 0.85
+   }
+  },
+  "trickster-forewarn": {
+   "id": "trickster-forewarn",
+   "name": "Forewarn",
+   "description": "+25% damage to foes carrying a status an ally applied, and its non-damaging moves recharge 1 turn faster.",
+   "mods": {
+    "vsSetupDamage": 1.25,
+    "statusCooldownReduction": 1
+   }
+  }
+ }
+}

@@ -90,5 +90,14 @@
  },
  "shed-shell": {
   "description": "Szabad ütés nélkül léphet el a lefogó ellenfelek mellől."
+ },
+ "black-glasses": {
+  "description": "A Dark támadások 20%-kal többet sebeznek."
+ },
+ "metal-coat": {
+  "description": "A Steel támadások 20%-kal többet sebeznek."
+ },
+ "fairy-feather": {
+  "description": "A Fairy támadások 20%-kal többet sebeznek."
  }
 }

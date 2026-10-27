@@ -1,0 +1,93 @@
+{
+ "id": "ghost",
+ "name": "Ghost",
+ "type": "ghost",
+ "lines": [
+  {
+   "line": [
+    "gastly",
+    "haunter",
+    "gengar"
+   ],
+   "focus": [
+    {
+     "stat": "attack",
+     "skill": "skill:phantom-force"
+    },
+    {
+     "stat": "defense",
+     "skill": "skill:perish-song"
+    },
+    {
+     "stat": "hp",
+     "skill": "skill:pain-split"
+    }
+   ]
+  }
+ ],
+ "rows": {
+  "4": [
+   "run-away",
+   "first-strike"
+  ],
+  "6": [
+   "skill:hex",
+   "skill:lick"
+  ],
+  "9": [
+   "bad-dreams",
+   "opportunist"
+  ],
+  "12": [
+   "skill:hypnosis",
+   "skill:will-o-wisp"
+  ],
+  "15": [
+   "lingering-effects",
+   "prankster"
+  ],
+  "18": [
+   "skill:sludge-bomb",
+   "skill:dark-pulse"
+  ],
+  "21": [
+   "exploit-opening",
+   "multiscale"
+  ],
+  "24": [
+   "skill:shadow-ball",
+   "skill:dream-eater"
+  ],
+  "27": [
+   "ghost-power",
+   "hustle"
+  ],
+  "30": [
+   "ghost-cursed-body",
+   "ghost-shadow-tag"
+  ]
+ },
+ "passives": {
+  "ghost-cursed-body": {
+   "id": "ghost-cursed-body",
+   "name": "Cursed Body",
+   "description": "Its hits on adjacent foes Disable them for 1 turn, and foes that hit it from an adjacent hex take 6 damage.",
+   "mods": {
+    "contactStatus": {
+     "status": "disabled",
+     "duration": 1
+    },
+    "thorns": 6
+   }
+  },
+  "ghost-shadow-tag": {
+   "id": "ghost-shadow-tag",
+   "name": "Shadow Tag",
+   "description": "Foes engaged with it cannot slip away without its free attack, and it deals 20% more damage to foes engaged with its allies.",
+   "mods": {
+    "noEscape": true,
+    "vsEngagedDamage": 1.2
+   }
+  }
+ }
+}

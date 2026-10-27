@@ -1,0 +1,53 @@
+{
+ "id": "eevee",
+ "name": "Eevee",
+ "type": "normal",
+ "lines": [
+  { "line": ["eevee", "vaporeon", "jolteon", "flareon"], "focus": [
+   { "stat": "attack", "skill": "skill:last-resort" },
+   { "stat": "defense", "skill": "skill:baby-doll-eyes" },
+   { "stat": "hp", "skill": "skill:wish" } ] }
+ ],
+ "rows": {
+  "4": ["run-away", "first-strike"],
+  "6": ["skill:covet", "skill:tail-whip"],
+  "9": ["teamwork", "flanker"],
+  "12": ["skill:swift", "skill:fake-tears"],
+  "15": ["speed-training", "shed-skin"],
+  "18": ["skill:double-edge", "skill:calm-mind"],
+  "21": ["second-wind", "battle-bond"],
+  "24": ["skill:hyper-voice", "skill:skull-bash"],
+  "27": ["hustle", "normal-power"],
+  "30": ["eevee-adaptability", "eevee-anticipation"]
+ },
+ "forms": {
+  "vaporeon": { "rows": {
+   "15": ["water-veil", "natural-recovery"],
+   "18": ["skill:aqua-tail", "skill:muddy-water"],
+   "21": ["water-power", "ingrain-grip"],
+   "24": ["skill:hydro-pump", "skill:aqua-ring"],
+   "27": ["vitality-training", "second-wind"],
+   "30": ["eevee-water-absorb", "multiscale"] } },
+  "jolteon": { "rows": {
+   "15": ["static", "speed-training"],
+   "18": ["skill:discharge", "skill:thunder-fang"],
+   "21": ["electric-power", "shock-exploit"],
+   "24": ["skill:thunderbolt", "skill:volt-switch"],
+   "27": ["speed-boost", "quick-feet"],
+   "30": ["eevee-volt-absorb", "battle-high"] } },
+  "flareon": { "rows": {
+   "15": ["flame-body", "guts"],
+   "18": ["skill:flare-blitz", "skill:lava-plume"],
+   "21": ["fire-power", "moxie"],
+   "24": ["skill:overheat", "skill:fire-blast"],
+   "27": ["attack-training", "desperation"],
+   "30": ["eevee-flash-fire", "follow-through"] } }
+ },
+ "passives": {
+  "eevee-adaptability": { "id": "eevee-adaptability", "name": "Adaptability", "description": "All its moves deal 20% more damage.", "mods": { "damageDealt": 1.2 } },
+  "eevee-anticipation": { "id": "eevee-anticipation", "name": "Anticipation", "description": "It takes 15% less damage.", "mods": { "damageTaken": 0.85 } },
+  "eevee-water-absorb": { "id": "eevee-water-absorb", "name": "Water Absorb", "description": "It heals 6% of its max HP each turn.", "mods": { "healPerTurn": 0.06 } },
+  "eevee-volt-absorb": { "id": "eevee-volt-absorb", "name": "Volt Absorb", "description": "It cannot be paralyzed or slowed, and heals 4% of its max HP each turn.", "mods": { "statusImmune": ["paralysis", "slow"], "healPerTurn": 0.04 } },
+  "eevee-flash-fire": { "id": "eevee-flash-fire", "name": "Flash Fire", "description": "It cannot be burned, and all its moves deal 15% more damage.", "mods": { "statusImmune": ["burn"], "damageDealt": 1.15 } }
+ }
+}

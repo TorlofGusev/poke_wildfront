@@ -120,6 +120,8 @@ export class BattleScene extends Phaser.Scene {
   private logOpenedAt = 0;
 
   private overlay!: Phaser.GameObjects.Graphics;
+  /** Combo names over the foes the active Pokémon would combo. */
+  private comboLabels: Phaser.GameObjects.Container | null = null;
   private boardGfx: Phaser.GameObjects.Graphics | null = null;
   private units = new Map<string, UnitView>();
   private panel!: Phaser.GameObjects.Container;
@@ -466,14 +468,19 @@ export class BattleScene extends Phaser.Scene {
       const a = centre(u.pos), b = centre(partner.pos);
       this.overlay.lineBetween(a.x, a.y, b.x, b.y);
     }
+    this.comboLabels?.destroy(true);
+    this.comboLabels = null;
     if (!this.isPlayerTurn()) return;
     const active = activeUnit(state)!;
-    this.overlay.fillStyle(COLORS.combo, 0.95);
+    // Named combo the active Pokémon would land: its name over the foe.
+    this.comboLabels = this.add.container(0, 0).setDepth(15);
     for (const foe of state.units) {
-      if (foe.side === active.side || foe.hp <= 0 || this.isHidden(foe.id) || !comboSetup(state, active, foe)) continue;
+      const combo = foe.side === active.side || foe.hp <= 0 || this.isHidden(foe.id) ? null : comboSetup(state, CONTENT, active, foe);
+      if (!combo) continue;
       const c = tileToWorld(foe.pos);
-      const x = c.x + TILE / 2 - 3, y = c.y - HEX_R / 2 - 4;
-      this.overlay.fillTriangle(x, y, x - 12, y, x, y + 12);
+      this.comboLabels.add(this.add.text(c.x, c.y - HEX_R - 6, `⚡ ${CONTENT.rules.combos[combo]!.name}`, {
+        fontFamily: FONT, fontSize: px(10), color: "#10141c", fontStyle: "bold", backgroundColor: "#f5d76e", padding: { x: 3, y: 1 },
+      }).setOrigin(0.5, 1));
     }
   }
 
@@ -501,9 +508,11 @@ export class BattleScene extends Phaser.Scene {
   private comboLine(unit: BattleUnit): string {
     if (!this.state || unit.hp <= 0 || !this.isPlayerTurn()) return "";
     const active = activeUnit(this.state)!;
-    const setup = unit.side !== active.side ? comboSetup(this.state, active, unit) : null;
+    const setup = unit.side !== active.side ? comboSetup(this.state, CONTENT, active, unit) : null;
     if (!setup) return "";
-    return `${tag("good", t("Combo target"))} ${tag("dim", setup === "engaged" ? t("an ally has engaged it: hit it for +1 Bond and combo bonuses") : t("it carries an ally's status: hit it for +1 Bond and combo bonuses"))}`;
+    const c = CONTENT.rules.combos[setup]!;
+    const why = c.engaged ? t("an ally has engaged it") : c.status ? t("an ally's {status} is on it", { status: CONTENT.statuses[c.status]?.name ?? c.status }) : t("it carries an ally's status");
+    return `${tag("good", t("Combo: {name}", { name: c.name }))} ${tag("dim", `${why}: ×${c.damage} ${t("damage")}${c.consumes ? t(", uses the status up") : ""}`)}`;
   }
 
   /** Hovering a destination: the free attacks the move would draw, shown like a damage preview. */
@@ -1067,6 +1076,7 @@ export class BattleScene extends Phaser.Scene {
       statusName: (id: string) => CONTENT.statuses[id]?.name ?? id,
       ballName: (id: string) => CONTENT.balls[id]?.name ?? id,
       abilityName: (id: string) => CONTENT.abilities[id]?.name ?? id,
+      comboName: (id: string) => CONTENT.rules.combos[id]?.name ?? id,
       bondName: CONTENT.terms.bond,
     };
     for (const e of events) {

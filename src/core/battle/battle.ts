@@ -123,7 +123,10 @@ export function movementPoints(content: BattleContent, unit: BattleUnit, state?:
 /** Combined battlefield traits of a Pokémon's types. */
 export function unitTraits(content: BattleContent, types: readonly string[]): TypeUnitTraits {
   const all = types.map((t) => content.types[t]?.unit ?? {});
-  return { flies: all.some((t) => t.flies), phases: all.some((t) => t.phases), immovable: all.some((t) => t.immovable) };
+  return {
+    flies: all.some((t) => t.flies), phases: all.some((t) => t.phases), immovable: all.some((t) => t.immovable),
+    damageTaken: all.reduce((m, t) => m * (t.damageTaken ?? 1), 1),
+  };
 }
 
 function occupancyFor(state: BattleState, unit: BattleUnit): Occupancy {
@@ -686,13 +689,18 @@ function hasAllySetupStatus(state: BattleState, user: BattleUnit, target: Battle
 }
 
 /**
- * The ally setup a hit on this foe exploits, if any: the foe is engaged with one of the user's allies,
- * or carries a status an ally applied.
+ * The named combo a hit on this foe would land, if any (rules.combos, first match): the foe is engaged with
+ * one of the user's allies, or carries a (harmful) status an ally applied.
  */
-export function comboSetup(state: BattleState, user: BattleUnit, target: BattleUnit): "engaged" | "status" | null {
+export function comboSetup(state: BattleState, content: BattleContent, user: BattleUnit, target: BattleUnit): string | null {
   const partner = partnerOf(state, target);
-  if (partner && partner.id !== user.id && partner.side === user.side) return "engaged";
-  return hasAllySetupStatus(state, user, target) ? "status" : null;
+  const pinned = !!partner && partner.id !== user.id && partner.side === user.side;
+  const allyMade = target.statuses.filter((st) => !content.statuses[st.id]?.buff && st.sourceId !== undefined && st.sourceId !== user.id
+    && state.units.find((u) => u.id === st.sourceId)?.side === user.side).map((st) => st.id);
+  for (const [id, c] of Object.entries(content.rules.combos)) {
+    if (c.engaged ? pinned : c.status ? allyMade.includes(c.status) : allyMade.length > 0) return id;
+  }
+  return null;
 }
 
 /** Applies a move's damage, effects and type mechanics to the units it affects. */
@@ -721,7 +729,8 @@ function resolveHits(
         (mech.flankBonus && helpers > 0 ? mech.flankBonus + m.flankBonus : 1) *
         (1 + (mech.swarmBonus ? (mech.swarmBonus + m.swarmBonus) * helpers : 0));
       const statusMult = statusFactor(content, user, "damageDealt") * statusFactor(content, t, "damageTaken");
-      const setup = isFoe ? comboSetup(state, user, t) : null;
+      const setup = isFoe ? comboSetup(state, content, user, t) : null;
+      const combo = setup ? content.rules.combos[setup]! : null;
       const pinner = isFoe ? partnerOf(state, t) : null;
       const adjacentFoes = livingUnits(state).filter((o) => o.side !== user.side && gridDistance(o.pos, user.pos) === 1).length;
       const streak = isFoe && user.furyTarget === t.id ? Math.min(3, user.furyStreak) : 0;
@@ -736,7 +745,7 @@ function resolveHits(
         move.range.max <= 1 ? content.rules.melee.closeBonus : 1,
         1 + momentumBonus(content, user, state),
         user.hp * 2 < user.maxHp ? m.lowHpDamage * (m.lowHpTypeDamage[move.type] ?? 1) : 1,
-        setup === "engaged" ? m.vsEngagedDamage : 1,
+        combo?.engaged ? m.vsEngagedDamage : 1,
         isFoe && hasAllySetupStatus(state, user, t) ? m.vsSetupDamage : 1,
         pinner && pinner.id !== user.id && pinner.side === user.side ? pinner.mods.pinDamage : 1,
         state.mapRows[t.pos.y]?.[t.pos.x] === "m" ? m.vsMudDamage : 1,
@@ -744,13 +753,15 @@ function resolveHits(
         ailments(content, user).length > 0 ? m.statusedDamage : 1,
         ...t.statuses.map((st) => m.vsStatusIdDamage[st.id] ?? 1),
         1 + m.furyCutter * streak,
+        // Dark moves exploit a hurt or afflicted foe.
+        mech.vsHurt && (t.hp * 2 < t.maxHp || ailments(content, t).length > 0) ? mech.vsHurt : 1,
       ];
       // A ranged move used while engaged is hampered by the foe in its face.
       if (user.engagedWith && move.range.max >= 2) ownFactors.push(content.rules.melee.engagedRangedPenalty);
       const bonus = ownFactors.reduce((sum, f) => sum + (f > 1 ? f - 1 : 0), 0);
       const penalty = ownFactors.reduce((prod, f) => prod * (f < 1 ? f : 1), 1);
       const own = penalty * (1 + Math.min(MAX_DAMAGE_BONUS, bonus));
-      const mult = own * eff * positional * statusMult * hitMult * t.mods.damageTaken * (t.hp === t.maxHp ? t.mods.fullHpDamageTaken : 1);
+      const mult = own * eff * positional * (combo?.damage ?? 1) * statusMult * hitMult * t.mods.damageTaken * (t.traits.damageTaken ?? 1) * (t.hp === t.maxHp ? t.mods.fullHpDamageTaken : 1);
       const off = content.rules.statOffset;
       const defense = mech.ignoresDefense ? 0 : t.stats.defense;
       const attack = move.scaleStat ? user.stats[move.scaleStat] : user.stats.attack;
@@ -770,7 +781,12 @@ function resolveHits(
       // One combo per action; Bond for it only comes from masteries (comboBond) and skills (bond effects).
       if (dealt > 0 && setup && !comboScored) {
         comboScored = true;
-        events.push({ type: "combo", unitId: user.id, targetId: t.id, setup });
+        events.push({ type: "combo", unitId: user.id, targetId: t.id, combo: setup });
+        // Some combos use the status up (a frozen foe shatters free, a paralysed one is jolted awake).
+        if (combo?.consumes && combo.status && t.statuses.some((st) => st.id === combo.status)) {
+          t.statuses = t.statuses.filter((st) => st.id !== combo.status);
+          events.push({ type: "statusExpired", unitId: t.id, status: combo.status });
+        }
         const bond = m.comboBond + bondOn("combo");
         if (bond > 0) gainBond(state, user.side, bond, "combo", events);
       }

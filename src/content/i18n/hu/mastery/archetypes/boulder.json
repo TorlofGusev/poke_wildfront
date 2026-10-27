@@ -1,0 +1,10 @@
+{
+ "passives": {
+  "boulder-rock-head": {
+   "description": "10%-kal többet sebez és 10%-kal kevesebb sebzést kap."
+  },
+  "boulder-solid-rock": {
+   "description": "20%-kal kevesebb sebzést kap."
+  }
+ }
+}

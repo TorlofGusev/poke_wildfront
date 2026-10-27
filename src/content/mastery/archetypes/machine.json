@@ -1,0 +1,108 @@
+{
+ "id": "machine",
+ "name": "Machine",
+ "type": "electric",
+ "lines": [
+  {
+   "line": [
+    "magnemite",
+    "magneton"
+   ],
+   "focus": [
+    {
+     "stat": "attack",
+     "skill": "skill:flash-cannon"
+    },
+    {
+     "stat": "attack",
+     "skill": "skill:steel-beam"
+    },
+    {
+     "stat": "defense",
+     "skill": "skill:magnet-rise"
+    }
+   ]
+  },
+  {
+   "line": [
+    "voltorb",
+    "electrode"
+   ],
+   "focus": [
+    {
+     "stat": "attack",
+     "skill": "skill:explosion"
+    },
+    {
+     "stat": "defense",
+     "skill": "skill:mirror-coat"
+    },
+    {
+     "stat": "attack",
+     "skill": "skill:foul-play"
+    }
+   ]
+  }
+ ],
+ "rows": {
+  "4": [
+   "sturdy",
+   "magnet-pull"
+  ],
+  "6": [
+   "skill:spark",
+   "skill:sonic-boom"
+  ],
+  "9": [
+   "shock-exploit",
+   "pin-down"
+  ],
+  "12": [
+   "skill:electro-ball",
+   "skill:metal-sound"
+  ],
+  "15": [
+   "thick-hide",
+   "aftermath"
+  ],
+  "18": [
+   "skill:thunderbolt",
+   "skill:gyro-ball"
+  ],
+  "21": [
+   "mean-look",
+   "bond-focus"
+  ],
+  "24": [
+   "skill:zap-cannon",
+   "skill:thunder"
+  ],
+  "27": [
+   "steel-power",
+   "electric-power"
+  ],
+  "30": [
+   "machine-magnet-pull",
+   "machine-analytic"
+  ]
+ },
+ "passives": {
+  "machine-magnet-pull": {
+   "id": "machine-magnet-pull",
+   "name": "Magnet Pull",
+   "description": "Its pulls move foes 1 more hex, and foes engaged with it cannot slip away without its free attack.",
+   "mods": {
+    "pullBonus": 1,
+    "noEscape": true
+   }
+  },
+  "machine-analytic": {
+   "id": "machine-analytic",
+   "name": "Analytic",
+   "description": "+25% damage to foes carrying any status.",
+   "mods": {
+    "vsStatusDamage": 1.25
+   }
+  }
+ }
+}

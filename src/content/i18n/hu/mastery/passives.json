@@ -1,0 +1,260 @@
+{
+ "thick-hide": {
+  "description": "10%-kal kevesebb sebzést kap."
+ },
+ "multiscale": {
+  "description": "Teljes HP-n 20%-kal kevesebb sebzést kap."
+ },
+ "sturdy": {
+  "description": "Csatánként egyszer 1 HP-val túléli a kiütő csapást."
+ },
+ "rough-skin": {
+  "description": "Aki szomszédból üti, 8 sebzést kap."
+ },
+ "shed-skin": {
+  "description": "Köre elején lerázza az ellenfél okozta státuszokat."
+ },
+ "natural-recovery": {
+  "description": "Minden köre elején a max HP 4%-át gyógyítja."
+ },
+ "ingrain-grip": {
+  "description": "Lekötve minden körben a max HP 4%-át gyógyítja."
+ },
+ "second-wind": {
+  "description": "Ha kiüt egy ellenfelet, a max HP 15%-át gyógyítja."
+ },
+ "run-away": {
+  "description": "Szabad ütés nélkül léphet el a lekötő ellenfél mellől."
+ },
+ "mean-look": {
+  "description": "A vele lekötött ellenfél nem szökhet el szabad ütés nélkül."
+ },
+ "pursuit-instinct": {
+  "description": "A menekülőre mért szabad ütései 25%-kal erősebbek."
+ },
+ "pin-down": {
+  "description": "A vele lekötött ellenfél 15%-kal többet kap a szövetségeseitől."
+ },
+ "flanker": {
+  "description": "+15% sebzés a szövetséges által lekötött ellenfélre."
+ },
+ "tough-claws": {
+  "description": "+15% sebzés a szomszédos ellenfelekre."
+ },
+ "long-reach": {
+  "description": "+15% sebzés a legalább 2 hexre lévő ellenfelekre."
+ },
+ "keen-eye": {
+  "description": "+1 hatótáv a legalább 2 hexes támadásokra."
+ },
+ "overhead-shot": {
+  "description": "Távolsági támadásai átlőnek a Pokémonok fölött."
+ },
+ "first-strike": {
+  "description": "+20% sebzés teljes HP-jú ellenfélre."
+ },
+ "opportunist": {
+  "description": "+15% sebzés státuszos ellenfélre."
+ },
+ "exploit-opening": {
+  "description": "+20% sebzés a szövetséges okozta státuszú ellenfélre."
+ },
+ "guts": {
+  "description": "+20% sebzés, amíg státusz van rajta."
+ },
+ "quick-feet": {
+  "description": "+2 mozgás, amíg státusz van rajta."
+ },
+ "desperation": {
+  "description": "+20% sebzés fél HP alatt."
+ },
+ "cornered": {
+  "description": "+20% sebzés, ha legalább két ellenfél áll mellette."
+ },
+ "hustle": {
+  "description": "Minden támadása 10%-kal többet sebez."
+ },
+ "relentless": {
+  "description": "Ugyanarra az ellenfélre egymás utáni találatonként +10% sebzés (max. 3)."
+ },
+ "moxie": {
+  "description": "Kiütés után a csata végéig nő az Attackja (max. +3)."
+ },
+ "speed-boost": {
+  "description": "Ha a körében kiüt valakit, +2 mozgást kap."
+ },
+ "follow-through": {
+  "description": "Ha a körében kiüt valakit, újra használhatja az alaptámadását."
+ },
+ "battle-high": {
+  "description": "Kiütés után a támadásai újratöltődnek."
+ },
+ "battle-bond": {
+  "description": "+1 csapat-Bond, ha kiüt egy ellenfelet."
+ },
+ "teamwork": {
+  "description": "+1 csapat-Bond, ha combót visz be."
+ },
+ "aftermath": {
+  "description": "+2 csapat-Bond, ha elájul."
+ },
+ "bond-focus": {
+  "description": "A Bond-támadásai 1-gyel olcsóbbak (legalább 1)."
+ },
+ "leader": {
+  "description": "Bevetve a csapat +1 Bonddal kezdi a csatát."
+ },
+ "lingering-effects": {
+  "description": "Az általa okozott státuszok 1 körrel tovább tartanak."
+ },
+ "prankster": {
+  "description": "A nem sebző támadásai 1 körrel gyorsabban töltődnek."
+ },
+ "lingering-aroma": {
+  "description": "Az elájult ellenfélen lévő státuszai átterjednek a szomszédaira."
+ },
+ "static": {
+  "description": "Szomszédos találatai 1 körre megbénítanak."
+ },
+ "poison-point": {
+  "description": "Szomszédos találatai 2 körre megmérgeznek."
+ },
+ "flame-body": {
+  "description": "Szomszédos találatai 1 körre megégetnek."
+ },
+ "gooey": {
+  "description": "Szomszédos találatai 1 körre lelassítanak."
+ },
+ "limber": {
+  "description": "Nem lehet megbénítani vagy lelassítani."
+ },
+ "water-veil": {
+  "description": "Nem lehet megégetni."
+ },
+ "immunity": {
+  "description": "Nem lehet megmérgezni."
+ },
+ "insomnia": {
+  "description": "Nem lehet elaltatni."
+ },
+ "own-tempo": {
+  "description": "Nem lehet megzavarni."
+ },
+ "bad-dreams": {
+  "description": "+25% sebzés alvó ellenfélre."
+ },
+ "merciless": {
+  "description": "+20% sebzés mérgezett ellenfélre."
+ },
+ "shock-exploit": {
+  "description": "+25% sebzés megbénított ellenfélre."
+ },
+ "hunter": {
+  "description": "+20% sebzés lelassított ellenfélre."
+ },
+ "sand-force": {
+  "description": "+20% sebzés sárban álló ellenfélre."
+ },
+ "forceful": {
+  "description": "A lökései 1 hexszel messzebbre viszik az ellenfelet."
+ },
+ "magnet-pull": {
+  "description": "A húzásai 1 hexszel közelebb hozzák az ellenfelet."
+ },
+ "bulldozer": {
+  "description": "Akadálynak lökött ellenfél +10 sebzést kap."
+ },
+ "big-root": {
+  "description": "Az elszívó támadásai a sebzés 20%-ával többet gyógyítanak."
+ },
+ "pincer": {
+  "description": "+20% oldalazó bónusz, ha egy szövetséges is a célpont mellett áll."
+ },
+ "swarm-tactics": {
+  "description": "Célpont melletti szövetségesenként +15% rajbónusz."
+ },
+ "blaze": {
+  "description": "Fél HP alatt a Fire támadások 25%-kal erősebbek."
+ },
+ "overgrow": {
+  "description": "Fél HP alatt a Grass támadások 25%-kal erősebbek."
+ },
+ "torrent": {
+  "description": "Fél HP alatt a Water támadások 25%-kal erősebbek."
+ },
+ "swarm": {
+  "description": "Fél HP alatt a Bug támadások 25%-kal erősebbek."
+ },
+ "attack-training": {
+  "description": "+1 Attack."
+ },
+ "defense-training": {
+  "description": "+1 Defense."
+ },
+ "vitality-training": {
+  "description": "+1 Vitality."
+ },
+ "speed-training": {
+  "description": "+1 Speed."
+ },
+ "willpower-training": {
+  "description": "+1 Willpower."
+ },
+ "crit-training": {
+  "description": "+1 Crit."
+ },
+ "normal-power": {
+  "description": "A Normal támadások 15%-kal erősebbek."
+ },
+ "fire-power": {
+  "description": "A Fire támadások 15%-kal erősebbek."
+ },
+ "water-power": {
+  "description": "A Water támadások 15%-kal erősebbek."
+ },
+ "grass-power": {
+  "description": "A Grass támadások 15%-kal erősebbek."
+ },
+ "electric-power": {
+  "description": "A Electric támadások 15%-kal erősebbek."
+ },
+ "ice-power": {
+  "description": "A Ice támadások 15%-kal erősebbek."
+ },
+ "fighting-power": {
+  "description": "A Fighting támadások 15%-kal erősebbek."
+ },
+ "poison-power": {
+  "description": "A Poison támadások 15%-kal erősebbek."
+ },
+ "ground-power": {
+  "description": "A Ground támadások 15%-kal erősebbek."
+ },
+ "flying-power": {
+  "description": "A Flying támadások 15%-kal erősebbek."
+ },
+ "psychic-power": {
+  "description": "A Psychic támadások 15%-kal erősebbek."
+ },
+ "bug-power": {
+  "description": "A Bug támadások 15%-kal erősebbek."
+ },
+ "rock-power": {
+  "description": "A Rock támadások 15%-kal erősebbek."
+ },
+ "ghost-power": {
+  "description": "A Ghost támadások 15%-kal erősebbek."
+ },
+ "dragon-power": {
+  "description": "A Dragon támadások 15%-kal erősebbek."
+ },
+ "dark-power": {
+  "description": "A Dark támadások 15%-kal erősebbek."
+ },
+ "steel-power": {
+  "description": "A Steel támadások 15%-kal erősebbek."
+ },
+ "fairy-power": {
+  "description": "A Fairy támadások 15%-kal erősebbek."
+ }
+}

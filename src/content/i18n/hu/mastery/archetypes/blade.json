@@ -1,0 +1,10 @@
+{
+ "passives": {
+  "blade-technician": {
+   "description": "20%-kal többet sebez a társával harcban álló ellenfelekre, és 10%-kal többet a szomszédosakra."
+  },
+  "blade-hyper-cutter": {
+   "description": "15%-kal többet sebez, és további 15%-kal többet az állapottal sújtott ellenfelekre."
+  }
+ }
+}

@@ -1,0 +1,110 @@
+{
+ "id": "thicket",
+ "name": "Thicket",
+ "type": "grass",
+ "lines": [
+  {
+   "line": [
+    "bellsprout",
+    "weepinbell",
+    "victreebel"
+   ],
+   "focus": [
+    {
+     "stat": "attack",
+     "skill": "skill:leaf-blade"
+    },
+    {
+     "stat": "defense",
+     "skill": "skill:stockpile"
+    },
+    {
+     "stat": "hp",
+     "skill": "skill:strength-sap"
+    }
+   ]
+  },
+  {
+   "line": [
+    "exeggcute",
+    "exeggutor"
+   ],
+   "focus": [
+    {
+     "stat": "attack",
+     "skill": "skill:wood-hammer"
+    },
+    {
+     "stat": "attack",
+     "skill": "skill:future-sight"
+    },
+    {
+     "stat": "hp",
+     "skill": "skill:synthesis"
+    }
+   ]
+  }
+ ],
+ "rows": {
+  "4": [
+   "overgrow",
+   "grass-power"
+  ],
+  "6": [
+   "skill:bullet-seed",
+   "skill:sleep-powder"
+  ],
+  "9": [
+   "ingrain-grip",
+   "first-strike"
+  ],
+  "12": [
+   "skill:seed-bomb",
+   "skill:magical-leaf"
+  ],
+  "15": [
+   "big-root",
+   "opportunist"
+  ],
+  "18": [
+   "skill:giga-drain",
+   "skill:grassy-glide"
+  ],
+  "21": [
+   "exploit-opening",
+   "attack-training"
+  ],
+  "24": [
+   "skill:leaf-storm",
+   "skill:hyper-beam"
+  ],
+  "27": [
+   "hunter",
+   "sturdy"
+  ],
+  "30": [
+   "thicket-harvest",
+   "thicket-gluttony"
+  ]
+ },
+ "passives": {
+  "thicket-harvest": {
+   "id": "thicket-harvest",
+   "name": "Harvest",
+   "description": "It heals 5% of its max HP each turn and drains more with Grass moves.",
+   "mods": {
+    "healPerTurn": 0.05,
+    "drainBonus": 0.15
+   }
+  },
+  "thicket-gluttony": {
+   "id": "thicket-gluttony",
+   "name": "Gluttony",
+   "description": "Its moves deal 25% more damage while it is below half HP, and it heals 15% of its max HP on a knockout.",
+   "mods": {
+    "lowHpDamage": 1.25,
+    "koHeal": 0.15
+   }
+  }
+ }
+}

@@ -1,0 +1,10 @@
+{
+ "passives": {
+  "frost-ice-body": {
+   "description": "Minden kör elején a maximális HP 5%-át gyógyítja."
+  },
+  "frost-snow-cloak": {
+   "description": "15%-kal kevesebb sebzést kap, és a Jég támadásai 10%-kal többet sebeznek."
+  }
+ }
+}

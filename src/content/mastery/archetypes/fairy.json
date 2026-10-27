@@ -1,0 +1,31 @@
+{
+ "id": "fairy",
+ "name": "Fairy",
+ "type": "fairy",
+ "lines": [
+  { "line": ["clefairy", "clefable"], "focus": [
+   { "stat": "attack", "skill": "skill:moonblast" },
+   { "stat": "defense", "skill": "skill:cosmic-power" },
+   { "stat": "hp", "skill": "skill:wish" } ] },
+  { "line": ["jigglypuff", "wigglytuff"], "focus": [
+   { "stat": "attack", "skill": "skill:spit-up" },
+   { "stat": "defense", "skill": "skill:sing--bond" },
+   { "stat": "hp", "skill": "skill:swallow" } ] }
+ ],
+ "rows": {
+  "4": ["thick-hide", "prankster"],
+  "6": ["skill:double-slap", "skill:sweet-kiss"],
+  "9": ["lingering-effects", "natural-recovery"],
+  "12": ["skill:draining-kiss", "skill:reflect"],
+  "15": ["willpower-training", "own-tempo"],
+  "18": ["skill:dazzling-gleam", "skill:safeguard"],
+  "21": ["teamwork", "bond-focus"],
+  "24": ["skill:play-rough", "skill:hyper-voice"],
+  "27": ["fairy-power", "second-wind"],
+  "30": ["fairy-cute-charm", "fairy-magic-guard"]
+ },
+ "passives": {
+  "fairy-cute-charm": { "id": "fairy-cute-charm", "name": "Cute Charm", "description": "Its hits on adjacent foes Weaken them for 1 turn.", "mods": { "contactStatus": { "status": "weakened", "duration": 1 } } },
+  "fairy-magic-guard": { "id": "fairy-magic-guard", "name": "Magic Guard", "description": "It cannot be poisoned or burned, and takes 10% less damage.", "mods": { "statusImmune": ["poison", "burn"], "damageTaken": 0.9 } }
+ }
+}

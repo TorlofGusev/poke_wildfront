@@ -1,0 +1,10 @@
+{
+ "passives": {
+  "machine-magnet-pull": {
+   "description": "A húzásai 1 mezővel tovább mozgatják az ellenfelet, és a vele harcban álló ellenfelek nem léphetnek el szabad támadása nélkül."
+  },
+  "machine-analytic": {
+   "description": "+25% sebzés bármilyen állapotot viselő ellenfelekre."
+  }
+ }
+}

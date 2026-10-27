@@ -1,0 +1,110 @@
+{
+ "id": "nido",
+ "name": "Nido",
+ "type": "poison",
+ "lines": [
+  {
+   "line": [
+    "nidoran-f",
+    "nidorina",
+    "nidoqueen"
+   ],
+   "focus": [
+    {
+     "stat": "attack",
+     "skill": "skill:crunch"
+    },
+    {
+     "stat": "attack",
+     "skill": "skill:poison-fang"
+    },
+    {
+     "stat": "defense",
+     "skill": "skill:charm"
+    }
+   ]
+  },
+  {
+   "line": [
+    "nidoran-m",
+    "nidorino",
+    "nidoking"
+   ],
+   "focus": [
+    {
+     "stat": "attack",
+     "skill": "skill:megahorn"
+    },
+    {
+     "stat": "attack",
+     "skill": "skill:head-smash"
+    },
+    {
+     "stat": "defense",
+     "skill": "skill:amnesia"
+    }
+   ]
+  }
+ ],
+ "rows": {
+  "4": [
+   "poison-point",
+   "rough-skin"
+  ],
+  "6": [
+   "skill:double-kick",
+   "skill:poison-tail"
+  ],
+  "9": [
+   "tough-claws",
+   "flanker"
+  ],
+  "12": [
+   "skill:sludge-bomb",
+   "skill:venoshock"
+  ],
+  "15": [
+   "guts",
+   "thick-hide"
+  ],
+  "18": [
+   "skill:earthquake",
+   "skill:iron-tail"
+  ],
+  "21": [
+   "moxie",
+   "natural-recovery"
+  ],
+  "24": [
+   "skill:earth-power",
+   "skill:fire-blast"
+  ],
+  "27": [
+   "ground-power",
+   "poison-power"
+  ],
+  "30": [
+   "nido-sheer-force",
+   "nido-rivalry"
+  ]
+ },
+ "passives": {
+  "nido-sheer-force": {
+   "id": "nido-sheer-force",
+   "name": "Sheer Force",
+   "description": "All its moves deal 20% more damage.",
+   "mods": {
+    "damageDealt": 1.2
+   }
+  },
+  "nido-rivalry": {
+   "id": "nido-rivalry",
+   "name": "Rivalry",
+   "description": "+15% damage to adjacent foes and +15% to foes engaged with one of its allies.",
+   "mods": {
+    "closeDamage": 1.15,
+    "vsEngagedDamage": 1.15
+   }
+  }
+ }
+}

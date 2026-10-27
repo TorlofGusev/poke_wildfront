@@ -1,0 +1,10 @@
+{
+ "passives": {
+  "spark-lightning-rod": {
+   "description": "Az Electric típusú támadásai 25%-kal többet sebeznek."
+  },
+  "spark-motor-drive": {
+   "description": "+1 mozgás, és ha a saját körében kiüt egy ellenfelet, 2-vel többet mozoghat."
+  }
+ }
+}
