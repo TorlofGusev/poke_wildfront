@@ -41,7 +41,14 @@ export function movesKnownAt(species: SpeciesDef, level: number): string[] {
 /** Default loadout: the most recently learned non-basic moves. */
 export function defaultActiveMoves(content: BattleContent, prog: ProgressionContent, speciesId: string, known: readonly string[]): string[] {
   const basic = basicMoveOf(content, content.species[speciesId]!);
-  return known.filter((m) => m !== basic).slice(-prog.rules.maxActiveMoves);
+  const max = prog.rules.maxActiveMoves;
+  const options = known.filter((m) => m !== basic);
+  // A fighting loadout: the strongest damaging moves, plus the newest support move in the last slot.
+  const damaging = options.filter((m) => (content.moves[m]?.power ?? 0) > 0).sort((a, b) => content.moves[b]!.power - content.moves[a]!.power);
+  const support = options.filter((m) => !damaging.includes(m)).reverse();
+  const picks = [...damaging.slice(0, max - 1), ...support.slice(0, 1)];
+  for (const m of [...damaging, ...support]) if (picks.length < max && !picks.includes(m)) picks.push(m);
+  return options.filter((m) => picks.includes(m));
 }
 
 export const xpToNext = (prog: ProgressionContent, level: number): number => level * prog.rules.xpPerLevel;

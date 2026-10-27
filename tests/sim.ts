@@ -37,7 +37,8 @@ export function develop(m: PartyMember, pick: Pick, seed: number, candies = { n:
     const offer = statOffer(CONTENT, PROGRESSION, cur);
     cur = takeOffer(CONTENT, PROGRESSION, cur, (offer.find((o) => o.stat === want) ?? offer[0]!).stat);
   }
-  return cur;
+  // A sensible player swaps in the best loadout of what it knows.
+  return { ...cur, activeMoves: defaultActiveMoves(CONTENT, PROGRESSION, cur.speciesId, cur.knownMoves) };
 }
 
 /**

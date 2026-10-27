@@ -58,6 +58,13 @@ export interface AiWeights {
    * the best. Seeded from the battle state, so a turn still replays identically.
    */
   readonly slack: number;
+  /** Penalty per opponent that could strike the unit's end position next round, minus allies close by. */
+  readonly exposure: number;
+  /**
+   * Rounds the unit holds at the edge of the opponents' reach instead of stepping into it first
+   * (so whoever charges in gets hit first); afterwards it advances anyway. 0 = always charge.
+   */
+  readonly patienceRounds: number;
 }
 
 export const DEFAULT_AI_WEIGHTS: AiWeights = {
@@ -79,6 +86,8 @@ export const DEFAULT_AI_WEIGHTS: AiWeights = {
   statusImpact: 1,
   escapeLowHp: 30,
   slack: 0,
+  exposure: 6,
+  patienceRounds: 2,
 };
 
 /**
@@ -98,6 +107,8 @@ export const NOVICE_AI_WEIGHTS: AiWeights = {
   statusImpact: 0,
   escapeLowHp: 0,
   slack: 0.5,
+  exposure: 0,
+  patienceRounds: 0,
 };
 
 /**
@@ -157,7 +168,9 @@ export function planTurn(
         if (score <= 0) continue;
         // The basic attack and the main action are separate: greedily add the best follow-up of the other kind.
         const follow = bestFollowUp(result.state, content, self, weights, mv.kind === "basic");
-        const total = score + (follow?.score ?? 0);
+        // Where the turn ends matters: fewer foes able to strike back, more friends nearby.
+        const exposed = weights.exposure > 0 && result.state.outcome === "ongoing" ? weights.exposure * exposureAt(content, result.state, self, stop ?? self.pos) : 0;
+        const total = score + (follow?.score ?? 0) - exposed;
         const plan = { actions: [...(moveAction ? [moveAction] : []), use, ...(follow ? [follow.action] : []), end], score: total };
         if (weights.slack > 0) plans.push(plan);
         if (!best || total > best.score) best = plan;
@@ -170,15 +183,20 @@ export function planTurn(
   }
   if (best) return best.actions;
 
-  // Nothing worth doing in reach: advance towards the closest opponent.
+  // Nothing worth doing in reach: advance towards the closest opponent. Early on a careful unit stops
+  // at the edge of their reach, so the side that charges in first is the one that gets hit first.
   const opponents = livingUnits(state).filter((u) => u.side !== self.side);
   const distTo = (p: Point) => Math.min(...opponents.map((o) => gridDistance(p, o.pos)));
+  const patient = state.round <= weights.patienceRounds;
+  const cost = (p: Point) => distTo(p) + (weights.exposure > 0 ? exposureAt(content, state, self, p) * 2 : 0);
   let bestStop: Point | null = null;
-  let bestDist = distTo(self.pos);
+  let bestCost = cost(self.pos);
   for (const p of reachableFor(state, unitId).destinations) {
-    const d = distTo(p);
-    if (d < bestDist) {
-      bestDist = d;
+    if (distTo(p) >= distTo(self.pos)) continue;
+    if (patient && exposureAt(content, state, self, p) > 0) continue;
+    const c = cost(p);
+    if (c < bestCost) {
+      bestCost = c;
       bestStop = p;
     }
   }
@@ -289,6 +307,16 @@ function engageValue(content: BattleContent, state: BattleState, self: BattleUni
   const flankers = livingUnits(state).filter((a) => a.side === self.side && a.id !== self.id
     && gridDistance(a.pos, target.pos) <= threatRange(content, state, a)).length;
   return flankers * w.engagePerFlanker;
+}
+
+/**
+ * How exposed a unit would be standing at `pos`: opponents that could strike it there next round,
+ * less one for each ally within 2 tiles to share the blows (never below 0).
+ */
+function exposureAt(content: BattleContent, state: BattleState, self: BattleUnit, pos: Point): number {
+  const threats = livingUnits(state).filter((o) => o.side !== self.side && gridDistance(o.pos, pos) <= threatRange(content, state, o)).length;
+  const friends = livingUnits(state).filter((a) => a.side === self.side && a.id !== self.id && gridDistance(a.pos, pos) <= 2).length;
+  return Math.max(0, threats - friends);
 }
 
 /** Furthest an opponent could strike from next round: its movement plus its longest reach. */
