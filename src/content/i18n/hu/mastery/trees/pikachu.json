@@ -1,0 +1,73 @@
+{
+ "talents": {
+  "pikachu-electro-ball": {
+   "description": "Bond képesség: elektromos gömböt dob egy max. 3 hexnyi ellenfélre (Erő 75, Speed alapján)."
+  },
+  "pikachu-electroweb": {
+   "description": "Bond képesség: elektromos háló max. 1 hexnyi, 1 hex területre (Erő 70, Sp. Atk); 1 körre lassít."
+  },
+  "pikachu-volt-tackle": {
+   "description": "Bond képesség: teljesen feltöltött roham (Erő 100, Attack), amely 1 körre megbénít (Paralysis)."
+  },
+  "pikachu-lightning-rod": {
+   "description": "Magához vonzza az áramot: Electric támadásai 15%-kal többet sebeznek."
+  },
+  "pikachu-nimble-paws": {
+   "description": "Ha a saját körében kiüt egy ellenfelet, 1 mozgást visszakap."
+  },
+  "pikachu-iron-tail": {
+   "description": "Új képesség: acélkemény farokcsapás (Erő 70), amely 1 körre Exposed állapotba hozza az ellenfelet."
+  },
+  "pikachu-agility": {
+   "description": "Új képesség: ellazítja és könnyíti a testét; 2 körre Hasted."
+  },
+  "pikachu-nimble-escape": {
+   "description": "Szabad csapás nélkül lép el a lekötött ellenfelek mellől."
+  },
+  "pikachu-overcharge": {
+   "description": "25%-kal többet sebez a bénult (Paralysis) ellenfelekre."
+  },
+  "pikachu-volt-switch": {
+   "description": "Új képesség: megráz egy max. 2 hexnyi ellenfelet (Erő 55), majd kiszabadul a lekötésből."
+  },
+  "pikachu-point-blank-spark": {
+   "description": "15%-kal többet sebez a szomszédos ellenfelekre."
+  },
+  "pikachu-lingering-shock": {
+   "description": "Az általa okozott állapotok 1 körrel tovább tartanak."
+  },
+  "pikachu-wild-charge": {
+   "description": "Új képesség: szikrázó roham egy ellenfélre (Erő 90), amellyel leköti."
+  },
+  "pikachu-swift": {
+   "description": "Új képesség: csillag alakú sugarak egy max. 1 hexnyi, 1 hex területre (Erő 80)."
+  },
+  "pikachu-lightning-reflexes": {
+   "description": "A menekülő ellenfelekre mért szabad csapásai 25%-kal többet sebeznek."
+  },
+  "pikachu-spark-battery": {
+   "description": "Minden kombója 1 Bondot ad a csapatnak."
+  },
+  "pikachu-slam": {
+   "description": "Új képesség: farkával lecsap egy ellenfélre (Erő 90)."
+  },
+  "pikachu-zap-cannon": {
+   "description": "Új képesség: elektromos ágyúlövés egy max. 2 hexnyi ellenfélre (Erő 95)."
+  },
+  "pikachu-light-ball": {
+   "description": "Világító gömböt tart, amit csak egy Pikachu használhat: 10%-kal többet sebez."
+  },
+  "pikachu-lightning-speed": {
+   "description": "Ha a saját körében kiüt egy ellenfelet, újra használhatja az alaptámadását."
+  },
+  "pikachu-thunderstruck": {
+   "description": "Mesterfok. 20%-kal többet sebez a teljes HP-s ellenfelekre; kiütéskor képességei újratöltődnek."
+  },
+  "pikachu-partner-spark": {
+   "description": "Mesterfokozat. Bond képességei 1-gyel olcsóbbak; szomszédos ellenfelekre mért találatai 1 körre megbénítanak."
+  },
+  "pikachu-growl": {
+   "description": "Új képesség: aranyos morgás 2 körre Weakened állapotba tesz egy szomszédos ellenfelet."
+  }
+ }
+}

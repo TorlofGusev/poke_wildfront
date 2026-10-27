@@ -1,0 +1,73 @@
+{
+ "talents": {
+  "pidgey-tailwind": {
+   "description": "Bond képesség: hátszelet kavar; ő és a 2 hexen belüli szövetségesek 2 körre Hasted állapotba kerülnek."
+  },
+  "pidgey-brave-bird": {
+   "description": "Bond képesség: lecsap egy max. 3 hexnyi ellenfélre (Erő 100, Attack), és leköti."
+  },
+  "pidgey-hurricane": {
+   "description": "Bond képesség: tomboló szél egy max. 3 hexnyi ellenfélre (Erő 95, Sp. Atk), 1 hexnyit lökve."
+  },
+  "pidgey-big-pecks": {
+   "description": "Védelme nem gyengíthető: nem lehet Exposed vagy Marked."
+  },
+  "pidgey-sharp-eyes": {
+   "description": "15%-kal többet sebez a legalább 2 hexnyire lévő ellenfelekre."
+  },
+  "pidgey-agility": {
+   "description": "Új képesség: ellazítja a testét, hogy gyorsabb legyen, 2 körre Hasted lesz."
+  },
+  "pidgey-steel-wing": {
+   "description": "Új képesség: megkeményedett szárnyakkal sújt le egy ellenfélre (Erő 65)."
+  },
+  "pidgey-pursuit": {
+   "description": "A menekülő ellenfelekre mért szabad csapásai 25%-kal többet sebeznek."
+  },
+  "pidgey-updraft": {
+   "description": "Felszálló légáramlattal szabad csapás nélkül lép el a lekötött ellenfelek mellől."
+  },
+  "pidgey-air-cutter": {
+   "description": "Új képesség: borotvaéles szél egy max. 1 hexnyi, 1 hex területen (Erő 50)."
+  },
+  "pidgey-swoop": {
+   "description": "Ha a saját körében kiüt egy ellenfelet, 1 mozgást visszakap."
+  },
+  "pidgey-gusting-wings": {
+   "description": "Az általa okozott lökések 1 hexszel messzebbre visznek."
+  },
+  "pidgey-sky-attack": {
+   "description": "Új képesség: izzó zuhanás egy max. 2 hexnyi ellenfélre (Erő 95), amellyel leköti."
+  },
+  "pidgey-hyper-beam": {
+   "description": "Új képesség: pusztító sugár egy legfeljebb 2 hexnyire lévő ellenfélre (Erő 85)."
+  },
+  "pidgey-birds-eye-view": {
+   "description": "Távolsági támadásai átlőnek az útban álló Pokémonok fölött."
+  },
+  "pidgey-raptor": {
+   "description": "15%-kal többet sebez a szövetségesei által lekötött ellenfelekre."
+  },
+  "pidgey-air-slash": {
+   "description": "Új képesség: légpenge egy max. 2 hexnyi ellenfélre (Erő 85)."
+  },
+  "pidgey-double-edge": {
+   "description": "Új képesség: vakmerő, teljes testtel mért roham egy ellenfélre (Erő 95)."
+  },
+  "pidgey-relentless-hunter": {
+   "description": "10%-kal többet sebez minden egymás utáni találatért ugyanazon az ellenfélen (max 3)."
+  },
+  "pidgey-flock-leader": {
+   "description": "Minden kiütése 1 Bondot ad a csapatnak."
+  },
+  "pidgey-sovereign-of-the-sky": {
+   "description": "Mesterfokozat. Az ég ura: Flying támadásai 25%-kal többet sebeznek."
+  },
+  "pidgey-raptors-fury": {
+   "description": "Mesterfok. 10%-kal többet sebez; ha a körében kiüt valakit, újra használhatja az alaptámadását."
+  },
+  "pidgey-sand-attack": {
+   "description": "Új képesség: homokot rúg egy legfeljebb 2 hexnyi ellenfélre, 1 körre Weakened lesz."
+  }
+ }
+}

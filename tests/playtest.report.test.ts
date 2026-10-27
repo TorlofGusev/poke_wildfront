@@ -7,7 +7,8 @@ import { STAT_NAMES } from "../src/core/battle";
 import { generateEncounter } from "../src/core/expedition";
 import { newMember, type PartyMember } from "../src/core/party";
 import {
-  chooseRole,
+  chooseFocus,
+  focusOptions,
   defaultActiveMoves,
   chooseTalent,
   gainXp,
@@ -27,103 +28,8 @@ import { nextRandom } from "../src/core/rng";
  * level, and a campaign from level 1 with automatic choices. Run with:
  *   PLAYTEST=1 npx vitest run tests/playtest.report.test.ts --silent=false
  */
-// Mirror-symmetric arena and start positions, so neither side has a terrain advantage.
-const HALF = ["......", "..\"\"..", ".....#", "..##..", "......", "....\"\"", ".#....", "......"];
-const arena = HALF.map((row) => row + [...row].reverse().join(""));
-const START = [{ x: 1, y: 1 }, { x: 1, y: 3 }, { x: 1, y: 5 }];
-const STARTERS = ["bulbasaur", "charmander", "squirtle", "pikachu", "geodude", "pidgey", "rattata", "zubat", "oddish", "mankey", "weedle", "spearow", "diglett", "caterpie"];
+import { arena, battle, bestHeldItem, combos, fight, firstPick, pct, raise, seededPick, STARTERS, withItem, develop, type Pick } from "./sim";
 
-type Pick = (options: readonly string[], seed: number) => string;
-const firstPick: Pick = (o) => o[0]!;
-const seededPick: Pick = (o, seed) => o[seed % o.length]!;
-
-/** Makes every pending choice: role (and mastery type), masteries, stat points along the species' best stats. */
-function develop(m: PartyMember, pick: Pick, seed: number, candies = { n: 0 }): PartyMember {
-  let cur = m;
-  for (let guard = 0; guard < 50; guard++) {
-    const p = pendingChoice(CONTENT, PROGRESSION, cur);
-    if (p === "role") {
-      const roles = CONTENT.species[cur.speciesId]!.roles ?? [];
-      cur = chooseRole(CONTENT, PROGRESSION, cur, pick(roles, seed));
-    } else if (p === "talent") {
-      const opts = talentOptions(CONTENT, PROGRESSION, cur);
-      if (!opts.length) throw new Error(`${cur.speciesId} L${cur.level}: talent pending but no options`);
-      cur = chooseTalent(CONTENT, PROGRESSION, cur, pick(opts, seed + guard));
-    } else break;
-  }
-  const base = CONTENT.species[cur.speciesId]!.stats;
-  const best = [...STAT_NAMES].filter((s) => s !== "hp").sort((a, b) => base[b] - base[a]);
-  for (let i = 0; cur.unspentPoints > 0; i++) {
-    const bonus = candies.n > 0 ? PROGRESSION.rules.candyBonus : 0;
-    if (bonus) candies.n--;
-    cur = spendPoints(cur, ([best[0]!, "hp", best[1]!] as const)[i % 3]!, 1 + bonus, 1);
-  }
-  return cur;
-}
-
-/**
- * The held item a sensible player gives this Pokémon: a booster for its main type if the Mart sells one,
- * else Muscle Band. `owned` limits it to what the team can afford.
- */
-function bestHeldItem(speciesId: string): string {
-  const type = CONTENT.species[speciesId]!.types[0]!;
-  const typed = Object.values(PROGRESSION.items).find((i) => i.kind === "held" && i.mods?.typeDamage?.[type]);
-  return typed?.id ?? "muscle-band";
-}
-const withItem = (m: PartyMember): PartyMember => ({ ...m, heldItem: bestHeldItem(m.speciesId) });
-
-/** A Pokémon raised from level 1 to `level` through XP (so it evolves), developing at every level. */
-function raise(species: string, level: number, pick: Pick, seed: number): PartyMember {
-  let m = develop(newMember(CONTENT, PROGRESSION, species, seed, 1), pick, seed);
-  while (m.level < level) {
-    m = gainXp(CONTENT, PROGRESSION, m, xpToNext(PROGRESSION, m.level) - m.xp).member;
-    m = develop(m, pick, seed);
-  }
-  const max = memberStats(CONTENT, PROGRESSION, m).maxHp;
-  // A player swaps in newly learned moves when the loadout is full; the default loadout (latest learned) stands in for that.
-  return withItem({ ...m, hp: max, activeMoves: defaultActiveMoves(CONTENT, PROGRESSION, m.speciesId, m.knownMoves) });
-}
-
-/** Combo events tallied across battles, by side (reset by the sections that report them). */
-const combos = { player: 0, enemy: 0 };
-
-/** `foeAi` drives the team listed second (the wild side), whichever side it plays. */
-function battle(players: Omit<UnitSetup, "id" | "side" | "pos">[], enemies: Omit<UnitSetup, "id" | "side" | "pos">[], seed: number, ai: { player?: AiWeights; enemy?: AiWeights } = {}) {
-  const units: UnitSetup[] = [
-    ...players.map((p, i) => ({ ...p, id: `p${i}`, side: "player" as const, pos: START[i]! })),
-    ...enemies.map((e, i) => ({ ...e, id: `e${i}`, side: "enemy" as const, pos: { x: arena[0]!.length - 1 - START[i]!.x, y: START[(i + seed) % 3]!.y } })),
-  ];
-  let { state } = createBattle(CONTENT, arena, units);
-  for (let i = 0; i < 600 && state.outcome === "ongoing"; i++)
-    for (const a of planTurn(state, CONTENT, (state.turn?.unitId.startsWith("p") ? ai.player : ai.enemy))) if (state.outcome === "ongoing") {
-      const r = applyAction(state, CONTENT, a);
-      for (const e of r.events) if (e.type === "combo") combos[e.unitId.startsWith("p") ? "player" : "enemy"]++;
-      state = r.state;
-    }
-  return state;
-}
-
-/**
- * Team A vs team B, played twice with sides swapped (the side that moves first tends to walk into
- * the other's range, so one game alone is biased). `win` is A's share of the two games.
- */
-function fight(a: Omit<UnitSetup, "id" | "side" | "pos">[], b: Omit<UnitSetup, "id" | "side" | "pos">[], seed: number, bAi?: AiWeights) {
-  const g1 = battle(a, b, seed, { enemy: bAi });
-  const g2 = battle(b, a, seed, { player: bAi });
-  const hpShare = (st: BattleState, side: "player" | "enemy") => {
-    const us = st.units.filter((u) => u.side === side);
-    return us.reduce((s, u) => s + u.hp, 0) / us.reduce((s, u) => s + u.maxHp, 0);
-  };
-  const win = ((g1.outcome === "victory" ? 1 : 0) + (g2.outcome === "defeat" ? 1 : 0)) / 2;
-  return {
-    win, outcome: win >= 0.5 ? "victory" : "defeat", rounds: (g1.round + g2.round) / 2,
-    alive: g1.units.filter((u) => u.side === "player" && u.hp > 0).length,
-    hpLeft: (hpShare(g1, "player") + hpShare(g2, "enemy")) / 2,
-    timeouts: (g1.outcome === "ongoing" ? 1 : 0) + (g2.outcome === "ongoing" ? 1 : 0),
-  };
-}
-
-const pct = (x: number) => `${Math.round(x * 100)}%`;
 
 it.skipIf(!process.env.PLAYTEST)("playtest report", () => {
   // 0) Side bias: identical wild teams on both sides.
@@ -171,30 +77,29 @@ it.skipIf(!process.env.PLAYTEST)("playtest report", () => {
     console.log(`L${level}: developed wins ${pct(wins / 10)}`);
   }
 
-  // 3) Role value in mixed teams: three different species against a wild group; one member at a time
-  // switches between its two roles while the rest stays fixed, so each role is judged in a real team.
-  console.log("=== role swap in mixed teams vs wild, L15 (16 teams × 3 members × 2 roles × 2 sides) ===");
+  // 3) Focus value in mixed teams: three different species against a wild group; one member at a time
+  // switches between its focuses while the rest keep their first, so each focus is judged in a real team.
+  console.log("=== focus swap in mixed teams vs wild, L15 (16 teams × 3 members × 3 focuses × 2 sides) ===");
   {
-    const dual = STARTERS.filter((sp) => (CONTENT.species[sp]!.roles ?? []).length === 2);
     const score: Record<string, { win: number; n: number }> = {};
     for (let seed = 0; seed < 16; seed++) {
       const r = (k: number) => nextRandom(seed * 53 + k).value;
       const team: string[] = [];
       for (let k = 0; team.length < 3; k++) {
-        const sp = dual[Math.floor(r(k) * dual.length)]!;
+        const sp = STARTERS[Math.floor(r(k) * STARTERS.length)]!;
         if (!team.includes(sp)) team.push(sp);
       }
       const foes = [10, 11, 12].map((k) => wildSetup(CONTENT, PROGRESSION, STARTERS[Math.floor(r(k) * STARTERS.length)]!, 15));
-      const base = team.map((sp) => CONTENT.species[sp]!.roles![seed % 2]!);
-      const mk = (roles: string[]) => team.map((sp, i) => toUnitSetup(CONTENT, PROGRESSION, raise(sp, 15, (o, sd) => (o.includes(roles[i]!) ? roles[i]! : seededPick(o, sd)), seed + i)));
-      for (let i = 0; i < 3; i++) for (const role of CONTENT.species[team[i]!]!.roles!) {
-        const roles = base.map((b, j) => (j === i ? role : b));
-        const s = (score[role] ??= { win: 0, n: 0 });
-        s.win += fight(mk(roles), foes, seed).win;
-        s.n++;
+      const firsts = team.map((sp) => focusOptions(PROGRESSION, sp)[0]?.skill ?? "");
+      const mk = (want: string[]) => team.map((sp, i) => toUnitSetup(CONTENT, PROGRESSION, raise(sp, 15, (o, sd) => (o.includes(want[i]!) ? want[i]! : seededPick(o, sd)), seed + i)));
+      for (let i = 0; i < 3; i++) for (const f of focusOptions(PROGRESSION, team[i]!)) {
+        const want = firsts.map((b, j) => (j === i ? f.skill : b));
+        const sc = (score[`${team[i]}:${f.skill}`] ??= { win: 0, n: 0 });
+        sc.win += fight(mk(want), foes, seed).win;
+        sc.n++;
       }
     }
-    for (const [role, s] of Object.entries(score)) console.log(`  ${role.padEnd(12)} win ${pct(s.win / s.n)} over ${s.n} line-ups`);
+    for (const [key, sc] of Object.entries(score).sort()) console.log(`  ${key.padEnd(22)} win ${pct(sc.win / sc.n)} over ${sc.n} line-ups`);
   }
 
   // 3b) Novice AI (early routes) vs the normal one: the same developed team against the same wild group.
@@ -210,31 +115,8 @@ it.skipIf(!process.env.PLAYTEST)("playtest report", () => {
     }
     console.log(`L${level}: player wins ${pct(res.novice / 12)} vs novice AI, ${pct(res.normal / 12)} vs normal AI`);
   }
-  // 3c) Mixed teams: one setup role (Tank / Controller) + two payoff roles vs the same species in their other roles.
-  console.log("=== mixed teams L15: setup + payoffs vs the same species' other roles (12 seeds × 2 sides) ===");
-  {
-    const SETUP = ["tank", "controller"];
-    const dual = STARTERS.filter((sp) => (CONTENT.species[sp]!.roles ?? []).length === 2);
-    let wins = 0;
-    combos.player = combos.enemy = 0;
-    for (let seed = 0; seed < 12; seed++) {
-      const r = (k: number) => nextRandom(seed * 31 + k).value;
-      const setupSp = dual.filter((sp) => CONTENT.species[sp]!.roles!.some((x) => SETUP.includes(x)));
-      const team = [setupSp[Math.floor(r(0) * setupSp.length)]!, dual[Math.floor(r(1) * dual.length)]!, dual[Math.floor(r(2) * dual.length)]!];
-      const want = team.map((sp, i) => {
-        const roles = CONTENT.species[sp]!.roles!;
-        const pick = roles.find((x) => (i === 0) === SETUP.includes(x)) ?? roles[0]!;
-        return [pick, roles.find((x) => x !== pick)!] as const;
-      });
-      const mk = (k: 0 | 1) => team.map((sp, i) => toUnitSetup(CONTENT, PROGRESSION, raise(sp, 15, (o, sd) => (o.includes(want[i]![k]) ? want[i]![k] : seededPick(o, sd)), seed + i)));
-      wins += fight(mk(0), mk(1), seed).win;
-    }
-    // fight() plays both ways, so each side's tally covers both teams once; report per game.
-    console.log(`synergy team wins ${pct(wins / 12)}; combos per game ${((combos.player + combos.enemy) / 24).toFixed(1)}`);
-  }
-
   // 4) Stat snapshots: how a line grows.
-  console.log("=== growth snapshots (first role, first type) ===");
+  console.log("=== growth snapshots (first focus) ===");
   for (const s of ["charmander", "squirtle", "pikachu", "geodude", "caterpie"]) {
     const row = [1, 5, 10, 15, 20, 30].map((lv) => {
       const m = raise(s, lv, firstPick, 1);

@@ -1,0 +1,73 @@
+{
+ "talents": {
+  "electabuzz-wild-charge": {
+   "description": "Bond képesség: elektromossággal körbevéve ront az ellenfélre (Erő 90, Támadás)."
+  },
+  "electabuzz-discharge": {
+   "description": "Bond képesség: áramkisülés minden szomszédos ellenfélre (Erő 75, Sp. Tám.); 1 körre megbénít."
+  },
+  "electabuzz-volt-switch": {
+   "description": "Bond képesség: 2 hexen belül megráz egy ellenfelet (Erő 60, Sp. Tám.), és kiszakad a közelharcból."
+  },
+  "electabuzz-high-voltage": {
+   "description": "Az Elektromos lépései 15%-kal több sebzést okoznak."
+  },
+  "electabuzz-insulated-hide": {
+   "description": "10%-kal kevesebb sebzést kap."
+  },
+  "electabuzz-light-screen": {
+   "description": "Új képesség: fényfal; ő és a szomszédos szövetségesei 2 körre Fortified."
+  },
+  "electabuzz-spark": {
+   "description": "Új képesség: elektromos roham egy szomszédos ellenfélre (Erő 55)."
+  },
+  "electabuzz-lightning-reflexes": {
+   "description": "Szabad ütés nélkül lép el a vele harcban álló ellenfelektől."
+  },
+  "electabuzz-overcharge": {
+   "description": "Fél HP alatt az Elektromos lépései 25%-kal többet sebeznek."
+  },
+  "electabuzz-thunder-fang": {
+   "description": "Új képesség: szikrázó harapás (Erő 65), amely 1 körre megbénítja az ellenfelet."
+  },
+  "electabuzz-shock-wave": {
+   "description": "Új képesség: gyors áramütés egy max. 2 hexnyi ellenfélre (Erő 75)."
+  },
+  "electabuzz-infighter": {
+   "description": "15%-kal többet sebez a szomszédos ellenfelekre."
+  },
+  "electabuzz-long-arc": {
+   "description": "20%-kal többet sebez a legalább 2 hexre lévő ellenfelekre."
+  },
+  "electabuzz-body-slam": {
+   "description": "Új képesség: teljes testével rávetődik egy ellenfélre (Erő 75), 1 körre megbénítja."
+  },
+  "electabuzz-electro-ball": {
+   "description": "Új képesség: elektromos gömb 2 hexen belül (Erő 80), a Gyorsasággal erősödik."
+  },
+  "electabuzz-overload": {
+   "description": "25%-kal többet sebez a megbénult ellenfelekre."
+  },
+  "electabuzz-storm-hide": {
+   "description": "Teli HP-n 20%-kal kevesebb sebzést kap; nem bénulhat meg."
+  },
+  "electabuzz-mega-punch": {
+   "description": "Új képesség: teljes erőből bevitt ütés (Erő 95)."
+  },
+  "electabuzz-hyper-beam": {
+   "description": "Új képesség: pusztító sugár egy 2 hexen belüli ellenfélre (Erő 100)."
+  },
+  "electabuzz-static-field": {
+   "description": "Szomszédos ellenfeleket érő sebző támadásai 1 körre Paralyzed állapotba teszik őket."
+  },
+  "electabuzz-adrenaline": {
+   "description": "Ha a saját körében kiüt egy ellenfelet, 2 mozgáspontot visszakap."
+  },
+  "electabuzz-living-storm": {
+   "description": "Capstone. 15%-kal többet sebez az állapottal sújtott ellenfeleknek; ezek ájuláskor továbbadják az állapotot."
+  },
+  "electabuzz-thunder-brawler": {
+   "description": "Csúcstudás. Kiütés után újra alaptámadhat; minden egymás utáni ütés ugyanarra 10%-kal több (max 3)."
+  }
+ }
+}

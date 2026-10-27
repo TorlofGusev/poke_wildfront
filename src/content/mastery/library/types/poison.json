@@ -1,0 +1,209 @@
+{
+ "type": "poison",
+ "moves": {
+  "venoshock": {
+   "id": "venoshock",
+   "name": "Venoshock",
+   "type": "poison",
+   "kind": "special",
+   "power": 65,
+   "range": {
+    "min": 1,
+    "max": 2
+   },
+   "requiresLineOfSight": true,
+   "shape": {
+    "kind": "single"
+   },
+   "affects": "enemies",
+   "cooldown": 3
+  },
+  "sludge-wave": {
+   "id": "sludge-wave",
+   "name": "Sludge Wave",
+   "type": "poison",
+   "kind": "special",
+   "power": 80,
+   "range": {
+    "min": 1,
+    "max": 1
+   },
+   "requiresLineOfSight": true,
+   "shape": {
+    "kind": "burst",
+    "radius": 1
+   },
+   "affects": "enemies",
+   "cooldown": 4,
+   "effects": [
+    {
+     "kind": "status",
+     "status": "poison",
+     "duration": 2
+    }
+   ]
+  },
+  "gunk-shot": {
+   "id": "gunk-shot",
+   "name": "Gunk Shot",
+   "type": "poison",
+   "kind": "special",
+   "power": 100,
+   "range": {
+    "min": 1,
+    "max": 2
+   },
+   "requiresLineOfSight": true,
+   "shape": {
+    "kind": "single"
+   },
+   "affects": "enemies",
+   "cooldown": 5,
+   "effects": [
+    {
+     "kind": "status",
+     "status": "poison",
+     "duration": 2
+    }
+   ]
+  }
+ },
+ "talents": {
+  "poison-skill-sludge": {
+   "id": "poison-skill-sludge",
+   "name": "Sludge",
+   "description": "New skill: hurls toxic sludge that Poisons a foe.",
+   "requiresType": "poison",
+   "grantsMove": "sludge"
+  },
+  "poison-point": {
+   "id": "poison-point",
+   "name": "Poison Point",
+   "description": "Its hits on adjacent foes Poison them; +1 Attack.",
+   "requiresType": "poison",
+   "mods": {
+    "contactStatus": {
+     "status": "poison",
+     "duration": 2
+    }
+   },
+   "stats": {
+    "attack": 1,
+    "hp": 1
+   }
+  },
+  "poison-merciless": {
+   "id": "poison-merciless",
+   "name": "Merciless",
+   "description": "+25% damage against Poisoned foes.",
+   "requiresType": "poison",
+   "mods": {
+    "vsStatusIdDamage": {
+     "poison": 1.25
+    }
+   },
+   "stats": {
+    "spAttack": 1,
+    "hp": 1
+   }
+  },
+  "poison-skill-venoshock": {
+   "id": "poison-skill-venoshock",
+   "name": "Venoshock",
+   "description": "New skill: a strong ranged blast of venom.",
+   "requiresType": "poison",
+   "grantsMove": "venoshock"
+  },
+  "poison-skill-poison-gas": {
+   "id": "poison-skill-poison-gas",
+   "name": "Poison Gas",
+   "description": "New skill: a toxic cloud that Poisons every foe in an area.",
+   "requiresType": "poison",
+   "grantsMove": "poison-gas"
+  },
+  "poison-miasma": {
+   "id": "poison-miasma",
+   "name": "Gluttony",
+   "description": "Heals 15% of its max HP when it knocks out a foe.",
+   "requiresType": "poison",
+   "mods": {
+    "koHeal": 0.15
+   },
+   "stats": {
+    "spAttack": 1
+   }
+  },
+  "poison-skill-sludge-wave": {
+   "id": "poison-skill-sludge-wave",
+   "name": "Sludge Wave",
+   "description": "New skill: a wave of sludge that hits and Poisons an area.",
+   "requiresType": "poison",
+   "grantsMove": "sludge-wave"
+  },
+  "poison-virulence": {
+   "id": "poison-virulence",
+   "name": "Virulence",
+   "description": "Statuses it inflicts last 1 turn longer; Poison moves deal 20% more damage.",
+   "requiresType": "poison",
+   "mods": {
+    "statusDurationBonus": 1,
+    "typeDamage": {
+     "poison": 1.2
+    }
+   },
+   "stats": {
+    "spAttack": 2
+   }
+  },
+  "poison-liquid-ooze": {
+   "id": "poison-liquid-ooze",
+   "name": "Liquid Ooze",
+   "description": "Foes that hit it from an adjacent hex take 8 damage; +1 HP.",
+   "requiresType": "poison",
+   "mods": {
+    "thorns": 8
+   },
+   "stats": {
+    "hp": 1,
+    "spAttack": 1
+   }
+  },
+  "poison-heal": {
+   "id": "poison-heal",
+   "name": "Poison Heal",
+   "description": "Immune to Poison; heals 8% of max HP at the start of each of its turns.",
+   "requiresType": "poison",
+   "mods": {
+    "statusImmune": [
+     "poison"
+    ],
+    "healPerTurn": 0.08
+   },
+   "stats": {
+    "hp": 2
+   }
+  },
+  "poison-skill-gunk-shot": {
+   "id": "poison-skill-gunk-shot",
+   "name": "Gunk Shot",
+   "description": "New skill: a heavy glob of filth up to 2 hexes that Poisons a foe.",
+   "requiresType": "poison",
+   "grantsMove": "gunk-shot"
+  }
+ },
+ "start": "poison-skill-sludge",
+ "passives": [
+  "poison-point",
+  "poison-merciless",
+  "poison-miasma",
+  "poison-liquid-ooze",
+  "poison-heal"
+ ],
+ "skills": [
+  "poison-skill-venoshock",
+  "poison-skill-poison-gas",
+  "poison-skill-sludge-wave",
+  "poison-skill-gunk-shot"
+ ],
+ "capstone": "poison-virulence"
+}

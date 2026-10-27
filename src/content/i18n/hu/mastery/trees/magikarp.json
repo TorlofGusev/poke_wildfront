@@ -1,0 +1,73 @@
+{
+ "talents": {
+  "magikarp-aqua-tail": {
+   "description": "Bond képesség: farkával csap le, mint egy megtörő hullám (Erő 90, Támadás)."
+  },
+  "magikarp-bounce": {
+   "description": "Bond képesség: 2 hexen belüli ellenfélre ugrik (Erő 60, Támadás); 1 körre megbénít."
+  },
+  "magikarp-rest": {
+   "description": "Bond képesség: elszundít, hogy erőre kapjon: 50 HP-t gyógyul, majd 1 körre Sleep."
+  },
+  "magikarp-hidden-potential": {
+   "description": "Ha kidől, a csapat 1 Bondot kap."
+  },
+  "magikarp-stubborn-fins": {
+   "description": "10%-kal kevesebb sebzést kap."
+  },
+  "magikarp-flail": {
+   "description": "Új képesség: vergődve csapkod az ellenfélre (Erő 45)."
+  },
+  "magikarp-whirlpool": {
+   "description": "Új képesség: örvény egy max. 1 hexnyi, 1 hex területen (Erő 40)."
+  },
+  "magikarp-rattled": {
+   "description": "20%-kal többet sebez, ha legalább 2 ellenfél áll mellette."
+  },
+  "magikarp-slippery-scales": {
+   "description": "Szabad ütés nélkül lép el a vele harcban álló ellenfelektől."
+  },
+  "magikarp-headbutt": {
+   "description": "Új képesség: fejjel nekiront egy ellenfélnek (Erő 65), 1 körre lassítja."
+  },
+  "magikarp-brine": {
+   "description": "Új képesség: sós vízsugár egy max. 2 hexnyi ellenfélre (Erő 75)."
+  },
+  "magikarp-furious-rampage": {
+   "description": "Minden egymás utáni ütés ugyanarra az ellenfélre 10%-kal többet sebez (max 3)."
+  },
+  "magikarp-iron-scales": {
+   "description": "Teljes HP-n 20%-kal kevesebb sebzést kap."
+  },
+  "magikarp-hurricane": {
+   "description": "Új képesség: tomboló szél egy 2 hexen belüli ellenfélre (Erő 90)."
+  },
+  "magikarp-crunch": {
+   "description": "Új képesség: állkapcsával roppant (Erő 85), az ellenfél 1 körre Kitett lesz."
+  },
+  "magikarp-tyrant-s-gaze": {
+   "description": "Az általa lefogott ellenfelek 15%-kal több sebzést kapnak a szövetségeseitől."
+  },
+  "magikarp-storm-rider": {
+   "description": "20%-kal többet sebez a legalább 2 hexre lévő ellenfelekre."
+  },
+  "magikarp-swords-dance": {
+   "description": "Új képesség: őrült harci tánc; 3 körre Focused állapotba kerül."
+  },
+  "magikarp-thrash": {
+   "description": "Új képesség: vadul csapkod egy szomszédos ellenfélre (Erő 100)."
+  },
+  "magikarp-destructive-rampage": {
+   "description": "Minden kiütése 1 Bondot ad a csapatnak."
+  },
+  "magikarp-tidal-vigor": {
+   "description": "Minden köre elején a max HP 4%-át gyógyítja."
+  },
+  "magikarp-atrocious-fury": {
+   "description": "Csúcstudás. Fél HP alatt +25% sebzés; kiütés után újra alaptámadhat és max HP-ja 10%-át gyógyítja."
+  },
+  "magikarp-leviathan": {
+   "description": "Csúcs. Önbizalom: minden kiütés +1 Támadást ad (max +3); 15%-kal kevesebb sebzést kap."
+  }
+ }
+}

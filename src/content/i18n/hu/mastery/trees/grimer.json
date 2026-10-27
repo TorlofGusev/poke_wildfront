@@ -1,0 +1,73 @@
+{
+ "talents": {
+  "grimer-minimize": {
+   "description": "Bond képesség: iszapos testét tócsává zsugorítja, 3 körre Megerősített lesz."
+  },
+  "grimer-gunk-shot": {
+   "description": "Bond képesség: mocskos szemetet hajít legfeljebb 2 hexnyire (Erő 100, Támadás), 3 körre mérgez."
+  },
+  "grimer-sludge-bomb": {
+   "description": "Bond képesség: iszapot lő legfeljebb 2 hexnyire (Erő 90, Kül. Tám.), 1 hex körzetet talál el."
+  },
+  "grimer-poison-touch": {
+   "description": "Szomszédos ellenfelekre 10%-kal többet sebez, és találatai 2 körre megmérgezik őket."
+  },
+  "grimer-amorphous-body": {
+   "description": "10%-kal kevesebb sebzést kap: az ütések elsüllyednek az iszapjában."
+  },
+  "grimer-disable": {
+   "description": "Új képesség: lezár egy legfeljebb 2 hexnyire lévő ellenfelet, 2 körre Disabled (csak alaptámadás)."
+  },
+  "grimer-shed-skin": {
+   "description": "Köre elején lerázza az ellenfelek által rárakott állapotokat."
+  },
+  "grimer-lingering-toxins": {
+   "description": "Általa okozott állapotok 1 körrel tovább tartanak; 15%-kal többet sebez a társai által sújtottakra."
+  },
+  "grimer-screech": {
+   "description": "Új képesség: borzalmas visítás 2 körre Kitetté tesz egy legfeljebb 2 hexnyire lévő ellenfelet."
+  },
+  "grimer-gooey-grip": {
+   "description": "A vele harcban álló ellenfelek mindig kapnak tőle egy szabad csapást, ha ellépnek."
+  },
+  "grimer-toxic-hunger": {
+   "description": "20%-kal többet sebez a megmérgezett ellenfelekre."
+  },
+  "grimer-sludge-wave": {
+   "description": "Új képesség: iszaphullám minden szomszédos ellenfelet eltalál (Erő 85), 1 körre megmérgezi őket."
+  },
+  "grimer-poison-jab": {
+   "description": "Új képesség: mérgező, iszapos karjával döf (Erő 85), 2 körre megmérgezi az ellenfelet."
+  },
+  "grimer-stench-cloud": {
+   "description": "10%-kal többet sebez; ha egy általa sújtott ellenfél elájul, a szomszédai elkapják az állapotot."
+  },
+  "grimer-ooze-regrowth": {
+   "description": "Minden köre elején maximális HP-ja 5%-át gyógyítja."
+  },
+  "grimer-sludge-feast": {
+   "description": "Maximális HP-ja 15%-át gyógyítja, ha kiüt egy ellenfelet."
+  },
+  "grimer-toxic-shroud": {
+   "description": "15%-kal többet sebez a valamilyen állapot alatt álló ellenfelekre."
+  },
+  "grimer-living-sludge": {
+   "description": "Csúcs. 15%-kal kevesebb sebzést kap; harcban körönként maximális HP-ja 3%-át gyógyítja."
+  },
+  "grimer-toxic-monarch": {
+   "description": "Csúcs. Méreg támadásai 25%-kal erősebbek; a vele harcolók 20%-kal többet kapnak társaitól."
+  },
+  "grimer-acid-spray": {
+   "description": "Új képesség: savat permetez egy 2 hexen belüli ellenfélre (Erő 45), 1 körre Marked."
+  },
+  "grimer-wrap": {
+   "description": "Új képesség: iszappal tekeri körbe a szomszédos ellenfelet (Erő 45), lefogja; 1 körig Slow."
+  },
+  "grimer-body-slam": {
+   "description": "Új képesség: iszapos tömegével rázuhan az ellenfélre (Erő 90), 1 körre Paralyzed."
+  },
+  "grimer-belch": {
+   "description": "Új képesség: bűzös böfögés egy 2 hexen belüli ellenfélre (Erő 95)."
+  }
+ }
+}

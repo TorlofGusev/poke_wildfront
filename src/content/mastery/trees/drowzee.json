@@ -1,0 +1,481 @@
+{
+ "line": [
+  "drowzee",
+  "hypno"
+ ],
+ "canonLevelUp": [
+  "drowzee-poison-gas"
+ ],
+ "focus": [
+  {
+   "stat": "spAttack",
+   "skill": "drowzee-future-sight"
+  },
+  {
+   "stat": "spDefense",
+   "skill": "drowzee-calm-mind"
+  },
+  {
+   "stat": "attack",
+   "skill": "drowzee-zen-headbutt"
+  }
+ ],
+ "rows": {
+  "4": [
+   "drowzee-swinging-pendulum",
+   "drowzee-dream-hunger"
+  ],
+  "6": [
+   "drowzee-poison-gas",
+   "drowzee-headbutt"
+  ],
+  "9": [
+   "drowzee-clear-mind",
+   "drowzee-dream-feast"
+  ],
+  "12": [
+   "drowzee-psyshock",
+   "drowzee-disable"
+  ],
+  "15": [
+   "drowzee-unshaken",
+   "drowzee-mind-games"
+  ],
+  "18": [
+   "drowzee-psywave",
+   "drowzee-mega-punch"
+  ],
+  "21": [
+   "drowzee-spreading-drowsiness",
+   "drowzee-restful-mind"
+  ],
+  "24": [
+   "drowzee-hyper-beam",
+   "drowzee-body-slam"
+  ],
+  "27": [
+   "drowzee-hypnotic-rhythm",
+   "drowzee-hypnotic-hold"
+  ],
+  "30": [
+   "drowzee-grand-hypnotist",
+   "drowzee-dream-devourer"
+  ]
+ },
+ "moves": {
+  "drowzee-future-sight": {
+   "id": "drowzee-future-sight",
+   "name": "Future Sight",
+   "type": "psychic",
+   "kind": "bond",
+   "category": "special",
+   "bondCost": 3,
+   "power": 100,
+   "range": {
+    "min": 1,
+    "max": 3
+   },
+   "requiresLineOfSight": true,
+   "shape": {
+    "kind": "single"
+   },
+   "affects": "enemies"
+  },
+  "drowzee-calm-mind": {
+   "id": "drowzee-calm-mind",
+   "name": "Calm Mind",
+   "type": "psychic",
+   "kind": "bond",
+   "category": "special",
+   "bondCost": 2,
+   "power": 0,
+   "range": {
+    "min": 0,
+    "max": 0
+   },
+   "requiresLineOfSight": false,
+   "shape": {
+    "kind": "single"
+   },
+   "affects": "allies",
+   "effects": [
+    {
+     "kind": "status",
+     "status": "focused",
+     "duration": 2
+    },
+    {
+     "kind": "status",
+     "status": "fortified",
+     "duration": 2
+    }
+   ]
+  },
+  "drowzee-zen-headbutt": {
+   "id": "drowzee-zen-headbutt",
+   "name": "Zen Headbutt",
+   "type": "psychic",
+   "kind": "bond",
+   "category": "physical",
+   "bondCost": 2,
+   "power": 90,
+   "range": {
+    "min": 1,
+    "max": 1
+   },
+   "requiresLineOfSight": false,
+   "shape": {
+    "kind": "single"
+   },
+   "affects": "enemies"
+  },
+  "drowzee-poison-gas": {
+   "id": "drowzee-poison-gas",
+   "name": "Poison Gas",
+   "type": "poison",
+   "kind": "special",
+   "category": "special",
+   "cooldown": 3,
+   "power": 0,
+   "range": {
+    "min": 1,
+    "max": 1
+   },
+   "requiresLineOfSight": true,
+   "shape": {
+    "kind": "burst",
+    "radius": 1
+   },
+   "affects": "enemies",
+   "effects": [
+    {
+     "kind": "status",
+     "status": "poison",
+     "duration": 2
+    }
+   ]
+  },
+  "drowzee-headbutt": {
+   "id": "drowzee-headbutt",
+   "name": "Headbutt",
+   "type": "normal",
+   "kind": "special",
+   "category": "physical",
+   "cooldown": 3,
+   "power": 60,
+   "range": {
+    "min": 1,
+    "max": 1
+   },
+   "requiresLineOfSight": false,
+   "shape": {
+    "kind": "single"
+   },
+   "affects": "enemies",
+   "effects": [
+    {
+     "kind": "status",
+     "status": "slow",
+     "duration": 1
+    }
+   ]
+  },
+  "drowzee-psyshock": {
+   "id": "drowzee-psyshock",
+   "name": "Psyshock",
+   "type": "psychic",
+   "kind": "special",
+   "category": "special",
+   "cooldown": 3,
+   "power": 70,
+   "range": {
+    "min": 1,
+    "max": 2
+   },
+   "requiresLineOfSight": true,
+   "shape": {
+    "kind": "single"
+   },
+   "affects": "enemies"
+  },
+  "drowzee-disable": {
+   "id": "drowzee-disable",
+   "name": "Disable",
+   "type": "normal",
+   "kind": "special",
+   "category": "special",
+   "cooldown": 4,
+   "power": 0,
+   "range": {
+    "min": 1,
+    "max": 2
+   },
+   "requiresLineOfSight": true,
+   "shape": {
+    "kind": "single"
+   },
+   "affects": "enemies",
+   "effects": [
+    {
+     "kind": "status",
+     "status": "paralysis",
+     "duration": 1
+    }
+   ]
+  },
+  "drowzee-psywave": {
+   "id": "drowzee-psywave",
+   "name": "Psywave",
+   "type": "psychic",
+   "kind": "special",
+   "category": "special",
+   "cooldown": 4,
+   "power": 45,
+   "range": {
+    "min": 1,
+    "max": 2
+   },
+   "requiresLineOfSight": true,
+   "shape": {
+    "kind": "single"
+   },
+   "affects": "enemies",
+   "effects": [
+    {
+     "kind": "status",
+     "status": "curse",
+     "duration": 2
+    }
+   ]
+  },
+  "drowzee-mega-punch": {
+   "id": "drowzee-mega-punch",
+   "name": "Mega Punch",
+   "type": "normal",
+   "kind": "special",
+   "category": "physical",
+   "cooldown": 4,
+   "power": 85,
+   "range": {
+    "min": 1,
+    "max": 1
+   },
+   "requiresLineOfSight": false,
+   "shape": {
+    "kind": "single"
+   },
+   "affects": "enemies"
+  },
+  "drowzee-hyper-beam": {
+   "id": "drowzee-hyper-beam",
+   "name": "Hyper Beam",
+   "type": "normal",
+   "kind": "special",
+   "category": "special",
+   "cooldown": 5,
+   "power": 100,
+   "range": {
+    "min": 1,
+    "max": 2
+   },
+   "requiresLineOfSight": true,
+   "shape": {
+    "kind": "single"
+   },
+   "affects": "enemies"
+  },
+  "drowzee-body-slam": {
+   "id": "drowzee-body-slam",
+   "name": "Body Slam",
+   "type": "normal",
+   "kind": "special",
+   "category": "physical",
+   "cooldown": 4,
+   "power": 85,
+   "range": {
+    "min": 1,
+    "max": 1
+   },
+   "requiresLineOfSight": false,
+   "shape": {
+    "kind": "single"
+   },
+   "affects": "enemies",
+   "effects": [
+    {
+     "kind": "status",
+     "status": "paralysis",
+     "duration": 1
+    }
+   ]
+  }
+ },
+ "talents": {
+  "drowzee-future-sight": {
+   "id": "drowzee-future-sight",
+   "name": "Future Sight",
+   "description": "Bond skill: a foreseen psychic blast at a foe up to 3 hexes away (Power 100, Sp. Atk).",
+   "grantsMove": "drowzee-future-sight"
+  },
+  "drowzee-calm-mind": {
+   "id": "drowzee-calm-mind",
+   "name": "Calm Mind",
+   "description": "Bond skill: calms its mind, becoming Focused and Fortified for 2 turns.",
+   "grantsMove": "drowzee-calm-mind"
+  },
+  "drowzee-zen-headbutt": {
+   "id": "drowzee-zen-headbutt",
+   "name": "Zen Headbutt",
+   "description": "Bond skill: a headbutt charged with willpower (Power 90, Attack).",
+   "grantsMove": "drowzee-zen-headbutt"
+  },
+  "drowzee-swinging-pendulum": {
+   "id": "drowzee-swinging-pendulum",
+   "name": "Swinging Pendulum",
+   "description": "Statuses it inflicts last 1 turn longer.",
+   "mods": {
+    "statusDurationBonus": 1
+   }
+  },
+  "drowzee-dream-hunger": {
+   "id": "drowzee-dream-hunger",
+   "name": "Dream Hunger",
+   "description": "Deals 25% more damage to sleeping foes.",
+   "mods": {
+    "vsStatusIdDamage": {
+     "sleep": 1.25
+    }
+   }
+  },
+  "drowzee-poison-gas": {
+   "id": "drowzee-poison-gas",
+   "name": "Poison Gas",
+   "description": "New skill: gas around a foe up to 1 hex away, Poisoning those hit for 2 turns.",
+   "grantsMove": "drowzee-poison-gas"
+  },
+  "drowzee-headbutt": {
+   "id": "drowzee-headbutt",
+   "name": "Headbutt",
+   "description": "New skill: rams its head into a foe (Power 60), Slowing it for 1 turn.",
+   "grantsMove": "drowzee-headbutt"
+  },
+  "drowzee-clear-mind": {
+   "id": "drowzee-clear-mind",
+   "name": "Clear Mind",
+   "description": "Sheds statuses foes put on it at the start of its turn.",
+   "mods": {
+    "shedStatuses": true
+   }
+  },
+  "drowzee-dream-feast": {
+   "id": "drowzee-dream-feast",
+   "name": "Dream Feast",
+   "description": "Heals 20% of max HP when it knocks out a foe.",
+   "mods": {
+    "koHeal": 0.2
+   }
+  },
+  "drowzee-psyshock": {
+   "id": "drowzee-psyshock",
+   "name": "Psyshock",
+   "description": "New skill: a psychic wave at a foe up to 2 hexes away (Power 70).",
+   "grantsMove": "drowzee-psyshock"
+  },
+  "drowzee-disable": {
+   "id": "drowzee-disable",
+   "name": "Disable",
+   "description": "New skill: a hypnotic gesture at a foe up to 2 hexes away Paralyzes it for 1 turn.",
+   "grantsMove": "drowzee-disable"
+  },
+  "drowzee-unshaken": {
+   "id": "drowzee-unshaken",
+   "name": "Unshaken",
+   "description": "Takes 20% less damage while at full HP.",
+   "mods": {
+    "fullHpDamageTaken": 0.8
+   }
+  },
+  "drowzee-mind-games": {
+   "id": "drowzee-mind-games",
+   "name": "Mind Games",
+   "description": "Deals 15% more damage to foes with any status.",
+   "mods": {
+    "vsStatusDamage": 1.15
+   }
+  },
+  "drowzee-psywave": {
+   "id": "drowzee-psywave",
+   "name": "Psywave",
+   "description": "New skill: an eerie psychic wave at a foe up to 2 hexes away (Power 45), Cursing it 2 turns.",
+   "grantsMove": "drowzee-psywave"
+  },
+  "drowzee-mega-punch": {
+   "id": "drowzee-mega-punch",
+   "name": "Mega Punch",
+   "description": "New skill: a powerful punch at an adjacent foe (Power 85).",
+   "grantsMove": "drowzee-mega-punch"
+  },
+  "drowzee-spreading-drowsiness": {
+   "id": "drowzee-spreading-drowsiness",
+   "name": "Spreading Drowsiness",
+   "description": "When a foe it afflicted faints, adjacent foes catch that status.",
+   "mods": {
+    "statusSpreadOnKo": true
+   }
+  },
+  "drowzee-restful-mind": {
+   "id": "drowzee-restful-mind",
+   "name": "Restful Mind",
+   "description": "Heals 5% of max HP at the start of each turn.",
+   "mods": {
+    "healPerTurn": 0.05
+   }
+  },
+  "drowzee-hyper-beam": {
+   "id": "drowzee-hyper-beam",
+   "name": "Hyper Beam",
+   "description": "New skill: a devastating beam at a foe up to 2 hexes away (Power 100).",
+   "grantsMove": "drowzee-hyper-beam"
+  },
+  "drowzee-body-slam": {
+   "id": "drowzee-body-slam",
+   "name": "Body Slam",
+   "description": "New skill: slams its body into a foe (Power 85), Paralyzing it for 1 turn.",
+   "grantsMove": "drowzee-body-slam"
+  },
+  "drowzee-hypnotic-rhythm": {
+   "id": "drowzee-hypnotic-rhythm",
+   "name": "Hypnotic Rhythm",
+   "description": "The team gains 1 Bond when it lands a combo.",
+   "mods": {
+    "comboBond": 1
+   }
+  },
+  "drowzee-hypnotic-hold": {
+   "id": "drowzee-hypnotic-hold",
+   "name": "Hypnotic Hold",
+   "description": "Foes it engages take 15% more damage from its allies.",
+   "mods": {
+    "pinDamage": 1.15
+   }
+  },
+  "drowzee-grand-hypnotist": {
+   "id": "drowzee-grand-hypnotist",
+   "name": "Grand Hypnotist",
+   "description": "Capstone. Its non-damaging skills recharge 1 turn faster; its statuses last 1 turn longer.",
+   "mods": {
+    "statusCooldownReduction": 1,
+    "statusDurationBonus": 1
+   }
+  },
+  "drowzee-dream-devourer": {
+   "id": "drowzee-dream-devourer",
+   "name": "Dream Devourer",
+   "description": "Capstone. Knockouts reset its skill cooldowns; takes 15% less damage.",
+   "mods": {
+    "koResetCooldowns": true,
+    "damageTaken": 0.85
+   }
+  }
+ }
+}

@@ -1,0 +1,485 @@
+{
+ "line": [
+  "bulbasaur",
+  "ivysaur",
+  "venusaur"
+ ],
+ "focus": [
+  {
+   "stat": "spAttack",
+   "skill": "bulbasaur-frenzy-plant"
+  },
+  {
+   "stat": "defense",
+   "skill": "bulbasaur-protect"
+  },
+  {
+   "stat": "hp",
+   "skill": "bulbasaur-leech-seed"
+  }
+ ],
+ "rows": {
+  "4": [
+   "bulbasaur-sun-soaked-bulb",
+   "bulbasaur-sweet-scent"
+  ],
+  "6": [
+   "bulbasaur-sleep-powder",
+   "bulbasaur-magical-leaf"
+  ],
+  "9": [
+   "bulbasaur-ingrain",
+   "bulbasaur-venomous-bloom"
+  ],
+  "12": [
+   "bulbasaur-sludge-bomb",
+   "bulbasaur-growth"
+  ],
+  "15": [
+   "bulbasaur-deep-roots",
+   "bulbasaur-thorny-vines"
+  ],
+  "18": [
+   "bulbasaur-giga-drain",
+   "bulbasaur-sludge-wave"
+  ],
+  "21": [
+   "bulbasaur-corrosive-sap",
+   "bulbasaur-great-flower"
+  ],
+  "24": [
+   "bulbasaur-leaf-storm",
+   "bulbasaur-synthesis"
+  ],
+  "27": [
+   "bulbasaur-bloom-season",
+   "bulbasaur-lingering-toxins"
+  ],
+  "30": [
+   "bulbasaur-solar-bloom",
+   "bulbasaur-venerable-bloom"
+  ]
+ },
+ "moves": {
+  "bulbasaur-frenzy-plant": {
+   "id": "bulbasaur-frenzy-plant",
+   "name": "Frenzy Plant",
+   "type": "grass",
+   "kind": "bond",
+   "category": "special",
+   "bondCost": 3,
+   "power": 105,
+   "range": {
+    "min": 1,
+    "max": 3
+   },
+   "requiresLineOfSight": true,
+   "shape": {
+    "kind": "single"
+   },
+   "affects": "enemies"
+  },
+  "bulbasaur-protect": {
+   "id": "bulbasaur-protect",
+   "name": "Protect",
+   "type": "normal",
+   "kind": "bond",
+   "bondCost": 1,
+   "power": 0,
+   "range": {
+    "min": 0,
+    "max": 0
+   },
+   "requiresLineOfSight": false,
+   "shape": {
+    "kind": "single"
+   },
+   "affects": "allies",
+   "effects": [
+    {
+     "kind": "status",
+     "status": "protected",
+     "duration": 1
+    }
+   ]
+  },
+  "bulbasaur-leech-seed": {
+   "id": "bulbasaur-leech-seed",
+   "name": "Leech Seed",
+   "type": "grass",
+   "kind": "bond",
+   "bondCost": 1,
+   "power": 0,
+   "range": {
+    "min": 1,
+    "max": 2
+   },
+   "requiresLineOfSight": true,
+   "shape": {
+    "kind": "single"
+   },
+   "affects": "enemies",
+   "effects": [
+    {
+     "kind": "status",
+     "status": "poison",
+     "duration": 3
+    }
+   ]
+  },
+  "bulbasaur-sleep-powder": {
+   "id": "bulbasaur-sleep-powder",
+   "name": "Sleep Powder",
+   "type": "grass",
+   "kind": "special",
+   "category": "special",
+   "cooldown": 4,
+   "power": 0,
+   "range": {
+    "min": 1,
+    "max": 2
+   },
+   "requiresLineOfSight": true,
+   "shape": {
+    "kind": "single"
+   },
+   "affects": "enemies",
+   "effects": [
+    {
+     "kind": "status",
+     "status": "sleep",
+     "duration": 2
+    }
+   ]
+  },
+  "bulbasaur-magical-leaf": {
+   "id": "bulbasaur-magical-leaf",
+   "name": "Magical Leaf",
+   "type": "grass",
+   "kind": "special",
+   "category": "special",
+   "cooldown": 2,
+   "power": 60,
+   "range": {
+    "min": 1,
+    "max": 2
+   },
+   "requiresLineOfSight": false,
+   "shape": {
+    "kind": "single"
+   },
+   "affects": "enemies"
+  },
+  "bulbasaur-sludge-bomb": {
+   "id": "bulbasaur-sludge-bomb",
+   "name": "Sludge Bomb",
+   "type": "poison",
+   "kind": "special",
+   "category": "special",
+   "cooldown": 3,
+   "power": 75,
+   "range": {
+    "min": 1,
+    "max": 2
+   },
+   "requiresLineOfSight": true,
+   "shape": {
+    "kind": "single"
+   },
+   "affects": "enemies",
+   "effects": [
+    {
+     "kind": "status",
+     "status": "poison",
+     "duration": 2
+    }
+   ]
+  },
+  "bulbasaur-growth": {
+   "id": "bulbasaur-growth",
+   "name": "Growth",
+   "type": "grass",
+   "kind": "special",
+   "category": "special",
+   "cooldown": 4,
+   "power": 0,
+   "range": {
+    "min": 0,
+    "max": 0
+   },
+   "requiresLineOfSight": false,
+   "shape": {
+    "kind": "single"
+   },
+   "affects": "allies",
+   "effects": [
+    {
+     "kind": "status",
+     "status": "focused",
+     "duration": 2
+    }
+   ]
+  },
+  "bulbasaur-giga-drain": {
+   "id": "bulbasaur-giga-drain",
+   "name": "Giga Drain",
+   "type": "grass",
+   "kind": "special",
+   "category": "special",
+   "cooldown": 4,
+   "power": 85,
+   "range": {
+    "min": 1,
+    "max": 2
+   },
+   "requiresLineOfSight": true,
+   "shape": {
+    "kind": "single"
+   },
+   "affects": "enemies"
+  },
+  "bulbasaur-sludge-wave": {
+   "id": "bulbasaur-sludge-wave",
+   "name": "Sludge Wave",
+   "type": "poison",
+   "kind": "special",
+   "category": "special",
+   "cooldown": 4,
+   "power": 75,
+   "range": {
+    "min": 0,
+    "max": 0
+   },
+   "requiresLineOfSight": false,
+   "shape": {
+    "kind": "burst",
+    "radius": 2
+   },
+   "affects": "enemies",
+   "effects": [
+    {
+     "kind": "status",
+     "status": "poison",
+     "duration": 1
+    }
+   ]
+  },
+  "bulbasaur-leaf-storm": {
+   "id": "bulbasaur-leaf-storm",
+   "name": "Leaf Storm",
+   "type": "grass",
+   "kind": "special",
+   "category": "special",
+   "cooldown": 5,
+   "power": 100,
+   "range": {
+    "min": 1,
+    "max": 2
+   },
+   "requiresLineOfSight": true,
+   "shape": {
+    "kind": "single"
+   },
+   "affects": "enemies"
+  },
+  "bulbasaur-synthesis": {
+   "id": "bulbasaur-synthesis",
+   "name": "Synthesis",
+   "type": "grass",
+   "kind": "special",
+   "category": "special",
+   "cooldown": 4,
+   "power": 0,
+   "range": {
+    "min": 0,
+    "max": 0
+   },
+   "requiresLineOfSight": false,
+   "shape": {
+    "kind": "burst",
+    "radius": 1
+   },
+   "affects": "allies",
+   "effects": [
+    {
+     "kind": "heal",
+     "amount": 50
+    }
+   ]
+  }
+ },
+ "talents": {
+  "bulbasaur-frenzy-plant": {
+   "id": "bulbasaur-frenzy-plant",
+   "name": "Frenzy Plant",
+   "description": "Bond skill: colossal roots smash a foe up to 3 hexes away (Power 105, Sp. Atk).",
+   "grantsMove": "bulbasaur-frenzy-plant"
+  },
+  "bulbasaur-protect": {
+   "id": "bulbasaur-protect",
+   "name": "Protect",
+   "description": "Bond skill: shields itself behind its bulb and is Protected for 1 turn.",
+   "grantsMove": "bulbasaur-protect"
+  },
+  "bulbasaur-ingrain": {
+   "id": "bulbasaur-ingrain",
+   "name": "Ingrain",
+   "description": "Puts down roots: heals 5% of max HP each turn while engaged with a foe.",
+   "mods": {
+    "healWhileEngaged": 0.05
+   }
+  },
+  "bulbasaur-leech-seed": {
+   "id": "bulbasaur-leech-seed",
+   "name": "Leech Seed",
+   "description": "Bond skill: plants a draining seed on a foe up to 2 hexes away, sapping it (Poison) 3 turns.",
+   "grantsMove": "bulbasaur-leech-seed"
+  },
+  "bulbasaur-sun-soaked-bulb": {
+   "id": "bulbasaur-sun-soaked-bulb",
+   "name": "Sun-Soaked Bulb",
+   "description": "Its bulb soaks up light: heals 4% of max HP at the start of each turn.",
+   "mods": {
+    "healPerTurn": 0.04
+   }
+  },
+  "bulbasaur-sweet-scent": {
+   "id": "bulbasaur-sweet-scent",
+   "name": "Sweet Scent",
+   "description": "Foes it engages are lured in: they take 15% more damage from its allies.",
+   "mods": {
+    "pinDamage": 1.15
+   }
+  },
+  "bulbasaur-sleep-powder": {
+   "id": "bulbasaur-sleep-powder",
+   "name": "Sleep Powder",
+   "description": "New skill: a powder that puts a foe up to 2 hexes away to Sleep for 2 turns.",
+   "grantsMove": "bulbasaur-sleep-powder"
+  },
+  "bulbasaur-magical-leaf": {
+   "id": "bulbasaur-magical-leaf",
+   "name": "Magical Leaf",
+   "description": "New skill: homing leaves strike a foe up to 2 hexes away (Power 60), even without line of sight.",
+   "grantsMove": "bulbasaur-magical-leaf"
+  },
+  "bulbasaur-venomous-bloom": {
+   "id": "bulbasaur-venomous-bloom",
+   "name": "Venomous Bloom",
+   "description": "Deals 20% more damage to Poisoned foes.",
+   "mods": {
+    "vsStatusIdDamage": {
+     "poison": 1.2
+    }
+   }
+  },
+  "bulbasaur-sludge-bomb": {
+   "id": "bulbasaur-sludge-bomb",
+   "name": "Sludge Bomb",
+   "description": "New skill: hurls toxic sludge at a foe up to 2 hexes away (Power 75), Poisoning it for 2 turns.",
+   "grantsMove": "bulbasaur-sludge-bomb"
+  },
+  "bulbasaur-growth": {
+   "id": "bulbasaur-growth",
+   "name": "Growth",
+   "description": "New skill: its plant swells with power; it is Focused for 2 turns.",
+   "grantsMove": "bulbasaur-growth"
+  },
+  "bulbasaur-deep-roots": {
+   "id": "bulbasaur-deep-roots",
+   "name": "Deep Roots",
+   "description": "Its Grass moves drain 10% more of the damage dealt as HP.",
+   "mods": {
+    "drainBonus": 0.1
+   }
+  },
+  "bulbasaur-thorny-vines": {
+   "id": "bulbasaur-thorny-vines",
+   "name": "Thorny Vines",
+   "description": "Foes that hit it from an adjacent hex take 6 damage from its thorny vines.",
+   "mods": {
+    "thorns": 6
+   }
+  },
+  "bulbasaur-giga-drain": {
+   "id": "bulbasaur-giga-drain",
+   "name": "Giga Drain",
+   "description": "New skill: drains a foe up to 2 hexes away (Power 85), healing by part of the damage.",
+   "grantsMove": "bulbasaur-giga-drain"
+  },
+  "bulbasaur-sludge-wave": {
+   "id": "bulbasaur-sludge-wave",
+   "name": "Sludge Wave",
+   "description": "New skill: a toxic wave hits every foe within 2 hexes (Power 75) and Poisons them for 1 turn.",
+   "grantsMove": "bulbasaur-sludge-wave"
+  },
+  "bulbasaur-corrosive-sap": {
+   "id": "bulbasaur-corrosive-sap",
+   "name": "Corrosive Sap",
+   "description": "Its damaging hits on adjacent foes Poison them for 2 turns.",
+   "mods": {
+    "contactStatus": {
+     "status": "poison",
+     "duration": 2
+    }
+   }
+  },
+  "bulbasaur-great-flower": {
+   "id": "bulbasaur-great-flower",
+   "name": "Great Flower",
+   "description": "Its huge flower shields its body: takes 10% less damage.",
+   "mods": {
+    "damageTaken": 0.9
+   }
+  },
+  "bulbasaur-leaf-storm": {
+   "id": "bulbasaur-leaf-storm",
+   "name": "Leaf Storm",
+   "description": "New skill: a storm of sharp leaves at a foe up to 2 hexes away (Power 100).",
+   "grantsMove": "bulbasaur-leaf-storm"
+  },
+  "bulbasaur-synthesis": {
+   "id": "bulbasaur-synthesis",
+   "name": "Synthesis",
+   "description": "New skill: turns sunlight into energy; it and adjacent allies heal 50 HP.",
+   "grantsMove": "bulbasaur-synthesis"
+  },
+  "bulbasaur-bloom-season": {
+   "id": "bulbasaur-bloom-season",
+   "name": "Bloom Season",
+   "description": "Each combo it lands gives the team 1 Bond.",
+   "mods": {
+    "comboBond": 1
+   }
+  },
+  "bulbasaur-lingering-toxins": {
+   "id": "bulbasaur-lingering-toxins",
+   "name": "Lingering Toxins",
+   "description": "Statuses it inflicts last 1 turn longer.",
+   "mods": {
+    "statusDurationBonus": 1
+   }
+  },
+  "bulbasaur-solar-bloom": {
+   "id": "bulbasaur-solar-bloom",
+   "name": "Solar Bloom",
+   "description": "Capstone. Its Grass and Poison moves deal 20% more damage; foes it poisoned spread it when they faint.",
+   "mods": {
+    "typeDamage": {
+     "grass": 1.2,
+     "poison": 1.2
+    },
+    "statusSpreadOnKo": true
+   }
+  },
+  "bulbasaur-venerable-bloom": {
+   "id": "bulbasaur-venerable-bloom",
+   "name": "Venerable Bloom",
+   "description": "Capstone. Takes 20% less damage at full HP; heals 15% of max HP when it knocks out a foe.",
+   "mods": {
+    "fullHpDamageTaken": 0.8,
+    "koHeal": 0.15
+   }
+  }
+ }
+}

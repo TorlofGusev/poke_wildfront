@@ -1,0 +1,481 @@
+{
+ "line": [
+  "pikachu",
+  "raichu"
+ ],
+ "focus": [
+  {
+   "stat": "speed",
+   "skill": "pikachu-electro-ball"
+  },
+  {
+   "stat": "spAttack",
+   "skill": "pikachu-electroweb"
+  },
+  {
+   "stat": "attack",
+   "skill": "pikachu-volt-tackle"
+  }
+ ],
+ "rows": {
+  "4": [
+   "pikachu-lightning-rod",
+   "pikachu-nimble-paws"
+  ],
+  "6": [
+   "pikachu-iron-tail",
+   "pikachu-agility"
+  ],
+  "9": [
+   "pikachu-nimble-escape",
+   "pikachu-overcharge"
+  ],
+  "12": [
+   "pikachu-growl",
+   "pikachu-volt-switch"
+  ],
+  "15": [
+   "pikachu-point-blank-spark",
+   "pikachu-lingering-shock"
+  ],
+  "18": [
+   "pikachu-wild-charge",
+   "pikachu-swift"
+  ],
+  "21": [
+   "pikachu-lightning-reflexes",
+   "pikachu-spark-battery"
+  ],
+  "24": [
+   "pikachu-slam",
+   "pikachu-zap-cannon"
+  ],
+  "27": [
+   "pikachu-light-ball",
+   "pikachu-lightning-speed"
+  ],
+  "30": [
+   "pikachu-thunderstruck",
+   "pikachu-partner-spark"
+  ]
+ },
+ "moves": {
+  "pikachu-electro-ball": {
+   "id": "pikachu-electro-ball",
+   "name": "Electro Ball",
+   "type": "electric",
+   "kind": "bond",
+   "category": "special",
+   "bondCost": 2,
+   "scaleStat": "speed",
+   "power": 75,
+   "range": {
+    "min": 1,
+    "max": 3
+   },
+   "requiresLineOfSight": true,
+   "shape": {
+    "kind": "single"
+   },
+   "affects": "enemies"
+  },
+  "pikachu-electroweb": {
+   "id": "pikachu-electroweb",
+   "name": "Electroweb",
+   "type": "electric",
+   "kind": "bond",
+   "category": "special",
+   "bondCost": 1,
+   "power": 70,
+   "range": {
+    "min": 1,
+    "max": 1
+   },
+   "requiresLineOfSight": true,
+   "shape": {
+    "kind": "burst",
+    "radius": 1
+   },
+   "affects": "enemies",
+   "effects": [
+    {
+     "kind": "status",
+     "status": "slow",
+     "duration": 1
+    }
+   ]
+  },
+  "pikachu-volt-tackle": {
+   "id": "pikachu-volt-tackle",
+   "name": "Volt Tackle",
+   "type": "electric",
+   "kind": "bond",
+   "category": "physical",
+   "bondCost": 3,
+   "power": 100,
+   "range": {
+    "min": 1,
+    "max": 1
+   },
+   "requiresLineOfSight": false,
+   "shape": {
+    "kind": "single"
+   },
+   "affects": "enemies",
+   "effects": [
+    {
+     "kind": "status",
+     "status": "paralysis",
+     "duration": 1
+    }
+   ]
+  },
+  "pikachu-iron-tail": {
+   "id": "pikachu-iron-tail",
+   "name": "Iron Tail",
+   "type": "normal",
+   "kind": "special",
+   "category": "physical",
+   "cooldown": 3,
+   "power": 70,
+   "range": {
+    "min": 1,
+    "max": 1
+   },
+   "requiresLineOfSight": false,
+   "shape": {
+    "kind": "single"
+   },
+   "affects": "enemies",
+   "effects": [
+    {
+     "kind": "status",
+     "status": "exposed",
+     "duration": 1
+    }
+   ]
+  },
+  "pikachu-agility": {
+   "id": "pikachu-agility",
+   "name": "Agility",
+   "type": "normal",
+   "kind": "special",
+   "cooldown": 4,
+   "power": 0,
+   "range": {
+    "min": 0,
+    "max": 0
+   },
+   "requiresLineOfSight": false,
+   "shape": {
+    "kind": "single"
+   },
+   "affects": "allies",
+   "effects": [
+    {
+     "kind": "status",
+     "status": "hasted",
+     "duration": 2
+    }
+   ]
+  },
+  "pikachu-volt-switch": {
+   "id": "pikachu-volt-switch",
+   "name": "Volt Switch",
+   "type": "electric",
+   "kind": "special",
+   "category": "special",
+   "cooldown": 2,
+   "power": 55,
+   "range": {
+    "min": 1,
+    "max": 2
+   },
+   "requiresLineOfSight": true,
+   "shape": {
+    "kind": "single"
+   },
+   "affects": "enemies",
+   "effects": [
+    {
+     "kind": "disengage"
+    }
+   ]
+  },
+  "pikachu-wild-charge": {
+   "id": "pikachu-wild-charge",
+   "name": "Wild Charge",
+   "type": "electric",
+   "kind": "special",
+   "category": "physical",
+   "cooldown": 4,
+   "power": 90,
+   "range": {
+    "min": 1,
+    "max": 1
+   },
+   "requiresLineOfSight": false,
+   "shape": {
+    "kind": "single"
+   },
+   "affects": "enemies",
+   "effects": [
+    {
+     "kind": "engage"
+    }
+   ]
+  },
+  "pikachu-swift": {
+   "id": "pikachu-swift",
+   "name": "Swift",
+   "type": "normal",
+   "kind": "special",
+   "category": "special",
+   "cooldown": 4,
+   "power": 80,
+   "range": {
+    "min": 1,
+    "max": 1
+   },
+   "requiresLineOfSight": true,
+   "shape": {
+    "kind": "burst",
+    "radius": 1
+   },
+   "affects": "enemies"
+  },
+  "pikachu-slam": {
+   "id": "pikachu-slam",
+   "name": "Slam",
+   "type": "normal",
+   "kind": "special",
+   "category": "physical",
+   "cooldown": 4,
+   "power": 90,
+   "range": {
+    "min": 1,
+    "max": 1
+   },
+   "requiresLineOfSight": false,
+   "shape": {
+    "kind": "single"
+   },
+   "affects": "enemies"
+  },
+  "pikachu-zap-cannon": {
+   "id": "pikachu-zap-cannon",
+   "name": "Zap Cannon",
+   "type": "electric",
+   "kind": "special",
+   "category": "special",
+   "cooldown": 5,
+   "power": 95,
+   "range": {
+    "min": 1,
+    "max": 2
+   },
+   "requiresLineOfSight": true,
+   "shape": {
+    "kind": "single"
+   },
+   "affects": "enemies"
+  },
+  "pikachu-growl": {
+   "id": "pikachu-growl",
+   "name": "Growl",
+   "type": "normal",
+   "kind": "special",
+   "cooldown": 3,
+   "power": 0,
+   "range": {
+    "min": 1,
+    "max": 1
+   },
+   "requiresLineOfSight": false,
+   "shape": {
+    "kind": "single"
+   },
+   "affects": "enemies",
+   "effects": [
+    {
+     "kind": "status",
+     "status": "weakened",
+     "duration": 2
+    }
+   ]
+  }
+ },
+ "talents": {
+  "pikachu-electro-ball": {
+   "id": "pikachu-electro-ball",
+   "name": "Electro Ball",
+   "description": "Bond skill: hurls an electric orb at a foe up to 3 hexes away (Power 75, scales with Speed).",
+   "grantsMove": "pikachu-electro-ball"
+  },
+  "pikachu-electroweb": {
+   "id": "pikachu-electroweb",
+   "name": "Electroweb",
+   "description": "Bond skill: an electric net on a 1-hex area up to 1 hex away (Power 70, Sp. Atk); Slows 1 turn.",
+   "grantsMove": "pikachu-electroweb"
+  },
+  "pikachu-volt-tackle": {
+   "id": "pikachu-volt-tackle",
+   "name": "Volt Tackle",
+   "description": "Bond skill: a fully charged tackle (Power 100, Attack) that Paralyses the foe for 1 turn.",
+   "grantsMove": "pikachu-volt-tackle"
+  },
+  "pikachu-lightning-rod": {
+   "id": "pikachu-lightning-rod",
+   "name": "Lightning Rod",
+   "description": "Draws electricity in: its Electric moves deal 15% more damage.",
+   "mods": {
+    "typeDamage": {
+     "electric": 1.15
+    }
+   }
+  },
+  "pikachu-nimble-paws": {
+   "id": "pikachu-nimble-paws",
+   "name": "Nimble Paws",
+   "description": "Regains 1 movement when it knocks out a foe on its turn.",
+   "mods": {
+    "koMove": 1
+   }
+  },
+  "pikachu-iron-tail": {
+   "id": "pikachu-iron-tail",
+   "name": "Iron Tail",
+   "description": "New skill: a steel-hard tail strike (Power 70) that leaves the foe Exposed for 1 turn.",
+   "grantsMove": "pikachu-iron-tail"
+  },
+  "pikachu-agility": {
+   "id": "pikachu-agility",
+   "name": "Agility",
+   "description": "New skill: relaxes and lightens its body; it is Hasted for 2 turns.",
+   "grantsMove": "pikachu-agility"
+  },
+  "pikachu-nimble-escape": {
+   "id": "pikachu-nimble-escape",
+   "name": "Nimble Escape",
+   "description": "Steps away from engaged foes without drawing free strikes.",
+   "mods": {
+    "disengage": true
+   }
+  },
+  "pikachu-overcharge": {
+   "id": "pikachu-overcharge",
+   "name": "Overcharge",
+   "description": "Deals 25% more damage to Paralysed foes.",
+   "mods": {
+    "vsStatusIdDamage": {
+     "paralysis": 1.25
+    }
+   }
+  },
+  "pikachu-volt-switch": {
+   "id": "pikachu-volt-switch",
+   "name": "Volt Switch",
+   "description": "New skill: zaps a foe up to 2 hexes away (Power 55), then breaks free of engagement.",
+   "grantsMove": "pikachu-volt-switch"
+  },
+  "pikachu-point-blank-spark": {
+   "id": "pikachu-point-blank-spark",
+   "name": "Point-Blank Spark",
+   "description": "Deals 15% more damage to adjacent foes.",
+   "mods": {
+    "closeDamage": 1.15
+   }
+  },
+  "pikachu-lingering-shock": {
+   "id": "pikachu-lingering-shock",
+   "name": "Lingering Shock",
+   "description": "Statuses it inflicts last 1 turn longer.",
+   "mods": {
+    "statusDurationBonus": 1
+   }
+  },
+  "pikachu-wild-charge": {
+   "id": "pikachu-wild-charge",
+   "name": "Wild Charge",
+   "description": "New skill: a crackling charge into a foe (Power 90) that engages it.",
+   "grantsMove": "pikachu-wild-charge"
+  },
+  "pikachu-swift": {
+   "id": "pikachu-swift",
+   "name": "Swift",
+   "description": "New skill: star-shaped rays on a 1-hex area up to 1 hex away (Power 80).",
+   "grantsMove": "pikachu-swift"
+  },
+  "pikachu-lightning-reflexes": {
+   "id": "pikachu-lightning-reflexes",
+   "name": "Lightning Reflexes",
+   "description": "Its free strikes on foes breaking away deal 25% more damage.",
+   "mods": {
+    "strikeDamage": 1.25
+   }
+  },
+  "pikachu-spark-battery": {
+   "id": "pikachu-spark-battery",
+   "name": "Spark Battery",
+   "description": "Each combo it lands gives the team 1 Bond.",
+   "mods": {
+    "comboBond": 1
+   }
+  },
+  "pikachu-slam": {
+   "id": "pikachu-slam",
+   "name": "Slam",
+   "description": "New skill: slams its tail into a foe (Power 90).",
+   "grantsMove": "pikachu-slam"
+  },
+  "pikachu-zap-cannon": {
+   "id": "pikachu-zap-cannon",
+   "name": "Zap Cannon",
+   "description": "New skill: an electric cannon blast at a foe up to 2 hexes away (Power 95).",
+   "grantsMove": "pikachu-zap-cannon"
+  },
+  "pikachu-light-ball": {
+   "id": "pikachu-light-ball",
+   "name": "Light Ball",
+   "description": "Holds a glowing orb only a Pikachu can use: deals 10% more damage.",
+   "mods": {
+    "damageDealt": 1.1
+   }
+  },
+  "pikachu-lightning-speed": {
+   "id": "pikachu-lightning-speed",
+   "name": "Lightning Speed",
+   "description": "Knocking out a foe on its turn lets it use its basic attack again.",
+   "mods": {
+    "koRefreshBasic": true
+   }
+  },
+  "pikachu-thunderstruck": {
+   "id": "pikachu-thunderstruck",
+   "name": "Thunderstruck",
+   "description": "Capstone. Deals 20% more damage to foes at full HP; a knockout resets its skill cooldowns.",
+   "mods": {
+    "fullHpTargetDamage": 1.2,
+    "koResetCooldowns": true
+   }
+  },
+  "pikachu-partner-spark": {
+   "id": "pikachu-partner-spark",
+   "name": "Partner Spark",
+   "description": "Capstone. Its Bond skills cost 1 less; its damaging hits on adjacent foes Paralyse them 1 turn.",
+   "mods": {
+    "bondCostReduction": 1,
+    "contactStatus": {
+     "status": "paralysis",
+     "duration": 1
+    }
+   }
+  },
+  "pikachu-growl": {
+   "id": "pikachu-growl",
+   "name": "Growl",
+   "description": "New skill: a cute growl leaves an adjacent foe Weakened for 2 turns.",
+   "grantsMove": "pikachu-growl"
+  }
+ }
+}

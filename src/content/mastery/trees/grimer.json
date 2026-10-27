@@ -1,0 +1,503 @@
+{
+ "line": [
+  "grimer",
+  "muk"
+ ],
+ "focus": [
+  {
+   "stat": "hp",
+   "skill": "grimer-minimize"
+  },
+  {
+   "stat": "attack",
+   "skill": "grimer-gunk-shot"
+  },
+  {
+   "stat": "spAttack",
+   "skill": "grimer-sludge-bomb"
+  }
+ ],
+ "rows": {
+  "4": [
+   "grimer-poison-touch",
+   "grimer-amorphous-body"
+  ],
+  "6": [
+   "grimer-acid-spray",
+   "grimer-disable"
+  ],
+  "9": [
+   "grimer-shed-skin",
+   "grimer-lingering-toxins"
+  ],
+  "12": [
+   "grimer-screech",
+   "grimer-wrap"
+  ],
+  "15": [
+   "grimer-gooey-grip",
+   "grimer-toxic-hunger"
+  ],
+  "18": [
+   "grimer-sludge-wave",
+   "grimer-poison-jab"
+  ],
+  "21": [
+   "grimer-stench-cloud",
+   "grimer-ooze-regrowth"
+  ],
+  "24": [
+   "grimer-body-slam",
+   "grimer-belch"
+  ],
+  "27": [
+   "grimer-sludge-feast",
+   "grimer-toxic-shroud"
+  ],
+  "30": [
+   "grimer-living-sludge",
+   "grimer-toxic-monarch"
+  ]
+ },
+ "moves": {
+  "grimer-minimize": {
+   "id": "grimer-minimize",
+   "name": "Minimize",
+   "type": "normal",
+   "kind": "bond",
+   "bondCost": 1,
+   "power": 0,
+   "range": {
+    "min": 0,
+    "max": 0
+   },
+   "requiresLineOfSight": false,
+   "shape": {
+    "kind": "single"
+   },
+   "affects": "allies",
+   "effects": [
+    {
+     "kind": "status",
+     "status": "fortified",
+     "duration": 3
+    }
+   ]
+  },
+  "grimer-gunk-shot": {
+   "id": "grimer-gunk-shot",
+   "name": "Gunk Shot",
+   "type": "poison",
+   "kind": "bond",
+   "category": "physical",
+   "bondCost": 2,
+   "power": 100,
+   "range": {
+    "min": 1,
+    "max": 2
+   },
+   "requiresLineOfSight": true,
+   "shape": {
+    "kind": "single"
+   },
+   "affects": "enemies",
+   "effects": [
+    {
+     "kind": "status",
+     "status": "poison",
+     "duration": 3
+    }
+   ]
+  },
+  "grimer-sludge-bomb": {
+   "id": "grimer-sludge-bomb",
+   "name": "Sludge Bomb",
+   "type": "poison",
+   "kind": "bond",
+   "category": "special",
+   "bondCost": 2,
+   "power": 90,
+   "range": {
+    "min": 1,
+    "max": 2
+   },
+   "requiresLineOfSight": true,
+   "shape": {
+    "kind": "burst",
+    "radius": 1
+   },
+   "affects": "enemies"
+  },
+  "grimer-disable": {
+   "id": "grimer-disable",
+   "name": "Disable",
+   "type": "normal",
+   "kind": "special",
+   "cooldown": 4,
+   "power": 0,
+   "range": {
+    "min": 1,
+    "max": 2
+   },
+   "requiresLineOfSight": false,
+   "shape": {
+    "kind": "single"
+   },
+   "affects": "enemies",
+   "effects": [
+    {
+     "kind": "status",
+     "status": "disabled",
+     "duration": 2
+    }
+   ]
+  },
+  "grimer-screech": {
+   "id": "grimer-screech",
+   "name": "Screech",
+   "type": "normal",
+   "kind": "special",
+   "cooldown": 3,
+   "power": 0,
+   "range": {
+    "min": 1,
+    "max": 2
+   },
+   "requiresLineOfSight": true,
+   "shape": {
+    "kind": "single"
+   },
+   "affects": "enemies",
+   "effects": [
+    {
+     "kind": "status",
+     "status": "exposed",
+     "duration": 2
+    }
+   ]
+  },
+  "grimer-sludge-wave": {
+   "id": "grimer-sludge-wave",
+   "name": "Sludge Wave",
+   "type": "poison",
+   "kind": "special",
+   "category": "special",
+   "cooldown": 4,
+   "power": 85,
+   "range": {
+    "min": 0,
+    "max": 0
+   },
+   "requiresLineOfSight": false,
+   "shape": {
+    "kind": "burst",
+    "radius": 1
+   },
+   "affects": "enemies",
+   "effects": [
+    {
+     "kind": "status",
+     "status": "poison",
+     "duration": 1
+    }
+   ]
+  },
+  "grimer-poison-jab": {
+   "id": "grimer-poison-jab",
+   "name": "Poison Jab",
+   "type": "poison",
+   "kind": "special",
+   "category": "physical",
+   "cooldown": 4,
+   "power": 85,
+   "range": {
+    "min": 1,
+    "max": 1
+   },
+   "requiresLineOfSight": false,
+   "shape": {
+    "kind": "single"
+   },
+   "affects": "enemies",
+   "effects": [
+    {
+     "kind": "status",
+     "status": "poison",
+     "duration": 2
+    }
+   ]
+  },
+  "grimer-acid-spray": {
+   "id": "grimer-acid-spray",
+   "name": "Acid Spray",
+   "type": "poison",
+   "kind": "special",
+   "category": "special",
+   "cooldown": 2,
+   "power": 45,
+   "range": {
+    "min": 1,
+    "max": 2
+   },
+   "requiresLineOfSight": true,
+   "shape": {
+    "kind": "single"
+   },
+   "affects": "enemies",
+   "effects": [
+    {
+     "kind": "status",
+     "status": "marked",
+     "duration": 1
+    }
+   ]
+  },
+  "grimer-wrap": {
+   "id": "grimer-wrap",
+   "name": "Wrap",
+   "type": "normal",
+   "kind": "special",
+   "category": "physical",
+   "cooldown": 2,
+   "power": 45,
+   "range": {
+    "min": 1,
+    "max": 1
+   },
+   "requiresLineOfSight": true,
+   "shape": {
+    "kind": "single"
+   },
+   "affects": "enemies",
+   "effects": [
+    {
+     "kind": "engage"
+    },
+    {
+     "kind": "status",
+     "status": "slow",
+     "duration": 1
+    }
+   ]
+  },
+  "grimer-body-slam": {
+   "id": "grimer-body-slam",
+   "name": "Body Slam",
+   "type": "normal",
+   "kind": "special",
+   "category": "physical",
+   "cooldown": 4,
+   "power": 90,
+   "range": {
+    "min": 1,
+    "max": 1
+   },
+   "requiresLineOfSight": false,
+   "shape": {
+    "kind": "single"
+   },
+   "affects": "enemies",
+   "effects": [
+    {
+     "kind": "status",
+     "status": "paralysis",
+     "duration": 1
+    }
+   ]
+  },
+  "grimer-belch": {
+   "id": "grimer-belch",
+   "name": "Belch",
+   "type": "poison",
+   "kind": "special",
+   "category": "special",
+   "cooldown": 5,
+   "power": 95,
+   "range": {
+    "min": 1,
+    "max": 2
+   },
+   "requiresLineOfSight": true,
+   "shape": {
+    "kind": "single"
+   },
+   "affects": "enemies"
+  }
+ },
+ "talents": {
+  "grimer-minimize": {
+   "id": "grimer-minimize",
+   "name": "Minimize",
+   "description": "Bond skill: shrinks its sludgy body to a puddle, becoming Fortified for 3 turns.",
+   "grantsMove": "grimer-minimize"
+  },
+  "grimer-gunk-shot": {
+   "id": "grimer-gunk-shot",
+   "name": "Gunk Shot",
+   "description": "Bond skill: hurls filthy garbage at a foe up to 2 hexes away (Power 100, Attack), Poisoning 3 turns.",
+   "grantsMove": "grimer-gunk-shot"
+  },
+  "grimer-sludge-bomb": {
+   "id": "grimer-sludge-bomb",
+   "name": "Sludge Bomb",
+   "description": "Bond skill: lobs sludge up to 2 hexes away (Power 90, Sp. Atk) hitting a 1-hex area.",
+   "grantsMove": "grimer-sludge-bomb"
+  },
+  "grimer-poison-touch": {
+   "id": "grimer-poison-touch",
+   "name": "Poison Touch",
+   "description": "Its hits on adjacent foes deal 10% more and Poison them for 2 turns.",
+   "mods": {
+    "contactStatus": {
+     "status": "poison",
+     "duration": 2
+    },
+    "closeDamage": 1.1
+   }
+  },
+  "grimer-amorphous-body": {
+   "id": "grimer-amorphous-body",
+   "name": "Amorphous Body",
+   "description": "Takes 10% less damage: blows sink into its sludge.",
+   "mods": {
+    "damageTaken": 0.9
+   }
+  },
+  "grimer-disable": {
+   "id": "grimer-disable",
+   "name": "Disable",
+   "description": "New skill: seals a foe up to 2 hexes away; Disabled (basic attack only) for 2 turns.",
+   "grantsMove": "grimer-disable"
+  },
+  "grimer-shed-skin": {
+   "id": "grimer-shed-skin",
+   "name": "Shed Skin",
+   "description": "Sheds statuses foes put on it at the start of its turn.",
+   "mods": {
+    "shedStatuses": true
+   }
+  },
+  "grimer-lingering-toxins": {
+   "id": "grimer-lingering-toxins",
+   "name": "Lingering Toxins",
+   "description": "Statuses it inflicts last 1 more turn; deals 15% more to foes carrying a status an ally applied.",
+   "mods": {
+    "statusDurationBonus": 1,
+    "vsSetupDamage": 1.15
+   }
+  },
+  "grimer-screech": {
+   "id": "grimer-screech",
+   "name": "Screech",
+   "description": "New skill: an awful screech Exposes a foe up to 2 hexes away for 2 turns.",
+   "grantsMove": "grimer-screech"
+  },
+  "grimer-gooey-grip": {
+   "id": "grimer-gooey-grip",
+   "name": "Gooey Grip",
+   "description": "Foes engaged with it always draw its free strike when stepping away.",
+   "mods": {
+    "noEscape": true
+   }
+  },
+  "grimer-toxic-hunger": {
+   "id": "grimer-toxic-hunger",
+   "name": "Toxic Hunger",
+   "description": "Deals 20% more damage to Poisoned foes.",
+   "mods": {
+    "vsStatusIdDamage": {
+     "poison": 1.2
+    }
+   }
+  },
+  "grimer-sludge-wave": {
+   "id": "grimer-sludge-wave",
+   "name": "Sludge Wave",
+   "description": "New skill: a wave of sludge hits every adjacent foe (Power 85), Poisoning them for 1 turn.",
+   "grantsMove": "grimer-sludge-wave"
+  },
+  "grimer-poison-jab": {
+   "id": "grimer-poison-jab",
+   "name": "Poison Jab",
+   "description": "New skill: jabs with a toxic, sludgy arm (Power 85), Poisoning the foe for 2 turns.",
+   "grantsMove": "grimer-poison-jab"
+  },
+  "grimer-stench-cloud": {
+   "id": "grimer-stench-cloud",
+   "name": "Stench",
+   "description": "Deals 10% more damage; when a foe it afflicted faints, adjacent foes catch that status.",
+   "mods": {
+    "statusSpreadOnKo": true,
+    "damageDealt": 1.1
+   }
+  },
+  "grimer-ooze-regrowth": {
+   "id": "grimer-ooze-regrowth",
+   "name": "Ooze Regrowth",
+   "description": "Heals 5% of max HP at the start of each turn.",
+   "mods": {
+    "healPerTurn": 0.05
+   }
+  },
+  "grimer-sludge-feast": {
+   "id": "grimer-sludge-feast",
+   "name": "Sludge Feast",
+   "description": "Heals 15% of max HP when it knocks out a foe.",
+   "mods": {
+    "koHeal": 0.15
+   }
+  },
+  "grimer-toxic-shroud": {
+   "id": "grimer-toxic-shroud",
+   "name": "Toxic Shroud",
+   "description": "Deals 15% more damage to foes carrying any status.",
+   "mods": {
+    "vsStatusDamage": 1.15
+   }
+  },
+  "grimer-living-sludge": {
+   "id": "grimer-living-sludge",
+   "name": "Living Sludge",
+   "description": "Capstone. Takes 15% less damage; heals 3% of max HP each turn while engaged.",
+   "mods": {
+    "damageTaken": 0.85,
+    "healWhileEngaged": 0.03
+   }
+  },
+  "grimer-toxic-monarch": {
+   "id": "grimer-toxic-monarch",
+   "name": "Toxic Monarch",
+   "description": "Capstone. Its Poison moves deal 25% more; foes it engages take 20% more from its allies.",
+   "mods": {
+    "typeDamage": {
+     "poison": 1.25
+    },
+    "pinDamage": 1.2
+   }
+  },
+  "grimer-acid-spray": {
+   "id": "grimer-acid-spray",
+   "name": "Acid Spray",
+   "description": "New skill: sprays acid at a foe up to 2 hexes away (Power 45), Marking it for 1 turn.",
+   "grantsMove": "grimer-acid-spray"
+  },
+  "grimer-wrap": {
+   "id": "grimer-wrap",
+   "name": "Wrap",
+   "description": "New skill: wraps an adjacent foe in sludge (Power 45), engaging it; Slow 1 turn.",
+   "grantsMove": "grimer-wrap"
+  },
+  "grimer-body-slam": {
+   "id": "grimer-body-slam",
+   "name": "Body Slam",
+   "description": "New skill: flops its sludgy bulk onto a foe (Power 90), Paralyzing it for 1 turn.",
+   "grantsMove": "grimer-body-slam"
+  },
+  "grimer-belch": {
+   "id": "grimer-belch",
+   "name": "Belch",
+   "description": "New skill: a foul belch at a foe up to 2 hexes away (Power 95).",
+   "grantsMove": "grimer-belch"
+  }
+ }
+}

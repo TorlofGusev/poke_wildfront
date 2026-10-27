@@ -1,0 +1,73 @@
+{
+ "talents": {
+  "jigglypuff-wish": {
+   "description": "Bond képesség: szívből jövő kívánság 35 HP-t gyógyít rajta vagy egy legfeljebb 3 hexnyi szövetségesen."
+  },
+  "jigglypuff-play-rough": {
+   "description": "Bond képesség: vad hempergés egy ellenféllel (Erő 90, Támadás)."
+  },
+  "jigglypuff-hyper-voice": {
+   "description": "Bond képesség: harsogó dal minden 2 hexen belüli ellenfélre (Erő 80, Sp. Atk)."
+  },
+  "jigglypuff-cute-charm": {
+   "description": "Szomszédos ellenfelekre mért sebző találatai 1 körre lelassítják (elbűvölik) őket."
+  },
+  "jigglypuff-competitive": {
+   "description": "20%-kal többet sebez, amíg bármilyen állapot van rajta."
+  },
+  "jigglypuff-disarming-voice": {
+   "description": "Új képesség: elbűvölő kiáltás egy legfeljebb 2 hexnyi ellenfélre (Erő 40)."
+  },
+  "jigglypuff-headbutt": {
+   "description": "Új képesség: kerek fejével megöklel egy ellenfelet (Erő 50), 1 hexnyit hátralökve."
+  },
+  "jigglypuff-soft-body": {
+   "description": "Rugalmas teste tompítja a csapásokat: 10%-kal kevesebb sebzést kap."
+  },
+  "jigglypuff-long-lullaby": {
+   "description": "Az általa okozott állapotok 1 körrel tovább tartanak."
+  },
+  "jigglypuff-disable": {
+   "description": "Új képesség: lezár egy legfeljebb 2 hexnyire lévő ellenfelet, 2 körre Disabled (csak alaptámadás)."
+  },
+  "jigglypuff-mega-punch": {
+   "description": "Új képesség: meglepően erős ütés (Erő 70)."
+  },
+  "jigglypuff-gentle-heart": {
+   "description": "Minden köre elején a max. HP-ja 5%-át gyógyítja."
+  },
+  "jigglypuff-puffed-up-rage": {
+   "description": "Dühében felfújódik: fél HP alatt 20%-kal többet sebez."
+  },
+  "jigglypuff-dazzling-gleam": {
+   "description": "Új képesség: vakító villanás egy legfeljebb 1 hexnyi 1 hex területre (Erő 80)."
+  },
+  "jigglypuff-slam": {
+   "description": "Új képesség: kerek testével nekicsapódik egy ellenfélnek (Erő 80)."
+  },
+  "jigglypuff-fluffy-fur": {
+   "description": "Teljes HP mellett 25%-kal kevesebb sebzést kap."
+  },
+  "jigglypuff-bouncy": {
+   "description": "Szabad csapás nélkül pattan el a lekötő ellenfelektől."
+  },
+  "jigglypuff-moonblast": {
+   "description": "Új képesség: a Hold erejével sújt le egy legfeljebb 2 hexnyi ellenfélre (Erő 95)."
+  },
+  "jigglypuff-giga-impact": {
+   "description": "Új képesség: teljes erejéből nekiront egy ellenfélnek (Erő 100)."
+  },
+  "jigglypuff-rude-awakening": {
+   "description": "25%-kal többet sebez az alvó ellenfelekre."
+  },
+  "jigglypuff-last-encore": {
+   "description": "Amikor kiesik, a csapat 2 Bondot kap."
+  },
+  "jigglypuff-balloon-body": {
+   "description": "Csúcs. Csatánként egyszer 1 HP-val túlél egy kiütő csapást; a mellőle támadók 8 sebzést kapnak."
+  },
+  "jigglypuff-superstar": {
+   "description": "Végső. Státuszképességei 1 körrel gyorsabbak; Bond képességei 1-gyel olcsóbbak; +20% állapotosokra."
+  }
+ }
+}

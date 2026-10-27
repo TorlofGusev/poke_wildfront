@@ -1,0 +1,73 @@
+{
+ "talents": {
+  "kangaskhan-dizzy-punch": {
+   "description": "Kötelék-képesség: ritmikus ütés (Erő 85, Támadás), az ellenfél 2 körig Zavarodott."
+  },
+  "kangaskhan-endeavor": {
+   "description": "Kötelék-képesség: elkeseredett, mindent bele csapás egy szomszédos ellenfélre (Erő 85)."
+  },
+  "kangaskhan-fake-out": {
+   "description": "Kötelék-képesség: villámgyors csapás (Erő 40), amely 1 körre megdermeszti az ellenfelet."
+  },
+  "kangaskhan-early-bird": {
+   "description": "Nem lehet elaltatni."
+  },
+  "kangaskhan-mothers-fury": {
+   "description": "20%-kal többet sebez, amíg HP-ja a fele alatt van."
+  },
+  "kangaskhan-pouch-guard": {
+   "description": "10%-kal kevesebb sebzést szenved el: a kicsinyét védi az erszényében."
+  },
+  "kangaskhan-protect": {
+   "description": "Új képesség: az erszénye köré görnyed, 1 körre Védett."
+  },
+  "kangaskhan-protective-instinct": {
+   "description": "Az általa lekötött ellenfelek 15%-kal több sebzést kapnak a szövetségeseitől."
+  },
+  "kangaskhan-fierce-mother": {
+   "description": "20%-kal többet sebez, amíg legalább 2 ellenfél áll mellette."
+  },
+  "kangaskhan-thick-pouch": {
+   "description": "Minden köre elején max HP-ja 4%-át gyógyítja."
+  },
+  "kangaskhan-rising-anger": {
+   "description": "Minden kiütött ellenfél után 1 Támadást kap (legfeljebb +3) a csata végéig."
+  },
+  "kangaskhan-guardian-mother": {
+   "description": "Csatánként egyszer 1 HP-val túlél egy kiütő csapást."
+  },
+  "kangaskhan-pouch-fury": {
+   "description": "Csúcs. 15%-kal többet sebez; a menekülő ellenfelekre mért szabad csapásai 30%-kal többet."
+  },
+  "kangaskhan-scrappy": {
+   "description": "Normal támadásai 15%-kal többet sebeznek."
+  },
+  "kangaskhan-inner-focus": {
+   "description": "Nem fagyasztható le; köre elején lerázza a ráadott állapotokat; 15%-kal többet sebez szomszédosakra."
+  },
+  "kangaskhan-parental-bond": {
+   "description": "Csúcs. A kicsinye is beszáll: minden egymás utáni találat egy ellenfélen 15%-kal több (max 3); kiütés után újra használhatja az alaptámadását."
+  },
+  "kangaskhan-headbutt": {
+   "description": "Új képesség: erős fejelés (Erő 60), 1 hexnyit hátralöki az ellenfelet."
+  },
+  "kangaskhan-double-hit": {
+   "description": "Új képesség: anya és kicsinye együtt üt (Erő 70), az ellenfél 1 körre Kitett."
+  },
+  "kangaskhan-mega-kick": {
+   "description": "Új képesség: hatalmas rúgás egy szomszédos ellenfélre (Erő 100)."
+  },
+  "kangaskhan-double-edge": {
+   "description": "Új képesség: vakmerő, teljes testes roham (Erő 95)."
+  },
+  "kangaskhan-strength": {
+   "description": "Új képesség: teljes erejével meglöki az ellenfelet (Erő 70), 2 hexnyire repíti."
+  },
+  "kangaskhan-leer": {
+   "description": "Új képesség: védelmező pillantás, amely 2 körre Marked állapotba hozza a szomszédos ellenfeleket."
+  },
+  "kangaskhan-rage": {
+   "description": "Új képesség: dühödt csapás (Erő 85), amellyel rátapad az ellenfélre (leköti)."
+  }
+ }
+}

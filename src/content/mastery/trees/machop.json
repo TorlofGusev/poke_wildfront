@@ -1,0 +1,494 @@
+{
+ "line": [
+  "machop",
+  "machoke",
+  "machamp"
+ ],
+ "focus": [
+  {
+   "stat": "attack",
+   "skill": "machop-dynamic-punch"
+  },
+  {
+   "stat": "hp",
+   "skill": "machop-seismic-toss"
+  },
+  {
+   "stat": "defense",
+   "skill": "machop-wide-guard"
+  }
+ ],
+ "rows": {
+  "4": [
+   "machop-guts",
+   "machop-muscle-mass"
+  ],
+  "6": [
+   "machop-rock-smash",
+   "machop-low-sweep"
+  ],
+  "9": [
+   "machop-endure",
+   "machop-pummeling"
+  ],
+  "12": [
+   "machop-vital-throw",
+   "machop-bulk-up"
+  ],
+  "15": [
+   "machop-submission-hold",
+   "machop-brawler"
+  ],
+  "18": [
+   "machop-submission",
+   "machop-brick-break"
+  ],
+  "21": [
+   "machop-no-guard",
+   "machop-iron-grip"
+  ],
+  "24": [
+   "machop-superpower",
+   "machop-hammer-arm"
+  ],
+  "27": [
+   "machop-moxie-drive",
+   "machop-stalwart"
+  ],
+  "30": [
+   "machop-thousand-punches",
+   "machop-unbreakable"
+  ]
+ },
+ "moves": {
+  "machop-dynamic-punch": {
+   "id": "machop-dynamic-punch",
+   "name": "Dynamic Punch",
+   "type": "fighting",
+   "kind": "bond",
+   "category": "physical",
+   "bondCost": 2,
+   "power": 100,
+   "range": {
+    "min": 1,
+    "max": 1
+   },
+   "requiresLineOfSight": false,
+   "shape": {
+    "kind": "single"
+   },
+   "affects": "enemies",
+   "effects": [
+    {
+     "kind": "status",
+     "status": "slow",
+     "duration": 2
+    }
+   ]
+  },
+  "machop-seismic-toss": {
+   "id": "machop-seismic-toss",
+   "name": "Seismic Toss",
+   "type": "fighting",
+   "kind": "bond",
+   "category": "physical",
+   "bondCost": 2,
+   "power": 75,
+   "range": {
+    "min": 1,
+    "max": 1
+   },
+   "requiresLineOfSight": false,
+   "shape": {
+    "kind": "single"
+   },
+   "affects": "enemies",
+   "effects": [
+    {
+     "kind": "push",
+     "distance": 2
+    }
+   ]
+  },
+  "machop-wide-guard": {
+   "id": "machop-wide-guard",
+   "name": "Wide Guard",
+   "type": "fighting",
+   "kind": "bond",
+   "bondCost": 2,
+   "power": 0,
+   "range": {
+    "min": 0,
+    "max": 0
+   },
+   "requiresLineOfSight": false,
+   "shape": {
+    "kind": "burst",
+    "radius": 1
+   },
+   "affects": "allies",
+   "effects": [
+    {
+     "kind": "status",
+     "status": "fortified",
+     "duration": 2
+    }
+   ]
+  },
+  "machop-rock-smash": {
+   "id": "machop-rock-smash",
+   "name": "Rock Smash",
+   "type": "fighting",
+   "kind": "special",
+   "category": "physical",
+   "cooldown": 2,
+   "power": 50,
+   "range": {
+    "min": 1,
+    "max": 1
+   },
+   "requiresLineOfSight": false,
+   "shape": {
+    "kind": "single"
+   },
+   "affects": "enemies",
+   "effects": [
+    {
+     "kind": "status",
+     "status": "exposed",
+     "duration": 1
+    }
+   ]
+  },
+  "machop-low-sweep": {
+   "id": "machop-low-sweep",
+   "name": "Low Sweep",
+   "type": "fighting",
+   "kind": "special",
+   "category": "physical",
+   "cooldown": 3,
+   "power": 50,
+   "range": {
+    "min": 1,
+    "max": 1
+   },
+   "requiresLineOfSight": false,
+   "shape": {
+    "kind": "single"
+   },
+   "affects": "enemies",
+   "effects": [
+    {
+     "kind": "status",
+     "status": "slow",
+     "duration": 2
+    }
+   ]
+  },
+  "machop-vital-throw": {
+   "id": "machop-vital-throw",
+   "name": "Vital Throw",
+   "type": "fighting",
+   "kind": "special",
+   "category": "physical",
+   "cooldown": 3,
+   "power": 70,
+   "range": {
+    "min": 1,
+    "max": 1
+   },
+   "requiresLineOfSight": false,
+   "shape": {
+    "kind": "single"
+   },
+   "affects": "enemies",
+   "effects": [
+    {
+     "kind": "push",
+     "distance": 1
+    }
+   ]
+  },
+  "machop-bulk-up": {
+   "id": "machop-bulk-up",
+   "name": "Bulk Up",
+   "type": "fighting",
+   "kind": "special",
+   "cooldown": 5,
+   "power": 0,
+   "range": {
+    "min": 0,
+    "max": 0
+   },
+   "requiresLineOfSight": false,
+   "shape": {
+    "kind": "single"
+   },
+   "affects": "allies",
+   "effects": [
+    {
+     "kind": "status",
+     "status": "focused",
+     "duration": 2
+    },
+    {
+     "kind": "status",
+     "status": "fortified",
+     "duration": 2
+    }
+   ]
+  },
+  "machop-submission": {
+   "id": "machop-submission",
+   "name": "Submission",
+   "type": "fighting",
+   "kind": "special",
+   "category": "physical",
+   "cooldown": 4,
+   "power": 95,
+   "range": {
+    "min": 1,
+    "max": 1
+   },
+   "requiresLineOfSight": false,
+   "shape": {
+    "kind": "single"
+   },
+   "affects": "enemies"
+  },
+  "machop-brick-break": {
+   "id": "machop-brick-break",
+   "name": "Brick Break",
+   "type": "fighting",
+   "kind": "special",
+   "category": "physical",
+   "cooldown": 4,
+   "power": 80,
+   "range": {
+    "min": 1,
+    "max": 1
+   },
+   "requiresLineOfSight": false,
+   "shape": {
+    "kind": "single"
+   },
+   "affects": "enemies",
+   "effects": [
+    {
+     "kind": "status",
+     "status": "exposed",
+     "duration": 1
+    }
+   ]
+  },
+  "machop-superpower": {
+   "id": "machop-superpower",
+   "name": "Superpower",
+   "type": "fighting",
+   "kind": "special",
+   "category": "physical",
+   "cooldown": 5,
+   "power": 100,
+   "range": {
+    "min": 1,
+    "max": 1
+   },
+   "requiresLineOfSight": false,
+   "shape": {
+    "kind": "single"
+   },
+   "affects": "enemies"
+  },
+  "machop-hammer-arm": {
+   "id": "machop-hammer-arm",
+   "name": "Hammer Arm",
+   "type": "fighting",
+   "kind": "special",
+   "category": "physical",
+   "cooldown": 5,
+   "power": 90,
+   "range": {
+    "min": 1,
+    "max": 1
+   },
+   "requiresLineOfSight": false,
+   "shape": {
+    "kind": "single"
+   },
+   "affects": "enemies",
+   "effects": [
+    {
+     "kind": "push",
+     "distance": 1
+    }
+   ]
+  }
+ },
+ "talents": {
+  "machop-dynamic-punch": {
+   "id": "machop-dynamic-punch",
+   "name": "Dynamic Punch",
+   "description": "Bond skill: an all-out punch (Power 100, Attack) that leaves the foe reeling (Slow) for 2 turns.",
+   "grantsMove": "machop-dynamic-punch"
+  },
+  "machop-seismic-toss": {
+   "id": "machop-seismic-toss",
+   "name": "Seismic Toss",
+   "description": "Bond skill: grabs a foe and hurls it 2 hexes (Power 75, Attack).",
+   "grantsMove": "machop-seismic-toss"
+  },
+  "machop-wide-guard": {
+   "id": "machop-wide-guard",
+   "name": "Wide Guard",
+   "description": "Bond skill: braces its arms to shield itself and adjacent allies (Fortified for 2 turns).",
+   "grantsMove": "machop-wide-guard"
+  },
+  "machop-guts": {
+   "id": "machop-guts",
+   "name": "Guts",
+   "description": "Deals 25% more damage while it carries a status.",
+   "mods": {
+    "statusedDamage": 1.25
+   }
+  },
+  "machop-muscle-mass": {
+   "id": "machop-muscle-mass",
+   "name": "Muscle Mass",
+   "description": "Takes 10% less damage: its training hardens every muscle.",
+   "mods": {
+    "damageTaken": 0.9
+   }
+  },
+  "machop-rock-smash": {
+   "id": "machop-rock-smash",
+   "name": "Rock Smash",
+   "description": "New skill: a rock-breaking punch (Power 50) that leaves the foe Exposed for 1 turn.",
+   "grantsMove": "machop-rock-smash"
+  },
+  "machop-low-sweep": {
+   "id": "machop-low-sweep",
+   "name": "Low Sweep",
+   "description": "New skill: a low sweeping kick (Power 50) that Slows the foe for 2 turns.",
+   "grantsMove": "machop-low-sweep"
+  },
+  "machop-endure": {
+   "id": "machop-endure",
+   "name": "Endure",
+   "description": "Survives one knockout blow per battle at 1 HP.",
+   "mods": {
+    "sturdy": true
+   }
+  },
+  "machop-pummeling": {
+   "id": "machop-pummeling",
+   "name": "Pummeling",
+   "description": "Each consecutive hit on the same foe deals 10% more, up to 3 stacks.",
+   "mods": {
+    "furyCutter": 0.1
+   }
+  },
+  "machop-vital-throw": {
+   "id": "machop-vital-throw",
+   "name": "Vital Throw",
+   "description": "New skill: a sure-footed throw (Power 70) that sends the foe 1 hex back.",
+   "grantsMove": "machop-vital-throw"
+  },
+  "machop-bulk-up": {
+   "id": "machop-bulk-up",
+   "name": "Bulk Up",
+   "description": "New skill: flexes its muscles, becoming Focused and Fortified for 2 turns.",
+   "grantsMove": "machop-bulk-up"
+  },
+  "machop-submission-hold": {
+   "id": "machop-submission-hold",
+   "name": "Submission Hold",
+   "description": "Foes it engages take 15% more damage from its allies.",
+   "mods": {
+    "pinDamage": 1.15
+   }
+  },
+  "machop-brawler": {
+   "id": "machop-brawler",
+   "name": "Brawler",
+   "description": "Deals 20% more damage while 2+ foes stand next to it.",
+   "mods": {
+    "surroundedDamage": 1.2
+   }
+  },
+  "machop-submission": {
+   "id": "machop-submission",
+   "name": "Submission",
+   "description": "New skill: a reckless body slam (Power 95).",
+   "grantsMove": "machop-submission"
+  },
+  "machop-brick-break": {
+   "id": "machop-brick-break",
+   "name": "Brick Break",
+   "description": "New skill: a guard-breaking karate chop (Power 80); the foe is Exposed for 1 turn.",
+   "grantsMove": "machop-brick-break"
+  },
+  "machop-no-guard": {
+   "id": "machop-no-guard",
+   "name": "No Guard",
+   "description": "Deals 15% more damage but takes 10% more damage.",
+   "mods": {
+    "damageDealt": 1.15,
+    "damageTaken": 1.1
+   }
+  },
+  "machop-iron-grip": {
+   "id": "machop-iron-grip",
+   "name": "Iron Grip",
+   "description": "Foes engaged with it always draw its free strike when stepping away.",
+   "mods": {
+    "noEscape": true
+   }
+  },
+  "machop-superpower": {
+   "id": "machop-superpower",
+   "name": "Superpower",
+   "description": "New skill: an attack of tremendous strength (Power 100).",
+   "grantsMove": "machop-superpower"
+  },
+  "machop-hammer-arm": {
+   "id": "machop-hammer-arm",
+   "name": "Hammer Arm",
+   "description": "New skill: swings a heavy fist (Power 90), knocking the foe back 1 hex.",
+   "grantsMove": "machop-hammer-arm"
+  },
+  "machop-moxie-drive": {
+   "id": "machop-moxie-drive",
+   "name": "Winning Streak",
+   "description": "Each knockout raises Attack by 1 for the battle (max +3).",
+   "mods": {
+    "koAttackBoost": 1
+   }
+  },
+  "machop-stalwart": {
+   "id": "machop-stalwart",
+   "name": "Stalwart",
+   "description": "Heals 4% of max HP each turn while engaged with a foe.",
+   "mods": {
+    "healWhileEngaged": 0.04
+   }
+  },
+  "machop-thousand-punches": {
+   "id": "machop-thousand-punches",
+   "name": "Four-Armed Barrage",
+   "description": "Capstone. A knockout lets it attack again; deals 15% more to adjacent foes.",
+   "mods": {
+    "koRefreshBasic": true,
+    "closeDamage": 1.15
+   }
+  },
+  "machop-unbreakable": {
+   "id": "machop-unbreakable",
+   "name": "Unbreakable",
+   "description": "Capstone. Takes 15% less damage and heals 5% of max HP each turn.",
+   "mods": {
+    "damageTaken": 0.85,
+    "healPerTurn": 0.05
+   }
+  }
+ }
+}

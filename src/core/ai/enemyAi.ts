@@ -269,6 +269,10 @@ function debuffValue(content: BattleContent, state: BattleState, self: BattleUni
   }
   if (def.damageDealt !== undefined && def.damageDealt < 1) value += hit * (1 - def.damageDealt) * duration;
   if (def.noAction) value += hit * duration;
+  // Sealed skills: worth the gap between its best skill and its basic attack.
+  if (def.noSkills) value += hit * 0.5 * duration;
+  // Confused: its next attack may land on its own side.
+  if (def.misdirects) value += hit * 0.6;
   if (def.noMove) {
     // Rooted: worth most when it cannot already reach anyone from where it stands.
     const reach = Math.max(0, ...target.moves.map((m) => (content.moves[m]!.power > 0 ? content.moves[m]!.range.max : 0)));

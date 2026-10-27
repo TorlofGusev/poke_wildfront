@@ -1,0 +1,73 @@
+{
+ "talents": {
+  "caterpie-bug-buzz": {
+   "description": "Bond képesség: szárnyai sebző zúgása egy max. 3 hexnyi ellenfélre (Erő 95, Sp. Atk)."
+  },
+  "caterpie-harden": {
+   "description": "Bond képesség: megkeményíti a burkát; 1 körre Protected állapotba kerül."
+  },
+  "caterpie-quiver-dance": {
+   "description": "Bond képesség: könnyed, misztikus tánc; 2 körre Hasted, 1 körre Focused állapotba kerül."
+  },
+  "caterpie-compound-eyes": {
+   "description": "Éles szeme pontosan céloz: 15%-kal többet sebez a legalább 2 hexnyi ellenfelekre."
+  },
+  "caterpie-hungry-caterpillar": {
+   "description": "Folyton eszik: minden köre elején max HP-ja 4%-át gyógyítja."
+  },
+  "caterpie-sleep-powder": {
+   "description": "Új képesség: altatópor, amely egy max. 2 hexnyire lévő ellenfelet 2 körre elaltat (Sleep)."
+  },
+  "caterpie-psybeam": {
+   "description": "Új képesség: különös sugár egy max. 2 hexnyi ellenfélre (Erő 60)."
+  },
+  "caterpie-poison-scales": {
+   "description": "Pikkelyei elnyelik az ártó hatásokat: nem lehet Poisoned, Burned vagy Paralyzed."
+  },
+  "caterpie-silk-cocoon": {
+   "description": "Teljes HP-n 20%-kal kevesebb sebzést kap."
+  },
+  "caterpie-air-slash": {
+   "description": "Új képesség: légpenge egy max. 2 hexnyi ellenfélre (Erő 70)."
+  },
+  "caterpie-poison-powder": {
+   "description": "Új képesség: mérgező por egy 1 hex körre max 1 hexnyire (Erő 40), 2 körre Poison."
+  },
+  "caterpie-fluttering-wings": {
+   "description": "Elröppen: szabad csapás nélkül lép el a lekötött ellenfelek mellől."
+  },
+  "caterpie-silver-scales": {
+   "description": "Bug támadásai 15%-kal többet sebeznek."
+  },
+  "caterpie-hurricane": {
+   "description": "Új képesség: süvítő vihar egy max. 2 hexnyi ellenfélre (Erő 90), amely 1 hexnyit lök rajta."
+  },
+  "caterpie-gentle-flutter": {
+   "description": "Repülés közben nehéz eltalálni: 10%-kal kevesebb sebzést kap."
+  },
+  "caterpie-dust-cloud": {
+   "description": "Státuszai 1 körrel tovább tartanak; +15% sebzés a társ által rárakott státuszú ellenfélre."
+  },
+  "caterpie-silver-wind": {
+   "description": "Új képesség: ezüstös pikkelyfelhő egy max. 1 hexnyi, 1 hex területen (Erő 90)."
+  },
+  "caterpie-u-turn": {
+   "description": "Új képesség: eltalál egy ellenfelet (Erő 70), majd kiszabadul a lekötésből."
+  },
+  "caterpie-metamorphosis": {
+   "description": "2 mozgást visszanyer, ha a saját körében kiüt egy ellenfelet."
+  },
+  "caterpie-pollen-trail": {
+   "description": "15%-kal többet sebez az állapot alatt álló ellenfelekre."
+  },
+  "caterpie-vivid-monarch": {
+   "description": "Capstone. Flying és Psychic támadásai 15%-kal többet sebeznek; nem sebző képességei 1 körrel gyorsabban töltődnek."
+  },
+  "caterpie-dream-dust": {
+   "description": "Mesterfok. 25%-kal többet sebez az alvó, megmérgezett vagy bénult ellenfelekre."
+  },
+  "caterpie-supersonic": {
+   "description": "Új képesség: furcsa hanghullámok egy max. 2 hexnyi ellenfélre: 2 körig Zavarodott."
+  }
+ }
+}

@@ -40,6 +40,7 @@ export function describeMove(content: BattleContent, move: MoveDef): string {
         lines.push(e.when === "combo" ? t("{x} if it lands a combo (hits a foe an ally set up)", { x }) : t("{x} if it knocks a foe out", { x }));
         break;
       }
+      case "cleanse": lines.push(t("Removes the statuses foes put on the target")); break;
       case "disengage": lines.push(t("Ends the user's engagement {x}", { x: tag("good", t("without a free attack")) })); break;
       case "status": {
         const st = content.statuses[e.status];

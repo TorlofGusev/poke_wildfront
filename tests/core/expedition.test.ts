@@ -19,6 +19,10 @@ import {
   type EncounterTable,
   pickupKind,
   rollLoot,
+  stepGroups,
+  LEASH,
+  type WorldDef,
+  type WorldState,
 } from "../../src/core/expedition";
 import { createBattle } from "../../src/core/battle";
 import { key } from "../../src/core/grid";
@@ -229,5 +233,39 @@ describe("loot and pickups", () => {
     expect(pickupKind({ ...at, balls: { "poke-ball": 1 }, items: { potion: 1 } }, kind)).toBe("ball");
     expect(pickupKind({ ...at, items: { potion: 1, berry: 1 } }, kind)).toBe("heal");
     expect(pickupKind({ ...at, items: { berry: 2 } }, kind)).toBe("food");
+  });
+});
+
+describe("moving wild groups", () => {
+  // A 12×3 strip of forest; the party walks along the middle row.
+  const def = { ...WORLD, rows: ['""""""""""""', '""""""""""""', '""""""""""""'], exits: [], spawnZones: [] } as unknown as WorldDef;
+  const base: WorldState = { ...newWorld(WORLD_CONTENT, WORLD, 1), mapId: def.id, pickups: [] };
+  const group = (x: number) => ({ id: "g", pos: { x, y: 1 }, home: { x, y: 1 }, biome: "forest", species: ["pidgey"], levels: [3] });
+
+  it("a group that sees the party stops to notice it, then closes in (slower than walking) and catches it", () => {
+    let world: WorldState = { ...base, pos: { x: 0, y: 1 }, encounters: [group(3)] };
+    let r = stepGroups(WORLD_CONTENT, def, world);
+    // First it only notices the party.
+    expect(r.world.encounters[0]).toMatchObject({ pos: { x: 3, y: 1 }, chasing: true });
+    let steps = 0;
+    while (!r.caught && steps < 20) {
+      const before = r.world.encounters[0]!.pos.x;
+      r = stepGroups(WORLD_CONTENT, def, r.world);
+      expect(r.world.encounters[0]!.pos.x).toBeLessThanOrEqual(before);
+      steps++;
+    }
+    expect(r.caught?.id).toBe("g");
+    expect(steps).toBeGreaterThanOrEqual(2);
+  });
+
+  it("idle groups only wander near home, never onto the party, and the same state moves the same way", () => {
+    let world: WorldState = { ...base, pos: { x: 11, y: 1 }, encounters: [group(0)] };
+    for (let i = 0; i < 60; i++) {
+      const r = stepGroups(WORLD_CONTENT, def, world);
+      expect(r.world.encounters[0]!.chasing).toBe(false);
+      expect(Math.abs(r.world.encounters[0]!.pos.x - 0) + Math.abs(r.world.encounters[0]!.pos.y - 1)).toBeLessThanOrEqual(LEASH);
+      expect(stepGroups(WORLD_CONTENT, def, world)).toEqual(r);
+      world = r.world;
+    }
   });
 });

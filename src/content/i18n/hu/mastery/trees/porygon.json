@@ -1,0 +1,73 @@
+{
+ "talents": {
+  "porygon-techno-blast": {
+   "description": "Bond képesség: nyers adatnyaláb egy max. 3 hexnyi ellenfélre (Erő 100)."
+  },
+  "porygon-conversion-2": {
+   "description": "Bond képesség: átírja a típusát, hogy ellenálljon: 2 körre Protected."
+  },
+  "porygon-lock-on": {
+   "description": "Új képesség: célba vesz egy max. 2 hexnyi ellenfelet: 2 körre Marked."
+  },
+  "porygon-firewall": {
+   "description": "10%-kal kevesebb sebzést kap."
+  },
+  "porygon-analytic": {
+   "description": "15%-kal többet sebez a szövetségeseivel harcban álló ellenfelekre."
+  },
+  "porygon-glare": {
+   "description": "Új képesség: fenyegető tekintet, amely 1 körre megbénít egy max. 2 hexnyi ellenfelet."
+  },
+  "porygon-error-correction": {
+   "description": "Köre elején lerázza az ellenfelek által rárakott állapotokat."
+  },
+  "porygon-targeting-matrix": {
+   "description": "20%-kal többet sebez a legalább 2 hexre lévő ellenfelekre."
+  },
+  "porygon-swift": {
+   "description": "Új képesség: csillag alakú sugarak egy max. 2 hexnyi ellenfélre (Erő 65); 1 körre lassít."
+  },
+  "porygon-conversion": {
+   "description": "Új képesség: típusát az ellenfelekhez igazítja: 2 körig Megerősített."
+  },
+  "porygon-virtual-body": {
+   "description": "Teljes HP-n 20%-kal kevesebb sebzést kap."
+  },
+  "porygon-adaptive-code": {
+   "description": "15%-kal többet sebez az állapottal sújtott ellenfelekre."
+  },
+  "porygon-hyper-voice": {
+   "description": "Új képesség: torz sikoly egy max. 2 hexnyi ellenfélre (Erő 85); 1 körre Exposed lesz."
+  },
+  "porygon-sharpen": {
+   "description": "Új képesség: kiélezi éleit; 2 körre Focused állapotba kerül."
+  },
+  "porygon-backup-copy": {
+   "description": "Csatánként egyszer 1 HP-val túlél egy kiütő csapást."
+  },
+  "porygon-cyberspace-link": {
+   "description": "A csapat 1 Bondot kap, amikor kombót ér el."
+  },
+  "porygon-hyper-beam": {
+   "description": "Új képesség: pusztító sugár egy 2 hexen belüli ellenfélre (Erő 100)."
+  },
+  "porygon-boomburst": {
+   "description": "Új képesség: fülsiketítő robbanás, amely az 1 hexen belüli ellenfeleket éri (Erő 90)."
+  },
+  "porygon-overclock": {
+   "description": "Ha a saját körében kiüt egy ellenfelet, 2 mozgáspontot visszakap."
+  },
+  "porygon-upgrade": {
+   "description": "Mesterfokozat. Frissített kód: távolsági támadásai 1 hexszel messzebb érnek; állapotai 1 körrel tovább tartanak."
+  },
+  "porygon-glitch-engine": {
+   "description": "Csúcstudás. Kiütéskor képességei újratöltődnek; 10%-kal többet sebez."
+  },
+  "porygon-recover": {
+   "description": "Bond képesség: helyreállítja sérült adatait, és 40 HP-t gyógyul."
+  },
+  "porygon-download": {
+   "description": "Elemzi a friss ellenfeleket: 20%-kal többet sebez a teljes HP-n lévőkre."
+  }
+ }
+}

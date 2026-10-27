@@ -1,0 +1,498 @@
+{
+ "line": [
+  "caterpie",
+  "metapod",
+  "butterfree"
+ ],
+ "canonLevelUp": [
+  "caterpie-sleep-powder",
+  "caterpie-psybeam",
+  "caterpie-poison-powder"
+ ],
+ "focus": [
+  {
+   "stat": "spAttack",
+   "skill": "caterpie-bug-buzz"
+  },
+  {
+   "stat": "defense",
+   "skill": "caterpie-harden"
+  },
+  {
+   "stat": "speed",
+   "skill": "caterpie-quiver-dance"
+  }
+ ],
+ "rows": {
+  "4": [
+   "caterpie-compound-eyes",
+   "caterpie-hungry-caterpillar"
+  ],
+  "6": [
+   "caterpie-sleep-powder",
+   "caterpie-psybeam"
+  ],
+  "9": [
+   "caterpie-poison-scales",
+   "caterpie-silk-cocoon"
+  ],
+  "12": [
+   "caterpie-air-slash",
+   "caterpie-poison-powder"
+  ],
+  "15": [
+   "caterpie-fluttering-wings",
+   "caterpie-silver-scales"
+  ],
+  "18": [
+   "caterpie-hurricane",
+   "caterpie-supersonic"
+  ],
+  "21": [
+   "caterpie-gentle-flutter",
+   "caterpie-dust-cloud"
+  ],
+  "24": [
+   "caterpie-silver-wind",
+   "caterpie-u-turn"
+  ],
+  "27": [
+   "caterpie-metamorphosis",
+   "caterpie-pollen-trail"
+  ],
+  "30": [
+   "caterpie-vivid-monarch",
+   "caterpie-dream-dust"
+  ]
+ },
+ "moves": {
+  "caterpie-bug-buzz": {
+   "id": "caterpie-bug-buzz",
+   "name": "Bug Buzz",
+   "type": "bug",
+   "kind": "bond",
+   "category": "special",
+   "bondCost": 2,
+   "power": 95,
+   "range": {
+    "min": 1,
+    "max": 3
+   },
+   "requiresLineOfSight": true,
+   "shape": {
+    "kind": "single"
+   },
+   "affects": "enemies"
+  },
+  "caterpie-harden": {
+   "id": "caterpie-harden",
+   "name": "Harden",
+   "type": "normal",
+   "kind": "bond",
+   "bondCost": 1,
+   "power": 0,
+   "range": {
+    "min": 0,
+    "max": 0
+   },
+   "requiresLineOfSight": false,
+   "shape": {
+    "kind": "single"
+   },
+   "affects": "allies",
+   "effects": [
+    {
+     "kind": "status",
+     "status": "protected",
+     "duration": 1
+    }
+   ]
+  },
+  "caterpie-quiver-dance": {
+   "id": "caterpie-quiver-dance",
+   "name": "Quiver Dance",
+   "type": "bug",
+   "kind": "bond",
+   "bondCost": 2,
+   "power": 0,
+   "range": {
+    "min": 0,
+    "max": 0
+   },
+   "requiresLineOfSight": false,
+   "shape": {
+    "kind": "single"
+   },
+   "affects": "allies",
+   "effects": [
+    {
+     "kind": "status",
+     "status": "hasted",
+     "duration": 2
+    },
+    {
+     "kind": "status",
+     "status": "focused",
+     "duration": 1
+    }
+   ]
+  },
+  "caterpie-sleep-powder": {
+   "id": "caterpie-sleep-powder",
+   "name": "Sleep Powder",
+   "type": "grass",
+   "kind": "special",
+   "category": "special",
+   "cooldown": 4,
+   "power": 0,
+   "range": {
+    "min": 1,
+    "max": 2
+   },
+   "requiresLineOfSight": true,
+   "shape": {
+    "kind": "single"
+   },
+   "affects": "enemies",
+   "effects": [
+    {
+     "kind": "status",
+     "status": "sleep",
+     "duration": 2
+    }
+   ]
+  },
+  "caterpie-psybeam": {
+   "id": "caterpie-psybeam",
+   "name": "Psybeam",
+   "type": "psychic",
+   "kind": "special",
+   "category": "special",
+   "cooldown": 2,
+   "power": 60,
+   "range": {
+    "min": 1,
+    "max": 2
+   },
+   "requiresLineOfSight": true,
+   "shape": {
+    "kind": "single"
+   },
+   "affects": "enemies"
+  },
+  "caterpie-air-slash": {
+   "id": "caterpie-air-slash",
+   "name": "Air Slash",
+   "type": "flying",
+   "kind": "special",
+   "category": "special",
+   "cooldown": 3,
+   "power": 70,
+   "range": {
+    "min": 1,
+    "max": 2
+   },
+   "requiresLineOfSight": true,
+   "shape": {
+    "kind": "single"
+   },
+   "affects": "enemies"
+  },
+  "caterpie-poison-powder": {
+   "id": "caterpie-poison-powder",
+   "name": "Poison Powder",
+   "type": "poison",
+   "kind": "special",
+   "category": "special",
+   "cooldown": 3,
+   "power": 40,
+   "range": {
+    "min": 1,
+    "max": 1
+   },
+   "requiresLineOfSight": true,
+   "shape": {
+    "kind": "burst",
+    "radius": 1
+   },
+   "affects": "enemies",
+   "effects": [
+    {
+     "kind": "status",
+     "status": "poison",
+     "duration": 2
+    }
+   ]
+  },
+  "caterpie-hurricane": {
+   "id": "caterpie-hurricane",
+   "name": "Hurricane",
+   "type": "flying",
+   "kind": "special",
+   "category": "special",
+   "cooldown": 4,
+   "power": 90,
+   "range": {
+    "min": 1,
+    "max": 2
+   },
+   "requiresLineOfSight": true,
+   "shape": {
+    "kind": "single"
+   },
+   "affects": "enemies",
+   "effects": [
+    {
+     "kind": "push",
+     "distance": 1
+    }
+   ]
+  },
+  "caterpie-silver-wind": {
+   "id": "caterpie-silver-wind",
+   "name": "Silver Wind",
+   "type": "bug",
+   "kind": "special",
+   "category": "special",
+   "cooldown": 5,
+   "power": 90,
+   "range": {
+    "min": 1,
+    "max": 1
+   },
+   "requiresLineOfSight": true,
+   "shape": {
+    "kind": "burst",
+    "radius": 1
+   },
+   "affects": "enemies"
+  },
+  "caterpie-u-turn": {
+   "id": "caterpie-u-turn",
+   "name": "U-turn",
+   "type": "bug",
+   "kind": "special",
+   "category": "physical",
+   "cooldown": 3,
+   "power": 70,
+   "range": {
+    "min": 1,
+    "max": 1
+   },
+   "requiresLineOfSight": false,
+   "shape": {
+    "kind": "single"
+   },
+   "affects": "enemies",
+   "effects": [
+    {
+     "kind": "disengage"
+    }
+   ]
+  },
+  "caterpie-supersonic": {
+   "id": "caterpie-supersonic",
+   "name": "Supersonic",
+   "type": "normal",
+   "kind": "special",
+   "category": "special",
+   "cooldown": 3,
+   "power": 0,
+   "range": {
+    "min": 1,
+    "max": 2
+   },
+   "requiresLineOfSight": true,
+   "shape": {
+    "kind": "single"
+   },
+   "affects": "enemies",
+   "effects": [
+    {
+     "kind": "status",
+     "status": "confused",
+     "duration": 2
+    }
+   ]
+  }
+ },
+ "talents": {
+  "caterpie-bug-buzz": {
+   "id": "caterpie-bug-buzz",
+   "name": "Bug Buzz",
+   "description": "Bond skill: a damaging buzz of its wings at a foe up to 3 hexes away (Power 95, Sp. Atk).",
+   "grantsMove": "caterpie-bug-buzz"
+  },
+  "caterpie-harden": {
+   "id": "caterpie-harden",
+   "name": "Harden",
+   "description": "Bond skill: hardens its shell; it is Protected for 1 turn.",
+   "grantsMove": "caterpie-harden"
+  },
+  "caterpie-quiver-dance": {
+   "id": "caterpie-quiver-dance",
+   "name": "Quiver Dance",
+   "description": "Bond skill: a light, mystic dance; it is Hasted for 2 turns and Focused for 1.",
+   "grantsMove": "caterpie-quiver-dance"
+  },
+  "caterpie-compound-eyes": {
+   "id": "caterpie-compound-eyes",
+   "name": "Compound Eyes",
+   "description": "Its keen eyes aim true: deals 15% more damage to foes 2+ hexes away.",
+   "mods": {
+    "farDamage": 1.15
+   }
+  },
+  "caterpie-hungry-caterpillar": {
+   "id": "caterpie-hungry-caterpillar",
+   "name": "Hungry Caterpillar",
+   "description": "Never stops eating: heals 4% of max HP at the start of each turn.",
+   "mods": {
+    "healPerTurn": 0.04
+   }
+  },
+  "caterpie-sleep-powder": {
+   "id": "caterpie-sleep-powder",
+   "name": "Sleep Powder",
+   "description": "New skill: a powder that puts a foe up to 2 hexes away to Sleep for 2 turns.",
+   "grantsMove": "caterpie-sleep-powder"
+  },
+  "caterpie-psybeam": {
+   "id": "caterpie-psybeam",
+   "name": "Psybeam",
+   "description": "New skill: a peculiar ray at a foe up to 2 hexes away (Power 60).",
+   "grantsMove": "caterpie-psybeam"
+  },
+  "caterpie-poison-scales": {
+   "id": "caterpie-poison-scales",
+   "name": "Shield Dust",
+   "description": "Its scales block harmful effects: cannot be Poisoned, Burned or Paralyzed.",
+   "mods": {
+    "statusImmune": [
+     "poison",
+     "burn",
+     "paralysis"
+    ]
+   }
+  },
+  "caterpie-silk-cocoon": {
+   "id": "caterpie-silk-cocoon",
+   "name": "Silk Cocoon",
+   "description": "Takes 20% less damage while at full HP.",
+   "mods": {
+    "fullHpDamageTaken": 0.8
+   }
+  },
+  "caterpie-air-slash": {
+   "id": "caterpie-air-slash",
+   "name": "Air Slash",
+   "description": "New skill: a blade of air at a foe up to 2 hexes away (Power 70).",
+   "grantsMove": "caterpie-air-slash"
+  },
+  "caterpie-poison-powder": {
+   "id": "caterpie-poison-powder",
+   "name": "Poison Powder",
+   "description": "New skill: toxic powder on a 1-hex area up to 1 hex away (Power 40), Poisoning for 2 turns.",
+   "grantsMove": "caterpie-poison-powder"
+  },
+  "caterpie-fluttering-wings": {
+   "id": "caterpie-fluttering-wings",
+   "name": "Fluttering Wings",
+   "description": "Flutters off: steps away from engaged foes without drawing free strikes.",
+   "mods": {
+    "disengage": true
+   }
+  },
+  "caterpie-silver-scales": {
+   "id": "caterpie-silver-scales",
+   "name": "Silver Scales",
+   "description": "Its Bug moves deal 15% more damage.",
+   "mods": {
+    "typeDamage": {
+     "bug": 1.15
+    }
+   }
+  },
+  "caterpie-hurricane": {
+   "id": "caterpie-hurricane",
+   "name": "Hurricane",
+   "description": "New skill: a howling gale at a foe up to 2 hexes away (Power 90) that pushes it 1 hex.",
+   "grantsMove": "caterpie-hurricane"
+  },
+  "caterpie-gentle-flutter": {
+   "id": "caterpie-gentle-flutter",
+   "name": "Gentle Flutter",
+   "description": "Hard to pin down in flight: takes 10% less damage.",
+   "mods": {
+    "damageTaken": 0.9
+   }
+  },
+  "caterpie-dust-cloud": {
+   "id": "caterpie-dust-cloud",
+   "name": "Dust Cloud",
+   "description": "Statuses it inflicts last 1 turn longer; +15% damage to foes with a status an ally applied.",
+   "mods": {
+    "statusDurationBonus": 1,
+    "vsSetupDamage": 1.15
+   }
+  },
+  "caterpie-silver-wind": {
+   "id": "caterpie-silver-wind",
+   "name": "Silver Wind",
+   "description": "New skill: a gust of silvery scales on a 1-hex area up to 1 hex away (Power 90).",
+   "grantsMove": "caterpie-silver-wind"
+  },
+  "caterpie-u-turn": {
+   "id": "caterpie-u-turn",
+   "name": "U-turn",
+   "description": "New skill: hits a foe (Power 70), then darts free of engagement.",
+   "grantsMove": "caterpie-u-turn"
+  },
+  "caterpie-metamorphosis": {
+   "id": "caterpie-metamorphosis",
+   "name": "Metamorphosis",
+   "description": "Regains 2 movement when it knocks out a foe on its turn.",
+   "mods": {
+    "koMove": 2
+   }
+  },
+  "caterpie-pollen-trail": {
+   "id": "caterpie-pollen-trail",
+   "name": "Pollen Trail",
+   "description": "Deals 15% more damage to foes with any status.",
+   "mods": {
+    "vsStatusDamage": 1.15
+   }
+  },
+  "caterpie-vivid-monarch": {
+   "id": "caterpie-vivid-monarch",
+   "name": "Vivid Monarch",
+   "description": "Capstone. Its Flying and Psychic moves deal 15% more damage; its non-damaging skills recharge 1 turn faster.",
+   "mods": {
+    "typeDamage": {
+     "flying": 1.15,
+     "psychic": 1.15
+    },
+    "statusCooldownReduction": 1
+   }
+  },
+  "caterpie-dream-dust": {
+   "id": "caterpie-dream-dust",
+   "name": "Dream Dust",
+   "description": "Capstone. Deals 25% more damage to Sleeping, Poisoned or Paralysed foes.",
+   "mods": {
+    "vsStatusIdDamage": {
+     "sleep": 1.25,
+     "poison": 1.25,
+     "paralysis": 1.25
+    }
+   }
+  },
+  "caterpie-supersonic": {
+   "id": "caterpie-supersonic",
+   "name": "Supersonic",
+   "description": "New skill: odd sound waves at a foe up to 2 hexes away: Confused for 2 turns.",
+   "grantsMove": "caterpie-supersonic"
+  }
+ }
+}

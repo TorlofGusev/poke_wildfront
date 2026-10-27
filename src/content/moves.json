@@ -87,7 +87,7 @@
   "power": 35,
   "range": {
    "min": 2,
-   "max": 3
+   "max": 2
   },
   "requiresLineOfSight": true,
   "shape": {
@@ -103,7 +103,7 @@
   "power": 35,
   "range": {
    "min": 1,
-   "max": 3
+   "max": 2
   },
   "requiresLineOfSight": true,
   "shape": {
@@ -119,7 +119,7 @@
   "power": 35,
   "range": {
    "min": 1,
-   "max": 3
+   "max": 2
   },
   "requiresLineOfSight": true,
   "shape": {
@@ -181,7 +181,7 @@
   "power": 0,
   "range": {
    "min": 1,
-   "max": 3
+   "max": 1
   },
   "requiresLineOfSight": true,
   "shape": {
@@ -206,12 +206,12 @@
   "power": 45,
   "range": {
    "min": 1,
-   "max": 3
+   "max": 2
   },
   "requiresLineOfSight": false,
   "shape": {
    "kind": "line",
-   "length": 3
+   "length": 2
   },
   "affects": "enemies"
  },
@@ -223,8 +223,8 @@
   "cooldown": 3,
   "power": 25,
   "range": {
-   "min": 2,
-   "max": 3
+   "min": 1,
+   "max": 1
   },
   "requiresLineOfSight": true,
   "shape": {
@@ -249,7 +249,7 @@
   "power": 0,
   "range": {
    "min": 1,
-   "max": 3
+   "max": 2
   },
   "requiresLineOfSight": true,
   "shape": {
@@ -296,7 +296,7 @@
   "power": 45,
   "range": {
    "min": 2,
-   "max": 3
+   "max": 2
   },
   "requiresLineOfSight": true,
   "shape": {
@@ -353,7 +353,7 @@
   "power": 0,
   "range": {
    "min": 1,
-   "max": 3
+   "max": 2
   },
   "requiresLineOfSight": true,
   "shape": {
@@ -363,7 +363,7 @@
   "effects": [
    {
     "kind": "status",
-    "status": "slow",
+    "status": "confused",
     "duration": 2
    }
   ]
@@ -399,12 +399,12 @@
   "power": 70,
   "range": {
    "min": 1,
-   "max": 4
+   "max": 3
   },
   "requiresLineOfSight": false,
   "shape": {
    "kind": "line",
-   "length": 4
+   "length": 3
   },
   "affects": "enemies",
   "bondCost": 3
@@ -440,7 +440,7 @@
   "power": 60,
   "range": {
    "min": 2,
-   "max": 4
+   "max": 2
   },
   "requiresLineOfSight": true,
   "shape": {
@@ -514,7 +514,7 @@
   "power": 0,
   "range": {
    "min": 1,
-   "max": 3
+   "max": 2
   },
   "requiresLineOfSight": true,
   "shape": {
@@ -554,12 +554,12 @@
   "power": 45,
   "range": {
    "min": 1,
-   "max": 3
+   "max": 2
   },
   "requiresLineOfSight": false,
   "shape": {
    "kind": "line",
-   "length": 3
+   "length": 2
   },
   "affects": "enemies",
   "cooldown": 2
@@ -572,7 +572,7 @@
   "power": 0,
   "range": {
    "min": 1,
-   "max": 3
+   "max": 1
   },
   "requiresLineOfSight": true,
   "shape": {
@@ -670,7 +670,7 @@
   "power": 40,
   "range": {
    "min": 1,
-   "max": 3
+   "max": 2
   },
   "requiresLineOfSight": true,
   "shape": {
@@ -711,7 +711,7 @@
   "power": 50,
   "range": {
    "min": 1,
-   "max": 3
+   "max": 2
   },
   "requiresLineOfSight": false,
   "shape": {
@@ -744,8 +744,8 @@
   "kind": "special",
   "power": 45,
   "range": {
-   "min": 2,
-   "max": 3
+   "min": 1,
+   "max": 1
   },
   "requiresLineOfSight": true,
   "shape": {
@@ -796,7 +796,7 @@
   "power": 55,
   "range": {
    "min": 1,
-   "max": 3
+   "max": 2
   },
   "requiresLineOfSight": true,
   "shape": {
@@ -813,7 +813,7 @@
   "power": 50,
   "range": {
    "min": 1,
-   "max": 3
+   "max": 2
   },
   "requiresLineOfSight": true,
   "shape": {
@@ -837,7 +837,7 @@
   "power": 70,
   "range": {
    "min": 2,
-   "max": 4
+   "max": 2
   },
   "requiresLineOfSight": true,
   "shape": {
@@ -969,7 +969,7 @@
   "power": 0,
   "range": {
    "min": 1,
-   "max": 3
+   "max": 1
   },
   "requiresLineOfSight": true,
   "shape": {
@@ -994,7 +994,7 @@
   "power": 0,
   "range": {
    "min": 1,
-   "max": 3
+   "max": 2
   },
   "requiresLineOfSight": true,
   "shape": {
@@ -1059,7 +1059,7 @@
   "power": 45,
   "range": {
    "min": 2,
-   "max": 3
+   "max": 2
   },
   "requiresLineOfSight": false,
   "shape": {
@@ -1100,7 +1100,7 @@
   "power": 35,
   "range": {
    "min": 1,
-   "max": 3
+   "max": 1
   },
   "requiresLineOfSight": true,
   "shape": {
@@ -1123,7 +1123,7 @@
   "requiresLineOfSight": true,
   "shape": {
    "kind": "line",
-   "length": 3
+   "length": 2
   },
   "affects": "enemies"
  },
@@ -1176,7 +1176,7 @@
   "requiresLineOfSight": true,
   "shape": {
    "kind": "line",
-   "length": 4
+   "length": 2
   },
   "affects": "enemies"
  },
@@ -1206,7 +1206,7 @@
   "power": 0,
   "range": {
    "min": 1,
-   "max": 3
+   "max": 2
   },
   "requiresLineOfSight": true,
   "shape": {
@@ -1269,7 +1269,7 @@
   "type": "psychic",
   "kind": "special",
   "cooldown": 3,
-  "power": 55,
+  "power": 45,
   "range": {
    "min": 1,
    "max": 1
@@ -1277,9 +1277,16 @@
   "requiresLineOfSight": true,
   "shape": {
    "kind": "line",
-   "length": 3
+   "length": 2
   },
-  "affects": "enemies"
+  "affects": "enemies",
+  "effects": [
+   {
+    "kind": "status",
+    "status": "confused",
+    "duration": 2
+   }
+  ]
  },
  "pin-missile": {
   "id": "pin-missile",
@@ -1290,7 +1297,7 @@
   "power": 45,
   "range": {
    "min": 1,
-   "max": 3
+   "max": 2
   },
   "requiresLineOfSight": true,
   "shape": {
@@ -1307,7 +1314,7 @@
   "power": 55,
   "range": {
    "min": 1,
-   "max": 3
+   "max": 2
   },
   "requiresLineOfSight": true,
   "shape": {
@@ -1324,7 +1331,7 @@
   "power": 65,
   "range": {
    "min": 1,
-   "max": 3
+   "max": 2
   },
   "requiresLineOfSight": true,
   "shape": {
@@ -1341,7 +1348,7 @@
   "power": 60,
   "range": {
    "min": 1,
-   "max": 3
+   "max": 2
   },
   "requiresLineOfSight": true,
   "shape": {
@@ -1440,7 +1447,7 @@
   "power": 0,
   "range": {
    "min": 1,
-   "max": 3
+   "max": 2
   },
   "requiresLineOfSight": true,
   "shape": {
@@ -1527,7 +1534,7 @@
   "power": 30,
   "range": {
    "min": 1,
-   "max": 3
+   "max": 2
   },
   "requiresLineOfSight": true,
   "shape": {
@@ -1560,7 +1567,7 @@
   "power": 45,
   "range": {
    "min": 1,
-   "max": 3
+   "max": 2
   },
   "requiresLineOfSight": true,
   "shape": {
@@ -1601,7 +1608,7 @@
   "power": 0,
   "range": {
    "min": 1,
-   "max": 3
+   "max": 2
   },
   "requiresLineOfSight": true,
   "shape": {
@@ -1672,7 +1679,7 @@
   "power": 70,
   "range": {
    "min": 1,
-   "max": 3
+   "max": 2
   },
   "requiresLineOfSight": true,
   "shape": {
@@ -1705,12 +1712,12 @@
   "power": 90,
   "range": {
    "min": 1,
-   "max": 4
+   "max": 3
   },
   "requiresLineOfSight": true,
   "shape": {
    "kind": "line",
-   "length": 4
+   "length": 3
   },
   "affects": "enemies",
   "bondCost": 3
@@ -1723,7 +1730,7 @@
   "power": 60,
   "range": {
    "min": 2,
-   "max": 4
+   "max": 2
   },
   "requiresLineOfSight": true,
   "shape": {
@@ -2214,7 +2221,7 @@
   "power": 55,
   "range": {
    "min": 2,
-   "max": 3
+   "max": 2
   },
   "requiresLineOfSight": true,
   "shape": {
@@ -2231,7 +2238,7 @@
   "power": 45,
   "range": {
    "min": 1,
-   "max": 3
+   "max": 2
   },
   "requiresLineOfSight": true,
   "shape": {
@@ -2248,7 +2255,7 @@
   "power": 60,
   "range": {
    "min": 1,
-   "max": 3
+   "max": 2
   },
   "requiresLineOfSight": true,
   "shape": {
@@ -2272,7 +2279,7 @@
   "power": 50,
   "range": {
    "min": 1,
-   "max": 3
+   "max": 2
   },
   "requiresLineOfSight": true,
   "shape": {
@@ -2336,7 +2343,7 @@
   "power": 50,
   "range": {
    "min": 1,
-   "max": 3
+   "max": 2
   },
   "requiresLineOfSight": true,
   "shape": {
@@ -2360,7 +2367,7 @@
   "power": 0,
   "range": {
    "min": 1,
-   "max": 3
+   "max": 1
   },
   "requiresLineOfSight": true,
   "shape": {
@@ -2385,7 +2392,7 @@
   "power": 55,
   "range": {
    "min": 1,
-   "max": 3
+   "max": 2
   },
   "requiresLineOfSight": true,
   "shape": {
@@ -2426,7 +2433,7 @@
   "power": 60,
   "range": {
    "min": 1,
-   "max": 3
+   "max": 2
   },
   "requiresLineOfSight": false,
   "shape": {
@@ -2491,7 +2498,7 @@
   "power": 0,
   "range": {
    "min": 1,
-   "max": 2
+   "max": 1
   },
   "requiresLineOfSight": true,
   "shape": {

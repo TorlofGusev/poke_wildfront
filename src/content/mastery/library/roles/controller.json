@@ -1,0 +1,180 @@
+{
+ "role": "controller",
+ "roleDescription": "Sets up foes for its allies: statuses it inflicts last 1 turn longer; takes 10% less damage.",
+ "roleMods": {
+  "statusDurationBonus": 1,
+  "damageTaken": 0.9
+ },
+ "moves": {
+  "controller-gravity": {
+   "id": "controller-gravity",
+   "name": "Gravity",
+   "type": "normal",
+   "kind": "special",
+   "requiresLineOfSight": true,
+   "shape": {
+    "kind": "burst",
+    "radius": 1
+   },
+   "affects": "enemies",
+   "cooldown": 4,
+   "power": 0,
+   "range": {
+    "min": 1,
+    "max": 1
+   },
+   "effects": [
+    {
+     "kind": "pull",
+     "distance": 1
+    },
+    {
+     "kind": "status",
+     "status": "slow",
+     "duration": 2
+    }
+   ]
+  },
+  "controller-hyper-voice": {
+   "id": "controller-hyper-voice",
+   "name": "Hyper Voice",
+   "type": "normal",
+   "kind": "special",
+   "requiresLineOfSight": true,
+   "shape": {
+    "kind": "burst",
+    "radius": 1
+   },
+   "affects": "enemies",
+   "cooldown": 5,
+   "power": 40,
+   "range": {
+    "min": 1,
+    "max": 1
+   },
+   "effects": [
+    {
+     "kind": "push",
+     "distance": 1
+    },
+    {
+     "kind": "status",
+     "status": "exposed",
+     "duration": 2
+    }
+   ]
+  }
+ },
+ "variants": {
+  "controller-gravity": {
+   "grass": "Grass Whistle",
+   "bug": "Spider Web",
+   "electric": "Electroweb",
+   "water": "Bubble Beam",
+   "ghost": "Mean Look",
+   "poison": "Toxic Spikes",
+   "ice": "Cold Snap",
+   "psychic": "Gravity"
+  },
+  "controller-hyper-voice": {
+   "normal": "Boomburst",
+   "fire": "Fire Spin",
+   "water": "Water Spout",
+   "grass": "Leaf Tornado",
+   "electric": "Thunder Cage",
+   "ice": "Frost Breath",
+   "fighting": "Vacuum Wave",
+   "poison": "Acid",
+   "ground": "Mud Shot",
+   "flying": "Whirlwind",
+   "psychic": "Psywave",
+   "bug": "Silver Wind",
+   "rock": "Ancient Power",
+   "ghost": "Hex",
+   "dragon": "Twister"
+  }
+ },
+ "talents": {
+  "controller-mastermind": {
+   "id": "controller-mastermind",
+   "name": "Mastermind",
+   "description": "Capstone. When a foe with its status faints, adjacent foes catch that status for 1 turn.",
+   "stats": {
+    "defense": 1,
+    "spAttack": 1,
+    "hp": 1,
+    "spDefense": 1
+   },
+   "mods": {
+    "statusSpreadOnKo": true
+   }
+  },
+  "controller-prankster": {
+   "id": "controller-prankster",
+   "name": "Prankster",
+   "description": "Its non-damaging special moves recharge 1 turn faster (minimum 1); +1 Sp. Def.",
+   "mods": {
+    "statusCooldownReduction": 1
+   },
+   "stats": {
+    "spDefense": 1
+   }
+  },
+  "skill-controller-gravity": {
+   "id": "skill-controller-gravity",
+   "name": "Gravity",
+   "description": "New skill: pulls foes in an area 1 hex closer and Slows them for 2 turns.",
+   "grantsMove": "controller-gravity"
+  },
+  "controller-shove": {
+   "id": "controller-shove",
+   "name": "Shove",
+   "description": "Its pushes go 1 hex farther; slamming foes into obstacles deals +6.",
+   "mods": {
+    "pushBonus": 1,
+    "impactBonus": 6
+   }
+  },
+  "controller-safeguard": {
+   "id": "controller-safeguard",
+   "name": "Safeguard",
+   "description": "Immune to all harmful statuses; +1 Sp. Def, +1 HP.",
+   "mods": {
+    "statusImmune": [
+     "poison",
+     "slow",
+     "burn",
+     "paralysis",
+     "freeze",
+     "curse",
+     "exposed",
+     "marked"
+    ]
+   },
+   "stats": {
+    "spDefense": 1,
+    "hp": 1
+   }
+  },
+  "skill-controller-hyper-voice": {
+   "id": "skill-controller-hyper-voice",
+   "name": "Hyper Voice",
+   "description": "New skill: pushes foes in an area 1 hex away and Exposes them for 2 turns (Power 40).",
+   "grantsMove": "controller-hyper-voice"
+  }
+ },
+ "passives": [
+  "controller-prankster",
+  "torment",
+  "momentum",
+  "controller-shove",
+  "controller-safeguard"
+ ],
+ "skills": [
+  "skill-leer",
+  "skill-glare",
+  "skill-controller-gravity",
+  "skill-controller-hyper-voice"
+ ],
+ "capstone": "controller-mastermind"
+}

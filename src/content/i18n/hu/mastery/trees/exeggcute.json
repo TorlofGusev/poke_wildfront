@@ -1,0 +1,73 @@
+{
+ "talents": {
+  "exeggcute-leaf-storm": {
+   "description": "Bond képesség: levélvihar legfeljebb 2 hexnyire (Erő 90, Sp. Atk), 1 hex körzetet talál el."
+  },
+  "exeggcute-wood-hammer": {
+   "description": "Bond képesség: kemény törzsével lesújt egy ellenfélre (Erő 100, Támadás)."
+  },
+  "exeggcute-synthesis": {
+   "description": "Bond képesség: napfényt szív magába, és 45 HP-t gyógyul."
+  },
+  "exeggcute-harvest": {
+   "description": "Minden köre elején max. HP-ja 4%-át gyógyítja."
+  },
+  "exeggcute-shared-minds": {
+   "description": "20%-kal többet sebez azokra, akikre egy társa rakott állapotot."
+  },
+  "exeggcute-barrage": {
+   "description": "Új képesség: tojászáport zúdít egy max. 2 hexnyire lévő ellenfélre (Erő 50)."
+  },
+  "exeggcute-reflect": {
+   "description": "Új képesség: védőfal maga és a szomszédos társak körül, 1 körre Fortified lesznek."
+  },
+  "exeggcute-thick-shells": {
+   "description": "10%-kal kevesebb sebzést szenved."
+  },
+  "exeggcute-deep-roots": {
+   "description": "Grass támadásai a sebzés további 15%-át szívják el HP-ként."
+  },
+  "exeggcute-seed-bomb": {
+   "description": "Új képesség: kemény héjú magot hajít egy legfeljebb 2 hexnyire álló ellenfélre (Erő 70)."
+  },
+  "exeggcute-extrasensory": {
+   "description": "Új képesség: különös erő egy legfeljebb 2 hexnyire álló ellenfélre (Erő 70), 1 körre lelassítja."
+  },
+  "exeggcute-lingering-spores": {
+   "description": "Az általa okozott állapotok 1 körrel tovább tartanak."
+  },
+  "exeggcute-prey-on-sleepers": {
+   "description": "25%-kal többet sebez az alvó ellenfelekre."
+  },
+  "exeggcute-psyshock": {
+   "description": "Új képesség: pszichikus hullám egy legfeljebb 2 hexnyire álló ellenfélre (Erő 85)."
+  },
+  "exeggcute-petal-blizzard": {
+   "description": "Új képesség: szirmok vihara kavarog körülötte (Erő 75), minden szomszédos ellenfelet eltalál."
+  },
+  "exeggcute-towering-reach": {
+   "description": "Távolsági támadásai 1 hexszel messzebbre érnek."
+  },
+  "exeggcute-ripe-fruit": {
+   "description": "Max. HP-ja 15%-át gyógyítja, ha kiüt egy ellenfelet."
+  },
+  "exeggcute-power-whip": {
+   "description": "Új képesség: leveleivel megcsap egy legfeljebb 2 hexnyire álló ellenfelet (Erő 100)."
+  },
+  "exeggcute-energy-ball": {
+   "description": "Új képesség: természeti energiagömb egy legfeljebb 2 hexnyire álló ellenfélre (Erő 90)."
+  },
+  "exeggcute-drowsy-pollen": {
+   "description": "Ha egy általa sújtott ellenfél elájul, a mellette állók elkapják az állapotot."
+  },
+  "exeggcute-rooted-trunk": {
+   "description": "Lekötve minden körben max. HP-ja 5%-át gyógyítja."
+  },
+  "exeggcute-six-minds-one": {
+   "description": "Capstone. Psychic támadásai 20%-kal többet sebeznek; sok feje átlát az útban álló Pokémonok felett."
+  },
+  "exeggcute-walking-grove": {
+   "description": "Csúcsképesség. Fű támadásai 20%-kal többet sebeznek; minden kiütése 1 Bondot ad a csapatnak."
+  }
+ }
+}

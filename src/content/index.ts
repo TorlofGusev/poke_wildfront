@@ -1,13 +1,10 @@
 import { speciesStats, type BaseStats, type BattleContent, type BattleScenario, type SpeciesDef, type TypeDef } from "../core/battle";
 import type { BiomeDef, FatigueRules, WorldContent, WorldDef } from "../core/expedition";
-import type { ItemDef, ProgressionContent, RoleDef, RoleKit, SpeciesKit, TalentDef, TypeKit, TypeTreeDef } from "../core/progression";
-import type { UnitModifiers } from "../core/battle/modifiers";
+import type { ItemDef, MasteryTree, ProgressionContent, TalentDef } from "../core/progression";
 import type { CampRules, MealDef } from "../core/party";
 import items from "./items.json";
 import progression from "./progression.json";
-import roles from "./roles.json";
 import talentData from "./talents.json";
-import typeTrees from "./typeTrees.json";
 import typeChart from "./typeChart.json";
 import abilities from "./abilities.json";
 import camp from "./camp.json";
@@ -33,39 +30,31 @@ import { localized } from "./lang";
 export const TYPES: Readonly<Record<string, TypeDef>> = types as Record<string, TypeDef>;
 
 /**
- * Role skills come in a version per type (skillVariants.json: base move → type → name), so a Fire
- * Pokémon's heavy strike is Flame Wheel, a Water one's Aqua Tail. Damaging versions take the type.
+ * Mastery content (docs/design/mastery-trees.md): the library (mastery/library/**) holds shared skills and
+ * passives with their moves; each tree file (mastery/trees/*.json) is one evolution line's hand-made tree and
+ * may define its own line-unique moves and talents.
  */
-/** Mastery kit files (docs/design/mastery-kits.md): their moves, talents and skill variants join the content. */
-interface KitFile extends Partial<TypeKit> {
-  readonly type?: string;
-  readonly role?: string;
+interface MasteryFile {
   readonly moves?: Readonly<Record<string, unknown>>;
   readonly talents?: Readonly<Record<string, TalentDef>>;
   readonly variants?: Readonly<Record<string, Record<string, string>>>;
-  readonly roleMods?: Partial<UnitModifiers>;
-  readonly roleDescription?: string;
-  readonly species?: readonly string[];
-  readonly rows?: Readonly<Record<string, readonly string[]>>;
 }
-const KITS = Object.entries(import.meta.glob("./kits/*/*.json", { eager: true, import: "default" }) as Record<string, KitFile>)
-  .map(([path, kit]) => localized(path.slice(2), kit));
-const SPECIES_ROLES = Object.values(import.meta.glob("./kits/speciesRoles.json", { eager: true, import: "default" }) as Record<string, Record<string, string>>)[0] ?? {};
+const LIBRARY = Object.entries(import.meta.glob(["./mastery/library/*/*.json"], { eager: true, import: "default" }) as Record<string, MasteryFile>)
+  .map(([path, f]) => localized(path.slice(2), f));
+const TREES = Object.entries(import.meta.glob("./mastery/trees/*.json", { eager: true, import: "default" }) as Record<string, MasteryFile & MasteryTree>)
+  .map(([path, f]) => localized(path.slice(2), f));
+const MASTERY_FILES: readonly MasteryFile[] = [...LIBRARY, ...TREES];
 
-const VARIANTS: Record<string, Record<string, string>> = Object.assign({}, skillVariants as Record<string, Record<string, string>>, ...KITS.map((k) => k.variants ?? {}));
+/** Library skills may come in a version per type (skillVariants.json: base move → type → name), ids `base--type`. */
+const VARIANTS: Record<string, Record<string, string>> = Object.assign({}, skillVariants as Record<string, Record<string, string>>, ...MASTERY_FILES.map((k) => k.variants ?? {}));
 const variantId = (base: string, type: string) => `${base}--${type}`;
-const moves: BattleContent["moves"] = Object.assign({}, baseMoves as BattleContent["moves"], ...KITS.map((k) => k.moves ?? {}));
+const moves: BattleContent["moves"] = Object.assign({}, baseMoves as BattleContent["moves"], ...MASTERY_FILES.map((k) => k.moves ?? {}));
 for (const [base, byType] of Object.entries(VARIANTS)) {
   const def = moves[base]!;
   for (const [type, name] of Object.entries(byType))
     (moves as Record<string, unknown>)[variantId(base, type)] = { ...def, id: variantId(base, type), name, type: (def.power ?? 0) > 0 ? type : def.type };
 }
-const talents: Record<string, TalentDef> = Object.fromEntries(
-  Object.entries(Object.assign({}, localized("talents.json", talentData), ...KITS.map((k) => k.talents ?? {})) as Record<string, TalentDef>).map(([id, t]) => {
-    const byType = t.grantsMove ? VARIANTS[t.grantsMove] : undefined;
-    return [id, byType ? { ...t, typedMoves: Object.fromEntries(Object.keys(byType).map((ty) => [ty, variantId(t.grantsMove!, ty)])) } : t];
-  }),
-);
+const talents: Record<string, TalentDef> = Object.assign({}, localized("talents.json", talentData), ...MASTERY_FILES.map((k) => k.talents ?? {}));
 
 /** Species with level-1 stats derived from their types' playstyles plus a small nudge. */
 const species: Record<string, SpeciesDef> = Object.fromEntries(
@@ -115,18 +104,8 @@ const WORLD_FILES = import.meta.glob("./worlds/*.json", { eager: true, import: "
 export const WORLDS: Readonly<Record<string, WorldDef>> = Object.fromEntries(Object.entries(WORLD_FILES).map(([path, w]) => [w.id, localized(path.slice(2), w)]));
 
 export const PROGRESSION: ProgressionContent = {
-  roles: Object.fromEntries(Object.entries(localized("roles.json", roles) as Record<string, RoleDef>).map(([id, r]) => {
-    const kit = KITS.find((k) => k.role === id);
-    return [id, { ...r, ...(kit?.roleMods && { mods: kit.roleMods }), ...(kit?.roleDescription && { description: kit.roleDescription }) }];
-  })),
-  kits: {
-    types: Object.fromEntries(KITS.filter((k) => k.type && !k.species).map((k) => [k.type!, k as TypeKit])),
-    roles: Object.fromEntries(KITS.filter((k) => k.role).map((k) => [k.role!, k as unknown as RoleKit])),
-  },
-  speciesRoles: SPECIES_ROLES,
-  speciesKits: Object.fromEntries(KITS.filter((k) => k.species).flatMap((k) => k.species!.map((id) => [id, k as SpeciesKit]))),
+  trees: Object.fromEntries(TREES.flatMap((t) => t.line.map((id) => [id, t as MasteryTree]))),
   talents,
-  typeTrees: typeTrees as Record<string, TypeTreeDef>,
   keyItems: localized("keyItems.json", keyItems),
   items: localized("items.json", items) as unknown as Record<string, ItemDef>,
   rules: progression,

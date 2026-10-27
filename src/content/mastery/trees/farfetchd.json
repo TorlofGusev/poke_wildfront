@@ -1,0 +1,461 @@
+{
+ "line": [
+  "farfetchd"
+ ],
+ "focus": [
+  {
+   "stat": "attack",
+   "skill": "farfetchd-double-edge"
+  },
+  {
+   "stat": "speed",
+   "skill": "farfetchd-acrobatics"
+  },
+  {
+   "stat": "spAttack",
+   "skill": "farfetchd-air-slash"
+  }
+ ],
+ "rows": {
+  "4": [
+   "farfetchd-defiant",
+   "farfetchd-keen-eye"
+  ],
+  "6": [
+   "farfetchd-swords-dance",
+   "farfetchd-air-cutter"
+  ],
+  "9": [
+   "farfetchd-leek-guard",
+   "farfetchd-fury-cutter"
+  ],
+  "12": [
+   "farfetchd-night-slash",
+   "farfetchd-leer"
+  ],
+  "15": [
+   "farfetchd-stick-fighter",
+   "farfetchd-tailwind"
+  ],
+  "18": [
+   "farfetchd-brave-bird",
+   "farfetchd-hurricane"
+  ],
+  "21": [
+   "farfetchd-inner-focus",
+   "farfetchd-duelist"
+  ],
+  "24": [
+   "farfetchd-sky-attack",
+   "farfetchd-razor-wind"
+  ],
+  "27": [
+   "farfetchd-leek-combo",
+   "farfetchd-flock-call"
+  ],
+  "30": [
+   "farfetchd-leek-master",
+   "farfetchd-sky-sovereign"
+  ]
+ },
+ "moves": {
+  "farfetchd-acrobatics": {
+   "id": "farfetchd-acrobatics",
+   "name": "Acrobatics",
+   "type": "flying",
+   "kind": "bond",
+   "category": "physical",
+   "bondCost": 1,
+   "power": 60,
+   "range": {
+    "min": 1,
+    "max": 2
+   },
+   "requiresLineOfSight": true,
+   "shape": {
+    "kind": "single"
+   },
+   "affects": "enemies",
+   "effects": [
+    {
+     "kind": "engage"
+    }
+   ]
+  },
+  "farfetchd-air-slash": {
+   "id": "farfetchd-air-slash",
+   "name": "Air Slash",
+   "type": "flying",
+   "kind": "bond",
+   "category": "special",
+   "bondCost": 2,
+   "power": 85,
+   "range": {
+    "min": 1,
+    "max": 3
+   },
+   "requiresLineOfSight": true,
+   "shape": {
+    "kind": "single"
+   },
+   "affects": "enemies"
+  },
+  "farfetchd-swords-dance": {
+   "id": "farfetchd-swords-dance",
+   "name": "Swords Dance",
+   "type": "normal",
+   "kind": "special",
+   "cooldown": 4,
+   "power": 0,
+   "range": {
+    "min": 0,
+    "max": 0
+   },
+   "requiresLineOfSight": false,
+   "shape": {
+    "kind": "single"
+   },
+   "affects": "allies",
+   "effects": [
+    {
+     "kind": "status",
+     "status": "focused",
+     "duration": 2
+    }
+   ]
+  },
+  "farfetchd-air-cutter": {
+   "id": "farfetchd-air-cutter",
+   "name": "Air Cutter",
+   "type": "flying",
+   "kind": "special",
+   "category": "special",
+   "cooldown": 2,
+   "power": 55,
+   "range": {
+    "min": 1,
+    "max": 2
+   },
+   "requiresLineOfSight": true,
+   "shape": {
+    "kind": "single"
+   },
+   "affects": "enemies"
+  },
+  "farfetchd-night-slash": {
+   "id": "farfetchd-night-slash",
+   "name": "Night Slash",
+   "type": "normal",
+   "kind": "special",
+   "category": "physical",
+   "cooldown": 3,
+   "power": 70,
+   "range": {
+    "min": 1,
+    "max": 1
+   },
+   "requiresLineOfSight": false,
+   "shape": {
+    "kind": "single"
+   },
+   "affects": "enemies",
+   "effects": [
+    {
+     "kind": "status",
+     "status": "exposed",
+     "duration": 1
+    }
+   ]
+  },
+  "farfetchd-brave-bird": {
+   "id": "farfetchd-brave-bird",
+   "name": "Brave Bird",
+   "type": "flying",
+   "kind": "special",
+   "category": "physical",
+   "cooldown": 5,
+   "power": 100,
+   "range": {
+    "min": 1,
+    "max": 1
+   },
+   "requiresLineOfSight": false,
+   "shape": {
+    "kind": "single"
+   },
+   "affects": "enemies"
+  },
+  "farfetchd-hurricane": {
+   "id": "farfetchd-hurricane",
+   "name": "Hurricane",
+   "type": "flying",
+   "kind": "special",
+   "category": "special",
+   "cooldown": 5,
+   "power": 90,
+   "range": {
+    "min": 1,
+    "max": 1
+   },
+   "requiresLineOfSight": true,
+   "shape": {
+    "kind": "burst",
+    "radius": 1
+   },
+   "affects": "enemies"
+  },
+  "farfetchd-sky-attack": {
+   "id": "farfetchd-sky-attack",
+   "name": "Sky Attack",
+   "type": "flying",
+   "kind": "special",
+   "category": "physical",
+   "cooldown": 5,
+   "power": 100,
+   "range": {
+    "min": 1,
+    "max": 2
+   },
+   "requiresLineOfSight": true,
+   "shape": {
+    "kind": "single"
+   },
+   "affects": "enemies"
+  },
+  "farfetchd-double-edge": {
+   "id": "farfetchd-double-edge",
+   "name": "Double-Edge",
+   "type": "normal",
+   "kind": "bond",
+   "category": "physical",
+   "bondCost": 2,
+   "power": 95,
+   "range": {
+    "min": 1,
+    "max": 1
+   },
+   "requiresLineOfSight": false,
+   "shape": {
+    "kind": "single"
+   },
+   "affects": "enemies"
+  },
+  "farfetchd-razor-wind": {
+   "id": "farfetchd-razor-wind",
+   "name": "Razor Wind",
+   "type": "normal",
+   "kind": "special",
+   "category": "special",
+   "cooldown": 5,
+   "power": 85,
+   "range": {
+    "min": 0,
+    "max": 0
+   },
+   "requiresLineOfSight": false,
+   "shape": {
+    "kind": "burst",
+    "radius": 1
+   },
+   "affects": "enemies"
+  },
+  "farfetchd-leer": {
+   "id": "farfetchd-leer",
+   "name": "Leer",
+   "type": "normal",
+   "kind": "special",
+   "cooldown": 3,
+   "power": 0,
+   "range": {
+    "min": 0,
+    "max": 0
+   },
+   "requiresLineOfSight": false,
+   "shape": {
+    "kind": "burst",
+    "radius": 1
+   },
+   "affects": "enemies",
+   "effects": [
+    {
+     "kind": "status",
+     "status": "marked",
+     "duration": 2
+    }
+   ]
+  }
+ },
+ "talents": {
+  "farfetchd-acrobatics": {
+   "id": "farfetchd-acrobatics",
+   "name": "Acrobatics",
+   "description": "Bond skill: flits up to 2 hexes into a foe (Power 60) and engages it.",
+   "grantsMove": "farfetchd-acrobatics"
+  },
+  "farfetchd-air-slash": {
+   "id": "farfetchd-air-slash",
+   "name": "Air Slash",
+   "description": "Bond skill: a blade of air at a foe up to 3 hexes away (Power 85, Sp. Atk).",
+   "grantsMove": "farfetchd-air-slash"
+  },
+  "farfetchd-defiant": {
+   "id": "farfetchd-defiant",
+   "name": "Defiant",
+   "description": "Deals 20% more damage while 2+ foes stand next to it.",
+   "mods": {
+    "surroundedDamage": 1.2
+   }
+  },
+  "farfetchd-keen-eye": {
+   "id": "farfetchd-keen-eye",
+   "name": "Keen Eye",
+   "description": "Its ranged moves fire over Pokémon standing in the way.",
+   "mods": {
+    "shootOver": true
+   }
+  },
+  "farfetchd-swords-dance": {
+   "id": "farfetchd-swords-dance",
+   "name": "Swords Dance",
+   "description": "New skill: a frenetic leek dance makes it Focused for 2 turns.",
+   "grantsMove": "farfetchd-swords-dance"
+  },
+  "farfetchd-air-cutter": {
+   "id": "farfetchd-air-cutter",
+   "name": "Air Cutter",
+   "description": "New skill: razor-like wind at a foe up to 2 hexes away (Power 55).",
+   "grantsMove": "farfetchd-air-cutter"
+  },
+  "farfetchd-leek-guard": {
+   "id": "farfetchd-leek-guard",
+   "name": "Leek Parry",
+   "description": "Takes 10% less damage: it parries with its leek.",
+   "mods": {
+    "damageTaken": 0.9
+   }
+  },
+  "farfetchd-fury-cutter": {
+   "id": "farfetchd-fury-cutter",
+   "name": "Fury Cutter",
+   "description": "Each consecutive hit on the same foe deals 10% more, up to 3 stacks.",
+   "mods": {
+    "furyCutter": 0.1
+   }
+  },
+  "farfetchd-night-slash": {
+   "id": "farfetchd-night-slash",
+   "name": "Night Slash",
+   "description": "New skill: a swift slash at an opening (Power 70) that Exposes the foe for 1 turn.",
+   "grantsMove": "farfetchd-night-slash"
+  },
+  "farfetchd-stick-fighter": {
+   "id": "farfetchd-stick-fighter",
+   "name": "Stick Fighter",
+   "description": "Deals 15% more damage to adjacent foes.",
+   "mods": {
+    "closeDamage": 1.15
+   }
+  },
+  "farfetchd-tailwind": {
+   "id": "farfetchd-tailwind",
+   "name": "Swift Wings",
+   "description": "Regains 2 movement when it knocks out a foe on its turn.",
+   "mods": {
+    "koMove": 2
+   }
+  },
+  "farfetchd-brave-bird": {
+   "id": "farfetchd-brave-bird",
+   "name": "Brave Bird",
+   "description": "New skill: a reckless diving charge (Power 100).",
+   "grantsMove": "farfetchd-brave-bird"
+  },
+  "farfetchd-hurricane": {
+   "id": "farfetchd-hurricane",
+   "name": "Hurricane",
+   "description": "New skill: a howling gale up to 1 hex away (Power 90) hitting a 1-hex area.",
+   "grantsMove": "farfetchd-hurricane"
+  },
+  "farfetchd-inner-focus": {
+   "id": "farfetchd-inner-focus",
+   "name": "Inner Focus",
+   "description": "Cannot be put to Sleep or Paralyzed.",
+   "mods": {
+    "statusImmune": [
+     "sleep",
+     "paralysis"
+    ]
+   }
+  },
+  "farfetchd-duelist": {
+   "id": "farfetchd-duelist",
+   "name": "Duelist",
+   "description": "Deals 20% more damage to foes at full HP.",
+   "mods": {
+    "fullHpTargetDamage": 1.2
+   }
+  },
+  "farfetchd-sky-attack": {
+   "id": "farfetchd-sky-attack",
+   "name": "Sky Attack",
+   "description": "New skill: dives from above at a foe up to 2 hexes away (Power 100).",
+   "grantsMove": "farfetchd-sky-attack"
+  },
+  "farfetchd-leek-combo": {
+   "id": "farfetchd-leek-combo",
+   "name": "Leek Flurry",
+   "description": "A knockout on its turn lets it use its basic attack again.",
+   "mods": {
+    "koRefreshBasic": true
+   }
+  },
+  "farfetchd-flock-call": {
+   "id": "farfetchd-flock-call",
+   "name": "Wild Duck Spirit",
+   "description": "Gives the team 1 Bond when it lands a combo.",
+   "mods": {
+    "comboBond": 1
+   }
+  },
+  "farfetchd-leek-master": {
+   "id": "farfetchd-leek-master",
+   "name": "Leek Master",
+   "description": "Capstone. A knockout resets its skill cooldowns; deals 20% more below half HP.",
+   "mods": {
+    "koResetCooldowns": true,
+    "lowHpDamage": 1.2
+   }
+  },
+  "farfetchd-sky-sovereign": {
+   "id": "farfetchd-sky-sovereign",
+   "name": "Super Luck",
+   "description": "Capstone. Deals 20% more damage to Exposed foes; its Flying moves deal 15% more damage.",
+   "mods": {
+    "vsStatusIdDamage": {
+     "exposed": 1.2
+    },
+    "typeDamage": {
+     "flying": 1.15
+    }
+   }
+  },
+  "farfetchd-double-edge": {
+   "id": "farfetchd-double-edge",
+   "name": "Double-Edge",
+   "description": "Bond skill: a reckless leek-first charge (Power 95, Attack).",
+   "grantsMove": "farfetchd-double-edge"
+  },
+  "farfetchd-razor-wind": {
+   "id": "farfetchd-razor-wind",
+   "name": "Razor Wind",
+   "description": "New skill: beats its wings into blades of wind at every adjacent foe (Power 85).",
+   "grantsMove": "farfetchd-razor-wind"
+  },
+  "farfetchd-leer": {
+   "id": "farfetchd-leer",
+   "name": "Leer",
+   "description": "New skill: a sharp glare that Marks adjacent foes for 2 turns.",
+   "grantsMove": "farfetchd-leer"
+  }
+ }
+}

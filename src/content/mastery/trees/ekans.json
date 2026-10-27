@@ -1,0 +1,496 @@
+{
+ "line": [
+  "ekans",
+  "arbok"
+ ],
+ "focus": [
+  {
+   "stat": "attack",
+   "skill": "ekans-gunk-shot"
+  },
+  {
+   "stat": "speed",
+   "skill": "ekans-sucker-punch"
+  },
+  {
+   "stat": "defense",
+   "skill": "ekans-coil"
+  }
+ ],
+ "rows": {
+  "4": [
+   "ekans-venom-fangs",
+   "ekans-intimidate"
+  ],
+  "6": [
+   "ekans-poison-sting",
+   "ekans-screech"
+  ],
+  "9": [
+   "ekans-ambusher",
+   "ekans-coiled-grip"
+  ],
+  "12": [
+   "ekans-crunch",
+   "ekans-stockpile"
+  ],
+  "15": [
+   "ekans-sudden-strike",
+   "ekans-fresh-scales"
+  ],
+  "18": [
+   "ekans-body-slam",
+   "ekans-swallow"
+  ],
+  "21": [
+   "ekans-venom-hunter",
+   "ekans-terrifying-hood"
+  ],
+  "24": [
+   "ekans-cross-poison",
+   "ekans-haze"
+  ],
+  "27": [
+   "ekans-ambush-coil",
+   "ekans-thick-coils"
+  ],
+  "30": [
+   "ekans-king-cobra",
+   "ekans-endless-coils"
+  ]
+ },
+ "moves": {
+  "ekans-gunk-shot": {
+   "id": "ekans-gunk-shot",
+   "name": "Gunk Shot",
+   "type": "poison",
+   "kind": "bond",
+   "category": "physical",
+   "bondCost": 3,
+   "power": 100,
+   "range": {
+    "min": 1,
+    "max": 1
+   },
+   "requiresLineOfSight": false,
+   "shape": {
+    "kind": "single"
+   },
+   "affects": "enemies",
+   "effects": [
+    {
+     "kind": "status",
+     "status": "poison",
+     "duration": 2
+    }
+   ]
+  },
+  "ekans-sucker-punch": {
+   "id": "ekans-sucker-punch",
+   "name": "Sucker Punch",
+   "type": "normal",
+   "kind": "bond",
+   "category": "physical",
+   "bondCost": 1,
+   "power": 60,
+   "range": {
+    "min": 1,
+    "max": 1
+   },
+   "requiresLineOfSight": false,
+   "shape": {
+    "kind": "single"
+   },
+   "affects": "enemies"
+  },
+  "ekans-coil": {
+   "id": "ekans-coil",
+   "name": "Coil",
+   "type": "poison",
+   "kind": "bond",
+   "bondCost": 2,
+   "power": 0,
+   "range": {
+    "min": 0,
+    "max": 0
+   },
+   "requiresLineOfSight": false,
+   "shape": {
+    "kind": "single"
+   },
+   "affects": "allies",
+   "effects": [
+    {
+     "kind": "status",
+     "status": "fortified",
+     "duration": 1
+    },
+    {
+     "kind": "status",
+     "status": "focused",
+     "duration": 1
+    }
+   ]
+  },
+  "ekans-poison-sting": {
+   "id": "ekans-poison-sting",
+   "name": "Poison Sting",
+   "type": "poison",
+   "kind": "special",
+   "category": "physical",
+   "cooldown": 2,
+   "power": 50,
+   "range": {
+    "min": 1,
+    "max": 1
+   },
+   "requiresLineOfSight": true,
+   "shape": {
+    "kind": "single"
+   },
+   "affects": "enemies",
+   "effects": [
+    {
+     "kind": "status",
+     "status": "poison",
+     "duration": 2
+    }
+   ]
+  },
+  "ekans-screech": {
+   "id": "ekans-screech",
+   "name": "Screech",
+   "type": "normal",
+   "kind": "special",
+   "cooldown": 3,
+   "power": 0,
+   "range": {
+    "min": 1,
+    "max": 2
+   },
+   "requiresLineOfSight": false,
+   "shape": {
+    "kind": "single"
+   },
+   "affects": "enemies",
+   "effects": [
+    {
+     "kind": "status",
+     "status": "exposed",
+     "duration": 2
+    }
+   ]
+  },
+  "ekans-crunch": {
+   "id": "ekans-crunch",
+   "name": "Crunch",
+   "type": "normal",
+   "kind": "special",
+   "category": "physical",
+   "cooldown": 3,
+   "power": 75,
+   "range": {
+    "min": 1,
+    "max": 1
+   },
+   "requiresLineOfSight": false,
+   "shape": {
+    "kind": "single"
+   },
+   "affects": "enemies"
+  },
+  "ekans-stockpile": {
+   "id": "ekans-stockpile",
+   "name": "Stockpile",
+   "type": "normal",
+   "kind": "special",
+   "cooldown": 4,
+   "power": 0,
+   "range": {
+    "min": 0,
+    "max": 0
+   },
+   "requiresLineOfSight": false,
+   "shape": {
+    "kind": "single"
+   },
+   "affects": "allies",
+   "effects": [
+    {
+     "kind": "status",
+     "status": "fortified",
+     "duration": 2
+    }
+   ]
+  },
+  "ekans-body-slam": {
+   "id": "ekans-body-slam",
+   "name": "Body Slam",
+   "type": "normal",
+   "kind": "special",
+   "category": "physical",
+   "cooldown": 4,
+   "power": 85,
+   "range": {
+    "min": 1,
+    "max": 1
+   },
+   "requiresLineOfSight": false,
+   "shape": {
+    "kind": "single"
+   },
+   "affects": "enemies",
+   "effects": [
+    {
+     "kind": "status",
+     "status": "paralysis",
+     "duration": 1
+    }
+   ]
+  },
+  "ekans-swallow": {
+   "id": "ekans-swallow",
+   "name": "Swallow",
+   "type": "normal",
+   "kind": "special",
+   "cooldown": 5,
+   "power": 0,
+   "range": {
+    "min": 0,
+    "max": 0
+   },
+   "requiresLineOfSight": false,
+   "shape": {
+    "kind": "single"
+   },
+   "affects": "allies",
+   "effects": [
+    {
+     "kind": "heal",
+     "amount": 60
+    }
+   ]
+  },
+  "ekans-cross-poison": {
+   "id": "ekans-cross-poison",
+   "name": "Cross Poison",
+   "type": "poison",
+   "kind": "special",
+   "category": "physical",
+   "cooldown": 5,
+   "power": 90,
+   "range": {
+    "min": 1,
+    "max": 1
+   },
+   "requiresLineOfSight": false,
+   "shape": {
+    "kind": "single"
+   },
+   "affects": "enemies",
+   "effects": [
+    {
+     "kind": "status",
+     "status": "exposed",
+     "duration": 1
+    }
+   ]
+  },
+  "ekans-haze": {
+   "id": "ekans-haze",
+   "name": "Haze",
+   "type": "poison",
+   "kind": "special",
+   "cooldown": 4,
+   "power": 0,
+   "range": {
+    "min": 1,
+    "max": 1
+   },
+   "requiresLineOfSight": false,
+   "shape": {
+    "kind": "burst",
+    "radius": 1
+   },
+   "affects": "enemies",
+   "effects": [
+    {
+     "kind": "status",
+     "status": "slow",
+     "duration": 2
+    }
+   ]
+  }
+ },
+ "talents": {
+  "ekans-gunk-shot": {
+   "id": "ekans-gunk-shot",
+   "name": "Gunk Shot",
+   "description": "Bond skill: shoves filthy garbage at a foe (Power 100, Attack) and Poisons it for 2 turns.",
+   "grantsMove": "ekans-gunk-shot"
+  },
+  "ekans-sucker-punch": {
+   "id": "ekans-sucker-punch",
+   "name": "Sucker Punch",
+   "description": "Bond skill: lunges before the foe can move (Power 60, Attack).",
+   "grantsMove": "ekans-sucker-punch"
+  },
+  "ekans-coil": {
+   "id": "ekans-coil",
+   "name": "Coil",
+   "description": "Bond skill: coils up tight and becomes Fortified and Focused for 1 turn.",
+   "grantsMove": "ekans-coil"
+  },
+  "ekans-venom-fangs": {
+   "id": "ekans-venom-fangs",
+   "name": "Venom Fangs",
+   "description": "Its Poison moves deal 15% more damage.",
+   "mods": {
+    "typeDamage": {
+     "poison": 1.15
+    }
+   }
+  },
+  "ekans-intimidate": {
+   "id": "ekans-intimidate",
+   "name": "Intimidate",
+   "description": "Takes 10% less damage: foes hold back before its glare.",
+   "mods": {
+    "damageTaken": 0.9
+   }
+  },
+  "ekans-poison-sting": {
+   "id": "ekans-poison-sting",
+   "name": "Poison Sting",
+   "description": "New skill: a toxic stab at an adjacent foe that Poisons it for 2 turns (Power 50).",
+   "grantsMove": "ekans-poison-sting"
+  },
+  "ekans-screech": {
+   "id": "ekans-screech",
+   "name": "Screech",
+   "description": "New skill: a piercing screech at a foe up to 2 hexes away leaves it Exposed for 2 turns.",
+   "grantsMove": "ekans-screech"
+  },
+  "ekans-ambusher": {
+   "id": "ekans-ambusher",
+   "name": "Ambusher",
+   "description": "Deals 20% more damage to foes at full HP.",
+   "mods": {
+    "fullHpTargetDamage": 1.2
+   }
+  },
+  "ekans-coiled-grip": {
+   "id": "ekans-coiled-grip",
+   "name": "Coiled Grip",
+   "description": "Foes it engages take 15% more damage from its allies.",
+   "mods": {
+    "pinDamage": 1.15
+   }
+  },
+  "ekans-crunch": {
+   "id": "ekans-crunch",
+   "name": "Crunch",
+   "description": "New skill: crunches a foe with sharp fangs (Power 75).",
+   "grantsMove": "ekans-crunch"
+  },
+  "ekans-stockpile": {
+   "id": "ekans-stockpile",
+   "name": "Stockpile",
+   "description": "New skill: stores up power and becomes Fortified for 2 turns.",
+   "grantsMove": "ekans-stockpile"
+  },
+  "ekans-sudden-strike": {
+   "id": "ekans-sudden-strike",
+   "name": "Sudden Strike",
+   "description": "Regains 2 movement when it knocks out a foe on its turn.",
+   "mods": {
+    "koMove": 2
+   }
+  },
+  "ekans-fresh-scales": {
+   "id": "ekans-fresh-scales",
+   "name": "Fresh Scales",
+   "description": "Heals 4% of max HP at the start of each turn.",
+   "mods": {
+    "healPerTurn": 0.04
+   }
+  },
+  "ekans-body-slam": {
+   "id": "ekans-body-slam",
+   "name": "Body Slam",
+   "description": "New skill: drops its full weight on the foe (Power 85), Paralyzing it for 1 turn.",
+   "grantsMove": "ekans-body-slam"
+  },
+  "ekans-swallow": {
+   "id": "ekans-swallow",
+   "name": "Swallow",
+   "description": "New skill: swallows its stockpiled strength and heals 60 HP.",
+   "grantsMove": "ekans-swallow"
+  },
+  "ekans-venom-hunter": {
+   "id": "ekans-venom-hunter",
+   "name": "Venom Hunter",
+   "description": "Deals 20% more damage to Poisoned foes.",
+   "mods": {
+    "vsStatusIdDamage": {
+     "poison": 1.2
+    }
+   }
+  },
+  "ekans-terrifying-hood": {
+   "id": "ekans-terrifying-hood",
+   "name": "Terrifying Hood",
+   "description": "Foes engaged with it can't slip away without drawing its free strike.",
+   "mods": {
+    "noEscape": true
+   }
+  },
+  "ekans-cross-poison": {
+   "id": "ekans-cross-poison",
+   "name": "Cross Poison",
+   "description": "New skill: a crossing poison slash (Power 90) that leaves the foe Exposed for 1 turn.",
+   "grantsMove": "ekans-cross-poison"
+  },
+  "ekans-haze": {
+   "id": "ekans-haze",
+   "name": "Haze",
+   "description": "New skill: a black haze up to 1 hex away Slows foes in a 1-hex area for 2 turns.",
+   "grantsMove": "ekans-haze"
+  },
+  "ekans-ambush-coil": {
+   "id": "ekans-ambush-coil",
+   "name": "Ambush Coil",
+   "description": "Deals 15% more damage to adjacent foes.",
+   "mods": {
+    "closeDamage": 1.15
+   }
+  },
+  "ekans-thick-coils": {
+   "id": "ekans-thick-coils",
+   "name": "Thick Coils",
+   "description": "Takes 20% less damage while at full HP.",
+   "mods": {
+    "fullHpDamageTaken": 0.8
+   }
+  },
+  "ekans-king-cobra": {
+   "id": "ekans-king-cobra",
+   "name": "King Cobra",
+   "description": "Capstone. A knockout on its turn lets it attack again and heals 15%; +20% damage to statused foes.",
+   "mods": {
+    "koRefreshBasic": true,
+    "vsStatusDamage": 1.2,
+    "koHeal": 0.15
+   }
+  },
+  "ekans-endless-coils": {
+   "id": "ekans-endless-coils",
+   "name": "Endless Coils",
+   "description": "Capstone. Survives one knockout blow per battle at 1 HP; deals 8 damage back to adjacent attackers.",
+   "mods": {
+    "sturdy": true,
+    "thorns": 8
+   }
+  }
+ }
+}

@@ -1,0 +1,467 @@
+{
+ "line": [
+  "meowth",
+  "persian"
+ ],
+ "focus": [
+  {
+   "stat": "attack",
+   "skill": "meowth-night-slash"
+  },
+  {
+   "stat": "speed",
+   "skill": "meowth-fake-out"
+  },
+  {
+   "stat": "spAttack",
+   "skill": "meowth-hyper-voice"
+  }
+ ],
+ "rows": {
+  "4": [
+   "meowth-technician",
+   "meowth-limber"
+  ],
+  "6": [
+   "meowth-bite",
+   "meowth-screech"
+  ],
+  "9": [
+   "meowth-pickup",
+   "meowth-cats-grace"
+  ],
+  "12": [
+   "meowth-growl",
+   "meowth-swift"
+  ],
+  "15": [
+   "meowth-opportunist",
+   "meowth-lithe-body"
+  ],
+  "18": [
+   "meowth-play-rough",
+   "meowth-tri-attack"
+  ],
+  "21": [
+   "meowth-pounce",
+   "meowth-amulet-coin"
+  ],
+  "24": [
+   "meowth-sucker-punch",
+   "meowth-hyper-beam"
+  ],
+  "27": [
+   "meowth-relentless-swipes",
+   "meowth-feline-focus"
+  ],
+  "30": [
+   "meowth-alley-cat-king",
+   "meowth-jackpot"
+  ]
+ },
+ "moves": {
+  "meowth-night-slash": {
+   "id": "meowth-night-slash",
+   "name": "Night Slash",
+   "type": "normal",
+   "kind": "bond",
+   "category": "physical",
+   "bondCost": 2,
+   "power": 85,
+   "range": {
+    "min": 1,
+    "max": 1
+   },
+   "requiresLineOfSight": false,
+   "shape": {
+    "kind": "single"
+   },
+   "affects": "enemies",
+   "effects": [
+    {
+     "kind": "bond",
+     "amount": 1,
+     "when": "knockout"
+    }
+   ]
+  },
+  "meowth-fake-out": {
+   "id": "meowth-fake-out",
+   "name": "Fake Out",
+   "type": "normal",
+   "kind": "bond",
+   "category": "physical",
+   "bondCost": 1,
+   "power": 50,
+   "range": {
+    "min": 1,
+    "max": 1
+   },
+   "requiresLineOfSight": false,
+   "shape": {
+    "kind": "single"
+   },
+   "affects": "enemies",
+   "effects": [
+    {
+     "kind": "status",
+     "status": "slow",
+     "duration": 1
+    }
+   ]
+  },
+  "meowth-hyper-voice": {
+   "id": "meowth-hyper-voice",
+   "name": "Hyper Voice",
+   "type": "normal",
+   "kind": "bond",
+   "category": "special",
+   "bondCost": 2,
+   "power": 85,
+   "range": {
+    "min": 1,
+    "max": 3
+   },
+   "requiresLineOfSight": true,
+   "shape": {
+    "kind": "single"
+   },
+   "affects": "enemies"
+  },
+  "meowth-bite": {
+   "id": "meowth-bite",
+   "name": "Bite",
+   "type": "normal",
+   "kind": "special",
+   "category": "physical",
+   "cooldown": 2,
+   "power": 55,
+   "range": {
+    "min": 1,
+    "max": 1
+   },
+   "requiresLineOfSight": false,
+   "shape": {
+    "kind": "single"
+   },
+   "affects": "enemies"
+  },
+  "meowth-screech": {
+   "id": "meowth-screech",
+   "name": "Screech",
+   "type": "normal",
+   "kind": "special",
+   "cooldown": 3,
+   "power": 0,
+   "range": {
+    "min": 1,
+    "max": 2
+   },
+   "requiresLineOfSight": true,
+   "shape": {
+    "kind": "single"
+   },
+   "affects": "enemies",
+   "effects": [
+    {
+     "kind": "status",
+     "status": "exposed",
+     "duration": 2
+    }
+   ]
+  },
+  "meowth-swift": {
+   "id": "meowth-swift",
+   "name": "Swift",
+   "type": "normal",
+   "kind": "special",
+   "category": "special",
+   "cooldown": 3,
+   "power": 60,
+   "range": {
+    "min": 1,
+    "max": 2
+   },
+   "requiresLineOfSight": true,
+   "shape": {
+    "kind": "single"
+   },
+   "affects": "enemies",
+   "effects": [
+    {
+     "kind": "status",
+     "status": "slow",
+     "duration": 1
+    }
+   ]
+  },
+  "meowth-play-rough": {
+   "id": "meowth-play-rough",
+   "name": "Play Rough",
+   "type": "normal",
+   "kind": "special",
+   "category": "physical",
+   "cooldown": 4,
+   "power": 85,
+   "range": {
+    "min": 1,
+    "max": 1
+   },
+   "requiresLineOfSight": false,
+   "shape": {
+    "kind": "single"
+   },
+   "affects": "enemies"
+  },
+  "meowth-tri-attack": {
+   "id": "meowth-tri-attack",
+   "name": "Tri Attack",
+   "type": "normal",
+   "kind": "special",
+   "category": "special",
+   "cooldown": 4,
+   "power": 80,
+   "range": {
+    "min": 1,
+    "max": 2
+   },
+   "requiresLineOfSight": true,
+   "shape": {
+    "kind": "single"
+   },
+   "affects": "enemies"
+  },
+  "meowth-sucker-punch": {
+   "id": "meowth-sucker-punch",
+   "name": "Sucker Punch",
+   "type": "normal",
+   "kind": "special",
+   "category": "physical",
+   "cooldown": 4,
+   "power": 90,
+   "range": {
+    "min": 1,
+    "max": 1
+   },
+   "requiresLineOfSight": false,
+   "shape": {
+    "kind": "single"
+   },
+   "affects": "enemies"
+  },
+  "meowth-hyper-beam": {
+   "id": "meowth-hyper-beam",
+   "name": "Hyper Beam",
+   "type": "normal",
+   "kind": "special",
+   "category": "special",
+   "cooldown": 5,
+   "power": 100,
+   "range": {
+    "min": 1,
+    "max": 2
+   },
+   "requiresLineOfSight": true,
+   "shape": {
+    "kind": "single"
+   },
+   "affects": "enemies"
+  },
+  "meowth-growl": {
+   "id": "meowth-growl",
+   "name": "Growl",
+   "type": "normal",
+   "kind": "special",
+   "cooldown": 3,
+   "power": 0,
+   "range": {
+    "min": 1,
+    "max": 1
+   },
+   "requiresLineOfSight": false,
+   "shape": {
+    "kind": "single"
+   },
+   "affects": "enemies",
+   "effects": [
+    {
+     "kind": "status",
+     "status": "weakened",
+     "duration": 2
+    }
+   ]
+  }
+ },
+ "talents": {
+  "meowth-night-slash": {
+   "id": "meowth-night-slash",
+   "name": "Night Slash",
+   "description": "Bond skill: a slash from the shadows (Power 85, Attack); a knockout gives back 1 Bond.",
+   "grantsMove": "meowth-night-slash"
+  },
+  "meowth-fake-out": {
+   "id": "meowth-fake-out",
+   "name": "Fake Out",
+   "description": "Bond skill: a startling first strike (Power 50, Attack) that Slows the foe for 1 turn.",
+   "grantsMove": "meowth-fake-out"
+  },
+  "meowth-hyper-voice": {
+   "id": "meowth-hyper-voice",
+   "name": "Hyper Voice",
+   "description": "Bond skill: a piercing yowl at a foe up to 3 hexes away (Power 85).",
+   "grantsMove": "meowth-hyper-voice"
+  },
+  "meowth-technician": {
+   "id": "meowth-technician",
+   "name": "Technician",
+   "description": "Its Normal-type moves deal 15% more damage.",
+   "mods": {
+    "typeDamage": {
+     "normal": 1.15
+    }
+   }
+  },
+  "meowth-limber": {
+   "id": "meowth-limber",
+   "name": "Limber",
+   "description": "Its supple body can't be held: immune to Paralysis and Slow.",
+   "mods": {
+    "statusImmune": [
+     "paralysis",
+     "slow"
+    ]
+   }
+  },
+  "meowth-bite": {
+   "id": "meowth-bite",
+   "name": "Bite",
+   "description": "New skill: a quick bite with sharp fangs (Power 55).",
+   "grantsMove": "meowth-bite"
+  },
+  "meowth-screech": {
+   "id": "meowth-screech",
+   "name": "Screech",
+   "description": "New skill: an ear-splitting screech leaves a foe up to 2 hexes away Exposed for 2 turns.",
+   "grantsMove": "meowth-screech"
+  },
+  "meowth-pickup": {
+   "id": "meowth-pickup",
+   "name": "Pickup",
+   "description": "Always finds something on a beaten foe: each knockout gives the team 1 Bond.",
+   "mods": {
+    "bondOnKo": 1
+   }
+  },
+  "meowth-cats-grace": {
+   "id": "meowth-cats-grace",
+   "name": "Cat's Grace",
+   "description": "Slinks away from engaged foes without drawing free strikes.",
+   "mods": {
+    "disengage": true
+   }
+  },
+  "meowth-swift": {
+   "id": "meowth-swift",
+   "name": "Swift",
+   "description": "New skill: star-shaped rays at a foe up to 2 hexes away (Power 60); Slows 1 turn.",
+   "grantsMove": "meowth-swift"
+  },
+  "meowth-opportunist": {
+   "id": "meowth-opportunist",
+   "name": "Opportunist",
+   "description": "Deals 20% more damage to foes engaged with one of its allies.",
+   "mods": {
+    "vsEngagedDamage": 1.2
+   }
+  },
+  "meowth-lithe-body": {
+   "id": "meowth-lithe-body",
+   "name": "Lithe Body",
+   "description": "Twists away from blows: takes 10% less damage.",
+   "mods": {
+    "damageTaken": 0.9
+   }
+  },
+  "meowth-play-rough": {
+   "id": "meowth-play-rough",
+   "name": "Play Rough",
+   "description": "New skill: pounces and plays rough with a foe (Power 85).",
+   "grantsMove": "meowth-play-rough"
+  },
+  "meowth-tri-attack": {
+   "id": "meowth-tri-attack",
+   "name": "Tri Attack",
+   "description": "New skill: a triangle of energy at a foe up to 2 hexes away (Power 80).",
+   "grantsMove": "meowth-tri-attack"
+  },
+  "meowth-pounce": {
+   "id": "meowth-pounce",
+   "name": "Pounce",
+   "description": "Its free strikes on foes breaking away deal 25% more damage.",
+   "mods": {
+    "strikeDamage": 1.25
+   }
+  },
+  "meowth-amulet-coin": {
+   "id": "meowth-amulet-coin",
+   "name": "Amulet Coin",
+   "description": "The team starts each battle with 1 extra Bond.",
+   "mods": {},
+   "team": {
+    "startBond": 1
+   }
+  },
+  "meowth-sucker-punch": {
+   "id": "meowth-sucker-punch",
+   "name": "Sucker Punch",
+   "description": "New skill: a sneaky strike before the foe can react (Power 90).",
+   "grantsMove": "meowth-sucker-punch"
+  },
+  "meowth-hyper-beam": {
+   "id": "meowth-hyper-beam",
+   "name": "Hyper Beam",
+   "description": "New skill: a devastating beam at a foe up to 2 hexes away (Power 100).",
+   "grantsMove": "meowth-hyper-beam"
+  },
+  "meowth-relentless-swipes": {
+   "id": "meowth-relentless-swipes",
+   "name": "Relentless Swipes",
+   "description": "Each hit in a row on the same foe deals 10% more damage (up to 3 stacks).",
+   "mods": {
+    "furyCutter": 0.1
+   }
+  },
+  "meowth-feline-focus": {
+   "id": "meowth-feline-focus",
+   "name": "Feline Focus",
+   "description": "Regains 2 movement when it knocks out a foe on its turn.",
+   "mods": {
+    "koMove": 2
+   }
+  },
+  "meowth-alley-cat-king": {
+   "id": "meowth-alley-cat-king",
+   "name": "Alley Cat King",
+   "description": "Capstone. A knockout lets it use its basic attack again; its free strikes give the team 1 Bond.",
+   "mods": {
+    "koRefreshBasic": true,
+    "bondOnStrike": 1
+   }
+  },
+  "meowth-jackpot": {
+   "id": "meowth-jackpot",
+   "name": "Jackpot",
+   "description": "Capstone. Each combo it lands gives the team 1 Bond; deals 15% more damage to foes at full HP.",
+   "mods": {
+    "comboBond": 1,
+    "fullHpTargetDamage": 1.15
+   }
+  },
+  "meowth-growl": {
+   "id": "meowth-growl",
+   "name": "Growl",
+   "description": "New skill: a cute growl leaves an adjacent foe Weakened for 2 turns.",
+   "grantsMove": "meowth-growl"
+  }
+ }
+}

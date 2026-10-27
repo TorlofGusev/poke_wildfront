@@ -1,0 +1,502 @@
+{
+ "line": [
+  "tentacool",
+  "tentacruel"
+ ],
+ "canonLevelUp": [
+  "tentacool-barrier"
+ ],
+ "focus": [
+  {
+   "stat": "spDefense",
+   "skill": "tentacool-acid-armor"
+  },
+  {
+   "stat": "spAttack",
+   "skill": "tentacool-sludge-wave"
+  },
+  {
+   "stat": "speed",
+   "skill": "tentacool-rapid-spin"
+  }
+ ],
+ "rows": {
+  "4": [
+   "tentacool-clear-body",
+   "tentacool-stinging-tentacles"
+  ],
+  "6": [
+   "tentacool-screech",
+   "tentacool-water-gun"
+  ],
+  "9": [
+   "tentacool-rain-dish",
+   "tentacool-venomous-tendrils"
+  ],
+  "12": [
+   "tentacool-barrier",
+   "tentacool-wring-out"
+  ],
+  "15": [
+   "tentacool-many-tentacles",
+   "tentacool-drifting-body"
+  ],
+  "18": [
+   "tentacool-scald",
+   "tentacool-toxic"
+  ],
+  "21": [
+   "tentacool-lingering-venom",
+   "tentacool-clinging-grip"
+  ],
+  "24": [
+   "tentacool-surf",
+   "tentacool-whirlpool"
+  ],
+  "27": [
+   "tentacool-toxic-tide",
+   "tentacool-cleansing-tide"
+  ],
+  "30": [
+   "tentacool-tentacruels-reign",
+   "tentacool-ocean-hunter"
+  ]
+ },
+ "moves": {
+  "tentacool-acid-armor": {
+   "id": "tentacool-acid-armor",
+   "name": "Acid Armor",
+   "type": "poison",
+   "kind": "bond",
+   "bondCost": 1,
+   "power": 0,
+   "range": {
+    "min": 0,
+    "max": 0
+   },
+   "requiresLineOfSight": false,
+   "shape": {
+    "kind": "single"
+   },
+   "affects": "allies",
+   "effects": [
+    {
+     "kind": "status",
+     "status": "fortified",
+     "duration": 3
+    }
+   ]
+  },
+  "tentacool-sludge-wave": {
+   "id": "tentacool-sludge-wave",
+   "name": "Sludge Wave",
+   "type": "poison",
+   "kind": "bond",
+   "category": "special",
+   "bondCost": 2,
+   "power": 90,
+   "range": {
+    "min": 0,
+    "max": 0
+   },
+   "requiresLineOfSight": false,
+   "shape": {
+    "kind": "burst",
+    "radius": 1
+   },
+   "affects": "enemies",
+   "effects": [
+    {
+     "kind": "status",
+     "status": "poison",
+     "duration": 2
+    }
+   ]
+  },
+  "tentacool-rapid-spin": {
+   "id": "tentacool-rapid-spin",
+   "name": "Rapid Spin",
+   "type": "normal",
+   "kind": "bond",
+   "category": "physical",
+   "bondCost": 1,
+   "power": 50,
+   "range": {
+    "min": 0,
+    "max": 0
+   },
+   "requiresLineOfSight": false,
+   "shape": {
+    "kind": "burst",
+    "radius": 1
+   },
+   "affects": "enemies",
+   "effects": [
+    {
+     "kind": "disengage"
+    }
+   ]
+  },
+  "tentacool-screech": {
+   "id": "tentacool-screech",
+   "name": "Screech",
+   "type": "normal",
+   "kind": "special",
+   "power": 0,
+   "cooldown": 3,
+   "range": {
+    "min": 1,
+    "max": 2
+   },
+   "requiresLineOfSight": false,
+   "shape": {
+    "kind": "single"
+   },
+   "affects": "enemies",
+   "effects": [
+    {
+     "kind": "status",
+     "status": "exposed",
+     "duration": 2
+    }
+   ]
+  },
+  "tentacool-water-gun": {
+   "id": "tentacool-water-gun",
+   "name": "Water Gun",
+   "type": "water",
+   "kind": "special",
+   "category": "special",
+   "cooldown": 2,
+   "power": 50,
+   "range": {
+    "min": 1,
+    "max": 2
+   },
+   "requiresLineOfSight": true,
+   "shape": {
+    "kind": "single"
+   },
+   "affects": "enemies"
+  },
+  "tentacool-barrier": {
+   "id": "tentacool-barrier",
+   "name": "Barrier",
+   "type": "psychic",
+   "kind": "special",
+   "cooldown": 4,
+   "power": 0,
+   "range": {
+    "min": 0,
+    "max": 2
+   },
+   "requiresLineOfSight": false,
+   "shape": {
+    "kind": "single"
+   },
+   "affects": "allies",
+   "effects": [
+    {
+     "kind": "status",
+     "status": "fortified",
+     "duration": 2
+    }
+   ]
+  },
+  "tentacool-wring-out": {
+   "id": "tentacool-wring-out",
+   "name": "Wring Out",
+   "type": "normal",
+   "kind": "special",
+   "category": "special",
+   "cooldown": 3,
+   "power": 70,
+   "range": {
+    "min": 1,
+    "max": 1
+   },
+   "requiresLineOfSight": false,
+   "shape": {
+    "kind": "single"
+   },
+   "affects": "enemies"
+  },
+  "tentacool-scald": {
+   "id": "tentacool-scald",
+   "name": "Scald",
+   "type": "water",
+   "kind": "special",
+   "category": "special",
+   "cooldown": 4,
+   "power": 80,
+   "range": {
+    "min": 1,
+    "max": 2
+   },
+   "requiresLineOfSight": true,
+   "shape": {
+    "kind": "single"
+   },
+   "affects": "enemies",
+   "effects": [
+    {
+     "kind": "status",
+     "status": "burn",
+     "duration": 2
+    }
+   ]
+  },
+  "tentacool-toxic": {
+   "id": "tentacool-toxic",
+   "name": "Toxic",
+   "type": "poison",
+   "kind": "special",
+   "cooldown": 4,
+   "power": 0,
+   "range": {
+    "min": 1,
+    "max": 2
+   },
+   "requiresLineOfSight": true,
+   "shape": {
+    "kind": "single"
+   },
+   "affects": "enemies",
+   "effects": [
+    {
+     "kind": "status",
+     "status": "poison",
+     "duration": 5
+    }
+   ]
+  },
+  "tentacool-surf": {
+   "id": "tentacool-surf",
+   "name": "Surf",
+   "type": "water",
+   "kind": "special",
+   "category": "special",
+   "cooldown": 5,
+   "power": 85,
+   "range": {
+    "min": 1,
+    "max": 1
+   },
+   "requiresLineOfSight": false,
+   "shape": {
+    "kind": "line",
+    "length": 2
+   },
+   "affects": "enemies"
+  },
+  "tentacool-whirlpool": {
+   "id": "tentacool-whirlpool",
+   "name": "Whirlpool",
+   "type": "water",
+   "kind": "special",
+   "category": "special",
+   "cooldown": 4,
+   "power": 75,
+   "range": {
+    "min": 1,
+    "max": 2
+   },
+   "requiresLineOfSight": true,
+   "shape": {
+    "kind": "single"
+   },
+   "affects": "enemies",
+   "effects": [
+    {
+     "kind": "status",
+     "status": "slow",
+     "duration": 2
+    }
+   ]
+  }
+ },
+ "talents": {
+  "tentacool-acid-armor": {
+   "id": "tentacool-acid-armor",
+   "name": "Acid Armor",
+   "description": "Bond skill: melts into a liquid body, becoming Fortified for 3 turns.",
+   "grantsMove": "tentacool-acid-armor"
+  },
+  "tentacool-sludge-wave": {
+   "id": "tentacool-sludge-wave",
+   "name": "Sludge Wave",
+   "description": "Bond skill: a wave of sludge hits every adjacent foe (Power 90, Sp. Atk) and Poisons them 2 turns.",
+   "grantsMove": "tentacool-sludge-wave"
+  },
+  "tentacool-rapid-spin": {
+   "id": "tentacool-rapid-spin",
+   "name": "Rapid Spin",
+   "description": "Bond skill: spins, hitting every adjacent foe (Power 50, Attack), and slips free.",
+   "grantsMove": "tentacool-rapid-spin"
+  },
+  "tentacool-clear-body": {
+   "id": "tentacool-clear-body",
+   "name": "Clear Body",
+   "description": "Cannot be Slowed or Exposed; takes 10% less damage.",
+   "mods": {
+    "statusImmune": [
+     "slow",
+     "exposed"
+    ],
+    "damageTaken": 0.9
+   }
+  },
+  "tentacool-stinging-tentacles": {
+   "id": "tentacool-stinging-tentacles",
+   "name": "Stinging Tentacles",
+   "description": "Its hits on adjacent foes Poison them for 2 turns.",
+   "mods": {
+    "contactStatus": {
+     "status": "poison",
+     "duration": 2
+    }
+   }
+  },
+  "tentacool-screech": {
+   "id": "tentacool-screech",
+   "name": "Screech",
+   "description": "New skill: a piercing screech at a foe up to 2 hexes away leaves it Exposed for 2 turns.",
+   "grantsMove": "tentacool-screech"
+  },
+  "tentacool-water-gun": {
+   "id": "tentacool-water-gun",
+   "name": "Water Gun",
+   "description": "New skill: squirts water at a foe up to 2 hexes away (Power 50).",
+   "grantsMove": "tentacool-water-gun"
+  },
+  "tentacool-rain-dish": {
+   "id": "tentacool-rain-dish",
+   "name": "Rain Dish",
+   "description": "Heals 4% of max HP at the start of each turn.",
+   "mods": {
+    "healPerTurn": 0.04
+   }
+  },
+  "tentacool-venomous-tendrils": {
+   "id": "tentacool-venomous-tendrils",
+   "name": "Venomous Tendrils",
+   "description": "Deals 25% more damage to Poisoned or Slowed foes.",
+   "mods": {
+    "vsStatusIdDamage": {
+     "poison": 1.25,
+     "slow": 1.25
+    }
+   }
+  },
+  "tentacool-barrier": {
+   "id": "tentacool-barrier",
+   "name": "Barrier",
+   "description": "New skill: raises a barrier on itself or an ally up to 2 hexes away (Fortified for 2 turns).",
+   "grantsMove": "tentacool-barrier"
+  },
+  "tentacool-wring-out": {
+   "id": "tentacool-wring-out",
+   "name": "Wring Out",
+   "description": "New skill: squeezes a foe in its tentacles (Power 70).",
+   "grantsMove": "tentacool-wring-out"
+  },
+  "tentacool-many-tentacles": {
+   "id": "tentacool-many-tentacles",
+   "name": "Eighty Tentacles",
+   "description": "Deals 15% more damage to foes engaged with its allies.",
+   "mods": {
+    "vsEngagedDamage": 1.15
+   }
+  },
+  "tentacool-drifting-body": {
+   "id": "tentacool-drifting-body",
+   "name": "Drifting Body",
+   "description": "Steps away from engaged foes without drawing free strikes.",
+   "mods": {
+    "disengage": true
+   }
+  },
+  "tentacool-scald": {
+   "id": "tentacool-scald",
+   "name": "Scald",
+   "description": "New skill: boiling water at a foe up to 2 hexes away (Power 80), Burning it for 2 turns.",
+   "grantsMove": "tentacool-scald"
+  },
+  "tentacool-toxic": {
+   "id": "tentacool-toxic",
+   "name": "Toxic",
+   "description": "New skill: badly Poisons a foe up to 2 hexes away for 5 turns.",
+   "grantsMove": "tentacool-toxic"
+  },
+  "tentacool-lingering-venom": {
+   "id": "tentacool-lingering-venom",
+   "name": "Lingering Venom",
+   "description": "Statuses it inflicts last 1 more turn.",
+   "mods": {
+    "statusDurationBonus": 1
+   }
+  },
+  "tentacool-clinging-grip": {
+   "id": "tentacool-clinging-grip",
+   "name": "Clinging Grip",
+   "description": "Foes engaged with it always draw its free strike when stepping away.",
+   "mods": {
+    "noEscape": true
+   }
+  },
+  "tentacool-surf": {
+   "id": "tentacool-surf",
+   "name": "Surf",
+   "description": "New skill: a wave crashes down a 2-hex line (Power 85).",
+   "grantsMove": "tentacool-surf"
+  },
+  "tentacool-whirlpool": {
+   "id": "tentacool-whirlpool",
+   "name": "Whirlpool",
+   "description": "New skill: traps a foe up to 2 hexes away in a vortex (Power 75), Slowing it for 2 turns.",
+   "grantsMove": "tentacool-whirlpool"
+  },
+  "tentacool-toxic-tide": {
+   "id": "tentacool-toxic-tide",
+   "name": "Toxic Tide",
+   "description": "Deals 20% more damage to foes with a status; cannot be Poisoned or Paralyzed.",
+   "mods": {
+    "vsStatusDamage": 1.2,
+    "statusImmune": [
+     "poison",
+     "paralysis"
+    ]
+   }
+  },
+  "tentacool-cleansing-tide": {
+   "id": "tentacool-cleansing-tide",
+   "name": "Cleansing Tide",
+   "description": "Sheds statuses foes put on it at the start of its turn.",
+   "mods": {
+    "shedStatuses": true
+   }
+  },
+  "tentacool-tentacruels-reign": {
+   "id": "tentacool-tentacruels-reign",
+   "name": "Reef Tyrant",
+   "description": "Capstone. Its Poison moves deal 20% more; foes it afflicted spread it on fainting.",
+   "mods": {
+    "typeDamage": {
+     "poison": 1.2
+    },
+    "statusSpreadOnKo": true
+   }
+  },
+  "tentacool-ocean-hunter": {
+   "id": "tentacool-ocean-hunter",
+   "name": "Ocean Hunter",
+   "description": "Capstone. Its Water moves deal 20% more; heals 15% of max HP when it knocks out a foe.",
+   "mods": {
+    "typeDamage": {
+     "water": 1.2
+    },
+    "koHeal": 0.15
+   }
+  }
+ }
+}

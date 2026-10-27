@@ -1,0 +1,73 @@
+{
+ "talents": {
+  "goldeen-liquidation": {
+   "description": "Bond képesség: vízrobbanással nekicsapódik egy szomszédos ellenfélnek (Erő 100, Attack)."
+  },
+  "goldeen-upstream-charge": {
+   "description": "Kötelék-képesség: legfeljebb 2 hexnyire egy ellenfélnek lódul (Erő 60, Támadás), és leköti."
+  },
+  "goldeen-aqua-ring": {
+   "description": "Kötelék-képesség: vízfátyol 25 HP-t gyógyít rajta és a szomszédos szövetségesein."
+  },
+  "goldeen-water-veil": {
+   "description": "Nem lehet megégetni."
+  },
+  "goldeen-sharp-horn": {
+   "description": "15%-kal többet sebez a szomszédos ellenfeleknek."
+  },
+  "goldeen-water-pulse": {
+   "description": "Új képesség: lüktető vízgyűrű egy legfeljebb 2 hexnyire lévő ellenfélre (Erő 60)."
+  },
+  "goldeen-flail": {
+   "description": "Új képesség: vadul csapkod egy szomszédos ellenfélre (Erő 65)."
+  },
+  "goldeen-gilded-scales": {
+   "description": "20%-kal kevesebb sebzést kap, amíg teljes a HP-ja."
+  },
+  "goldeen-drilling-strikes": {
+   "description": "Minden egymás utáni találat ugyanazon az ellenfélen 10%-kal többet sebez, legfeljebb 3-szor."
+  },
+  "goldeen-take-down": {
+   "description": "Új képesség: szarvával előre végigront 2 hexnyi vonalon (Erő 80)."
+  },
+  "goldeen-soak": {
+   "description": "Új képesség: eláztat egy legfeljebb 2 hexnyire lévő ellenfelet, 2 körre Megjelölve."
+  },
+  "goldeen-graceful-fins": {
+   "description": "Szabad csapás nélkül lép el a lekötött ellenfelektől."
+  },
+  "goldeen-waterfall-climber": {
+   "description": "20%-kal többet sebez, amíg HP-ja a fele alatt van."
+  },
+  "goldeen-double-edge": {
+   "description": "Új képesség: vakmerő, teljes testes roham egy szomszédos ellenfélre (Erő 85)."
+  },
+  "goldeen-hydro-pump": {
+   "description": "Új képesség: nagynyomású vízsugár egy legfeljebb 2 hexnyire lévő ellenfélre (Erő 95)."
+  },
+  "goldeen-ornate-fins": {
+   "description": "Minden köre elején max HP-ja 4%-át gyógyítja."
+  },
+  "goldeen-horn-momentum": {
+   "description": "2 mozgáspontot visszanyer, ha a saját körében kiüt egy ellenfelet."
+  },
+  "goldeen-horn-drill": {
+   "description": "Új képesség: pörgő szarvát mélyen egy szomszédos ellenfélbe fúrja (Erő 100)."
+  },
+  "goldeen-aqua-tail": {
+   "description": "Új képesség: farkával csap le egy szomszédos ellenfélre (Erő 85), 1 hexnyit lökve."
+  },
+  "goldeen-pinning-horn": {
+   "description": "Az általa lekötött ellenfelek 15%-kal több sebzést kapnak a szövetségeseitől."
+  },
+  "goldeen-scale-shimmer": {
+   "description": "10%-kal kevesebb sebzést szenved el."
+  },
+  "goldeen-king-of-the-river": {
+   "description": "Csúcs. Minden kiütés 1 Köteléket ad a csapatnak, és újra használhatja az alaptámadását."
+  },
+  "goldeen-golden-grace": {
+   "description": "Csúcs. Körönként lerázza az ellenfelek által rárakott állapotokat; 15%-kal kevesebb sebzést kap."
+  }
+ }
+}

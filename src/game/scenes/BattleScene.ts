@@ -254,6 +254,13 @@ export class BattleScene extends Phaser.Scene {
       }
   }
 
+  /** The middle of the other side's starting hexes. */
+  private startLookAt(side: "player" | "enemy"): Point | null {
+    const pts = side === "enemy" ? this.scenario.deploymentZone : this.scenario.enemies.map((e) => e.pos);
+    if (!pts.length) return null;
+    return { x: Math.round(pts.reduce((s, p) => s + p.x, 0) / pts.length), y: Math.round(pts.reduce((s, p) => s + p.y, 0) / pts.length) };
+  }
+
   private createUnitView(id: string, speciesId: string, side: "player" | "enemy", pos: Point): void {
     const species = CONTENT.species[speciesId]!;
     const { x, y } = tileToWorld(pos);
@@ -263,7 +270,9 @@ export class BattleScene extends Phaser.Scene {
     const label = this.add
       .text(0, -1, species.name.slice(0, 2), { fontFamily: FONT, fontSize: "14px", color: "#10141c", fontStyle: "bold" })
       .setOrigin(0.5);
-    const facing = side === "player" ? FACE_RIGHT : FACE_LEFT;
+    // At the start the two sides face each other: enemies look at the deployment spots, the party at the enemies.
+    const look = this.startLookAt(side);
+    const facing = look ? facingFor(tileToWorld(look).x - x, tileToWorld(look).y - y) : side === "player" ? FACE_RIGHT : FACE_LEFT;
     const sprite = hasSprite(speciesId)
       ? this.add.sprite(0, 14, `${speciesId}-idle`).setOrigin(0.5, 0.82).setScale(1.25).play(animKey(speciesId, "idle", facing))
       : null;

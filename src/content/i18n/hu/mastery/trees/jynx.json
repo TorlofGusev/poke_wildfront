@@ -1,0 +1,73 @@
+{
+ "talents": {
+  "jynx-sheer-cold": {
+   "description": "Kötelék-képesség: abszolút hideg hulláma max. 3 hexnyire (Erő 100, Sp. Atk), 1 körre lefagyaszt."
+  },
+  "jynx-powder-snow": {
+   "description": "Kötelék-képesség: hózápor max. 1 hexnyire (Erő 55, Sp. Atk), 1 körre lassít egy 1 hex körzetet."
+  },
+  "jynx-reflect": {
+   "description": "Kötelék-képesség: csillogó fal 2 körre Megerősíti őt és a szomszédos szövetségeseit."
+  },
+  "jynx-graceful-sway": {
+   "description": "Szabad csapás nélkül lép el a lekötött ellenfelektől: kitáncol a karjaik közül."
+  },
+  "jynx-hypnotic-voice": {
+   "description": "Az általa okozott állapotok 1 körrel tovább tartanak."
+  },
+  "jynx-confusion": {
+   "description": "Új képesség: gyenge telekinetikus csapás egy legfeljebb 2 hexnyire lévő ellenfélre (Erő 55)."
+  },
+  "jynx-icy-wind": {
+   "description": "Új képesség: dermesztő szél egy legfeljebb 2 hexnyire lévő ellenfélre (Erő 45), 2 körre lelassítja."
+  },
+  "jynx-glacial-voice": {
+   "description": "Jég támadásai 15%-kal többet sebeznek."
+  },
+  "jynx-nightmare-muse": {
+   "description": "25%-kal többet sebez az alvó ellenfeleknek."
+  },
+  "jynx-psybeam": {
+   "description": "Új képesség: különös pszichikus sugár egy max. 2 hexnyi ellenfélre (Erő 55); 2 körig Zavarodott."
+  },
+  "jynx-calm-mind": {
+   "description": "Új képesség: csendben elméjére összpontosít, és 1 körre Összpontosított lesz."
+  },
+  "jynx-cold-heart": {
+   "description": "20%-kal többet sebez, amíg HP-ja a fele alatt van."
+  },
+  "jynx-frozen-veil": {
+   "description": "20%-kal kevesebb sebzést kap, amíg teljes a HP-ja."
+  },
+  "jynx-ice-beam": {
+   "description": "Új képesség: jeges sugár egy legfeljebb 2 hexnyire lévő ellenfélre (Erő 85), 1 körre lefagyasztja."
+  },
+  "jynx-dream-eater": {
+   "description": "Új képesség: felfalja egy legfeljebb 2 hexnyire lévő ellenfél álmait (Erő 90)."
+  },
+  "jynx-snow-veil": {
+   "description": "10%-kal kevesebb sebzést szenved el."
+  },
+  "jynx-bewitching-step": {
+   "description": "2 mozgáspontot visszanyer, ha a saját körében kiüt egy ellenfelet."
+  },
+  "jynx-freeze-dry": {
+   "description": "Új képesség: villámgyorsan lefagyaszt egy legfeljebb 2 hexnyire lévő ellenfelet (Erő 95)."
+  },
+  "jynx-psyshock": {
+   "description": "Új képesség: pszichikus hullám egy max. 2 hexnyi ellenfélre (Erő 80); 1 körre Exposed lesz."
+  },
+  "jynx-royal-poise": {
+   "description": "Csatánként egyszer 1 HP-val túlél egy kiütő csapást."
+  },
+  "jynx-siren-song": {
+   "description": "Minden kombója 1 Köteléket ad a csapatnak."
+  },
+  "jynx-queen-of-frost": {
+   "description": "Csúcs. Távolsági támadásai 1 hexszel messzebb érnek; kiütés után képességei újratöltődnek."
+  },
+  "jynx-kiss-of-winter": {
+   "description": "Csúcs. 20%-kal többet sebez állapotos ellenfeleknek; ha egy általa sújtott elájul, a szomszédok elkapják."
+  }
+ }
+}

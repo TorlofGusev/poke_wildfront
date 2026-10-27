@@ -1,0 +1,73 @@
+{
+ "talents": {
+  "ekans-gunk-shot": {
+   "description": "Bond képesség: mocskos szemetet zúdít az ellenfélre (Power 100, Attack), 2 körre Poison."
+  },
+  "ekans-sucker-punch": {
+   "description": "Bond képesség: lecsap, mielőtt az ellenfél mozdulhatna (Power 60, Attack)."
+  },
+  "ekans-coil": {
+   "description": "Bond képesség: szorosan feltekeredik, 1 körre Fortified és Focused lesz."
+  },
+  "ekans-venom-fangs": {
+   "description": "A Poison típusú támadásai 15%-kal többet sebeznek."
+  },
+  "ekans-intimidate": {
+   "description": "10%-kal kevesebb sebzést kap: az ellenfelek visszafogják magukat a tekintetétől."
+  },
+  "ekans-poison-sting": {
+   "description": "Új képesség: mérgező szúrás egy szomszédos ellenfélbe, 2 körre Poison-t okoz (Power 50)."
+  },
+  "ekans-screech": {
+   "description": "Új képesség: fülsértő sikoly egy legfeljebb 2 hexnyire lévő ellenfélre, 2 körre Exposed."
+  },
+  "ekans-ambusher": {
+   "description": "20%-kal többet sebez a teljes HP-n lévő ellenfeleknek."
+  },
+  "ekans-coiled-grip": {
+   "description": "Az általa lekötött ellenfelek 15%-kal több sebzést kapnak a szövetségeseitől."
+  },
+  "ekans-crunch": {
+   "description": "Új képesség: éles fogaival ráharap az ellenfélre (Power 75)."
+  },
+  "ekans-stockpile": {
+   "description": "Új képesség: erőt halmoz fel, 2 körre Fortified lesz."
+  },
+  "ekans-sudden-strike": {
+   "description": "Ha a saját körében kiüt egy ellenfelet, 2 mozgáspontot visszanyer."
+  },
+  "ekans-fresh-scales": {
+   "description": "Minden köre elején a max HP 4%-át gyógyítja."
+  },
+  "ekans-body-slam": {
+   "description": "Új képesség: teljes súlyával az ellenfélre veti magát (Erő 85), 1 körre Paralysis."
+  },
+  "ekans-swallow": {
+   "description": "Új képesség: lenyeli a felhalmozott erőt, 60 HP-t gyógyul."
+  },
+  "ekans-venom-hunter": {
+   "description": "20%-kal többet sebez a megmérgezett (Poison) ellenfeleknek."
+  },
+  "ekans-terrifying-hood": {
+   "description": "A vele harcoló ellenfelek nem léphetnek el szabad ütése nélkül."
+  },
+  "ekans-cross-poison": {
+   "description": "Új képesség: keresztben vágó mérges csapás (Erő 90), 1 körre Exposed lesz az ellenfél."
+  },
+  "ekans-haze": {
+   "description": "Új képesség: fekete köd legfeljebb 1 hexnyire, 1 hex körzetben 2 körre Slow."
+  },
+  "ekans-ambush-coil": {
+   "description": "15%-kal többet sebez a szomszédos ellenfeleknek."
+  },
+  "ekans-thick-coils": {
+   "description": "Teljes HP-n 20%-kal kevesebb sebzést kap."
+  },
+  "ekans-king-cobra": {
+   "description": "Csúcsképesség. Ha kiüt valakit, újra támad és 15% HP-t gyógyul; +20% sebzés státuszos ellenfélre."
+  },
+  "ekans-endless-coils": {
+   "description": "Csúcsképesség. Csatánként egyszer 1 HP-val túlél egy halálos ütést; 8 sebzést ad vissza a szomszédos támadóknak."
+  }
+ }
+}

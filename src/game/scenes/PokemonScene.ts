@@ -17,24 +17,18 @@ import {
 } from "../../core/party";
 import {
   basicMoveOf,
-  chooseRole,
+  chooseFocus,
   chooseTalent,
-  masteryGrid,
+  focusGrowth,
+  focusOptions,
   memberStats,
-  roleGrowth,
   pendingChoice,
   respecCost,
   chooseEvolution,
   evolutionChoices,
   memberGrid,
-  pathName,
-  pathOf,
-  pathOptions,
-  pathStartSkill,
-  resolvePath,
   rowPick,
   setActiveMoves,
-  talentFor,
   talentOptions,
   xpToNext,
 } from "../../core/progression";
@@ -42,7 +36,7 @@ import { STAT_NAMES, type StatName } from "../../core/battle";
 import { session } from "../session";
 import { portraitKey } from "../sprites";
 import { Button } from "../ui/Button";
-import { describeGrowth, describeItem, describeTalent, STAT_LABEL, STAT_SHORT, statLine } from "../ui/describeEffects";
+import { describeItem, focusLabel, describeTalent, STAT_LABEL, STAT_SHORT, statLine } from "../ui/describeEffects";
 import { describeMove } from "../ui/describeMove";
 import { tag } from "../ui/markup";
 import { t } from "../i18n";
@@ -60,7 +54,6 @@ export class PokemonScene extends Phaser.Scene {
   private message = "";
   private tab: Tab = "stats";
   private selectedTalent: string | null = null;
-  private previewRole: string | null = null;
   private selectedMove: string | null = null;
 
   constructor() {
@@ -148,14 +141,13 @@ export class PokemonScene extends Phaser.Scene {
   private renderDetail(m: PartyMember, add: <T extends Phaser.GameObjects.GameObject>(o: T) => T): void {
     const s = CONTENT.species[m.speciesId]!;
     const { stats, maxHp } = memberStats(CONTENT, PROGRESSION, m);
-    const role = m.role ? PROGRESSION.roles[m.role] : null;
     const held = m.heldItem ? PROGRESSION.items[m.heldItem] : null;
     const evo = s.evolution ? t(" · evolves at Lv {lv}", { lv: s.evolution.level }) : "";
     const header = [
       `${tag("title", s.name)}  ${s.types.map((t) => tag(t, t)).join("/")}  Lv ${tag("num", m.level)}  XP ${m.xp}/${xpToNext(PROGRESSION, m.level)}${tag("dim", evo)}`,
       `HP ${tag(m.hp > 0 ? "heal" : "ko", `${m.hp}/${maxHp}`)}  ${statLine(stats)}  KO ${tag(m.knockouts ? "ko" : "dim", `${m.knockouts}/${KNOCKOUTS_TO_DEATH}`)}`,
       ...(s.ability && CONTENT.abilities[s.ability] ? [`${t("Ability:")} ${tag("special", CONTENT.abilities[s.ability]!.name)} ${tag("dim", CONTENT.abilities[s.ability]!.description)}`] : []),
-      `${t("Role:")} ${role ? `${tag("special", role.name)}` : tag("dim", m.level < PROGRESSION.rules.roleLevel ? t("chosen at Lv {lv}", { lv: PROGRESSION.rules.roleLevel }) : t("not chosen"))}  ${t("Held:")} ${held ? tag("num", held.name) : tag("dim", t("nothing"))}`,
+      `${t("Focus:")} ${m.focus ? tag("special", focusLabel(m.focus)) : tag("dim", m.level < PROGRESSION.rules.focusLevel ? t("chosen at Lv {lv}", { lv: PROGRESSION.rules.focusLevel }) : t("not chosen"))}  ${t("Held:")} ${held ? tag("num", held.name) : tag("dim", t("nothing"))}`,
     ];
     let y = 48;
     if (this.textures.exists(portraitKey(m.speciesId))) add(this.add.image(DETAIL_X + DETAIL_W - 32, 12 + 32, portraitKey(m.speciesId)).setDisplaySize(64, 64));
@@ -185,14 +177,14 @@ export class PokemonScene extends Phaser.Scene {
     else this.renderStats(m, y, add);
   }
 
-  /** Where every stat comes from (species, role growth, points, talents), then the stat points to spend. */
+  /** Where every stat comes from (species, focus growth, points, talents), then the stat points to spend. */
   private renderStats(m: PartyMember, y: number, add: <T extends Phaser.GameObjects.GameObject>(o: T) => T): void {
     const s = CONTENT.species[m.speciesId]!;
     const { stats, maxHp } = memberStats(CONTENT, PROGRESSION, m);
-    const growth = roleGrowth(PROGRESSION, m.role, m.level);
+    const growth = focusGrowth(PROGRESSION, m.focus, m.level);
     const fromTalents = (st: StatName) => m.talents.reduce((sum, t) => sum + (PROGRESSION.talents[t]?.stats?.[st] ?? 0), 0);
     const cols = [0, 150, 260, 380, 490, 600];
-    const head = [t("Stat"), t("Species"), t("Role growth"), t("Points"), t("Masteries"), t("Total")];
+    const head = [t("Stat"), t("Species"), t("Focus growth"), t("Points"), t("Masteries"), t("Total")];
     head.forEach((h, i) => add(new RichText(this, DETAIL_X + cols[i]!, y, 140, 12)).setMarkup(tag("dim", h)));
     y += 20;
     for (const st of STAT_NAMES) {
@@ -201,11 +193,9 @@ export class PokemonScene extends Phaser.Scene {
       cells.forEach((c, i) => add(new RichText(this, DETAIL_X + cols[i]!, y, 140, 13)).setMarkup(c));
       y += 20;
     }
-    const role = m.role ? PROGRESSION.roles[m.role]! : null;
     const r = CONTENT.rules;
     y += 4 + add(new RichText(this, DETAIL_X, y + 4, DETAIL_W, 12)).setMarkup([
       t("Max HP {max} = {base} + {perPoint} × HP + Lv growth ({perLevel} + {perDef} × species Def per level)", { max: tag("num", maxHp), base: r.hpBase, perPoint: r.hpPerPoint, perLevel: r.hpPerLevel, perDef: r.hpPerLevelPerDefense }),
-      role ? t("{role} growth per level: {growth}", { role: tag("special", role.name), growth: describeGrowth(role) }) : tag("dim", t("No role yet: role growth starts when a role is chosen (Lv {lv}+), counted from Lv 1.", { lv: PROGRESSION.rules.roleLevel })),
     ].join("\n")) + 10;
     this.renderPoints(m, y, add);
   }
@@ -229,7 +219,7 @@ export class PokemonScene extends Phaser.Scene {
       });
       y += candies > 0 ? 56 : 30;
       y += add(new RichText(this, DETAIL_X, y, DETAIL_W, 11)).setMarkup(tag("dim",
-        t("HP: +{hp} max HP per point · Atk/Def: physical damage dealt/taken · SpA/SpD: special damage ({types} moves) · Speed: +1 movement every {speed} points, acts earlier", { hp: CONTENT.rules.hpPerPoint, types: CONTENT.rules.specialTypes.join(", "), speed: CONTENT.rules.speedPerMove }))) + 6;
+        t("HP: +{hp} max HP per point · Atk/Def: physical damage dealt/taken · SpA/SpD: special damage ({types} moves) · Speed: movement {steps}, acts earlier", { hp: CONTENT.rules.hpPerPoint, types: CONTENT.rules.specialTypes.join(", "), steps: CONTENT.rules.moveBySpeed.map((s) => `${s.speed}+ → ${s.move}`).join(", ") }))) + 6;
     }
     return y;
   }
@@ -286,7 +276,7 @@ export class PokemonScene extends Phaser.Scene {
   }
 
   /**
-   * The mastery grid on one page (as in Wartales): the role row, then one row per level whose
+   * The mastery grid on one page (as in Wartales): the focus row, then one row per level whose
    * masteries exclude each other (left), and the exact rules of the selected cell with its action (right).
    */
   private renderTalents(m: PartyMember, y: number, add: <T extends Phaser.GameObjects.GameObject>(o: T) => T): void {
@@ -307,22 +297,16 @@ ${into.types.map((ty) => tag(ty, ty)).join("/")}`);
       });
       return;
     }
-    // The path chosen at the role level: a type for dual types, else a role. Before choosing, preview one.
-    const roles = pathOptions(CONTENT, PROGRESSION, m);
-    const chosen = pathOf(CONTENT, m);
-    const role = chosen ?? (this.previewRole && roles.includes(this.previewRole) ? this.previewRole : roles[0] ?? null);
-    // The member's own grid once it has a path (it may include an evolution's gift row), else a preview.
-    const grid = chosen ? memberGrid(CONTENT, PROGRESSION, m) : masteryGrid(CONTENT, PROGRESSION, m.speciesId, role);
-    const pathLabel = (p: string) => pathName(PROGRESSION, p);
-    // Skills take the names of the path's type (a Poison Tank's guard move is the Poison version).
-    const pathTypes = role ? [resolvePath(CONTENT, m.speciesId, role).type] : s.types;
+    // The focus row (stat + Bond skill), then the line's rows; the whole tree can be looked at before choosing.
+    const focuses = focusOptions(PROGRESSION, m.speciesId);
+    const grid = memberGrid(PROGRESSION, m);
     const open = new Set(talentOptions(CONTENT, PROGRESSION, m));
     const waiting = grid.filter((r) => r.level <= m.level && !rowPick(r, m)).length;
 
-    const status = m.level < PROGRESSION.rules.roleLevel
-      ? t("The path is chosen at Lv {lv}; until then you can look around.", { lv: PROGRESSION.rules.roleLevel })
-      : pending === "role"
-        ? t("★ Choose a path first: it decides the rows below.")
+    const status = m.level < PROGRESSION.rules.focusLevel
+      ? t("The focus is chosen at Lv {lv}; until then you can look around.", { lv: PROGRESSION.rules.focusLevel })
+      : pending === "focus"
+        ? t("★ Choose a focus first: its stat grows every level and its Bond skill scales with it.")
         : pending === "talent"
           ? waiting > 1 ? t("★ {n} rows waiting: pick one mastery in each.", { n: waiting }) : t("★ {n} row waiting: pick one mastery in each.", { n: waiting })
           : t("All reached rows are picked.");
@@ -337,7 +321,6 @@ ${into.types.map((ty) => tag(ty, ty)).join("/")}`);
       const mark = state === "picked" ? "✓ " : state === "open" ? "★ " : "";
       const b = new Button(this, x, cy, w, 24, `${mark}${label}`, () => {
         this.selectedTalent = key;
-        if (key.startsWith("role:") && m.role === null) this.previewRole = key.slice(5);
         this.render();
       }).setHighlighted(this.selectedTalent === key || state === "picked").centerLabel();
       // Masteries that teach a new move wear that move's type colour.
@@ -350,29 +333,35 @@ ${into.types.map((ty) => tag(ty, ty)).join("/")}`);
       add(new RichText(this, DETAIL_X, cy + 5, labelW, 12)).setMarkup(tag(m.level >= lv ? "num" : "dim", `Lv ${lv}`));
     const lines = add(this.add.graphics());
 
-    // The role row.
+    // The focus row.
     let cy = y;
-    rowLabel(cy, PROGRESSION.rules.roleLevel);
-    const roleW = Math.min(180, Math.floor((gridW - 6 * (roles.length - 1)) / Math.max(1, roles.length)));
-    // Rows are centred in the grid area, so 2-option rows sit under the middle of the 4 roles.
+    rowLabel(cy, PROGRESSION.rules.focusLevel);
+    const focusW = Math.min(180, Math.floor((gridW - 6 * (focuses.length - 1)) / Math.max(1, focuses.length)));
+    // Rows are centred in the grid area.
     const rowX = (n: number, w: number) => DETAIL_X + labelW + (gridW - (n * w + 6 * (n - 1))) / 2;
-    roles.forEach((r, i) => {
-      const state = chosen === r ? "picked" : chosen ? "excluded" : pending === "role" ? "open" : "locked";
-      cell(rowX(roles.length, roleW) + i * (roleW + 6), cy, roleW, pathLabel(r), `role:${r}`, state, TYPE_COLORS[resolvePath(CONTENT, m.speciesId, r).type]);
+    const skillType = (id: string) => {
+      const mv = PROGRESSION.talents[id]?.grantsMove;
+      const ty = mv ? CONTENT.moves[mv]?.type : undefined;
+      return ty ? TYPE_COLORS[ty] : undefined;
+    };
+    focuses.forEach((f, i) => {
+      const state = m.talents.includes(f.skill) ? "picked" : m.focus ? "excluded" : pending === "focus" ? "open" : "locked";
+      const fx = rowX(focuses.length, focusW) + i * (focusW + 6);
+      cell(fx, cy, focusW, PROGRESSION.talents[f.skill]?.name ?? f.skill, `focus:${f.skill}`, state, skillType(f.skill));
+      // Under the skill: what the pick adds to its stat.
+      add(new RichText(this, fx, cy + 26, focusW, 11)).setMarkup(tag("good", `+${PROGRESSION.rules.focusBonus} ${STAT_LABEL[f.stat]}`));
     });
-    cy += rowH;
+    cy += rowH + 14;
 
     // Mastery rows.
     for (const row of grid) {
       lines.lineStyle(1, 0x2a3245, 1).lineBetween(DETAIL_X, cy - 3, DETAIL_X + labelW + gridW, cy - 3);
       rowLabel(cy, row.level);
-      const pick = chosen === role ? rowPick(row, m) : null;
+      const pick = rowPick(row, m);
       const w = Math.min(180, Math.floor((gridW - 6 * (row.options.length - 1)) / row.options.length));
       row.options.forEach((id, i) => {
         const state = pick === id ? "picked" : pick ? "excluded" : open.has(id) ? "open" : "locked";
-        const tal = talentFor(CONTENT, PROGRESSION, id, pathTypes);
-        const moveType = tal.grantsMove ? CONTENT.moves[tal.grantsMove]?.type : undefined;
-        cell(rowX(row.options.length, w) + i * (w + 6), cy, w, tal.name, id, state, moveType ? TYPE_COLORS[moveType] : undefined);
+        cell(rowX(row.options.length, w) + i * (w + 6), cy, w, PROGRESSION.talents[id]?.name ?? id, id, state, skillType(id));
       });
       cy += rowH;
     }
@@ -381,25 +370,23 @@ ${into.types.map((ty) => tag(ty, ty)).join("/")}`);
     const infoX = DETAIL_X + DETAIL_W - infoW;
     const key = this.selectedTalent;
     let iy = y;
-    if (key?.startsWith("role:")) {
-      const r = key.slice(5);
-      const { role: roleId, type } = resolvePath(CONTENT, m.speciesId, r);
-      const def = PROGRESSION.roles[roleId]!;
+    const focus = key?.startsWith("focus:") ? focuses.find((f) => `focus:${f.skill}` === key) : undefined;
+    if (focus) {
+      const skill = PROGRESSION.talents[focus.skill]!;
       iy += add(new RichText(this, infoX, iy, infoW, 12)).setMarkup([
-        tag("title", pathLabel(r)),
-        tag("dim", t("Path · Lv {lv}", { lv: PROGRESSION.rules.roleLevel })),
-        def.description,
-        ...(pathStartSkill(PROGRESSION, r, m.speciesId) ? [t("Starts with: {skill}", { skill: tag("special", talentFor(CONTENT, PROGRESSION, pathStartSkill(PROGRESSION, r, m.speciesId)!, s.types).name) })] : []),
-        tag("dim", t("Its {type} masteries and skills fill the tree.", { type: type.charAt(0).toUpperCase() + type.slice(1) })),
-        t("Grows every level: {growth}", { growth: tag("good", describeGrowth(def)) }),
+        tag("title", skill.name),
+        tag("dim", t("Focus · Lv {lv}", { lv: PROGRESSION.rules.focusLevel })),
+        t("{stat} +{n} now, and it keeps growing as it levels up.", { stat: tag("good", STAT_LABEL[focus.stat]), n: PROGRESSION.rules.focusBonus }),
+        t("Learns the Bond skill {skill}:", { skill: tag("special", skill.name) }),
+        ...describeTalent(CONTENT, PROGRESSION, skill),
       ].join("\n")) + 8;
-      if (pending === "role")
-        add(new Button(this, infoX, iy, infoW, 28, t("Choose {path}", { path: pathLabel(r) }), () =>
-          this.act(() => this.updateMember(m, (x2) => chooseRole(CONTENT, PROGRESSION, x2, r)), t("{name} chose {path}.", { name: s.name, path: pathLabel(r) }))).setHighlighted(true));
+      if (pending === "focus")
+        add(new Button(this, infoX, iy, infoW, 28, t("Choose {focus}", { focus: skill.name }), () =>
+          this.act(() => this.updateMember(m, (x2) => chooseFocus(CONTENT, PROGRESSION, x2, focus.skill)), t("{name} chose {focus}.", { name: s.name, focus: skill.name }))).setHighlighted(true));
     } else if (key && PROGRESSION.talents[key]) {
-      const tal = talentFor(CONTENT, PROGRESSION, key, pathTypes);
+      const tal = PROGRESSION.talents[key]!;
       const row = grid.find((r) => r.options.includes(key));
-      const kind = tal.grantsMove ? t("Skill") : tal.requiresType ? t("{type} type mastery", { type: tal.requiresType }) : tal.stats && !tal.mods ? t("Stat mastery") : t("Mastery");
+      const kind = tal.grantsMove ? t("Skill") : t("Passive");
       iy += add(new RichText(this, infoX, iy, infoW, 12)).setMarkup(
         [tag("title", tal.name), tag("dim", `${kind} · Lv ${row?.level ?? "?"}`), ...describeTalent(CONTENT, PROGRESSION, tal)].join("\n")) + 8;
       if (open.has(key)) {
@@ -414,10 +401,10 @@ ${into.types.map((ty) => tag(ty, ty)).join("/")}`);
     }
 
     // Reset (respec) for Pokédollars.
-    if (m.role !== null) {
+    if (m.focus !== null) {
       const cost = respecCost(PROGRESSION, m);
-      add(new Button(this, infoX, 470, infoW, 26, t("Reset role & masteries (₽{cost})", { cost }), () =>
-        this.act(() => session.update(respecMember(CONTENT, PROGRESSION, session.game, m.uid)), t("{name} forgot its role and masteries.", { name: s.name })))
+      add(new Button(this, infoX, 470, infoW, 26, t("Reset focus & masteries (₽{cost})", { cost }), () =>
+        this.act(() => session.update(respecMember(CONTENT, PROGRESSION, session.game, m.uid)), t("{name} forgot its focus and masteries.", { name: s.name })))
         .setEnabled(session.game.money >= cost));
     }
   }

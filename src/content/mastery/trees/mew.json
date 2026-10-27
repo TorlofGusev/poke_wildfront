@@ -1,0 +1,477 @@
+{
+ "line": [
+  "mew"
+ ],
+ "focus": [
+  {
+   "stat": "spAttack",
+   "skill": "mew-swift"
+  },
+  {
+   "stat": "attack",
+   "skill": "mew-zen-headbutt"
+  },
+  {
+   "stat": "speed",
+   "skill": "mew-baton-pass"
+  }
+ ],
+ "rows": {
+  "4": [
+   "mew-bubble-shield",
+   "mew-psychic-heritage"
+  ],
+  "6": [
+   "mew-soft-boiled",
+   "mew-psywave"
+  ],
+  "9": [
+   "mew-curious-mind",
+   "mew-adaptive-genes"
+  ],
+  "12": [
+   "mew-dazzling-gleam",
+   "mew-dizzy-punch"
+  ],
+  "15": [
+   "mew-mischief",
+   "mew-metronome"
+  ],
+  "18": [
+   "mew-nasty-plot",
+   "mew-iron-tail"
+  ],
+  "21": [
+   "mew-weightless",
+   "mew-elusive"
+  ],
+  "24": [
+   "mew-psyshock",
+   "mew-barrier"
+  ],
+  "27": [
+   "mew-playful",
+   "mew-copycat"
+  ],
+  "30": [
+   "mew-ancestor-of-all",
+   "mew-mythical"
+  ]
+ },
+ "moves": {
+  "mew-swift": {
+   "id": "mew-swift",
+   "name": "Swift",
+   "type": "normal",
+   "kind": "bond",
+   "category": "special",
+   "bondCost": 2,
+   "power": 85,
+   "range": {
+    "min": 1,
+    "max": 3
+   },
+   "requiresLineOfSight": false,
+   "shape": {
+    "kind": "single"
+   },
+   "affects": "enemies"
+  },
+  "mew-zen-headbutt": {
+   "id": "mew-zen-headbutt",
+   "name": "Zen Headbutt",
+   "type": "psychic",
+   "kind": "bond",
+   "category": "physical",
+   "bondCost": 2,
+   "power": 100,
+   "range": {
+    "min": 1,
+    "max": 1
+   },
+   "requiresLineOfSight": false,
+   "shape": {
+    "kind": "single"
+   },
+   "affects": "enemies"
+  },
+  "mew-baton-pass": {
+   "id": "mew-baton-pass",
+   "name": "Baton Pass",
+   "type": "normal",
+   "kind": "bond",
+   "bondCost": 2,
+   "power": 0,
+   "range": {
+    "min": 1,
+    "max": 3
+   },
+   "requiresLineOfSight": false,
+   "shape": {
+    "kind": "single"
+   },
+   "affects": "allies",
+   "effects": [
+    {
+     "kind": "status",
+     "status": "hasted",
+     "duration": 1
+    },
+    {
+     "kind": "status",
+     "status": "focused",
+     "duration": 1
+    }
+   ]
+  },
+  "mew-soft-boiled": {
+   "id": "mew-soft-boiled",
+   "name": "Soft-Boiled",
+   "type": "normal",
+   "kind": "special",
+   "cooldown": 4,
+   "power": 0,
+   "range": {
+    "min": 0,
+    "max": 2
+   },
+   "requiresLineOfSight": false,
+   "shape": {
+    "kind": "single"
+   },
+   "affects": "allies",
+   "effects": [
+    {
+     "kind": "heal",
+     "amount": 30
+    }
+   ]
+  },
+  "mew-psywave": {
+   "id": "mew-psywave",
+   "name": "Psywave",
+   "type": "psychic",
+   "kind": "special",
+   "category": "special",
+   "cooldown": 2,
+   "power": 50,
+   "range": {
+    "min": 1,
+    "max": 2
+   },
+   "requiresLineOfSight": true,
+   "shape": {
+    "kind": "single"
+   },
+   "affects": "enemies"
+  },
+  "mew-dazzling-gleam": {
+   "id": "mew-dazzling-gleam",
+   "name": "Dazzling Gleam",
+   "type": "normal",
+   "kind": "special",
+   "category": "special",
+   "cooldown": 3,
+   "power": 60,
+   "range": {
+    "min": 1,
+    "max": 1
+   },
+   "requiresLineOfSight": true,
+   "shape": {
+    "kind": "burst",
+    "radius": 1
+   },
+   "affects": "enemies"
+  },
+  "mew-dizzy-punch": {
+   "id": "mew-dizzy-punch",
+   "name": "Dizzy Punch",
+   "type": "normal",
+   "kind": "special",
+   "category": "physical",
+   "cooldown": 3,
+   "power": 65,
+   "range": {
+    "min": 1,
+    "max": 1
+   },
+   "requiresLineOfSight": false,
+   "shape": {
+    "kind": "single"
+   },
+   "affects": "enemies",
+   "effects": [
+    {
+     "kind": "status",
+     "status": "confused",
+     "duration": 2
+    }
+   ]
+  },
+  "mew-nasty-plot": {
+   "id": "mew-nasty-plot",
+   "name": "Nasty Plot",
+   "type": "normal",
+   "kind": "special",
+   "cooldown": 4,
+   "power": 0,
+   "range": {
+    "min": 0,
+    "max": 0
+   },
+   "requiresLineOfSight": false,
+   "shape": {
+    "kind": "single"
+   },
+   "affects": "allies",
+   "effects": [
+    {
+     "kind": "status",
+     "status": "focused",
+     "duration": 2
+    }
+   ]
+  },
+  "mew-iron-tail": {
+   "id": "mew-iron-tail",
+   "name": "Iron Tail",
+   "type": "normal",
+   "kind": "special",
+   "category": "physical",
+   "cooldown": 4,
+   "power": 90,
+   "range": {
+    "min": 1,
+    "max": 1
+   },
+   "requiresLineOfSight": false,
+   "shape": {
+    "kind": "single"
+   },
+   "affects": "enemies",
+   "effects": [
+    {
+     "kind": "status",
+     "status": "exposed",
+     "duration": 1
+    }
+   ]
+  },
+  "mew-psyshock": {
+   "id": "mew-psyshock",
+   "name": "Psyshock",
+   "type": "psychic",
+   "kind": "special",
+   "category": "special",
+   "cooldown": 4,
+   "power": 90,
+   "range": {
+    "min": 1,
+    "max": 2
+   },
+   "requiresLineOfSight": true,
+   "shape": {
+    "kind": "single"
+   },
+   "affects": "enemies"
+  },
+  "mew-barrier": {
+   "id": "mew-barrier",
+   "name": "Barrier",
+   "type": "psychic",
+   "kind": "special",
+   "cooldown": 4,
+   "power": 0,
+   "range": {
+    "min": 0,
+    "max": 0
+   },
+   "requiresLineOfSight": false,
+   "shape": {
+    "kind": "burst",
+    "radius": 1
+   },
+   "affects": "allies",
+   "effects": [
+    {
+     "kind": "status",
+     "status": "fortified",
+     "duration": 2
+    }
+   ]
+  }
+ },
+ "talents": {
+  "mew-swift": {
+   "id": "mew-swift",
+   "name": "Swift",
+   "description": "Bond skill: never-missing stars up to 3 hexes away, even around others (Power 85, Sp. Atk).",
+   "grantsMove": "mew-swift"
+  },
+  "mew-zen-headbutt": {
+   "id": "mew-zen-headbutt",
+   "name": "Zen Headbutt",
+   "description": "Bond skill: a headbutt charged with willpower (Power 100, Attack).",
+   "grantsMove": "mew-zen-headbutt"
+  },
+  "mew-baton-pass": {
+   "id": "mew-baton-pass",
+   "name": "Baton Pass",
+   "description": "Bond skill: hands its momentum to an ally up to 3 hexes away: Hasted and Focused 1 turn.",
+   "grantsMove": "mew-baton-pass"
+  },
+  "mew-bubble-shield": {
+   "id": "mew-bubble-shield",
+   "name": "Bubble Shield",
+   "description": "Floats in a psychic bubble: takes 20% less damage while at full HP.",
+   "mods": {
+    "fullHpDamageTaken": 0.8
+   }
+  },
+  "mew-psychic-heritage": {
+   "id": "mew-psychic-heritage",
+   "name": "Psychic Heritage",
+   "description": "Its Psychic moves deal 15% more damage.",
+   "mods": {
+    "typeDamage": {
+     "psychic": 1.15
+    }
+   }
+  },
+  "mew-soft-boiled": {
+   "id": "mew-soft-boiled",
+   "name": "Soft-Boiled",
+   "description": "New skill: shares a soft-boiled egg: heals itself or an ally within 2 hexes by 30 HP.",
+   "grantsMove": "mew-soft-boiled"
+  },
+  "mew-psywave": {
+   "id": "mew-psywave",
+   "name": "Psywave",
+   "description": "New skill: an odd psychic wave at a foe up to 2 hexes away (Power 50).",
+   "grantsMove": "mew-psywave"
+  },
+  "mew-curious-mind": {
+   "id": "mew-curious-mind",
+   "name": "Curious Mind",
+   "description": "Deals 15% more damage to foes carrying any status.",
+   "mods": {
+    "vsStatusDamage": 1.15
+   }
+  },
+  "mew-dazzling-gleam": {
+   "id": "mew-dazzling-gleam",
+   "name": "Dazzling Gleam",
+   "description": "New skill: a flash of light over a 1-hex area up to 1 hex away (Power 60).",
+   "grantsMove": "mew-dazzling-gleam"
+  },
+  "mew-dizzy-punch": {
+   "id": "mew-dizzy-punch",
+   "name": "Dizzy Punch",
+   "description": "New skill: a dizzying punch (Power 65), Confusing the foe for 2 turns.",
+   "grantsMove": "mew-dizzy-punch"
+  },
+  "mew-adaptive-genes": {
+   "id": "mew-adaptive-genes",
+   "name": "Adaptive Genes",
+   "description": "Sheds statuses foes put on it at the start of its turn.",
+   "mods": {
+    "shedStatuses": true
+   }
+  },
+  "mew-mischief": {
+   "id": "mew-mischief",
+   "name": "Mischief",
+   "description": "Its free strikes on foes breaking away deal 25% more damage.",
+   "mods": {
+    "strikeDamage": 1.25
+   }
+  },
+  "mew-nasty-plot": {
+   "id": "mew-nasty-plot",
+   "name": "Nasty Plot",
+   "description": "New skill: thinks up something wicked: Focused for 2 turns.",
+   "grantsMove": "mew-nasty-plot"
+  },
+  "mew-iron-tail": {
+   "id": "mew-iron-tail",
+   "name": "Iron Tail",
+   "description": "New skill: whips its tail hard as iron (Power 90), leaving the foe Exposed 1 turn.",
+   "grantsMove": "mew-iron-tail"
+  },
+  "mew-weightless": {
+   "id": "mew-weightless",
+   "name": "Weightless",
+   "description": "Floats above the fray: its ranged moves fire over Pokémon in the way.",
+   "mods": {
+    "shootOver": true
+   }
+  },
+  "mew-elusive": {
+   "id": "mew-elusive",
+   "name": "Elusive",
+   "description": "Slips away from engaged foes without drawing free strikes.",
+   "mods": {
+    "disengage": true
+   }
+  },
+  "mew-psyshock": {
+   "id": "mew-psyshock",
+   "name": "Psyshock",
+   "description": "New skill: a psychic wave at a foe up to 2 hexes away (Power 90).",
+   "grantsMove": "mew-psyshock"
+  },
+  "mew-barrier": {
+   "id": "mew-barrier",
+   "name": "Barrier",
+   "description": "New skill: a psychic barrier makes it and allies within 1 hex Fortified for 2 turns.",
+   "grantsMove": "mew-barrier"
+  },
+  "mew-playful": {
+   "id": "mew-playful",
+   "name": "Playful",
+   "description": "Each combo it lands gives the team 1 Bond.",
+   "mods": {
+    "comboBond": 1
+   }
+  },
+  "mew-ancestor-of-all": {
+   "id": "mew-ancestor-of-all",
+   "name": "Ancestor of All",
+   "description": "Capstone. Holds every move's potential: a knockout resets its skill cooldowns and refreshes its basic attack.",
+   "mods": {
+    "koResetCooldowns": true,
+    "koRefreshBasic": true
+   }
+  },
+  "mew-mythical": {
+   "id": "mew-mythical",
+   "name": "Mythical",
+   "description": "Capstone. Its Bond skills cost 1 less; cannot fall Asleep, be Frozen or Paralyzed.",
+   "mods": {
+    "bondCostReduction": 1,
+    "statusImmune": [
+     "sleep",
+     "freeze",
+     "paralysis"
+    ]
+   }
+  },
+  "mew-metronome": {
+   "id": "mew-metronome",
+   "name": "Metronome",
+   "description": "Each hit in a row on the same foe deals 10% more damage, up to 3 stacks.",
+   "mods": {
+    "furyCutter": 0.1
+   }
+  },
+  "mew-copycat": {
+   "id": "mew-copycat",
+   "name": "Copycat",
+   "description": "Deals 20% more damage to foes carrying a status an ally applied.",
+   "mods": {
+    "vsSetupDamage": 1.2
+   }
+  }
+ }
+}

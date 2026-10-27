@@ -1,0 +1,487 @@
+{
+ "line": [
+  "jynx"
+ ],
+ "focus": [
+  {
+   "stat": "spAttack",
+   "skill": "jynx-sheer-cold"
+  },
+  {
+   "stat": "speed",
+   "skill": "jynx-powder-snow"
+  },
+  {
+   "stat": "spDefense",
+   "skill": "jynx-reflect"
+  }
+ ],
+ "rows": {
+  "4": [
+   "jynx-graceful-sway",
+   "jynx-hypnotic-voice"
+  ],
+  "6": [
+   "jynx-confusion",
+   "jynx-icy-wind"
+  ],
+  "9": [
+   "jynx-glacial-voice",
+   "jynx-nightmare-muse"
+  ],
+  "12": [
+   "jynx-psybeam",
+   "jynx-calm-mind"
+  ],
+  "15": [
+   "jynx-cold-heart",
+   "jynx-frozen-veil"
+  ],
+  "18": [
+   "jynx-ice-beam",
+   "jynx-dream-eater"
+  ],
+  "21": [
+   "jynx-snow-veil",
+   "jynx-bewitching-step"
+  ],
+  "24": [
+   "jynx-freeze-dry",
+   "jynx-psyshock"
+  ],
+  "27": [
+   "jynx-royal-poise",
+   "jynx-siren-song"
+  ],
+  "30": [
+   "jynx-queen-of-frost",
+   "jynx-kiss-of-winter"
+  ]
+ },
+ "moves": {
+  "jynx-sheer-cold": {
+   "id": "jynx-sheer-cold",
+   "name": "Sheer Cold",
+   "type": "ice",
+   "kind": "bond",
+   "category": "special",
+   "bondCost": 3,
+   "power": 100,
+   "range": {
+    "min": 1,
+    "max": 3
+   },
+   "requiresLineOfSight": true,
+   "shape": {
+    "kind": "single"
+   },
+   "affects": "enemies",
+   "effects": [
+    {
+     "kind": "status",
+     "status": "freeze",
+     "duration": 1
+    }
+   ]
+  },
+  "jynx-powder-snow": {
+   "id": "jynx-powder-snow",
+   "name": "Powder Snow",
+   "type": "ice",
+   "kind": "bond",
+   "category": "special",
+   "bondCost": 1,
+   "power": 55,
+   "range": {
+    "min": 1,
+    "max": 1
+   },
+   "requiresLineOfSight": false,
+   "shape": {
+    "kind": "burst",
+    "radius": 1
+   },
+   "affects": "enemies",
+   "effects": [
+    {
+     "kind": "status",
+     "status": "slow",
+     "duration": 1
+    }
+   ]
+  },
+  "jynx-reflect": {
+   "id": "jynx-reflect",
+   "name": "Reflect",
+   "type": "psychic",
+   "kind": "bond",
+   "bondCost": 2,
+   "power": 0,
+   "range": {
+    "min": 0,
+    "max": 0
+   },
+   "requiresLineOfSight": false,
+   "shape": {
+    "kind": "burst",
+    "radius": 1
+   },
+   "affects": "allies",
+   "effects": [
+    {
+     "kind": "status",
+     "status": "fortified",
+     "duration": 2
+    }
+   ]
+  },
+  "jynx-confusion": {
+   "id": "jynx-confusion",
+   "name": "Confusion",
+   "type": "psychic",
+   "kind": "special",
+   "category": "special",
+   "cooldown": 2,
+   "power": 55,
+   "range": {
+    "min": 1,
+    "max": 2
+   },
+   "requiresLineOfSight": true,
+   "shape": {
+    "kind": "single"
+   },
+   "affects": "enemies"
+  },
+  "jynx-icy-wind": {
+   "id": "jynx-icy-wind",
+   "name": "Icy Wind",
+   "type": "ice",
+   "kind": "special",
+   "category": "special",
+   "cooldown": 3,
+   "power": 45,
+   "range": {
+    "min": 1,
+    "max": 2
+   },
+   "requiresLineOfSight": true,
+   "shape": {
+    "kind": "single"
+   },
+   "affects": "enemies",
+   "effects": [
+    {
+     "kind": "status",
+     "status": "slow",
+     "duration": 2
+    }
+   ]
+  },
+  "jynx-psybeam": {
+   "id": "jynx-psybeam",
+   "name": "Psybeam",
+   "type": "psychic",
+   "kind": "special",
+   "category": "special",
+   "cooldown": 3,
+   "power": 55,
+   "range": {
+    "min": 1,
+    "max": 2
+   },
+   "requiresLineOfSight": true,
+   "shape": {
+    "kind": "single"
+   },
+   "affects": "enemies",
+   "effects": [
+    {
+     "kind": "status",
+     "status": "confused",
+     "duration": 2
+    }
+   ]
+  },
+  "jynx-calm-mind": {
+   "id": "jynx-calm-mind",
+   "name": "Calm Mind",
+   "type": "psychic",
+   "kind": "special",
+   "cooldown": 4,
+   "power": 0,
+   "range": {
+    "min": 0,
+    "max": 0
+   },
+   "requiresLineOfSight": false,
+   "shape": {
+    "kind": "single"
+   },
+   "affects": "allies",
+   "effects": [
+    {
+     "kind": "status",
+     "status": "focused",
+     "duration": 1
+    }
+   ]
+  },
+  "jynx-ice-beam": {
+   "id": "jynx-ice-beam",
+   "name": "Ice Beam",
+   "type": "ice",
+   "kind": "special",
+   "category": "special",
+   "cooldown": 4,
+   "power": 85,
+   "range": {
+    "min": 1,
+    "max": 2
+   },
+   "requiresLineOfSight": true,
+   "shape": {
+    "kind": "single"
+   },
+   "affects": "enemies",
+   "effects": [
+    {
+     "kind": "status",
+     "status": "freeze",
+     "duration": 1
+    }
+   ]
+  },
+  "jynx-dream-eater": {
+   "id": "jynx-dream-eater",
+   "name": "Dream Eater",
+   "type": "psychic",
+   "kind": "special",
+   "category": "special",
+   "cooldown": 4,
+   "power": 90,
+   "range": {
+    "min": 1,
+    "max": 2
+   },
+   "requiresLineOfSight": true,
+   "shape": {
+    "kind": "single"
+   },
+   "affects": "enemies"
+  },
+  "jynx-freeze-dry": {
+   "id": "jynx-freeze-dry",
+   "name": "Freeze-Dry",
+   "type": "ice",
+   "kind": "special",
+   "category": "special",
+   "cooldown": 5,
+   "power": 95,
+   "range": {
+    "min": 1,
+    "max": 2
+   },
+   "requiresLineOfSight": true,
+   "shape": {
+    "kind": "single"
+   },
+   "affects": "enemies"
+  },
+  "jynx-psyshock": {
+   "id": "jynx-psyshock",
+   "name": "Psyshock",
+   "type": "psychic",
+   "kind": "special",
+   "category": "special",
+   "cooldown": 4,
+   "power": 80,
+   "range": {
+    "min": 1,
+    "max": 2
+   },
+   "requiresLineOfSight": true,
+   "shape": {
+    "kind": "single"
+   },
+   "affects": "enemies",
+   "effects": [
+    {
+     "kind": "status",
+     "status": "exposed",
+     "duration": 1
+    }
+   ]
+  }
+ },
+ "talents": {
+  "jynx-sheer-cold": {
+   "id": "jynx-sheer-cold",
+   "name": "Sheer Cold",
+   "description": "Bond skill: a wave of absolute cold up to 3 hexes away (Power 100, Sp. Atk), Freezing 1 turn.",
+   "grantsMove": "jynx-sheer-cold"
+  },
+  "jynx-powder-snow": {
+   "id": "jynx-powder-snow",
+   "name": "Powder Snow",
+   "description": "Bond skill: a flurry up to 1 hex away (Power 55, Sp. Atk) Slows a 1-hex area 1 turn.",
+   "grantsMove": "jynx-powder-snow"
+  },
+  "jynx-reflect": {
+   "id": "jynx-reflect",
+   "name": "Reflect",
+   "description": "Bond skill: a shimmering wall Fortifies it and adjacent allies for 2 turns.",
+   "grantsMove": "jynx-reflect"
+  },
+  "jynx-graceful-sway": {
+   "id": "jynx-graceful-sway",
+   "name": "Graceful Sway",
+   "description": "Steps away from engaged foes without drawing free strikes: it dances out of reach.",
+   "mods": {
+    "disengage": true
+   }
+  },
+  "jynx-hypnotic-voice": {
+   "id": "jynx-hypnotic-voice",
+   "name": "Hypnotic Voice",
+   "description": "Statuses it inflicts last 1 turn longer.",
+   "mods": {
+    "statusDurationBonus": 1
+   }
+  },
+  "jynx-confusion": {
+   "id": "jynx-confusion",
+   "name": "Confusion",
+   "description": "New skill: a weak telekinetic blow at a foe up to 2 hexes away (Power 55).",
+   "grantsMove": "jynx-confusion"
+  },
+  "jynx-icy-wind": {
+   "id": "jynx-icy-wind",
+   "name": "Icy Wind",
+   "description": "New skill: a chilling wind at a foe up to 2 hexes away (Power 45), Slowing it 2 turns.",
+   "grantsMove": "jynx-icy-wind"
+  },
+  "jynx-glacial-voice": {
+   "id": "jynx-glacial-voice",
+   "name": "Glacial Voice",
+   "description": "Its ice moves deal 15% more damage.",
+   "mods": {
+    "typeDamage": {
+     "ice": 1.15
+    }
+   }
+  },
+  "jynx-nightmare-muse": {
+   "id": "jynx-nightmare-muse",
+   "name": "Nightmare Muse",
+   "description": "Deals 25% more damage to Sleeping foes.",
+   "mods": {
+    "vsStatusIdDamage": {
+     "sleep": 1.25
+    }
+   }
+  },
+  "jynx-psybeam": {
+   "id": "jynx-psybeam",
+   "name": "Psybeam",
+   "description": "New skill: a strange psychic ray at a foe up to 2 hexes away (Power 55); Confused 2 turns.",
+   "grantsMove": "jynx-psybeam"
+  },
+  "jynx-calm-mind": {
+   "id": "jynx-calm-mind",
+   "name": "Calm Mind",
+   "description": "New skill: quietly focuses its mind and becomes Focused for 1 turn.",
+   "grantsMove": "jynx-calm-mind"
+  },
+  "jynx-cold-heart": {
+   "id": "jynx-cold-heart",
+   "name": "Cold Heart",
+   "description": "Deals 20% more damage while below half HP.",
+   "mods": {
+    "lowHpDamage": 1.2
+   }
+  },
+  "jynx-frozen-veil": {
+   "id": "jynx-frozen-veil",
+   "name": "Frozen Veil",
+   "description": "Takes 20% less damage while at full HP.",
+   "mods": {
+    "fullHpDamageTaken": 0.8
+   }
+  },
+  "jynx-ice-beam": {
+   "id": "jynx-ice-beam",
+   "name": "Ice Beam",
+   "description": "New skill: an icy beam at a foe up to 2 hexes away (Power 85) that Freezes it 1 turn.",
+   "grantsMove": "jynx-ice-beam"
+  },
+  "jynx-dream-eater": {
+   "id": "jynx-dream-eater",
+   "name": "Dream Eater",
+   "description": "New skill: devours the dreams of a foe up to 2 hexes away (Power 90).",
+   "grantsMove": "jynx-dream-eater"
+  },
+  "jynx-snow-veil": {
+   "id": "jynx-snow-veil",
+   "name": "Snow Veil",
+   "description": "Takes 10% less damage.",
+   "mods": {
+    "damageTaken": 0.9
+   }
+  },
+  "jynx-bewitching-step": {
+   "id": "jynx-bewitching-step",
+   "name": "Bewitching Step",
+   "description": "Regains 2 movement when it knocks out a foe on its turn.",
+   "mods": {
+    "koMove": 2
+   }
+  },
+  "jynx-freeze-dry": {
+   "id": "jynx-freeze-dry",
+   "name": "Freeze-Dry",
+   "description": "New skill: flash-freezes a foe up to 2 hexes away (Power 95).",
+   "grantsMove": "jynx-freeze-dry"
+  },
+  "jynx-psyshock": {
+   "id": "jynx-psyshock",
+   "name": "Psyshock",
+   "description": "New skill: a psychic wave at a foe up to 2 hexes away (Power 80); leaves it Exposed 1 turn.",
+   "grantsMove": "jynx-psyshock"
+  },
+  "jynx-royal-poise": {
+   "id": "jynx-royal-poise",
+   "name": "Royal Poise",
+   "description": "Survives one knockout blow per battle at 1 HP.",
+   "mods": {
+    "sturdy": true
+   }
+  },
+  "jynx-siren-song": {
+   "id": "jynx-siren-song",
+   "name": "Siren Song",
+   "description": "Each combo it lands gives the team 1 Bond.",
+   "mods": {
+    "comboBond": 1
+   }
+  },
+  "jynx-queen-of-frost": {
+   "id": "jynx-queen-of-frost",
+   "name": "Queen of Frost",
+   "description": "Capstone. Its ranged moves reach 1 hex farther; a knockout resets its skill cooldowns.",
+   "mods": {
+    "rangeBonus": 1,
+    "koResetCooldowns": true
+   }
+  },
+  "jynx-kiss-of-winter": {
+   "id": "jynx-kiss-of-winter",
+   "name": "Kiss of Winter",
+   "description": "Capstone. Deals 20% more damage to statused foes; if one it statused faints, adjacent foes catch it.",
+   "mods": {
+    "vsStatusDamage": 1.2,
+    "statusSpreadOnKo": true
+   }
+  }
+ }
+}

@@ -1,5 +1,7 @@
 {
- "roleLevel": 3,
+ "focusLevel": 3,
+ "focusBonus": 2,
+ "focusGrowthEvery": 2,
  "maxLevel": 30,
  "xpPerLevel": 30,
  "xpPerEnemyLevel": 6,

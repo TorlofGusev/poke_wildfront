@@ -7,7 +7,7 @@ const plain = (lines: string[]) => lines.map(stripMarkup).join("\n");
 
 describe("exact effect descriptions", () => {
   it("states talent numbers exactly", () => {
-    expect(plain(describeTalent(CONTENT, PROGRESSION, PROGRESSION.talents["type-rock"]!))).toBe("+1 HP (max HP +6)\n+1 Attack\nTakes 10% less damage");
+    expect(plain(describeTalent(CONTENT, PROGRESSION, PROGRESSION.talents["type-rock"]!))).toBe("+1 HP (max HP +2)\n+1 Attack\nTakes 10% less damage");
     expect(plain(describeTalent(CONTENT, PROGRESSION, PROGRESSION.talents.bastion!))).toContain("damage foes it engages take from its allies");
     expect(plain(describeTalent(CONTENT, PROGRESSION, PROGRESSION.talents.steadfast!))).toContain("While deployed, the team starts battles with +1 Bond (base 2)");
     expect(plain(describeTalent(CONTENT, PROGRESSION, PROGRESSION.talents["skill-protect"]!))).toContain("Protect");

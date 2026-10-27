@@ -1,0 +1,73 @@
+{
+ "talents": {
+  "rhyhorn-horn-drill": {
+   "description": "Bond képesség: forgó szarvát egy szomszédos ellenfélbe fúrja (Erő 100, Támadás)."
+  },
+  "rhyhorn-endure": {
+   "description": "Bond képesség: megfeszíti páncélos testét, és 1 körre Protected lesz."
+  },
+  "rhyhorn-rock-wrecker": {
+   "description": "Kötelék-képesség: hatalmas sziklát hajít egy legfeljebb 3 hexnyire lévő ellenfélre (Erő 90, Támadás)."
+  },
+  "rhyhorn-reckless": {
+   "description": "15%-kal többet sebez a szomszédos ellenfeleknek: gondolkodás nélkül ront előre."
+  },
+  "rhyhorn-solid-rock": {
+   "description": "10%-kal kevesebb sebzést szenved el."
+  },
+  "rhyhorn-bulldoze": {
+   "description": "Új képesség: megdöngöli a földet (Erő 60), eltalálja a szomszédos ellenfeleket és 1 körre lelassítja őket."
+  },
+  "rhyhorn-leer": {
+   "description": "Új képesség: fenyegető tekintet egy legfeljebb 2 hexre lévő ellenfélre, 2 körre Exposed lesz."
+  },
+  "rhyhorn-hard-hide": {
+   "description": "25%-kal kevesebb sebzést kap, amíg teljes a HP-ja."
+  },
+  "rhyhorn-stampede": {
+   "description": "2 mozgáspontot visszanyer, ha a saját körében kiüt egy ellenfelet."
+  },
+  "rhyhorn-drill-run": {
+   "description": "Új képesség: fúróként pörgő szarvval 2 hexnyi vonalon át tör (Erő 80)."
+  },
+  "rhyhorn-harden": {
+   "description": "Új képesség: megkeményíti a bőrét, és 2 körre Megerősített lesz."
+  },
+  "rhyhorn-horn-rush": {
+   "description": "Ugyanarra az ellenfélre mért minden egymást követő találat 15%-kal többet sebez (max. 3-szor)."
+  },
+  "rhyhorn-living-fortress": {
+   "description": "Minden körben max HP-ja 3%-át gyógyul, amíg ellenféllel van lekötve."
+  },
+  "rhyhorn-stone-edge": {
+   "description": "Új képesség: éles kőpengéket döf egy szomszédos ellenfélbe (Erő 90), 1 körre Sebezhetővé téve."
+  },
+  "rhyhorn-wide-guard": {
+   "description": "Új képesség: kőfalat emel; ő és a szomszédos szövetségesei 1 körre Védettek."
+  },
+  "rhyhorn-unyielding": {
+   "description": "20%-kal többet sebez, amíg HP-ja a fele alatt van."
+  },
+  "rhyhorn-trampling-bulk": {
+   "description": "A tőle elszakadó ellenfelekre mért szabad csapásai 25%-kal többet sebeznek."
+  },
+  "rhyhorn-head-smash": {
+   "description": "Új képesség: teljes erejű fejelés egy szomszédos ellenfélre (Erő 100)."
+  },
+  "rhyhorn-giga-impact": {
+   "description": "Új képesség: teljes erejével az ellenfélnek csapódik (Erő 95)."
+  },
+  "rhyhorn-rampage": {
+   "description": "Minden kiütött ellenfél után 1 Támadást kap (legfeljebb +3) a csata végéig."
+  },
+  "rhyhorn-pinning-mass": {
+   "description": "Az általa lekötött ellenfelek 15%-kal több sebzést kapnak a szövetségeseitől."
+  },
+  "rhyhorn-drill-tyrant": {
+   "description": "Csúcs. Kő és föld támadásai 15%-kal többet sebeznek; minden kiütés 1 Köteléket ad a csapatnak."
+  },
+  "rhyhorn-living-wall": {
+   "description": "Csúcs. A vele lekötött ellenfelek mindig kiváltják szabad csapását; minden találat 1 Köteléket ad."
+  }
+ }
+}

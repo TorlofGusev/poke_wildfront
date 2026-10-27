@@ -1,0 +1,73 @@
+{
+ "talents": {
+  "bellsprout-power-whip": {
+   "description": "Bond képesség: nehéz indával csap le egy legfeljebb 2 hexnyire lévő ellenfélre (Erő 100, Támadás)."
+  },
+  "bellsprout-sludge-bomb": {
+   "description": "Bond képesség: iszapot lő legfeljebb 3 hexnyire (Erő 90, Kül. Tám.), 2 körre megmérgezi."
+  },
+  "bellsprout-grassy-glide": {
+   "description": "Bond képesség: legfeljebb 2 hexnyit siklik egy ellenfélhez (Erő 55) és leköti."
+  },
+  "bellsprout-long-vines": {
+   "description": "A legalább 2 hexes hatótávú mozdulatai 1 hexszel messzebbre érnek."
+  },
+  "bellsprout-corrosive-sap": {
+   "description": "20%-kal többet sebez a megmérgezett ellenfelekre."
+  },
+  "bellsprout-knock-off": {
+   "description": "Új képesség: erősen lecsap az ellenfélre egy levéllel (Erő 65)."
+  },
+  "bellsprout-sticky-nectar": {
+   "description": "Az általa lekötött ellenfelek 15%-kal több sebzést kapnak a szövetségeseitől."
+  },
+  "bellsprout-toxic-drip": {
+   "description": "Szomszédos ellenfeleken landolt találatai 2 körre megmérgezik őket."
+  },
+  "bellsprout-poison-jab": {
+   "description": "Új képesség: mérgező indavéggel szúr (Erő 70), 2 körre megmérgezi az ellenfelet."
+  },
+  "bellsprout-magical-leaf": {
+   "description": "Új képesség: célkövető levelek legfeljebb 2 hexnyire (Erő 60)."
+  },
+  "bellsprout-swallow": {
+   "description": "Maximális HP-ja 20%-át gyógyítja, ha kiüt egy ellenfelet."
+  },
+  "bellsprout-stockpile": {
+   "description": "Teli HP-n 20%-kal kevesebb sebzést kap."
+  },
+  "bellsprout-leaf-blade": {
+   "description": "Új képesség: borotvaéles levéllel vág (Erő 90)."
+  },
+  "bellsprout-leaf-storm": {
+   "description": "Új képesség: levélvihar legfeljebb 1 hexnyire (Erő 85), 1 hex körzetet talál el."
+  },
+  "bellsprout-venom-pool": {
+   "description": "Az általa okozott állapotok 1 körrel tovább tartanak."
+  },
+  "bellsprout-digestive-acid": {
+   "description": "Ha egy általa sújtott ellenfél elájul, a szomszédos ellenfelek is elkapják az állapotot."
+  },
+  "bellsprout-seed-bomb": {
+   "description": "Új képesség: kemény magot hajít egy legfeljebb 2 hexnyire lévő ellenfélre (Erő 85)."
+  },
+  "bellsprout-spit-up": {
+   "description": "Új képesség: a felhalmozott emésztőnedvet egy legfeljebb 2 hexnyire lévő ellenfélre köpi (Erő 90)."
+  },
+  "bellsprout-sun-fed-leaves": {
+   "description": "Fű típusú mozdulatai 15%-kal többet sebeznek."
+  },
+  "bellsprout-clinging-vines": {
+   "description": "A kiszakadó ellenfelekre mért szabad csapásai 25%-kal többet sebeznek."
+  },
+  "bellsprout-pitchers-maw": {
+   "description": "Csúcs. 25%-kal többet sebez állapottal sújtott ellenfelekre, és 10%-kal kevesebb sebzést kap."
+  },
+  "bellsprout-flytrap-frenzy": {
+   "description": "Csúcs. Egy kiütés lenullázza a képességei töltési idejét, és a csapat 1 Kötelék pontot kap."
+  },
+  "bellsprout-growth": {
+   "description": "Új képesség: gyorsan megnő; 2 körre Focused állapotba kerül."
+  }
+ }
+}

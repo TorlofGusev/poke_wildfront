@@ -56,6 +56,8 @@ export interface TurnState {
   actionUsed: boolean;
   /** The basic attack is separate from the action: one of each per turn. */
   basicUsed: boolean;
+  /** The unit has moved this turn (Speed's momentum bonus). */
+  moved?: boolean;
   /** Nothing done yet: the player may still hand the turn to another of their units. */
   fresh?: boolean;
 }

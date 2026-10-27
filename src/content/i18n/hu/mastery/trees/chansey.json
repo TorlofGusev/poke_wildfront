@@ -1,0 +1,73 @@
+{
+ "talents": {
+  "chansey-wish": {
+   "description": "Kötelék-képesség: kívánsága 40 HP-t gyógyít egy legfeljebb 3 hexnyire lévő szövetségesen (vagy magán)."
+  },
+  "chansey-light-screen": {
+   "description": "Kötelék-képesség: legfeljebb 2 hexnyire fényfal 2 körre Megerősíti a szövetségeseket egy 1 hex körzetben."
+  },
+  "chansey-hyper-voice": {
+   "description": "Kötelék-képesség: harsány kiáltás legfeljebb 2 hexnyire (Erő 80, Sp. Atk), egy 1 hex körzetet eltalálva."
+  },
+  "chansey-egg-padding": {
+   "description": "20%-kal kevesebb sebzést kap, amíg teljes a HP-ja."
+  },
+  "chansey-lucky-egg": {
+   "description": "Amikor elájul, a csapat 2 Köteléket kap."
+  },
+  "chansey-tail-whip": {
+   "description": "Új képesség: kedvesen csóválja a farkát, egy szomszédos ellenfél 2 körre Exposed lesz."
+  },
+  "chansey-body-slam": {
+   "description": "Új képesség: teljes testével rávetődik egy szomszédos ellenfélre (Erő 60)."
+  },
+  "chansey-egg-reserve": {
+   "description": "Minden köre elején max HP-ja 5%-át gyógyítja."
+  },
+  "chansey-serene-grace": {
+   "description": "Az általa okozott állapotok 1 körrel tovább tartanak."
+  },
+  "chansey-growl": {
+   "description": "Új képesség: aranyos morgás, a szomszédos ellenfelek 1 körre Weakened-ek lesznek."
+  },
+  "chansey-echoed-voice": {
+   "description": "Új képesség: visszhangzó kiáltás egy legfeljebb 2 hexnyi ellenfélre (Erő 70)."
+  },
+  "chansey-steady-nerves": {
+   "description": "Nem lehet elaltatni vagy lefagyasztani."
+  },
+  "chansey-egg-toss-aim": {
+   "description": "15%-kal többet sebez a legalább 2 hexnyire lévő ellenfeleknek."
+  },
+  "chansey-heal-bell": {
+   "description": "Új képesség: csengőszó leveszi róla és a 2 hexen belüli társakról az ellenfelek okozta állapotokat."
+  },
+  "chansey-tri-attack": {
+   "description": "Új képesség: háromszögnyi energia egy legfeljebb 2 hexnyi ellenfélre (Erő 85), 1 körre megbénítja."
+  },
+  "chansey-unbreakable": {
+   "description": "Csatánként egyszer 1 HP-val túlél egy kiütő csapást."
+  },
+  "chansey-gentle-power": {
+   "description": "10%-kal többet sebez, 25%-kal többet a társ által rárakott státuszú ellenfélre."
+  },
+  "chansey-hyper-beam": {
+   "description": "Új képesség: pusztító sugár egy legfeljebb 2 hexnyi ellenfélre (Erő 100)."
+  },
+  "chansey-egg-bomb": {
+   "description": "Új képesség: nagy tojást hajít egy legfeljebb 2 hexnyi ellenfélre (Erő 90)."
+  },
+  "chansey-lucky-charm": {
+   "description": "Minden kombója 1 Köteléket ad a csapatnak."
+  },
+  "chansey-soft-body": {
+   "description": "10%-kal kevesebb sebzést szenved el."
+  },
+  "chansey-nurses-calling": {
+   "description": "Capstone. Nem sebző képességei 1 körrel gyorsabban töltődnek; köre elején lerázza a rárakott állapotokat."
+  },
+  "chansey-egg-barrage": {
+   "description": "Csúcs. 20%-kal többet sebez az állapottal sújtott ellenfeleknek; kiütés után képességei újratöltődnek."
+  }
+ }
+}

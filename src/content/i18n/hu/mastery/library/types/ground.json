@@ -1,0 +1,28 @@
+{
+ "talents": {
+  "ground-skill-dig": {
+   "description": "Új képesség: a föld alól támad egy max. 2 hexnyi ellenfélre, rálátás nélkül."
+  },
+  "ground-skill-bonemerang": {
+   "description": "Új képesség: csontot hajít egy max. 2 hexnyi ellenfélre (Erő 55)."
+  },
+  "ground-skill-magnitude": {
+   "description": "Új képesség: földrengés sújt minden ellenfelet 2 hexen belül (Erő 80)."
+  },
+  "ground-arena-trap": {
+   "description": "A lekötött ellenfelek távozáskor mindig kapnak tőle szabad csapást; szabad csapásai +30%."
+  },
+  "ground-unshakable": {
+   "description": "Mesterfok. Ground lépései 25%-kal többet sebeznek; nem lassítható és nem bénítható."
+  },
+  "ground-dug-in": {
+   "description": "Körönként max. HP-ja 5%-át gyógyítja, amíg ellenféllel harcol; +1 Defense."
+  },
+  "ground-sand-veil": {
+   "description": "10%-kal kevesebb sebzést kap; +2 Defense."
+  },
+  "ground-skill-earthquake": {
+   "description": "Új Bond képesség: földrengés minden ellenfélre max. 3 hexen belül (Erő 90)."
+  }
+ }
+}

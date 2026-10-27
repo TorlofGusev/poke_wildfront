@@ -1,0 +1,490 @@
+{
+ "line": [
+  "lapras"
+ ],
+ "canonLevelUp": [
+  "lapras-confuse-ray"
+ ],
+ "focus": [
+  {
+   "stat": "hp",
+   "skill": "lapras-life-dew"
+  },
+  {
+   "stat": "spAttack",
+   "skill": "lapras-sheer-cold"
+  },
+  {
+   "stat": "spDefense",
+   "skill": "lapras-safeguard"
+  }
+ ],
+ "rows": {
+  "4": [
+   "lapras-shell-armor",
+   "lapras-hydration"
+  ],
+  "6": [
+   "lapras-ice-shard",
+   "lapras-confuse-ray"
+  ],
+  "9": [
+   "lapras-icy-hide",
+   "lapras-steady-hull"
+  ],
+  "12": [
+   "lapras-water-pulse",
+   "lapras-aqua-ring"
+  ],
+  "15": [
+   "lapras-frost-lance",
+   "lapras-cold-snap"
+  ],
+  "18": [
+   "lapras-hydro-pump",
+   "lapras-freeze-dry"
+  ],
+  "21": [
+   "lapras-gentle-giant",
+   "lapras-steadfast-heart"
+  ],
+  "24": [
+   "lapras-surf",
+   "lapras-mist"
+  ],
+  "27": [
+   "lapras-cold-waters",
+   "lapras-polar-current"
+  ],
+  "30": [
+   "lapras-song-of-the-sea",
+   "lapras-eternal-winter"
+  ]
+ },
+ "moves": {
+  "lapras-life-dew": {
+   "id": "lapras-life-dew",
+   "name": "Life Dew",
+   "type": "water",
+   "kind": "bond",
+   "bondCost": 2,
+   "power": 0,
+   "range": {
+    "min": 0,
+    "max": 0
+   },
+   "requiresLineOfSight": false,
+   "shape": {
+    "kind": "burst",
+    "radius": 2
+   },
+   "affects": "allies",
+   "effects": [
+    {
+     "kind": "heal",
+     "amount": 30
+    }
+   ]
+  },
+  "lapras-sheer-cold": {
+   "id": "lapras-sheer-cold",
+   "name": "Sheer Cold",
+   "type": "ice",
+   "kind": "bond",
+   "category": "special",
+   "bondCost": 3,
+   "power": 110,
+   "range": {
+    "min": 1,
+    "max": 3
+   },
+   "requiresLineOfSight": true,
+   "shape": {
+    "kind": "single"
+   },
+   "affects": "enemies",
+   "effects": [
+    {
+     "kind": "status",
+     "status": "freeze",
+     "duration": 1
+    }
+   ]
+  },
+  "lapras-safeguard": {
+   "id": "lapras-safeguard",
+   "name": "Safeguard",
+   "type": "normal",
+   "kind": "bond",
+   "bondCost": 3,
+   "power": 0,
+   "range": {
+    "min": 0,
+    "max": 0
+   },
+   "requiresLineOfSight": false,
+   "shape": {
+    "kind": "burst",
+    "radius": 1
+   },
+   "affects": "allies",
+   "effects": [
+    {
+     "kind": "cleanse"
+    },
+    {
+     "kind": "status",
+     "status": "protected",
+     "duration": 1
+    }
+   ]
+  },
+  "lapras-ice-shard": {
+   "id": "lapras-ice-shard",
+   "name": "Ice Shard",
+   "type": "ice",
+   "kind": "special",
+   "category": "physical",
+   "cooldown": 2,
+   "power": 40,
+   "range": {
+    "min": 1,
+    "max": 2
+   },
+   "requiresLineOfSight": true,
+   "shape": {
+    "kind": "single"
+   },
+   "affects": "enemies"
+  },
+  "lapras-confuse-ray": {
+   "id": "lapras-confuse-ray",
+   "name": "Confuse Ray",
+   "type": "ghost",
+   "kind": "special",
+   "cooldown": 4,
+   "power": 0,
+   "range": {
+    "min": 1,
+    "max": 2
+   },
+   "requiresLineOfSight": true,
+   "shape": {
+    "kind": "single"
+   },
+   "affects": "enemies",
+   "effects": [
+    {
+     "kind": "status",
+     "status": "confused",
+     "duration": 2
+    }
+   ]
+  },
+  "lapras-water-pulse": {
+   "id": "lapras-water-pulse",
+   "name": "Water Pulse",
+   "type": "water",
+   "kind": "special",
+   "category": "special",
+   "cooldown": 3,
+   "power": 65,
+   "range": {
+    "min": 1,
+    "max": 2
+   },
+   "requiresLineOfSight": true,
+   "shape": {
+    "kind": "single"
+   },
+   "affects": "enemies"
+  },
+  "lapras-aqua-ring": {
+   "id": "lapras-aqua-ring",
+   "name": "Aqua Ring",
+   "type": "water",
+   "kind": "special",
+   "cooldown": 5,
+   "power": 0,
+   "range": {
+    "min": 0,
+    "max": 0
+   },
+   "requiresLineOfSight": false,
+   "shape": {
+    "kind": "single"
+   },
+   "affects": "allies",
+   "effects": [
+    {
+     "kind": "heal",
+     "amount": 45
+    }
+   ]
+  },
+  "lapras-hydro-pump": {
+   "id": "lapras-hydro-pump",
+   "name": "Hydro Pump",
+   "type": "water",
+   "kind": "special",
+   "category": "special",
+   "cooldown": 5,
+   "power": 95,
+   "range": {
+    "min": 1,
+    "max": 2
+   },
+   "requiresLineOfSight": true,
+   "shape": {
+    "kind": "single"
+   },
+   "affects": "enemies"
+  },
+  "lapras-freeze-dry": {
+   "id": "lapras-freeze-dry",
+   "name": "Freeze-Dry",
+   "type": "ice",
+   "kind": "special",
+   "category": "special",
+   "cooldown": 5,
+   "power": 70,
+   "range": {
+    "min": 1,
+    "max": 2
+   },
+   "requiresLineOfSight": true,
+   "shape": {
+    "kind": "single"
+   },
+   "affects": "enemies",
+   "effects": [
+    {
+     "kind": "status",
+     "status": "freeze",
+     "duration": 1
+    }
+   ]
+  },
+  "lapras-surf": {
+   "id": "lapras-surf",
+   "name": "Surf",
+   "type": "water",
+   "kind": "special",
+   "category": "special",
+   "cooldown": 5,
+   "power": 85,
+   "range": {
+    "min": 0,
+    "max": 0
+   },
+   "requiresLineOfSight": true,
+   "shape": {
+    "kind": "burst",
+    "radius": 2
+   },
+   "affects": "enemies"
+  },
+  "lapras-mist": {
+   "id": "lapras-mist",
+   "name": "Mist",
+   "type": "ice",
+   "kind": "special",
+   "cooldown": 5,
+   "power": 0,
+   "range": {
+    "min": 0,
+    "max": 0
+   },
+   "requiresLineOfSight": false,
+   "shape": {
+    "kind": "burst",
+    "radius": 1
+   },
+   "affects": "allies",
+   "effects": [
+    {
+     "kind": "status",
+     "status": "fortified",
+     "duration": 2
+    }
+   ]
+  }
+ },
+ "talents": {
+  "lapras-life-dew": {
+   "id": "lapras-life-dew",
+   "name": "Life Dew",
+   "description": "Bond skill: scatters healing water; it and allies within 2 hexes heal 30 HP.",
+   "grantsMove": "lapras-life-dew"
+  },
+  "lapras-sheer-cold": {
+   "id": "lapras-sheer-cold",
+   "name": "Sheer Cold",
+   "description": "Bond skill: absolute cold at a foe up to 3 hexes away (Power 110, Sp. Atk); Freezes 1 turn.",
+   "grantsMove": "lapras-sheer-cold"
+  },
+  "lapras-safeguard": {
+   "id": "lapras-safeguard",
+   "name": "Safeguard",
+   "description": "Bond skill: a sacred veil cleanses it and adjacent allies of foes' statuses; Protected 1 turn.",
+   "grantsMove": "lapras-safeguard"
+  },
+  "lapras-shell-armor": {
+   "id": "lapras-shell-armor",
+   "name": "Shell Armor",
+   "description": "Takes 15% less damage.",
+   "mods": {
+    "damageTaken": 0.85
+   }
+  },
+  "lapras-hydration": {
+   "id": "lapras-hydration",
+   "name": "Hydration",
+   "description": "Sheds statuses foes put on it at the start of its turn.",
+   "mods": {
+    "shedStatuses": true
+   }
+  },
+  "lapras-ice-shard": {
+   "id": "lapras-ice-shard",
+   "name": "Ice Shard",
+   "description": "New skill: flings a chunk of ice at a foe up to 2 hexes away (Power 40).",
+   "grantsMove": "lapras-ice-shard"
+  },
+  "lapras-confuse-ray": {
+   "id": "lapras-confuse-ray",
+   "name": "Confuse Ray",
+   "description": "New skill: an eerie light at a foe up to 2 hexes away: Confused for 2 turns.",
+   "grantsMove": "lapras-confuse-ray"
+  },
+  "lapras-icy-hide": {
+   "id": "lapras-icy-hide",
+   "name": "Icy Hide",
+   "description": "Foes it hits from an adjacent hex become Slow for 1 turn.",
+   "mods": {
+    "contactStatus": {
+     "status": "slow",
+     "duration": 1
+    }
+   }
+  },
+  "lapras-steady-hull": {
+   "id": "lapras-steady-hull",
+   "name": "Steady Hull",
+   "description": "Takes 20% less damage while at full HP.",
+   "mods": {
+    "fullHpDamageTaken": 0.8
+   }
+  },
+  "lapras-water-pulse": {
+   "id": "lapras-water-pulse",
+   "name": "Water Pulse",
+   "description": "New skill: a pulse of water at a foe up to 2 hexes away (Power 65).",
+   "grantsMove": "lapras-water-pulse"
+  },
+  "lapras-aqua-ring": {
+   "id": "lapras-aqua-ring",
+   "name": "Aqua Ring",
+   "description": "New skill: a veil of water heals it for 45 HP.",
+   "grantsMove": "lapras-aqua-ring"
+  },
+  "lapras-frost-lance": {
+   "id": "lapras-frost-lance",
+   "name": "Frost Lance",
+   "description": "Deals 20% more damage to foes 2+ hexes away.",
+   "mods": {
+    "farDamage": 1.2
+   }
+  },
+  "lapras-cold-snap": {
+   "id": "lapras-cold-snap",
+   "name": "Cold Snap",
+   "description": "Deals 20% more damage to Slowed foes.",
+   "mods": {
+    "vsStatusIdDamage": {
+     "slow": 1.2
+    }
+   }
+  },
+  "lapras-hydro-pump": {
+   "id": "lapras-hydro-pump",
+   "name": "Hydro Pump",
+   "description": "New skill: a huge blast of water at a foe up to 2 hexes away (Power 95).",
+   "grantsMove": "lapras-hydro-pump"
+  },
+  "lapras-freeze-dry": {
+   "id": "lapras-freeze-dry",
+   "name": "Freeze-Dry",
+   "description": "New skill: flash-freezes a foe up to 2 hexes away (Power 70); Freezes 1 turn.",
+   "grantsMove": "lapras-freeze-dry"
+  },
+  "lapras-steadfast-heart": {
+   "id": "lapras-steadfast-heart",
+   "name": "Steadfast Heart",
+   "description": "Survives one knockout blow per battle at 1 HP.",
+   "mods": {
+    "sturdy": true
+   }
+  },
+  "lapras-surf": {
+   "id": "lapras-surf",
+   "name": "Surf",
+   "description": "New skill: a great wave hits all foes within 2 hexes (Power 85).",
+   "grantsMove": "lapras-surf"
+  },
+  "lapras-mist": {
+   "id": "lapras-mist",
+   "name": "Mist",
+   "description": "New skill: a white mist makes it and adjacent allies Fortified for 2 turns.",
+   "grantsMove": "lapras-mist"
+  },
+  "lapras-cold-waters": {
+   "id": "lapras-cold-waters",
+   "name": "Cold Waters",
+   "description": "Its Water moves deal 15% more damage.",
+   "mods": {
+    "typeDamage": {
+     "water": 1.15
+    }
+   }
+  },
+  "lapras-polar-current": {
+   "id": "lapras-polar-current",
+   "name": "Polar Current",
+   "description": "Statuses it inflicts last 1 more turn.",
+   "mods": {
+    "statusDurationBonus": 1
+   }
+  },
+  "lapras-song-of-the-sea": {
+   "id": "lapras-song-of-the-sea",
+   "name": "Song of the Sea",
+   "description": "Capstone. Its non-damaging skills recharge 1 turn faster; each combo it lands gives the team 1 Bond.",
+   "mods": {
+    "statusCooldownReduction": 1,
+    "comboBond": 1
+   }
+  },
+  "lapras-eternal-winter": {
+   "id": "lapras-eternal-winter",
+   "name": "Eternal Winter",
+   "description": "Capstone. Its Ice moves deal 20% more damage; deals 20% more damage to Frozen foes.",
+   "mods": {
+    "typeDamage": {
+     "ice": 1.2
+    },
+    "vsStatusIdDamage": {
+     "freeze": 1.2
+    }
+   }
+  },
+  "lapras-gentle-giant": {
+   "id": "lapras-gentle-giant",
+   "name": "Gentle Giant",
+   "description": "Foes it engages take 15% more damage from its allies.",
+   "mods": {
+    "pinDamage": 1.15
+   }
+  }
+ }
+}

@@ -1,0 +1,478 @@
+{
+ "line": [
+  "electabuzz"
+ ],
+ "focus": [
+  {
+   "stat": "attack",
+   "skill": "electabuzz-wild-charge"
+  },
+  {
+   "stat": "spAttack",
+   "skill": "electabuzz-discharge"
+  },
+  {
+   "stat": "speed",
+   "skill": "electabuzz-volt-switch"
+  }
+ ],
+ "rows": {
+  "4": [
+   "electabuzz-high-voltage",
+   "electabuzz-insulated-hide"
+  ],
+  "6": [
+   "electabuzz-light-screen",
+   "electabuzz-spark"
+  ],
+  "9": [
+   "electabuzz-lightning-reflexes",
+   "electabuzz-overcharge"
+  ],
+  "12": [
+   "electabuzz-thunder-fang",
+   "electabuzz-shock-wave"
+  ],
+  "15": [
+   "electabuzz-infighter",
+   "electabuzz-long-arc"
+  ],
+  "18": [
+   "electabuzz-body-slam",
+   "electabuzz-electro-ball"
+  ],
+  "21": [
+   "electabuzz-overload",
+   "electabuzz-storm-hide"
+  ],
+  "24": [
+   "electabuzz-mega-punch",
+   "electabuzz-hyper-beam"
+  ],
+  "27": [
+   "electabuzz-static-field",
+   "electabuzz-adrenaline"
+  ],
+  "30": [
+   "electabuzz-living-storm",
+   "electabuzz-thunder-brawler"
+  ]
+ },
+ "moves": {
+  "electabuzz-wild-charge": {
+   "id": "electabuzz-wild-charge",
+   "name": "Wild Charge",
+   "type": "electric",
+   "kind": "bond",
+   "category": "physical",
+   "bondCost": 2,
+   "power": 90,
+   "range": {
+    "min": 1,
+    "max": 1
+   },
+   "requiresLineOfSight": false,
+   "shape": {
+    "kind": "single"
+   },
+   "affects": "enemies"
+  },
+  "electabuzz-discharge": {
+   "id": "electabuzz-discharge",
+   "name": "Discharge",
+   "type": "electric",
+   "kind": "bond",
+   "category": "special",
+   "bondCost": 3,
+   "power": 75,
+   "range": {
+    "min": 0,
+    "max": 0
+   },
+   "requiresLineOfSight": false,
+   "shape": {
+    "kind": "burst",
+    "radius": 1
+   },
+   "affects": "enemies",
+   "effects": [
+    {
+     "kind": "status",
+     "status": "paralysis",
+     "duration": 1
+    }
+   ]
+  },
+  "electabuzz-volt-switch": {
+   "id": "electabuzz-volt-switch",
+   "name": "Volt Switch",
+   "type": "electric",
+   "kind": "bond",
+   "category": "special",
+   "bondCost": 1,
+   "power": 60,
+   "range": {
+    "min": 1,
+    "max": 2
+   },
+   "requiresLineOfSight": true,
+   "shape": {
+    "kind": "single"
+   },
+   "affects": "enemies",
+   "effects": [
+    {
+     "kind": "disengage"
+    }
+   ]
+  },
+  "electabuzz-light-screen": {
+   "id": "electabuzz-light-screen",
+   "name": "Light Screen",
+   "type": "psychic",
+   "kind": "special",
+   "cooldown": 4,
+   "power": 0,
+   "range": {
+    "min": 0,
+    "max": 0
+   },
+   "requiresLineOfSight": false,
+   "shape": {
+    "kind": "burst",
+    "radius": 1
+   },
+   "affects": "allies",
+   "effects": [
+    {
+     "kind": "status",
+     "status": "fortified",
+     "duration": 2
+    }
+   ]
+  },
+  "electabuzz-spark": {
+   "id": "electabuzz-spark",
+   "name": "Spark",
+   "type": "electric",
+   "kind": "special",
+   "category": "physical",
+   "cooldown": 2,
+   "power": 55,
+   "range": {
+    "min": 1,
+    "max": 1
+   },
+   "requiresLineOfSight": false,
+   "shape": {
+    "kind": "single"
+   },
+   "affects": "enemies"
+  },
+  "electabuzz-thunder-fang": {
+   "id": "electabuzz-thunder-fang",
+   "name": "Thunder Fang",
+   "type": "electric",
+   "kind": "special",
+   "category": "physical",
+   "cooldown": 4,
+   "power": 65,
+   "range": {
+    "min": 1,
+    "max": 1
+   },
+   "requiresLineOfSight": false,
+   "shape": {
+    "kind": "single"
+   },
+   "affects": "enemies",
+   "effects": [
+    {
+     "kind": "status",
+     "status": "paralysis",
+     "duration": 1
+    }
+   ]
+  },
+  "electabuzz-shock-wave": {
+   "id": "electabuzz-shock-wave",
+   "name": "Shock Wave",
+   "type": "electric",
+   "kind": "special",
+   "category": "special",
+   "cooldown": 3,
+   "power": 75,
+   "range": {
+    "min": 1,
+    "max": 2
+   },
+   "requiresLineOfSight": true,
+   "shape": {
+    "kind": "single"
+   },
+   "affects": "enemies"
+  },
+  "electabuzz-body-slam": {
+   "id": "electabuzz-body-slam",
+   "name": "Body Slam",
+   "type": "normal",
+   "kind": "special",
+   "category": "physical",
+   "cooldown": 3,
+   "power": 75,
+   "range": {
+    "min": 1,
+    "max": 1
+   },
+   "requiresLineOfSight": false,
+   "shape": {
+    "kind": "single"
+   },
+   "affects": "enemies",
+   "effects": [
+    {
+     "kind": "status",
+     "status": "paralysis",
+     "duration": 1
+    }
+   ]
+  },
+  "electabuzz-electro-ball": {
+   "id": "electabuzz-electro-ball",
+   "name": "Electro Ball",
+   "type": "electric",
+   "kind": "special",
+   "category": "special",
+   "scaleStat": "speed",
+   "cooldown": 4,
+   "power": 80,
+   "range": {
+    "min": 1,
+    "max": 2
+   },
+   "requiresLineOfSight": true,
+   "shape": {
+    "kind": "single"
+   },
+   "affects": "enemies"
+  },
+  "electabuzz-mega-punch": {
+   "id": "electabuzz-mega-punch",
+   "name": "Mega Punch",
+   "type": "normal",
+   "kind": "special",
+   "category": "physical",
+   "cooldown": 4,
+   "power": 95,
+   "range": {
+    "min": 1,
+    "max": 1
+   },
+   "requiresLineOfSight": false,
+   "shape": {
+    "kind": "single"
+   },
+   "affects": "enemies"
+  },
+  "electabuzz-hyper-beam": {
+   "id": "electabuzz-hyper-beam",
+   "name": "Hyper Beam",
+   "type": "normal",
+   "kind": "special",
+   "category": "special",
+   "cooldown": 5,
+   "power": 100,
+   "range": {
+    "min": 1,
+    "max": 2
+   },
+   "requiresLineOfSight": true,
+   "shape": {
+    "kind": "single"
+   },
+   "affects": "enemies"
+  }
+ },
+ "talents": {
+  "electabuzz-wild-charge": {
+   "id": "electabuzz-wild-charge",
+   "name": "Wild Charge",
+   "description": "Bond skill: crashes into a foe wrapped in electricity (Power 90, Attack).",
+   "grantsMove": "electabuzz-wild-charge"
+  },
+  "electabuzz-discharge": {
+   "id": "electabuzz-discharge",
+   "name": "Discharge",
+   "description": "Bond skill: a burst of electricity on every adjacent foe (Power 75, Sp. Atk); Paralyzes 1 turn.",
+   "grantsMove": "electabuzz-discharge"
+  },
+  "electabuzz-volt-switch": {
+   "id": "electabuzz-volt-switch",
+   "name": "Volt Switch",
+   "description": "Bond skill: zaps a foe up to 2 hexes away (Power 60, Sp. Atk) and breaks off from engaged foes.",
+   "grantsMove": "electabuzz-volt-switch"
+  },
+  "electabuzz-high-voltage": {
+   "id": "electabuzz-high-voltage",
+   "name": "High Voltage",
+   "description": "Its Electric moves deal 15% more damage.",
+   "mods": {
+    "typeDamage": {
+     "electric": 1.15
+    }
+   }
+  },
+  "electabuzz-insulated-hide": {
+   "id": "electabuzz-insulated-hide",
+   "name": "Insulated Hide",
+   "description": "Takes 10% less damage.",
+   "mods": {
+    "damageTaken": 0.9
+   }
+  },
+  "electabuzz-light-screen": {
+   "id": "electabuzz-light-screen",
+   "name": "Light Screen",
+   "description": "New skill: a wall of light; it and adjacent allies are Fortified for 2 turns.",
+   "grantsMove": "electabuzz-light-screen"
+  },
+  "electabuzz-spark": {
+   "id": "electabuzz-spark",
+   "name": "Spark",
+   "description": "New skill: an electrified tackle into an adjacent foe (Power 55).",
+   "grantsMove": "electabuzz-spark"
+  },
+  "electabuzz-lightning-reflexes": {
+   "id": "electabuzz-lightning-reflexes",
+   "name": "Lightning Reflexes",
+   "description": "Steps away from engaged foes without drawing free strikes.",
+   "mods": {
+    "disengage": true
+   }
+  },
+  "electabuzz-overcharge": {
+   "id": "electabuzz-overcharge",
+   "name": "Overcharge",
+   "description": "While below half HP its Electric moves deal 25% more damage.",
+   "mods": {
+    "lowHpTypeDamage": {
+     "electric": 1.25
+    }
+   }
+  },
+  "electabuzz-thunder-fang": {
+   "id": "electabuzz-thunder-fang",
+   "name": "Thunder Fang",
+   "description": "New skill: a crackling bite (Power 65) that Paralyses the foe for 1 turn.",
+   "grantsMove": "electabuzz-thunder-fang"
+  },
+  "electabuzz-shock-wave": {
+   "id": "electabuzz-shock-wave",
+   "name": "Shock Wave",
+   "description": "New skill: a swift jolt at a foe up to 2 hexes away (Power 75).",
+   "grantsMove": "electabuzz-shock-wave"
+  },
+  "electabuzz-infighter": {
+   "id": "electabuzz-infighter",
+   "name": "Infighter",
+   "description": "Deals 15% more damage to adjacent foes.",
+   "mods": {
+    "closeDamage": 1.15
+   }
+  },
+  "electabuzz-long-arc": {
+   "id": "electabuzz-long-arc",
+   "name": "Long Arc",
+   "description": "Deals 20% more damage to foes 2+ hexes away.",
+   "mods": {
+    "farDamage": 1.2
+   }
+  },
+  "electabuzz-body-slam": {
+   "id": "electabuzz-body-slam",
+   "name": "Body Slam",
+   "description": "New skill: throws its whole body on a foe (Power 75), Paralysing it for 1 turn.",
+   "grantsMove": "electabuzz-body-slam"
+  },
+  "electabuzz-electro-ball": {
+   "id": "electabuzz-electro-ball",
+   "name": "Electro Ball",
+   "description": "New skill: an electric orb up to 2 hexes away (Power 80) that scales with Speed.",
+   "grantsMove": "electabuzz-electro-ball"
+  },
+  "electabuzz-overload": {
+   "id": "electabuzz-overload",
+   "name": "Overload",
+   "description": "Deals 25% more damage to Paralyzed foes.",
+   "mods": {
+    "vsStatusIdDamage": {
+     "paralysis": 1.25
+    }
+   }
+  },
+  "electabuzz-storm-hide": {
+   "id": "electabuzz-storm-hide",
+   "name": "Storm Hide",
+   "description": "Takes 20% less damage while at full HP; can't be Paralyzed.",
+   "mods": {
+    "fullHpDamageTaken": 0.8,
+    "statusImmune": [
+     "paralysis"
+    ]
+   }
+  },
+  "electabuzz-mega-punch": {
+   "id": "electabuzz-mega-punch",
+   "name": "Mega Punch",
+   "description": "New skill: a punch thrown with all its might (Power 95).",
+   "grantsMove": "electabuzz-mega-punch"
+  },
+  "electabuzz-hyper-beam": {
+   "id": "electabuzz-hyper-beam",
+   "name": "Hyper Beam",
+   "description": "New skill: a devastating beam at a foe up to 2 hexes away (Power 100).",
+   "grantsMove": "electabuzz-hyper-beam"
+  },
+  "electabuzz-static-field": {
+   "id": "electabuzz-static-field",
+   "name": "Static",
+   "description": "Its damaging hits on adjacent foes Paralyze them for 1 turn.",
+   "mods": {
+    "contactStatus": {
+     "status": "paralysis",
+     "duration": 1
+    }
+   }
+  },
+  "electabuzz-adrenaline": {
+   "id": "electabuzz-adrenaline",
+   "name": "Adrenaline",
+   "description": "Knocking out a foe on its turn gives back 2 movement.",
+   "mods": {
+    "koMove": 2
+   }
+  },
+  "electabuzz-living-storm": {
+   "id": "electabuzz-living-storm",
+   "name": "Living Storm",
+   "description": "Capstone. Deals 15% more damage to foes with a status; foes it statused pass it on when they faint.",
+   "mods": {
+    "vsStatusDamage": 1.15,
+    "statusSpreadOnKo": true
+   }
+  },
+  "electabuzz-thunder-brawler": {
+   "id": "electabuzz-thunder-brawler",
+   "name": "Thunder Brawler",
+   "description": "Capstone. Knockouts refresh its basic attack; each hit in a row on a foe deals 10% more (max 3).",
+   "mods": {
+    "koRefreshBasic": true,
+    "furyCutter": 0.1
+   }
+  }
+ },
+ "canonLevelUp": [
+  "electabuzz-light-screen",
+  "electabuzz-light-screen"
+ ]
+}

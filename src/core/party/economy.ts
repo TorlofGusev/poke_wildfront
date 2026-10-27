@@ -100,7 +100,7 @@ export function useRemedy(prog: ProgressionContent, game: GameState, uid: string
   return { ...next, inventory: { ...next.inventory, items: { ...next.inventory.items, [itemId]: count(next.inventory.items, itemId) - 1 } } };
 }
 
-/** Applies a change to one member (role, talent, moves) by uid. */
+/** Applies a change to one member (focus, talent, moves) by uid. */
 export const withMember = updateMember;
 
 export const CANDY = "candy";
@@ -118,11 +118,11 @@ export function allocatePoint(prog: ProgressionContent, game: GameState, uid: st
   return { ...next, inventory: { ...next.inventory, items } };
 }
 
-/** Forgets a member's role and masteries for Pokédollars, so they can be chosen again. */
+/** Forgets a member's focus and masteries for Pokédollars, so they can be chosen again. */
 export function respecMember(content: BattleContent, prog: ProgressionContent, game: GameState, uid: string): GameState {
   const member = findMember(game, uid);
   if (!member) throw new Error(`${uid} is not in party or storage`);
-  if (member.role === null) throw new Error("nothing to reset");
+  if (member.focus === null) throw new Error("nothing to reset");
   const cost = respecCost(prog, member);
   if (game.money < cost) throw new Error(`not enough money (need ₽${cost}, have ₽${game.money})`);
   return { ...updateMember(game, uid, (m) => resetMasteries(content, m)), money: game.money - cost };

@@ -1,0 +1,484 @@
+{
+ "line": [
+  "vulpix",
+  "ninetales"
+ ],
+ "focus": [
+  {
+   "stat": "spAttack",
+   "skill": "vulpix-inferno"
+  },
+  {
+   "stat": "speed",
+   "skill": "vulpix-feint-attack"
+  },
+  {
+   "stat": "spDefense",
+   "skill": "vulpix-safeguard"
+  }
+ ],
+ "rows": {
+  "4": [
+   "vulpix-flash-fire",
+   "vulpix-lustrous-coat"
+  ],
+  "6": [
+   "vulpix-roar",
+   "vulpix-incinerate"
+  ],
+  "9": [
+   "vulpix-drought",
+   "vulpix-distant-flames"
+  ],
+  "12": [
+   "vulpix-will-o-wisp",
+   "vulpix-swift"
+  ],
+  "15": [
+   "vulpix-lingering-grudge",
+   "vulpix-mystic-tails"
+  ],
+  "18": [
+   "vulpix-heat-wave",
+   "vulpix-mystical-fire"
+  ],
+  "21": [
+   "vulpix-ward-of-nine-tails",
+   "vulpix-nimble-fox"
+  ],
+  "24": [
+   "vulpix-overheat",
+   "vulpix-confuse-ray"
+  ],
+  "27": [
+   "vulpix-hexing-flames",
+   "vulpix-mystic-fox"
+  ],
+  "30": [
+   "vulpix-nine-tailed-curse",
+   "vulpix-ageless-fox"
+  ]
+ },
+ "moves": {
+  "vulpix-inferno": {
+   "id": "vulpix-inferno",
+   "name": "Inferno",
+   "type": "fire",
+   "kind": "bond",
+   "category": "special",
+   "bondCost": 3,
+   "power": 100,
+   "range": {
+    "min": 1,
+    "max": 3
+   },
+   "requiresLineOfSight": true,
+   "shape": {
+    "kind": "single"
+   },
+   "affects": "enemies",
+   "effects": [
+    {
+     "kind": "status",
+     "status": "burn",
+     "duration": 2
+    }
+   ]
+  },
+  "vulpix-feint-attack": {
+   "id": "vulpix-feint-attack",
+   "name": "Feint Attack",
+   "type": "normal",
+   "kind": "bond",
+   "category": "physical",
+   "bondCost": 1,
+   "power": 55,
+   "range": {
+    "min": 1,
+    "max": 1
+   },
+   "requiresLineOfSight": false,
+   "shape": {
+    "kind": "single"
+   },
+   "affects": "enemies",
+   "effects": [
+    {
+     "kind": "status",
+     "status": "exposed",
+     "duration": 1
+    }
+   ]
+  },
+  "vulpix-incinerate": {
+   "id": "vulpix-incinerate",
+   "name": "Incinerate",
+   "type": "fire",
+   "kind": "special",
+   "category": "special",
+   "cooldown": 2,
+   "power": 50,
+   "range": {
+    "min": 1,
+    "max": 2
+   },
+   "requiresLineOfSight": true,
+   "shape": {
+    "kind": "single"
+   },
+   "affects": "enemies"
+  },
+  "vulpix-will-o-wisp": {
+   "id": "vulpix-will-o-wisp",
+   "name": "Will-O-Wisp",
+   "type": "fire",
+   "kind": "special",
+   "cooldown": 3,
+   "power": 0,
+   "range": {
+    "min": 1,
+    "max": 2
+   },
+   "requiresLineOfSight": true,
+   "shape": {
+    "kind": "single"
+   },
+   "affects": "enemies",
+   "effects": [
+    {
+     "kind": "status",
+     "status": "burn",
+     "duration": 3
+    }
+   ]
+  },
+  "vulpix-heat-wave": {
+   "id": "vulpix-heat-wave",
+   "name": "Heat Wave",
+   "type": "fire",
+   "kind": "special",
+   "category": "special",
+   "cooldown": 4,
+   "power": 80,
+   "range": {
+    "min": 1,
+    "max": 1
+   },
+   "requiresLineOfSight": true,
+   "shape": {
+    "kind": "burst",
+    "radius": 1
+   },
+   "affects": "enemies"
+  },
+  "vulpix-overheat": {
+   "id": "vulpix-overheat",
+   "name": "Overheat",
+   "type": "fire",
+   "kind": "special",
+   "category": "special",
+   "cooldown": 5,
+   "power": 100,
+   "range": {
+    "min": 1,
+    "max": 2
+   },
+   "requiresLineOfSight": true,
+   "shape": {
+    "kind": "single"
+   },
+   "affects": "enemies"
+  },
+  "vulpix-safeguard": {
+   "id": "vulpix-safeguard",
+   "name": "Safeguard",
+   "type": "normal",
+   "kind": "bond",
+   "bondCost": 2,
+   "power": 0,
+   "range": {
+    "min": 0,
+    "max": 0
+   },
+   "requiresLineOfSight": false,
+   "shape": {
+    "kind": "burst",
+    "radius": 1
+   },
+   "affects": "allies",
+   "effects": [
+    {
+     "kind": "cleanse"
+    },
+    {
+     "kind": "status",
+     "status": "fortified",
+     "duration": 1
+    }
+   ]
+  },
+  "vulpix-roar": {
+   "id": "vulpix-roar",
+   "name": "Roar",
+   "type": "normal",
+   "kind": "special",
+   "cooldown": 3,
+   "power": 0,
+   "range": {
+    "min": 1,
+    "max": 2
+   },
+   "requiresLineOfSight": true,
+   "shape": {
+    "kind": "single"
+   },
+   "affects": "enemies",
+   "effects": [
+    {
+     "kind": "push",
+     "distance": 2
+    }
+   ]
+  },
+  "vulpix-swift": {
+   "id": "vulpix-swift",
+   "name": "Swift",
+   "type": "normal",
+   "kind": "special",
+   "category": "special",
+   "cooldown": 3,
+   "power": 70,
+   "range": {
+    "min": 1,
+    "max": 2
+   },
+   "requiresLineOfSight": true,
+   "shape": {
+    "kind": "single"
+   },
+   "affects": "enemies"
+  },
+  "vulpix-mystical-fire": {
+   "id": "vulpix-mystical-fire",
+   "name": "Mystical Fire",
+   "type": "fire",
+   "kind": "special",
+   "category": "special",
+   "cooldown": 4,
+   "power": 80,
+   "range": {
+    "min": 1,
+    "max": 2
+   },
+   "requiresLineOfSight": true,
+   "shape": {
+    "kind": "single"
+   },
+   "affects": "enemies"
+  },
+  "vulpix-confuse-ray": {
+   "id": "vulpix-confuse-ray",
+   "name": "Confuse Ray",
+   "type": "ghost",
+   "kind": "special",
+   "cooldown": 4,
+   "power": 0,
+   "range": {
+    "min": 1,
+    "max": 2
+   },
+   "requiresLineOfSight": true,
+   "shape": {
+    "kind": "single"
+   },
+   "affects": "enemies",
+   "effects": [
+    {
+     "kind": "status",
+     "status": "confused",
+     "duration": 2
+    }
+   ]
+  }
+ },
+ "talents": {
+  "vulpix-inferno": {
+   "id": "vulpix-inferno",
+   "name": "Inferno",
+   "description": "Bond skill: engulfs a foe up to 3 hexes away in flame (Power 100, Sp. Atk), Burning it for 2 turns.",
+   "grantsMove": "vulpix-inferno"
+  },
+  "vulpix-feint-attack": {
+   "id": "vulpix-feint-attack",
+   "name": "Feint Attack",
+   "description": "Bond skill: a sly feint (Power 55) that leaves the foe Exposed for 1 turn.",
+   "grantsMove": "vulpix-feint-attack"
+  },
+  "vulpix-flash-fire": {
+   "id": "vulpix-flash-fire",
+   "name": "Flash Fire",
+   "description": "Immune to Burn; its Fire-type moves deal 10% more damage.",
+   "mods": {
+    "statusImmune": [
+     "burn"
+    ],
+    "typeDamage": {
+     "fire": 1.1
+    }
+   }
+  },
+  "vulpix-lustrous-coat": {
+   "id": "vulpix-lustrous-coat",
+   "name": "Lustrous Coat",
+   "description": "Its gleaming coat wards off blows: takes 10% less damage.",
+   "mods": {
+    "damageTaken": 0.9
+   }
+  },
+  "vulpix-incinerate": {
+   "id": "vulpix-incinerate",
+   "name": "Incinerate",
+   "description": "New skill: scorches a foe up to 2 hexes away (Power 50).",
+   "grantsMove": "vulpix-incinerate"
+  },
+  "vulpix-drought": {
+   "id": "vulpix-drought",
+   "name": "Drought",
+   "description": "Its harsh sunlight scorches: deals 20% more damage to Burned foes.",
+   "mods": {
+    "vsStatusIdDamage": {
+     "burn": 1.2
+    }
+   }
+  },
+  "vulpix-distant-flames": {
+   "id": "vulpix-distant-flames",
+   "name": "Distant Flames",
+   "description": "Deals 15% more damage to foes 2+ hexes away.",
+   "mods": {
+    "farDamage": 1.15
+   }
+  },
+  "vulpix-will-o-wisp": {
+   "id": "vulpix-will-o-wisp",
+   "name": "Will-O-Wisp",
+   "description": "New skill: an eerie flame Burns a foe up to 2 hexes away for 3 turns.",
+   "grantsMove": "vulpix-will-o-wisp"
+  },
+  "vulpix-lingering-grudge": {
+   "id": "vulpix-lingering-grudge",
+   "name": "Lingering Grudge",
+   "description": "Its curses run deep: statuses it inflicts last 1 turn longer.",
+   "mods": {
+    "statusDurationBonus": 1
+   }
+  },
+  "vulpix-mystic-tails": {
+   "id": "vulpix-mystic-tails",
+   "name": "Mystic Tails",
+   "description": "Heals 4% of its max HP at the start of each turn.",
+   "mods": {
+    "healPerTurn": 0.04
+   }
+  },
+  "vulpix-heat-wave": {
+   "id": "vulpix-heat-wave",
+   "name": "Heat Wave",
+   "description": "New skill: a scorching gust hits a 1-hex area up to 1 hex away (Power 80).",
+   "grantsMove": "vulpix-heat-wave"
+  },
+  "vulpix-ward-of-nine-tails": {
+   "id": "vulpix-ward-of-nine-tails",
+   "name": "Ward of Nine Tails",
+   "description": "Immune to Sleep, Paralysis and Freeze.",
+   "mods": {
+    "statusImmune": [
+     "sleep",
+     "paralysis",
+     "freeze"
+    ]
+   }
+  },
+  "vulpix-nimble-fox": {
+   "id": "vulpix-nimble-fox",
+   "name": "Nimble Fox",
+   "description": "Slips away from engaged foes without drawing free strikes.",
+   "mods": {
+    "disengage": true
+   }
+  },
+  "vulpix-overheat": {
+   "id": "vulpix-overheat",
+   "name": "Overheat",
+   "description": "New skill: an all-out blast of fire at a foe up to 2 hexes away (Power 100).",
+   "grantsMove": "vulpix-overheat"
+  },
+  "vulpix-hexing-flames": {
+   "id": "vulpix-hexing-flames",
+   "name": "Hexing Flames",
+   "description": "Deals 20% more damage to foes with any status.",
+   "mods": {
+    "vsStatusDamage": 1.2
+   }
+  },
+  "vulpix-mystic-fox": {
+   "id": "vulpix-mystic-fox",
+   "name": "Mystic Fox",
+   "description": "Gives the team 1 Bond whenever it lands a combo.",
+   "mods": {
+    "comboBond": 1
+   }
+  },
+  "vulpix-nine-tailed-curse": {
+   "id": "vulpix-nine-tailed-curse",
+   "name": "Nine-Tailed Curse",
+   "description": "Capstone. Its ranged moves fire over Pokémon; its statuses spread to adjacent foes on a knockout.",
+   "mods": {
+    "shootOver": true,
+    "statusSpreadOnKo": true
+   }
+  },
+  "vulpix-ageless-fox": {
+   "id": "vulpix-ageless-fox",
+   "name": "Ageless Fox",
+   "description": "Capstone. Takes 15% less damage and sheds statuses foes put on it at the start of its turn.",
+   "mods": {
+    "damageTaken": 0.85,
+    "shedStatuses": true
+   }
+  },
+  "vulpix-safeguard": {
+   "id": "vulpix-safeguard",
+   "name": "Safeguard",
+   "description": "Bond skill: a mystic veil clears foes' statuses on it and adjacent allies; Fortified 1 turn.",
+   "grantsMove": "vulpix-safeguard"
+  },
+  "vulpix-roar": {
+   "id": "vulpix-roar",
+   "name": "Roar",
+   "description": "New skill: a fierce roar drives a foe up to 2 hexes away 2 hexes back.",
+   "grantsMove": "vulpix-roar"
+  },
+  "vulpix-swift": {
+   "id": "vulpix-swift",
+   "name": "Swift",
+   "description": "New skill: star-shaped rays at a foe up to 2 hexes away (Power 70).",
+   "grantsMove": "vulpix-swift"
+  },
+  "vulpix-mystical-fire": {
+   "id": "vulpix-mystical-fire",
+   "name": "Mystical Fire",
+   "description": "New skill: a mystical flame at a foe up to 2 hexes away (Power 80).",
+   "grantsMove": "vulpix-mystical-fire"
+  },
+  "vulpix-confuse-ray": {
+   "id": "vulpix-confuse-ray",
+   "name": "Confuse Ray",
+   "description": "New skill: an eerie light at a foe up to 2 hexes away: Confused for 2 turns.",
+   "grantsMove": "vulpix-confuse-ray"
+  }
+ },
+ "canonLevelUp": [
+  "vulpix-confuse-ray"
+ ]
+}

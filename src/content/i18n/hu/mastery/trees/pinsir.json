@@ -1,0 +1,73 @@
+{
+ "talents": {
+  "pinsir-guillotine": {
+   "description": "Bond képesség: zúzó erővel szorítja ollói közé az ellenfelet (Erő 110, Támadás)."
+  },
+  "pinsir-seismic-toss": {
+   "description": "Bond képesség: megragad egy ellenfelet és 2 hexnyire hajítja (Erő 70, Attack)."
+  },
+  "pinsir-x-scissor": {
+   "description": "Bond képesség: 2 hexen belül rávetődik és keresztben vág (Erő 60, Támadás), majd lefogja."
+  },
+  "pinsir-moxie": {
+   "description": "Minden kiütés 1-gyel növeli a Támadását a csata végéig (max +3)."
+  },
+  "pinsir-thick-carapace": {
+   "description": "10%-kal kevesebb sebzést kap."
+  },
+  "pinsir-bind": {
+   "description": "Új képesség: megszorítja az ellenfelet (Erő 25), lefogja, és 2 körig Lassú lesz."
+  },
+  "pinsir-bug-bite": {
+   "description": "Új képesség: védelmet törő harapás (Erő 55), 1 körre Exposed állapotba hozza az ellenfelet."
+  },
+  "pinsir-iron-grip": {
+   "description": "15%-kal többet sebez a szövetségeseivel harcban álló ellenfelekre."
+  },
+  "pinsir-fury-cutter": {
+   "description": "Új képesség: ollóival újra meg újra vág (Erő 75)."
+  },
+  "pinsir-swords-dance": {
+   "description": "Új képesség: harci tánc, amitől 2 körig Összpontosított."
+  },
+  "pinsir-vise-lock": {
+   "description": "Az általa lefogott ellenfelek 15%-kal több sebzést kapnak a szövetségeseitől."
+  },
+  "pinsir-battle-hardened": {
+   "description": "Közelharcban körönként a max HP további 3%-át gyógyítja."
+  },
+  "pinsir-lunge": {
+   "description": "Új képesség: teljes erejével nekiugrik egy szomszédos ellenfélnek (Erő 80)."
+  },
+  "pinsir-pin-missile": {
+   "description": "Új képesség: hegyes tüskéket lő egy legfeljebb 1 hexnyire lévő 1 hexes körzetre (Erő 70)."
+  },
+  "pinsir-pincer-hold": {
+   "description": "Az elszakadó ellenfelekre mért szabad ütései 30%-kal erősebbek."
+  },
+  "pinsir-swarm": {
+   "description": "Fél HP alatt a Bogár lépései 25%-kal többet sebeznek."
+  },
+  "pinsir-double-edge": {
+   "description": "Új képesség: vakmerő, teljes testes roham egy szomszédos ellenfélre (Erő 100)."
+  },
+  "pinsir-thrash": {
+   "description": "Új képesség: tombolva minden szomszédos ellenfelet eltalál (Erő 80)."
+  },
+  "pinsir-hunter-s-focus": {
+   "description": "20%-kal többet sebez a teljes HP-jú ellenfelekre."
+  },
+  "pinsir-relentless": {
+   "description": "Minden egymás utáni ütés ugyanarra az ellenfélre 10%-kal többet sebez (max 3)."
+  },
+  "pinsir-crushing-pincers": {
+   "description": "Csúcstudás. Kiütés után újra alaptámadhat; 15%-kal többet sebez a szomszédos ellenfelekre."
+  },
+  "pinsir-living-fortress": {
+   "description": "Csúcstudás. 15%-kal kevesebb sebzést kap; a lefogott ellenfelek távozáskor mindig szabad ütést kapnak."
+  },
+  "pinsir-hyper-cutter": {
+   "description": "Hatalmas ollóit semmi sem gyengíti: nem égethető meg (Burn), és nem lehet Exposed."
+  }
+ }
+}

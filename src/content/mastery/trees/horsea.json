@@ -1,0 +1,489 @@
+{
+ "line": [
+  "horsea",
+  "seadra"
+ ],
+ "canonLevelUp": [
+  "horsea-agility"
+ ],
+ "focus": [
+  {
+   "stat": "spAttack",
+   "skill": "horsea-octazooka"
+  },
+  {
+   "stat": "speed",
+   "skill": "horsea-agility"
+  },
+  {
+   "stat": "defense",
+   "skill": "horsea-smokescreen"
+  }
+ ],
+ "rows": {
+  "4": [
+   "horsea-sniper",
+   "horsea-ink-cloak"
+  ],
+  "6": [
+   "horsea-bubble-beam",
+   "horsea-leer"
+  ],
+  "9": [
+   "horsea-current-rider",
+   "horsea-spiny-back"
+  ],
+  "12": [
+   "horsea-brine",
+   "horsea-focus-energy"
+  ],
+  "15": [
+   "horsea-pinpoint",
+   "horsea-rough-waters"
+  ],
+  "18": [
+   "horsea-muddy-water",
+   "horsea-whirlpool"
+  ],
+  "21": [
+   "horsea-swift-current",
+   "horsea-deep-pressure"
+  ],
+  "24": [
+   "horsea-hyper-beam",
+   "horsea-surf"
+  ],
+  "27": [
+   "horsea-ink-stain",
+   "horsea-opening-shot"
+  ],
+  "30": [
+   "horsea-deep-sea-sniper",
+   "horsea-dragon-current"
+  ]
+ },
+ "moves": {
+  "horsea-octazooka": {
+   "id": "horsea-octazooka",
+   "name": "Octazooka",
+   "type": "water",
+   "kind": "bond",
+   "category": "special",
+   "bondCost": 2,
+   "power": 80,
+   "range": {
+    "min": 1,
+    "max": 3
+   },
+   "requiresLineOfSight": true,
+   "shape": {
+    "kind": "single"
+   },
+   "affects": "enemies",
+   "effects": [
+    {
+     "kind": "status",
+     "status": "marked",
+     "duration": 2
+    }
+   ]
+  },
+  "horsea-smokescreen": {
+   "id": "horsea-smokescreen",
+   "name": "Smokescreen",
+   "type": "normal",
+   "kind": "bond",
+   "bondCost": 1,
+   "power": 0,
+   "range": {
+    "min": 0,
+    "max": 0
+   },
+   "requiresLineOfSight": false,
+   "shape": {
+    "kind": "burst",
+    "radius": 1
+   },
+   "affects": "allies",
+   "effects": [
+    {
+     "kind": "status",
+     "status": "fortified",
+     "duration": 2
+    }
+   ]
+  },
+  "horsea-bubble-beam": {
+   "id": "horsea-bubble-beam",
+   "name": "Bubble Beam",
+   "type": "water",
+   "kind": "special",
+   "category": "special",
+   "cooldown": 3,
+   "power": 65,
+   "range": {
+    "min": 1,
+    "max": 2
+   },
+   "requiresLineOfSight": true,
+   "shape": {
+    "kind": "single"
+   },
+   "affects": "enemies",
+   "effects": [
+    {
+     "kind": "status",
+     "status": "slow",
+     "duration": 1
+    }
+   ]
+  },
+  "horsea-leer": {
+   "id": "horsea-leer",
+   "name": "Leer",
+   "type": "normal",
+   "kind": "special",
+   "cooldown": 2,
+   "power": 0,
+   "range": {
+    "min": 1,
+    "max": 2
+   },
+   "requiresLineOfSight": true,
+   "shape": {
+    "kind": "single"
+   },
+   "affects": "enemies",
+   "effects": [
+    {
+     "kind": "status",
+     "status": "exposed",
+     "duration": 1
+    }
+   ]
+  },
+  "horsea-focus-energy": {
+   "id": "horsea-focus-energy",
+   "name": "Focus Energy",
+   "type": "normal",
+   "kind": "special",
+   "cooldown": 4,
+   "power": 0,
+   "range": {
+    "min": 0,
+    "max": 0
+   },
+   "requiresLineOfSight": false,
+   "shape": {
+    "kind": "single"
+   },
+   "affects": "allies",
+   "effects": [
+    {
+     "kind": "status",
+     "status": "focused",
+     "duration": 1
+    }
+   ]
+  },
+  "horsea-whirlpool": {
+   "id": "horsea-whirlpool",
+   "name": "Whirlpool",
+   "type": "water",
+   "kind": "special",
+   "category": "special",
+   "cooldown": 4,
+   "power": 55,
+   "range": {
+    "min": 1,
+    "max": 2
+   },
+   "requiresLineOfSight": true,
+   "shape": {
+    "kind": "single"
+   },
+   "affects": "enemies",
+   "effects": [
+    {
+     "kind": "status",
+     "status": "paralysis",
+     "duration": 2
+    }
+   ]
+  },
+  "horsea-surf": {
+   "id": "horsea-surf",
+   "name": "Surf",
+   "type": "water",
+   "kind": "special",
+   "category": "special",
+   "cooldown": 4,
+   "power": 90,
+   "range": {
+    "min": 0,
+    "max": 0
+   },
+   "requiresLineOfSight": false,
+   "shape": {
+    "kind": "burst",
+    "radius": 1
+   },
+   "affects": "enemies"
+  },
+  "horsea-agility": {
+   "id": "horsea-agility",
+   "name": "Agility",
+   "type": "psychic",
+   "kind": "bond",
+   "bondCost": 1,
+   "power": 0,
+   "range": {
+    "min": 0,
+    "max": 0
+   },
+   "requiresLineOfSight": false,
+   "shape": {
+    "kind": "single"
+   },
+   "affects": "allies",
+   "effects": [
+    {
+     "kind": "status",
+     "status": "hasted",
+     "duration": 3
+    }
+   ]
+  },
+  "horsea-brine": {
+   "id": "horsea-brine",
+   "name": "Brine",
+   "type": "water",
+   "kind": "special",
+   "category": "special",
+   "cooldown": 3,
+   "power": 65,
+   "range": {
+    "min": 1,
+    "max": 2
+   },
+   "requiresLineOfSight": true,
+   "shape": {
+    "kind": "single"
+   },
+   "affects": "enemies"
+  },
+  "horsea-muddy-water": {
+   "id": "horsea-muddy-water",
+   "name": "Muddy Water",
+   "type": "water",
+   "kind": "special",
+   "category": "special",
+   "cooldown": 4,
+   "power": 90,
+   "range": {
+    "min": 1,
+    "max": 2
+   },
+   "requiresLineOfSight": true,
+   "shape": {
+    "kind": "single"
+   },
+   "affects": "enemies",
+   "effects": [
+    {
+     "kind": "status",
+     "status": "slow",
+     "duration": 1
+    }
+   ]
+  },
+  "horsea-hyper-beam": {
+   "id": "horsea-hyper-beam",
+   "name": "Hyper Beam",
+   "type": "normal",
+   "kind": "special",
+   "category": "special",
+   "cooldown": 5,
+   "power": 95,
+   "range": {
+    "min": 1,
+    "max": 2
+   },
+   "requiresLineOfSight": true,
+   "shape": {
+    "kind": "single"
+   },
+   "affects": "enemies"
+  }
+ },
+ "talents": {
+  "horsea-octazooka": {
+   "id": "horsea-octazooka",
+   "name": "Octazooka",
+   "description": "Bond skill: blasts ink at a foe up to 3 hexes away (Power 80, Sp. Atk), Marking it 2 turns.",
+   "grantsMove": "horsea-octazooka"
+  },
+  "horsea-smokescreen": {
+   "id": "horsea-smokescreen",
+   "name": "Smokescreen",
+   "description": "Bond skill: a cloud of ink hides it and adjacent allies, Fortified for 2 turns.",
+   "grantsMove": "horsea-smokescreen"
+  },
+  "horsea-bubble-beam": {
+   "id": "horsea-bubble-beam",
+   "name": "Bubble Beam",
+   "description": "New skill: a spray of bubbles at a foe up to 2 hexes away (Power 65), Slowing it 1 turn.",
+   "grantsMove": "horsea-bubble-beam"
+  },
+  "horsea-leer": {
+   "id": "horsea-leer",
+   "name": "Leer",
+   "description": "New skill: a sharp stare leaves a foe up to 2 hexes away Exposed for 1 turn.",
+   "grantsMove": "horsea-leer"
+  },
+  "horsea-ink-cloak": {
+   "id": "horsea-ink-cloak",
+   "name": "Ink Cloak",
+   "description": "Takes 20% less damage while at full HP.",
+   "mods": {
+    "fullHpDamageTaken": 0.8
+   }
+  },
+  "horsea-current-rider": {
+   "id": "horsea-current-rider",
+   "name": "Current Rider",
+   "description": "Regains 2 movement when it knocks out a foe on its turn.",
+   "mods": {
+    "koMove": 2
+   }
+  },
+  "horsea-focus-energy": {
+   "id": "horsea-focus-energy",
+   "name": "Focus Energy",
+   "description": "New skill: takes a deep breath and becomes Focused for 1 turn.",
+   "grantsMove": "horsea-focus-energy"
+  },
+  "horsea-pinpoint": {
+   "id": "horsea-pinpoint",
+   "name": "Pinpoint",
+   "description": "Deals 25% more damage to Marked foes.",
+   "mods": {
+    "vsStatusIdDamage": {
+     "marked": 1.25
+    }
+   }
+  },
+  "horsea-spiny-back": {
+   "id": "horsea-spiny-back",
+   "name": "Spiny Back",
+   "description": "Foes that hit it from an adjacent hex take 8 damage.",
+   "mods": {
+    "thorns": 8
+   }
+  },
+  "horsea-whirlpool": {
+   "id": "horsea-whirlpool",
+   "name": "Whirlpool",
+   "description": "New skill: traps a foe up to 2 hexes away in a whirlpool (Power 55); it can't move 2 turns.",
+   "grantsMove": "horsea-whirlpool"
+  },
+  "horsea-swift-current": {
+   "id": "horsea-swift-current",
+   "name": "Swift Current",
+   "description": "Steps away from engaged foes without drawing free strikes.",
+   "mods": {
+    "disengage": true
+   }
+  },
+  "horsea-deep-pressure": {
+   "id": "horsea-deep-pressure",
+   "name": "Deep Pressure",
+   "description": "Takes 10% less damage.",
+   "mods": {
+    "damageTaken": 0.9
+   }
+  },
+  "horsea-surf": {
+   "id": "horsea-surf",
+   "name": "Surf",
+   "description": "New skill: a great wave crashes over every foe within 1 hex of it (Power 90).",
+   "grantsMove": "horsea-surf"
+  },
+  "horsea-rough-waters": {
+   "id": "horsea-rough-waters",
+   "name": "Rough Waters",
+   "description": "Deals 20% more damage to foes carrying a status an ally applied.",
+   "mods": {
+    "vsSetupDamage": 1.2
+   }
+  },
+  "horsea-deep-sea-sniper": {
+   "id": "horsea-deep-sea-sniper",
+   "name": "Deep Sea Sniper",
+   "description": "Capstone. Its ranged moves fire over Pokémon in the way and reach 1 hex farther.",
+   "mods": {
+    "shootOver": true,
+    "rangeBonus": 1
+   }
+  },
+  "horsea-dragon-current": {
+   "id": "horsea-dragon-current",
+   "name": "Riptide",
+   "description": "Capstone. Its Water moves deal 20% more; a knockout resets its skill cooldowns.",
+   "mods": {
+    "typeDamage": {
+     "water": 1.2
+    },
+    "koResetCooldowns": true
+   }
+  },
+  "horsea-sniper": {
+   "id": "horsea-sniper",
+   "name": "Sniper",
+   "description": "Deals 15% more damage to foes 2+ hexes away.",
+   "mods": {
+    "farDamage": 1.15
+   }
+  },
+  "horsea-ink-stain": {
+   "id": "horsea-ink-stain",
+   "name": "Ink Stain",
+   "description": "Statuses it inflicts last 1 turn longer.",
+   "mods": {
+    "statusDurationBonus": 1
+   }
+  },
+  "horsea-opening-shot": {
+   "id": "horsea-opening-shot",
+   "name": "Opening Shot",
+   "description": "Deals 20% more damage to foes at full HP.",
+   "mods": {
+    "fullHpTargetDamage": 1.2
+   }
+  },
+  "horsea-agility": {
+   "id": "horsea-agility",
+   "name": "Agility",
+   "description": "Bond skill: darts through the water, becoming Hasted for 3 turns.",
+   "grantsMove": "horsea-agility"
+  },
+  "horsea-brine": {
+   "id": "horsea-brine",
+   "name": "Brine",
+   "description": "New skill: a jet of salt water at a foe up to 2 hexes away (Power 65).",
+   "grantsMove": "horsea-brine"
+  },
+  "horsea-muddy-water": {
+   "id": "horsea-muddy-water",
+   "name": "Muddy Water",
+   "description": "New skill: a muddy surge at a foe up to 2 hexes away (Power 90) that Slows it 1 turn.",
+   "grantsMove": "horsea-muddy-water"
+  },
+  "horsea-hyper-beam": {
+   "id": "horsea-hyper-beam",
+   "name": "Hyper Beam",
+   "description": "New skill: a mighty beam at a foe up to 2 hexes away (Power 95).",
+   "grantsMove": "horsea-hyper-beam"
+  }
+ }
+}

@@ -1,0 +1,506 @@
+{
+ "line": [
+  "onix"
+ ],
+ "focus": [
+  {
+   "stat": "defense",
+   "skill": "onix-heavy-slam"
+  },
+  {
+   "stat": "attack",
+   "skill": "onix-stone-edge"
+  },
+  {
+   "stat": "speed",
+   "skill": "onix-dig"
+  }
+ ],
+ "rows": {
+  "4": [
+   "onix-hard-stone",
+   "onix-boulder-body"
+  ],
+  "6": [
+   "onix-rock-tomb",
+   "onix-bind"
+  ],
+  "9": [
+   "onix-sand-force",
+   "onix-rough-rocks"
+  ],
+  "12": [
+   "onix-iron-tail",
+   "onix-rock-polish"
+  ],
+  "15": [
+   "onix-crushing-coils",
+   "onix-living-wall"
+  ],
+  "18": [
+   "onix-smack-down",
+   "onix-sandstorm"
+  ],
+  "21": [
+   "onix-crushing-weight",
+   "onix-burrow-away"
+  ],
+  "24": [
+   "onix-double-edge",
+   "onix-stealth-rock"
+  ],
+  "27": [
+   "onix-cornered-giant",
+   "onix-rock-head"
+  ],
+  "30": [
+   "onix-rock-snakes-wrath",
+   "onix-rock-titan"
+  ]
+ },
+ "moves": {
+  "onix-heavy-slam": {
+   "id": "onix-heavy-slam",
+   "name": "Heavy Slam",
+   "type": "normal",
+   "kind": "bond",
+   "category": "physical",
+   "bondCost": 2,
+   "power": 85,
+   "range": {
+    "min": 1,
+    "max": 1
+   },
+   "requiresLineOfSight": false,
+   "shape": {
+    "kind": "single"
+   },
+   "affects": "enemies",
+   "effects": [
+    {
+     "kind": "push",
+     "distance": 1
+    }
+   ]
+  },
+  "onix-stone-edge": {
+   "id": "onix-stone-edge",
+   "name": "Stone Edge",
+   "type": "rock",
+   "kind": "bond",
+   "category": "physical",
+   "bondCost": 3,
+   "power": 100,
+   "range": {
+    "min": 1,
+    "max": 2
+   },
+   "requiresLineOfSight": true,
+   "shape": {
+    "kind": "single"
+   },
+   "affects": "enemies",
+   "effects": [
+    {
+     "kind": "status",
+     "status": "exposed",
+     "duration": 1
+    }
+   ]
+  },
+  "onix-bind": {
+   "id": "onix-bind",
+   "name": "Bind",
+   "type": "normal",
+   "kind": "special",
+   "category": "physical",
+   "power": 40,
+   "range": {
+    "min": 1,
+    "max": 1
+   },
+   "requiresLineOfSight": false,
+   "shape": {
+    "kind": "single"
+   },
+   "affects": "enemies",
+   "effects": [
+    {
+     "kind": "engage"
+    },
+    {
+     "kind": "status",
+     "status": "slow",
+     "duration": 2
+    }
+   ],
+   "cooldown": 3
+  },
+  "onix-rock-tomb": {
+   "id": "onix-rock-tomb",
+   "name": "Rock Tomb",
+   "type": "rock",
+   "kind": "special",
+   "category": "physical",
+   "cooldown": 3,
+   "power": 60,
+   "range": {
+    "min": 1,
+    "max": 2
+   },
+   "requiresLineOfSight": true,
+   "shape": {
+    "kind": "single"
+   },
+   "affects": "enemies",
+   "effects": [
+    {
+     "kind": "status",
+     "status": "slow",
+     "duration": 2
+    }
+   ]
+  },
+  "onix-iron-tail": {
+   "id": "onix-iron-tail",
+   "name": "Iron Tail",
+   "type": "normal",
+   "kind": "special",
+   "category": "physical",
+   "cooldown": 3,
+   "power": 75,
+   "range": {
+    "min": 1,
+    "max": 1
+   },
+   "requiresLineOfSight": false,
+   "shape": {
+    "kind": "single"
+   },
+   "affects": "enemies",
+   "effects": [
+    {
+     "kind": "status",
+     "status": "exposed",
+     "duration": 1
+    }
+   ]
+  },
+  "onix-rock-polish": {
+   "id": "onix-rock-polish",
+   "name": "Rock Polish",
+   "type": "rock",
+   "kind": "special",
+   "cooldown": 4,
+   "power": 0,
+   "range": {
+    "min": 0,
+    "max": 0
+   },
+   "requiresLineOfSight": false,
+   "shape": {
+    "kind": "single"
+   },
+   "affects": "allies",
+   "effects": [
+    {
+     "kind": "status",
+     "status": "hasted",
+     "duration": 2
+    }
+   ]
+  },
+  "onix-smack-down": {
+   "id": "onix-smack-down",
+   "name": "Smack Down",
+   "type": "rock",
+   "kind": "special",
+   "category": "physical",
+   "cooldown": 4,
+   "power": 80,
+   "range": {
+    "min": 1,
+    "max": 2
+   },
+   "requiresLineOfSight": false,
+   "shape": {
+    "kind": "single"
+   },
+   "affects": "enemies",
+   "effects": [
+    {
+     "kind": "status",
+     "status": "slow",
+     "duration": 1
+    }
+   ]
+  },
+  "onix-sandstorm": {
+   "id": "onix-sandstorm",
+   "name": "Sandstorm",
+   "type": "rock",
+   "kind": "special",
+   "category": "physical",
+   "cooldown": 4,
+   "power": 60,
+   "range": {
+    "min": 0,
+    "max": 0
+   },
+   "requiresLineOfSight": false,
+   "shape": {
+    "kind": "burst",
+    "radius": 1
+   },
+   "affects": "enemies",
+   "effects": [
+    {
+     "kind": "status",
+     "status": "slow",
+     "duration": 1
+    }
+   ]
+  },
+  "onix-double-edge": {
+   "id": "onix-double-edge",
+   "name": "Double-Edge",
+   "type": "normal",
+   "kind": "special",
+   "category": "physical",
+   "cooldown": 5,
+   "power": 95,
+   "range": {
+    "min": 1,
+    "max": 1
+   },
+   "requiresLineOfSight": false,
+   "shape": {
+    "kind": "single"
+   },
+   "affects": "enemies"
+  },
+  "onix-stealth-rock": {
+   "id": "onix-stealth-rock",
+   "name": "Stealth Rock",
+   "type": "rock",
+   "kind": "special",
+   "category": "physical",
+   "cooldown": 4,
+   "power": 70,
+   "range": {
+    "min": 1,
+    "max": 1
+   },
+   "requiresLineOfSight": true,
+   "shape": {
+    "kind": "burst",
+    "radius": 1
+   },
+   "affects": "enemies",
+   "effects": [
+    {
+     "kind": "status",
+     "status": "marked",
+     "duration": 2
+    }
+   ]
+  },
+  "onix-dig": {
+   "id": "onix-dig",
+   "name": "Dig",
+   "type": "ground",
+   "kind": "bond",
+   "category": "physical",
+   "bondCost": 1,
+   "power": 65,
+   "range": {
+    "min": 1,
+    "max": 2
+   },
+   "requiresLineOfSight": false,
+   "shape": {
+    "kind": "single"
+   },
+   "affects": "enemies",
+   "effects": [
+    {
+     "kind": "engage"
+    }
+   ]
+  }
+ },
+ "talents": {
+  "onix-heavy-slam": {
+   "id": "onix-heavy-slam",
+   "name": "Heavy Slam",
+   "description": "Bond skill: slams its whole rocky bulk into a foe (Power 85, Attack), pushing it 1 hex.",
+   "grantsMove": "onix-heavy-slam"
+  },
+  "onix-stone-edge": {
+   "id": "onix-stone-edge",
+   "name": "Stone Edge",
+   "description": "Bond skill: jagged stones erupt under a foe 2 hexes away (Power 100, Attack), Exposing it 1 turn.",
+   "grantsMove": "onix-stone-edge"
+  },
+  "onix-bind": {
+   "id": "onix-bind",
+   "name": "Bind",
+   "description": "New skill: coils around a foe (Power 40), engaging it and Slowing it for 2 turns.",
+   "grantsMove": "onix-bind"
+  },
+  "onix-hard-stone": {
+   "id": "onix-hard-stone",
+   "name": "Hard Stone",
+   "description": "Its Rock moves deal 25% more damage.",
+   "mods": {
+    "typeDamage": {
+     "rock": 1.25
+    }
+   }
+  },
+  "onix-boulder-body": {
+   "id": "onix-boulder-body",
+   "name": "Boulder Body",
+   "description": "Takes 10% less damage.",
+   "mods": {
+    "damageTaken": 0.9
+   }
+  },
+  "onix-rock-tomb": {
+   "id": "onix-rock-tomb",
+   "name": "Rock Tomb",
+   "description": "New skill: hurls boulders at a foe up to 2 hexes away (Power 60), Slowing it for 2 turns.",
+   "grantsMove": "onix-rock-tomb"
+  },
+  "onix-sand-force": {
+   "id": "onix-sand-force",
+   "name": "Sand Force",
+   "description": "Its Ground moves deal 15% more damage; deals 20% more to foes standing on mud.",
+   "mods": {
+    "typeDamage": {
+     "ground": 1.15
+    },
+    "vsMudDamage": 1.2
+   }
+  },
+  "onix-rough-rocks": {
+   "id": "onix-rough-rocks",
+   "name": "Rough Rocks",
+   "description": "Foes that hit it from an adjacent hex take 6 damage.",
+   "mods": {
+    "thorns": 6
+   }
+  },
+  "onix-iron-tail": {
+   "id": "onix-iron-tail",
+   "name": "Iron Tail",
+   "description": "New skill: swings its hardened tail into a foe (Power 75), leaving it Exposed for 1 turn.",
+   "grantsMove": "onix-iron-tail"
+  },
+  "onix-rock-polish": {
+   "id": "onix-rock-polish",
+   "name": "Rock Polish",
+   "description": "New skill: polishes its rocky body smooth, becoming Hasted for 2 turns.",
+   "grantsMove": "onix-rock-polish"
+  },
+  "onix-crushing-coils": {
+   "id": "onix-crushing-coils",
+   "name": "Crushing Coils",
+   "description": "Deals 15% more damage to adjacent foes.",
+   "mods": {
+    "closeDamage": 1.15
+   }
+  },
+  "onix-living-wall": {
+   "id": "onix-living-wall",
+   "name": "Living Wall",
+   "description": "Foes it engages take 15% more damage from its allies.",
+   "mods": {
+    "pinDamage": 1.15
+   }
+  },
+  "onix-smack-down": {
+   "id": "onix-smack-down",
+   "name": "Smack Down",
+   "description": "New skill: throws a rock at a foe up to 2 hexes away (Power 80), Slowing it for 1 turn.",
+   "grantsMove": "onix-smack-down"
+  },
+  "onix-sandstorm": {
+   "id": "onix-sandstorm",
+   "name": "Sandstorm",
+   "description": "New skill: whips up a sandstorm around itself (Power 60), Slowing adjacent foes for 1 turn.",
+   "grantsMove": "onix-sandstorm"
+  },
+  "onix-crushing-weight": {
+   "id": "onix-crushing-weight",
+   "name": "Crushing Weight",
+   "description": "Pushing a foe into an obstacle deals 10 extra damage.",
+   "mods": {
+    "impactBonus": 10
+   }
+  },
+  "onix-burrow-away": {
+   "id": "onix-burrow-away",
+   "name": "Burrow Away",
+   "description": "Tunnels away from engaged foes without drawing free strikes.",
+   "mods": {
+    "disengage": true
+   }
+  },
+  "onix-double-edge": {
+   "id": "onix-double-edge",
+   "name": "Double-Edge",
+   "description": "New skill: a reckless full-body charge into a foe (Power 95).",
+   "grantsMove": "onix-double-edge"
+  },
+  "onix-stealth-rock": {
+   "id": "onix-stealth-rock",
+   "name": "Stealth Rock",
+   "description": "New skill: sharp stones around a foe up to 1 hex away (Power 70), Marking those hit 2 turns.",
+   "grantsMove": "onix-stealth-rock"
+  },
+  "onix-cornered-giant": {
+   "id": "onix-cornered-giant",
+   "name": "Cornered Giant",
+   "description": "Deals 20% more damage while 2+ foes stand next to it.",
+   "mods": {
+    "surroundedDamage": 1.2
+   }
+  },
+  "onix-rock-snakes-wrath": {
+   "id": "onix-rock-snakes-wrath",
+   "name": "Rock Snake's Wrath",
+   "description": "Capstone. Its pushes go 1 hex farther; each knockout it lands gives the team 1 Bond.",
+   "mods": {
+    "pushBonus": 1,
+    "bondOnKo": 1
+   }
+  },
+  "onix-rock-titan": {
+   "id": "onix-rock-titan",
+   "name": "Rock Titan",
+   "description": "Capstone. Survives one knockout blow per battle at 1 HP; foes it engages always draw its free strike.",
+   "mods": {
+    "sturdy": true,
+    "noEscape": true
+   }
+  },
+  "onix-dig": {
+   "id": "onix-dig",
+   "name": "Dig",
+   "description": "Bond skill: tunnels up to 2 hexes to a foe (Power 65, Attack) and engages it.",
+   "grantsMove": "onix-dig"
+  },
+  "onix-rock-head": {
+   "id": "onix-rock-head",
+   "name": "Rock Head",
+   "description": "Its rock-hard head shrugs it off: cannot be Slowed or Exposed.",
+   "mods": {
+    "statusImmune": [
+     "slow",
+     "exposed"
+    ]
+   }
+  }
+ }
+}

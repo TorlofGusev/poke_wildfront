@@ -1,0 +1,484 @@
+{
+ "line": [
+  "mankey",
+  "primeape"
+ ],
+ "focus": [
+  {
+   "stat": "attack",
+   "skill": "mankey-close-combat"
+  },
+  {
+   "stat": "speed",
+   "skill": "mankey-fury-swipes"
+  },
+  {
+   "stat": "defense",
+   "skill": "mankey-bulk-up"
+  }
+ ],
+ "rows": {
+  "4": [
+   "mankey-vital-spirit",
+   "mankey-defiant"
+  ],
+  "6": [
+   "mankey-low-sweep",
+   "mankey-seismic-toss"
+  ],
+  "9": [
+   "mankey-pent-up-fury",
+   "mankey-relentless-fists"
+  ],
+  "12": [
+   "mankey-thrash",
+   "mankey-focus-energy"
+  ],
+  "15": [
+   "mankey-brawler",
+   "mankey-shrug-off"
+  ],
+  "18": [
+   "mankey-double-edge",
+   "mankey-screech"
+  ],
+  "21": [
+   "mankey-rampage",
+   "mankey-hit-and-run"
+  ],
+  "24": [
+   "mankey-focus-punch",
+   "mankey-circle-throw"
+  ],
+  "27": [
+   "mankey-furious-frenzy",
+   "mankey-gang-up"
+  ],
+  "30": [
+   "mankey-rage-incarnate",
+   "mankey-vengeful-pursuit"
+  ]
+ },
+ "moves": {
+  "mankey-close-combat": {
+   "id": "mankey-close-combat",
+   "name": "Close Combat",
+   "type": "fighting",
+   "kind": "bond",
+   "category": "physical",
+   "bondCost": 3,
+   "power": 105,
+   "range": {
+    "min": 1,
+    "max": 1
+   },
+   "requiresLineOfSight": false,
+   "shape": {
+    "kind": "single"
+   },
+   "affects": "enemies"
+  },
+  "mankey-fury-swipes": {
+   "id": "mankey-fury-swipes",
+   "name": "Fury Swipes",
+   "type": "normal",
+   "kind": "bond",
+   "category": "physical",
+   "bondCost": 1,
+   "power": 70,
+   "range": {
+    "min": 1,
+    "max": 1
+   },
+   "requiresLineOfSight": false,
+   "shape": {
+    "kind": "single"
+   },
+   "affects": "enemies",
+   "effects": [
+    {
+     "kind": "status",
+     "status": "exposed",
+     "duration": 1
+    }
+   ]
+  },
+  "mankey-bulk-up": {
+   "id": "mankey-bulk-up",
+   "name": "Bulk Up",
+   "type": "fighting",
+   "kind": "bond",
+   "bondCost": 2,
+   "power": 0,
+   "range": {
+    "min": 0,
+    "max": 0
+   },
+   "requiresLineOfSight": false,
+   "shape": {
+    "kind": "single"
+   },
+   "affects": "allies",
+   "effects": [
+    {
+     "kind": "status",
+     "status": "fortified",
+     "duration": 2
+    },
+    {
+     "kind": "status",
+     "status": "focused",
+     "duration": 2
+    }
+   ]
+  },
+  "mankey-low-sweep": {
+   "id": "mankey-low-sweep",
+   "name": "Low Sweep",
+   "type": "fighting",
+   "kind": "special",
+   "category": "physical",
+   "cooldown": 2,
+   "power": 55,
+   "range": {
+    "min": 1,
+    "max": 1
+   },
+   "requiresLineOfSight": false,
+   "shape": {
+    "kind": "single"
+   },
+   "affects": "enemies",
+   "effects": [
+    {
+     "kind": "status",
+     "status": "slow",
+     "duration": 2
+    }
+   ]
+  },
+  "mankey-seismic-toss": {
+   "id": "mankey-seismic-toss",
+   "name": "Seismic Toss",
+   "type": "fighting",
+   "kind": "special",
+   "category": "physical",
+   "cooldown": 3,
+   "power": 55,
+   "range": {
+    "min": 1,
+    "max": 1
+   },
+   "requiresLineOfSight": false,
+   "shape": {
+    "kind": "single"
+   },
+   "affects": "enemies",
+   "effects": [
+    {
+     "kind": "push",
+     "distance": 2
+    }
+   ]
+  },
+  "mankey-thrash": {
+   "id": "mankey-thrash",
+   "name": "Thrash",
+   "type": "normal",
+   "kind": "special",
+   "category": "physical",
+   "cooldown": 3,
+   "power": 70,
+   "range": {
+    "min": 0,
+    "max": 0
+   },
+   "requiresLineOfSight": false,
+   "shape": {
+    "kind": "burst",
+    "radius": 1
+   },
+   "affects": "enemies"
+  },
+  "mankey-focus-energy": {
+   "id": "mankey-focus-energy",
+   "name": "Focus Energy",
+   "type": "normal",
+   "kind": "special",
+   "power": 0,
+   "cooldown": 4,
+   "range": {
+    "min": 0,
+    "max": 0
+   },
+   "requiresLineOfSight": false,
+   "shape": {
+    "kind": "single"
+   },
+   "affects": "allies",
+   "effects": [
+    {
+     "kind": "status",
+     "status": "focused",
+     "duration": 2
+    }
+   ]
+  },
+  "mankey-double-edge": {
+   "id": "mankey-double-edge",
+   "name": "Double-Edge",
+   "type": "normal",
+   "kind": "special",
+   "category": "physical",
+   "cooldown": 5,
+   "power": 95,
+   "range": {
+    "min": 1,
+    "max": 1
+   },
+   "requiresLineOfSight": false,
+   "shape": {
+    "kind": "single"
+   },
+   "affects": "enemies"
+  },
+  "mankey-screech": {
+   "id": "mankey-screech",
+   "name": "Screech",
+   "type": "normal",
+   "kind": "special",
+   "cooldown": 4,
+   "power": 0,
+   "range": {
+    "min": 0,
+    "max": 0
+   },
+   "requiresLineOfSight": false,
+   "shape": {
+    "kind": "burst",
+    "radius": 1
+   },
+   "affects": "enemies",
+   "effects": [
+    {
+     "kind": "status",
+     "status": "exposed",
+     "duration": 2
+    }
+   ]
+  },
+  "mankey-focus-punch": {
+   "id": "mankey-focus-punch",
+   "name": "Focus Punch",
+   "type": "fighting",
+   "kind": "special",
+   "category": "physical",
+   "cooldown": 5,
+   "power": 100,
+   "range": {
+    "min": 1,
+    "max": 1
+   },
+   "requiresLineOfSight": false,
+   "shape": {
+    "kind": "single"
+   },
+   "affects": "enemies"
+  },
+  "mankey-circle-throw": {
+   "id": "mankey-circle-throw",
+   "name": "Circle Throw",
+   "type": "fighting",
+   "kind": "special",
+   "category": "physical",
+   "cooldown": 3,
+   "power": 75,
+   "range": {
+    "min": 1,
+    "max": 1
+   },
+   "requiresLineOfSight": false,
+   "shape": {
+    "kind": "single"
+   },
+   "affects": "enemies",
+   "effects": [
+    {
+     "kind": "push",
+     "distance": 2
+    }
+   ]
+  }
+ },
+ "talents": {
+  "mankey-close-combat": {
+   "id": "mankey-close-combat",
+   "name": "Close Combat",
+   "description": "Bond skill: an all-out flurry of blows on a foe (Power 105, Attack).",
+   "grantsMove": "mankey-close-combat"
+  },
+  "mankey-fury-swipes": {
+   "id": "mankey-fury-swipes",
+   "name": "Fury Swipes",
+   "description": "Bond skill: a frenzy of scratches (Power 70, Attack) that leaves the foe Exposed 1 turn.",
+   "grantsMove": "mankey-fury-swipes"
+  },
+  "mankey-bulk-up": {
+   "id": "mankey-bulk-up",
+   "name": "Bulk Up",
+   "description": "Bond skill: tenses its muscles; it is Fortified and Focused for 2 turns.",
+   "grantsMove": "mankey-bulk-up"
+  },
+  "mankey-vital-spirit": {
+   "id": "mankey-vital-spirit",
+   "name": "Vital Spirit",
+   "description": "Cannot be put to Sleep; heals 3% of max HP at the start of each turn.",
+   "mods": {
+    "statusImmune": [
+     "sleep"
+    ],
+    "healPerTurn": 0.03
+   }
+  },
+  "mankey-defiant": {
+   "id": "mankey-defiant",
+   "name": "Defiant",
+   "description": "Deals 20% more damage while 2+ foes stand next to it.",
+   "mods": {
+    "surroundedDamage": 1.2
+   }
+  },
+  "mankey-low-sweep": {
+   "id": "mankey-low-sweep",
+   "name": "Low Sweep",
+   "description": "New skill: a sweeping kick at the legs (Power 55) that Slows the foe for 2 turns.",
+   "grantsMove": "mankey-low-sweep"
+  },
+  "mankey-seismic-toss": {
+   "id": "mankey-seismic-toss",
+   "name": "Seismic Toss",
+   "description": "New skill: grabs a foe and hurls it 2 hexes (Power 55).",
+   "grantsMove": "mankey-seismic-toss"
+  },
+  "mankey-pent-up-fury": {
+   "id": "mankey-pent-up-fury",
+   "name": "Pent-Up Fury",
+   "description": "Deals 20% more damage while below half HP.",
+   "mods": {
+    "lowHpDamage": 1.2
+   }
+  },
+  "mankey-relentless-fists": {
+   "id": "mankey-relentless-fists",
+   "name": "Relentless Fists",
+   "description": "Deals 8% more damage per consecutive hit on the same foe (up to 3).",
+   "mods": {
+    "furyCutter": 0.08
+   }
+  },
+  "mankey-thrash": {
+   "id": "mankey-thrash",
+   "name": "Thrash",
+   "description": "New skill: thrashes about wildly, hitting every foe next to it (Power 70).",
+   "grantsMove": "mankey-thrash"
+  },
+  "mankey-focus-energy": {
+   "id": "mankey-focus-energy",
+   "name": "Focus Energy",
+   "description": "New skill: pumps itself up and becomes Focused for 2 turns.",
+   "grantsMove": "mankey-focus-energy"
+  },
+  "mankey-brawler": {
+   "id": "mankey-brawler",
+   "name": "Brawler",
+   "description": "Its Fighting flank bonus is 10% higher.",
+   "mods": {
+    "flankBonus": 0.1
+   }
+  },
+  "mankey-shrug-off": {
+   "id": "mankey-shrug-off",
+   "name": "Shrug It Off",
+   "description": "Sheds statuses foes put on it at the start of its turn.",
+   "mods": {
+    "shedStatuses": true
+   }
+  },
+  "mankey-double-edge": {
+   "id": "mankey-double-edge",
+   "name": "Double-Edge",
+   "description": "New skill: a reckless full-body charge at a foe (Power 95).",
+   "grantsMove": "mankey-double-edge"
+  },
+  "mankey-screech": {
+   "id": "mankey-screech",
+   "name": "Screech",
+   "description": "New skill: an ear-splitting screech leaves adjacent foes Exposed for 2 turns.",
+   "grantsMove": "mankey-screech"
+  },
+  "mankey-rampage": {
+   "id": "mankey-rampage",
+   "name": "Rampage",
+   "description": "Gains 1 Attack for the battle each time it knocks out a foe (max +3).",
+   "mods": {
+    "koAttackBoost": 1
+   }
+  },
+  "mankey-hit-and-run": {
+   "id": "mankey-hit-and-run",
+   "name": "Hit and Run",
+   "description": "Steps away from engaged foes without drawing free strikes.",
+   "mods": {
+    "disengage": true
+   }
+  },
+  "mankey-focus-punch": {
+   "id": "mankey-focus-punch",
+   "name": "Focus Punch",
+   "description": "New skill: a punch thrown with total focus (Power 100).",
+   "grantsMove": "mankey-focus-punch"
+  },
+  "mankey-circle-throw": {
+   "id": "mankey-circle-throw",
+   "name": "Circle Throw",
+   "description": "New skill: hurls a foe (Power 75), throwing it 2 hexes away.",
+   "grantsMove": "mankey-circle-throw"
+  },
+  "mankey-furious-frenzy": {
+   "id": "mankey-furious-frenzy",
+   "name": "Furious Frenzy",
+   "description": "Knocking out a foe on its turn lets it use its basic attack again.",
+   "mods": {
+    "koRefreshBasic": true
+   }
+  },
+  "mankey-gang-up": {
+   "id": "mankey-gang-up",
+   "name": "Gang Up",
+   "description": "Deals 15% more damage to foes engaged with one of its allies.",
+   "mods": {
+    "vsEngagedDamage": 1.15
+   }
+  },
+  "mankey-rage-incarnate": {
+   "id": "mankey-rage-incarnate",
+   "name": "Rage Incarnate",
+   "description": "Capstone. +20% damage while it carries a status; a knockout resets its skill cooldowns.",
+   "mods": {
+    "statusedDamage": 1.2,
+    "koResetCooldowns": true
+   }
+  },
+  "mankey-vengeful-pursuit": {
+   "id": "mankey-vengeful-pursuit",
+   "name": "Vengeful Pursuit",
+   "description": "Capstone. Its Fighting moves deal 20% more; its free strikes on fleeing foes deal 30% more.",
+   "mods": {
+    "typeDamage": {
+     "fighting": 1.2
+    },
+    "strikeDamage": 1.3
+   }
+  }
+ }
+}

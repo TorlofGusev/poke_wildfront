@@ -1,0 +1,73 @@
+{
+ "talents": {
+  "tentacool-acid-armor": {
+   "description": "Bond képesség: folyékony testté olvad, 3 körre Megerősített lesz."
+  },
+  "tentacool-sludge-wave": {
+   "description": "Bond képesség: iszaphullám minden szomszédos ellenfelet eltalál (Erő 90, Kül. Tám.), 2 körre mérgez."
+  },
+  "tentacool-rapid-spin": {
+   "description": "Bond képesség: pörögve minden szomszédos ellenfelet eltalál (Erő 50, Támadás), majd kiszabadul."
+  },
+  "tentacool-clear-body": {
+   "description": "Nem lehet lelassítani (Slow) vagy Exposeddá tenni; 10%-kal kevesebb sebzést kap."
+  },
+  "tentacool-stinging-tentacles": {
+   "description": "Szomszédos ellenfeleken landolt találatai 2 körre megmérgezik őket."
+  },
+  "tentacool-screech": {
+   "description": "Új képesség: fülsértő visítás egy legfeljebb 2 hexre lévő ellenfélre, 2 körre Exposed lesz."
+  },
+  "tentacool-water-gun": {
+   "description": "Új képesség: vizet spriccel egy legfeljebb 2 hexre lévő ellenfélre (Power 50)."
+  },
+  "tentacool-rain-dish": {
+   "description": "Minden köre elején maximális HP-ja 4%-át gyógyítja."
+  },
+  "tentacool-venomous-tendrils": {
+   "description": "25%-kal többet sebez a mérgezett (Poison) vagy lelassított (Slow) ellenfelekre."
+  },
+  "tentacool-barrier": {
+   "description": "Új képesség: védőfalat emel magára vagy egy legfeljebb 2 hexnyire lévő társára (2 körre Megerősítve)."
+  },
+  "tentacool-wring-out": {
+   "description": "Új képesség: csápjaival kicsavarja az ellenfelet (Erő 70)."
+  },
+  "tentacool-many-tentacles": {
+   "description": "15%-kal többet sebez a szövetségeseivel harcban álló ellenfelekre."
+  },
+  "tentacool-drifting-body": {
+   "description": "Szabad csapás nélkül léphet el a vele harcban álló ellenfelektől."
+  },
+  "tentacool-scald": {
+   "description": "Új képesség: forró víz egy legfeljebb 2 hexnyire lévő ellenfélre (Erő 80), 2 körre megégeti."
+  },
+  "tentacool-toxic": {
+   "description": "Új képesség: súlyosan megmérgez egy legfeljebb 2 hexnyire lévő ellenfelet 5 körre."
+  },
+  "tentacool-lingering-venom": {
+   "description": "Az általa okozott állapotok 1 körrel tovább tartanak."
+  },
+  "tentacool-clinging-grip": {
+   "description": "A vele harcban álló ellenfelek mindig kapnak tőle egy szabad csapást, ha ellépnek."
+  },
+  "tentacool-surf": {
+   "description": "Új képesség: hullám zúdul végig egy 2 hexnyi vonalon (Erő 85)."
+  },
+  "tentacool-whirlpool": {
+   "description": "Új képesség: örvénybe zár egy legfeljebb 2 hexnyire lévő ellenfelet (Erő 75), 2 körre Lelassítja."
+  },
+  "tentacool-toxic-tide": {
+   "description": "20%-kal többet sebez a státuszos ellenfelekre; nem lehet Poisonnal vagy Paralysisszel sújtani."
+  },
+  "tentacool-cleansing-tide": {
+   "description": "Köre elején lerázza az ellenfelek által rárakott állapotokat."
+  },
+  "tentacool-tentacruels-reign": {
+   "description": "Csúcs. Méreg mozdulatai 20%-kal többet sebeznek; az általa sújtott ellenfelek ájuláskor továbbadják."
+  },
+  "tentacool-ocean-hunter": {
+   "description": "Csúcs. Water mozdulatai 20%-kal többet sebeznek; 15% HP-t gyógyul, ha kiüt egy ellenfelet."
+  }
+ }
+}

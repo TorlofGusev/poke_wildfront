@@ -1,0 +1,454 @@
+{
+ "line": [
+  "goldeen",
+  "seaking"
+ ],
+ "focus": [
+  {
+   "stat": "attack",
+   "skill": "goldeen-liquidation"
+  },
+  {
+   "stat": "speed",
+   "skill": "goldeen-upstream-charge"
+  },
+  {
+   "stat": "spDefense",
+   "skill": "goldeen-aqua-ring"
+  }
+ ],
+ "rows": {
+  "4": [
+   "goldeen-water-veil",
+   "goldeen-sharp-horn"
+  ],
+  "6": [
+   "goldeen-water-pulse",
+   "goldeen-flail"
+  ],
+  "9": [
+   "goldeen-gilded-scales",
+   "goldeen-drilling-strikes"
+  ],
+  "12": [
+   "goldeen-take-down",
+   "goldeen-soak"
+  ],
+  "15": [
+   "goldeen-graceful-fins",
+   "goldeen-waterfall-climber"
+  ],
+  "18": [
+   "goldeen-double-edge",
+   "goldeen-hydro-pump"
+  ],
+  "21": [
+   "goldeen-ornate-fins",
+   "goldeen-horn-momentum"
+  ],
+  "24": [
+   "goldeen-horn-drill",
+   "goldeen-aqua-tail"
+  ],
+  "27": [
+   "goldeen-pinning-horn",
+   "goldeen-scale-shimmer"
+  ],
+  "30": [
+   "goldeen-king-of-the-river",
+   "goldeen-golden-grace"
+  ]
+ },
+ "moves": {
+  "goldeen-liquidation": {
+   "id": "goldeen-liquidation",
+   "name": "Liquidation",
+   "type": "water",
+   "kind": "bond",
+   "category": "physical",
+   "bondCost": 2,
+   "power": 100,
+   "range": {
+    "min": 1,
+    "max": 1
+   },
+   "requiresLineOfSight": false,
+   "shape": {
+    "kind": "single"
+   },
+   "affects": "enemies"
+  },
+  "goldeen-upstream-charge": {
+   "id": "goldeen-upstream-charge",
+   "name": "Upstream Charge",
+   "type": "water",
+   "kind": "bond",
+   "category": "physical",
+   "bondCost": 1,
+   "power": 60,
+   "range": {
+    "min": 1,
+    "max": 2
+   },
+   "requiresLineOfSight": false,
+   "shape": {
+    "kind": "single"
+   },
+   "affects": "enemies",
+   "effects": [
+    {
+     "kind": "engage"
+    }
+   ]
+  },
+  "goldeen-aqua-ring": {
+   "id": "goldeen-aqua-ring",
+   "name": "Aqua Ring",
+   "type": "water",
+   "kind": "bond",
+   "bondCost": 2,
+   "power": 0,
+   "range": {
+    "min": 0,
+    "max": 0
+   },
+   "requiresLineOfSight": false,
+   "shape": {
+    "kind": "burst",
+    "radius": 1
+   },
+   "affects": "allies",
+   "effects": [
+    {
+     "kind": "heal",
+     "amount": 25
+    }
+   ]
+  },
+  "goldeen-water-pulse": {
+   "id": "goldeen-water-pulse",
+   "name": "Water Pulse",
+   "type": "water",
+   "kind": "special",
+   "category": "special",
+   "cooldown": 2,
+   "power": 60,
+   "range": {
+    "min": 1,
+    "max": 2
+   },
+   "requiresLineOfSight": true,
+   "shape": {
+    "kind": "single"
+   },
+   "affects": "enemies"
+  },
+  "goldeen-flail": {
+   "id": "goldeen-flail",
+   "name": "Flail",
+   "type": "normal",
+   "kind": "special",
+   "category": "physical",
+   "cooldown": 2,
+   "power": 65,
+   "range": {
+    "min": 1,
+    "max": 1
+   },
+   "requiresLineOfSight": false,
+   "shape": {
+    "kind": "single"
+   },
+   "affects": "enemies"
+  },
+  "goldeen-take-down": {
+   "id": "goldeen-take-down",
+   "name": "Take Down",
+   "type": "normal",
+   "kind": "special",
+   "category": "physical",
+   "cooldown": 4,
+   "power": 80,
+   "range": {
+    "min": 1,
+    "max": 1
+   },
+   "requiresLineOfSight": false,
+   "shape": {
+    "kind": "line",
+    "length": 2
+   },
+   "affects": "enemies"
+  },
+  "goldeen-soak": {
+   "id": "goldeen-soak",
+   "name": "Soak",
+   "type": "water",
+   "kind": "special",
+   "cooldown": 3,
+   "power": 0,
+   "range": {
+    "min": 1,
+    "max": 2
+   },
+   "requiresLineOfSight": true,
+   "shape": {
+    "kind": "single"
+   },
+   "affects": "enemies",
+   "effects": [
+    {
+     "kind": "status",
+     "status": "marked",
+     "duration": 2
+    }
+   ]
+  },
+  "goldeen-double-edge": {
+   "id": "goldeen-double-edge",
+   "name": "Double-Edge",
+   "type": "normal",
+   "kind": "special",
+   "category": "physical",
+   "cooldown": 4,
+   "power": 85,
+   "range": {
+    "min": 1,
+    "max": 1
+   },
+   "requiresLineOfSight": false,
+   "shape": {
+    "kind": "single"
+   },
+   "affects": "enemies"
+  },
+  "goldeen-hydro-pump": {
+   "id": "goldeen-hydro-pump",
+   "name": "Hydro Pump",
+   "type": "water",
+   "kind": "special",
+   "category": "special",
+   "cooldown": 5,
+   "power": 95,
+   "range": {
+    "min": 1,
+    "max": 2
+   },
+   "requiresLineOfSight": true,
+   "shape": {
+    "kind": "single"
+   },
+   "affects": "enemies"
+  },
+  "goldeen-horn-drill": {
+   "id": "goldeen-horn-drill",
+   "name": "Horn Drill",
+   "type": "normal",
+   "kind": "special",
+   "category": "physical",
+   "cooldown": 5,
+   "power": 100,
+   "range": {
+    "min": 1,
+    "max": 1
+   },
+   "requiresLineOfSight": false,
+   "shape": {
+    "kind": "single"
+   },
+   "affects": "enemies"
+  },
+  "goldeen-aqua-tail": {
+   "id": "goldeen-aqua-tail",
+   "name": "Aqua Tail",
+   "type": "water",
+   "kind": "special",
+   "category": "physical",
+   "cooldown": 4,
+   "power": 85,
+   "range": {
+    "min": 1,
+    "max": 1
+   },
+   "requiresLineOfSight": false,
+   "shape": {
+    "kind": "single"
+   },
+   "affects": "enemies",
+   "effects": [
+    {
+     "kind": "push",
+     "distance": 1
+    }
+   ]
+  }
+ },
+ "talents": {
+  "goldeen-liquidation": {
+   "id": "goldeen-liquidation",
+   "name": "Liquidation",
+   "description": "Bond skill: crashes into an adjacent foe in a burst of water (Power 100, Attack).",
+   "grantsMove": "goldeen-liquidation"
+  },
+  "goldeen-upstream-charge": {
+   "id": "goldeen-upstream-charge",
+   "name": "Upstream Charge",
+   "description": "Bond skill: darts up to 2 hexes into a foe (Power 60, Attack) and engages it.",
+   "grantsMove": "goldeen-upstream-charge"
+  },
+  "goldeen-aqua-ring": {
+   "id": "goldeen-aqua-ring",
+   "name": "Aqua Ring",
+   "description": "Bond skill: a veil of water heals it and adjacent allies for 25 HP.",
+   "grantsMove": "goldeen-aqua-ring"
+  },
+  "goldeen-water-veil": {
+   "id": "goldeen-water-veil",
+   "name": "Water Veil",
+   "description": "Cannot be Burned.",
+   "mods": {
+    "statusImmune": [
+     "burn"
+    ]
+   }
+  },
+  "goldeen-sharp-horn": {
+   "id": "goldeen-sharp-horn",
+   "name": "Sharp Horn",
+   "description": "Deals 15% more damage to adjacent foes.",
+   "mods": {
+    "closeDamage": 1.15
+   }
+  },
+  "goldeen-water-pulse": {
+   "id": "goldeen-water-pulse",
+   "name": "Water Pulse",
+   "description": "New skill: a pulsing ring of water at a foe up to 2 hexes away (Power 60).",
+   "grantsMove": "goldeen-water-pulse"
+  },
+  "goldeen-flail": {
+   "id": "goldeen-flail",
+   "name": "Flail",
+   "description": "New skill: thrashes wildly at an adjacent foe (Power 65).",
+   "grantsMove": "goldeen-flail"
+  },
+  "goldeen-gilded-scales": {
+   "id": "goldeen-gilded-scales",
+   "name": "Gilded Scales",
+   "description": "Takes 20% less damage while at full HP.",
+   "mods": {
+    "fullHpDamageTaken": 0.8
+   }
+  },
+  "goldeen-drilling-strikes": {
+   "id": "goldeen-drilling-strikes",
+   "name": "Drilling Strikes",
+   "description": "Each hit in a row on the same foe deals 10% more damage, up to 3 stacks.",
+   "mods": {
+    "furyCutter": 0.1
+   }
+  },
+  "goldeen-take-down": {
+   "id": "goldeen-take-down",
+   "name": "Take Down",
+   "description": "New skill: charges horn-first through 2 hexes in a line (Power 80).",
+   "grantsMove": "goldeen-take-down"
+  },
+  "goldeen-soak": {
+   "id": "goldeen-soak",
+   "name": "Soak",
+   "description": "New skill: drenches a foe up to 2 hexes away, Marking it for 2 turns.",
+   "grantsMove": "goldeen-soak"
+  },
+  "goldeen-graceful-fins": {
+   "id": "goldeen-graceful-fins",
+   "name": "Graceful Fins",
+   "description": "Steps away from engaged foes without drawing free strikes.",
+   "mods": {
+    "disengage": true
+   }
+  },
+  "goldeen-waterfall-climber": {
+   "id": "goldeen-waterfall-climber",
+   "name": "Waterfall Climber",
+   "description": "Deals 20% more damage while below half HP.",
+   "mods": {
+    "lowHpDamage": 1.2
+   }
+  },
+  "goldeen-double-edge": {
+   "id": "goldeen-double-edge",
+   "name": "Double-Edge",
+   "description": "New skill: a reckless full-body charge at an adjacent foe (Power 85).",
+   "grantsMove": "goldeen-double-edge"
+  },
+  "goldeen-hydro-pump": {
+   "id": "goldeen-hydro-pump",
+   "name": "Hydro Pump",
+   "description": "New skill: a high-pressure blast of water at a foe up to 2 hexes away (Power 95).",
+   "grantsMove": "goldeen-hydro-pump"
+  },
+  "goldeen-ornate-fins": {
+   "id": "goldeen-ornate-fins",
+   "name": "Ornate Fins",
+   "description": "Heals 4% of max HP at the start of each turn.",
+   "mods": {
+    "healPerTurn": 0.04
+   }
+  },
+  "goldeen-horn-momentum": {
+   "id": "goldeen-horn-momentum",
+   "name": "Horn Momentum",
+   "description": "Regains 2 movement when it knocks out a foe on its turn.",
+   "mods": {
+    "koMove": 2
+   }
+  },
+  "goldeen-horn-drill": {
+   "id": "goldeen-horn-drill",
+   "name": "Horn Drill",
+   "description": "New skill: drives its spinning horn deep into an adjacent foe (Power 100).",
+   "grantsMove": "goldeen-horn-drill"
+  },
+  "goldeen-aqua-tail": {
+   "id": "goldeen-aqua-tail",
+   "name": "Aqua Tail",
+   "description": "New skill: lashes an adjacent foe with its tail (Power 85), pushing it 1 hex.",
+   "grantsMove": "goldeen-aqua-tail"
+  },
+  "goldeen-pinning-horn": {
+   "id": "goldeen-pinning-horn",
+   "name": "Pinning Horn",
+   "description": "Foes it engages take 15% more damage from its allies.",
+   "mods": {
+    "pinDamage": 1.15
+   }
+  },
+  "goldeen-scale-shimmer": {
+   "id": "goldeen-scale-shimmer",
+   "name": "Scale Shimmer",
+   "description": "Takes 10% less damage.",
+   "mods": {
+    "damageTaken": 0.9
+   }
+  },
+  "goldeen-king-of-the-river": {
+   "id": "goldeen-king-of-the-river",
+   "name": "King of the River",
+   "description": "Capstone. Each knockout gives the team 1 Bond and lets it use its basic attack again.",
+   "mods": {
+    "bondOnKo": 1,
+    "koRefreshBasic": true
+   }
+  },
+  "goldeen-golden-grace": {
+   "id": "goldeen-golden-grace",
+   "name": "Golden Grace",
+   "description": "Capstone. Sheds statuses foes put on it each turn; takes 15% less damage.",
+   "mods": {
+    "shedStatuses": true,
+    "damageTaken": 0.85
+   }
+  }
+ }
+}

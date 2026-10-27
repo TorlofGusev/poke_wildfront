@@ -1,0 +1,73 @@
+{
+ "talents": {
+  "clefairy-heal-bell": {
+   "description": "Bond képesség: nyugtató csengőszó leveszi az ellenfelek okozta státuszokat róla és a szomszédos társakról, 25 HP-t gyógyítva."
+  },
+  "clefairy-moonblast": {
+   "description": "Bond képesség: a hold erejével sújt egy legfeljebb 3 hexnyire lévő ellenfélre (Power 90, Sp. Atk)."
+  },
+  "clefairy-light-screen": {
+   "description": "Bond képesség: fényfal legfeljebb 2 hexnyire, 1 hexes körzetben a szövetségesek 2 körre Fortified-ok."
+  },
+  "clefairy-moon-glow": {
+   "description": "Minden köre elején a max HP 4%-át gyógyítja."
+  },
+  "clefairy-soft-body": {
+   "description": "10%-kal kevesebb sebzést kap."
+  },
+  "clefairy-disarming-voice": {
+   "description": "Új képesség: elbűvölő kiáltás legfeljebb 1 hexnyire, 1 hex körzetben, rálátás nélkül (Power 40)."
+  },
+  "clefairy-minimize": {
+   "description": "Új képesség: összezsugorodik, 1 körre Protected lesz."
+  },
+  "clefairy-lullaby": {
+   "description": "Az általa okozott státuszok 1 körrel tovább tartanak."
+  },
+  "clefairy-pixie-cheer": {
+   "description": "Ha kombót hajt végre, a csapat 1 Bondot kap."
+  },
+  "clefairy-growl": {
+   "description": "Új képesség: aranyos morgás, a szomszédos ellenfelek 1 körre Weakened-ek lesznek."
+  },
+  "clefairy-swift": {
+   "description": "Új képesség: csillag alakú sugarak egy legfeljebb 2 hexnyire lévő ellenfélre, rálátás nélkül (Power 60)."
+  },
+  "clefairy-sweet-dreams": {
+   "description": "25%-kal többet sebez az alvó (Sleep) ellenfeleknek."
+  },
+  "clefairy-plush-guard": {
+   "description": "Teljes HP-n 20%-kal kevesebb sebzést kap."
+  },
+  "clefairy-tri-attack": {
+   "description": "Új képesség: három sugárból álló háromszög egy legfeljebb 2 hexnyire lévő ellenfélre (Erő 85)."
+  },
+  "clefairy-yawn": {
+   "description": "Új képesség: hatalmas ásítás 1 körre elaltat egy legfeljebb 2 hexnyire lévő ellenfelet."
+  },
+  "clefairy-magic-guard": {
+   "description": "Nem kaphat Poison és Burn státuszt."
+  },
+  "clefairy-playful-teamwork": {
+   "description": "20%-kal többet sebez azoknak, akikre egy szövetségese tett státuszt."
+  },
+  "clefairy-hyper-voice": {
+   "description": "Új képesség: harsány kiáltás legfeljebb 1 hexnyire, 1 hex körzetben, rálátás nélkül (Power 85)."
+  },
+  "clefairy-wish": {
+   "description": "Új képesség: kívánságával 50 HP-t gyógyít magán vagy egy legfeljebb 2 hexnyire lévő szövetségesén."
+  },
+  "clefairy-cheerful-spirit": {
+   "description": "Ha elájul, a csapata 2 Bondot kap."
+  },
+  "clefairy-lunar-power": {
+   "description": "A Normal típusú támadásai 15%-kal többet sebeznek."
+  },
+  "clefairy-full-moon": {
+   "description": "Capstone. Nem sebző képességei 1 körrel gyorsabban töltődnek; 15%-kal többet sebez az állapottal sújtott ellenfeleknek."
+  },
+  "clefairy-moonstone-heart": {
+   "description": "Csúcsképesség. Csatánként egyszer 1 HP-val túlél egy halálos ütést; fél HP alatt 20%-kal többet sebez."
+  }
+ }
+}

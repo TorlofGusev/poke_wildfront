@@ -1,0 +1,73 @@
+{
+ "talents": {
+  "aerodactyl-stone-edge": {
+   "description": "Bond képesség: éles kövek legfeljebb 2 hexnyire (Power 100, Attack); 1 körig Exposed."
+  },
+  "aerodactyl-aerial-ace": {
+   "description": "Bond képesség: legfeljebb 2 hexnyiről lecsap egy ellenfélre (Power 65, Attack), és leköti."
+  },
+  "aerodactyl-wide-guard": {
+   "description": "Bond képesség: szárnyait kitárja maga és szomszédos szövetségesei fölé: 2 körig Fortified."
+  },
+  "aerodactyl-tough-claws": {
+   "description": "15%-kal többet sebez a szomszédos ellenfelekre."
+  },
+  "aerodactyl-fossil-hide": {
+   "description": "Ősi, kőkemény bőr: 10%-kal kevesebb sebzést kap."
+  },
+  "aerodactyl-rock-slide": {
+   "description": "Új képesség: sziklákat zúdít egy legfeljebb 1 hexnyi, 1 hex körzetre (Power 60)."
+  },
+  "aerodactyl-roar": {
+   "description": "Új képesség: ősi üvöltés, amely 1 hexnyit hátraűz egy szomszédos ellenfelet."
+  },
+  "aerodactyl-ambush-dive": {
+   "description": "20%-kal többet sebez a teljes HP-n lévő ellenfelekre."
+  },
+  "aerodactyl-jagged-hide": {
+   "description": "Szaggatott kőbőre 6 sebzést okoz a szomszédos hexről őt ütő ellenfeleknek."
+  },
+  "aerodactyl-crunch": {
+   "description": "Új képesség: zúzó agyarak (Power 80), az ellenfél 1 körig Exposed."
+  },
+  "aerodactyl-tailwind": {
+   "description": "Új képesség: szárnyai szelet kavarnak: ő és a 2 hexen belüli szövetségesek 2 körig Hasted."
+  },
+  "aerodactyl-skyborne": {
+   "description": "Szabad ütés nélkül emelkedik fel a vele harcoló ellenfelektől."
+  },
+  "aerodactyl-apex-predator": {
+   "description": "Minden kiütéskor +1 Attack (max. 3)."
+  },
+  "aerodactyl-iron-head": {
+   "description": "Új képesség: acélkemény koponyájával öklel (Power 85)."
+  },
+  "aerodactyl-scary-face": {
+   "description": "Új képesség: rémisztő arckifejezés egy legfeljebb 2 hexnyi ellenfélre: 2 körig Slow."
+  },
+  "aerodactyl-living-fossil": {
+   "description": "Túlélte a korokat: csatánként egyszer 1 HP-val túlél egy kiütő csapást."
+  },
+  "aerodactyl-high-vantage": {
+   "description": "Felülről támad: távolsági támadásai átrepülnek az útban álló Pokémonok fölött."
+  },
+  "aerodactyl-sky-attack": {
+   "description": "Új képesség: zuhanó csapás egy legfeljebb 2 hexnyire álló ellenfélre (Erő 100)."
+  },
+  "aerodactyl-rock-tomb": {
+   "description": "Új képesség: sziklák egy legfeljebb 2 hexnyi ellenfélre (Power 70), 2 körre lassítva."
+  },
+  "aerodactyl-pursuit-instinct": {
+   "description": "20%-kal többet sebez az Exposed ellenfeleknek."
+  },
+  "aerodactyl-skyward-momentum": {
+   "description": "Ha saját körében kiüt valakit, 2 mozgást visszanyer."
+  },
+  "aerodactyl-ancient-terror": {
+   "description": "Capstone. Kiütés után újra használhatja alaptámadását, és max. HP 15%-át gyógyítja."
+  },
+  "aerodactyl-ruler-of-the-skies": {
+   "description": "Capstone. A vele harcoló ellenfelek 20%-kal több sebzést kapnak a társaitól, és elhagyva mindig kapnak tőle szabad ütést."
+  }
+ }
+}

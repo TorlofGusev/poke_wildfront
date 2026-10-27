@@ -1,0 +1,73 @@
+{
+ "talents": {
+  "mew-swift": {
+   "description": "Bond képesség: sosem tévesztő csillagok legfeljebb 3 hexnyire, mások mellett is (Erő 85, Sp. Atk)."
+  },
+  "mew-zen-headbutt": {
+   "description": "Bond képesség: akaraterővel töltött fejelés (Power 100, Attack)."
+  },
+  "mew-baton-pass": {
+   "description": "Bond képesség: lendületét átadja egy 3 hexen belüli szövetségesnek: 1 körig Hasted és Focused."
+  },
+  "mew-bubble-shield": {
+   "description": "Pszichikus buborékban lebeg: teljes HP-n 20%-kal kevesebb sebzést kap."
+  },
+  "mew-psychic-heritage": {
+   "description": "Psychic támadásai 15%-kal többet sebeznek."
+  },
+  "mew-soft-boiled": {
+   "description": "Új képesség: megoszt egy lágy tojást: önmagát vagy egy max. 2 hexnyi szövetségesét 30 HP-val gyógyítja."
+  },
+  "mew-psywave": {
+   "description": "Új képesség: furcsa pszichikus hullám egy legfeljebb 2 hexnyi ellenfélre (Power 50)."
+  },
+  "mew-curious-mind": {
+   "description": "15%-kal többet sebez a valamilyen állapottal sújtott ellenfelekre."
+  },
+  "mew-dazzling-gleam": {
+   "description": "Új képesség: vakító fényvillanás egy legfeljebb 1 hexnyi, 1 hex körzetre (Power 60)."
+  },
+  "mew-dizzy-punch": {
+   "description": "Új képesség: szédítő ütés (Erő 65), 2 körig Zavarodott lesz tőle az ellenfél."
+  },
+  "mew-adaptive-genes": {
+   "description": "Köre elején leveti az ellenfelek által rárakott állapotokat."
+  },
+  "mew-mischief": {
+   "description": "A tőle elszakadó ellenfelekre mért szabad ütései 25%-kal többet sebeznek."
+  },
+  "mew-nasty-plot": {
+   "description": "Új képesség: valami csintalanságot eszel ki: 2 körig Focused."
+  },
+  "mew-iron-tail": {
+   "description": "Új képesség: vaskemény farkával csap (Power 90), az ellenfél 1 körig Exposed."
+  },
+  "mew-weightless": {
+   "description": "A csata fölött lebeg: távolsági támadásai átrepülnek az útban álló Pokémonok fölött."
+  },
+  "mew-elusive": {
+   "description": "Szabad ütés nélkül siklik el a vele harcoló ellenfelektől."
+  },
+  "mew-psyshock": {
+   "description": "Új képesség: pszichikus hullám egy legfeljebb 2 hexnyi ellenfélre (Erő 90)."
+  },
+  "mew-barrier": {
+   "description": "Új képesség: pszichikus gát: ő és az 1 hexen belüli társai 2 körig Fortified."
+  },
+  "mew-playful": {
+   "description": "Minden kombója 1 Bondot ad a csapatnak."
+  },
+  "mew-ancestor-of-all": {
+   "description": "Mesterfokozat. Minden támadás ott szunnyad benne: kiütéskor képességei újratöltődnek, és újra használhatja alaptámadását."
+  },
+  "mew-mythical": {
+   "description": "Capstone. Bond képességei 1-gyel olcsóbbak; nem alhat el, nem fagyhat meg, nem bénulhat meg."
+  },
+  "mew-metronome": {
+   "description": "Ugyanazon ellenfélre mért egymást követő találatai 10%-kal többet sebeznek, legfeljebb 3-szor halmozva."
+  },
+  "mew-copycat": {
+   "description": "20%-kal többet sebez azokra az ellenfelekre, amelyekre egy szövetségese tett állapotot."
+  }
+ }
+}

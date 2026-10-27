@@ -1,0 +1,486 @@
+{
+ "line": [
+  "growlithe",
+  "arcanine"
+ ],
+ "focus": [
+  {
+   "stat": "attack",
+   "skill": "growlithe-fire-fang"
+  },
+  {
+   "stat": "speed",
+   "skill": "growlithe-extreme-speed"
+  },
+  {
+   "stat": "hp",
+   "skill": "growlithe-morning-sun"
+  }
+ ],
+ "rows": {
+  "4": [
+   "growlithe-loyal-guard",
+   "growlithe-eager-pup"
+  ],
+  "6": [
+   "growlithe-howl",
+   "growlithe-flame-wheel"
+  ],
+  "9": [
+   "growlithe-flash-fire",
+   "growlithe-thick-coat"
+  ],
+  "12": [
+   "growlithe-crunch",
+   "growlithe-roar"
+  ],
+  "15": [
+   "growlithe-loyal-heart",
+   "growlithe-hounds-pursuit"
+  ],
+  "18": [
+   "growlithe-flare-blitz",
+   "growlithe-body-slam"
+  ],
+  "21": [
+   "growlithe-agile-bound",
+   "growlithe-unshakeable-loyalty"
+  ],
+  "24": [
+   "growlithe-thrash",
+   "growlithe-raging-fury"
+  ],
+  "27": [
+   "growlithe-legendary-pride",
+   "growlithe-pack-bond"
+  ],
+  "30": [
+   "growlithe-legendary-pokemon",
+   "growlithe-thousand-mile-run"
+  ]
+ },
+ "moves": {
+  "growlithe-fire-fang": {
+   "id": "growlithe-fire-fang",
+   "name": "Fire Fang",
+   "type": "fire",
+   "kind": "bond",
+   "category": "physical",
+   "bondCost": 2,
+   "power": 85,
+   "range": {
+    "min": 1,
+    "max": 1
+   },
+   "requiresLineOfSight": false,
+   "shape": {
+    "kind": "single"
+   },
+   "affects": "enemies",
+   "effects": [
+    {
+     "kind": "status",
+     "status": "burn",
+     "duration": 2
+    }
+   ]
+  },
+  "growlithe-extreme-speed": {
+   "id": "growlithe-extreme-speed",
+   "name": "Extreme Speed",
+   "type": "normal",
+   "kind": "bond",
+   "category": "physical",
+   "bondCost": 2,
+   "power": 70,
+   "range": {
+    "min": 1,
+    "max": 1
+   },
+   "requiresLineOfSight": false,
+   "shape": {
+    "kind": "single"
+   },
+   "affects": "enemies"
+  },
+  "growlithe-morning-sun": {
+   "id": "growlithe-morning-sun",
+   "name": "Morning Sun",
+   "type": "fire",
+   "kind": "bond",
+   "bondCost": 1,
+   "power": 0,
+   "range": {
+    "min": 0,
+    "max": 0
+   },
+   "requiresLineOfSight": false,
+   "shape": {
+    "kind": "single"
+   },
+   "affects": "allies",
+   "effects": [
+    {
+     "kind": "heal",
+     "amount": 40
+    }
+   ]
+  },
+  "growlithe-howl": {
+   "id": "growlithe-howl",
+   "name": "Howl",
+   "type": "normal",
+   "kind": "special",
+   "cooldown": 4,
+   "power": 0,
+   "range": {
+    "min": 0,
+    "max": 0
+   },
+   "requiresLineOfSight": false,
+   "shape": {
+    "kind": "burst",
+    "radius": 1
+   },
+   "affects": "allies",
+   "effects": [
+    {
+     "kind": "status",
+     "status": "focused",
+     "duration": 1
+    }
+   ]
+  },
+  "growlithe-flame-wheel": {
+   "id": "growlithe-flame-wheel",
+   "name": "Flame Wheel",
+   "type": "fire",
+   "kind": "special",
+   "category": "physical",
+   "cooldown": 3,
+   "power": 55,
+   "range": {
+    "min": 1,
+    "max": 1
+   },
+   "requiresLineOfSight": false,
+   "shape": {
+    "kind": "single"
+   },
+   "affects": "enemies",
+   "effects": [
+    {
+     "kind": "status",
+     "status": "burn",
+     "duration": 1
+    }
+   ]
+  },
+  "growlithe-crunch": {
+   "id": "growlithe-crunch",
+   "name": "Crunch",
+   "type": "normal",
+   "kind": "special",
+   "category": "physical",
+   "cooldown": 3,
+   "power": 70,
+   "range": {
+    "min": 1,
+    "max": 1
+   },
+   "requiresLineOfSight": false,
+   "shape": {
+    "kind": "single"
+   },
+   "affects": "enemies",
+   "effects": [
+    {
+     "kind": "status",
+     "status": "exposed",
+     "duration": 1
+    }
+   ]
+  },
+  "growlithe-roar": {
+   "id": "growlithe-roar",
+   "name": "Roar",
+   "type": "normal",
+   "kind": "special",
+   "cooldown": 3,
+   "power": 0,
+   "range": {
+    "min": 1,
+    "max": 1
+   },
+   "requiresLineOfSight": false,
+   "shape": {
+    "kind": "single"
+   },
+   "affects": "enemies",
+   "effects": [
+    {
+     "kind": "push",
+     "distance": 2
+    }
+   ]
+  },
+  "growlithe-flare-blitz": {
+   "id": "growlithe-flare-blitz",
+   "name": "Flare Blitz",
+   "type": "fire",
+   "kind": "special",
+   "category": "physical",
+   "cooldown": 4,
+   "power": 90,
+   "range": {
+    "min": 1,
+    "max": 1
+   },
+   "requiresLineOfSight": false,
+   "shape": {
+    "kind": "single"
+   },
+   "affects": "enemies"
+  },
+  "growlithe-body-slam": {
+   "id": "growlithe-body-slam",
+   "name": "Body Slam",
+   "type": "normal",
+   "kind": "special",
+   "category": "physical",
+   "cooldown": 4,
+   "power": 85,
+   "range": {
+    "min": 1,
+    "max": 1
+   },
+   "requiresLineOfSight": false,
+   "shape": {
+    "kind": "single"
+   },
+   "affects": "enemies",
+   "effects": [
+    {
+     "kind": "status",
+     "status": "paralysis",
+     "duration": 1
+    }
+   ]
+  },
+  "growlithe-thrash": {
+   "id": "growlithe-thrash",
+   "name": "Thrash",
+   "type": "normal",
+   "kind": "special",
+   "category": "physical",
+   "cooldown": 5,
+   "power": 95,
+   "range": {
+    "min": 1,
+    "max": 1
+   },
+   "requiresLineOfSight": false,
+   "shape": {
+    "kind": "single"
+   },
+   "affects": "enemies"
+  },
+  "growlithe-raging-fury": {
+   "id": "growlithe-raging-fury",
+   "name": "Raging Fury",
+   "type": "fire",
+   "kind": "special",
+   "category": "physical",
+   "cooldown": 5,
+   "power": 90,
+   "range": {
+    "min": 1,
+    "max": 1
+   },
+   "requiresLineOfSight": false,
+   "shape": {
+    "kind": "single"
+   },
+   "affects": "enemies",
+   "effects": [
+    {
+     "kind": "status",
+     "status": "burn",
+     "duration": 2
+    }
+   ]
+  }
+ },
+ "talents": {
+  "growlithe-fire-fang": {
+   "id": "growlithe-fire-fang",
+   "name": "Fire Fang",
+   "description": "Bond skill: bites with flame-wrapped fangs (Power 85, Attack), Burning the foe for 2 turns.",
+   "grantsMove": "growlithe-fire-fang"
+  },
+  "growlithe-extreme-speed": {
+   "id": "growlithe-extreme-speed",
+   "name": "Extreme Speed",
+   "description": "Bond skill: a blindingly fast rush (Power 70, Attack).",
+   "grantsMove": "growlithe-extreme-speed"
+  },
+  "growlithe-morning-sun": {
+   "id": "growlithe-morning-sun",
+   "name": "Morning Sun",
+   "description": "Bond skill: basks in warm light and heals itself for 40 HP.",
+   "grantsMove": "growlithe-morning-sun"
+  },
+  "growlithe-loyal-guard": {
+   "id": "growlithe-loyal-guard",
+   "name": "Loyal Guard",
+   "description": "Foes engaged with it take 10% more damage from its allies.",
+   "mods": {
+    "pinDamage": 1.1
+   }
+  },
+  "growlithe-eager-pup": {
+   "id": "growlithe-eager-pup",
+   "name": "Eager Pup",
+   "description": "Deals 15% more damage to foes at full HP.",
+   "mods": {
+    "fullHpTargetDamage": 1.15
+   }
+  },
+  "growlithe-howl": {
+   "id": "growlithe-howl",
+   "name": "Howl",
+   "description": "New skill: a rallying howl makes it and adjacent allies Focused for 1 turn.",
+   "grantsMove": "growlithe-howl"
+  },
+  "growlithe-flame-wheel": {
+   "id": "growlithe-flame-wheel",
+   "name": "Flame Wheel",
+   "description": "New skill: charges wrapped in fire (Power 55), Burning the foe for 1 turn.",
+   "grantsMove": "growlithe-flame-wheel"
+  },
+  "growlithe-flash-fire": {
+   "id": "growlithe-flash-fire",
+   "name": "Flash Fire",
+   "description": "Immune to Burn; its Fire-type moves deal 10% more damage.",
+   "mods": {
+    "statusImmune": [
+     "burn"
+    ],
+    "typeDamage": {
+     "fire": 1.1
+    }
+   }
+  },
+  "growlithe-thick-coat": {
+   "id": "growlithe-thick-coat",
+   "name": "Thick Coat",
+   "description": "Its shaggy mane softens blows: takes 10% less damage.",
+   "mods": {
+    "damageTaken": 0.9
+   }
+  },
+  "growlithe-crunch": {
+   "id": "growlithe-crunch",
+   "name": "Crunch",
+   "description": "New skill: bites down hard (Power 70), leaving the foe Exposed for 1 turn.",
+   "grantsMove": "growlithe-crunch"
+  },
+  "growlithe-roar": {
+   "id": "growlithe-roar",
+   "name": "Roar",
+   "description": "New skill: a mighty roar drives an adjacent foe 2 hexes back.",
+   "grantsMove": "growlithe-roar"
+  },
+  "growlithe-loyal-heart": {
+   "id": "growlithe-loyal-heart",
+   "name": "Loyal Heart",
+   "description": "When it faints, the team gains 2 Bond.",
+   "mods": {
+    "bondOnFaint": 2
+   }
+  },
+  "growlithe-hounds-pursuit": {
+   "id": "growlithe-hounds-pursuit",
+   "name": "Hound's Pursuit",
+   "description": "Foes engaged with it always draw its free strike when leaving, even if nimble.",
+   "mods": {
+    "noEscape": true
+   }
+  },
+  "growlithe-flare-blitz": {
+   "id": "growlithe-flare-blitz",
+   "name": "Flare Blitz",
+   "description": "New skill: cloaked in fire, it charges into a foe (Power 90).",
+   "grantsMove": "growlithe-flare-blitz"
+  },
+  "growlithe-body-slam": {
+   "id": "growlithe-body-slam",
+   "name": "Body Slam",
+   "description": "New skill: pounces with its full weight (Power 85), Paralyzing the foe for 1 turn.",
+   "grantsMove": "growlithe-body-slam"
+  },
+  "growlithe-agile-bound": {
+   "id": "growlithe-agile-bound",
+   "name": "Agile Bound",
+   "description": "Bounds away from engaged foes without drawing free strikes; deals 15% more to adjacent foes.",
+   "mods": {
+    "disengage": true,
+    "closeDamage": 1.15
+   }
+  },
+  "growlithe-unshakeable-loyalty": {
+   "id": "growlithe-unshakeable-loyalty",
+   "name": "Unshakeable Loyalty",
+   "description": "Survives one knockout blow per battle at 1 HP.",
+   "mods": {
+    "sturdy": true
+   }
+  },
+  "growlithe-thrash": {
+   "id": "growlithe-thrash",
+   "name": "Thrash",
+   "description": "New skill: thrashes wildly at a foe (Power 95).",
+   "grantsMove": "growlithe-thrash"
+  },
+  "growlithe-raging-fury": {
+   "id": "growlithe-raging-fury",
+   "name": "Raging Fury",
+   "description": "New skill: a furious fiery rampage at an adjacent foe (Power 90) that Burns it for 2 turns.",
+   "grantsMove": "growlithe-raging-fury"
+  },
+  "growlithe-legendary-pride": {
+   "id": "growlithe-legendary-pride",
+   "name": "Legendary Pride",
+   "description": "Gains 1 Attack for the battle (up to +3) whenever it knocks out a foe.",
+   "mods": {
+    "koAttackBoost": 1
+   }
+  },
+  "growlithe-pack-bond": {
+   "id": "growlithe-pack-bond",
+   "name": "Pack Bond",
+   "description": "Gives the team 1 Bond whenever it lands a combo.",
+   "mods": {
+    "comboBond": 1
+   }
+  },
+  "growlithe-legendary-pokemon": {
+   "id": "growlithe-legendary-pokemon",
+   "name": "Legendary Pokémon",
+   "description": "Capstone. Heals 10% of its max HP on each knockout; deals 20% more damage while below half HP.",
+   "mods": {
+    "koHeal": 0.1,
+    "lowHpDamage": 1.2
+   }
+  },
+  "growlithe-thousand-mile-run": {
+   "id": "growlithe-thousand-mile-run",
+   "name": "Thousand-Mile Run",
+   "description": "Capstone. A knockout on its turn resets its skill cooldowns and gives back 2 movement.",
+   "mods": {
+    "koResetCooldowns": true,
+    "koMove": 2
+   }
+  }
+ }
+}

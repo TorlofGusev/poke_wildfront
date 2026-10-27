@@ -108,7 +108,7 @@
   "description": "A távolsági támadások 1 hexszel messzebbre érnek (legfeljebb 3-ig; Bond támadásoknál nincs korlát), és átlőnek az útban álló Pokémonokon; +1 Sp. Atk."
  },
  "skill-swift": {
-  "description": "Új képesség: csillagsorozat, amely figyelmen kívül hagyja a rálátást, 2–5 hex."
+  "description": "Új képesség: csillagsorozat, amely figyelmen kívül hagyja a rálátást, 2 hexnyire."
  },
  "marksman": {
   "description": "Csúcstehetség. Ellenfél kiütése nullázza a speciális támadásai újratöltését."
@@ -240,7 +240,7 @@
   "description": "A távolsági támadások 1 hexszel messzebbre érnek (legfeljebb 3-ig; Bond támadásoknál nincs korlát), és átrepülnek az útban álló Pokémonokon."
  },
  "skill-psybeam": {
-  "description": "Új képesség: pszichikus sugár egy vonal mentén."
+  "description": "Új képesség: pszichikus sugár egy vonal mentén (Erő 45); 2 körig Zavarodott."
  },
  "calm-mind": {
   "description": "Immunis a Poisonra és a Burnre."
@@ -351,18 +351,18 @@
   "description": "Csúcstehetség. Ha a saját körében kiüt egy ellenfelet, visszakapja az alaptámadását; +5% sebzés minden egymást követő találatért ugyanazon az ellenfélen."
  },
  "steady-aim": {
-  "description": "+15% sebzés legalább 3 hexnyire lévő ellenfelekre."
+  "description": "+15% sebzés legalább 2 hexnyire lévő ellenfelekre."
  },
  "spotter": {
   "description": "+25% sebzés olyan ellenfelekre, akiken egy szövetséges által rakott állapot van; +1 Bond, ha kombót visz be."
  },
  "deadeye": {
-  "description": "Csúcstehetség. +25% sebzés legalább 3 hexnyire lévő ellenfelekre; a távolsági támadások 1 hexszel messzebbre érnek (legfeljebb 3-ig; Bond támadásoknál nincs korlát), és átlőnek az útban álló Pokémonokon."
+  "description": "Csúcstehetség. +25% sebzés legalább 2 hexnyire lévő ellenfelekre; a távolsági támadások 1 hexszel messzebbre érnek (legfeljebb 3-ig; Bond támadásoknál nincs korlát), és átlőnek az útban álló Pokémonokon."
  },
  "pressure": {
   "description": "A vele lekötésben álló ellenfelek 10%-kal több sebzést kapnak a szövetségeseitől, és elléptükkor mindig kiváltják az ingyen csapását."
  },
  "sniper": {
-  "description": "+10% sebzés legalább 3 hexnyire lévő ellenfelekre."
+  "description": "+10% sebzés legalább 2 hexnyire lévő ellenfelekre."
  }
 }

@@ -66,5 +66,20 @@
   "id": "marked",
   "name": "Marked",
   "damageTaken": 1.15
+ },
+ "weakened": {
+  "id": "weakened",
+  "name": "Weakened",
+  "damageDealt": 0.7
+ },
+ "disabled": {
+  "id": "disabled",
+  "name": "Disabled",
+  "noSkills": true
+ },
+ "confused": {
+  "id": "confused",
+  "name": "Confused",
+  "misdirects": true
  }
 }

@@ -1,0 +1,456 @@
+{
+ "line": [
+  "exeggcute",
+  "exeggutor"
+ ],
+ "focus": [
+  {
+   "stat": "spAttack",
+   "skill": "exeggcute-leaf-storm"
+  },
+  {
+   "stat": "attack",
+   "skill": "exeggcute-wood-hammer"
+  },
+  {
+   "stat": "hp",
+   "skill": "exeggcute-synthesis"
+  }
+ ],
+ "rows": {
+  "4": [
+   "exeggcute-harvest",
+   "exeggcute-shared-minds"
+  ],
+  "6": [
+   "exeggcute-barrage",
+   "exeggcute-reflect"
+  ],
+  "9": [
+   "exeggcute-thick-shells",
+   "exeggcute-deep-roots"
+  ],
+  "12": [
+   "exeggcute-seed-bomb",
+   "exeggcute-extrasensory"
+  ],
+  "15": [
+   "exeggcute-lingering-spores",
+   "exeggcute-prey-on-sleepers"
+  ],
+  "18": [
+   "exeggcute-psyshock",
+   "exeggcute-petal-blizzard"
+  ],
+  "21": [
+   "exeggcute-towering-reach",
+   "exeggcute-ripe-fruit"
+  ],
+  "24": [
+   "exeggcute-power-whip",
+   "exeggcute-energy-ball"
+  ],
+  "27": [
+   "exeggcute-drowsy-pollen",
+   "exeggcute-rooted-trunk"
+  ],
+  "30": [
+   "exeggcute-six-minds-one",
+   "exeggcute-walking-grove"
+  ]
+ },
+ "moves": {
+  "exeggcute-leaf-storm": {
+   "id": "exeggcute-leaf-storm",
+   "name": "Leaf Storm",
+   "type": "grass",
+   "kind": "bond",
+   "category": "special",
+   "bondCost": 3,
+   "power": 90,
+   "range": {
+    "min": 1,
+    "max": 2
+   },
+   "requiresLineOfSight": true,
+   "shape": {
+    "kind": "burst",
+    "radius": 1
+   },
+   "affects": "enemies"
+  },
+  "exeggcute-wood-hammer": {
+   "id": "exeggcute-wood-hammer",
+   "name": "Wood Hammer",
+   "type": "grass",
+   "kind": "bond",
+   "category": "physical",
+   "bondCost": 3,
+   "power": 100,
+   "range": {
+    "min": 1,
+    "max": 1
+   },
+   "requiresLineOfSight": false,
+   "shape": {
+    "kind": "single"
+   },
+   "affects": "enemies"
+  },
+  "exeggcute-synthesis": {
+   "id": "exeggcute-synthesis",
+   "name": "Synthesis",
+   "type": "grass",
+   "kind": "bond",
+   "bondCost": 2,
+   "power": 0,
+   "range": {
+    "min": 0,
+    "max": 0
+   },
+   "requiresLineOfSight": false,
+   "shape": {
+    "kind": "single"
+   },
+   "affects": "allies",
+   "effects": [
+    {
+     "kind": "heal",
+     "amount": 45
+    }
+   ]
+  },
+  "exeggcute-barrage": {
+   "id": "exeggcute-barrage",
+   "name": "Barrage",
+   "type": "normal",
+   "kind": "special",
+   "category": "physical",
+   "cooldown": 2,
+   "power": 50,
+   "range": {
+    "min": 1,
+    "max": 2
+   },
+   "requiresLineOfSight": true,
+   "shape": {
+    "kind": "single"
+   },
+   "affects": "enemies"
+  },
+  "exeggcute-reflect": {
+   "id": "exeggcute-reflect",
+   "name": "Reflect",
+   "type": "psychic",
+   "kind": "special",
+   "category": "special",
+   "cooldown": 4,
+   "power": 0,
+   "range": {
+    "min": 0,
+    "max": 0
+   },
+   "requiresLineOfSight": false,
+   "shape": {
+    "kind": "burst",
+    "radius": 1
+   },
+   "affects": "allies",
+   "effects": [
+    {
+     "kind": "status",
+     "status": "fortified",
+     "duration": 1
+    }
+   ]
+  },
+  "exeggcute-seed-bomb": {
+   "id": "exeggcute-seed-bomb",
+   "name": "Seed Bomb",
+   "type": "grass",
+   "kind": "special",
+   "category": "physical",
+   "cooldown": 3,
+   "power": 70,
+   "range": {
+    "min": 1,
+    "max": 2
+   },
+   "requiresLineOfSight": true,
+   "shape": {
+    "kind": "single"
+   },
+   "affects": "enemies"
+  },
+  "exeggcute-extrasensory": {
+   "id": "exeggcute-extrasensory",
+   "name": "Extrasensory",
+   "type": "psychic",
+   "kind": "special",
+   "category": "special",
+   "cooldown": 3,
+   "power": 70,
+   "range": {
+    "min": 1,
+    "max": 2
+   },
+   "requiresLineOfSight": true,
+   "shape": {
+    "kind": "single"
+   },
+   "affects": "enemies",
+   "effects": [
+    {
+     "kind": "status",
+     "status": "slow",
+     "duration": 1
+    }
+   ]
+  },
+  "exeggcute-psyshock": {
+   "id": "exeggcute-psyshock",
+   "name": "Psyshock",
+   "type": "psychic",
+   "kind": "special",
+   "category": "special",
+   "cooldown": 4,
+   "power": 85,
+   "range": {
+    "min": 1,
+    "max": 2
+   },
+   "requiresLineOfSight": true,
+   "shape": {
+    "kind": "single"
+   },
+   "affects": "enemies"
+  },
+  "exeggcute-petal-blizzard": {
+   "id": "exeggcute-petal-blizzard",
+   "name": "Petal Blizzard",
+   "type": "grass",
+   "kind": "special",
+   "category": "physical",
+   "cooldown": 4,
+   "power": 75,
+   "range": {
+    "min": 0,
+    "max": 0
+   },
+   "requiresLineOfSight": false,
+   "shape": {
+    "kind": "burst",
+    "radius": 1
+   },
+   "affects": "enemies"
+  },
+  "exeggcute-power-whip": {
+   "id": "exeggcute-power-whip",
+   "name": "Power Whip",
+   "type": "grass",
+   "kind": "special",
+   "category": "physical",
+   "cooldown": 5,
+   "power": 100,
+   "range": {
+    "min": 1,
+    "max": 2
+   },
+   "requiresLineOfSight": true,
+   "shape": {
+    "kind": "single"
+   },
+   "affects": "enemies"
+  },
+  "exeggcute-energy-ball": {
+   "id": "exeggcute-energy-ball",
+   "name": "Energy Ball",
+   "type": "grass",
+   "kind": "special",
+   "category": "special",
+   "cooldown": 4,
+   "power": 90,
+   "range": {
+    "min": 1,
+    "max": 2
+   },
+   "requiresLineOfSight": true,
+   "shape": {
+    "kind": "single"
+   },
+   "affects": "enemies"
+  }
+ },
+ "talents": {
+  "exeggcute-leaf-storm": {
+   "id": "exeggcute-leaf-storm",
+   "name": "Leaf Storm",
+   "description": "Bond skill: a storm of leaves up to 2 hexes away (Power 90, Sp. Atk) hitting a 1-hex area.",
+   "grantsMove": "exeggcute-leaf-storm"
+  },
+  "exeggcute-wood-hammer": {
+   "id": "exeggcute-wood-hammer",
+   "name": "Wood Hammer",
+   "description": "Bond skill: slams its hard trunk into a foe (Power 100, Attack).",
+   "grantsMove": "exeggcute-wood-hammer"
+  },
+  "exeggcute-synthesis": {
+   "id": "exeggcute-synthesis",
+   "name": "Synthesis",
+   "description": "Bond skill: soaks up sunlight and heals itself 45 HP.",
+   "grantsMove": "exeggcute-synthesis"
+  },
+  "exeggcute-harvest": {
+   "id": "exeggcute-harvest",
+   "name": "Harvest",
+   "description": "Heals 4% of max HP at the start of each turn.",
+   "mods": {
+    "healPerTurn": 0.04
+   }
+  },
+  "exeggcute-shared-minds": {
+   "id": "exeggcute-shared-minds",
+   "name": "Shared Minds",
+   "description": "Deals 20% more damage to foes carrying a status an ally applied.",
+   "mods": {
+    "vsSetupDamage": 1.2
+   }
+  },
+  "exeggcute-barrage": {
+   "id": "exeggcute-barrage",
+   "name": "Barrage",
+   "description": "New skill: hurls a volley of eggs at a foe up to 2 hexes away (Power 50).",
+   "grantsMove": "exeggcute-barrage"
+  },
+  "exeggcute-reflect": {
+   "id": "exeggcute-reflect",
+   "name": "Reflect",
+   "description": "New skill: a barrier around itself and adjacent allies, Fortifying them for 1 turn.",
+   "grantsMove": "exeggcute-reflect"
+  },
+  "exeggcute-thick-shells": {
+   "id": "exeggcute-thick-shells",
+   "name": "Thick Shells",
+   "description": "Takes 10% less damage.",
+   "mods": {
+    "damageTaken": 0.9
+   }
+  },
+  "exeggcute-deep-roots": {
+   "id": "exeggcute-deep-roots",
+   "name": "Deep Roots",
+   "description": "Its Grass moves drain an extra 15% of the damage dealt as HP.",
+   "mods": {
+    "drainBonus": 0.15
+   }
+  },
+  "exeggcute-seed-bomb": {
+   "id": "exeggcute-seed-bomb",
+   "name": "Seed Bomb",
+   "description": "New skill: lobs a hard-shelled seed at a foe up to 2 hexes away (Power 70).",
+   "grantsMove": "exeggcute-seed-bomb"
+  },
+  "exeggcute-extrasensory": {
+   "id": "exeggcute-extrasensory",
+   "name": "Extrasensory",
+   "description": "New skill: an odd power at a foe up to 2 hexes away (Power 70), Slowing it for 1 turn.",
+   "grantsMove": "exeggcute-extrasensory"
+  },
+  "exeggcute-lingering-spores": {
+   "id": "exeggcute-lingering-spores",
+   "name": "Lingering Spores",
+   "description": "Statuses it inflicts last 1 turn longer.",
+   "mods": {
+    "statusDurationBonus": 1
+   }
+  },
+  "exeggcute-prey-on-sleepers": {
+   "id": "exeggcute-prey-on-sleepers",
+   "name": "Prey on Sleepers",
+   "description": "Deals 25% more damage to sleeping foes.",
+   "mods": {
+    "vsStatusIdDamage": {
+     "sleep": 1.25
+    }
+   }
+  },
+  "exeggcute-psyshock": {
+   "id": "exeggcute-psyshock",
+   "name": "Psyshock",
+   "description": "New skill: a wave of psychic force at a foe up to 2 hexes away (Power 85).",
+   "grantsMove": "exeggcute-psyshock"
+  },
+  "exeggcute-petal-blizzard": {
+   "id": "exeggcute-petal-blizzard",
+   "name": "Petal Blizzard",
+   "description": "New skill: a storm of petals whirls around itself (Power 75), hitting all adjacent foes.",
+   "grantsMove": "exeggcute-petal-blizzard"
+  },
+  "exeggcute-towering-reach": {
+   "id": "exeggcute-towering-reach",
+   "name": "Towering Reach",
+   "description": "Its ranged moves reach 1 hex farther.",
+   "mods": {
+    "rangeBonus": 1
+   }
+  },
+  "exeggcute-ripe-fruit": {
+   "id": "exeggcute-ripe-fruit",
+   "name": "Ripe Fruit",
+   "description": "Heals 15% of max HP when it knocks out a foe.",
+   "mods": {
+    "koHeal": 0.15
+   }
+  },
+  "exeggcute-power-whip": {
+   "id": "exeggcute-power-whip",
+   "name": "Power Whip",
+   "description": "New skill: lashes a foe up to 2 hexes away with its leaves (Power 100).",
+   "grantsMove": "exeggcute-power-whip"
+  },
+  "exeggcute-energy-ball": {
+   "id": "exeggcute-energy-ball",
+   "name": "Energy Ball",
+   "description": "New skill: a ball of nature's energy at a foe up to 2 hexes away (Power 90).",
+   "grantsMove": "exeggcute-energy-ball"
+  },
+  "exeggcute-drowsy-pollen": {
+   "id": "exeggcute-drowsy-pollen",
+   "name": "Drowsy Pollen",
+   "description": "When a foe it afflicted faints, adjacent foes catch that status.",
+   "mods": {
+    "statusSpreadOnKo": true
+   }
+  },
+  "exeggcute-rooted-trunk": {
+   "id": "exeggcute-rooted-trunk",
+   "name": "Rooted Trunk",
+   "description": "Heals 5% of max HP each turn while engaged.",
+   "mods": {
+    "healWhileEngaged": 0.05
+   }
+  },
+  "exeggcute-six-minds-one": {
+   "id": "exeggcute-six-minds-one",
+   "name": "Six Minds, One Will",
+   "description": "Capstone. Its Psychic moves deal 20% more damage; its many heads fire over Pokémon in the way.",
+   "mods": {
+    "typeDamage": {
+     "psychic": 1.2
+    },
+    "shootOver": true
+   }
+  },
+  "exeggcute-walking-grove": {
+   "id": "exeggcute-walking-grove",
+   "name": "Walking Grove",
+   "description": "Capstone. Its Grass moves deal 20% more damage; each knockout gives the team 1 Bond.",
+   "mods": {
+    "typeDamage": {
+     "grass": 1.2
+    },
+    "bondOnKo": 1
+   }
+  }
+ }
+}

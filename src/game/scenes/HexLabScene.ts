@@ -1,6 +1,6 @@
 import Phaser from "phaser";
 import { CONTENT } from "../../content";
-import { moveRange, NO_MODIFIERS, unitTraits, type MoveDef } from "../../core/battle";
+import { baseMovement, moveRange, NO_MODIFIERS, unitTraits, type MoveDef } from "../../core/battle";
 import { hexDistance, hexLine, hexNeighbors, hexReachable } from "../../core/grid/hex";
 import { samePoint, type Point } from "../../core/grid";
 import { animKey, facingFor, hasSprite } from "../sprites";
@@ -140,7 +140,7 @@ export class HexLabScene extends Phaser.Scene {
   private movePoints(u: LabUnit): number {
     const s = CONTENT.species[u.speciesId]!;
     const r = CONTENT.rules;
-    return Math.min(r.moveMax, r.moveBase + Math.floor(s.stats.speed / r.speedPerMove));
+    return Math.min(r.moveMax, baseMovement(CONTENT, s.stats.speed));
   }
 
   private flies(u: LabUnit): boolean {

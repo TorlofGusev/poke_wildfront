@@ -1,0 +1,462 @@
+{
+ "line": [
+  "bellsprout",
+  "weepinbell",
+  "victreebel"
+ ],
+ "focus": [
+  {
+   "stat": "attack",
+   "skill": "bellsprout-power-whip"
+  },
+  {
+   "stat": "spAttack",
+   "skill": "bellsprout-sludge-bomb"
+  },
+  {
+   "stat": "speed",
+   "skill": "bellsprout-grassy-glide"
+  }
+ ],
+ "rows": {
+  "4": [
+   "bellsprout-long-vines",
+   "bellsprout-corrosive-sap"
+  ],
+  "6": [
+   "bellsprout-knock-off",
+   "bellsprout-growth"
+  ],
+  "9": [
+   "bellsprout-sticky-nectar",
+   "bellsprout-toxic-drip"
+  ],
+  "12": [
+   "bellsprout-poison-jab",
+   "bellsprout-magical-leaf"
+  ],
+  "15": [
+   "bellsprout-swallow",
+   "bellsprout-stockpile"
+  ],
+  "18": [
+   "bellsprout-leaf-blade",
+   "bellsprout-leaf-storm"
+  ],
+  "21": [
+   "bellsprout-venom-pool",
+   "bellsprout-digestive-acid"
+  ],
+  "24": [
+   "bellsprout-seed-bomb",
+   "bellsprout-spit-up"
+  ],
+  "27": [
+   "bellsprout-sun-fed-leaves",
+   "bellsprout-clinging-vines"
+  ],
+  "30": [
+   "bellsprout-pitchers-maw",
+   "bellsprout-flytrap-frenzy"
+  ]
+ },
+ "moves": {
+  "bellsprout-power-whip": {
+   "id": "bellsprout-power-whip",
+   "name": "Power Whip",
+   "type": "grass",
+   "kind": "bond",
+   "category": "physical",
+   "bondCost": 2,
+   "power": 100,
+   "range": {
+    "min": 1,
+    "max": 2
+   },
+   "requiresLineOfSight": true,
+   "shape": {
+    "kind": "single"
+   },
+   "affects": "enemies"
+  },
+  "bellsprout-sludge-bomb": {
+   "id": "bellsprout-sludge-bomb",
+   "name": "Sludge Bomb",
+   "type": "poison",
+   "kind": "bond",
+   "category": "special",
+   "bondCost": 2,
+   "power": 90,
+   "range": {
+    "min": 1,
+    "max": 3
+   },
+   "requiresLineOfSight": true,
+   "shape": {
+    "kind": "single"
+   },
+   "affects": "enemies",
+   "effects": [
+    {
+     "kind": "status",
+     "status": "poison",
+     "duration": 2
+    }
+   ]
+  },
+  "bellsprout-grassy-glide": {
+   "id": "bellsprout-grassy-glide",
+   "name": "Grassy Glide",
+   "type": "grass",
+   "kind": "bond",
+   "category": "physical",
+   "bondCost": 1,
+   "power": 55,
+   "range": {
+    "min": 1,
+    "max": 2
+   },
+   "requiresLineOfSight": true,
+   "shape": {
+    "kind": "single"
+   },
+   "affects": "enemies",
+   "effects": [
+    {
+     "kind": "engage"
+    }
+   ]
+  },
+  "bellsprout-knock-off": {
+   "id": "bellsprout-knock-off",
+   "name": "Knock Off",
+   "type": "normal",
+   "kind": "special",
+   "category": "physical",
+   "cooldown": 3,
+   "power": 65,
+   "range": {
+    "min": 1,
+    "max": 1
+   },
+   "requiresLineOfSight": false,
+   "shape": {
+    "kind": "single"
+   },
+   "affects": "enemies"
+  },
+  "bellsprout-poison-jab": {
+   "id": "bellsprout-poison-jab",
+   "name": "Poison Jab",
+   "type": "poison",
+   "kind": "special",
+   "category": "physical",
+   "cooldown": 3,
+   "power": 70,
+   "range": {
+    "min": 1,
+    "max": 1
+   },
+   "requiresLineOfSight": false,
+   "shape": {
+    "kind": "single"
+   },
+   "affects": "enemies",
+   "effects": [
+    {
+     "kind": "status",
+     "status": "poison",
+     "duration": 2
+    }
+   ]
+  },
+  "bellsprout-magical-leaf": {
+   "id": "bellsprout-magical-leaf",
+   "name": "Magical Leaf",
+   "type": "grass",
+   "kind": "special",
+   "category": "special",
+   "cooldown": 2,
+   "power": 60,
+   "range": {
+    "min": 1,
+    "max": 2
+   },
+   "requiresLineOfSight": true,
+   "shape": {
+    "kind": "single"
+   },
+   "affects": "enemies"
+  },
+  "bellsprout-leaf-blade": {
+   "id": "bellsprout-leaf-blade",
+   "name": "Leaf Blade",
+   "type": "grass",
+   "kind": "special",
+   "category": "physical",
+   "cooldown": 4,
+   "power": 90,
+   "range": {
+    "min": 1,
+    "max": 1
+   },
+   "requiresLineOfSight": false,
+   "shape": {
+    "kind": "single"
+   },
+   "affects": "enemies"
+  },
+  "bellsprout-leaf-storm": {
+   "id": "bellsprout-leaf-storm",
+   "name": "Leaf Storm",
+   "type": "grass",
+   "kind": "special",
+   "category": "special",
+   "cooldown": 5,
+   "power": 85,
+   "range": {
+    "min": 1,
+    "max": 1
+   },
+   "requiresLineOfSight": true,
+   "shape": {
+    "kind": "burst",
+    "radius": 1
+   },
+   "affects": "enemies"
+  },
+  "bellsprout-seed-bomb": {
+   "id": "bellsprout-seed-bomb",
+   "name": "Seed Bomb",
+   "type": "grass",
+   "kind": "special",
+   "category": "physical",
+   "cooldown": 4,
+   "power": 85,
+   "range": {
+    "min": 1,
+    "max": 2
+   },
+   "requiresLineOfSight": true,
+   "shape": {
+    "kind": "single"
+   },
+   "affects": "enemies"
+  },
+  "bellsprout-spit-up": {
+   "id": "bellsprout-spit-up",
+   "name": "Spit Up",
+   "type": "normal",
+   "kind": "special",
+   "category": "special",
+   "cooldown": 5,
+   "power": 90,
+   "range": {
+    "min": 1,
+    "max": 2
+   },
+   "requiresLineOfSight": true,
+   "shape": {
+    "kind": "single"
+   },
+   "affects": "enemies"
+  },
+  "bellsprout-growth": {
+   "id": "bellsprout-growth",
+   "name": "Growth",
+   "type": "normal",
+   "kind": "special",
+   "cooldown": 4,
+   "power": 0,
+   "range": {
+    "min": 0,
+    "max": 0
+   },
+   "requiresLineOfSight": false,
+   "shape": {
+    "kind": "single"
+   },
+   "affects": "allies",
+   "effects": [
+    {
+     "kind": "status",
+     "status": "focused",
+     "duration": 2
+    }
+   ]
+  }
+ },
+ "talents": {
+  "bellsprout-power-whip": {
+   "id": "bellsprout-power-whip",
+   "name": "Power Whip",
+   "description": "Bond skill: lashes a foe up to 2 hexes away with a heavy vine (Power 100, Attack).",
+   "grantsMove": "bellsprout-power-whip"
+  },
+  "bellsprout-sludge-bomb": {
+   "id": "bellsprout-sludge-bomb",
+   "name": "Sludge Bomb",
+   "description": "Bond skill: lobs sludge up to 3 hexes away (Power 90, Sp. Atk), Poisoning the foe for 2 turns.",
+   "grantsMove": "bellsprout-sludge-bomb"
+  },
+  "bellsprout-grassy-glide": {
+   "id": "bellsprout-grassy-glide",
+   "name": "Grassy Glide",
+   "description": "Bond skill: glides up to 2 hexes into a foe (Power 55) and engages it.",
+   "grantsMove": "bellsprout-grassy-glide"
+  },
+  "bellsprout-long-vines": {
+   "id": "bellsprout-long-vines",
+   "name": "Long Vines",
+   "description": "Its moves that reach 2+ hexes reach 1 hex further.",
+   "mods": {
+    "rangeBonus": 1
+   }
+  },
+  "bellsprout-corrosive-sap": {
+   "id": "bellsprout-corrosive-sap",
+   "name": "Corrosive Sap",
+   "description": "Deals 20% more damage to Poisoned foes.",
+   "mods": {
+    "vsStatusIdDamage": {
+     "poison": 1.2
+    }
+   }
+  },
+  "bellsprout-knock-off": {
+   "id": "bellsprout-knock-off",
+   "name": "Knock Off",
+   "description": "New skill: swats the foe hard with a leaf (Power 65).",
+   "grantsMove": "bellsprout-knock-off"
+  },
+  "bellsprout-sticky-nectar": {
+   "id": "bellsprout-sticky-nectar",
+   "name": "Sticky Nectar",
+   "description": "Foes it engages take 15% more damage from its allies.",
+   "mods": {
+    "pinDamage": 1.15
+   }
+  },
+  "bellsprout-toxic-drip": {
+   "id": "bellsprout-toxic-drip",
+   "name": "Toxic Drip",
+   "description": "Its hits on adjacent foes Poison them for 2 turns.",
+   "mods": {
+    "contactStatus": {
+     "status": "poison",
+     "duration": 2
+    }
+   }
+  },
+  "bellsprout-poison-jab": {
+   "id": "bellsprout-poison-jab",
+   "name": "Poison Jab",
+   "description": "New skill: stabs with a venomous vine tip (Power 70), Poisoning the foe for 2 turns.",
+   "grantsMove": "bellsprout-poison-jab"
+  },
+  "bellsprout-magical-leaf": {
+   "id": "bellsprout-magical-leaf",
+   "name": "Magical Leaf",
+   "description": "New skill: homing leaves at a foe up to 2 hexes away (Power 60).",
+   "grantsMove": "bellsprout-magical-leaf"
+  },
+  "bellsprout-swallow": {
+   "id": "bellsprout-swallow",
+   "name": "Swallow",
+   "description": "Heals 20% of max HP when it knocks out a foe.",
+   "mods": {
+    "koHeal": 0.2
+   }
+  },
+  "bellsprout-stockpile": {
+   "id": "bellsprout-stockpile",
+   "name": "Stockpile",
+   "description": "Takes 20% less damage while at full HP.",
+   "mods": {
+    "fullHpDamageTaken": 0.8
+   }
+  },
+  "bellsprout-leaf-blade": {
+   "id": "bellsprout-leaf-blade",
+   "name": "Leaf Blade",
+   "description": "New skill: slashes with a razor-edged leaf (Power 90).",
+   "grantsMove": "bellsprout-leaf-blade"
+  },
+  "bellsprout-leaf-storm": {
+   "id": "bellsprout-leaf-storm",
+   "name": "Leaf Storm",
+   "description": "New skill: a storm of leaves up to 1 hex away (Power 85) hitting a 1-hex area.",
+   "grantsMove": "bellsprout-leaf-storm"
+  },
+  "bellsprout-venom-pool": {
+   "id": "bellsprout-venom-pool",
+   "name": "Venom Pool",
+   "description": "Statuses it inflicts last 1 more turn.",
+   "mods": {
+    "statusDurationBonus": 1
+   }
+  },
+  "bellsprout-digestive-acid": {
+   "id": "bellsprout-digestive-acid",
+   "name": "Digestive Acid",
+   "description": "When a foe it afflicted faints, adjacent foes catch that status.",
+   "mods": {
+    "statusSpreadOnKo": true
+   }
+  },
+  "bellsprout-seed-bomb": {
+   "id": "bellsprout-seed-bomb",
+   "name": "Seed Bomb",
+   "description": "New skill: hurls a hard seed at a foe up to 2 hexes away (Power 85).",
+   "grantsMove": "bellsprout-seed-bomb"
+  },
+  "bellsprout-spit-up": {
+   "id": "bellsprout-spit-up",
+   "name": "Spit Up",
+   "description": "New skill: spews stored digestive fluid at a foe up to 2 hexes away (Power 90).",
+   "grantsMove": "bellsprout-spit-up"
+  },
+  "bellsprout-sun-fed-leaves": {
+   "id": "bellsprout-sun-fed-leaves",
+   "name": "Sun-Fed Leaves",
+   "description": "Its Grass moves deal 15% more damage.",
+   "mods": {
+    "typeDamage": {
+     "grass": 1.15
+    }
+   }
+  },
+  "bellsprout-clinging-vines": {
+   "id": "bellsprout-clinging-vines",
+   "name": "Clinging Vines",
+   "description": "Its free strikes on foes breaking away deal 25% more damage.",
+   "mods": {
+    "strikeDamage": 1.25
+   }
+  },
+  "bellsprout-pitchers-maw": {
+   "id": "bellsprout-pitchers-maw",
+   "name": "Pitcher's Maw",
+   "description": "Capstone. Deals 25% more damage to foes with any status and takes 10% less damage.",
+   "mods": {
+    "vsStatusDamage": 1.25,
+    "damageTaken": 0.9
+   }
+  },
+  "bellsprout-flytrap-frenzy": {
+   "id": "bellsprout-flytrap-frenzy",
+   "name": "Flytrap Frenzy",
+   "description": "Capstone. A knockout resets its skill cooldowns and gives the team 1 Bond.",
+   "mods": {
+    "koResetCooldowns": true,
+    "bondOnKo": 1
+   }
+  },
+  "bellsprout-growth": {
+   "id": "bellsprout-growth",
+   "name": "Growth",
+   "description": "New skill: grows rapidly; Focused for 2 turns.",
+   "grantsMove": "bellsprout-growth"
+  }
+ }
+}

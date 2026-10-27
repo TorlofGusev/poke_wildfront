@@ -1,0 +1,477 @@
+{
+ "line": [
+  "geodude",
+  "graveler",
+  "golem"
+ ],
+ "focus": [
+  {
+   "stat": "attack",
+   "skill": "geodude-explosion"
+  },
+  {
+   "stat": "defense",
+   "skill": "geodude-gyro-ball"
+  },
+  {
+   "stat": "hp",
+   "skill": "geodude-endure"
+  }
+ ],
+ "rows": {
+  "4": [
+   "geodude-rolling-stone",
+   "geodude-granite-skin"
+  ],
+  "6": [
+   "geodude-magnitude",
+   "geodude-rock-polish"
+  ],
+  "9": [
+   "geodude-jagged-rock",
+   "geodude-mudslide"
+  ],
+  "12": [
+   "geodude-smack-down",
+   "geodude-defense-curl"
+  ],
+  "15": [
+   "geodude-steadfast-boulder",
+   "geodude-mineral-body"
+  ],
+  "18": [
+   "geodude-stone-edge",
+   "geodude-heavy-slam"
+  ],
+  "21": [
+   "geodude-landslide",
+   "geodude-bedrock"
+  ],
+  "24": [
+   "geodude-rock-wrecker",
+   "geodude-high-horsepower"
+  ],
+  "27": [
+   "geodude-snowballing-boulder",
+   "geodude-final-rumble"
+  ],
+  "30": [
+   "geodude-tectonic-force",
+   "geodude-living-mountain"
+  ]
+ },
+ "moves": {
+  "geodude-explosion": {
+   "id": "geodude-explosion",
+   "name": "Explosion",
+   "type": "normal",
+   "kind": "bond",
+   "category": "physical",
+   "bondCost": 3,
+   "power": 100,
+   "range": {
+    "min": 0,
+    "max": 0
+   },
+   "requiresLineOfSight": false,
+   "shape": {
+    "kind": "burst",
+    "radius": 1
+   },
+   "affects": "enemies"
+  },
+  "geodude-gyro-ball": {
+   "id": "geodude-gyro-ball",
+   "name": "Gyro Ball",
+   "type": "normal",
+   "kind": "bond",
+   "category": "physical",
+   "bondCost": 2,
+   "power": 80,
+   "range": {
+    "min": 1,
+    "max": 1
+   },
+   "requiresLineOfSight": false,
+   "shape": {
+    "kind": "single"
+   },
+   "affects": "enemies",
+   "effects": [
+    {
+     "kind": "push",
+     "distance": 1
+    }
+   ]
+  },
+  "geodude-endure": {
+   "id": "geodude-endure",
+   "name": "Endure",
+   "type": "normal",
+   "kind": "bond",
+   "bondCost": 1,
+   "power": 0,
+   "range": {
+    "min": 0,
+    "max": 0
+   },
+   "requiresLineOfSight": false,
+   "shape": {
+    "kind": "single"
+   },
+   "affects": "allies",
+   "effects": [
+    {
+     "kind": "status",
+     "status": "protected",
+     "duration": 1
+    }
+   ]
+  },
+  "geodude-magnitude": {
+   "id": "geodude-magnitude",
+   "name": "Magnitude",
+   "type": "ground",
+   "kind": "special",
+   "category": "physical",
+   "cooldown": 3,
+   "power": 55,
+   "range": {
+    "min": 0,
+    "max": 0
+   },
+   "requiresLineOfSight": false,
+   "shape": {
+    "kind": "burst",
+    "radius": 1
+   },
+   "affects": "enemies"
+  },
+  "geodude-rock-polish": {
+   "id": "geodude-rock-polish",
+   "name": "Rock Polish",
+   "type": "rock",
+   "kind": "special",
+   "category": "special",
+   "cooldown": 4,
+   "power": 0,
+   "range": {
+    "min": 0,
+    "max": 0
+   },
+   "requiresLineOfSight": false,
+   "shape": {
+    "kind": "single"
+   },
+   "affects": "allies",
+   "effects": [
+    {
+     "kind": "status",
+     "status": "hasted",
+     "duration": 2
+    }
+   ]
+  },
+  "geodude-smack-down": {
+   "id": "geodude-smack-down",
+   "name": "Smack Down",
+   "type": "rock",
+   "kind": "special",
+   "category": "physical",
+   "cooldown": 2,
+   "power": 60,
+   "range": {
+    "min": 1,
+    "max": 2
+   },
+   "requiresLineOfSight": true,
+   "shape": {
+    "kind": "single"
+   },
+   "affects": "enemies",
+   "effects": [
+    {
+     "kind": "pull",
+     "distance": 1
+    }
+   ]
+  },
+  "geodude-defense-curl": {
+   "id": "geodude-defense-curl",
+   "name": "Defense Curl",
+   "type": "normal",
+   "kind": "special",
+   "category": "special",
+   "cooldown": 3,
+   "power": 0,
+   "range": {
+    "min": 0,
+    "max": 0
+   },
+   "requiresLineOfSight": false,
+   "shape": {
+    "kind": "single"
+   },
+   "affects": "allies",
+   "effects": [
+    {
+     "kind": "status",
+     "status": "fortified",
+     "duration": 2
+    }
+   ]
+  },
+  "geodude-stone-edge": {
+   "id": "geodude-stone-edge",
+   "name": "Stone Edge",
+   "type": "rock",
+   "kind": "special",
+   "category": "physical",
+   "cooldown": 4,
+   "power": 95,
+   "range": {
+    "min": 1,
+    "max": 2
+   },
+   "requiresLineOfSight": false,
+   "shape": {
+    "kind": "single"
+   },
+   "affects": "enemies"
+  },
+  "geodude-heavy-slam": {
+   "id": "geodude-heavy-slam",
+   "name": "Heavy Slam",
+   "type": "normal",
+   "kind": "special",
+   "category": "physical",
+   "cooldown": 4,
+   "power": 85,
+   "range": {
+    "min": 1,
+    "max": 1
+   },
+   "requiresLineOfSight": false,
+   "shape": {
+    "kind": "single"
+   },
+   "affects": "enemies"
+  },
+  "geodude-rock-wrecker": {
+   "id": "geodude-rock-wrecker",
+   "name": "Rock Wrecker",
+   "type": "rock",
+   "kind": "special",
+   "category": "physical",
+   "cooldown": 4,
+   "power": 100,
+   "range": {
+    "min": 1,
+    "max": 2
+   },
+   "requiresLineOfSight": true,
+   "shape": {
+    "kind": "single"
+   },
+   "affects": "enemies"
+  },
+  "geodude-high-horsepower": {
+   "id": "geodude-high-horsepower",
+   "name": "High Horsepower",
+   "type": "ground",
+   "kind": "special",
+   "category": "physical",
+   "cooldown": 5,
+   "power": 90,
+   "range": {
+    "min": 1,
+    "max": 1
+   },
+   "requiresLineOfSight": false,
+   "shape": {
+    "kind": "single"
+   },
+   "affects": "enemies",
+   "effects": [
+    {
+     "kind": "push",
+     "distance": 1
+    }
+   ]
+  }
+ },
+ "talents": {
+  "geodude-explosion": {
+   "id": "geodude-explosion",
+   "name": "Explosion",
+   "description": "Bond skill: a huge blast hits every foe next to it (Power 100, Attack).",
+   "grantsMove": "geodude-explosion"
+  },
+  "geodude-gyro-ball": {
+   "id": "geodude-gyro-ball",
+   "name": "Gyro Ball",
+   "description": "Bond skill: a spinning rock body crashes into a foe (Power 80, Attack), pushing 1 hex.",
+   "grantsMove": "geodude-gyro-ball"
+  },
+  "geodude-endure": {
+   "id": "geodude-endure",
+   "name": "Endure",
+   "description": "Bond skill: braces its rocky body; it is Protected for 1 turn.",
+   "grantsMove": "geodude-endure"
+  },
+  "geodude-rolling-stone": {
+   "id": "geodude-rolling-stone",
+   "name": "Rolling Stone",
+   "description": "Deals 10 extra damage when it pushes a foe into an obstacle.",
+   "mods": {
+    "impactBonus": 10
+   }
+  },
+  "geodude-granite-skin": {
+   "id": "geodude-granite-skin",
+   "name": "Granite Skin",
+   "description": "Takes 20% less damage while at full HP.",
+   "mods": {
+    "fullHpDamageTaken": 0.8
+   }
+  },
+  "geodude-magnitude": {
+   "id": "geodude-magnitude",
+   "name": "Magnitude",
+   "description": "New skill: shakes the ground, hitting every foe next to it (Power 55).",
+   "grantsMove": "geodude-magnitude"
+  },
+  "geodude-rock-polish": {
+   "id": "geodude-rock-polish",
+   "name": "Rock Polish",
+   "description": "New skill: polishes its body smooth; it is Hasted for 2 turns.",
+   "grantsMove": "geodude-rock-polish"
+  },
+  "geodude-jagged-rock": {
+   "id": "geodude-jagged-rock",
+   "name": "Jagged Rock",
+   "description": "Foes that hit it from an adjacent hex take 6 damage.",
+   "mods": {
+    "thorns": 6
+   }
+  },
+  "geodude-mudslide": {
+   "id": "geodude-mudslide",
+   "name": "Mudslide",
+   "description": "Deals 10% more damage to adjacent foes and 25% more to foes standing on mud.",
+   "mods": {
+    "vsMudDamage": 1.25,
+    "closeDamage": 1.1
+   }
+  },
+  "geodude-smack-down": {
+   "id": "geodude-smack-down",
+   "name": "Smack Down",
+   "description": "New skill: hurls a rock at a foe up to 2 hexes away (Power 60), dragging it 1 hex closer.",
+   "grantsMove": "geodude-smack-down"
+  },
+  "geodude-defense-curl": {
+   "id": "geodude-defense-curl",
+   "name": "Defense Curl",
+   "description": "New skill: curls into a ball; it is Fortified for 2 turns.",
+   "grantsMove": "geodude-defense-curl"
+  },
+  "geodude-steadfast-boulder": {
+   "id": "geodude-steadfast-boulder",
+   "name": "Steadfast Boulder",
+   "description": "Deals 25% more while 2+ foes stand next to it; heals 3% of max HP each turn while engaged.",
+   "mods": {
+    "surroundedDamage": 1.25,
+    "healWhileEngaged": 0.03
+   }
+  },
+  "geodude-mineral-body": {
+   "id": "geodude-mineral-body",
+   "name": "Mineral Body",
+   "description": "Heals 3% of max HP at the start of each turn.",
+   "mods": {
+    "healPerTurn": 0.03
+   }
+  },
+  "geodude-stone-edge": {
+   "id": "geodude-stone-edge",
+   "name": "Stone Edge",
+   "description": "New skill: sharp stones burst up under a foe up to 2 hexes away (Power 95).",
+   "grantsMove": "geodude-stone-edge"
+  },
+  "geodude-heavy-slam": {
+   "id": "geodude-heavy-slam",
+   "name": "Heavy Slam",
+   "description": "New skill: drops its full weight on a foe (Power 85).",
+   "grantsMove": "geodude-heavy-slam"
+  },
+  "geodude-landslide": {
+   "id": "geodude-landslide",
+   "name": "Landslide",
+   "description": "Deals 20% more damage to foes at full HP.",
+   "mods": {
+    "fullHpTargetDamage": 1.2
+   }
+  },
+  "geodude-bedrock": {
+   "id": "geodude-bedrock",
+   "name": "Bedrock",
+   "description": "Cannot be Slowed or Paralysed.",
+   "mods": {
+    "statusImmune": [
+     "slow",
+     "paralysis"
+    ]
+   }
+  },
+  "geodude-rock-wrecker": {
+   "id": "geodude-rock-wrecker",
+   "name": "Rock Wrecker",
+   "description": "New skill: hurls a huge boulder at a foe up to 2 hexes away (Power 100).",
+   "grantsMove": "geodude-rock-wrecker"
+  },
+  "geodude-high-horsepower": {
+   "id": "geodude-high-horsepower",
+   "name": "High Horsepower",
+   "description": "New skill: a crushing stomp (Power 90) that pushes the foe 1 hex.",
+   "grantsMove": "geodude-high-horsepower"
+  },
+  "geodude-snowballing-boulder": {
+   "id": "geodude-snowballing-boulder",
+   "name": "Snowballing Boulder",
+   "description": "Gains 1 Attack for the battle each time it knocks out a foe (max +3).",
+   "mods": {
+    "koAttackBoost": 1
+   }
+  },
+  "geodude-final-rumble": {
+   "id": "geodude-final-rumble",
+   "name": "Final Rumble",
+   "description": "When it faints, the team gains 2 Bond.",
+   "mods": {
+    "bondOnFaint": 2
+   }
+  },
+  "geodude-tectonic-force": {
+   "id": "geodude-tectonic-force",
+   "name": "Tectonic Force",
+   "description": "Capstone. Rock and Ground moves deal 25% more damage; its pushes go 1 hex farther.",
+   "mods": {
+    "typeDamage": {
+     "rock": 1.25,
+     "ground": 1.25
+    },
+    "pushBonus": 1
+   }
+  },
+  "geodude-living-mountain": {
+   "id": "geodude-living-mountain",
+   "name": "Living Mountain",
+   "description": "Capstone. Takes 15% less damage; heals 10% of max HP when it knocks out a foe.",
+   "mods": {
+    "damageTaken": 0.85,
+    "koHeal": 0.1
+   }
+  }
+ }
+}

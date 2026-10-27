@@ -1,0 +1,73 @@
+{
+ "talents": {
+  "articuno-freeze-dry": {
+   "description": "Bond képesség: villámfagyasztás legfeljebb 3 hexnyire (Power 80, Sp. Atk), 1 körre lefagyaszt."
+  },
+  "articuno-aurora-veil": {
+   "description": "Bond képesség: csillogó aurora borul rá és a szomszédos szövetségesekre: 2 körre Fortified."
+  },
+  "articuno-tailwind": {
+   "description": "Bond képesség: jeges szél: ő és a 2 hexen belüli szövetségesek 2 körig Hasted."
+  },
+  "articuno-snow-cloak": {
+   "description": "Kavargó hóba burkolózik: 15%-kal kevesebb sebzést kap."
+  },
+  "articuno-lingering-chill": {
+   "description": "Minden köre elején a max HP 4%-át gyógyul."
+  },
+  "articuno-powder-snow": {
+   "description": "Új képesség: porhó egy legfeljebb 1 hexnyi, 1 hex körzetre (Power 40), 1 körre lassít."
+  },
+  "articuno-mind-reader": {
+   "description": "Új képesség: kiolvassa egy legfeljebb 2 hexnyi ellenfél szándékát: 2 körig Marked."
+  },
+  "articuno-glacial-grace": {
+   "description": "15%-kal többet sebez a legalább 2 hexnyire lévő ellenfelekre."
+  },
+  "articuno-frost-plumage": {
+   "description": "Teljes HP-n 20%-kal kevesebb sebzést kap."
+  },
+  "articuno-icy-wind": {
+   "description": "Új képesség: fagyos szél egy 2 hexes vonalban (Power 55), 2 körre lassít."
+  },
+  "articuno-hail": {
+   "description": "Új képesség: jégeső egy legfeljebb 1 hexnyi, 1 hex körzetre (Power 35)."
+  },
+  "articuno-crystal-wings": {
+   "description": "Jégkristály szárnyak: Ice támadásai 25%-kal többet sebeznek."
+  },
+  "articuno-endless-winter": {
+   "description": "Köd veszi körül: köre elején lerázza az ellenfelek által rárakott állapotokat."
+  },
+  "articuno-hurricane": {
+   "description": "Új képesség: süvítő vihar egy legfeljebb 2 hexnyi ellenfélre (Power 90)."
+  },
+  "articuno-frost-breath": {
+   "description": "Új képesség: mindig kritikus jeges lehelet legfeljebb 2 hexnyire (Power 60); 1 körig Exposed."
+  },
+  "articuno-lofty-glide": {
+   "description": "Szabad ütés nélkül siklik el a vele harcoló ellenfelektől."
+  },
+  "articuno-brittle-frost": {
+   "description": "20%-kal többet sebez a lassított ellenfelekre."
+  },
+  "articuno-sheer-cold": {
+   "description": "Új képesség: abszolút nulla fok egy legfeljebb 2 hexnyi ellenfélre (Power 95); 1 körig Freeze."
+  },
+  "articuno-sky-attack": {
+   "description": "Új képesség: az égből lecsap egy legfeljebb 2 hexnyi ellenfélre (Erő 90)."
+  },
+  "articuno-diamond-dust": {
+   "description": "15%-kal többet sebez a valamilyen állapottal sújtott ellenfelekre."
+  },
+  "articuno-frost-armor": {
+   "description": "20%-kal többet sebez a teljes HP-n lévő ellenfeleknek."
+  },
+  "articuno-freezing-legend": {
+   "description": "Capstone. Az általa okozott állapotok 1 körrel tovább tartanak; 25%-kal többet sebez a Frozen ellenfeleknek."
+  },
+  "articuno-eternal-winter": {
+   "description": "Capstone. Távolsági támadásai 1 hexszel messzebbre érnek; az általa sújtott ellenfelek ájuláskor továbbadják az állapotot."
+  }
+ }
+}

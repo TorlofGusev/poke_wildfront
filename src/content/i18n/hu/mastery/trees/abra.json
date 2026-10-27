@@ -1,0 +1,73 @@
+{
+ "talents": {
+  "abra-future-sight": {
+   "description": "Bond képesség: előre látott pszichikus csapás legfeljebb 3 hexre, rálátás nélkül (Power 100, Sp. Atk)."
+  },
+  "abra-teleport": {
+   "description": "Bond képesség: teleportálva szabad ütés nélkül kiszabadul a lekötésből, 2 körre Hasted lesz."
+  },
+  "abra-reflect": {
+   "description": "Bond képesség: védőfal legfeljebb 2 hexnyire, 1 hexes körzetben a szövetségesek 2 körre Fortified-ok."
+  },
+  "abra-psychic-power": {
+   "description": "A Psychic típusú támadásai 15%-kal többet sebeznek."
+  },
+  "abra-mental-barrier": {
+   "description": "10%-kal kevesebb sebzést kap."
+  },
+  "abra-calm-mind": {
+   "description": "Új képesség: lecsendesíti az elméjét, 1 körre Focused lesz."
+  },
+  "abra-recover": {
+   "description": "Új képesség: helyreállítja a sejtjeit és 40 HP-t gyógyul."
+  },
+  "abra-telepathy": {
+   "description": "Távolsági támadásai átszállnak az útban álló Pokémonok felett."
+  },
+  "abra-blink": {
+   "description": "Szabad ütés nélkül léphet el a vele harcoló ellenfelek mellől."
+  },
+  "abra-psyshock": {
+   "description": "Új képesség: pszichikus hullám egy legfeljebb 2 hexnyire lévő ellenfélre (Power 75)."
+  },
+  "abra-disable": {
+   "description": "Új képesség: lezár egy legfeljebb 2 hexnyire lévő ellenfelet, 2 körre Disabled (csak alaptámadás)."
+  },
+  "abra-twisted-spoon": {
+   "description": "15%-kal többet sebez a legalább 2 hexnyire lévő ellenfeleknek."
+  },
+  "abra-precognition": {
+   "description": "Teljes HP-n 20%-kal kevesebb sebzést kap."
+  },
+  "abra-hyper-beam": {
+   "description": "Új képesség: pusztító sugár egy legfeljebb 2 hexnyire lévő ellenfélre (Erő 100)."
+  },
+  "abra-extrasensory": {
+   "description": "Új képesség: különös, láthatatlan erő sújt egy legfeljebb 2 hexnyire lévő ellenfélre (Erő 80)."
+  },
+  "abra-magic-guard": {
+   "description": "Nem kaphat Poison, Burn és Curse státuszt."
+  },
+  "abra-dream-reading": {
+   "description": "25%-kal többet sebez az alvó (Sleep) ellenfeleknek."
+  },
+  "abra-tri-attack": {
+   "description": "Új képesség: három sugárból álló háromszög egy legfeljebb 2 hexnyire lévő ellenfélre (Erő 90)."
+  },
+  "abra-telekinesis": {
+   "description": "Új képesség: felemel egy ellenfelet 2 hexen belül, 2 hexnyit közelebb húzza, 1 körre Exposed."
+  },
+  "abra-speed-of-thought": {
+   "description": "Ha a saját körében kiüt egy ellenfelet, 2 mozgáspontot visszanyer."
+  },
+  "abra-clear-mind": {
+   "description": "Köre elején lerázza magáról az ellenfelek okozta státuszokat."
+  },
+  "abra-iq-5000": {
+   "description": "Csúcsképesség. Kiütéskor a képességei újratöltődnek; 15%-kal többet sebez a státuszos ellenfeleknek."
+  },
+  "abra-psychic-prodigy": {
+   "description": "Capstone. Távolsági támadásai 1 hexszel messzebbre érnek; nem sebző képességei 1 körrel gyorsabban töltődnek."
+  }
+ }
+}

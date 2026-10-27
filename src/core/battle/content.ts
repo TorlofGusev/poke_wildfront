@@ -1,6 +1,6 @@
 import type { PokemonType, TypeChartData } from "../rules/typeChart";
 import type { UnitModifiers } from "./modifiers";
-import type { TypeDef } from "./species";
+import type { StatName, TypeDef } from "./species";
 
 export interface BaseStats {
   readonly hp: number;
@@ -25,8 +25,6 @@ export interface SpeciesDef {
   readonly captureBase: number;
   /** Moves learned on reaching a level (in addition to `moves`, known from the start). */
   readonly learnset?: readonly { readonly level: number; readonly move: string }[];
-  /** The two roles this species can specialise into. */
-  readonly roles?: readonly string[];
   /** `choices`: the player picks the form when the level is reached (Eevee); `into` is the default (wild Pokémon). */
   readonly evolution?: { readonly level: number; readonly into: string; readonly choices?: readonly string[] };
   readonly ability?: string;
@@ -55,6 +53,8 @@ export type MoveEffect =
   | { readonly kind: "engage" }
   /** Ends the user's engagement without a free attack (U-turn, Teleport). */
   | { readonly kind: "disengage" }
+  /** Removes every status a foe put on the target (Heal Bell, Aromatherapy). */
+  | { readonly kind: "cleanse" }
   /** The team gains Bond when the move lands a combo or knocks a foe out (once per use). */
   | { readonly kind: "bond"; readonly amount: number; readonly when: "combo" | "knockout" };
 
@@ -76,6 +76,8 @@ export interface MoveDef {
   readonly cooldown?: number;
   /** Team Bond points spent (bond moves only). */
   readonly bondCost?: number;
+  /** The user's stat its damage scales with instead of Attack / Sp. Atk (Body Press: Defense). */
+  readonly scaleStat?: StatName;
   readonly effects?: readonly MoveEffect[];
 }
 
@@ -90,6 +92,10 @@ export interface StatusDef {
   readonly noMove?: boolean;
   /** Cannot use moves or balls while active (Freeze). */
   readonly noAction?: boolean;
+  /** Only the basic attack (or Struggle) can be used while active (Disable). */
+  readonly noSkills?: boolean;
+  /** The next attack hits the nearest unit in reach, friend or foe, then the status ends (Confusion). */
+  readonly misdirects?: boolean;
   /** Ends as soon as the unit takes damage (Sleep). */
   readonly wakesOnDamage?: boolean;
   /** Multiplies damage dealt by the affected unit (Burn). */
@@ -105,7 +111,7 @@ export interface StatusDef {
  * - Max HP = hpBase + hpPerPoint × HP + (level − 1) × (hpPerLevel + hpPerLevelPerDefense × species base Def)
  * - Damage = max(1, round(power × (statOffset + Atk) / (statOffset + Def) × multipliers / damageDivisor)),
  *   with Sp. Atk / Sp. Def for special moves
- * - Movement = min(moveMax, moveBase + ⌊Speed / speedPerMove⌋)
+ * - Movement by Speed: the highest `moveBySpeed` step the Speed reaches (1 hex up to 3 Speed, 2 from 4, 3 from 6)
  */
 export interface BattleRules {
   readonly hpBase: number;
@@ -117,8 +123,9 @@ export interface BattleRules {
   readonly specialTypes: readonly PokemonType[];
   readonly statOffset: number;
   readonly damageDivisor: number;
-  readonly moveBase: number;
-  readonly speedPerMove: number;
+  /** Movement points by Speed: each step's `move` applies from its `speed` on (ascending). */
+  readonly moveBySpeed: readonly { readonly speed: number; readonly move: number }[];
+  /** Cap on movement including bonuses. */
   readonly moveMax: number;
   /** Damage taken when pushed into an obstacle or another unit. */
   readonly impactDamage: number;
@@ -131,6 +138,10 @@ export interface BattleRules {
   /** Most extra turns masteries may add to a status (freeze and paralysis never get any). */
   readonly statusBonusCap: number;
   readonly engagement: { readonly fallbackPower: number };
+  /** Melee moves (range 1) deal `closeBonus` ×; ranged moves used while engaged deal `engagedRangedPenalty` ×. */
+  readonly melee: { readonly closeBonus: number; readonly engagedRangedPenalty: number };
+  /** Speed past the movement cap: after moving, +stepBonus damage per speedPerStep, up to max. */
+  readonly momentum: { readonly speedPerStep: number; readonly stepBonus: number; readonly max: number };
   /** Team Bond: default start and cap per side, and the gain per knockout. */
   readonly bond: { readonly start: number; readonly max: number; readonly perKnockout: number };
 }

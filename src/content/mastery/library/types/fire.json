@@ -1,0 +1,215 @@
+{
+ "type": "fire",
+ "moves": {
+  "will-o-wisp": {
+   "id": "will-o-wisp",
+   "name": "Will-O-Wisp",
+   "type": "fire",
+   "kind": "special",
+   "power": 0,
+   "range": {
+    "min": 1,
+    "max": 2
+   },
+   "requiresLineOfSight": true,
+   "shape": {
+    "kind": "single"
+   },
+   "affects": "enemies",
+   "cooldown": 3,
+   "effects": [
+    {
+     "kind": "status",
+     "status": "burn",
+     "duration": 2
+    }
+   ]
+  },
+  "lava-plume": {
+   "id": "lava-plume",
+   "name": "Lava Plume",
+   "type": "fire",
+   "kind": "special",
+   "power": 50,
+   "range": {
+    "min": 0,
+    "max": 0
+   },
+   "requiresLineOfSight": false,
+   "shape": {
+    "kind": "burst",
+    "radius": 1
+   },
+   "affects": "enemies",
+   "cooldown": 3,
+   "effects": [
+    {
+     "kind": "status",
+     "status": "burn",
+     "duration": 1
+    }
+   ]
+  },
+  "overheat": {
+   "id": "overheat",
+   "name": "Overheat",
+   "type": "fire",
+   "kind": "special",
+   "power": 95,
+   "range": {
+    "min": 1,
+    "max": 2
+   },
+   "requiresLineOfSight": true,
+   "shape": {
+    "kind": "single"
+   },
+   "affects": "enemies",
+   "cooldown": 4,
+   "effects": [
+    {
+     "kind": "status",
+     "status": "burn",
+     "duration": 1
+    }
+   ]
+  },
+  "heat-wave": {
+   "id": "heat-wave",
+   "name": "Heat Wave",
+   "type": "fire",
+   "kind": "special",
+   "requiresLineOfSight": true,
+   "affects": "enemies",
+   "power": 80,
+   "range": {
+    "min": 1,
+    "max": 1
+   },
+   "shape": {
+    "kind": "burst",
+    "radius": 1
+   },
+   "cooldown": 5,
+   "effects": [
+    {
+     "kind": "status",
+     "status": "burn",
+     "duration": 1
+    }
+   ]
+  }
+ },
+ "talents": {
+  "fire-skill-will-o-wisp": {
+   "id": "fire-skill-will-o-wisp",
+   "name": "Will-O-Wisp",
+   "description": "New skill: eerie flames Burn a foe at range for 2 turns.",
+   "requiresType": "fire",
+   "grantsMove": "will-o-wisp"
+  },
+  "fire-blaze": {
+   "id": "fire-blaze",
+   "name": "Blaze",
+   "description": "+25% Fire damage while below half HP.",
+   "requiresType": "fire",
+   "mods": {
+    "lowHpTypeDamage": {
+     "fire": 1.25
+    }
+   }
+  },
+  "fire-flash-fire": {
+   "id": "fire-flash-fire",
+   "name": "Flash Fire",
+   "description": "Immune to Burn; Fire moves deal 15% more damage.",
+   "requiresType": "fire",
+   "mods": {
+    "statusImmune": [
+     "burn"
+    ],
+    "typeDamage": {
+     "fire": 1.15
+    }
+   }
+  },
+  "fire-skill-flamethrower": {
+   "id": "fire-skill-flamethrower",
+   "name": "Flamethrower",
+   "description": "New skill: a stream of fire that hits everything in a 2-hex line.",
+   "requiresType": "fire",
+   "grantsMove": "flamethrower"
+  },
+  "fire-skill-lava-plume": {
+   "id": "fire-skill-lava-plume",
+   "name": "Lava Plume",
+   "description": "New skill: scorching lava bursts around it, Burning adjacent foes.",
+   "requiresType": "fire",
+   "grantsMove": "lava-plume"
+  },
+  "fire-skill-overheat": {
+   "id": "fire-skill-overheat",
+   "name": "Overheat",
+   "description": "New skill: an all-out blast of fire at range (Power 95) that Burns.",
+   "requiresType": "fire",
+   "grantsMove": "overheat"
+  },
+  "fire-inferno": {
+   "id": "fire-inferno",
+   "name": "Inferno",
+   "description": "Capstone. +25% damage against Burned foes; Fire moves deal 15% more damage.",
+   "requiresType": "fire",
+   "mods": {
+    "vsStatusIdDamage": {
+     "burn": 1.25
+    },
+    "typeDamage": {
+     "fire": 1.15
+    }
+   }
+  },
+  "fire-flare-boost": {
+   "id": "fire-flare-boost",
+   "name": "Flare Boost",
+   "description": "+20% damage while it carries a status.",
+   "requiresType": "fire",
+   "mods": {
+    "statusedDamage": 1.2
+   }
+  },
+  "fire-magma-armor": {
+   "id": "fire-magma-armor",
+   "name": "Magma Armor",
+   "description": "Immune to Freeze; takes 10% less damage.",
+   "requiresType": "fire",
+   "mods": {
+    "statusImmune": [
+     "freeze"
+    ],
+    "damageTaken": 0.9
+   }
+  },
+  "fire-skill-heat-wave": {
+   "id": "fire-skill-heat-wave",
+   "name": "Heat Wave",
+   "description": "New skill: a scorching wind at range (Power 80) that Burns a 1-hex area.",
+   "requiresType": "fire",
+   "grantsMove": "heat-wave"
+  }
+ },
+ "start": "fire-skill-will-o-wisp",
+ "passives": [
+  "fire-blaze",
+  "flame-body",
+  "fire-flash-fire",
+  "fire-flare-boost",
+  "fire-magma-armor"
+ ],
+ "skills": [
+  "fire-skill-flamethrower",
+  "fire-skill-lava-plume",
+  "fire-skill-overheat",
+  "fire-skill-heat-wave"
+ ],
+ "capstone": "fire-inferno"
+}

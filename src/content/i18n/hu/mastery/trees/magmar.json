@@ -1,0 +1,73 @@
+{
+ "talents": {
+  "magmar-inferno": {
+   "description": "Bond képesség: 3 hexen belüli ellenfelet borít lángba (Erő 100, Sp. Tám.); 3 körre megéget."
+  },
+  "magmar-flare-blitz": {
+   "description": "Bond képesség: lángba borulva nekiront egy szomszédos ellenfélnek (Erő 100, Attack)."
+  },
+  "magmar-feint-attack": {
+   "description": "Bond képesség: 2 hexen belül átsiklik az ellenfél védelmén (Erő 60, Támadás), és lefogja."
+  },
+  "magmar-magma-skin": {
+   "description": "10%-kal kevesebb sebzést kap."
+  },
+  "magmar-confuse-ray": {
+   "description": "Új képesség: kísérteties fény egy 2 hexen belüli ellenfélre: 2 körig Zavarodott."
+  },
+  "magmar-fire-fang": {
+   "description": "Új képesség: lángoló agyarakkal harap (Erő 55), 1 körre megégeti az ellenfelet."
+  },
+  "magmar-searing-fists": {
+   "description": "15%-kal többet sebez a szomszédos ellenfelekre."
+  },
+  "magmar-fire-spin": {
+   "description": "Új képesség: tűzörvény 2 hexen belül (Erő 40), ami 2 körre megéget."
+  },
+  "magmar-mega-punch": {
+   "description": "Új képesség: teljes erőből bevitt ütés (Erő 75)."
+  },
+  "magmar-kindled-spirit": {
+   "description": "20%-kal többet sebez a megégett ellenfelekre."
+  },
+  "magmar-inner-furnace": {
+   "description": "Minden köre elején a max HP 4%-át gyógyítja."
+  },
+  "magmar-body-slam": {
+   "description": "Új képesség: testével rácsapódik egy ellenfélre (Erő 80), 1 körre megbénítja."
+  },
+  "magmar-bellows": {
+   "description": "Az általa okozott állapotok 1 körrel tovább tartanak."
+  },
+  "magmar-hot-temper": {
+   "description": "Fél HP alatt 20%-kal többet sebez."
+  },
+  "magmar-fire-blast": {
+   "description": "Új képesség: csillag alakú tűz 2 hexen belül (Erő 100); 2 körre megéget."
+  },
+  "magmar-mega-kick": {
+   "description": "Új képesség: hatalmas erejű rúgás (Erő 100)."
+  },
+  "magmar-spreading-flames": {
+   "description": "Ha az általa okozott állapotot viselő ellenfél kidől, a szomszédos ellenfelek is elkapják."
+  },
+  "magmar-blazing-momentum": {
+   "description": "Ha a saját körében kiüt egy ellenfelet, 2 mozgáspontot visszakap."
+  },
+  "magmar-living-volcano": {
+   "description": "Csúcs. Tűz támadásai 20%-kal többet sebeznek; 15%-kal többet sebez a legalább 2 hexnyire lévőknek."
+  },
+  "magmar-fists-of-fire": {
+   "description": "Csúcstudás. Kiütés után újra alaptámadhat; a menekülőkre mért szabad ütései 30%-kal erősebbek."
+  },
+  "magmar-flame-body": {
+   "description": "Szomszédos ellenfelekre mért találatai 1 körre megégetik őket."
+  },
+  "magmar-heat-shimmer": {
+   "description": "Szabad ütés nélkül lép el a vele harcban álló ellenfelektől."
+  },
+  "magmar-smokescreen": {
+   "description": "Új képesség: füstfelhő 1 körre Weakened állapotba teszi a 2 hexen belüli ellenfeleket."
+  }
+ }
+}

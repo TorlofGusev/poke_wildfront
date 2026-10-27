@@ -93,6 +93,10 @@ export interface EncounterGroup {
   readonly species: readonly string[];
   /** Level of each species entry. */
   readonly levels: readonly number[];
+  /** Where it spawned: it wanders and gives up a chase within LEASH tiles of it. */
+  readonly home?: Point;
+  /** It has seen the party and is coming for it. */
+  readonly chasing?: boolean;
 }
 
 export interface WorldState {
@@ -178,7 +182,7 @@ export function respawnEncounters(content: WorldContent, def: WorldDef, world: W
       const pos = free.splice(idx.value, 1)[0]!;
       const rolled = generateEncounter(zone.levels ? { ...table, levels: zone.levels } : table, rng);
       rng = rolled.rngState;
-      groups.push({ id: `wild${nextId++}`, pos, biome: zone.biome, species: rolled.species, levels: rolled.levels });
+      groups.push({ id: `wild${nextId++}`, pos, home: pos, biome: zone.biome, species: rolled.species, levels: rolled.levels });
     }
   }
   return rollPickups(def, content, { ...world, encounters: groups, rngState: rng, nextEncounterId: nextId });
@@ -288,8 +292,71 @@ export function effectiveGroup(group: EncounterGroup, healthyPartyMembers: numbe
   return { ...group, species: keep.map((i) => group.species[i]!), levels: keep.map((i) => group.levels[i]!) };
 }
 
-/** Share of wild battles that start as an ambush (the party surrounded or caught in a pincer). */
-export const AMBUSH_CHANCE = 0.2;
+/** A wild group sees the party within this many tiles (walking distance on open ground). */
+export const SIGHT = 3;
+/** Wild groups stay within this many tiles of where they spawned. */
+export const LEASH = 6;
+/** Chance per party step that an idle group takes a step of its own. */
+const WANDER_CHANCE = 0.4;
+/** Chance per party step that a chasing group closes in: slower than the party, so it can be outrun. */
+const CHASE_CHANCE = 0.6;
+
+export interface GroupsStep {
+  readonly world: WorldState;
+  /** A chasing group that reached the party: the battle starts as its ambush. */
+  readonly caught: EncounterGroup | null;
+}
+
+/**
+ * The world's answer to one party step (the overworld is turn-based like a roguelike: groups only move
+ * when the party does). A group that sees the party within SIGHT first stops (its "!" warns the player),
+ * then chases it, slower than the party walks, as long as it stays within LEASH of home; otherwise it
+ * wanders now and then. Groups keep to tiles the party
+ * could walk, never step on each other, NPCs, obstacles or exits, and a chaser next to the party catches it.
+ */
+export function stepGroups(content: WorldContent, def: WorldDef, world: WorldState, access?: WorldAccess): GroupsStep {
+  const grid = worldGrid(content, def, access);
+  const party = world.pos;
+  const blocked = new Set([...(access?.blocked ?? []), ...(def.exits ?? []).map((e) => key(e.pos))]);
+  let rng = world.rngState;
+  const occupied = new Set(world.encounters.map((e) => key(e.pos)));
+  const open = (p: Point, home: Point) =>
+    grid.inBounds(p) && grid.terrainAt(p).moveCost !== null && !blocked.has(key(p)) && !occupied.has(key(p)) && !samePoint(p, party) && manhattan(p, home) <= LEASH;
+  const neighbors = (p: Point): Point[] => [{ x: p.x + 1, y: p.y }, { x: p.x - 1, y: p.y }, { x: p.x, y: p.y + 1 }, { x: p.x, y: p.y - 1 }];
+  let caught: EncounterGroup | null = null;
+  const encounters = world.encounters.map((g) => {
+    const home = g.home ?? g.pos;
+    const sees = manhattan(g.pos, party) <= SIGHT && manhattan(party, home) <= LEASH + 1;
+    let pos = g.pos;
+    const roll = nextRandom(rng);
+    rng = roll.state;
+    if (sees) {
+      if (g.chasing && roll.value < CHASE_CHANCE && manhattan(pos, party) > 1) {
+        // Chase: the free neighbour closest to the party.
+        const next = neighbors(pos).filter((n) => open(n, home)).sort((a, b) => manhattan(a, party) - manhattan(b, party))[0];
+        if (next && manhattan(next, party) < manhattan(pos, party)) pos = next;
+      }
+    } else {
+      if (roll.value < WANDER_CHANCE) {
+        // Wander, drifting back home when far; staying in its own biome keeps grass groups in the grass.
+        const options = neighbors(pos).filter((n) => open(n, home) && biomeAt(content, def, n).id === g.biome);
+        const homeward = manhattan(pos, home) > 2 ? options.filter((n) => manhattan(n, home) < manhattan(pos, home)) : options;
+        const pool = homeward.length ? homeward : options;
+        if (pool.length) {
+          const pick = randomInt(rng, 0, pool.length - 1);
+          rng = pick.state;
+          pos = pool[pick.value]!;
+        }
+      }
+    }
+    occupied.delete(key(g.pos));
+    occupied.add(key(pos));
+    const moved: EncounterGroup = { ...g, pos, home, chasing: sees };
+    if (sees && !caught && manhattan(pos, party) <= 1) caught = moved;
+    return moved;
+  });
+  return { world: { ...world, encounters, rngState: rng }, caught };
+}
 
 /**
  * Builds the battle for a wild group on its biome's terrain. With a seed the arena is generated with a
@@ -301,13 +368,14 @@ export function wildScenario(
   setup: (speciesId: string, level: number) => Omit<UnitSetup, "id" | "side" | "pos">,
   maxDeploy = MAX_ACTIVE_UNITS,
   seed?: number,
+  /** The group caught the party: its ambush formations (surrounded, pincer). */
+  ambush = false,
 ): BattleScenario & { name: string; captureAllowed: boolean } {
   const biome = content.biomes[group.biome]!;
   let arena: { readonly mapRows: readonly string[]; readonly deploymentZone: readonly Point[]; readonly enemySpawns: readonly Point[] } | undefined = biome.arena;
   if (!arena) throw new Error(`biome ${biome.id} has no arena`);
   let name = `Wild Pokémon · ${biome.name}`;
   if (seed !== undefined) {
-    const ambush = (nextRandom(seed).value) < AMBUSH_CHANCE;
     const gen = battleArena(arena, biome.id, seed, ambush ? "wildAmbush" : "wild", maxDeploy, group.species.length);
     arena = gen;
     name = `${name} · ${formationLabel(gen.formation)}`;

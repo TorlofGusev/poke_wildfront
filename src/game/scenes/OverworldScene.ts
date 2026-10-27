@@ -19,6 +19,8 @@ import {
   worldGrid,
   wildScenario,
   pickupKind,
+  stepGroups,
+  type EncounterGroup,
   type PickupKind,
   type WorldAccess,
   type WorldState,
@@ -58,6 +60,8 @@ const biomeColor = (id: string): number => BIOME_COLORS[id] ?? BIOME_HINTS.find(
 export class OverworldScene extends Phaser.Scene {
   private token!: Phaser.GameObjects.Container;
   private markers!: Phaser.GameObjects.Container;
+  /** Each wild group's marker by group id, so a step can glide it to its new tile. */
+  private groupViews = new Map<string, Phaser.GameObjects.Container>();
   private preview!: Phaser.GameObjects.Graphics;
   private hud!: RichText;
   private buttons!: Phaser.GameObjects.Container;
@@ -272,6 +276,7 @@ export class OverworldScene extends Phaser.Scene {
   private render(): void {
     const world = this.world;
     this.markers.removeAll(true);
+    this.groupViews.clear();
     // The last camp is where a defeated party wakes up.
     const camp = this.center(world.lastCamp);
     this.markers.add(this.add.triangle(camp.x, camp.y, 0, 16, 8, 0, 16, 16, 0xe8d8b0, 0.85).setStrokeStyle(1, 0x5a4a30));
@@ -283,14 +288,19 @@ export class OverworldScene extends Phaser.Scene {
       const e = effectiveGroup(raw, this.healthy(), this.slots());
       const { x, y } = this.center(e.pos);
       // Wild groups are visible: the strongest member stands on the map, with the group size.
-      this.markers.add(this.add.ellipse(x, y + 8, 22, 8, 0xd0021b, 0.6).setStrokeStyle(1, 0xd0021b));
+      const view = this.add.container(x, y);
+      view.add(this.add.ellipse(0, 8, 22, 8, 0xd0021b, 0.6).setStrokeStyle(1, 0xd0021b));
       const leadIdx = e.levels.indexOf(Math.max(...e.levels));
       const lead = wildForm(CONTENT, e.species[leadIdx] ?? e.species[0]!, e.levels[leadIdx] ?? e.levels[0]!, e.id);
-      if (hasSprite(lead)) this.markers.add(this.add.sprite(x, y + 8, `${lead}-idle`).setOrigin(0.5, 0.85).play(animKey(lead, "idle", 0)));
-      else this.markers.add(this.add.circle(x, y, 10, 0xd0021b).setStrokeStyle(2, 0x10141c));
-      this.markers.add(this.add.text(x + 9, y - 13, String(e.species.length), {
+      if (hasSprite(lead)) view.add(this.add.sprite(0, 8, `${lead}-idle`).setOrigin(0.5, 0.85).play(animKey(lead, "idle", 0)));
+      else view.add(this.add.circle(0, 0, 10, 0xd0021b).setStrokeStyle(2, 0x10141c));
+      // A group that has seen the party shows it.
+      if (raw.chasing) view.add(this.add.text(-9, -14, "!", { fontFamily: FONT, fontSize: px(13), color: "#10141c", fontStyle: "bold", backgroundColor: "#ff8c42", padding: { x: 3, y: 0 } }).setOrigin(0.5));
+      view.add(this.add.text(9, -13, String(e.species.length), {
         fontFamily: FONT, fontSize: px(11), color: "#ffffff", fontStyle: "bold", backgroundColor: "#a0101a", padding: { x: 2, y: 0 },
       }).setOrigin(0.5));
+      this.markers.add(view);
+      this.groupViews.set(raw.id, view);
     }
     for (const o of currentWorld().obstacles ?? []) {
       if (meets(session.game, o.opensIf)) continue;
@@ -622,44 +632,70 @@ export class OverworldScene extends Phaser.Scene {
     });
   }
 
+  /**
+   * Walks the path one tile at a time; after every step the wild groups take theirs (stepGroups), so
+   * a group can cut the walk short. Walking into a group is the party's attack; a chaser catching the
+   * party starts the battle as the group's ambush.
+   */
   private async travelTo(to: Point): Promise<void> {
     if (this.moving || samePoint(to, this.world.pos)) return;
-    if (!travelPath(WORLD_CONTENT, currentWorld(), this.world, to, this.access())) return;
+    const path = travelPath(WORLD_CONTENT, currentWorld(), this.world, to, this.access());
+    if (!path) return;
     if (this.spawnPanel) this.toggleSpawnPanel();
     const before = this.world.pos;
-    const result = travel(WORLD_CONTENT, currentWorld(), this.world, to, this.access());
     this.moving = true;
     this.preview.clear();
-    for (const step of result.path) {
-      if (result.encounter && samePoint(step, to)) break;
+    let inventory = session.game.inventory;
+    const found: string[] = [];
+    let encounter: EncounterGroup | null = null;
+    let ambush = false;
+    for (const step of path) {
+      const there = this.world.encounters.find((e) => samePoint(e.pos, step));
+      if (there) {
+        encounter = there;
+        break;
+      }
+      if (!travelPath(WORLD_CONTENT, currentWorld(), this.world, step, this.access())) break;
       const c = this.center(step);
+      const result = travel(WORLD_CONTENT, currentWorld(), this.world, step, this.access());
+      const groups = stepGroups(WORLD_CONTENT, currentWorld(), result.world, this.access());
       if (this.leader) this.leaderSprite?.play(animKey(this.leader, "walk", facingFor(c.x - this.token.x, c.y - this.token.y)), true);
-      await new Promise<void>((resolve) => this.tweens.add({ targets: this.token, x: c.x, y: c.y, duration: STEP_MS, onComplete: () => resolve() }));
+      // The party and the groups that move glide together.
+      const glides = groups.world.encounters.flatMap((g) => {
+        const view = this.groupViews.get(g.id);
+        const to = this.center(g.pos);
+        return view && (view.x !== to.x || view.y !== to.y) ? [new Promise<void>((resolve) => this.tweens.add({ targets: view, x: to.x, y: to.y, duration: STEP_MS, onComplete: () => resolve() }))] : [];
+      });
+      await Promise.all([new Promise<void>((resolve) => this.tweens.add({ targets: this.token, x: c.x, y: c.y, duration: STEP_MS, onComplete: () => resolve() })), ...glides]);
+      for (const p of result.pickedUp) {
+        const balls = { ...inventory.balls };
+        const items = { ...inventory.items };
+        for (const [id, n] of Object.entries(p.balls ?? {})) {
+          balls[id] = (balls[id] ?? 0) + n;
+          found.push(`${n} ${CONTENT.balls[id]?.name ?? id}`);
+        }
+        for (const [id, n] of Object.entries(p.items ?? {})) {
+          items[id] = (items[id] ?? 0) + n;
+          found.push(`${n} ${PROGRESSION.items[id]?.name ?? id}`);
+        }
+        inventory = { ...inventory, balls, items };
+      }
+      session.update({ ...session.game, inventory, world: groups.world });
+      // Only redraw when a group's alert changed (redrawing restarts the idle animations).
+      if (groups.world.encounters.some((g, i) => g.chasing !== result.world.encounters[i]?.chasing)) this.render();
+      if (groups.caught) {
+        encounter = groups.caught;
+        ambush = true;
+        break;
+      }
+      if (exitAt(currentWorld(), step)?.to) break;
     }
     if (this.leader) this.leaderSprite?.play(animKey(this.leader, "idle", 0), true);
     this.moving = false;
-
-    let inventory = session.game.inventory;
-    const found: string[] = [];
-    for (const p of result.pickedUp) {
-      const balls = { ...inventory.balls };
-      const items = { ...inventory.items };
-      for (const [id, n] of Object.entries(p.balls ?? {})) {
-        balls[id] = (balls[id] ?? 0) + n;
-        found.push(`${n} ${CONTENT.balls[id]?.name ?? id}`);
-      }
-      for (const [id, n] of Object.entries(p.items ?? {})) {
-        items[id] = (items[id] ?? 0) + n;
-        found.push(`${n} ${PROGRESSION.items[id]?.name ?? id}`);
-      }
-      inventory = { ...inventory, balls, items };
-    }
-    // An encounter stops the party on the tile next to the wild group.
-    const stopAt = result.encounter ? (result.path.length >= 2 ? result.path[result.path.length - 2]! : before) : to;
-    session.update({ ...session.game, inventory, world: { ...result.world, pos: stopAt } });
+    const stopAt = this.world.pos;
     this.message = found.length ? tag("good", t("Found {items}!", { items: found.join(", ") })) : "";
     if (found.length) sfx(this, "pickup");
-    const exit = !result.encounter ? exitAt(currentWorld(), stopAt) : undefined;
+    const exit = !encounter ? exitAt(currentWorld(), stopAt) : undefined;
     if (exit?.to && WORLDS[exit.to] && !meets(session.game, exit.requires)) {
       this.message = tag("bad", exit.lockedText ?? t("The way is shut for now."));
     } else if (exit?.to && WORLDS[exit.to]) {
@@ -676,10 +712,11 @@ export class OverworldScene extends Phaser.Scene {
     }
     this.render();
 
-    if (result.encounter) {
-      const scenario = wildScenario(WORLD_CONTENT, effectiveGroup(result.encounter, this.healthy(), this.slots()), (s, lv) => wildSetup(CONTENT, PROGRESSION, s, lv, result.encounter!.id), this.slots(), Date.now() >>> 0);
+    if (encounter) {
+      const group = encounter;
+      const scenario = wildScenario(WORLD_CONTENT, effectiveGroup(group, this.healthy(), this.slots()), (s, lv) => wildSetup(CONTENT, PROGRESSION, s, lv, group.id), this.slots(), Date.now() >>> 0, ambush);
       sfx(this, "encounter");
-      this.scene.start("Battle", { scenario, encounterId: result.encounter.id, biome: result.encounter.biome });
+      this.scene.start("Battle", { scenario, encounterId: group.id, biome: group.biome });
     }
   }
 

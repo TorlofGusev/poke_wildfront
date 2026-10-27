@@ -1,0 +1,486 @@
+{
+ "line": [
+  "nidoran-f",
+  "nidorina",
+  "nidoqueen"
+ ],
+ "focus": [
+  {
+   "stat": "defense",
+   "skill": "nidoran-f-roar"
+  },
+  {
+   "stat": "attack",
+   "skill": "nidoran-f-gunk-shot"
+  },
+  {
+   "stat": "spAttack",
+   "skill": "nidoran-f-sludge-wave"
+  }
+ ],
+ "rows": {
+  "4": [
+   "nidoran-f-hustle",
+   "nidoran-f-poison-point"
+  ],
+  "6": [
+   "nidoran-f-fury-swipes",
+   "nidoran-f-acid"
+  ],
+  "9": [
+   "nidoran-f-armored-scales",
+   "nidoran-f-venom-expertise"
+  ],
+  "12": [
+   "nidoran-f-growl",
+   "nidoran-f-sludge"
+  ],
+  "15": [
+   "nidoran-f-sheer-force",
+   "nidoran-f-thick-hide"
+  ],
+  "18": [
+   "nidoran-f-crunch",
+   "nidoran-f-mud-shot"
+  ],
+  "21": [
+   "nidoran-f-queens-resolve",
+   "nidoran-f-queens-wrath"
+  ],
+  "24": [
+   "nidoran-f-earth-power",
+   "nidoran-f-stomping-tantrum"
+  ],
+  "27": [
+   "nidoran-f-matriarch",
+   "nidoran-f-mothers-watch"
+  ],
+  "30": [
+   "nidoran-f-iron-queen",
+   "nidoran-f-toxic-queen"
+  ]
+ },
+ "moves": {
+  "nidoran-f-roar": {
+   "id": "nidoran-f-roar",
+   "name": "Roar",
+   "type": "normal",
+   "kind": "bond",
+   "bondCost": 1,
+   "power": 0,
+   "range": {
+    "min": 0,
+    "max": 0
+   },
+   "requiresLineOfSight": false,
+   "shape": {
+    "kind": "burst",
+    "radius": 1
+   },
+   "affects": "enemies",
+   "effects": [
+    {
+     "kind": "push",
+     "distance": 1
+    }
+   ]
+  },
+  "nidoran-f-gunk-shot": {
+   "id": "nidoran-f-gunk-shot",
+   "name": "Gunk Shot",
+   "type": "poison",
+   "kind": "bond",
+   "category": "physical",
+   "bondCost": 2,
+   "power": 100,
+   "range": {
+    "min": 1,
+    "max": 1
+   },
+   "requiresLineOfSight": false,
+   "shape": {
+    "kind": "single"
+   },
+   "affects": "enemies"
+  },
+  "nidoran-f-sludge-wave": {
+   "id": "nidoran-f-sludge-wave",
+   "name": "Sludge Wave",
+   "type": "poison",
+   "kind": "bond",
+   "category": "special",
+   "bondCost": 3,
+   "power": 75,
+   "range": {
+    "min": 0,
+    "max": 0
+   },
+   "requiresLineOfSight": false,
+   "shape": {
+    "kind": "burst",
+    "radius": 2
+   },
+   "affects": "enemies",
+   "effects": [
+    {
+     "kind": "status",
+     "status": "poison",
+     "duration": 1
+    }
+   ]
+  },
+  "nidoran-f-fury-swipes": {
+   "id": "nidoran-f-fury-swipes",
+   "name": "Fury Swipes",
+   "type": "normal",
+   "kind": "special",
+   "category": "physical",
+   "cooldown": 2,
+   "power": 45,
+   "range": {
+    "min": 1,
+    "max": 1
+   },
+   "requiresLineOfSight": false,
+   "shape": {
+    "kind": "single"
+   },
+   "affects": "enemies"
+  },
+  "nidoran-f-acid": {
+   "id": "nidoran-f-acid",
+   "name": "Acid",
+   "type": "poison",
+   "kind": "special",
+   "category": "special",
+   "cooldown": 3,
+   "power": 40,
+   "range": {
+    "min": 1,
+    "max": 2
+   },
+   "requiresLineOfSight": true,
+   "shape": {
+    "kind": "single"
+   },
+   "affects": "enemies",
+   "effects": [
+    {
+     "kind": "status",
+     "status": "marked",
+     "duration": 2
+    }
+   ]
+  },
+  "nidoran-f-sludge": {
+   "id": "nidoran-f-sludge",
+   "name": "Sludge",
+   "type": "poison",
+   "kind": "special",
+   "category": "special",
+   "cooldown": 3,
+   "power": 60,
+   "range": {
+    "min": 1,
+    "max": 2
+   },
+   "requiresLineOfSight": true,
+   "shape": {
+    "kind": "single"
+   },
+   "affects": "enemies",
+   "effects": [
+    {
+     "kind": "status",
+     "status": "poison",
+     "duration": 2
+    }
+   ]
+  },
+  "nidoran-f-crunch": {
+   "id": "nidoran-f-crunch",
+   "name": "Crunch",
+   "type": "normal",
+   "kind": "special",
+   "category": "physical",
+   "cooldown": 4,
+   "power": 80,
+   "range": {
+    "min": 1,
+    "max": 1
+   },
+   "requiresLineOfSight": false,
+   "shape": {
+    "kind": "single"
+   },
+   "affects": "enemies",
+   "effects": [
+    {
+     "kind": "status",
+     "status": "exposed",
+     "duration": 1
+    }
+   ]
+  },
+  "nidoran-f-mud-shot": {
+   "id": "nidoran-f-mud-shot",
+   "name": "Mud Shot",
+   "type": "ground",
+   "kind": "special",
+   "category": "special",
+   "cooldown": 4,
+   "power": 75,
+   "range": {
+    "min": 1,
+    "max": 2
+   },
+   "requiresLineOfSight": true,
+   "shape": {
+    "kind": "single"
+   },
+   "affects": "enemies",
+   "effects": [
+    {
+     "kind": "status",
+     "status": "slow",
+     "duration": 1
+    }
+   ]
+  },
+  "nidoran-f-earth-power": {
+   "id": "nidoran-f-earth-power",
+   "name": "Earth Power",
+   "type": "ground",
+   "kind": "special",
+   "category": "special",
+   "cooldown": 4,
+   "power": 90,
+   "range": {
+    "min": 1,
+    "max": 2
+   },
+   "requiresLineOfSight": true,
+   "shape": {
+    "kind": "single"
+   },
+   "affects": "enemies"
+  },
+  "nidoran-f-stomping-tantrum": {
+   "id": "nidoran-f-stomping-tantrum",
+   "name": "Stomping Tantrum",
+   "type": "ground",
+   "kind": "special",
+   "category": "physical",
+   "cooldown": 5,
+   "power": 85,
+   "range": {
+    "min": 0,
+    "max": 0
+   },
+   "requiresLineOfSight": true,
+   "shape": {
+    "kind": "burst",
+    "radius": 1
+   },
+   "affects": "enemies"
+  },
+  "nidoran-f-growl": {
+   "id": "nidoran-f-growl",
+   "name": "Growl",
+   "type": "normal",
+   "kind": "special",
+   "cooldown": 3,
+   "power": 0,
+   "range": {
+    "min": 1,
+    "max": 1
+   },
+   "requiresLineOfSight": false,
+   "shape": {
+    "kind": "single"
+   },
+   "affects": "enemies",
+   "effects": [
+    {
+     "kind": "status",
+     "status": "weakened",
+     "duration": 2
+    }
+   ]
+  }
+ },
+ "talents": {
+  "nidoran-f-roar": {
+   "id": "nidoran-f-roar",
+   "name": "Roar",
+   "description": "Bond skill: a fearsome roar pushes every adjacent foe back 1 hex.",
+   "grantsMove": "nidoran-f-roar"
+  },
+  "nidoran-f-gunk-shot": {
+   "id": "nidoran-f-gunk-shot",
+   "name": "Gunk Shot",
+   "description": "Bond skill: hurls a heap of filth at an adjacent foe (Power 100, Attack).",
+   "grantsMove": "nidoran-f-gunk-shot"
+  },
+  "nidoran-f-sludge-wave": {
+   "id": "nidoran-f-sludge-wave",
+   "name": "Sludge Wave",
+   "description": "Bond skill: a wave of sludge hits all foes within 2 hexes (Power 75, Sp. Atk), Poisoning for 1 turn.",
+   "grantsMove": "nidoran-f-sludge-wave"
+  },
+  "nidoran-f-hustle": {
+   "id": "nidoran-f-hustle",
+   "name": "Hustle",
+   "description": "Deals 15% more damage, but its free strikes deal 25% less.",
+   "mods": {
+    "damageDealt": 1.15,
+    "strikeDamage": 0.75
+   }
+  },
+  "nidoran-f-poison-point": {
+   "id": "nidoran-f-poison-point",
+   "name": "Poison Point",
+   "description": "Its damaging hits on adjacent foes Poison them for 1 turn.",
+   "mods": {
+    "contactStatus": {
+     "status": "poison",
+     "duration": 1
+    }
+   }
+  },
+  "nidoran-f-fury-swipes": {
+   "id": "nidoran-f-fury-swipes",
+   "name": "Fury Swipes",
+   "description": "New skill: a flurry of quick scratches (Power 45).",
+   "grantsMove": "nidoran-f-fury-swipes"
+  },
+  "nidoran-f-acid": {
+   "id": "nidoran-f-acid",
+   "name": "Acid",
+   "description": "New skill: sprays acid at a foe up to 2 hexes away (Power 40), leaving it Marked for 2 turns.",
+   "grantsMove": "nidoran-f-acid"
+  },
+  "nidoran-f-armored-scales": {
+   "id": "nidoran-f-armored-scales",
+   "name": "Armored Scales",
+   "description": "Its hard, needle-studded scales: takes 10% less damage.",
+   "mods": {
+    "damageTaken": 0.9
+   }
+  },
+  "nidoran-f-venom-expertise": {
+   "id": "nidoran-f-venom-expertise",
+   "name": "Venom Expertise",
+   "description": "Deals 20% more damage to Poisoned foes.",
+   "mods": {
+    "vsStatusIdDamage": {
+     "poison": 1.2
+    }
+   }
+  },
+  "nidoran-f-sludge": {
+   "id": "nidoran-f-sludge",
+   "name": "Sludge",
+   "description": "New skill: hurls toxic sludge up to 2 hexes away (Power 60), Poisoning the foe for 2 turns.",
+   "grantsMove": "nidoran-f-sludge"
+  },
+  "nidoran-f-crunch": {
+   "id": "nidoran-f-crunch",
+   "name": "Crunch",
+   "description": "New skill: bites down hard (Power 80), leaving the foe Exposed for 1 turn.",
+   "grantsMove": "nidoran-f-crunch"
+  },
+  "nidoran-f-mud-shot": {
+   "id": "nidoran-f-mud-shot",
+   "name": "Mud Shot",
+   "description": "New skill: hurls mud at a foe up to 2 hexes away (Power 75) that Slows it for 1 turn.",
+   "grantsMove": "nidoran-f-mud-shot"
+  },
+  "nidoran-f-sheer-force": {
+   "id": "nidoran-f-sheer-force",
+   "name": "Sheer Force",
+   "description": "Its Ground-type moves deal 20% more damage.",
+   "mods": {
+    "typeDamage": {
+     "ground": 1.2
+    }
+   }
+  },
+  "nidoran-f-queens-resolve": {
+   "id": "nidoran-f-queens-resolve",
+   "name": "Queen's Resolve",
+   "description": "Survives one knockout blow per battle at 1 HP.",
+   "mods": {
+    "sturdy": true
+   }
+  },
+  "nidoran-f-earth-power": {
+   "id": "nidoran-f-earth-power",
+   "name": "Earth Power",
+   "description": "New skill: the ground erupts under a foe up to 2 hexes away (Power 90).",
+   "grantsMove": "nidoran-f-earth-power"
+  },
+  "nidoran-f-stomping-tantrum": {
+   "id": "nidoran-f-stomping-tantrum",
+   "name": "Stomping Tantrum",
+   "description": "New skill: stomps furiously, hitting all adjacent foes (Power 85).",
+   "grantsMove": "nidoran-f-stomping-tantrum"
+  },
+  "nidoran-f-matriarch": {
+   "id": "nidoran-f-matriarch",
+   "name": "Matriarch",
+   "description": "Gives the team 1 Bond whenever it lands a combo.",
+   "mods": {
+    "comboBond": 1
+   }
+  },
+  "nidoran-f-mothers-watch": {
+   "id": "nidoran-f-mothers-watch",
+   "name": "Mother's Watch",
+   "description": "Foes engaged with it take 10% more damage from its allies.",
+   "mods": {
+    "pinDamage": 1.1
+   }
+  },
+  "nidoran-f-iron-queen": {
+   "id": "nidoran-f-iron-queen",
+   "name": "Iron Queen",
+   "description": "Capstone. Takes 15% less damage; foes it pushes into an obstacle take 15 extra damage.",
+   "mods": {
+    "damageTaken": 0.85,
+    "impactBonus": 15
+   }
+  },
+  "nidoran-f-toxic-queen": {
+   "id": "nidoran-f-toxic-queen",
+   "name": "Toxic Queen",
+   "description": "Capstone. When a foe it afflicted faints, adjacent foes catch that status; each knockout gives 1 Bond.",
+   "mods": {
+    "statusSpreadOnKo": true,
+    "bondOnKo": 1
+   }
+  },
+  "nidoran-f-thick-hide": {
+   "id": "nidoran-f-thick-hide",
+   "name": "Thick Hide",
+   "description": "Its thick hide: takes 20% less damage while at full HP.",
+   "mods": {
+    "fullHpDamageTaken": 0.8
+   }
+  },
+  "nidoran-f-queens-wrath": {
+   "id": "nidoran-f-queens-wrath",
+   "name": "Queen's Wrath",
+   "description": "Deals 20% more damage while 2+ foes stand next to it.",
+   "mods": {
+    "surroundedDamage": 1.2
+   }
+  },
+  "nidoran-f-growl": {
+   "id": "nidoran-f-growl",
+   "name": "Growl",
+   "description": "New skill: a sweet growl leaves an adjacent foe Weakened for 2 turns.",
+   "grantsMove": "nidoran-f-growl"
+  }
+ }
+}

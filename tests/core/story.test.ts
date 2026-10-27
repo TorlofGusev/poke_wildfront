@@ -60,7 +60,8 @@ describe("story conditions", () => {
     expect(sc.enemies).toHaveLength(2);
     expect(sc.captureAllowed).toBe(false);
     const onix = trainerSetup(CONTENT, PROGRESSION, { species: "onix", level: 12, heldItem: "hard-stone" });
-    expect(onix.mods?.typeDamage?.rock).toBeCloseTo(1.2);
+    const bare = trainerSetup(CONTENT, PROGRESSION, { species: "onix", level: 12 });
+    expect(onix.mods!.typeDamage!.rock! / (bare.mods?.typeDamage?.rock ?? 1)).toBeCloseTo(1.2);
   });
 
   it("shows the first unmet goal", () => {

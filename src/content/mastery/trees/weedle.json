@@ -1,0 +1,501 @@
+{
+ "line": [
+  "weedle",
+  "kakuna",
+  "beedrill"
+ ],
+ "canonLevelUp": [
+  "weedle-agility"
+ ],
+ "focus": [
+  {
+   "stat": "attack",
+   "skill": "weedle-poison-jab"
+  },
+  {
+   "stat": "speed",
+   "skill": "weedle-u-turn"
+  },
+  {
+   "stat": "defense",
+   "skill": "weedle-harden"
+  }
+ ],
+ "rows": {
+  "4": [
+   "weedle-potent-venom",
+   "weedle-hard-shell"
+  ],
+  "6": [
+   "weedle-string-shot",
+   "weedle-toxic"
+  ],
+  "9": [
+   "weedle-toxic-hunter",
+   "weedle-cocoon-memory"
+  ],
+  "12": [
+   "weedle-pin-missile",
+   "weedle-agility"
+  ],
+  "15": [
+   "weedle-sting-barrage",
+   "weedle-barbed-carapace"
+  ],
+  "18": [
+   "weedle-x-scissor",
+   "weedle-focus-energy"
+  ],
+  "21": [
+   "weedle-adrenaline",
+   "weedle-hive-guard"
+  ],
+  "24": [
+   "weedle-fell-stinger",
+   "weedle-poison-gas"
+  ],
+  "27": [
+   "weedle-pursuit",
+   "weedle-venom-sacs"
+  ],
+  "30": [
+   "weedle-hornet-frenzy",
+   "weedle-cocoon-revival"
+  ]
+ },
+ "moves": {
+  "weedle-poison-jab": {
+   "id": "weedle-poison-jab",
+   "name": "Poison Jab",
+   "type": "poison",
+   "kind": "bond",
+   "category": "physical",
+   "bondCost": 2,
+   "power": 90,
+   "range": {
+    "min": 1,
+    "max": 1
+   },
+   "requiresLineOfSight": false,
+   "shape": {
+    "kind": "single"
+   },
+   "affects": "enemies",
+   "effects": [
+    {
+     "kind": "status",
+     "status": "poison",
+     "duration": 2
+    }
+   ]
+  },
+  "weedle-u-turn": {
+   "id": "weedle-u-turn",
+   "name": "U-turn",
+   "type": "bug",
+   "kind": "bond",
+   "category": "physical",
+   "bondCost": 1,
+   "power": 60,
+   "range": {
+    "min": 1,
+    "max": 1
+   },
+   "requiresLineOfSight": false,
+   "shape": {
+    "kind": "single"
+   },
+   "affects": "enemies",
+   "effects": [
+    {
+     "kind": "disengage"
+    }
+   ]
+  },
+  "weedle-harden": {
+   "id": "weedle-harden",
+   "name": "Harden",
+   "type": "bug",
+   "kind": "bond",
+   "bondCost": 1,
+   "power": 0,
+   "range": {
+    "min": 0,
+    "max": 0
+   },
+   "requiresLineOfSight": false,
+   "shape": {
+    "kind": "single"
+   },
+   "affects": "allies",
+   "effects": [
+    {
+     "kind": "status",
+     "status": "fortified",
+     "duration": 2
+    }
+   ]
+  },
+  "weedle-string-shot": {
+   "id": "weedle-string-shot",
+   "name": "String Shot",
+   "type": "bug",
+   "kind": "special",
+   "cooldown": 3,
+   "power": 0,
+   "range": {
+    "min": 1,
+    "max": 2
+   },
+   "requiresLineOfSight": true,
+   "shape": {
+    "kind": "single"
+   },
+   "affects": "enemies",
+   "effects": [
+    {
+     "kind": "status",
+     "status": "slow",
+     "duration": 2
+    }
+   ]
+  },
+  "weedle-toxic": {
+   "id": "weedle-toxic",
+   "name": "Toxic",
+   "type": "poison",
+   "kind": "special",
+   "cooldown": 4,
+   "power": 0,
+   "range": {
+    "min": 1,
+    "max": 2
+   },
+   "requiresLineOfSight": true,
+   "shape": {
+    "kind": "single"
+   },
+   "affects": "enemies",
+   "effects": [
+    {
+     "kind": "status",
+     "status": "poison",
+     "duration": 3
+    }
+   ]
+  },
+  "weedle-pin-missile": {
+   "id": "weedle-pin-missile",
+   "name": "Pin Missile",
+   "type": "bug",
+   "kind": "special",
+   "category": "physical",
+   "cooldown": 3,
+   "power": 70,
+   "range": {
+    "min": 1,
+    "max": 2
+   },
+   "requiresLineOfSight": true,
+   "shape": {
+    "kind": "single"
+   },
+   "affects": "enemies"
+  },
+  "weedle-agility": {
+   "id": "weedle-agility",
+   "name": "Agility",
+   "type": "psychic",
+   "kind": "special",
+   "cooldown": 4,
+   "power": 0,
+   "range": {
+    "min": 0,
+    "max": 0
+   },
+   "requiresLineOfSight": false,
+   "shape": {
+    "kind": "single"
+   },
+   "affects": "allies",
+   "effects": [
+    {
+     "kind": "status",
+     "status": "hasted",
+     "duration": 2
+    }
+   ]
+  },
+  "weedle-x-scissor": {
+   "id": "weedle-x-scissor",
+   "name": "X-Scissor",
+   "type": "bug",
+   "kind": "special",
+   "category": "physical",
+   "cooldown": 4,
+   "power": 85,
+   "range": {
+    "min": 1,
+    "max": 1
+   },
+   "requiresLineOfSight": false,
+   "shape": {
+    "kind": "single"
+   },
+   "affects": "enemies",
+   "effects": [
+    {
+     "kind": "status",
+     "status": "exposed",
+     "duration": 1
+    }
+   ]
+  },
+  "weedle-focus-energy": {
+   "id": "weedle-focus-energy",
+   "name": "Focus Energy",
+   "type": "normal",
+   "kind": "special",
+   "power": 0,
+   "cooldown": 4,
+   "range": {
+    "min": 0,
+    "max": 0
+   },
+   "requiresLineOfSight": false,
+   "shape": {
+    "kind": "single"
+   },
+   "affects": "allies",
+   "effects": [
+    {
+     "kind": "status",
+     "status": "focused",
+     "duration": 2
+    }
+   ]
+  },
+  "weedle-fell-stinger": {
+   "id": "weedle-fell-stinger",
+   "name": "Fell Stinger",
+   "type": "bug",
+   "kind": "special",
+   "category": "physical",
+   "cooldown": 5,
+   "power": 90,
+   "range": {
+    "min": 1,
+    "max": 1
+   },
+   "requiresLineOfSight": false,
+   "shape": {
+    "kind": "single"
+   },
+   "affects": "enemies",
+   "effects": [
+    {
+     "kind": "bond",
+     "amount": 1,
+     "when": "knockout"
+    }
+   ]
+  },
+  "weedle-poison-gas": {
+   "id": "weedle-poison-gas",
+   "name": "Poison Gas",
+   "type": "poison",
+   "kind": "special",
+   "cooldown": 5,
+   "power": 0,
+   "range": {
+    "min": 1,
+    "max": 1
+   },
+   "requiresLineOfSight": true,
+   "shape": {
+    "kind": "burst",
+    "radius": 1
+   },
+   "affects": "enemies",
+   "effects": [
+    {
+     "kind": "status",
+     "status": "poison",
+     "duration": 2
+    }
+   ]
+  }
+ },
+ "talents": {
+  "weedle-poison-jab": {
+   "id": "weedle-poison-jab",
+   "name": "Poison Jab",
+   "description": "Bond skill: stabs with a venomous stinger (Power 90, Attack) and Poisons the foe for 2 turns.",
+   "grantsMove": "weedle-poison-jab"
+  },
+  "weedle-u-turn": {
+   "id": "weedle-u-turn",
+   "name": "U-turn",
+   "description": "Bond skill: strikes a foe (Power 60, Attack) and darts away without free strikes.",
+   "grantsMove": "weedle-u-turn"
+  },
+  "weedle-harden": {
+   "id": "weedle-harden",
+   "name": "Harden",
+   "description": "Bond skill: hardens its shell and becomes Fortified for 2 turns.",
+   "grantsMove": "weedle-harden"
+  },
+  "weedle-potent-venom": {
+   "id": "weedle-potent-venom",
+   "name": "Potent Venom",
+   "description": "Its Poison moves deal 15% more damage.",
+   "mods": {
+    "typeDamage": {
+     "poison": 1.15
+    }
+   }
+  },
+  "weedle-hard-shell": {
+   "id": "weedle-hard-shell",
+   "name": "Hard Shell",
+   "description": "Takes 10% less damage.",
+   "mods": {
+    "damageTaken": 0.9
+   }
+  },
+  "weedle-string-shot": {
+   "id": "weedle-string-shot",
+   "name": "String Shot",
+   "description": "New skill: sticky silk at a foe up to 2 hexes away that Slows it for 2 turns.",
+   "grantsMove": "weedle-string-shot"
+  },
+  "weedle-toxic": {
+   "id": "weedle-toxic",
+   "name": "Toxic",
+   "description": "New skill: badly Poisons a foe up to 2 hexes away for 3 turns.",
+   "grantsMove": "weedle-toxic"
+  },
+  "weedle-toxic-hunter": {
+   "id": "weedle-toxic-hunter",
+   "name": "Toxic Hunter",
+   "description": "Deals 20% more damage to Poisoned foes.",
+   "mods": {
+    "vsStatusIdDamage": {
+     "poison": 1.2
+    }
+   }
+  },
+  "weedle-cocoon-memory": {
+   "id": "weedle-cocoon-memory",
+   "name": "Cocoon Memory",
+   "description": "Takes 20% less damage while at full HP.",
+   "mods": {
+    "fullHpDamageTaken": 0.8
+   }
+  },
+  "weedle-pin-missile": {
+   "id": "weedle-pin-missile",
+   "name": "Pin Missile",
+   "description": "New skill: fires a volley of stingers at a foe up to 2 hexes away (Power 70).",
+   "grantsMove": "weedle-pin-missile"
+  },
+  "weedle-agility": {
+   "id": "weedle-agility",
+   "name": "Agility",
+   "description": "New skill: relaxes its body and becomes Hasted for 2 turns.",
+   "grantsMove": "weedle-agility"
+  },
+  "weedle-sting-barrage": {
+   "id": "weedle-sting-barrage",
+   "name": "Sting Barrage",
+   "description": "Each consecutive hit on the same foe deals 10% more damage, up to 3 stacks.",
+   "mods": {
+    "furyCutter": 0.1
+   }
+  },
+  "weedle-barbed-carapace": {
+   "id": "weedle-barbed-carapace",
+   "name": "Barbed Carapace",
+   "description": "Deals 6 damage back to foes that hit it from an adjacent hex.",
+   "mods": {
+    "thorns": 6
+   }
+  },
+  "weedle-x-scissor": {
+   "id": "weedle-x-scissor",
+   "name": "X-Scissor",
+   "description": "New skill: crosses both stingers like scissors (Power 85) and leaves the foe Exposed for 1 turn.",
+   "grantsMove": "weedle-x-scissor"
+  },
+  "weedle-focus-energy": {
+   "id": "weedle-focus-energy",
+   "name": "Focus Energy",
+   "description": "New skill: pumps itself up and becomes Focused for 2 turns.",
+   "grantsMove": "weedle-focus-energy"
+  },
+  "weedle-adrenaline": {
+   "id": "weedle-adrenaline",
+   "name": "Hive Adrenaline",
+   "description": "Regains 2 movement when it knocks out a foe on its turn.",
+   "mods": {
+    "koMove": 2
+   }
+  },
+  "weedle-hive-guard": {
+   "id": "weedle-hive-guard",
+   "name": "Hive Guard",
+   "description": "Foes it engages take 15% more damage from its allies.",
+   "mods": {
+    "pinDamage": 1.15
+   }
+  },
+  "weedle-fell-stinger": {
+   "id": "weedle-fell-stinger",
+   "name": "Fell Stinger",
+   "description": "New skill: a finishing sting (Power 90); a knockout with it gives the team 1 Bond.",
+   "grantsMove": "weedle-fell-stinger"
+  },
+  "weedle-poison-gas": {
+   "id": "weedle-poison-gas",
+   "name": "Poison Gas",
+   "description": "New skill: a toxic cloud up to 1 hex away that Poisons foes in a 1-hex area for 2 turns.",
+   "grantsMove": "weedle-poison-gas"
+  },
+  "weedle-pursuit": {
+   "id": "weedle-pursuit",
+   "name": "Pursuit",
+   "description": "Its free strikes on foes breaking away deal 25% more damage.",
+   "mods": {
+    "strikeDamage": 1.25
+   }
+  },
+  "weedle-venom-sacs": {
+   "id": "weedle-venom-sacs",
+   "name": "Venom Sacs",
+   "description": "Statuses it inflicts last 1 more turn.",
+   "mods": {
+    "statusDurationBonus": 1
+   }
+  },
+  "weedle-hornet-frenzy": {
+   "id": "weedle-hornet-frenzy",
+   "name": "Hornet Frenzy",
+   "description": "Capstone. Knocking out a foe on its turn lets it attack again; deals 10% more damage.",
+   "mods": {
+    "koRefreshBasic": true,
+    "damageDealt": 1.1
+   }
+  },
+  "weedle-cocoon-revival": {
+   "id": "weedle-cocoon-revival",
+   "name": "Swarm",
+   "description": "Capstone. Swarm: its Bug moves deal 15% more and allies helping it add 10% more each.",
+   "mods": {
+    "typeDamage": {
+     "bug": 1.15
+    },
+    "swarmBonus": 0.1
+   }
+  }
+ }
+}

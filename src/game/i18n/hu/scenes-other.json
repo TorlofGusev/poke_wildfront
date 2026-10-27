@@ -92,5 +92,8 @@
  "Earned the {badge} Badge!": "Megszerezted a(z) {badge} jelvényt!",
  "Got {item}!": "Megkaptad: {item}!",
  "Got {n} {item}.": "Kaptál: {n} {item}.",
- "choose its evolution": "válassz fejlődést"
+ "choose its evolution": "válassz fejlődést",
+ "Focus at Lv {lv}: {focuses}": "Fókusz Lv {lv}-on: {focuses}",
+ "choose its focus": "válassz fókuszt",
+ "no focus yet": "még nincs fókusz"
 }

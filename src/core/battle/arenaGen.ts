@@ -1,6 +1,7 @@
 import { nextRandom } from "../rng";
 import { ASCII_LEGEND } from "../grid/Grid";
 import { gridDistance, key, type Point } from "../grid/types";
+import { hexDirToward, hexStep } from "../grid/hex";
 
 /**
  * Procedural battle arenas: terrain from a biome's palette plus a deployment formation.
@@ -296,7 +297,59 @@ function place(rng: Rng, map: Map2, zones: Zones, enemyCount: number, minDist: n
     taken.add(key(best));
   }
   if (enemySpawns.length < enemyCount) return null;
-  return { mapRows: map.map((r) => r.join("")), deploymentZone, enemySpawns };
+  // A boss fight and an ambush from all sides keep their shape.
+  if (zones.boss || zones.spread) return { mapRows: map.map((r) => r.join("")), deploymentZone, enemySpawns };
+  const close = closeIn(map, reach, deploymentZone, enemySpawns, playerCount);
+  return { mapRows: map.map((r) => r.join("")), ...close };
+}
+
+/** How far apart the two sides' centres start, in hexes. */
+const START_GAP = 6;
+/** No spot starts closer than this to a foe. */
+const MIN_PAIR = 4;
+const centroid = (ps: readonly Point[]): Point => ({
+  x: Math.round(ps.reduce((s, p) => s + p.x, 0) / ps.length),
+  y: Math.round(ps.reduce((s, p) => s + p.y, 0) / ps.length),
+});
+
+/**
+ * Deployment spots instead of a half-board zone: the player gets a cluster of spots (its team + 2) at the
+ * front of its zone, then both sides step toward each other until their centres are about START_GAP hexes
+ * apart, so a battle starts within a turn or two of contact.
+ */
+function closeIn(map: Map2, reach: Set<string>, zone: readonly Point[], foes: readonly Point[], playerCount: number): { deploymentZone: Point[]; enemySpawns: Point[] } {
+  const h = map.length;
+  const w = map[0]!.length;
+  const front = centroid(foes);
+  const anchor = [...zone].sort((a, b) => gridDistance(a, front) - gridDistance(b, front))[0]!;
+  let spots = [...zone].sort((a, b) => gridDistance(a, anchor) - gridDistance(b, anchor) || gridDistance(a, front) - gridDistance(b, front)).slice(0, playerCount + 2);
+  let enemies = [...foes];
+  const gap = () => gridDistance(centroid(spots), centroid(enemies));
+  const free = (n: Point, taken: Set<string>) => inside(w, h, n.x, n.y) && passable(map[n.y]![n.x]!) && map[n.y]![n.x] !== WATER && reach.has(key(n)) && !taken.has(key(n));
+  /** Every point of a group steps toward a target (or sideways around an obstacle) when the hex is free. */
+  const shift = (group: Point[], toward: Point, other: Point[]): Point[] => {
+    const taken = new Set([...group, ...other].map(key));
+    return group.map((p) => {
+      const dir = hexDirToward(p, toward);
+      const n = [dir, (dir + 1) % 6, (dir + 5) % 6].map((d) => hexStep(p, d))
+        .find((q) => free(q, taken) && gridDistance(q, toward) < gridDistance(p, toward) && other.every((o) => gridDistance(o, q) >= MIN_PAIR));
+      if (!n) return p;
+      taken.delete(key(p));
+      taken.add(key(n));
+      return n;
+    });
+  };
+  for (let i = 0; i < w && gap() > START_GAP; i++) {
+    const target = centroid([...spots, ...enemies]);
+    const moved = shift(spots, target, enemies);
+    const next = shift(enemies, target, moved);
+    if (moved.every((p, k) => p === spots[k]) && next.every((p, k) => p === enemies[k])) break;
+    spots = moved;
+    enemies = next;
+  }
+  // Starting hexes are plain floor (grass or mud under a spot is cleared).
+  for (const p of [...spots, ...enemies]) map[p.y]![p.x] = FLOOR;
+  return { deploymentZone: spots, enemySpawns: enemies };
 }
 
 export function generateArena(opts: GenerateArenaOptions): GeneratedArena {

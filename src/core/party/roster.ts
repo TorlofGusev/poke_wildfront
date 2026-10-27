@@ -71,7 +71,7 @@ export function newMember(
   const earned = (level - 1) * prog.rules.pointsPerLevel;
   const knownMoves = movesKnownAt(content.species[speciesId]!, level);
   const base: PartyMember = {
-    uid: `pk${uidNumber}`, speciesId, level, xp: 0, role: null, talents: [], heldItem: null, knownMoves,
+    uid: `pk${uidNumber}`, speciesId, level, xp: 0, focus: null, talents: [], heldItem: null, knownMoves,
     activeMoves: defaultActiveMoves(content, prog, speciesId, knownMoves), hp: 0, knockouts: 0,
     // Points from levels it already had are pre-spent along its playstyle; new levels are the player's choice.
     statPoints: playstylePoints(content, speciesId, playerSpendsPoints ? 0 : earned), unspentPoints: playerSpendsPoints ? earned : 0,

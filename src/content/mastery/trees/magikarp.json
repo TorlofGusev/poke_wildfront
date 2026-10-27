@@ -1,0 +1,467 @@
+{
+ "line": [
+  "magikarp",
+  "gyarados"
+ ],
+ "focus": [
+  {
+   "stat": "attack",
+   "skill": "magikarp-aqua-tail"
+  },
+  {
+   "stat": "speed",
+   "skill": "magikarp-bounce"
+  },
+  {
+   "stat": "hp",
+   "skill": "magikarp-rest"
+  }
+ ],
+ "rows": {
+  "4": [
+   "magikarp-hidden-potential",
+   "magikarp-stubborn-fins"
+  ],
+  "6": [
+   "magikarp-flail",
+   "magikarp-whirlpool"
+  ],
+  "9": [
+   "magikarp-rattled",
+   "magikarp-slippery-scales"
+  ],
+  "12": [
+   "magikarp-headbutt",
+   "magikarp-brine"
+  ],
+  "15": [
+   "magikarp-furious-rampage",
+   "magikarp-iron-scales"
+  ],
+  "18": [
+   "magikarp-hurricane",
+   "magikarp-crunch"
+  ],
+  "21": [
+   "magikarp-tyrant-s-gaze",
+   "magikarp-storm-rider"
+  ],
+  "24": [
+   "magikarp-swords-dance",
+   "magikarp-thrash"
+  ],
+  "27": [
+   "magikarp-destructive-rampage",
+   "magikarp-tidal-vigor"
+  ],
+  "30": [
+   "magikarp-atrocious-fury",
+   "magikarp-leviathan"
+  ]
+ },
+ "moves": {
+  "magikarp-aqua-tail": {
+   "id": "magikarp-aqua-tail",
+   "name": "Aqua Tail",
+   "type": "water",
+   "kind": "bond",
+   "category": "physical",
+   "bondCost": 2,
+   "power": 90,
+   "range": {
+    "min": 1,
+    "max": 1
+   },
+   "requiresLineOfSight": false,
+   "shape": {
+    "kind": "single"
+   },
+   "affects": "enemies"
+  },
+  "magikarp-bounce": {
+   "id": "magikarp-bounce",
+   "name": "Bounce",
+   "type": "flying",
+   "kind": "bond",
+   "category": "physical",
+   "bondCost": 1,
+   "power": 60,
+   "range": {
+    "min": 1,
+    "max": 2
+   },
+   "requiresLineOfSight": false,
+   "shape": {
+    "kind": "single"
+   },
+   "affects": "enemies",
+   "effects": [
+    {
+     "kind": "status",
+     "status": "paralysis",
+     "duration": 1
+    }
+   ]
+  },
+  "magikarp-rest": {
+   "id": "magikarp-rest",
+   "name": "Rest",
+   "type": "normal",
+   "kind": "bond",
+   "bondCost": 2,
+   "power": 0,
+   "range": {
+    "min": 0,
+    "max": 0
+   },
+   "requiresLineOfSight": false,
+   "shape": {
+    "kind": "single"
+   },
+   "affects": "allies",
+   "effects": [
+    {
+     "kind": "heal",
+     "amount": 50
+    },
+    {
+     "kind": "status",
+     "status": "sleep",
+     "duration": 1
+    }
+   ]
+  },
+  "magikarp-flail": {
+   "id": "magikarp-flail",
+   "name": "Flail",
+   "type": "normal",
+   "kind": "special",
+   "category": "physical",
+   "cooldown": 2,
+   "power": 45,
+   "range": {
+    "min": 1,
+    "max": 1
+   },
+   "requiresLineOfSight": false,
+   "shape": {
+    "kind": "single"
+   },
+   "affects": "enemies"
+  },
+  "magikarp-whirlpool": {
+   "id": "magikarp-whirlpool",
+   "name": "Whirlpool",
+   "type": "water",
+   "kind": "special",
+   "category": "special",
+   "cooldown": 3,
+   "power": 40,
+   "range": {
+    "min": 1,
+    "max": 1
+   },
+   "requiresLineOfSight": true,
+   "shape": {
+    "kind": "burst",
+    "radius": 1
+   },
+   "affects": "enemies"
+  },
+  "magikarp-headbutt": {
+   "id": "magikarp-headbutt",
+   "name": "Headbutt",
+   "type": "normal",
+   "kind": "special",
+   "category": "physical",
+   "cooldown": 3,
+   "power": 65,
+   "range": {
+    "min": 1,
+    "max": 1
+   },
+   "requiresLineOfSight": false,
+   "shape": {
+    "kind": "single"
+   },
+   "affects": "enemies",
+   "effects": [
+    {
+     "kind": "status",
+     "status": "slow",
+     "duration": 1
+    }
+   ]
+  },
+  "magikarp-brine": {
+   "id": "magikarp-brine",
+   "name": "Brine",
+   "type": "water",
+   "kind": "special",
+   "category": "special",
+   "cooldown": 3,
+   "power": 75,
+   "range": {
+    "min": 1,
+    "max": 2
+   },
+   "requiresLineOfSight": true,
+   "shape": {
+    "kind": "single"
+   },
+   "affects": "enemies"
+  },
+  "magikarp-hurricane": {
+   "id": "magikarp-hurricane",
+   "name": "Hurricane",
+   "type": "flying",
+   "kind": "special",
+   "category": "special",
+   "cooldown": 4,
+   "power": 90,
+   "range": {
+    "min": 1,
+    "max": 2
+   },
+   "requiresLineOfSight": true,
+   "shape": {
+    "kind": "single"
+   },
+   "affects": "enemies"
+  },
+  "magikarp-crunch": {
+   "id": "magikarp-crunch",
+   "name": "Crunch",
+   "type": "normal",
+   "kind": "special",
+   "category": "physical",
+   "cooldown": 4,
+   "power": 85,
+   "range": {
+    "min": 1,
+    "max": 1
+   },
+   "requiresLineOfSight": false,
+   "shape": {
+    "kind": "single"
+   },
+   "affects": "enemies",
+   "effects": [
+    {
+     "kind": "status",
+     "status": "exposed",
+     "duration": 1
+    }
+   ]
+  },
+  "magikarp-swords-dance": {
+   "id": "magikarp-swords-dance",
+   "name": "Swords Dance",
+   "type": "normal",
+   "kind": "special",
+   "cooldown": 4,
+   "power": 0,
+   "range": {
+    "min": 0,
+    "max": 0
+   },
+   "requiresLineOfSight": false,
+   "shape": {
+    "kind": "single"
+   },
+   "affects": "allies",
+   "effects": [
+    {
+     "kind": "status",
+     "status": "focused",
+     "duration": 3
+    }
+   ]
+  },
+  "magikarp-thrash": {
+   "id": "magikarp-thrash",
+   "name": "Thrash",
+   "type": "normal",
+   "kind": "special",
+   "category": "physical",
+   "cooldown": 5,
+   "power": 100,
+   "range": {
+    "min": 1,
+    "max": 1
+   },
+   "requiresLineOfSight": false,
+   "shape": {
+    "kind": "single"
+   },
+   "affects": "enemies"
+  }
+ },
+ "talents": {
+  "magikarp-aqua-tail": {
+   "id": "magikarp-aqua-tail",
+   "name": "Aqua Tail",
+   "description": "Bond skill: lashes a foe with its tail like a crashing wave (Power 90, Attack).",
+   "grantsMove": "magikarp-aqua-tail"
+  },
+  "magikarp-bounce": {
+   "id": "magikarp-bounce",
+   "name": "Bounce",
+   "description": "Bond skill: springs onto a foe up to 2 hexes away (Power 60, Attack); Paralyzes 1 turn.",
+   "grantsMove": "magikarp-bounce"
+  },
+  "magikarp-rest": {
+   "id": "magikarp-rest",
+   "name": "Rest",
+   "description": "Bond skill: dozes off to recover: heals 50 HP, then Sleeps for 1 turn.",
+   "grantsMove": "magikarp-rest"
+  },
+  "magikarp-hidden-potential": {
+   "id": "magikarp-hidden-potential",
+   "name": "Hidden Potential",
+   "description": "When it faints, the team gains 1 Bond.",
+   "mods": {
+    "bondOnFaint": 1
+   }
+  },
+  "magikarp-stubborn-fins": {
+   "id": "magikarp-stubborn-fins",
+   "name": "Stubborn Fins",
+   "description": "Takes 10% less damage.",
+   "mods": {
+    "damageTaken": 0.9
+   }
+  },
+  "magikarp-flail": {
+   "id": "magikarp-flail",
+   "name": "Flail",
+   "description": "New skill: flops and flails at a foe (Power 45).",
+   "grantsMove": "magikarp-flail"
+  },
+  "magikarp-whirlpool": {
+   "id": "magikarp-whirlpool",
+   "name": "Whirlpool",
+   "description": "New skill: a swirling vortex on a 1-hex area up to 1 hex away (Power 40).",
+   "grantsMove": "magikarp-whirlpool"
+  },
+  "magikarp-rattled": {
+   "id": "magikarp-rattled",
+   "name": "Rattled",
+   "description": "Deals 20% more damage while 2+ foes stand next to it.",
+   "mods": {
+    "surroundedDamage": 1.2
+   }
+  },
+  "magikarp-slippery-scales": {
+   "id": "magikarp-slippery-scales",
+   "name": "Slippery Scales",
+   "description": "Steps away from engaged foes without drawing free strikes.",
+   "mods": {
+    "disengage": true
+   }
+  },
+  "magikarp-headbutt": {
+   "id": "magikarp-headbutt",
+   "name": "Headbutt",
+   "description": "New skill: rams its head into a foe (Power 65), Slowing it for 1 turn.",
+   "grantsMove": "magikarp-headbutt"
+  },
+  "magikarp-brine": {
+   "id": "magikarp-brine",
+   "name": "Brine",
+   "description": "New skill: a jet of salt water at a foe up to 2 hexes away (Power 75).",
+   "grantsMove": "magikarp-brine"
+  },
+  "magikarp-furious-rampage": {
+   "id": "magikarp-furious-rampage",
+   "name": "Furious Rampage",
+   "description": "Each hit in a row on the same foe deals 10% more damage (max 3).",
+   "mods": {
+    "furyCutter": 0.1
+   }
+  },
+  "magikarp-iron-scales": {
+   "id": "magikarp-iron-scales",
+   "name": "Iron Scales",
+   "description": "Takes 20% less damage while at full HP.",
+   "mods": {
+    "fullHpDamageTaken": 0.8
+   }
+  },
+  "magikarp-hurricane": {
+   "id": "magikarp-hurricane",
+   "name": "Hurricane",
+   "description": "New skill: a raging wind at a foe up to 2 hexes away (Power 90).",
+   "grantsMove": "magikarp-hurricane"
+  },
+  "magikarp-crunch": {
+   "id": "magikarp-crunch",
+   "name": "Crunch",
+   "description": "New skill: crunches with its jaws (Power 85), leaving the foe Exposed for 1 turn.",
+   "grantsMove": "magikarp-crunch"
+  },
+  "magikarp-tyrant-s-gaze": {
+   "id": "magikarp-tyrant-s-gaze",
+   "name": "Tyrant's Gaze",
+   "description": "Foes it engages take 15% more damage from its allies.",
+   "mods": {
+    "pinDamage": 1.15
+   }
+  },
+  "magikarp-storm-rider": {
+   "id": "magikarp-storm-rider",
+   "name": "Storm Rider",
+   "description": "Deals 20% more damage to foes 2+ hexes away.",
+   "mods": {
+    "farDamage": 1.2
+   }
+  },
+  "magikarp-swords-dance": {
+   "id": "magikarp-swords-dance",
+   "name": "Swords Dance",
+   "description": "New skill: a frenzied battle dance; it is Focused for 3 turns.",
+   "grantsMove": "magikarp-swords-dance"
+  },
+  "magikarp-thrash": {
+   "id": "magikarp-thrash",
+   "name": "Thrash",
+   "description": "New skill: thrashes wildly at an adjacent foe (Power 100).",
+   "grantsMove": "magikarp-thrash"
+  },
+  "magikarp-destructive-rampage": {
+   "id": "magikarp-destructive-rampage",
+   "name": "Destructive Rampage",
+   "description": "Each knockout it lands gives the team 1 Bond.",
+   "mods": {
+    "bondOnKo": 1
+   }
+  },
+  "magikarp-tidal-vigor": {
+   "id": "magikarp-tidal-vigor",
+   "name": "Tidal Vigor",
+   "description": "Heals 4% of max HP at the start of each turn.",
+   "mods": {
+    "healPerTurn": 0.04
+   }
+  },
+  "magikarp-atrocious-fury": {
+   "id": "magikarp-atrocious-fury",
+   "name": "Atrocious Fury",
+   "description": "Capstone. +25% damage below half HP; a knockout refreshes its basic attack and heals 10% max HP.",
+   "mods": {
+    "lowHpDamage": 1.25,
+    "koRefreshBasic": true,
+    "koHeal": 0.1
+   }
+  },
+  "magikarp-leviathan": {
+   "id": "magikarp-leviathan",
+   "name": "Leviathan",
+   "description": "Capstone. Moxie: each knockout raises Attack by 1 (max +3); takes 15% less damage.",
+   "mods": {
+    "koAttackBoost": 1,
+    "damageTaken": 0.85
+   }
+  }
+ }
+}

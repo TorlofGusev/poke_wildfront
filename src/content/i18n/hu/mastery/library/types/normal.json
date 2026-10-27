@@ -1,0 +1,25 @@
+{
+ "talents": {
+  "normal-skill-tail-whip": {
+   "description": "Új képesség: egy terület ellenfelei 2 körig 25%-kal több sebzést kapnak."
+  },
+  "normal-skill-tri-attack": {
+   "description": "Új képesség: hármas sugár távolra (Erő 60), amely megéget."
+  },
+  "normal-skill-giga-impact": {
+   "description": "Új képesség: teljes erejű roham (Erő 100), amely 1 hexszel hátralöki az ellenfelet."
+  },
+  "normal-hustle": {
+   "description": "Csúcsképesség. 25%-kal többet sebez, de 10%-kal több sebzést kap."
+  },
+  "normal-inner-focus": {
+   "description": "Nem lehet Kitett vagy Megjelölt."
+  },
+  "normal-serene-grace": {
+   "description": "Az általa okozott állapotok 1 körrel tovább tartanak."
+  },
+  "normal-skill-hyper-voice": {
+   "description": "Új képesség: fülsiketítő kiáltás (Erő 80), egy 2 hexes vonalban mindent eltalál."
+  }
+ }
+}

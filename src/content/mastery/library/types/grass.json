@@ -1,0 +1,130 @@
+{
+ "type": "grass",
+ "moves": {
+  "leaf-storm": {
+   "id": "leaf-storm",
+   "name": "Leaf Storm",
+   "type": "grass",
+   "kind": "special",
+   "power": 95,
+   "range": {
+    "min": 1,
+    "max": 2
+   },
+   "requiresLineOfSight": true,
+   "shape": {
+    "kind": "single"
+   },
+   "affects": "enemies",
+   "cooldown": 4
+  },
+  "petal-blizzard": {
+   "id": "petal-blizzard",
+   "name": "Petal Blizzard",
+   "type": "grass",
+   "kind": "special",
+   "requiresLineOfSight": false,
+   "affects": "enemies",
+   "power": 75,
+   "range": {
+    "min": 0,
+    "max": 0
+   },
+   "shape": {
+    "kind": "burst",
+    "radius": 2
+   },
+   "cooldown": 5
+  }
+ },
+ "talents": {
+  "grass-skill-stun-spore": {
+   "id": "grass-skill-stun-spore",
+   "name": "Stun Spore",
+   "description": "New skill: a cloud of spores that Slows foes in an area for 2 turns.",
+   "requiresType": "grass",
+   "grantsMove": "stun-spore"
+  },
+  "grass-overgrow": {
+   "id": "grass-overgrow",
+   "name": "Overgrow",
+   "description": "+25% Grass damage while below half HP.",
+   "requiresType": "grass",
+   "mods": {
+    "lowHpTypeDamage": {
+     "grass": 1.25
+    }
+   }
+  },
+  "grass-skill-razor-leaf": {
+   "id": "grass-skill-razor-leaf",
+   "name": "Razor Leaf",
+   "description": "New skill: sharp leaves that hit everything in a 2-hex line.",
+   "requiresType": "grass",
+   "grantsMove": "razor-leaf"
+  },
+  "grass-skill-leaf-storm": {
+   "id": "grass-skill-leaf-storm",
+   "name": "Leaf Storm",
+   "description": "New skill: a storm of leaves hurled at range (Power 95).",
+   "requiresType": "grass",
+   "grantsMove": "leaf-storm"
+  },
+  "grass-harvest": {
+   "id": "grass-harvest",
+   "name": "Harvest",
+   "description": "Capstone. Grass drain heals 50% more; heals 15% max HP when it knocks out a foe.",
+   "requiresType": "grass",
+   "mods": {
+    "drainBonus": 0.5,
+    "koHeal": 0.15
+   }
+  },
+  "grass-leaf-guard": {
+   "id": "grass-leaf-guard",
+   "name": "Leaf Guard",
+   "description": "Immune to Poison and Burn.",
+   "requiresType": "grass",
+   "mods": {
+    "statusImmune": [
+     "poison",
+     "burn"
+    ]
+   }
+  },
+  "grass-grass-pelt": {
+   "id": "grass-grass-pelt",
+   "name": "Grass Pelt",
+   "description": "Takes 10% less damage; +1 Defense.",
+   "requiresType": "grass",
+   "stats": {
+    "defense": 1
+   },
+   "mods": {
+    "damageTaken": 0.9
+   }
+  },
+  "grass-skill-petal-blizzard": {
+   "id": "grass-skill-petal-blizzard",
+   "name": "Petal Blizzard",
+   "description": "New skill: a petal storm (Power 75) hitting all foes within 2 hexes.",
+   "requiresType": "grass",
+   "grantsMove": "petal-blizzard"
+  }
+ },
+ "start": "grass-skill-stun-spore",
+ "passives": [
+  "grass-overgrow",
+  "photosynthesis",
+  "spore-cloud",
+  "grass-leaf-guard",
+  "grass-grass-pelt"
+ ],
+ "skills": [
+  "grass-skill-razor-leaf",
+  "skill-giga-drain",
+  "grass-skill-leaf-storm",
+  "grass-skill-petal-blizzard"
+ ],
+ "capstone": "grass-harvest"
+}

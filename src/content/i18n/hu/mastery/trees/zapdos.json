@@ -1,0 +1,73 @@
+{
+ "talents": {
+  "zapdos-zap-cannon": {
+   "description": "Bond képesség: elektromos ágyú legfeljebb 3 hexnyire (Power 100, Sp. Atk); 1 körig bénult."
+  },
+  "zapdos-volt-switch": {
+   "description": "Bond képesség: villám legfeljebb 2 hexnyire (Power 70, Sp. Atk), majd kiszabadul a lekötésből."
+  },
+  "zapdos-brave-bird": {
+   "description": "Bond képesség: vakmerő zuhanórepülés egy szomszédos ellenfélre (Erő 100)."
+  },
+  "zapdos-static": {
+   "description": "Szomszédos ellenfelekre mért találatai 1 körre megbénítják őket."
+  },
+  "zapdos-storm-feathers": {
+   "description": "15%-kal többet sebez a legalább 2 hexnyire lévő ellenfelekre."
+  },
+  "zapdos-agility": {
+   "description": "Új képesség: ellazítja és áramvonalassá teszi a testét; 2 körre Hasted."
+  },
+  "zapdos-light-screen": {
+   "description": "Új képesség: fényfal; ő és a szomszédos szövetségesei 2 körre Fortified."
+  },
+  "zapdos-storm-bringer": {
+   "description": "Electric támadásai 15%-kal többet sebeznek."
+  },
+  "zapdos-updraft": {
+   "description": "Felszálló légáramlattal szabad ütés nélkül távozik a vele harcolóktól."
+  },
+  "zapdos-shock-wave": {
+   "description": "Új képesség: sosem tévesztő áramlöket legfeljebb 2 hexnyire, mások mögé is (Power 60)."
+  },
+  "zapdos-pluck": {
+   "description": "Új képesség: megcsípi az ellenfelet (Power 65); ha kiüt vele, a csapat 1 Bondot kap."
+  },
+  "zapdos-thunder-cloud": {
+   "description": "Az általa okozott állapotok 1 körrel tovább tartanak."
+  },
+  "zapdos-storm-rider": {
+   "description": "Ha saját körében kiüt valakit, 2 mozgást visszanyer."
+  },
+  "zapdos-discharge": {
+   "description": "Új képesség: villámok törnek ki belőle minden szomszédos ellenfélre (Power 85), 1 körre bénítva."
+  },
+  "zapdos-fly": {
+   "description": "Új képesség: lecsap egy szomszédos ellenfélre (Erő 75), majd kiszabadul a lekötésből."
+  },
+  "zapdos-eye-of-the-storm": {
+   "description": "Távolsági támadásai átrepülnek az útban álló Pokémonok fölött."
+  },
+  "zapdos-grounding-strike": {
+   "description": "20%-kal többet sebez a megbénult ellenfelekre."
+  },
+  "zapdos-hurricane": {
+   "description": "Új képesség: tomboló viharszél egy max. 2 hexnyi ellenfélre (Erő 90)."
+  },
+  "zapdos-sky-drop": {
+   "description": "Új képesség: megragad egy ellenfelet, a magasba viszi, és 1 hexnyire ledobja (Power 85)."
+  },
+  "zapdos-electric-momentum": {
+   "description": "Minden kombója 1 Bondot ad a csapatnak."
+  },
+  "zapdos-overcharge": {
+   "description": "15%-kal többet sebez, de 10%-kal több sebzést kap."
+  },
+  "zapdos-thunderbird": {
+   "description": "Csúcs. Flying mozdulatai 25%-kal többet sebeznek; minden kiütése 1 Bondot ad a csapatnak."
+  },
+  "zapdos-lord-of-thunder": {
+   "description": "Capstone. Kiütéskor képességei újratöltődnek; 20%-kal többet sebez teljes HP-s ellenfelekre."
+  }
+ }
+}

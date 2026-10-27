@@ -1,0 +1,73 @@
+{
+ "talents": {
+  "ponyta-flame-charge": {
+   "description": "Bond képesség: legfeljebb 2 hexnyit vágtat egy ellenfélhez (Erő 55, Támadás) és leköti."
+  },
+  "ponyta-flare-blitz": {
+   "description": "Bond képesség: lángoló roham (Erő 100, Támadás), amely 2 körre megégeti az ellenfelet."
+  },
+  "ponyta-fire-blast": {
+   "description": "Bond képesség: csillag alakú tűz legfeljebb 3 hexnyire (Erő 100, Kül. Tám.), 2 körre megéget."
+  },
+  "ponyta-flash-fire": {
+   "description": "Nem lehet megégetni; tűz mozdulatai 10%-kal többet sebeznek."
+  },
+  "ponyta-run-away": {
+   "description": "Szabad csapás nélkül léphet el a vele harcban álló ellenfelektől."
+  },
+  "ponyta-horn-attack": {
+   "description": "Új képesség: éles szarvával megdöfi az ellenfelet (Erő 55)."
+  },
+  "ponyta-flame-body": {
+   "description": "Szomszédos ellenfeleken landolt találatai 1 körre megégetik őket."
+  },
+  "ponyta-galloping": {
+   "description": "2 mozgáspontot kap vissza, ha saját körében kiüt egy ellenfelet."
+  },
+  "ponyta-flame-wheel": {
+   "description": "Új képesség: lángba burkolózva nekigurul az ellenfélnek (Erő 60), 1 körre megégeti."
+  },
+  "ponyta-incinerate": {
+   "description": "Új képesség: lángcsóva legfeljebb 1 hexnyire (Erő 60), 1 hex körzetet talál el."
+  },
+  "ponyta-pace-setter": {
+   "description": "A csapat 1 Kötelék pontot kap, ha kombót ér el."
+  },
+  "ponyta-inferno": {
+   "description": "Új képesség: tűzbe borít egy legfeljebb 2 hexnyire lévő ellenfelet (Erő 90), 3 körre megégeti."
+  },
+  "ponyta-extreme-speed": {
+   "description": "Új képesség: villámgyorsan nekiront egy legfeljebb 2 hexnyire lévő ellenfélnek (Erő 80) és leköti."
+  },
+  "ponyta-unicorn-horn": {
+   "description": "20%-kal többet sebez a teljes HP-jú ellenfelekre."
+  },
+  "ponyta-blazing-aura": {
+   "description": "10%-kal kevesebb sebzést kap: égő sörénye távol tartja az ellenfeleket."
+  },
+  "ponyta-double-edge": {
+   "description": "Új képesség: vakmerő roham teljes vágtából az ellenfélbe (Erő 95)."
+  },
+  "ponyta-overheat": {
+   "description": "Új képesség: minden hőjét egy legfeljebb 2 hexnyire lévő ellenfélre zúdítja (Erő 100)."
+  },
+  "ponyta-wildfire-run": {
+   "description": "Az általa okozott állapotok 1 körrel tovább tartanak."
+  },
+  "ponyta-second-wind": {
+   "description": "20%-kal többet sebez, amíg HP-ja a fele alatt van."
+  },
+  "ponyta-rapid-blaze": {
+   "description": "Mesterfokozat. Semmi sem fogja vissza: nem lassítható és nem bénítható; 10%-kal többet sebez."
+  },
+  "ponyta-wildfire": {
+   "description": "Csúcs. Egy kiütés lenullázza képességei töltési idejét; 20%-kal többet sebez a megégett ellenfelekre."
+  },
+  "ponyta-full-gallop": {
+   "description": "Ha a saját körében kiüt egy ellenfelet, újra használhatja alaptámadását."
+  },
+  "ponyta-growl": {
+   "description": "Új képesség: harcias nyerítés 2 körre Weakened állapotba tesz egy szomszédos ellenfelet."
+  }
+ }
+}

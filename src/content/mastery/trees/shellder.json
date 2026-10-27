@@ -1,0 +1,490 @@
+{
+ "line": [
+  "shellder",
+  "cloyster"
+ ],
+ "focus": [
+  {
+   "stat": "defense",
+   "skill": "shellder-iron-defense"
+  },
+  {
+   "stat": "attack",
+   "skill": "shellder-icicle-spear"
+  },
+  {
+   "stat": "spAttack",
+   "skill": "shellder-hydro-pump"
+  }
+ ],
+ "rows": {
+  "4": [
+   "shellder-shell-armor",
+   "shellder-skill-link"
+  ],
+  "6": [
+   "shellder-ice-shard",
+   "shellder-bubble-beam"
+  ],
+  "9": [
+   "shellder-hard-shell",
+   "shellder-clamp-hold"
+  ],
+  "12": [
+   "shellder-protect",
+   "shellder-razor-shell"
+  ],
+  "15": [
+   "shellder-sealed-shell",
+   "shellder-tight-grip"
+  ],
+  "18": [
+   "shellder-avalanche",
+   "shellder-freeze-dry"
+  ],
+  "21": [
+   "shellder-icy-spikes",
+   "shellder-glacial-aim"
+  ],
+  "24": [
+   "shellder-icicle-crash",
+   "shellder-shell-smash"
+  ],
+  "27": [
+   "shellder-iron-shell",
+   "shellder-pearl-sniper"
+  ],
+  "30": [
+   "shellder-fortress-shell",
+   "shellder-spike-barrage"
+  ]
+ },
+ "moves": {
+  "shellder-iron-defense": {
+   "id": "shellder-iron-defense",
+   "name": "Iron Defense",
+   "type": "normal",
+   "kind": "bond",
+   "bondCost": 1,
+   "power": 0,
+   "range": {
+    "min": 0,
+    "max": 0
+   },
+   "requiresLineOfSight": false,
+   "shape": {
+    "kind": "single"
+   },
+   "affects": "allies",
+   "effects": [
+    {
+     "kind": "status",
+     "status": "fortified",
+     "duration": 3
+    },
+    {
+     "kind": "status",
+     "status": "protected",
+     "duration": 1
+    }
+   ]
+  },
+  "shellder-icicle-spear": {
+   "id": "shellder-icicle-spear",
+   "name": "Icicle Spear",
+   "type": "ice",
+   "kind": "bond",
+   "category": "physical",
+   "bondCost": 2,
+   "power": 95,
+   "range": {
+    "min": 1,
+    "max": 3
+   },
+   "requiresLineOfSight": true,
+   "shape": {
+    "kind": "single"
+   },
+   "affects": "enemies"
+  },
+  "shellder-hydro-pump": {
+   "id": "shellder-hydro-pump",
+   "name": "Hydro Pump",
+   "type": "water",
+   "kind": "bond",
+   "category": "special",
+   "bondCost": 3,
+   "power": 100,
+   "range": {
+    "min": 1,
+    "max": 3
+   },
+   "requiresLineOfSight": true,
+   "shape": {
+    "kind": "single"
+   },
+   "affects": "enemies"
+  },
+  "shellder-ice-shard": {
+   "id": "shellder-ice-shard",
+   "name": "Ice Shard",
+   "type": "ice",
+   "kind": "special",
+   "category": "physical",
+   "cooldown": 2,
+   "power": 40,
+   "range": {
+    "min": 1,
+    "max": 2
+   },
+   "requiresLineOfSight": true,
+   "shape": {
+    "kind": "single"
+   },
+   "affects": "enemies"
+  },
+  "shellder-bubble-beam": {
+   "id": "shellder-bubble-beam",
+   "name": "Bubble Beam",
+   "type": "water",
+   "kind": "special",
+   "category": "special",
+   "cooldown": 3,
+   "power": 60,
+   "range": {
+    "min": 1,
+    "max": 2
+   },
+   "requiresLineOfSight": true,
+   "shape": {
+    "kind": "single"
+   },
+   "affects": "enemies",
+   "effects": [
+    {
+     "kind": "status",
+     "status": "slow",
+     "duration": 1
+    }
+   ]
+  },
+  "shellder-protect": {
+   "id": "shellder-protect",
+   "name": "Protect",
+   "type": "normal",
+   "kind": "special",
+   "cooldown": 4,
+   "power": 0,
+   "range": {
+    "min": 0,
+    "max": 0
+   },
+   "requiresLineOfSight": false,
+   "shape": {
+    "kind": "single"
+   },
+   "affects": "allies",
+   "effects": [
+    {
+     "kind": "status",
+     "status": "protected",
+     "duration": 1
+    }
+   ]
+  },
+  "shellder-razor-shell": {
+   "id": "shellder-razor-shell",
+   "name": "Razor Shell",
+   "type": "water",
+   "kind": "special",
+   "category": "physical",
+   "cooldown": 3,
+   "power": 65,
+   "range": {
+    "min": 1,
+    "max": 1
+   },
+   "requiresLineOfSight": false,
+   "shape": {
+    "kind": "single"
+   },
+   "affects": "enemies",
+   "effects": [
+    {
+     "kind": "status",
+     "status": "exposed",
+     "duration": 1
+    }
+   ]
+  },
+  "shellder-avalanche": {
+   "id": "shellder-avalanche",
+   "name": "Avalanche",
+   "type": "ice",
+   "kind": "special",
+   "category": "physical",
+   "cooldown": 4,
+   "power": 90,
+   "range": {
+    "min": 1,
+    "max": 1
+   },
+   "requiresLineOfSight": false,
+   "shape": {
+    "kind": "single"
+   },
+   "affects": "enemies"
+  },
+  "shellder-freeze-dry": {
+   "id": "shellder-freeze-dry",
+   "name": "Freeze-Dry",
+   "type": "ice",
+   "kind": "special",
+   "category": "special",
+   "cooldown": 4,
+   "power": 85,
+   "range": {
+    "min": 1,
+    "max": 2
+   },
+   "requiresLineOfSight": true,
+   "shape": {
+    "kind": "single"
+   },
+   "affects": "enemies",
+   "effects": [
+    {
+     "kind": "status",
+     "status": "slow",
+     "duration": 2
+    }
+   ]
+  },
+  "shellder-icicle-crash": {
+   "id": "shellder-icicle-crash",
+   "name": "Icicle Crash",
+   "type": "ice",
+   "kind": "special",
+   "category": "physical",
+   "cooldown": 5,
+   "power": 95,
+   "range": {
+    "min": 1,
+    "max": 2
+   },
+   "requiresLineOfSight": true,
+   "shape": {
+    "kind": "single"
+   },
+   "affects": "enemies"
+  },
+  "shellder-shell-smash": {
+   "id": "shellder-shell-smash",
+   "name": "Shell Smash",
+   "type": "normal",
+   "kind": "special",
+   "cooldown": 5,
+   "power": 0,
+   "range": {
+    "min": 0,
+    "max": 0
+   },
+   "requiresLineOfSight": false,
+   "shape": {
+    "kind": "single"
+   },
+   "affects": "allies",
+   "effects": [
+    {
+     "kind": "status",
+     "status": "focused",
+     "duration": 2
+    },
+    {
+     "kind": "status",
+     "status": "hasted",
+     "duration": 2
+    },
+    {
+     "kind": "status",
+     "status": "exposed",
+     "duration": 2
+    }
+   ]
+  }
+ },
+ "talents": {
+  "shellder-iron-defense": {
+   "id": "shellder-iron-defense",
+   "name": "Iron Defense",
+   "description": "Bond skill: hardens its shell like iron: Protected for 1 turn and Fortified for 3 turns.",
+   "grantsMove": "shellder-iron-defense"
+  },
+  "shellder-icicle-spear": {
+   "id": "shellder-icicle-spear",
+   "name": "Icicle Spear",
+   "description": "Bond skill: fires a volley of icicles at a foe up to 3 hexes away (Power 95, Attack).",
+   "grantsMove": "shellder-icicle-spear"
+  },
+  "shellder-hydro-pump": {
+   "id": "shellder-hydro-pump",
+   "name": "Hydro Pump",
+   "description": "Bond skill: a torrent of water at a foe up to 3 hexes away (Power 100, Sp. Atk).",
+   "grantsMove": "shellder-hydro-pump"
+  },
+  "shellder-shell-armor": {
+   "id": "shellder-shell-armor",
+   "name": "Shell Armor",
+   "description": "Takes 10% less damage.",
+   "mods": {
+    "damageTaken": 0.9
+   }
+  },
+  "shellder-skill-link": {
+   "id": "shellder-skill-link",
+   "name": "Skill Link",
+   "description": "Each consecutive hit on the same foe deals 10% more, up to 3 stacks.",
+   "mods": {
+    "furyCutter": 0.1
+   }
+  },
+  "shellder-ice-shard": {
+   "id": "shellder-ice-shard",
+   "name": "Ice Shard",
+   "description": "New skill: flicks a quick chunk of ice at a foe up to 2 hexes away (Power 40).",
+   "grantsMove": "shellder-ice-shard"
+  },
+  "shellder-bubble-beam": {
+   "id": "shellder-bubble-beam",
+   "name": "Bubble Beam",
+   "description": "New skill: a spray of bubbles at a foe up to 2 hexes away (Power 60), Slowing it for 1 turn.",
+   "grantsMove": "shellder-bubble-beam"
+  },
+  "shellder-hard-shell": {
+   "id": "shellder-hard-shell",
+   "name": "Hard Shell",
+   "description": "Takes 20% less damage while at full HP.",
+   "mods": {
+    "fullHpDamageTaken": 0.8
+   }
+  },
+  "shellder-clamp-hold": {
+   "id": "shellder-clamp-hold",
+   "name": "Clamp Hold",
+   "description": "Foes it engages take 15% more damage from its allies.",
+   "mods": {
+    "pinDamage": 1.15
+   }
+  },
+  "shellder-protect": {
+   "id": "shellder-protect",
+   "name": "Protect",
+   "description": "New skill: clamps its shell shut, becoming Protected for 1 turn.",
+   "grantsMove": "shellder-protect"
+  },
+  "shellder-razor-shell": {
+   "id": "shellder-razor-shell",
+   "name": "Razor Shell",
+   "description": "New skill: slashes a foe with the sharp edge of its shell (Power 65); Exposed 1 turn.",
+   "grantsMove": "shellder-razor-shell"
+  },
+  "shellder-sealed-shell": {
+   "id": "shellder-sealed-shell",
+   "name": "Sealed Shell",
+   "description": "Cannot be Burned or Poisoned.",
+   "mods": {
+    "statusImmune": [
+     "burn",
+     "poison"
+    ]
+   }
+  },
+  "shellder-tight-grip": {
+   "id": "shellder-tight-grip",
+   "name": "Tight Grip",
+   "description": "Its free strikes on foes breaking away deal 25% more damage.",
+   "mods": {
+    "strikeDamage": 1.25
+   }
+  },
+  "shellder-avalanche": {
+   "id": "shellder-avalanche",
+   "name": "Avalanche",
+   "description": "New skill: crashes a mass of ice onto the foe (Power 90).",
+   "grantsMove": "shellder-avalanche"
+  },
+  "shellder-freeze-dry": {
+   "id": "shellder-freeze-dry",
+   "name": "Freeze-Dry",
+   "description": "New skill: flash-freezes a foe up to 2 hexes away (Power 85), Slowing it for 2 turns.",
+   "grantsMove": "shellder-freeze-dry"
+  },
+  "shellder-icy-spikes": {
+   "id": "shellder-icy-spikes",
+   "name": "Icy Spikes",
+   "description": "Its hits on adjacent foes Slow them for 1 turn.",
+   "mods": {
+    "contactStatus": {
+     "status": "slow",
+     "duration": 1
+    }
+   }
+  },
+  "shellder-glacial-aim": {
+   "id": "shellder-glacial-aim",
+   "name": "Glacial Aim",
+   "description": "Its Ice moves deal 15% more damage.",
+   "mods": {
+    "typeDamage": {
+     "ice": 1.15
+    }
+   }
+  },
+  "shellder-icicle-crash": {
+   "id": "shellder-icicle-crash",
+   "name": "Icicle Crash",
+   "description": "New skill: drops huge icicles on a foe up to 2 hexes away (Power 95).",
+   "grantsMove": "shellder-icicle-crash"
+  },
+  "shellder-shell-smash": {
+   "id": "shellder-shell-smash",
+   "name": "Shell Smash",
+   "description": "New skill: breaks its shell open: Focused and Hasted for 2 turns, but Exposed for 2 turns.",
+   "grantsMove": "shellder-shell-smash"
+  },
+  "shellder-iron-shell": {
+   "id": "shellder-iron-shell",
+   "name": "Iron Shell",
+   "description": "Survives one knockout blow per battle at 1 HP.",
+   "mods": {
+    "sturdy": true
+   }
+  },
+  "shellder-pearl-sniper": {
+   "id": "shellder-pearl-sniper",
+   "name": "Pearl Sniper",
+   "description": "Deals 15% more damage to foes 2+ hexes away.",
+   "mods": {
+    "farDamage": 1.15
+   }
+  },
+  "shellder-fortress-shell": {
+   "id": "shellder-fortress-shell",
+   "name": "Fortress Shell",
+   "description": "Capstone. Takes 15% less damage; foes that hit it from an adjacent hex take 10 damage.",
+   "mods": {
+    "damageTaken": 0.85,
+    "thorns": 10
+   }
+  },
+  "shellder-spike-barrage": {
+   "id": "shellder-spike-barrage",
+   "name": "Spike Barrage",
+   "description": "Capstone. A knockout resets its skill cooldowns and lets it attack again.",
+   "mods": {
+    "koResetCooldowns": true,
+    "koRefreshBasic": true
+   }
+  }
+ }
+}

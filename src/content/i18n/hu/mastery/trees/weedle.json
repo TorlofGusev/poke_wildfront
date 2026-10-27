@@ -1,0 +1,73 @@
+{
+ "talents": {
+  "weedle-poison-jab": {
+   "description": "Bond képesség: mérges fullánkszúrás (Power 90, Attack), 2 körre Poisont okoz."
+  },
+  "weedle-u-turn": {
+   "description": "Bond képesség: lecsap egy ellenfélre (Power 60, Attack), majd szabad ütés nélkül elröppen."
+  },
+  "weedle-harden": {
+   "description": "Bond képesség: megkeményíti a páncélját, 2 körre Fortified lesz."
+  },
+  "weedle-potent-venom": {
+   "description": "A Poison típusú támadásai 15%-kal többet sebeznek."
+  },
+  "weedle-hard-shell": {
+   "description": "10%-kal kevesebb sebzést kap."
+  },
+  "weedle-string-shot": {
+   "description": "Új képesség: ragacsos selyem egy legfeljebb 2 hexnyire lévő ellenfélre, 2 körre Slow-t okoz."
+  },
+  "weedle-toxic": {
+   "description": "Új képesség: súlyosan megmérgez egy legfeljebb 2 hexnyire lévő ellenfelet, 3 körre Poison."
+  },
+  "weedle-toxic-hunter": {
+   "description": "20%-kal többet sebez a megmérgezett (Poison) ellenfeleknek."
+  },
+  "weedle-cocoon-memory": {
+   "description": "Teljes HP-n 20%-kal kevesebb sebzést kap."
+  },
+  "weedle-pin-missile": {
+   "description": "Új képesség: tüskezápor egy legfeljebb 2 hexnyire lévő ellenfélre (Power 70)."
+  },
+  "weedle-agility": {
+   "description": "Új képesség: ellazítja a testét, 2 körre Hasted lesz."
+  },
+  "weedle-sting-barrage": {
+   "description": "Ugyanazon ellenfélre mért minden egymást követő találat 10%-kal többet sebez, legfeljebb 3-szor."
+  },
+  "weedle-barbed-carapace": {
+   "description": "6 sebzést ad vissza a szomszédos hexről őt eltaláló ellenfeleknek."
+  },
+  "weedle-x-scissor": {
+   "description": "Új képesség: ollóként keresztezi a fullánkjait (Power 85), az ellenfél 1 körre Exposed lesz."
+  },
+  "weedle-focus-energy": {
+   "description": "Új képesség: felpörgeti magát, 2 körre Focused lesz."
+  },
+  "weedle-adrenaline": {
+   "description": "Ha a saját körében kiüt egy ellenfelet, 2 mozgáspontot visszanyer."
+  },
+  "weedle-hive-guard": {
+   "description": "Az általa lekötött ellenfelek 15%-kal több sebzést kapnak a szövetségeseitől."
+  },
+  "weedle-fell-stinger": {
+   "description": "Új képesség: végső szúrás (Power 90); ha ezzel üt ki, a csapat 1 Bondot kap."
+  },
+  "weedle-poison-gas": {
+   "description": "Új képesség: mérgező felhő legfeljebb 1 hexnyire, 1 hex körzetben 2 körre Poisont okoz."
+  },
+  "weedle-pursuit": {
+   "description": "A menekülő ellenfelekre mért szabad ütései 25%-kal többet sebeznek."
+  },
+  "weedle-venom-sacs": {
+   "description": "Az általa okozott státuszok 1 körrel tovább tartanak."
+  },
+  "weedle-hornet-frenzy": {
+   "description": "Csúcsképesség. Ha a saját körében kiüt egy ellenfelet, újra támadhat; 10%-kal többet sebez."
+  },
+  "weedle-cocoon-revival": {
+   "description": "Csúcs. Swarm: Bug mozdulatai 15%-kal többet sebeznek, és minden segítő társ további 10%-ot ad."
+  }
+ }
+}

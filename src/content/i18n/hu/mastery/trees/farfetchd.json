@@ -1,0 +1,73 @@
+{
+ "talents": {
+  "farfetchd-acrobatics": {
+   "description": "Bond képesség: legfeljebb 2 hexnyit röppen egy ellenfélhez (Erő 60) és leköti."
+  },
+  "farfetchd-air-slash": {
+   "description": "Bond képesség: légpenge egy legfeljebb 3 hexnyire lévő ellenfélre (Erő 85, Kül. Tám.)."
+  },
+  "farfetchd-defiant": {
+   "description": "20%-kal többet sebez, amíg 2 vagy több ellenfél áll mellette."
+  },
+  "farfetchd-keen-eye": {
+   "description": "Távolsági mozdulatai átlőnek az útban álló Pokémonok felett."
+  },
+  "farfetchd-swords-dance": {
+   "description": "Új képesség: eszeveszett póréhagyma-tánc, 2 körre Fókuszált lesz."
+  },
+  "farfetchd-air-cutter": {
+   "description": "Új képesség: borotvaéles szél egy legfeljebb 2 hexnyire lévő ellenfélre (Erő 55)."
+  },
+  "farfetchd-leek-guard": {
+   "description": "10%-kal kevesebb sebzést kap: póréhagymájával hárít."
+  },
+  "farfetchd-fury-cutter": {
+   "description": "Minden egymást követő találat ugyanazon az ellenfélen 10%-kal többet sebez, legfeljebb 3-szor."
+  },
+  "farfetchd-night-slash": {
+   "description": "Új képesség: gyors vágás egy résen át (Erő 70), 1 körre Kitetté teszi az ellenfelet."
+  },
+  "farfetchd-stick-fighter": {
+   "description": "15%-kal többet sebez a szomszédos ellenfelekre."
+  },
+  "farfetchd-tailwind": {
+   "description": "2 mozgáspontot kap vissza, ha saját körében kiüt egy ellenfelet."
+  },
+  "farfetchd-brave-bird": {
+   "description": "Új képesség: vakmerő zuhanórepülés (Erő 100)."
+  },
+  "farfetchd-hurricane": {
+   "description": "Új képesség: süvítő szélvihar legfeljebb 1 hexnyire (Erő 90), 1 hex körzetet talál el."
+  },
+  "farfetchd-inner-focus": {
+   "description": "Nem lehet elaltatni vagy megbénítani."
+  },
+  "farfetchd-duelist": {
+   "description": "20%-kal többet sebez a teljes HP-jú ellenfelekre."
+  },
+  "farfetchd-sky-attack": {
+   "description": "Új képesség: a magasból lecsap egy legfeljebb 2 hexnyire lévő ellenfélre (Erő 100)."
+  },
+  "farfetchd-leek-combo": {
+   "description": "Ha saját körében kiüt egy ellenfelet, újra használhatja alaptámadását."
+  },
+  "farfetchd-flock-call": {
+   "description": "A csapat 1 Kötelék pontot kap, ha kombót ér el."
+  },
+  "farfetchd-leek-master": {
+   "description": "Csúcs. Egy kiütés lenullázza képességei töltési idejét; 20%-kal többet sebez a fele HP alatt."
+  },
+  "farfetchd-sky-sovereign": {
+   "description": "Capstone. 20%-kal többet sebez az Exposed ellenfeleknek; Flying támadásai 15%-kal többet sebeznek."
+  },
+  "farfetchd-double-edge": {
+   "description": "Bond képesség: vakmerő roham póréhagymával előre (Erő 95, Támadás)."
+  },
+  "farfetchd-razor-wind": {
+   "description": "Új képesség: szárnycsapásai szélpengéket küldenek minden szomszédos ellenfélre (Erő 85)."
+  },
+  "farfetchd-leer": {
+   "description": "Új képesség: éles pillantás, amely 2 körre Marked állapotba hozza a szomszédos ellenfeleket."
+  }
+ }
+}

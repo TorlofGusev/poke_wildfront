@@ -76,7 +76,7 @@
  "skill-feint-attack": {
   "id": "skill-feint-attack",
   "name": "Sonic Boom",
-  "description": "New skill: strikes from 2 tiles, ignoring line of sight.",
+  "description": "New skill: strikes from 2 hexes, ignoring line of sight.",
   "grantsMove": "feint-attack"
  },
  "type-fire": {
@@ -96,7 +96,7 @@
  "type-water": {
   "id": "type-water",
   "name": "Torrent",
-  "description": "Pushes it causes go 1 tile further; +1 HP.",
+  "description": "Pushes it causes go 1 hex further; +1 HP.",
   "requiresType": "water",
   "mods": {
    "pushBonus": 1
@@ -199,7 +199,7 @@
  "type-psychic": {
   "id": "type-psychic",
   "name": "Telepathy",
-  "description": "Pulls it causes go 1 tile further; +1 Sp. Atk.",
+  "description": "Pulls it causes go 1 hex further; +1 Sp. Atk.",
   "requiresType": "psychic",
   "mods": {
    "pullBonus": 1
@@ -383,7 +383,7 @@
  "skill-swift": {
   "id": "skill-swift",
   "name": "Swift",
-  "description": "New skill: a star volley that ignores line of sight, 2–5 tiles.",
+  "description": "New skill: a star volley that ignores line of sight, 2 hexes away.",
   "grantsMove": "swift"
  },
  "marksman": {
@@ -841,7 +841,7 @@
  "gale": {
   "id": "gale",
   "name": "Gale",
-  "description": "Pushes it causes go 1 tile further.",
+  "description": "Pushes it causes go 1 hex further.",
   "mods": {
    "pushBonus": 1
   },
@@ -897,7 +897,7 @@
  "skill-psybeam": {
   "id": "skill-psybeam",
   "name": "Psybeam",
-  "description": "New skill: a psychic beam along a line.",
+  "description": "New skill: a psychic beam along a line (Power 45); Confused 2 turns.",
   "grantsMove": "psybeam",
   "requiresType": "psychic"
  },
@@ -967,7 +967,7 @@
  "rough-skin": {
   "id": "rough-skin",
   "name": "Rough Skin",
-  "description": "Foes that hit it from an adjacent tile take 6 damage; +1 Defense.",
+  "description": "Foes that hit it from an adjacent hex take 6 damage; +1 Defense.",
   "mods": {
    "thorns": 6
   },
@@ -1229,7 +1229,7 @@
  "puppeteer": {
   "id": "puppeteer",
   "name": "Puppeteer",
-  "description": "Capstone. Pushes and pulls it causes go 1 tile further, and pushing a foe into an obstacle deals 10 extra damage.",
+  "description": "Capstone. Pushes and pulls it causes go 1 hex further, and pushing a foe into an obstacle deals 10 extra damage.",
   "mods": {
    "pushBonus": 1,
    "pullBonus": 1,
@@ -1264,7 +1264,7 @@
  "steady-aim": {
   "id": "steady-aim",
   "name": "Steady Aim",
-  "description": "+15% damage against foes 3+ tiles away.",
+  "description": "+15% damage against foes 2+ hexes away.",
   "mods": {
    "farDamage": 1.15
   }
@@ -1281,7 +1281,7 @@
  "deadeye": {
   "id": "deadeye",
   "name": "Deadeye",
-  "description": "Capstone. +25% damage against foes 3+ hexes away; ranged moves reach 1 hex further (up to 3; Bond moves no limit) and fire over Pokémon in the way.",
+  "description": "Capstone. +25% damage against foes 2+ hexes away; ranged moves reach 1 hex further (up to 3; Bond moves no limit) and fire over Pokémon in the way.",
   "mods": {
    "farDamage": 1.25,
    "rangeBonus": 1,
@@ -1300,7 +1300,7 @@
  "sniper": {
   "id": "sniper",
   "name": "Sniper",
-  "description": "+10% damage against foes 3+ tiles away.",
+  "description": "+10% damage against foes 2+ hexes away.",
   "mods": {
    "farDamage": 1.1
   }

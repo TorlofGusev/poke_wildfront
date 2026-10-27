@@ -1,0 +1,73 @@
+{
+ "talents": {
+  "doduo-brave-bird": {
+   "description": "Bond képesség: vakmerő teljes sebességű roham (Erő 100, Támadás)."
+  },
+  "doduo-quick-attack": {
+   "description": "Bond képesség: legfeljebb 2 hexnyit sprintel egy ellenfélhez (Erő 50, Támadás) és leköti."
+  },
+  "doduo-roost": {
+   "description": "Bond képesség: leül pihentetni a lábait, és 50 HP-t gyógyul."
+  },
+  "doduo-run-away": {
+   "description": "Szabad csapás nélkül léphet el a vele harcban álló ellenfelektől."
+  },
+  "doduo-early-bird": {
+   "description": "Köre elején lerázza az ellenfelek által rárakott állapotokat."
+  },
+  "doduo-pluck": {
+   "description": "Új képesség: megcsípi és tépi az ellenfelet (Erő 60)."
+  },
+  "doduo-uproar": {
+   "description": "Új képesség: mindkét fej egyszerre rikolt, minden szomszédos ellenfelet eltalál (Erő 55)."
+  },
+  "doduo-rapid-pecking": {
+   "description": "Minden egymást követő találat ugyanazon az ellenfélen 10%-kal többet sebez, legfeljebb 3-szor."
+  },
+  "doduo-watchful-heads": {
+   "description": "A kiszakadó ellenfelekre mért szabad csapásai 25%-kal többet sebeznek."
+  },
+  "doduo-rage": {
+   "description": "Új képesség: dühöngő, tomboló csípés egy szomszédos ellenfélre (Power 70)."
+  },
+  "doduo-swift": {
+   "description": "Új képesség: sosem tévesztő csillagsugarak egy legfeljebb 2 hexnyire lévő ellenfélre (Erő 60)."
+  },
+  "doduo-three-headed-fury": {
+   "description": "Ha saját körében kiüt egy ellenfelet, újra használhatja alaptámadását."
+  },
+  "doduo-tireless-lungs": {
+   "description": "Minden köre elején maximális HP-ja 3%-át gyógyítja."
+  },
+  "doduo-double-hit": {
+   "description": "Új képesség: mindkét feje sorban lecsap az ellenfélre (Erő 90)."
+  },
+  "doduo-acupressure": {
+   "description": "Új képesség: a fejek egymás nyomópontjait nyomkodják: 2 körre Fókuszált és Felgyorsult."
+  },
+  "doduo-runners-high": {
+   "description": "2 mozgáspontot kap vissza, ha saját körében kiüt egy ellenfelet."
+  },
+  "doduo-pack-hunter": {
+   "description": "15%-kal többet sebez a szövetségeseivel harcban álló ellenfelekre."
+  },
+  "doduo-double-edge": {
+   "description": "Új képesség: életveszélyes rohamtámadás (Erő 100)."
+  },
+  "doduo-hyper-voice": {
+   "description": "Új képesség: a három fej egyszerre kiált, minden szomszédos ellenfelet eltalál (Erő 90)."
+  },
+  "doduo-endurance-runner": {
+   "description": "10%-kal kevesebb sebzést kap."
+  },
+  "doduo-triple-threat": {
+   "description": "15%-kal többet sebez a szomszédos ellenfelekre."
+  },
+  "doduo-stampede-king": {
+   "description": "Csúcs. Egy kiütés lenullázza képességei töltési idejét; 20%-kal többet sebez a teljes HP-jú ellenfelekre."
+  },
+  "doduo-three-minds": {
+   "description": "Csúcs. 20%-kal többet sebez állapottal sújtott ellenfelekre; minden kiütése 1 Bondot ad a csapatnak."
+  }
+ }
+}

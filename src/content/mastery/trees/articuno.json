@@ -1,0 +1,491 @@
+{
+ "line": [
+  "articuno"
+ ],
+ "focus": [
+  {
+   "stat": "spAttack",
+   "skill": "articuno-freeze-dry"
+  },
+  {
+   "stat": "spDefense",
+   "skill": "articuno-aurora-veil"
+  },
+  {
+   "stat": "speed",
+   "skill": "articuno-tailwind"
+  }
+ ],
+ "rows": {
+  "4": [
+   "articuno-snow-cloak",
+   "articuno-lingering-chill"
+  ],
+  "6": [
+   "articuno-powder-snow",
+   "articuno-mind-reader"
+  ],
+  "9": [
+   "articuno-glacial-grace",
+   "articuno-frost-plumage"
+  ],
+  "12": [
+   "articuno-icy-wind",
+   "articuno-hail"
+  ],
+  "15": [
+   "articuno-crystal-wings",
+   "articuno-endless-winter"
+  ],
+  "18": [
+   "articuno-hurricane",
+   "articuno-frost-breath"
+  ],
+  "21": [
+   "articuno-lofty-glide",
+   "articuno-brittle-frost"
+  ],
+  "24": [
+   "articuno-sheer-cold",
+   "articuno-sky-attack"
+  ],
+  "27": [
+   "articuno-diamond-dust",
+   "articuno-frost-armor"
+  ],
+  "30": [
+   "articuno-freezing-legend",
+   "articuno-eternal-winter"
+  ]
+ },
+ "moves": {
+  "articuno-freeze-dry": {
+   "id": "articuno-freeze-dry",
+   "name": "Freeze-Dry",
+   "type": "ice",
+   "kind": "bond",
+   "category": "special",
+   "bondCost": 3,
+   "power": 80,
+   "range": {
+    "min": 1,
+    "max": 3
+   },
+   "requiresLineOfSight": true,
+   "shape": {
+    "kind": "single"
+   },
+   "affects": "enemies",
+   "effects": [
+    {
+     "kind": "status",
+     "status": "freeze",
+     "duration": 1
+    }
+   ]
+  },
+  "articuno-aurora-veil": {
+   "id": "articuno-aurora-veil",
+   "name": "Aurora Veil",
+   "type": "ice",
+   "kind": "bond",
+   "bondCost": 2,
+   "power": 0,
+   "range": {
+    "min": 0,
+    "max": 0
+   },
+   "requiresLineOfSight": false,
+   "shape": {
+    "kind": "burst",
+    "radius": 1
+   },
+   "affects": "allies",
+   "effects": [
+    {
+     "kind": "status",
+     "status": "fortified",
+     "duration": 2
+    }
+   ]
+  },
+  "articuno-tailwind": {
+   "id": "articuno-tailwind",
+   "name": "Tailwind",
+   "type": "flying",
+   "kind": "bond",
+   "bondCost": 1,
+   "power": 0,
+   "range": {
+    "min": 0,
+    "max": 0
+   },
+   "requiresLineOfSight": false,
+   "shape": {
+    "kind": "burst",
+    "radius": 2
+   },
+   "affects": "allies",
+   "effects": [
+    {
+     "kind": "status",
+     "status": "hasted",
+     "duration": 2
+    }
+   ]
+  },
+  "articuno-powder-snow": {
+   "id": "articuno-powder-snow",
+   "name": "Powder Snow",
+   "type": "ice",
+   "kind": "special",
+   "category": "special",
+   "cooldown": 2,
+   "power": 40,
+   "range": {
+    "min": 1,
+    "max": 1
+   },
+   "requiresLineOfSight": true,
+   "shape": {
+    "kind": "burst",
+    "radius": 1
+   },
+   "affects": "enemies",
+   "effects": [
+    {
+     "kind": "status",
+     "status": "slow",
+     "duration": 1
+    }
+   ]
+  },
+  "articuno-mind-reader": {
+   "id": "articuno-mind-reader",
+   "name": "Mind Reader",
+   "type": "normal",
+   "kind": "special",
+   "cooldown": 3,
+   "power": 0,
+   "range": {
+    "min": 1,
+    "max": 2
+   },
+   "requiresLineOfSight": true,
+   "shape": {
+    "kind": "single"
+   },
+   "affects": "enemies",
+   "effects": [
+    {
+     "kind": "status",
+     "status": "marked",
+     "duration": 2
+    }
+   ]
+  },
+  "articuno-icy-wind": {
+   "id": "articuno-icy-wind",
+   "name": "Icy Wind",
+   "type": "ice",
+   "kind": "special",
+   "category": "special",
+   "cooldown": 3,
+   "power": 55,
+   "range": {
+    "min": 1,
+    "max": 2
+   },
+   "requiresLineOfSight": true,
+   "shape": {
+    "kind": "line",
+    "length": 2
+   },
+   "affects": "enemies",
+   "effects": [
+    {
+     "kind": "status",
+     "status": "slow",
+     "duration": 2
+    }
+   ]
+  },
+  "articuno-hail": {
+   "id": "articuno-hail",
+   "name": "Hail",
+   "type": "ice",
+   "kind": "special",
+   "category": "special",
+   "cooldown": 4,
+   "power": 35,
+   "range": {
+    "min": 1,
+    "max": 1
+   },
+   "requiresLineOfSight": true,
+   "shape": {
+    "kind": "burst",
+    "radius": 1
+   },
+   "affects": "enemies"
+  },
+  "articuno-hurricane": {
+   "id": "articuno-hurricane",
+   "name": "Hurricane",
+   "type": "flying",
+   "kind": "special",
+   "category": "special",
+   "cooldown": 4,
+   "power": 90,
+   "range": {
+    "min": 1,
+    "max": 2
+   },
+   "requiresLineOfSight": true,
+   "shape": {
+    "kind": "single"
+   },
+   "affects": "enemies"
+  },
+  "articuno-frost-breath": {
+   "id": "articuno-frost-breath",
+   "name": "Frost Breath",
+   "type": "ice",
+   "kind": "special",
+   "category": "special",
+   "cooldown": 3,
+   "power": 60,
+   "range": {
+    "min": 1,
+    "max": 2
+   },
+   "requiresLineOfSight": true,
+   "shape": {
+    "kind": "single"
+   },
+   "affects": "enemies",
+   "effects": [
+    {
+     "kind": "status",
+     "status": "exposed",
+     "duration": 1
+    }
+   ]
+  },
+  "articuno-sheer-cold": {
+   "id": "articuno-sheer-cold",
+   "name": "Sheer Cold",
+   "type": "ice",
+   "kind": "special",
+   "category": "special",
+   "cooldown": 5,
+   "power": 95,
+   "range": {
+    "min": 1,
+    "max": 2
+   },
+   "requiresLineOfSight": true,
+   "shape": {
+    "kind": "single"
+   },
+   "affects": "enemies",
+   "effects": [
+    {
+     "kind": "status",
+     "status": "freeze",
+     "duration": 1
+    }
+   ]
+  },
+  "articuno-sky-attack": {
+   "id": "articuno-sky-attack",
+   "name": "Sky Attack",
+   "type": "flying",
+   "kind": "special",
+   "category": "physical",
+   "cooldown": 5,
+   "power": 90,
+   "range": {
+    "min": 1,
+    "max": 2
+   },
+   "requiresLineOfSight": true,
+   "shape": {
+    "kind": "single"
+   },
+   "affects": "enemies"
+  }
+ },
+ "talents": {
+  "articuno-freeze-dry": {
+   "id": "articuno-freeze-dry",
+   "name": "Freeze-Dry",
+   "description": "Bond skill: a flash-freeze up to 3 hexes away (Power 80, Sp. Atk) that Freezes for 1 turn.",
+   "grantsMove": "articuno-freeze-dry"
+  },
+  "articuno-aurora-veil": {
+   "id": "articuno-aurora-veil",
+   "name": "Aurora Veil",
+   "description": "Bond skill: a shimmering aurora over itself and adjacent allies: Fortified for 2 turns.",
+   "grantsMove": "articuno-aurora-veil"
+  },
+  "articuno-tailwind": {
+   "id": "articuno-tailwind",
+   "name": "Tailwind",
+   "description": "Bond skill: an icy gale: itself and allies within 2 hexes are Hasted for 2 turns.",
+   "grantsMove": "articuno-tailwind"
+  },
+  "articuno-snow-cloak": {
+   "id": "articuno-snow-cloak",
+   "name": "Snow Cloak",
+   "description": "Hides in drifting snow: takes 15% less damage.",
+   "mods": {
+    "damageTaken": 0.85
+   }
+  },
+  "articuno-lingering-chill": {
+   "id": "articuno-lingering-chill",
+   "name": "Ice Body",
+   "description": "Heals 4% of max HP at the start of each turn.",
+   "mods": {
+    "healPerTurn": 0.04
+   }
+  },
+  "articuno-powder-snow": {
+   "id": "articuno-powder-snow",
+   "name": "Powder Snow",
+   "description": "New skill: powdery snow over a 1-hex area up to 1 hex away (Power 40), Slowing 1 turn.",
+   "grantsMove": "articuno-powder-snow"
+  },
+  "articuno-mind-reader": {
+   "id": "articuno-mind-reader",
+   "name": "Mind Reader",
+   "description": "New skill: reads a foe up to 2 hexes away, leaving it Marked for 2 turns.",
+   "grantsMove": "articuno-mind-reader"
+  },
+  "articuno-glacial-grace": {
+   "id": "articuno-glacial-grace",
+   "name": "Glacial Grace",
+   "description": "Deals 15% more damage to foes 2+ hexes away.",
+   "mods": {
+    "farDamage": 1.15
+   }
+  },
+  "articuno-frost-plumage": {
+   "id": "articuno-frost-plumage",
+   "name": "Frost Plumage",
+   "description": "Takes 20% less damage while at full HP.",
+   "mods": {
+    "fullHpDamageTaken": 0.8
+   }
+  },
+  "articuno-icy-wind": {
+   "id": "articuno-icy-wind",
+   "name": "Icy Wind",
+   "description": "New skill: a freezing wind along a 2-hex line (Power 55) that Slows for 2 turns.",
+   "grantsMove": "articuno-icy-wind"
+  },
+  "articuno-hail": {
+   "id": "articuno-hail",
+   "name": "Hail",
+   "description": "New skill: a hailstorm on a 1-hex area up to 1 hex away (Power 35).",
+   "grantsMove": "articuno-hail"
+  },
+  "articuno-crystal-wings": {
+   "id": "articuno-crystal-wings",
+   "name": "Crystal Wings",
+   "description": "Its wings of ice: its Ice moves deal 25% more damage.",
+   "mods": {
+    "typeDamage": {
+     "ice": 1.25
+    }
+   }
+  },
+  "articuno-endless-winter": {
+   "id": "articuno-endless-winter",
+   "name": "Mist",
+   "description": "Wrapped in mist: sheds statuses foes put on it at the start of its turn.",
+   "mods": {
+    "shedStatuses": true
+   }
+  },
+  "articuno-hurricane": {
+   "id": "articuno-hurricane",
+   "name": "Hurricane",
+   "description": "New skill: a howling storm at a foe up to 2 hexes away (Power 90).",
+   "grantsMove": "articuno-hurricane"
+  },
+  "articuno-frost-breath": {
+   "id": "articuno-frost-breath",
+   "name": "Frost Breath",
+   "description": "New skill: always-critical icy breath up to 2 hexes away (Power 60); Exposed 1 turn.",
+   "grantsMove": "articuno-frost-breath"
+  },
+  "articuno-lofty-glide": {
+   "id": "articuno-lofty-glide",
+   "name": "Lofty Glide",
+   "description": "Glides away from engaged foes without drawing free strikes.",
+   "mods": {
+    "disengage": true
+   }
+  },
+  "articuno-brittle-frost": {
+   "id": "articuno-brittle-frost",
+   "name": "Brittle Frost",
+   "description": "Deals 20% more damage to Slowed foes.",
+   "mods": {
+    "vsStatusIdDamage": {
+     "slow": 1.2
+    }
+   }
+  },
+  "articuno-sheer-cold": {
+   "id": "articuno-sheer-cold",
+   "name": "Sheer Cold",
+   "description": "New skill: absolute-zero cold at a foe up to 2 hexes away (Power 95); Frozen 1 turn.",
+   "grantsMove": "articuno-sheer-cold"
+  },
+  "articuno-sky-attack": {
+   "id": "articuno-sky-attack",
+   "name": "Sky Attack",
+   "description": "New skill: dives from the sky onto a foe up to 2 hexes away (Power 90).",
+   "grantsMove": "articuno-sky-attack"
+  },
+  "articuno-diamond-dust": {
+   "id": "articuno-diamond-dust",
+   "name": "Diamond Dust",
+   "description": "Deals 15% more damage to foes carrying any status.",
+   "mods": {
+    "vsStatusDamage": 1.15
+   }
+  },
+  "articuno-frost-armor": {
+   "id": "articuno-frost-armor",
+   "name": "Cold Front",
+   "description": "Deals 20% more damage to foes at full HP.",
+   "mods": {
+    "fullHpTargetDamage": 1.2
+   }
+  },
+  "articuno-freezing-legend": {
+   "id": "articuno-freezing-legend",
+   "name": "Freezing Legend",
+   "description": "Capstone. Statuses it inflicts last 1 turn longer; deals 25% more damage to Frozen foes.",
+   "mods": {
+    "statusDurationBonus": 1,
+    "vsStatusIdDamage": {
+     "freeze": 1.25
+    }
+   }
+  },
+  "articuno-eternal-winter": {
+   "id": "articuno-eternal-winter",
+   "name": "Eternal Winter",
+   "description": "Capstone. Its ranged moves reach 1 hex farther; foes it statused pass that status on when they faint.",
+   "mods": {
+    "rangeBonus": 1,
+    "statusSpreadOnKo": true
+   }
+  }
+ }
+}

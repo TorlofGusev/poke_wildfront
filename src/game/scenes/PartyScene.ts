@@ -2,7 +2,7 @@ import Phaser from "phaser";
 import { playMusic } from "../music";
 import { CAMP, CONTENT, MEALS, PROGRESSION, WORLD_CONTENT } from "../../content";
 import { canCook, KNOCKOUTS_TO_DEATH, MAX_PARTY_SIZE, memberMaxHp, rest, type MealDef, type PartyMember } from "../../core/party";
-import { describeModifiers } from "../ui/describeEffects";
+import { describeModifiers, focusLabel } from "../ui/describeEffects";
 import { pendingChoice, xpToNext } from "../../core/progression";
 import { currentWorld, session } from "../session";
 import { portraitKey } from "../sprites";
@@ -116,7 +116,7 @@ export class PartyScene extends Phaser.Scene {
   private card(x: number, y: number, m: PartyMember): void {
     const s = CONTENT.species[m.speciesId]!;
     const pending = pendingChoice(CONTENT, PROGRESSION, m);
-    const waiting = [pending === "evolution" ? t("choose its evolution") : pending === "role" ? t("choose role & mastery type") : pending === "talent" ? t("learn a mastery") : "", m.unspentPoints ? (m.unspentPoints > 1 ? t("{n} stat points", { n: m.unspentPoints }) : t("{n} stat point", { n: m.unspentPoints })) : ""].filter(Boolean);
+    const waiting = [pending === "evolution" ? t("choose its evolution") : pending === "focus" ? t("choose its focus") : pending === "talent" ? t("learn a mastery") : "", m.unspentPoints ? (m.unspentPoints > 1 ? t("{n} stat points", { n: m.unspentPoints }) : t("{n} stat point", { n: m.unspentPoints })) : ""].filter(Boolean);
     const bg = this.add.rectangle(x, y, CARD_W, CARD_H, 0x1c2130).setOrigin(0)
       .setStrokeStyle(waiting.length ? 2 : 1, waiting.length ? 0xf5d76e : m.knockouts === 2 ? 0xd0021b : 0x3a4560);
     bg.setInteractive({ useHandCursor: true }).on("pointerdown", () => this.open(m));
@@ -124,7 +124,7 @@ export class PartyScene extends Phaser.Scene {
 
     const max = memberMaxHp(CONTENT, PROGRESSION, m);
     const frac = m.hp / max;
-    const role = m.role ? PROGRESSION.roles[m.role]!.name : t("no role yet");
+    const role = m.focus ? focusLabel(m.focus) : t("no focus yet");
     const held = m.heldItem ? PROGRESSION.items[m.heldItem]!.name : t("no item");
     const pips = "●".repeat(m.knockouts) + "○".repeat(KNOCKOUTS_TO_DEATH - m.knockouts);
     // Text first; the HP bar goes below however tall the text turned out (fonts are larger on phones).

@@ -27,6 +27,10 @@ describe("content integrity", () => {
       expect(CONTENT.typeChart.chart).toHaveProperty(m.type);
       expect(m.range.min).toBeLessThanOrEqual(m.range.max);
       if (m.kind === "special") expect(m.cooldown, `${id} cooldown`).toBeGreaterThan(0);
+      // Nothing hits across the board: reach (range + area, or a line's length) is at most 2; 3 only for
+      // ultimates and Bond moves costing 2+.
+      const reach = Math.max(m.range.max + (m.shape.kind === "burst" ? m.shape.radius : 0), m.shape.kind === "line" ? m.shape.length : 0);
+      expect(reach, `${id} reach`).toBeLessThanOrEqual(m.kind === "ultimate" || (m.kind === "bond" && (m.bondCost ?? 0) >= 2) ? 3 : 2);
       for (const e of m.effects ?? []) if (e.kind === "status") expect(CONTENT.statuses).toHaveProperty(e.status);
     }
   });

@@ -1,0 +1,508 @@
+{
+ "line": [
+  "seel",
+  "dewgong"
+ ],
+ "canonLevelUp": [
+  "seel-rest"
+ ],
+ "focus": [
+  {
+   "stat": "hp",
+   "skill": "seel-rest"
+  },
+  {
+   "stat": "spDefense",
+   "skill": "seel-safeguard"
+  },
+  {
+   "stat": "spAttack",
+   "skill": "seel-surf"
+  }
+ ],
+ "rows": {
+  "4": [
+   "seel-hydration",
+   "seel-blubber"
+  ],
+  "6": [
+   "seel-brine",
+   "seel-aqua-jet"
+  ],
+  "9": [
+   "seel-cold-water",
+   "seel-ice-body"
+  ],
+  "12": [
+   "seel-bubble-beam",
+   "seel-growl"
+  ],
+  "15": [
+   "seel-diving-hunter",
+   "seel-thick-blubber"
+  ],
+  "18": [
+   "seel-frost-breath",
+   "seel-ice-wall"
+  ],
+  "21": [
+   "seel-polar-hunter",
+   "seel-arctic-hide"
+  ],
+  "24": [
+   "seel-sheer-cold",
+   "seel-whirlpool"
+  ],
+  "27": [
+   "seel-arctic-stamina",
+   "seel-cold-front"
+  ],
+  "30": [
+   "seel-polar-guardian",
+   "seel-blizzard-lord"
+  ]
+ },
+ "moves": {
+  "seel-rest": {
+   "id": "seel-rest",
+   "name": "Rest",
+   "type": "psychic",
+   "kind": "bond",
+   "bondCost": 1,
+   "power": 0,
+   "range": {
+    "min": 0,
+    "max": 0
+   },
+   "requiresLineOfSight": false,
+   "shape": {
+    "kind": "single"
+   },
+   "affects": "allies",
+   "effects": [
+    {
+     "kind": "cleanse"
+    },
+    {
+     "kind": "heal",
+     "amount": 70
+    },
+    {
+     "kind": "status",
+     "status": "sleep",
+     "duration": 2
+    }
+   ]
+  },
+  "seel-surf": {
+   "id": "seel-surf",
+   "name": "Surf",
+   "type": "water",
+   "kind": "bond",
+   "category": "special",
+   "bondCost": 3,
+   "power": 85,
+   "range": {
+    "min": 1,
+    "max": 2
+   },
+   "requiresLineOfSight": false,
+   "shape": {
+    "kind": "burst",
+    "radius": 1
+   },
+   "affects": "enemies"
+  },
+  "seel-brine": {
+   "id": "seel-brine",
+   "name": "Brine",
+   "type": "water",
+   "kind": "special",
+   "category": "special",
+   "cooldown": 2,
+   "power": 60,
+   "range": {
+    "min": 1,
+    "max": 2
+   },
+   "requiresLineOfSight": true,
+   "shape": {
+    "kind": "single"
+   },
+   "affects": "enemies"
+  },
+  "seel-aqua-jet": {
+   "id": "seel-aqua-jet",
+   "name": "Aqua Jet",
+   "type": "water",
+   "kind": "special",
+   "category": "physical",
+   "cooldown": 2,
+   "power": 40,
+   "range": {
+    "min": 1,
+    "max": 2
+   },
+   "requiresLineOfSight": false,
+   "shape": {
+    "kind": "single"
+   },
+   "affects": "enemies",
+   "effects": [
+    {
+     "kind": "engage"
+    }
+   ]
+  },
+  "seel-bubble-beam": {
+   "id": "seel-bubble-beam",
+   "name": "Bubble Beam",
+   "type": "water",
+   "kind": "special",
+   "category": "special",
+   "cooldown": 3,
+   "power": 65,
+   "range": {
+    "min": 1,
+    "max": 2
+   },
+   "requiresLineOfSight": true,
+   "shape": {
+    "kind": "single"
+   },
+   "affects": "enemies",
+   "effects": [
+    {
+     "kind": "status",
+     "status": "slow",
+     "duration": 1
+    }
+   ]
+  },
+  "seel-frost-breath": {
+   "id": "seel-frost-breath",
+   "name": "Frost Breath",
+   "type": "ice",
+   "kind": "special",
+   "category": "special",
+   "cooldown": 4,
+   "power": 80,
+   "range": {
+    "min": 1,
+    "max": 2
+   },
+   "requiresLineOfSight": true,
+   "shape": {
+    "kind": "single"
+   },
+   "affects": "enemies",
+   "effects": [
+    {
+     "kind": "status",
+     "status": "exposed",
+     "duration": 1
+    }
+   ]
+  },
+  "seel-ice-wall": {
+   "id": "seel-ice-wall",
+   "name": "Ice Wall",
+   "type": "ice",
+   "kind": "special",
+   "cooldown": 5,
+   "power": 0,
+   "range": {
+    "min": 0,
+    "max": 1
+   },
+   "requiresLineOfSight": false,
+   "shape": {
+    "kind": "burst",
+    "radius": 1
+   },
+   "affects": "allies",
+   "effects": [
+    {
+     "kind": "status",
+     "status": "fortified",
+     "duration": 2
+    }
+   ]
+  },
+  "seel-sheer-cold": {
+   "id": "seel-sheer-cold",
+   "name": "Sheer Cold",
+   "type": "ice",
+   "kind": "special",
+   "category": "special",
+   "cooldown": 5,
+   "power": 90,
+   "range": {
+    "min": 1,
+    "max": 1
+   },
+   "requiresLineOfSight": false,
+   "shape": {
+    "kind": "single"
+   },
+   "affects": "enemies",
+   "effects": [
+    {
+     "kind": "status",
+     "status": "freeze",
+     "duration": 1
+    }
+   ]
+  },
+  "seel-whirlpool": {
+   "id": "seel-whirlpool",
+   "name": "Whirlpool",
+   "type": "water",
+   "kind": "special",
+   "category": "special",
+   "cooldown": 4,
+   "power": 45,
+   "range": {
+    "min": 1,
+    "max": 2
+   },
+   "requiresLineOfSight": true,
+   "shape": {
+    "kind": "single"
+   },
+   "affects": "enemies",
+   "effects": [
+    {
+     "kind": "status",
+     "status": "slow",
+     "duration": 3
+    }
+   ]
+  },
+  "seel-safeguard": {
+   "id": "seel-safeguard",
+   "name": "Safeguard",
+   "type": "normal",
+   "kind": "bond",
+   "bondCost": 1,
+   "power": 0,
+   "range": {
+    "min": 0,
+    "max": 0
+   },
+   "requiresLineOfSight": false,
+   "shape": {
+    "kind": "burst",
+    "radius": 2
+   },
+   "affects": "allies",
+   "effects": [
+    {
+     "kind": "cleanse"
+    }
+   ]
+  },
+  "seel-growl": {
+   "id": "seel-growl",
+   "name": "Growl",
+   "type": "normal",
+   "kind": "special",
+   "cooldown": 3,
+   "power": 0,
+   "range": {
+    "min": 1,
+    "max": 1
+   },
+   "requiresLineOfSight": false,
+   "shape": {
+    "kind": "single"
+   },
+   "affects": "enemies",
+   "effects": [
+    {
+     "kind": "status",
+     "status": "weakened",
+     "duration": 2
+    }
+   ]
+  }
+ },
+ "talents": {
+  "seel-rest": {
+   "id": "seel-rest",
+   "name": "Rest",
+   "description": "Bond skill: sleeps 2 turns, heals 70 HP and sheds the statuses foes put on it.",
+   "grantsMove": "seel-rest"
+  },
+  "seel-surf": {
+   "id": "seel-surf",
+   "name": "Surf",
+   "description": "Bond skill: a big wave up to 2 hexes away hitting foes in a 1-hex area (Power 85, Sp. Atk).",
+   "grantsMove": "seel-surf"
+  },
+  "seel-hydration": {
+   "id": "seel-hydration",
+   "name": "Hydration",
+   "description": "Sheds statuses foes put on it at the start of its turn.",
+   "mods": {
+    "shedStatuses": true
+   }
+  },
+  "seel-blubber": {
+   "id": "seel-blubber",
+   "name": "Blubber",
+   "description": "Takes 10% less damage.",
+   "mods": {
+    "damageTaken": 0.9
+   }
+  },
+  "seel-brine": {
+   "id": "seel-brine",
+   "name": "Brine",
+   "description": "New skill: a jet of salt water at a foe up to 2 hexes away (Power 60).",
+   "grantsMove": "seel-brine"
+  },
+  "seel-aqua-jet": {
+   "id": "seel-aqua-jet",
+   "name": "Aqua Jet",
+   "description": "New skill: shoots at a foe up to 2 hexes away (Power 40) and engages it.",
+   "grantsMove": "seel-aqua-jet"
+  },
+  "seel-cold-water": {
+   "id": "seel-cold-water",
+   "name": "Cold Water",
+   "description": "Its Water moves deal 20% more damage.",
+   "mods": {
+    "typeDamage": {
+     "water": 1.2
+    }
+   }
+  },
+  "seel-ice-body": {
+   "id": "seel-ice-body",
+   "name": "Ice Body",
+   "description": "Heals 3% of max HP at the start of each turn.",
+   "mods": {
+    "healPerTurn": 0.03
+   }
+  },
+  "seel-bubble-beam": {
+   "id": "seel-bubble-beam",
+   "name": "Bubble Beam",
+   "description": "New skill: a spray of bubbles up to 2 hexes away (Power 65) that Slows the foe for 1 turn.",
+   "grantsMove": "seel-bubble-beam"
+  },
+  "seel-diving-hunter": {
+   "id": "seel-diving-hunter",
+   "name": "Diving Hunter",
+   "description": "Deals 15% more damage to foes carrying any status.",
+   "mods": {
+    "vsStatusDamage": 1.15
+   }
+  },
+  "seel-thick-blubber": {
+   "id": "seel-thick-blubber",
+   "name": "Thick Blubber",
+   "description": "Takes 20% less damage while at full HP.",
+   "mods": {
+    "fullHpDamageTaken": 0.8
+   }
+  },
+  "seel-frost-breath": {
+   "id": "seel-frost-breath",
+   "name": "Frost Breath",
+   "description": "New skill: icy breath at a foe up to 2 hexes away (Power 80), leaving it Exposed for 1 turn.",
+   "grantsMove": "seel-frost-breath"
+  },
+  "seel-ice-wall": {
+   "id": "seel-ice-wall",
+   "name": "Ice Wall",
+   "description": "New skill: a wall of ice up to 1 hex away makes allies in a 1-hex area Fortified 2 turns.",
+   "grantsMove": "seel-ice-wall"
+  },
+  "seel-polar-hunter": {
+   "id": "seel-polar-hunter",
+   "name": "Polar Hunter",
+   "description": "Its Ice moves deal 25% more damage.",
+   "mods": {
+    "typeDamage": {
+     "ice": 1.25
+    }
+   }
+  },
+  "seel-arctic-hide": {
+   "id": "seel-arctic-hide",
+   "name": "Arctic Hide",
+   "description": "Cannot be Frozen or Burned.",
+   "mods": {
+    "statusImmune": [
+     "freeze",
+     "burn"
+    ]
+   }
+  },
+  "seel-sheer-cold": {
+   "id": "seel-sheer-cold",
+   "name": "Sheer Cold",
+   "description": "New skill: absolute cold on an adjacent foe (Power 90) that Freezes it for 1 turn.",
+   "grantsMove": "seel-sheer-cold"
+  },
+  "seel-whirlpool": {
+   "id": "seel-whirlpool",
+   "name": "Whirlpool",
+   "description": "New skill: traps a foe up to 2 hexes away in a vortex (Power 45), Slowing it 3 turns.",
+   "grantsMove": "seel-whirlpool"
+  },
+  "seel-arctic-stamina": {
+   "id": "seel-arctic-stamina",
+   "name": "Arctic Stamina",
+   "description": "Heals 15% of max HP when it knocks out a foe.",
+   "mods": {
+    "koHeal": 0.15
+   }
+  },
+  "seel-cold-front": {
+   "id": "seel-cold-front",
+   "name": "Cold Front",
+   "description": "Deals 20% more damage to Slowed or Frozen foes.",
+   "mods": {
+    "vsStatusIdDamage": {
+     "slow": 1.2,
+     "freeze": 1.2
+    }
+   }
+  },
+  "seel-polar-guardian": {
+   "id": "seel-polar-guardian",
+   "name": "Polar Guardian",
+   "description": "Capstone. Survives one knockout blow per battle at 1 HP; heals 3% more each turn while engaged.",
+   "mods": {
+    "sturdy": true,
+    "healWhileEngaged": 0.03
+   }
+  },
+  "seel-blizzard-lord": {
+   "id": "seel-blizzard-lord",
+   "name": "Blizzard Lord",
+   "description": "Capstone. Statuses it inflicts last 1 more turn; its Ice moves deal 25% more below half HP.",
+   "mods": {
+    "statusDurationBonus": 1,
+    "lowHpTypeDamage": {
+     "ice": 1.25
+    }
+   }
+  },
+  "seel-safeguard": {
+   "id": "seel-safeguard",
+   "name": "Safeguard",
+   "description": "Bond skill: a mystic veil clears statuses foes put on it and allies within 2 hexes.",
+   "grantsMove": "seel-safeguard"
+  },
+  "seel-growl": {
+   "id": "seel-growl",
+   "name": "Growl",
+   "description": "New skill: a playful bark leaves an adjacent foe Weakened for 2 turns.",
+   "grantsMove": "seel-growl"
+  }
+ }
+}

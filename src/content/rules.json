@@ -1,6 +1,6 @@
 {
- "hpBase": 30,
- "hpPerPoint": 6,
+ "hpBase": 52,
+ "hpPerPoint": 2,
  "hpPerLevel": 1.5,
  "hpPerLevelPerDefense": 0.15,
  "specialTypes": [
@@ -14,9 +14,7 @@
  ],
  "statOffset": 6,
  "damageDivisor": 4,
- "moveBase": 2,
- "speedPerMove": 4,
- "moveMax": 4,
+ "moveMax": 3,
  "impactDamage": 8,
  "bond": {
   "start": 2,
@@ -26,5 +24,28 @@
  "statusBonusCap": 2,
  "engagement": {
   "fallbackPower": 0.5
- }
+ },
+ "melee": {
+  "closeBonus": 1.1,
+  "engagedRangedPenalty": 0.85
+ },
+ "momentum": {
+  "speedPerStep": 4,
+  "stepBonus": 0.05,
+  "max": 0.25
+ },
+ "moveBySpeed": [
+  {
+   "speed": 0,
+   "move": 1
+  },
+  {
+   "speed": 4,
+   "move": 2
+  },
+  {
+   "speed": 6,
+   "move": 3
+  }
+ ]
 }

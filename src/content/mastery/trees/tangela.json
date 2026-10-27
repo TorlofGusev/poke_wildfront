@@ -1,0 +1,472 @@
+{
+ "line": [
+  "tangela"
+ ],
+ "focus": [
+  {
+   "stat": "defense",
+   "skill": "tangela-ingrain"
+  },
+  {
+   "stat": "spAttack",
+   "skill": "tangela-solar-beam"
+  },
+  {
+   "stat": "hp",
+   "skill": "tangela-wring-out"
+  }
+ ],
+ "rows": {
+  "4": [
+   "tangela-leaf-guard",
+   "tangela-tangled-mass"
+  ],
+  "6": [
+   "tangela-vine-whip",
+   "tangela-mega-drain"
+  ],
+  "9": [
+   "tangela-root-grip",
+   "tangela-toxic-tendrils"
+  ],
+  "12": [
+   "tangela-bind",
+   "tangela-growth"
+  ],
+  "15": [
+   "tangela-sun-soaker",
+   "tangela-grasping-vines"
+  ],
+  "18": [
+   "tangela-energy-ball",
+   "tangela-power-whip"
+  ],
+  "21": [
+   "tangela-regenerator",
+   "tangela-constricting-hold"
+  ],
+  "24": [
+   "tangela-leaf-storm",
+   "tangela-petal-dance"
+  ],
+  "27": [
+   "tangela-spreading-spores",
+   "tangela-thick-vines"
+  ],
+  "30": [
+   "tangela-overgrown-jungle",
+   "tangela-tangled-nightmare"
+  ]
+ },
+ "moves": {
+  "tangela-ingrain": {
+   "id": "tangela-ingrain",
+   "name": "Ingrain",
+   "type": "grass",
+   "kind": "bond",
+   "bondCost": 1,
+   "power": 0,
+   "range": {
+    "min": 0,
+    "max": 0
+   },
+   "requiresLineOfSight": false,
+   "shape": {
+    "kind": "single"
+   },
+   "affects": "allies",
+   "effects": [
+    {
+     "kind": "heal",
+     "amount": 20
+    },
+    {
+     "kind": "status",
+     "status": "fortified",
+     "duration": 2
+    }
+   ]
+  },
+  "tangela-solar-beam": {
+   "id": "tangela-solar-beam",
+   "name": "Solar Beam",
+   "type": "grass",
+   "kind": "bond",
+   "category": "special",
+   "bondCost": 3,
+   "power": 100,
+   "range": {
+    "min": 1,
+    "max": 3
+   },
+   "requiresLineOfSight": true,
+   "shape": {
+    "kind": "single"
+   },
+   "affects": "enemies"
+  },
+  "tangela-wring-out": {
+   "id": "tangela-wring-out",
+   "name": "Wring Out",
+   "type": "normal",
+   "kind": "bond",
+   "category": "special",
+   "bondCost": 2,
+   "power": 80,
+   "range": {
+    "min": 1,
+    "max": 1
+   },
+   "requiresLineOfSight": false,
+   "shape": {
+    "kind": "single"
+   },
+   "affects": "enemies",
+   "effects": [
+    {
+     "kind": "engage"
+    }
+   ]
+  },
+  "tangela-vine-whip": {
+   "id": "tangela-vine-whip",
+   "name": "Vine Whip",
+   "type": "grass",
+   "kind": "special",
+   "category": "physical",
+   "cooldown": 2,
+   "power": 45,
+   "range": {
+    "min": 1,
+    "max": 2
+   },
+   "requiresLineOfSight": true,
+   "shape": {
+    "kind": "single"
+   },
+   "affects": "enemies",
+   "effects": [
+    {
+     "kind": "pull",
+     "distance": 1
+    }
+   ]
+  },
+  "tangela-mega-drain": {
+   "id": "tangela-mega-drain",
+   "name": "Mega Drain",
+   "type": "grass",
+   "kind": "special",
+   "category": "special",
+   "cooldown": 3,
+   "power": 60,
+   "range": {
+    "min": 1,
+    "max": 2
+   },
+   "requiresLineOfSight": true,
+   "shape": {
+    "kind": "single"
+   },
+   "affects": "enemies"
+  },
+  "tangela-bind": {
+   "id": "tangela-bind",
+   "name": "Bind",
+   "type": "normal",
+   "kind": "special",
+   "category": "physical",
+   "cooldown": 3,
+   "power": 30,
+   "range": {
+    "min": 1,
+    "max": 1
+   },
+   "requiresLineOfSight": false,
+   "shape": {
+    "kind": "single"
+   },
+   "affects": "enemies",
+   "effects": [
+    {
+     "kind": "engage"
+    },
+    {
+     "kind": "status",
+     "status": "paralysis",
+     "duration": 1
+    }
+   ]
+  },
+  "tangela-growth": {
+   "id": "tangela-growth",
+   "name": "Growth",
+   "type": "normal",
+   "kind": "special",
+   "cooldown": 4,
+   "power": 0,
+   "range": {
+    "min": 0,
+    "max": 0
+   },
+   "requiresLineOfSight": false,
+   "shape": {
+    "kind": "single"
+   },
+   "affects": "allies",
+   "effects": [
+    {
+     "kind": "status",
+     "status": "focused",
+     "duration": 2
+    }
+   ]
+  },
+  "tangela-energy-ball": {
+   "id": "tangela-energy-ball",
+   "name": "Energy Ball",
+   "type": "grass",
+   "kind": "special",
+   "category": "special",
+   "cooldown": 4,
+   "power": 90,
+   "range": {
+    "min": 1,
+    "max": 2
+   },
+   "requiresLineOfSight": true,
+   "shape": {
+    "kind": "single"
+   },
+   "affects": "enemies"
+  },
+  "tangela-power-whip": {
+   "id": "tangela-power-whip",
+   "name": "Power Whip",
+   "type": "grass",
+   "kind": "special",
+   "category": "physical",
+   "cooldown": 5,
+   "power": 95,
+   "range": {
+    "min": 1,
+    "max": 2
+   },
+   "requiresLineOfSight": true,
+   "shape": {
+    "kind": "single"
+   },
+   "affects": "enemies"
+  },
+  "tangela-leaf-storm": {
+   "id": "tangela-leaf-storm",
+   "name": "Leaf Storm",
+   "type": "grass",
+   "kind": "special",
+   "category": "special",
+   "cooldown": 4,
+   "power": 100,
+   "range": {
+    "min": 1,
+    "max": 2
+   },
+   "requiresLineOfSight": true,
+   "shape": {
+    "kind": "single"
+   },
+   "affects": "enemies"
+  },
+  "tangela-petal-dance": {
+   "id": "tangela-petal-dance",
+   "name": "Petal Dance",
+   "type": "grass",
+   "kind": "special",
+   "category": "special",
+   "cooldown": 4,
+   "power": 85,
+   "range": {
+    "min": 1,
+    "max": 2
+   },
+   "requiresLineOfSight": true,
+   "shape": {
+    "kind": "single"
+   },
+   "affects": "enemies"
+  }
+ },
+ "talents": {
+  "tangela-ingrain": {
+   "id": "tangela-ingrain",
+   "name": "Ingrain",
+   "description": "Bond skill: roots itself, healing 20 HP and becoming Fortified for 2 turns.",
+   "grantsMove": "tangela-ingrain"
+  },
+  "tangela-solar-beam": {
+   "id": "tangela-solar-beam",
+   "name": "Solar Beam",
+   "description": "Bond skill: a beam of gathered sunlight at a foe up to 3 hexes away (Power 100, Sp. Atk).",
+   "grantsMove": "tangela-solar-beam"
+  },
+  "tangela-wring-out": {
+   "id": "tangela-wring-out",
+   "name": "Wring Out",
+   "description": "Bond skill: wrings an adjacent foe in its vines (Power 80, Sp. Atk) and holds it.",
+   "grantsMove": "tangela-wring-out"
+  },
+  "tangela-leaf-guard": {
+   "id": "tangela-leaf-guard",
+   "name": "Leaf Guard",
+   "description": "Cannot be Poisoned or Paralyzed.",
+   "mods": {
+    "statusImmune": [
+     "poison",
+     "paralysis"
+    ]
+   }
+  },
+  "tangela-tangled-mass": {
+   "id": "tangela-tangled-mass",
+   "name": "Tangled Mass",
+   "description": "Takes 20% less damage while at full HP.",
+   "mods": {
+    "fullHpDamageTaken": 0.8
+   }
+  },
+  "tangela-vine-whip": {
+   "id": "tangela-vine-whip",
+   "name": "Vine Whip",
+   "description": "New skill: lashes a foe up to 2 hexes away with a vine (Power 45) and pulls it 1 hex.",
+   "grantsMove": "tangela-vine-whip"
+  },
+  "tangela-mega-drain": {
+   "id": "tangela-mega-drain",
+   "name": "Mega Drain",
+   "description": "New skill: saps a foe up to 2 hexes away with its vines (Power 60).",
+   "grantsMove": "tangela-mega-drain"
+  },
+  "tangela-root-grip": {
+   "id": "tangela-root-grip",
+   "name": "Root Grip",
+   "description": "Heals 4% of max HP each turn while engaged with a foe.",
+   "mods": {
+    "healWhileEngaged": 0.04
+   }
+  },
+  "tangela-toxic-tendrils": {
+   "id": "tangela-toxic-tendrils",
+   "name": "Toxic Tendrils",
+   "description": "Its hits on adjacent foes Poison them for 2 turns.",
+   "mods": {
+    "contactStatus": {
+     "status": "poison",
+     "duration": 2
+    }
+   }
+  },
+  "tangela-bind": {
+   "id": "tangela-bind",
+   "name": "Bind",
+   "description": "New skill: binds an adjacent foe (Power 30), engaging it; it can't move for 1 turn.",
+   "grantsMove": "tangela-bind"
+  },
+  "tangela-growth": {
+   "id": "tangela-growth",
+   "name": "Growth",
+   "description": "New skill: its vines swell with growth: Focused for 2 turns.",
+   "grantsMove": "tangela-growth"
+  },
+  "tangela-sun-soaker": {
+   "id": "tangela-sun-soaker",
+   "name": "Sun Soaker",
+   "description": "Its grass moves deal 15% more damage.",
+   "mods": {
+    "typeDamage": {
+     "grass": 1.15
+    }
+   }
+  },
+  "tangela-grasping-vines": {
+   "id": "tangela-grasping-vines",
+   "name": "Grasping Vines",
+   "description": "Its pulls drag foes 1 hex farther.",
+   "mods": {
+    "pullBonus": 1
+   }
+  },
+  "tangela-energy-ball": {
+   "id": "tangela-energy-ball",
+   "name": "Energy Ball",
+   "description": "New skill: a ball of nature's energy at a foe up to 2 hexes away (Power 90).",
+   "grantsMove": "tangela-energy-ball"
+  },
+  "tangela-power-whip": {
+   "id": "tangela-power-whip",
+   "name": "Power Whip",
+   "description": "New skill: whips a foe up to 2 hexes away with thick vines (Power 95).",
+   "grantsMove": "tangela-power-whip"
+  },
+  "tangela-regenerator": {
+   "id": "tangela-regenerator",
+   "name": "Regenerator",
+   "description": "Heals 5% of max HP at the start of each turn: torn vines grow back.",
+   "mods": {
+    "healPerTurn": 0.05
+   }
+  },
+  "tangela-constricting-hold": {
+   "id": "tangela-constricting-hold",
+   "name": "Constricting Hold",
+   "description": "Foes it engages take 15% more damage from its allies.",
+   "mods": {
+    "pinDamage": 1.15
+   }
+  },
+  "tangela-leaf-storm": {
+   "id": "tangela-leaf-storm",
+   "name": "Leaf Storm",
+   "description": "New skill: a storm of sharp leaves at a foe up to 2 hexes away (Power 100).",
+   "grantsMove": "tangela-leaf-storm"
+  },
+  "tangela-petal-dance": {
+   "id": "tangela-petal-dance",
+   "name": "Petal Dance",
+   "description": "New skill: a whirl of petals at a foe up to 2 hexes away (Power 85).",
+   "grantsMove": "tangela-petal-dance"
+  },
+  "tangela-spreading-spores": {
+   "id": "tangela-spreading-spores",
+   "name": "Spreading Spores",
+   "description": "When a foe carrying its status faints, adjacent foes catch that status.",
+   "mods": {
+    "statusSpreadOnKo": true
+   }
+  },
+  "tangela-thick-vines": {
+   "id": "tangela-thick-vines",
+   "name": "Thick Vines",
+   "description": "Takes 10% less damage.",
+   "mods": {
+    "damageTaken": 0.9
+   }
+  },
+  "tangela-overgrown-jungle": {
+   "id": "tangela-overgrown-jungle",
+   "name": "Overgrown Jungle",
+   "description": "Capstone. Its Grass moves drain 20% more HP; heals 20% of max HP when it knocks out a foe.",
+   "mods": {
+    "drainBonus": 0.2,
+    "koHeal": 0.2
+   }
+  },
+  "tangela-tangled-nightmare": {
+   "id": "tangela-tangled-nightmare",
+   "name": "Tangled Nightmare",
+   "description": "Capstone. Statuses it inflicts last 1 turn longer; deals 20% more damage to foes with a status.",
+   "mods": {
+    "statusDurationBonus": 1,
+    "vsStatusDamage": 1.2
+   }
+  }
+ }
+}

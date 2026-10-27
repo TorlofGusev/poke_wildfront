@@ -93,7 +93,7 @@
   "description": "Minden saját köre elején gyógyítja max HP-ja 5%-át."
  },
  "sniper": {
-  "description": "+15% sebzés legalább 3 hexnyire lévő célpontokra."
+  "description": "+15% sebzés legalább 2 hexnyire lévő célpontokra."
  },
  "sand-veil": {
   "description": "20%-kal kevesebb sebzést kap, amíg teljes HP-n van."

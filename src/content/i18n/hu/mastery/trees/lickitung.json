@@ -1,0 +1,73 @@
+{
+ "talents": {
+  "lickitung-sticky-tongue": {
+   "description": "Húzásai 1 hexszel messzebbre rántják az ellenfelet."
+  },
+  "lickitung-tongue-lash": {
+   "description": "Új képesség: nyelvével elkap egy legfeljebb 2 hexnyire álló ellenfelet (Erő 40), és 2 hexnyit magához húzza."
+  },
+  "lickitung-sticky-saliva": {
+   "description": "Szomszédos ellenfelekre mért sebző találatai 1 körre lelassítják őket."
+  },
+  "lickitung-cushy-belly": {
+   "description": "20%-kal kevesebb sebzést szenved, amíg teljes a HP-ja."
+  },
+  "lickitung-body-slam": {
+   "description": "Új képesség: teljes súlyával rázuhan egy ellenfélre (Erő 70), 1 körre megbénítja."
+  },
+  "lickitung-disable": {
+   "description": "Új képesség: lezár egy legfeljebb 2 hexnyire lévő ellenfelet, 2 körre Disabled (csak alaptámadás)."
+  },
+  "lickitung-steady-digestion": {
+   "description": "Lekötve minden körben max. HP-ja 5%-át gyógyítja."
+  },
+  "lickitung-tongue-hold": {
+   "description": "Az általa lekötött ellenfelek 15%-kal több sebzést kapnak a társaitól."
+  },
+  "lickitung-taste-for-weakness": {
+   "description": "25%-kal többet sebez a megbénult ellenfelekre."
+  },
+  "lickitung-rubbery-hide": {
+   "description": "10%-kal kevesebb sebzést szenved."
+  },
+  "lickitung-giga-impact": {
+   "description": "Új képesség: minden erejével nekiront egy ellenfélnek (Erő 100)."
+  },
+  "lickitung-hyper-beam": {
+   "description": "Új képesség: hatalmas sugár egy 2 hexes vonalban (Erő 90)."
+  },
+  "lickitung-helping-tongue": {
+   "description": "A csapat 1 Bondot kap, ha kombót visz be."
+  },
+  "lickitung-unbudging": {
+   "description": "Csatánként egyszer 1 HP-val túlél egy kiütő csapást."
+  },
+  "lickitung-tongue-tyrant": {
+   "description": "Csúcsképesség. Lekötött ellenfelek mindig szabad ütést kapnak; ez +30%; +15% a szomszédosakra."
+  },
+  "lickitung-bottomless-belly": {
+   "description": "Csúcs. 15%-kal kevesebb sebzést kap; kiütéskor max HP-ja 20%-át visszatölti."
+  },
+  "lickitung-oblivious": {
+   "description": "Nem lassítható: semmi sem tereli el a figyelmét."
+  },
+  "lickitung-recover": {
+   "description": "Bond képesség: regenerálja a testét, 50 HP-t gyógyul."
+  },
+  "lickitung-double-edge": {
+   "description": "Bond képesség: vakmerő roham teljes súlyával egy szomszédos ellenfélre (Erő 100, Támadás)."
+  },
+  "lickitung-stockpile": {
+   "description": "Bond képesség: erőt gyűjt a gyomrában; 3 körre Fortified."
+  },
+  "lickitung-thrash": {
+   "description": "Új képesség: vadul csapkod (Erő 80), minden szomszédos ellenfelet eltalál."
+  },
+  "lickitung-hyper-voice": {
+   "description": "Új képesség: harsány kiáltás egy 2 hexen belüli ellenfélre (Erő 80)."
+  },
+  "lickitung-screech": {
+   "description": "Új képesség: fülsértő rikoltás egy max. 2 hexnyi ellenfélre; 2 körre Exposed állapotba kerül."
+  }
+ }
+}

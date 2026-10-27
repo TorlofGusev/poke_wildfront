@@ -1,0 +1,73 @@
+{
+ "talents": {
+  "mewtwo-psystrike": {
+   "description": "Bond képesség: anyagot öltő pszichikus hullámok legfeljebb 3 hexnyire (Power 110, Sp. Atk)."
+  },
+  "mewtwo-barrier": {
+   "description": "Bond képesség: pszichikus gátat emel maga köré: 3 körig Fortified."
+  },
+  "mewtwo-telekinetic-focus": {
+   "description": "Psychic támadásai 15%-kal többet sebeznek."
+  },
+  "mewtwo-engineered-body": {
+   "description": "Laborban épített test: nem mérgezhető és nem égethető meg."
+  },
+  "mewtwo-cold-calculation": {
+   "description": "20%-kal többet sebez a szövetséges által okozott állapottal sújtott ellenfelekre."
+  },
+  "mewtwo-kinetic-barrier": {
+   "description": "Teljes HP-n 20%-kal kevesebb sebzést kap."
+  },
+  "mewtwo-psycho-cut": {
+   "description": "Új képesség: elméje formálta pengékkel szabdal (Power 75)."
+  },
+  "mewtwo-psychic-dominance": {
+   "description": "Az általa okozott állapotok 1 körrel tovább tartanak."
+  },
+  "mewtwo-teleport": {
+   "description": "Szabad csapások nélkül teleportál el a lekötő ellenfelek mellől."
+  },
+  "mewtwo-overwhelming-power": {
+   "description": "15%-kal többet sebez a legalább 2 hexnyire lévő ellenfelekre."
+  },
+  "mewtwo-future-sight": {
+   "description": "Új képesség: előre látott pszichikus csapás egy 1 hexen belüli, 1 hex körzetre (Power 85)."
+  },
+  "mewtwo-merciless-mind": {
+   "description": "15%-kal többet sebez a valamilyen állapottal sújtott ellenfelekre."
+  },
+  "mewtwo-iron-will": {
+   "description": "Csatánként egyszer 1 HP-val túlél egy kiütő csapást."
+  },
+  "mewtwo-strongest-pokemon": {
+   "description": "Capstone. 15%-kal többet sebez; kiütéskor képességei újratöltődnek."
+  },
+  "mewtwo-psychic-overlord": {
+   "description": "Mesterfokozat. Távolsági támadásai 1 hexszel messzebb érnek; 20%-kal többet sebez a teljes HP-n lévő ellenfelekre."
+  },
+  "mewtwo-regenerator": {
+   "description": "Mesterséges sejtjei összeforrnak: kiütéskor maximális HP-ja 15%-át visszagyógyítja."
+  },
+  "mewtwo-agility": {
+   "description": "Bond képesség: ellazítja és könnyebbé teszi testét, 3 körig Hasted."
+  },
+  "mewtwo-psybeam": {
+   "description": "Új képesség: különös sugár egy 2 hexen belüli ellenfélre (Erő 50); 2 körig Zavarodott."
+  },
+  "mewtwo-psyshock": {
+   "description": "Új képesség: anyagivá tett pszichikus hullámok egy 2 hexen belüli ellenfélre (Erő 75)."
+  },
+  "mewtwo-extrasensory": {
+   "description": "Új képesség: különös, láthatatlan erő sújt egy 2 hexen belüli ellenfélre (Erő 95)."
+  },
+  "mewtwo-psywave": {
+   "description": "Új képesség: pszichikus hullámok egy 2 hexen belüli ellenfélre, rálátás nélkül is (Erő 85)."
+  },
+  "mewtwo-amnesia": {
+   "description": "Új képesség: kiüríti az elméjét, hogy élesítse pszichikus erejét; 2 körre Focused állapotba kerül."
+  },
+  "mewtwo-disable": {
+   "description": "Új képesség: 2 körre lezárja egy legfeljebb 2 hexnyi ellenfél képességeit (Disabled)."
+  }
+ }
+}

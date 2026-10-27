@@ -1,0 +1,73 @@
+{
+ "talents": {
+  "omanyte-brine": {
+   "description": "Bond képesség: sós vízsugár egy 3 hexen belüli ellenfélre (Erő 85, Sp. Tám.)."
+  },
+  "omanyte-rollout": {
+   "description": "Bond képesség: héjában 2 hexen belül begurul (Erő 65, Attack), és lefogja az ellenfelet."
+  },
+  "omanyte-shell-smash": {
+   "description": "Bond képesség: feltöri a héját, 2 körig Összpontosított és Felgyorsult."
+  },
+  "omanyte-shell-armor": {
+   "description": "Teljes HP-n 20%-kal kevesebb sebzést kap."
+  },
+  "omanyte-ancient-hunter": {
+   "description": "20%-kal többet sebez a Lassú ellenfelekre."
+  },
+  "omanyte-constrict": {
+   "description": "Új képesség: csápjaival körbefonja az ellenfelet (Erő 40), és lefogja."
+  },
+  "omanyte-bubble": {
+   "description": "Új képesség: buborékzápor egy max. 2 hexnyi ellenfélre (Erő 50); 1 körre lassít."
+  },
+  "omanyte-tentacle-grip": {
+   "description": "A lefogott ellenfelek távozáskor mindig szabad ütést kapnak, akkor is, ha kiszakadnának."
+  },
+  "omanyte-spiked-shell": {
+   "description": "A szomszédos hexről őt ütő ellenfelek 6 sebzést kapnak."
+  },
+  "omanyte-muddy-water": {
+   "description": "Új képesség: sáros hullám egy 1 hexen belüli 1 hex területre (Erő 65)."
+  },
+  "omanyte-protect": {
+   "description": "Új képesség: visszahúzódik a házába, 2 körre Protected."
+  },
+  "omanyte-hunting-tentacles": {
+   "description": "15%-kal többet sebez a szövetségeseivel harcban álló ellenfelekre."
+  },
+  "omanyte-sealed-shell": {
+   "description": "Közelharcban körönként a max HP további 3%-át gyógyítja."
+  },
+  "omanyte-scald": {
+   "description": "Új képesség: forró víz egy 2 hexen belüli ellenfélre (Erő 80); 1 körre megéget."
+  },
+  "omanyte-rock-slide": {
+   "description": "Új képesség: sziklákat zúdít egy 1 hexen belüli 1 hex területre (Erő 75)."
+  },
+  "omanyte-tentacle-lash": {
+   "description": "Lekötött ellenfelei 25%-kal több sebzést kapnak társaitól; szabad csapásai 20%-kal erősebbek."
+  },
+  "omanyte-barnacle-hide": {
+   "description": "Köre elején lerázza az ellenfelek által rárakott állapotokat."
+  },
+  "omanyte-power-gem": {
+   "description": "Új képesség: csillogó fénysugár egy max. 2 hexnyi ellenfélre (Erő 90)."
+  },
+  "omanyte-rock-blast": {
+   "description": "Új képesség: köveket hajít egy max. 2 hexnyi ellenfélre (Erő 80); 1 körre Exposed lesz."
+  },
+  "omanyte-spike-volley": {
+   "description": "20%-kal többet sebez a legalább 2 hexre lévő ellenfelekre."
+  },
+  "omanyte-ancient-instinct": {
+   "description": "Minden kiütése 1 Bondot ad a csapatnak."
+  },
+  "omanyte-ancient-tide": {
+   "description": "Mesterfokozat. Water és Rock támadásai 20%-kal többet sebeznek."
+  },
+  "omanyte-shell-fortress": {
+   "description": "Csúcstudás. 15%-kal kevesebb sebzést kap; csatánként egyszer 1 HP-val túlél egy kiütő csapást."
+  }
+ }
+}

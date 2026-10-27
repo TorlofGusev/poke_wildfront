@@ -1,0 +1,482 @@
+{
+ "line": [
+  "cubone",
+  "marowak"
+ ],
+ "focus": [
+  {
+   "stat": "attack",
+   "skill": "cubone-bone-rush"
+  },
+  {
+   "stat": "defense",
+   "skill": "cubone-skull-bash"
+  },
+  {
+   "stat": "hp",
+   "skill": "cubone-endure"
+  }
+ ],
+ "rows": {
+  "4": [
+   "cubone-skull-helmet",
+   "cubone-bone-keeper"
+  ],
+  "6": [
+   "cubone-headbutt",
+   "cubone-mud-slap"
+  ],
+  "9": [
+   "cubone-lonely-fury",
+   "cubone-mud-stomper"
+  ],
+  "12": [
+   "cubone-fling",
+   "cubone-rage"
+  ],
+  "15": [
+   "cubone-stubborn-will",
+   "cubone-long-throw"
+  ],
+  "18": [
+   "cubone-bulldoze",
+   "cubone-dig"
+  ],
+  "21": [
+   "cubone-lightning-rod",
+   "cubone-allys-avenger"
+  ],
+  "24": [
+   "cubone-double-edge",
+   "cubone-earth-power"
+  ],
+  "27": [
+   "cubone-follow-through",
+   "cubone-unyielding"
+  ],
+  "30": [
+   "cubone-bone-warden",
+   "cubone-mothers-spirit"
+  ]
+ },
+ "moves": {
+  "cubone-bone-rush": {
+   "id": "cubone-bone-rush",
+   "name": "Bone Rush",
+   "type": "ground",
+   "kind": "bond",
+   "category": "physical",
+   "bondCost": 2,
+   "power": 95,
+   "range": {
+    "min": 1,
+    "max": 1
+   },
+   "requiresLineOfSight": false,
+   "shape": {
+    "kind": "single"
+   },
+   "affects": "enemies"
+  },
+  "cubone-skull-bash": {
+   "id": "cubone-skull-bash",
+   "name": "Skull Bash",
+   "type": "normal",
+   "kind": "bond",
+   "category": "physical",
+   "bondCost": 2,
+   "power": 85,
+   "range": {
+    "min": 1,
+    "max": 1
+   },
+   "requiresLineOfSight": false,
+   "shape": {
+    "kind": "single"
+   },
+   "affects": "enemies",
+   "effects": [
+    {
+     "kind": "push",
+     "distance": 1
+    }
+   ]
+  },
+  "cubone-endure": {
+   "id": "cubone-endure",
+   "name": "Endure",
+   "type": "normal",
+   "kind": "bond",
+   "bondCost": 1,
+   "power": 0,
+   "range": {
+    "min": 0,
+    "max": 0
+   },
+   "requiresLineOfSight": false,
+   "shape": {
+    "kind": "single"
+   },
+   "affects": "allies",
+   "effects": [
+    {
+     "kind": "status",
+     "status": "protected",
+     "duration": 1
+    },
+    {
+     "kind": "status",
+     "status": "fortified",
+     "duration": 2
+    }
+   ]
+  },
+  "cubone-headbutt": {
+   "id": "cubone-headbutt",
+   "name": "Headbutt",
+   "type": "normal",
+   "kind": "special",
+   "category": "physical",
+   "cooldown": 3,
+   "power": 70,
+   "range": {
+    "min": 1,
+    "max": 1
+   },
+   "requiresLineOfSight": false,
+   "shape": {
+    "kind": "single"
+   },
+   "affects": "enemies",
+   "effects": [
+    {
+     "kind": "status",
+     "status": "slow",
+     "duration": 1
+    }
+   ]
+  },
+  "cubone-mud-slap": {
+   "id": "cubone-mud-slap",
+   "name": "Mud-Slap",
+   "type": "ground",
+   "kind": "special",
+   "category": "special",
+   "cooldown": 3,
+   "power": 40,
+   "range": {
+    "min": 1,
+    "max": 2
+   },
+   "requiresLineOfSight": true,
+   "shape": {
+    "kind": "single"
+   },
+   "affects": "enemies",
+   "effects": [
+    {
+     "kind": "status",
+     "status": "marked",
+     "duration": 2
+    }
+   ]
+  },
+  "cubone-fling": {
+   "id": "cubone-fling",
+   "name": "Fling",
+   "type": "normal",
+   "kind": "special",
+   "category": "physical",
+   "cooldown": 3,
+   "power": 70,
+   "range": {
+    "min": 1,
+    "max": 2
+   },
+   "requiresLineOfSight": true,
+   "shape": {
+    "kind": "single"
+   },
+   "affects": "enemies",
+   "effects": [
+    {
+     "kind": "status",
+     "status": "slow",
+     "duration": 1
+    }
+   ]
+  },
+  "cubone-rage": {
+   "id": "cubone-rage",
+   "name": "Rage",
+   "type": "normal",
+   "kind": "special",
+   "category": "physical",
+   "cooldown": 3,
+   "power": 75,
+   "range": {
+    "min": 1,
+    "max": 1
+   },
+   "requiresLineOfSight": false,
+   "shape": {
+    "kind": "single"
+   },
+   "affects": "enemies"
+  },
+  "cubone-bulldoze": {
+   "id": "cubone-bulldoze",
+   "name": "Bulldoze",
+   "type": "ground",
+   "kind": "special",
+   "category": "physical",
+   "cooldown": 4,
+   "power": 80,
+   "range": {
+    "min": 0,
+    "max": 0
+   },
+   "requiresLineOfSight": false,
+   "shape": {
+    "kind": "burst",
+    "radius": 1
+   },
+   "affects": "enemies",
+   "effects": [
+    {
+     "kind": "status",
+     "status": "slow",
+     "duration": 1
+    }
+   ]
+  },
+  "cubone-dig": {
+   "id": "cubone-dig",
+   "name": "Dig",
+   "type": "ground",
+   "kind": "special",
+   "category": "physical",
+   "cooldown": 4,
+   "power": 85,
+   "range": {
+    "min": 1,
+    "max": 2
+   },
+   "requiresLineOfSight": false,
+   "shape": {
+    "kind": "single"
+   },
+   "affects": "enemies"
+  },
+  "cubone-double-edge": {
+   "id": "cubone-double-edge",
+   "name": "Double-Edge",
+   "type": "normal",
+   "kind": "special",
+   "category": "physical",
+   "cooldown": 4,
+   "power": 100,
+   "range": {
+    "min": 1,
+    "max": 1
+   },
+   "requiresLineOfSight": false,
+   "shape": {
+    "kind": "single"
+   },
+   "affects": "enemies"
+  },
+  "cubone-earth-power": {
+   "id": "cubone-earth-power",
+   "name": "Earth Power",
+   "type": "ground",
+   "kind": "special",
+   "category": "special",
+   "cooldown": 4,
+   "power": 90,
+   "range": {
+    "min": 1,
+    "max": 2
+   },
+   "requiresLineOfSight": false,
+   "shape": {
+    "kind": "single"
+   },
+   "affects": "enemies"
+  }
+ },
+ "talents": {
+  "cubone-bone-rush": {
+   "id": "cubone-bone-rush",
+   "name": "Bone Rush",
+   "description": "Bond skill: a flurry of blows with its bone club (Power 95, Attack).",
+   "grantsMove": "cubone-bone-rush"
+  },
+  "cubone-skull-bash": {
+   "id": "cubone-skull-bash",
+   "name": "Skull Bash",
+   "description": "Bond skill: rams a foe with its skull helmet (Power 85, Attack), pushing it 1 hex.",
+   "grantsMove": "cubone-skull-bash"
+  },
+  "cubone-endure": {
+   "id": "cubone-endure",
+   "name": "Endure",
+   "description": "Bond skill: braces to endure any blow; Protected for 1 turn and Fortified for 2.",
+   "grantsMove": "cubone-endure"
+  },
+  "cubone-skull-helmet": {
+   "id": "cubone-skull-helmet",
+   "name": "Skull Helmet",
+   "description": "Takes 15% less damage.",
+   "mods": {
+    "damageTaken": 0.85
+   }
+  },
+  "cubone-bone-keeper": {
+   "id": "cubone-bone-keeper",
+   "name": "Bone Keeper",
+   "description": "Its Ground moves deal 15% more damage.",
+   "mods": {
+    "typeDamage": {
+     "ground": 1.15
+    }
+   }
+  },
+  "cubone-headbutt": {
+   "id": "cubone-headbutt",
+   "name": "Headbutt",
+   "description": "New skill: butts a foe with its skull (Power 70), Slowing it for 1 turn.",
+   "grantsMove": "cubone-headbutt"
+  },
+  "cubone-mud-slap": {
+   "id": "cubone-mud-slap",
+   "name": "Mud-Slap",
+   "description": "New skill: flings mud at a foe up to 2 hexes away (Power 40), Marking it for 2 turns.",
+   "grantsMove": "cubone-mud-slap"
+  },
+  "cubone-lonely-fury": {
+   "id": "cubone-lonely-fury",
+   "name": "Lonely Fury",
+   "description": "Deals 25% more damage while below half HP and 15% more while it has a status.",
+   "mods": {
+    "lowHpDamage": 1.25,
+    "statusedDamage": 1.15
+   }
+  },
+  "cubone-mud-stomper": {
+   "id": "cubone-mud-stomper",
+   "name": "Mud Stomper",
+   "description": "Deals 20% more damage to foes standing on mud.",
+   "mods": {
+    "vsMudDamage": 1.2
+   }
+  },
+  "cubone-fling": {
+   "id": "cubone-fling",
+   "name": "Fling",
+   "description": "New skill: hurls its bone at a foe up to 2 hexes away (Power 70), Slowing it for 1 turn.",
+   "grantsMove": "cubone-fling"
+  },
+  "cubone-rage": {
+   "id": "cubone-rage",
+   "name": "Rage",
+   "description": "New skill: lashes out at a foe in a lonely rage (Power 75).",
+   "grantsMove": "cubone-rage"
+  },
+  "cubone-stubborn-will": {
+   "id": "cubone-stubborn-will",
+   "name": "Stubborn Will",
+   "description": "Heals 4% of max HP each turn while engaged.",
+   "mods": {
+    "healWhileEngaged": 0.04
+   }
+  },
+  "cubone-long-throw": {
+   "id": "cubone-long-throw",
+   "name": "Long Throw",
+   "description": "Its ranged moves reach 1 hex farther.",
+   "mods": {
+    "rangeBonus": 1
+   }
+  },
+  "cubone-bulldoze": {
+   "id": "cubone-bulldoze",
+   "name": "Bulldoze",
+   "description": "New skill: stomps the ground (Power 80), hitting foes within 1 hex and Slowing them 1 turn.",
+   "grantsMove": "cubone-bulldoze"
+  },
+  "cubone-dig": {
+   "id": "cubone-dig",
+   "name": "Dig",
+   "description": "New skill: burrows and bursts up under a foe up to 2 hexes away (Power 85).",
+   "grantsMove": "cubone-dig"
+  },
+  "cubone-lightning-rod": {
+   "id": "cubone-lightning-rod",
+   "name": "Lightning Rod",
+   "description": "Can't be Paralyzed; the lightning its bone draws makes it deal 10% more damage.",
+   "mods": {
+    "statusImmune": [
+     "paralysis"
+    ],
+    "damageDealt": 1.1
+   }
+  },
+  "cubone-allys-avenger": {
+   "id": "cubone-allys-avenger",
+   "name": "Ally's Avenger",
+   "description": "Deals 20% more damage to foes engaged with one of its allies.",
+   "mods": {
+    "vsEngagedDamage": 1.2
+   }
+  },
+  "cubone-double-edge": {
+   "id": "cubone-double-edge",
+   "name": "Double-Edge",
+   "description": "New skill: a reckless all-out charge into a foe (Power 100).",
+   "grantsMove": "cubone-double-edge"
+  },
+  "cubone-earth-power": {
+   "id": "cubone-earth-power",
+   "name": "Earth Power",
+   "description": "New skill: the ground erupts under a foe up to 2 hexes away (Power 90).",
+   "grantsMove": "cubone-earth-power"
+  },
+  "cubone-follow-through": {
+   "id": "cubone-follow-through",
+   "name": "Follow Through",
+   "description": "After a knockout on its turn, it can use its basic attack again and heals 15% of max HP.",
+   "mods": {
+    "koRefreshBasic": true,
+    "koHeal": 0.15
+   }
+  },
+  "cubone-unyielding": {
+   "id": "cubone-unyielding",
+   "name": "Unyielding",
+   "description": "Survives one knockout blow per battle at 1 HP.",
+   "mods": {
+    "sturdy": true
+   }
+  },
+  "cubone-bone-warden": {
+   "id": "cubone-bone-warden",
+   "name": "Bone Warden",
+   "description": "Capstone. Deals 20% more damage while 2+ foes stand next to it; adjacent attackers take 8 damage.",
+   "mods": {
+    "surroundedDamage": 1.2,
+    "thorns": 8
+   }
+  },
+  "cubone-mothers-spirit": {
+   "id": "cubone-mothers-spirit",
+   "name": "Mother's Spirit",
+   "description": "Capstone. Takes 15% less damage; heals 5% of max HP each turn; knockouts give the team 1 Bond.",
+   "mods": {
+    "damageTaken": 0.85,
+    "healPerTurn": 0.05,
+    "bondOnKo": 1
+   }
+  }
+ }
+}

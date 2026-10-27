@@ -1,0 +1,73 @@
+{
+ "talents": {
+  "squirtle-hydro-cannon": {
+   "description": "Bond képesség: páncélágyúiból lő egy max. 3 hexnyire lévő ellenfélre (Erő 105, Sp. Atk)."
+  },
+  "squirtle-heavy-slam": {
+   "description": "Bond képesség: nehéz páncéljával rázuhan egy ellenfélre (Erő 80, Attack), 1 hexnyit hátralökve."
+  },
+  "squirtle-aqua-ring": {
+   "description": "Bond képesség: vízfátyol gyógyítja őt és a szomszédos szövetségeseket max HP-juk 25%-ával."
+  },
+  "squirtle-rain-dish": {
+   "description": "Magába szívja a vizet: minden köre elején max HP-ja 4%-át gyógyítja."
+  },
+  "squirtle-mega-launcher": {
+   "description": "Water támadásai 15%-kal többet sebeznek."
+  },
+  "squirtle-rapid-spin": {
+   "description": "Új képesség: pörgő páncéllal nekiront egy ellenfélnek (Erő 50), majd kiszabadul a lekötésből."
+  },
+  "squirtle-bubble-beam": {
+   "description": "Új képesség: buborékzápor egy max. 2 hexnyi ellenfélre (Erő 60), 1 körre lelassítva (Slow)."
+  },
+  "squirtle-shell-armor": {
+   "description": "Teljes HP-n 20%-kal kevesebb sebzést kap."
+  },
+  "squirtle-cannon-sights": {
+   "description": "15%-kal többet sebez a legalább 2 hexnyire lévő ellenfelekre."
+  },
+  "squirtle-scald": {
+   "description": "Új képesség: forró víz egy max. 2 hexnyi ellenfélre (Erő 70), 1 körre Burn."
+  },
+  "squirtle-withdraw": {
+   "description": "Új képesség: behúzódik a páncéljába; 2 körre Fortified állapotba kerül."
+  },
+  "squirtle-hard-shell": {
+   "description": "A szomszédos hexről támadó ellenfelek 8 sebzést kapnak."
+  },
+  "squirtle-squirtle-squad": {
+   "description": "15%-kal többet sebez a társa által lekötött ellenfélre; minden kombója 1 Bondot ad."
+  },
+  "squirtle-flash-cannon": {
+   "description": "Új képesség: ágyúiból fénysugár tör elő, amely egy 2 hexes vonalban mindent eltalál (Erő 85)."
+  },
+  "squirtle-shell-smash": {
+   "description": "Új képesség: kitör a páncéljából; 2 körre Focused és Hasted állapotba kerül."
+  },
+  "squirtle-arcing-cannons": {
+   "description": "Távolsági támadásai átlőnek az útban álló Pokémonok fölött."
+  },
+  "squirtle-shell-wall": {
+   "description": "A vele lekötött ellenfelek mindig kapnak tőle szabad csapást, ha ellépnek."
+  },
+  "squirtle-water-spout": {
+   "description": "Új képesség: zúduló vízsugár egy max. 1 hexnyi, 1 hex területre (Erő 90)."
+  },
+  "squirtle-aqua-tail": {
+   "description": "Új képesség: nehéz, vizes farokcsapás (Erő 85), amely 2 hexnyire elsodorja az ellenfelet."
+  },
+  "squirtle-rinse-off": {
+   "description": "Köre elején lemossa magáról az ellenfelek által rárakott állapotokat."
+  },
+  "squirtle-cold-current": {
+   "description": "Az általa okozott státuszok 1 körrel tovább tartanak; 15%-kal többet sebez a státuszos ellenfelekre."
+  },
+  "squirtle-hydro-artillery": {
+   "description": "Csúcs. Torrent: Water mozdulatai 30%-kal többet sebeznek fél HP alatt; 10%-kal többet sebez."
+  },
+  "squirtle-living-fortress": {
+   "description": "Mesterfok. 15%-kal kevesebb sebzést kap; az általa lekötött ellenfelek 15%-kal többet kapnak a társaitól."
+  }
+ }
+}

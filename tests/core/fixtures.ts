@@ -8,14 +8,13 @@ export const content: BattleContent = {
   abilities: {},
   // Profiles are unused by rule tests (species set their stats directly); no type mechanics by default.
   types: Object.fromEntries(Object.keys(typeChart.chart).map((t) => [t, { profile: { hp: 5, attack: 5, defense: 5, spAttack: 5, spDefense: 5, speed: 5 } }])),
-  rules: { statusBonusCap: 2, engagement: { fallbackPower: 0.5 }, hpPerLevel: 0, hpPerLevelPerDefense: 0, specialTypes: [],
+  rules: { statusBonusCap: 2, engagement: { fallbackPower: 0.5 }, melee: { closeBonus: 1, engagedRangedPenalty: 1 }, momentum: { speedPerStep: 4, stepBonus: 0, max: 0 }, hpPerLevel: 0, hpPerLevelPerDefense: 0, specialTypes: [],
     // Offsets of 0 keep the arithmetic in tests simple: damage = power × Atk / Def / 4, HP = HP stat.
     hpBase: 0,
     hpPerPoint: 1,
     statOffset: 0,
     damageDivisor: 4,
-    moveBase: 3,
-    speedPerMove: 40,
+    moveBySpeed: [{ speed: 0, move: 3 }, { speed: 40, move: 4 }, { speed: 80, move: 5 }],
     moveMax: 5,
     impactDamage: 5,
     bond: { start: 2, max: 6, perKnockout: 1 },
@@ -53,10 +52,6 @@ import type { ProgressionContent } from "../../src/core/progression";
 
 /** Minimal progression rules for tests. */
 export const prog: ProgressionContent = {
-  roles: {
-    striker: { id: "striker", name: "Striker", description: "", growth: {}, tree: [{ talent: "power", level: 6 }, { talent: "brutal", level: 6 }, { talent: "shell", level: 7 }] },
-    tank: { id: "tank", name: "Tank", description: "", growth: {}, tree: [{ talent: "shell", level: 6 }] },
-  },
   talents: {
     power: { id: "power", name: "Power", description: "", stats: { attack: 20 } },
     brutal: { id: "brutal", name: "Brutal", description: "", mods: { damageDealt: 2 } },
@@ -66,13 +61,13 @@ export const prog: ProgressionContent = {
     potion: { id: "potion", name: "Potion", description: "", kind: "potion", price: 100, heal: 20 },
     claw: { id: "claw", name: "Claw", description: "", kind: "held", price: 300, mods: { moveBonus: 1 } },
   },
-  typeTrees: { normal: { id: "normal", tree: [] }, water: { id: "water", tree: [] }, grass: { id: "grass", tree: [] } },
-  rules: { roleLevel: 5, respecCostPerLevel: 10, maxLevel: 30, xpPerLevel: 10, pointsPerLevel: 1, evolutionPoints: 2, candyBonus: 1, candiesPerVictory: 1, xpPerEnemyLevel: 5, benchXpShare: 0.5, moneyPerEnemyLevel: 10, maxActiveMoves: 3 },
+  trees: {},
+  rules: { focusLevel: 5, focusBonus: 2, focusGrowthEvery: 2, respecCostPerLevel: 10, maxLevel: 30, xpPerLevel: 10, pointsPerLevel: 1, evolutionPoints: 2, candyBonus: 1, candiesPerVictory: 1, xpPerEnemyLevel: 5, benchXpShare: 0.5, moneyPerEnemyLevel: 10, maxActiveMoves: 3 },
 };
 
 /** A party member with default progression fields. */
 export const pm = (uid: string, speciesId: string, knockouts = 0, hp = 40, extra: Partial<PartyMember> = {}): PartyMember => ({
-  uid, speciesId, hp, knockouts, level: 1, xp: 0, role: null, talents: [], heldItem: null,
+  uid, speciesId, hp, knockouts, level: 1, xp: 0, focus: null, talents: [], heldItem: null,
   knownMoves: content.species[speciesId]?.moves ?? [], activeMoves: [],
   statPoints: { hp: 0, attack: 0, defense: 0, spAttack: 0, spDefense: 0, speed: 0 }, unspentPoints: 0, ...extra,
 });

@@ -95,11 +95,26 @@ function gainBond(state: BattleState, side: Side, amount: number, reason: "knock
   if (state.bond[side] !== before) events.push({ type: "bondChanged", side, amount: state.bond[side] - before, total: state.bond[side], reason });
 }
 
+/**
+ * Speed beyond the last movement step turns into momentum: after moving this turn, every
+ * `speedPerStep` Speed past it adds `stepBonus` damage (at most `max`).
+ */
+export function momentumBonus(content: BattleContent, unit: BattleUnit, state: BattleState): number {
+  if (state.turn?.unitId !== unit.id || !state.turn.moved) return 0;
+  const r = content.rules;
+  const excess = unit.stats.speed - r.moveBySpeed[r.moveBySpeed.length - 1]!.speed;
+  return Math.min(r.momentum.max, Math.max(0, Math.floor(excess / r.momentum.speedPerStep)) * r.momentum.stepBonus);
+}
+
+/** Movement points a Speed gives before statuses and bonuses. */
+export const baseMovement = (content: BattleContent, speed: number): number =>
+  [...content.rules.moveBySpeed].reverse().find((s) => speed >= s.speed)?.move ?? content.rules.moveBySpeed[0]!.move;
+
 export function movementPoints(content: BattleContent, unit: BattleUnit, state?: BattleState): number {
   if (unit.statuses.some((st) => content.statuses[st.id]?.noMove)) return 0;
   if (state && livingUnits(state).some((o) => o.side !== unit.side && o.ability?.arenaTrap && gridDistance(o.pos, unit.pos) === 1)) return 0;
   const r = content.rules;
-  const base = Math.min(r.moveMax, r.moveBase + Math.floor(unit.stats.speed / r.speedPerMove));
+  const base = Math.min(r.moveMax, baseMovement(content, unit.stats.speed));
   const penalty = unit.statuses.reduce((s, st) => s + (content.statuses[st.id]?.movePenalty ?? 0), 0);
   // Bonuses (abilities, items, masteries) help slow Pokémon but never lift anyone past the cap.
   return Math.max(0, Math.min(r.moveMax, base - penalty + unit.mods.moveBonus + (unit.statuses.length ? unit.mods.statusedMove : 0)));
@@ -152,6 +167,8 @@ export function moveUnavailableReason(
   if (move?.kind === "bond" && state.bond[unit.side] < bondCostFor(move, unit)) return `needs ${bondCostFor(move, unit)} Bond`;
   const blocking = unit.statuses.find((st) => content.statuses[st.id]?.noAction);
   if (blocking) return `${content.statuses[blocking.id]!.name.toLowerCase()}: cannot act this turn`;
+  const sealed = unit.statuses.find((st) => content.statuses[st.id]?.noSkills);
+  if (sealed && kind !== "basic" && moveId !== "struggle") return `${content.statuses[sealed.id]!.name.toLowerCase()}: only its basic attack`;
   const engaged = unit.engagedWith !== null;
   if (moveId === "struggle") {
     const basic = basicOf(content, unit);
@@ -250,6 +267,13 @@ export function validTargets(
       out.push(p);
     }
   return out;
+}
+
+/** Removes the statuses foes put on a unit (its own buffs stay). */
+function cleanse(state: BattleState, unit: BattleUnit, events: BattleEvent[]): void {
+  const foeMade = (st: ActiveStatus) => st.sourceId !== undefined && state.units.find((u) => u.id === st.sourceId)?.side !== unit.side;
+  for (const st of unit.statuses.filter(foeMade)) events.push({ type: "statusExpired", unitId: unit.id, status: st.id });
+  unit.statuses = unit.statuses.filter((st) => !foeMade(st));
 }
 
 // ---------------------------------------------------------------- setup
@@ -472,6 +496,7 @@ function doMove(state: BattleState, content: BattleContent, unitId: string, to: 
     const cost = reach.cost.get(key(segment[segment.length - 1]!))! - spent;
     spent += cost;
     state.turn!.movePointsLeft -= cost;
+    state.turn!.moved = true;
     events.push({ type: "moved", unitId, path: segment, cost });
     segment = [];
   };
@@ -496,9 +521,10 @@ function doUseMove(
   content: BattleContent,
   unitId: string,
   moveId: string,
-  target: Point,
+  aimedAt: Point,
   events: BattleEvent[],
 ): void {
+  let target = aimedAt;
   const reason = moveUnavailableReason(state, content, unitId, moveId);
   if (reason) throw new IllegalActionError(`${moveId}: ${reason}`);
   if (!validTargets(state, content, unitId, moveId).some((p) => samePoint(p, target)))
@@ -506,7 +532,21 @@ function doUseMove(
 
   const user = unitById(state, unitId);
   const move = effectiveMove(content, user, moveId);
-  const affected = affectedUnits(state, move, user, target);
+  let affected = affectedUnits(state, move, user, target);
+  // Confusion: the attack goes to the nearest unit in reach, an ally if one is as close as any foe.
+  const confusion = move.affects === "enemies" && move.power > 0 ? user.statuses.find((st) => content.statuses[st.id]?.misdirects) : undefined;
+  if (confusion) {
+    const reach = moveRange(user, move);
+    const nearest = livingUnits(state)
+      .filter((u) => u.id !== user.id && gridDistance(u.pos, user.pos) >= reach.min && gridDistance(u.pos, user.pos) <= reach.max)
+      .sort((a, b) => gridDistance(a.pos, user.pos) - gridDistance(b.pos, user.pos) || Number(b.side === user.side) - Number(a.side === user.side) || (a.id < b.id ? -1 : 1))[0];
+    if (nearest) {
+      target = nearest.pos;
+      affected = moveArea(state, move, user, target).map((p) => unitAt(state, p)).filter((u): u is BattleUnit => u !== undefined && u.id !== user.id);
+    }
+    user.statuses = user.statuses.filter((st) => st !== confusion);
+    events.push({ type: "statusExpired", unitId: user.id, status: confusion.id });
+  }
   if (move.kind === "basic") state.turn!.basicUsed = true;
   else state.turn!.actionUsed = true;
   if (move.kind === "special" && move.cooldown)
@@ -650,7 +690,10 @@ function resolveHits(
         m.damageDealt, m.typeDamage[move.type] ?? 1,
         t.statuses.length > 0 ? m.vsStatusDamage : 1,
         t.hp === t.maxHp ? m.fullHpTargetDamage : 1,
-        dist >= 3 ? m.farDamage : dist === 1 ? m.closeDamage : 1,
+        dist >= 2 ? m.farDamage : m.closeDamage,
+        // Melee moves hit harder (they must walk into reach); speed past the movement cap adds momentum after moving.
+        move.range.max <= 1 ? content.rules.melee.closeBonus : 1,
+        1 + momentumBonus(content, user, state),
         user.hp * 2 < user.maxHp ? m.lowHpDamage * (m.lowHpTypeDamage[move.type] ?? 1) : 1,
         setup === "engaged" ? m.vsEngagedDamage : 1,
         isFoe && hasAllySetupStatus(state, user, t) ? m.vsSetupDamage : 1,
@@ -661,6 +704,8 @@ function resolveHits(
         ...t.statuses.map((st) => m.vsStatusIdDamage[st.id] ?? 1),
         1 + m.furyCutter * streak,
       ];
+      // A ranged move used while engaged is hampered by the foe in its face.
+      if (user.engagedWith && move.range.max >= 2) ownFactors.push(content.rules.melee.engagedRangedPenalty);
       const bonus = ownFactors.reduce((sum, f) => sum + (f > 1 ? f - 1 : 0), 0);
       const penalty = ownFactors.reduce((prod, f) => prod * (f < 1 ? f : 1), 1);
       const own = penalty * (1 + Math.min(MAX_DAMAGE_BONUS, bonus));
@@ -668,7 +713,7 @@ function resolveHits(
       const off = content.rules.statOffset;
       const special = isSpecialMove(content, move);
       const defense = mech.ignoresDefense ? 0 : special ? t.stats.spDefense : t.stats.defense;
-      const attack = special ? user.stats.spAttack : user.stats.attack;
+      const attack = move.scaleStat ? user.stats[move.scaleStat] : special ? user.stats.spAttack : user.stats.attack;
       const raw = (move.power * (off + attack + user.attackBoost)) / (off + defense) * mult / content.rules.damageDivisor;
       // Any hit deals at least 1, unless something blocks all damage (Protect).
       const dealt = dealDamage(state, t, mult > 0 ? Math.max(1, Math.round(raw)) : 0, "move", events, eff);
@@ -723,6 +768,9 @@ function resolveHits(
           break;
         case "bond":
           break; // Resolved with the hit above.
+        case "cleanse":
+          cleanse(state, t, events);
+          break;
         case "disengage":
           // Applied once to the user, whoever the move hit.
           if (t === affected[0]) disengage(state, user, events);
@@ -863,11 +911,7 @@ function startTurn(state: BattleState, content: BattleContent, events: BattleEve
       if (unit.hp <= 0) spreadStatuses(state, content, unit, events);
     }
   }
-  if (unit.hp > 0 && unit.mods.shedStatuses) {
-    const foeMade = (st: ActiveStatus) => st.sourceId !== undefined && state.units.find((u) => u.id === st.sourceId)?.side !== unit.side;
-    for (const st of unit.statuses.filter(foeMade)) events.push({ type: "statusExpired", unitId: unit.id, status: st.id });
-    unit.statuses = unit.statuses.filter((st) => !foeMade(st));
-  }
+  if (unit.hp > 0 && unit.mods.shedStatuses) cleanse(state, unit, events);
   const healFrac = unit.mods.healPerTurn + (unit.engagedWith ? unit.mods.healWhileEngaged : 0);
   if (unit.hp > 0 && healFrac > 0 && unit.hp < unit.maxHp) {
     const amount = Math.min(unit.maxHp - unit.hp, Math.max(1, Math.floor(unit.maxHp * healFrac)));

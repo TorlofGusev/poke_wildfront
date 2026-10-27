@@ -1,0 +1,73 @@
+{
+ "talents": {
+  "rattata-crunch": {
+   "description": "Bond képesség: agyarával összeroppant egy ellenfelet (Erő 100, Attack), 2 körre Exposed állapotba hozva."
+  },
+  "rattata-sucker-punch": {
+   "description": "Bond képesség: rárontó támadás egy max. 2 hexnyi ellenfélre (Erő 70), majd leköti."
+  },
+  "rattata-endeavor": {
+   "description": "Bond képesség: elszánt, mindent beleadó támadás egy ellenfélre (Erő 80)."
+  },
+  "rattata-guts": {
+   "description": "25%-kal többet sebez, amíg állapot van rajta."
+  },
+  "rattata-scavenger": {
+   "description": "Kiütéskor max HP-ja 10%-át gyógyítja."
+  },
+  "rattata-focus-energy": {
+   "description": "Új képesség: mély levegőt vesz; 2 körre Focused állapotba kerül."
+  },
+  "rattata-pursuit": {
+   "description": "Új képesség: üldözőbe vesz egy max. 2 hexnyi ellenfelet (Erő 50), és leköti."
+  },
+  "rattata-pack-rat": {
+   "description": "15%-kal többet sebez a szövetségesei által lekötött ellenfelekre."
+  },
+  "rattata-gnawing-teeth": {
+   "description": "8%-kal többet sebez minden egymás utáni találatért ugyanazon az ellenfélen (max 3)."
+  },
+  "rattata-survivor": {
+   "description": "Fél HP alatt 20%-kal többet sebez."
+  },
+  "rattata-street-tough": {
+   "description": "Nem lehet elaltatni (Sleep) vagy lelassítani (Slow)."
+  },
+  "rattata-double-edge": {
+   "description": "Új képesség: vakmerő, teljes testtel mért roham egy ellenfélre (Erő 90)."
+  },
+  "rattata-cornered-rat": {
+   "description": "20%-kal többet sebez, amíg legalább 2 ellenfél áll mellette."
+  },
+  "rattata-rat-race": {
+   "description": "Szabad csapás nélkül lép el a lekötött ellenfelek mellől."
+  },
+  "rattata-giga-impact": {
+   "description": "Új képesség: teljes erejével nekiront egy ellenfélnek (Erő 100), 1 hexnyit hátralökve."
+  },
+  "rattata-hunger": {
+   "description": "Minden kiütésnél +1 Attackot kap a csata végéig (max +3)."
+  },
+  "rattata-frenzy": {
+   "description": "Ha a saját körében kiüt egy ellenfelet, újra használhatja az alaptámadását."
+  },
+  "rattata-hyper-fangs": {
+   "description": "Capstone. 25%-kal többet sebez a státuszos, 20%-kal többet a teli HP-s ellenfelekre."
+  },
+  "rattata-survivors-grit": {
+   "description": "Mesterfokozat. Csatánként egyszer 1 HP-val túlél egy kiütő csapást; nem mérgezhető és nem égethető meg."
+  },
+  "rattata-super-fang": {
+   "description": "Új képesség: éles metszőfogaival harap (Erő 65)."
+  },
+  "rattata-endure": {
+   "description": "Új képesség: összeszedi magát, hogy kitartson; 1 körre Protected."
+  },
+  "rattata-rapid-spin": {
+   "description": "Új képesség: pörögve nekiront (Erő 75), majd kipörög a lekötésből."
+  },
+  "rattata-tail-whip": {
+   "description": "Új képesség: csóválja a farkát, hogy lankadjon a figyelem; a szomszédos ellenfelek 2 körre Marked állapotba kerülnek."
+  }
+ }
+}

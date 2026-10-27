@@ -1,5 +1,5 @@
 import { STAT_NAMES, type BaseStats, type BattleContent, type StatName, type UnitModifiers } from "../../core/battle";
-import type { ItemDef, ProgressionContent, RoleDef, TalentDef } from "../../core/progression";
+import type { ItemDef, ProgressionContent, TalentDef } from "../../core/progression";
 import { t } from "../i18n";
 import { describeMove } from "./describeMove";
 import { tag } from "./markup";
@@ -13,7 +13,7 @@ export function describeModifiers(content: BattleContent, m: Partial<UnitModifie
   const bond = content.terms.bond;
   if (m.rangeBonus) out.push(t("Ranged moves (2+ hexes) reach {n} further (max 3, Bond moves no limit)", { n: up(m.rangeBonus > 1 ? t("+{n} hexes", { n: m.rangeBonus }) : t("+{n} hex", { n: m.rangeBonus })) }));
   if (m.shootOver) out.push(t("Its ranged moves {x} in the way", { x: up(t("fire over Pokémon")) }));
-  if (m.farDamage && m.farDamage !== 1) out.push(t("{v} damage to foes 3+ tiles away", { v: m.farDamage > 1 ? up(`+${pct(m.farDamage - 1)}`) : tag("bad", `−${pct(m.farDamage - 1)}`) }));
+  if (m.farDamage && m.farDamage !== 1) out.push(t("{v} damage to foes 2+ hexes away", { v: m.farDamage > 1 ? up(`+${pct(m.farDamage - 1)}`) : tag("bad", `−${pct(m.farDamage - 1)}`) }));
   if (m.closeDamage && m.closeDamage !== 1) out.push(t("{v} damage to adjacent foes", { v: m.closeDamage > 1 ? up(`+${pct(m.closeDamage - 1)}`) : tag("bad", `−${pct(m.closeDamage - 1)}`) }));
   if (m.moveBonus) out.push(t("{x} every turn", { x: up(t("{v} movement", { v: `${m.moveBonus > 0 ? "+" : ""}${m.moveBonus}` })) }));
   if (m.damageDealt && m.damageDealt !== 1) out.push(t("{x} with every move", { x: up(t("{v} damage", { v: `${m.damageDealt > 1 ? "+" : "−"}${pct(m.damageDealt - 1)}` })) }));
@@ -82,19 +82,15 @@ export const STAT_SHORT: Record<StatName, string> = { hp: t("HP"), attack: t("At
 export const statLine = (stats: BaseStats): string =>
   STAT_NAMES.filter((s) => s !== "hp").map((s) => `${STAT_SHORT[s]} ${stats[s]}`).join("  ");
 
-/** A role's automatic growth as a hint: "Def ++ · SpD ++ · HP +". */
-export function describeGrowth(role: RoleDef): string {
-  return STAT_NAMES.filter((s) => (role.growth[s] ?? 0) > 0)
-    .sort((a, b) => role.growth[b]! - role.growth[a]!)
-    .map((s) => `${STAT_SHORT[s]} ${role.growth[s]! >= 0.25 ? "++" : "+"}`).join(" · ");
-}
+/** "Attack focus": the stat the Lv 3 pick grows. */
+export const focusLabel = (stat: StatName): string => t("{stat} focus", { stat: STAT_LABEL[stat] });
 
 export function describeTalent(content: BattleContent, prog: ProgressionContent, talent: TalentDef): string[] {
   const out: string[] = [];
   const bond = content.terms.bond;
   for (const [s, v] of Object.entries(talent.stats ?? {}) as [StatName, number][]) {
     const extra = s === "hp" ? t(" (max HP +{n})", { n: v * content.rules.hpPerPoint })
-      : s === "speed" ? t(" (movement +1 every {n} Speed)", { n: content.rules.speedPerMove }) : "";
+      : s === "speed" ? t(" (more movement at {steps} Speed)", { steps: content.rules.moveBySpeed.slice(1).map((st) => st.speed).join(" / ") }) : "";
     out.push(`${tag("good", `+${v} ${STAT_LABEL[s]}`)}${tag("dim", extra)}`);
   }
   out.push(...describeModifiers(content, talent.mods ?? {}));

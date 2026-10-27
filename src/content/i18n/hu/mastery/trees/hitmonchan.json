@@ -1,0 +1,73 @@
+{
+ "talents": {
+  "hitmonchan-sky-uppercut": {
+   "description": "Bond képesség: égbe szökő felütés (Erő 95, Támadás), 1 hexnyit hátralöki az ellenfelet."
+  },
+  "hitmonchan-detect": {
+   "description": "Bond képesség: minden érkező ütést kiszámít, 1 körre Protected."
+  },
+  "hitmonchan-mach-punch": {
+   "description": "Bond képesség: hangsebességnél gyorsabb ütés (Erő 60, Támadás)."
+  },
+  "hitmonchan-iron-fist": {
+   "description": "15%-kal többet sebez a szomszédos ellenfelekre."
+  },
+  "hitmonchan-high-guard": {
+   "description": "10%-kal kevesebb sebzést szenved."
+  },
+  "hitmonchan-bullet-punch": {
+   "description": "Új képesség: villámgyors acélos egyenes (Erő 45)."
+  },
+  "hitmonchan-vacuum-wave": {
+   "description": "Új képesség: ütés, amely légüres hullámot küld egy legfeljebb 2 hexnyire álló ellenfélre (Erő 45)."
+  },
+  "hitmonchan-counterpunch": {
+   "description": "A szomszédos hexről őt eltaláló ellenfelek 8 sebzést kapnak."
+  },
+  "hitmonchan-footwork": {
+   "description": "Szabad ütés nélkül lép el a lekötő ellenfelektől."
+  },
+  "hitmonchan-agility": {
+   "description": "Új képesség: ellazul, 2 körre Hasted lesz."
+  },
+  "hitmonchan-counter": {
+   "description": "Új képesség: súlyos ellencsapás (Erő 70), 1 hexnyit hátralöki az ellenfelet."
+  },
+  "hitmonchan-corner-trap": {
+   "description": "Az általa lekötött ellenfelek 15%-kal több sebzést kapnak a társaitól."
+  },
+  "hitmonchan-second-wind": {
+   "description": "Minden köre elején max. HP-ja 4%-át gyógyítja."
+  },
+  "hitmonchan-focus-punch": {
+   "description": "Új képesség: teljes összpontosítással mért pusztító ütés (Erő 100)."
+  },
+  "hitmonchan-quick-guard": {
+   "description": "Új képesség: védi magát és a szomszédos társakat, 1 körre Fortified lesznek."
+  },
+  "hitmonchan-combination": {
+   "description": "Ugyanarra az ellenfélre mért minden egymást követő találat 10%-kal többet sebez, legfeljebb 3-szor."
+  },
+  "hitmonchan-fighting-spirit": {
+   "description": "25%-kal többet sebez, amíg HP-ja a fele alatt van."
+  },
+  "hitmonchan-dynamic-punch": {
+   "description": "Új képesség: teljes erejű ütés (Erő 90), az ellenfél megszédül, 2 körre lelassul."
+  },
+  "hitmonchan-close-combat": {
+   "description": "Új képesség: mindent beleadó ütéssorozat leeresztett védelemmel (Erő 95)."
+  },
+  "hitmonchan-winning-rhythm": {
+   "description": "Max. HP-ja 15%-át gyógyítja, ha kiüt egy ellenfelet."
+  },
+  "hitmonchan-back-to-the-ropes": {
+   "description": "20%-kal többet sebez, amíg legalább 2 ellenfél áll mellette."
+  },
+  "hitmonchan-champion": {
+   "description": "Csúcs. Harci támadásai 15%-kal többet sebeznek; kiütés után újra használhatja az alaptámadását."
+  },
+  "hitmonchan-knockout-artist": {
+   "description": "Csúcsképesség. 20%-kal többet sebez a teljes HP-jú ellenfelekre; szabad ütései 30%-kal erősebbek."
+  }
+ }
+}

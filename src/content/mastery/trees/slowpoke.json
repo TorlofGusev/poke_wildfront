@@ -1,0 +1,466 @@
+{
+ "line": [
+  "slowpoke",
+  "slowbro"
+ ],
+ "focus": [
+  {
+   "stat": "hp",
+   "skill": "slowpoke-slack-off"
+  },
+  {
+   "stat": "spAttack",
+   "skill": "slowpoke-psyshock"
+  },
+  {
+   "stat": "defense",
+   "skill": "slowpoke-aqua-tail"
+  }
+ ],
+ "rows": {
+  "4": [
+   "slowpoke-regenerator",
+   "slowpoke-own-tempo"
+  ],
+  "6": [
+   "slowpoke-disable",
+   "slowpoke-zen-headbutt"
+  ],
+  "9": [
+   "slowpoke-delayed-pain",
+   "slowpoke-fishing-tail"
+  ],
+  "12": [
+   "slowpoke-amnesia",
+   "slowpoke-water-gun"
+  ],
+  "15": [
+   "slowpoke-unbothered",
+   "slowpoke-telepathy"
+  ],
+  "18": [
+   "slowpoke-iron-tail",
+   "slowpoke-muddy-water"
+  ],
+  "21": [
+   "slowpoke-shellder-bite",
+   "slowpoke-calm-mind"
+  ],
+  "24": [
+   "slowpoke-hydro-pump",
+   "slowpoke-expanding-force"
+  ],
+  "27": [
+   "slowpoke-stubborn",
+   "slowpoke-sluggish-strength"
+  ],
+  "30": [
+   "slowpoke-unshakable-calm",
+   "slowpoke-psychic-link"
+  ]
+ },
+ "moves": {
+  "slowpoke-slack-off": {
+   "id": "slowpoke-slack-off",
+   "name": "Slack Off",
+   "type": "normal",
+   "kind": "bond",
+   "bondCost": 1,
+   "power": 0,
+   "range": {
+    "min": 0,
+    "max": 0
+   },
+   "requiresLineOfSight": false,
+   "shape": {
+    "kind": "single"
+   },
+   "affects": "allies",
+   "effects": [
+    {
+     "kind": "heal",
+     "amount": 40
+    }
+   ]
+  },
+  "slowpoke-psyshock": {
+   "id": "slowpoke-psyshock",
+   "name": "Psyshock",
+   "type": "psychic",
+   "kind": "bond",
+   "category": "special",
+   "bondCost": 2,
+   "power": 90,
+   "range": {
+    "min": 1,
+    "max": 3
+   },
+   "requiresLineOfSight": true,
+   "shape": {
+    "kind": "single"
+   },
+   "affects": "enemies"
+  },
+  "slowpoke-aqua-tail": {
+   "id": "slowpoke-aqua-tail",
+   "name": "Aqua Tail",
+   "type": "water",
+   "kind": "bond",
+   "category": "physical",
+   "bondCost": 2,
+   "power": 80,
+   "range": {
+    "min": 1,
+    "max": 1
+   },
+   "requiresLineOfSight": false,
+   "shape": {
+    "kind": "single"
+   },
+   "affects": "enemies"
+  },
+  "slowpoke-zen-headbutt": {
+   "id": "slowpoke-zen-headbutt",
+   "name": "Zen Headbutt",
+   "type": "psychic",
+   "kind": "special",
+   "category": "physical",
+   "cooldown": 3,
+   "power": 70,
+   "range": {
+    "min": 1,
+    "max": 1
+   },
+   "requiresLineOfSight": false,
+   "shape": {
+    "kind": "single"
+   },
+   "affects": "enemies"
+  },
+  "slowpoke-amnesia": {
+   "id": "slowpoke-amnesia",
+   "name": "Amnesia",
+   "type": "psychic",
+   "kind": "special",
+   "cooldown": 4,
+   "power": 0,
+   "range": {
+    "min": 0,
+    "max": 0
+   },
+   "requiresLineOfSight": false,
+   "shape": {
+    "kind": "single"
+   },
+   "affects": "allies",
+   "effects": [
+    {
+     "kind": "status",
+     "status": "fortified",
+     "duration": 3
+    }
+   ]
+  },
+  "slowpoke-water-gun": {
+   "id": "slowpoke-water-gun",
+   "name": "Water Gun",
+   "type": "water",
+   "kind": "special",
+   "category": "special",
+   "cooldown": 2,
+   "power": 60,
+   "range": {
+    "min": 1,
+    "max": 2
+   },
+   "requiresLineOfSight": true,
+   "shape": {
+    "kind": "single"
+   },
+   "affects": "enemies"
+  },
+  "slowpoke-iron-tail": {
+   "id": "slowpoke-iron-tail",
+   "name": "Iron Tail",
+   "type": "normal",
+   "kind": "special",
+   "category": "physical",
+   "cooldown": 4,
+   "power": 90,
+   "range": {
+    "min": 1,
+    "max": 1
+   },
+   "requiresLineOfSight": false,
+   "shape": {
+    "kind": "single"
+   },
+   "affects": "enemies",
+   "effects": [
+    {
+     "kind": "status",
+     "status": "exposed",
+     "duration": 1
+    }
+   ]
+  },
+  "slowpoke-muddy-water": {
+   "id": "slowpoke-muddy-water",
+   "name": "Muddy Water",
+   "type": "water",
+   "kind": "special",
+   "category": "special",
+   "cooldown": 5,
+   "power": 85,
+   "range": {
+    "min": 1,
+    "max": 2
+   },
+   "requiresLineOfSight": true,
+   "shape": {
+    "kind": "single"
+   },
+   "affects": "enemies",
+   "effects": [
+    {
+     "kind": "status",
+     "status": "slow",
+     "duration": 2
+    }
+   ]
+  },
+  "slowpoke-hydro-pump": {
+   "id": "slowpoke-hydro-pump",
+   "name": "Hydro Pump",
+   "type": "water",
+   "kind": "special",
+   "category": "special",
+   "cooldown": 5,
+   "power": 95,
+   "range": {
+    "min": 1,
+    "max": 2
+   },
+   "requiresLineOfSight": true,
+   "shape": {
+    "kind": "single"
+   },
+   "affects": "enemies"
+  },
+  "slowpoke-expanding-force": {
+   "id": "slowpoke-expanding-force",
+   "name": "Expanding Force",
+   "type": "psychic",
+   "kind": "special",
+   "category": "special",
+   "cooldown": 5,
+   "power": 85,
+   "range": {
+    "min": 0,
+    "max": 0
+   },
+   "requiresLineOfSight": false,
+   "shape": {
+    "kind": "burst",
+    "radius": 1
+   },
+   "affects": "enemies"
+  },
+  "slowpoke-disable": {
+   "id": "slowpoke-disable",
+   "name": "Disable",
+   "type": "normal",
+   "kind": "special",
+   "cooldown": 4,
+   "power": 0,
+   "range": {
+    "min": 1,
+    "max": 2
+   },
+   "requiresLineOfSight": true,
+   "shape": {
+    "kind": "single"
+   },
+   "affects": "enemies",
+   "effects": [
+    {
+     "kind": "status",
+     "status": "disabled",
+     "duration": 2
+    }
+   ]
+  }
+ },
+ "talents": {
+  "slowpoke-slack-off": {
+   "id": "slowpoke-slack-off",
+   "name": "Slack Off",
+   "description": "Bond skill: lazes around and restores 40 HP.",
+   "grantsMove": "slowpoke-slack-off"
+  },
+  "slowpoke-psyshock": {
+   "id": "slowpoke-psyshock",
+   "name": "Psyshock",
+   "description": "Bond skill: a psychic wave at a foe up to 3 hexes away (Power 90, Sp. Atk).",
+   "grantsMove": "slowpoke-psyshock"
+  },
+  "slowpoke-aqua-tail": {
+   "id": "slowpoke-aqua-tail",
+   "name": "Aqua Tail",
+   "description": "Bond skill: swings its heavy, wet tail at an adjacent foe (Power 80).",
+   "grantsMove": "slowpoke-aqua-tail"
+  },
+  "slowpoke-regenerator": {
+   "id": "slowpoke-regenerator",
+   "name": "Regenerator",
+   "description": "Heals 4% of max HP at the start of each turn.",
+   "mods": {
+    "healPerTurn": 0.04
+   }
+  },
+  "slowpoke-own-tempo": {
+   "id": "slowpoke-own-tempo",
+   "name": "Own Tempo",
+   "description": "Cannot be Slowed: it keeps its own pace.",
+   "mods": {
+    "statusImmune": [
+     "slow"
+    ]
+   }
+  },
+  "slowpoke-zen-headbutt": {
+   "id": "slowpoke-zen-headbutt",
+   "name": "Zen Headbutt",
+   "description": "New skill: a headbutt charged with willpower (Power 70).",
+   "grantsMove": "slowpoke-zen-headbutt"
+  },
+  "slowpoke-delayed-pain": {
+   "id": "slowpoke-delayed-pain",
+   "name": "Delayed Pain",
+   "description": "Takes 20% less damage while at full HP: it notices pain late.",
+   "mods": {
+    "fullHpDamageTaken": 0.8
+   }
+  },
+  "slowpoke-fishing-tail": {
+   "id": "slowpoke-fishing-tail",
+   "name": "Fishing Tail",
+   "description": "Foes it engages take 15% more damage from its allies.",
+   "mods": {
+    "pinDamage": 1.15
+   }
+  },
+  "slowpoke-amnesia": {
+   "id": "slowpoke-amnesia",
+   "name": "Amnesia",
+   "description": "New skill: empties its mind, becoming Fortified for 3 turns.",
+   "grantsMove": "slowpoke-amnesia"
+  },
+  "slowpoke-water-gun": {
+   "id": "slowpoke-water-gun",
+   "name": "Water Gun",
+   "description": "New skill: squirts water at a foe up to 2 hexes away (Power 60).",
+   "grantsMove": "slowpoke-water-gun"
+  },
+  "slowpoke-unbothered": {
+   "id": "slowpoke-unbothered",
+   "name": "Unbothered",
+   "description": "Heals 3% of max HP each turn while engaged with a foe.",
+   "mods": {
+    "healWhileEngaged": 0.03
+   }
+  },
+  "slowpoke-telepathy": {
+   "id": "slowpoke-telepathy",
+   "name": "Telepathy",
+   "description": "Gives the team 1 Bond when it lands a combo.",
+   "mods": {
+    "comboBond": 1
+   }
+  },
+  "slowpoke-iron-tail": {
+   "id": "slowpoke-iron-tail",
+   "name": "Iron Tail",
+   "description": "New skill: slams with its hardened tail (Power 90), Exposing the foe for 1 turn.",
+   "grantsMove": "slowpoke-iron-tail"
+  },
+  "slowpoke-muddy-water": {
+   "id": "slowpoke-muddy-water",
+   "name": "Muddy Water",
+   "description": "New skill: a muddy wave at a foe up to 2 hexes away (Power 85); Slows 2 turns.",
+   "grantsMove": "slowpoke-muddy-water"
+  },
+  "slowpoke-shellder-bite": {
+   "id": "slowpoke-shellder-bite",
+   "name": "Shellder Bite",
+   "description": "Deals 15% more damage to adjacent foes: the Shellder on its tail bites too.",
+   "mods": {
+    "closeDamage": 1.15
+   }
+  },
+  "slowpoke-calm-mind": {
+   "id": "slowpoke-calm-mind",
+   "name": "Calm Mind",
+   "description": "Its Psychic moves deal 15% more damage.",
+   "mods": {
+    "typeDamage": {
+     "psychic": 1.15
+    }
+   }
+  },
+  "slowpoke-hydro-pump": {
+   "id": "slowpoke-hydro-pump",
+   "name": "Hydro Pump",
+   "description": "New skill: a torrent of water at a foe up to 2 hexes away (Power 95).",
+   "grantsMove": "slowpoke-hydro-pump"
+  },
+  "slowpoke-expanding-force": {
+   "id": "slowpoke-expanding-force",
+   "name": "Expanding Force",
+   "description": "New skill: psychic force bursts out, hitting foes within 1 hex (Power 85).",
+   "grantsMove": "slowpoke-expanding-force"
+  },
+  "slowpoke-stubborn": {
+   "id": "slowpoke-stubborn",
+   "name": "Thick-Headed",
+   "description": "Survives one knockout blow per battle at 1 HP.",
+   "mods": {
+    "sturdy": true
+   }
+  },
+  "slowpoke-sluggish-strength": {
+   "id": "slowpoke-sluggish-strength",
+   "name": "Slow Fury",
+   "description": "Deals 20% more damage while below half HP.",
+   "mods": {
+    "lowHpDamage": 1.2
+   }
+  },
+  "slowpoke-unshakable-calm": {
+   "id": "slowpoke-unshakable-calm",
+   "name": "Unshakable Calm",
+   "description": "Capstone. Takes 15% less damage and cannot receive any status.",
+   "mods": {
+    "damageTaken": 0.85,
+    "statusImmune": [
+     "*"
+    ]
+   }
+  },
+  "slowpoke-psychic-link": {
+   "id": "slowpoke-psychic-link",
+   "name": "Psychic Link",
+   "description": "Capstone. Deals 20% more to foes an ally afflicted; its non-damaging skills recharge 1 turn faster.",
+   "mods": {
+    "vsSetupDamage": 1.2,
+    "statusCooldownReduction": 1
+   }
+  },
+  "slowpoke-disable": {
+   "id": "slowpoke-disable",
+   "name": "Disable",
+   "description": "New skill: seals the skills of a foe up to 2 hexes away for 2 turns (Disabled).",
+   "grantsMove": "slowpoke-disable"
+  }
+ }
+}

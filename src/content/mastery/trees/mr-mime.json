@@ -1,0 +1,472 @@
+{
+ "line": [
+  "mr-mime"
+ ],
+ "focus": [
+  {
+   "stat": "spAttack",
+   "skill": "mr-mime-future-sight"
+  },
+  {
+   "stat": "spDefense",
+   "skill": "mr-mime-barrier"
+  },
+  {
+   "stat": "speed",
+   "skill": "mr-mime-swift"
+  }
+ ],
+ "rows": {
+  "4": [
+   "mr-mime-filter",
+   "mr-mime-psychic-focus"
+  ],
+  "6": [
+   "mr-mime-psywave",
+   "mr-mime-encore"
+  ],
+  "9": [
+   "mr-mime-invisible-wall",
+   "mr-mime-insomnia"
+  ],
+  "12": [
+   "mr-mime-substitute",
+   "mr-mime-psyshock"
+  ],
+  "15": [
+   "mr-mime-mimes-act",
+   "mr-mime-vanishing-act"
+  ],
+  "18": [
+   "mr-mime-nasty-plot",
+   "mr-mime-extrasensory"
+  ],
+  "21": [
+   "mr-mime-unbreakable-act",
+   "mr-mime-showstopper"
+  ],
+  "24": [
+   "mr-mime-hyper-voice",
+   "mr-mime-light-screen"
+  ],
+  "27": [
+   "mr-mime-mind-bulwark",
+   "mr-mime-applause"
+  ],
+  "30": [
+   "mr-mime-grand-performance",
+   "mr-mime-invisible-stage"
+  ]
+ },
+ "moves": {
+  "mr-mime-future-sight": {
+   "id": "mr-mime-future-sight",
+   "name": "Future Sight",
+   "type": "psychic",
+   "kind": "bond",
+   "category": "special",
+   "bondCost": 3,
+   "power": 100,
+   "range": {
+    "min": 1,
+    "max": 3
+   },
+   "requiresLineOfSight": false,
+   "shape": {
+    "kind": "single"
+   },
+   "affects": "enemies"
+  },
+  "mr-mime-barrier": {
+   "id": "mr-mime-barrier",
+   "name": "Barrier",
+   "type": "psychic",
+   "kind": "bond",
+   "bondCost": 2,
+   "power": 0,
+   "range": {
+    "min": 0,
+    "max": 2
+   },
+   "requiresLineOfSight": false,
+   "shape": {
+    "kind": "burst",
+    "radius": 1
+   },
+   "affects": "allies",
+   "effects": [
+    {
+     "kind": "status",
+     "status": "fortified",
+     "duration": 2
+    }
+   ]
+  },
+  "mr-mime-swift": {
+   "id": "mr-mime-swift",
+   "name": "Swift",
+   "type": "normal",
+   "kind": "bond",
+   "category": "special",
+   "bondCost": 1,
+   "power": 60,
+   "range": {
+    "min": 1,
+    "max": 2
+   },
+   "requiresLineOfSight": true,
+   "shape": {
+    "kind": "single"
+   },
+   "affects": "enemies"
+  },
+  "mr-mime-psywave": {
+   "id": "mr-mime-psywave",
+   "name": "Psywave",
+   "type": "psychic",
+   "kind": "special",
+   "category": "special",
+   "cooldown": 2,
+   "power": 55,
+   "range": {
+    "min": 1,
+    "max": 2
+   },
+   "requiresLineOfSight": true,
+   "shape": {
+    "kind": "single"
+   },
+   "affects": "enemies"
+  },
+  "mr-mime-encore": {
+   "id": "mr-mime-encore",
+   "name": "Encore",
+   "type": "normal",
+   "kind": "special",
+   "cooldown": 3,
+   "power": 0,
+   "range": {
+    "min": 1,
+    "max": 2
+   },
+   "requiresLineOfSight": true,
+   "shape": {
+    "kind": "single"
+   },
+   "affects": "enemies",
+   "effects": [
+    {
+     "kind": "status",
+     "status": "paralysis",
+     "duration": 1
+    }
+   ]
+  },
+  "mr-mime-substitute": {
+   "id": "mr-mime-substitute",
+   "name": "Substitute",
+   "type": "normal",
+   "kind": "special",
+   "cooldown": 5,
+   "power": 0,
+   "range": {
+    "min": 0,
+    "max": 0
+   },
+   "requiresLineOfSight": false,
+   "shape": {
+    "kind": "single"
+   },
+   "affects": "allies",
+   "effects": [
+    {
+     "kind": "status",
+     "status": "protected",
+     "duration": 2
+    }
+   ]
+  },
+  "mr-mime-psyshock": {
+   "id": "mr-mime-psyshock",
+   "name": "Psyshock",
+   "type": "psychic",
+   "kind": "special",
+   "category": "special",
+   "cooldown": 3,
+   "power": 70,
+   "range": {
+    "min": 1,
+    "max": 2
+   },
+   "requiresLineOfSight": true,
+   "shape": {
+    "kind": "single"
+   },
+   "affects": "enemies"
+  },
+  "mr-mime-nasty-plot": {
+   "id": "mr-mime-nasty-plot",
+   "name": "Nasty Plot",
+   "type": "normal",
+   "kind": "special",
+   "cooldown": 5,
+   "power": 0,
+   "range": {
+    "min": 0,
+    "max": 0
+   },
+   "requiresLineOfSight": false,
+   "shape": {
+    "kind": "single"
+   },
+   "affects": "allies",
+   "effects": [
+    {
+     "kind": "status",
+     "status": "focused",
+     "duration": 2
+    }
+   ]
+  },
+  "mr-mime-extrasensory": {
+   "id": "mr-mime-extrasensory",
+   "name": "Extrasensory",
+   "type": "psychic",
+   "kind": "special",
+   "category": "special",
+   "cooldown": 5,
+   "power": 95,
+   "range": {
+    "min": 1,
+    "max": 2
+   },
+   "requiresLineOfSight": true,
+   "shape": {
+    "kind": "single"
+   },
+   "affects": "enemies"
+  },
+  "mr-mime-hyper-voice": {
+   "id": "mr-mime-hyper-voice",
+   "name": "Hyper Voice",
+   "type": "normal",
+   "kind": "special",
+   "category": "special",
+   "cooldown": 4,
+   "power": 90,
+   "range": {
+    "min": 1,
+    "max": 2
+   },
+   "requiresLineOfSight": true,
+   "shape": {
+    "kind": "single"
+   },
+   "affects": "enemies",
+   "effects": [
+    {
+     "kind": "status",
+     "status": "exposed",
+     "duration": 1
+    }
+   ]
+  },
+  "mr-mime-light-screen": {
+   "id": "mr-mime-light-screen",
+   "name": "Light Screen",
+   "type": "psychic",
+   "kind": "special",
+   "cooldown": 5,
+   "power": 0,
+   "range": {
+    "min": 0,
+    "max": 0
+   },
+   "requiresLineOfSight": false,
+   "shape": {
+    "kind": "burst",
+    "radius": 1
+   },
+   "affects": "allies",
+   "effects": [
+    {
+     "kind": "status",
+     "status": "protected",
+     "duration": 1
+    }
+   ]
+  }
+ },
+ "talents": {
+  "mr-mime-future-sight": {
+   "id": "mr-mime-future-sight",
+   "name": "Future Sight",
+   "description": "Bond skill: a foreseen psychic blast at a foe up to 3 hexes away (Power 100, Sp. Atk).",
+   "grantsMove": "mr-mime-future-sight"
+  },
+  "mr-mime-barrier": {
+   "id": "mr-mime-barrier",
+   "name": "Barrier",
+   "description": "Bond skill: mimes a wall up to 2 hexes away; allies in a 1-hex area are Fortified 2 turns.",
+   "grantsMove": "mr-mime-barrier"
+  },
+  "mr-mime-swift": {
+   "id": "mr-mime-swift",
+   "name": "Swift",
+   "description": "Bond skill: star-shaped rays at a foe up to 2 hexes away (Power 60).",
+   "grantsMove": "mr-mime-swift"
+  },
+  "mr-mime-filter": {
+   "id": "mr-mime-filter",
+   "name": "Filter",
+   "description": "Takes 10% less damage.",
+   "mods": {
+    "damageTaken": 0.9
+   }
+  },
+  "mr-mime-psywave": {
+   "id": "mr-mime-psywave",
+   "name": "Psywave",
+   "description": "New skill: an odd psychic wave at a foe up to 2 hexes away (Power 55).",
+   "grantsMove": "mr-mime-psywave"
+  },
+  "mr-mime-encore": {
+   "id": "mr-mime-encore",
+   "name": "Encore",
+   "description": "New skill: makes a foe up to 2 hexes away repeat itself; it can't move for 1 turn.",
+   "grantsMove": "mr-mime-encore"
+  },
+  "mr-mime-psychic-focus": {
+   "id": "mr-mime-psychic-focus",
+   "name": "Psychic Focus",
+   "description": "Its Psychic moves deal 15% more damage.",
+   "mods": {
+    "typeDamage": {
+     "psychic": 1.15
+    }
+   }
+  },
+  "mr-mime-invisible-wall": {
+   "id": "mr-mime-invisible-wall",
+   "name": "Invisible Wall",
+   "description": "Foes that hit it from an adjacent hex take 8 damage: they bump into its wall.",
+   "mods": {
+    "thorns": 8
+   }
+  },
+  "mr-mime-substitute": {
+   "id": "mr-mime-substitute",
+   "name": "Substitute",
+   "description": "New skill: leaves a decoy to take the hits; it is Protected for 2 turns.",
+   "grantsMove": "mr-mime-substitute"
+  },
+  "mr-mime-psyshock": {
+   "id": "mr-mime-psyshock",
+   "name": "Psyshock",
+   "description": "New skill: a psychic wave at a foe up to 2 hexes away (Power 70).",
+   "grantsMove": "mr-mime-psyshock"
+  },
+  "mr-mime-mimes-act": {
+   "id": "mr-mime-mimes-act",
+   "name": "Mime's Act",
+   "description": "Statuses it inflicts last 1 turn longer.",
+   "mods": {
+    "statusDurationBonus": 1
+   }
+  },
+  "mr-mime-vanishing-act": {
+   "id": "mr-mime-vanishing-act",
+   "name": "Vanishing Act",
+   "description": "Steps away from engaged foes without drawing free strikes.",
+   "mods": {
+    "disengage": true
+   }
+  },
+  "mr-mime-nasty-plot": {
+   "id": "mr-mime-nasty-plot",
+   "name": "Nasty Plot",
+   "description": "New skill: plots something wicked and becomes Focused for 2 turns.",
+   "grantsMove": "mr-mime-nasty-plot"
+  },
+  "mr-mime-extrasensory": {
+   "id": "mr-mime-extrasensory",
+   "name": "Extrasensory",
+   "description": "New skill: an eerie psychic force at a foe up to 2 hexes away (Power 95).",
+   "grantsMove": "mr-mime-extrasensory"
+  },
+  "mr-mime-unbreakable-act": {
+   "id": "mr-mime-unbreakable-act",
+   "name": "Unbreakable Act",
+   "description": "Survives one knockout blow per battle at 1 HP.",
+   "mods": {
+    "sturdy": true
+   }
+  },
+  "mr-mime-showstopper": {
+   "id": "mr-mime-showstopper",
+   "name": "Showstopper",
+   "description": "Deals 20% more damage to foes carrying a status an ally applied.",
+   "mods": {
+    "vsSetupDamage": 1.2
+   }
+  },
+  "mr-mime-hyper-voice": {
+   "id": "mr-mime-hyper-voice",
+   "name": "Hyper Voice",
+   "description": "New skill: a booming shout at a foe up to 2 hexes away (Power 90); Exposes it 1 turn.",
+   "grantsMove": "mr-mime-hyper-voice"
+  },
+  "mr-mime-light-screen": {
+   "id": "mr-mime-light-screen",
+   "name": "Light Screen",
+   "description": "New skill: mimes a wall of light; it and adjacent allies are Protected for 1 turn.",
+   "grantsMove": "mr-mime-light-screen"
+  },
+  "mr-mime-mind-bulwark": {
+   "id": "mr-mime-mind-bulwark",
+   "name": "Mind Bulwark",
+   "description": "Takes 25% less damage while at full HP.",
+   "mods": {
+    "fullHpDamageTaken": 0.75
+   }
+  },
+  "mr-mime-applause": {
+   "id": "mr-mime-applause",
+   "name": "Applause",
+   "description": "Deals 20% more damage to foes with any status.",
+   "mods": {
+    "vsStatusDamage": 1.2
+   }
+  },
+  "mr-mime-grand-performance": {
+   "id": "mr-mime-grand-performance",
+   "name": "Grand Performance",
+   "description": "Capstone. Its non-damaging skills recharge 1 turn faster; each combo it lands gives the team 1 Bond.",
+   "mods": {
+    "statusCooldownReduction": 1,
+    "comboBond": 1
+   }
+  },
+  "mr-mime-invisible-stage": {
+   "id": "mr-mime-invisible-stage",
+   "name": "Invisible Stage",
+   "description": "Capstone. Its ranged moves fire over Pokémon in the way; 15% more damage to foes 2+ hexes away.",
+   "mods": {
+    "shootOver": true,
+    "farDamage": 1.15
+   }
+  },
+  "mr-mime-insomnia": {
+   "id": "mr-mime-insomnia",
+   "name": "Insomnia",
+   "description": "Never stops performing: cannot be put to Sleep, Paralysed or Slowed.",
+   "mods": {
+    "statusImmune": [
+     "sleep",
+     "paralysis",
+     "slow"
+    ]
+   }
+  }
+ }
+}
