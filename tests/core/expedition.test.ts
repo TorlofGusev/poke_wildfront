@@ -169,6 +169,8 @@ describe("team-scaled encounters", () => {
   it("never fields more wild Pokémon than the player's healthy team (max 3), keeping the strongest", () => {
     expect(effectiveGroup(g, 1)).toMatchObject({ species: ["b"], levels: [5] });
     expect(effectiveGroup(g, 2)).toMatchObject({ species: ["b", "c"], levels: [5, 4] });
+    // Learning maps: nobody above the party's best level.
+    expect(effectiveGroup(g, 3, 3, 3).levels.every((lv) => lv <= 3)).toBe(true);
     expect(effectiveGroup(g, 6)).toMatchObject({ species: ["a", "b", "c"], levels: [3, 5, 4] });
     expect(effectiveGroup(g, 0).species).toHaveLength(1);
   });

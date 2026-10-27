@@ -218,6 +218,12 @@ export class OverworldScene extends Phaser.Scene {
     return currentWorld().deploySlots ?? MAX_ACTIVE_UNITS;
   }
 
+  /** On the learning (tutorial-AI) maps wild Pokémon are never above the party's best level. */
+  private levelCap(): number | undefined {
+    if (currentWorld().ai !== "tutorial") return undefined;
+    return Math.max(1, ...session.game.roster.party.filter((m) => m.hp > 0).map((m) => m.level));
+  }
+
   private healthy(): number {
     return session.game.roster.party.filter((m) => m.hp > 0).length;
   }
@@ -285,7 +291,7 @@ export class OverworldScene extends Phaser.Scene {
       this.drawPickup(x, y, pickupKind(p, (id) => PROGRESSION.items[id]?.kind));
     }
     for (const raw of world.encounters) {
-      const e = effectiveGroup(raw, this.healthy(), this.slots());
+      const e = effectiveGroup(raw, this.healthy(), this.slots(), this.levelCap());
       const { x, y } = this.center(e.pos);
       // Wild groups are visible: the strongest member stands on the map, with the group size.
       const view = this.add.container(x, y);
@@ -625,7 +631,7 @@ export class OverworldScene extends Phaser.Scene {
     }
     const after = Math.min(WORLD_CONTENT.fatigue.max, this.world.fatigue + cost);
     const rawEnc = this.world.encounters.find((e) => samePoint(e.pos, to));
-    const enc = rawEnc ? effectiveGroup(rawEnc, this.healthy()) : undefined;
+    const enc = rawEnc ? effectiveGroup(rawEnc, this.healthy(), this.slots(), this.levelCap()) : undefined;
     const hint = `${t("{tiles}, fatigue {cost} → {after} ({level})", { tiles: tag("num", t("{n} tiles", { n: path.length })), cost: tag("dmg", `+${cost}`), after, level: fatigueLevel(WORLD_CONTENT.fatigue, after).name })}${enc ? `\n${tag("enemy", t("Wild group — battle!"))}\n${enc.species.map((sp, i) => `${tag(`foe:${CONTENT.species[sp]!.types[0]}`, CONTENT.species[sp]!.name)} Lv ${enc.levels[i]}`).join("\n")}` : ""}`;
     this.message = hint;
     this.renderHudSoon();
@@ -723,7 +729,7 @@ export class OverworldScene extends Phaser.Scene {
 
     if (encounter) {
       const group = encounter;
-      const scenario = wildScenario(WORLD_CONTENT, effectiveGroup(group, this.healthy(), this.slots()), (s, lv) => wildSetup(CONTENT, PROGRESSION, s, lv, group.id), this.slots(), Date.now() >>> 0, ambush);
+      const scenario = wildScenario(WORLD_CONTENT, effectiveGroup(group, this.healthy(), this.slots(), this.levelCap()), (s, lv) => wildSetup(CONTENT, PROGRESSION, s, lv, group.id), this.slots(), Date.now() >>> 0, ambush);
       sfx(this, "encounter");
       this.scene.start("Battle", { scenario, encounterId: group.id, biome: group.biome });
     }

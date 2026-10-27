@@ -280,7 +280,12 @@ export function removeEncounter(world: WorldState, id: string): WorldState {
  * (healthy party members, at most the map's deploy slots), so a lone starter is not swarmed.
  * Keeps the strongest members.
  */
-export function effectiveGroup(group: EncounterGroup, healthyPartyMembers: number, deploySlots = MAX_ACTIVE_UNITS): EncounterGroup {
+export function effectiveGroup(
+  group: EncounterGroup, healthyPartyMembers: number, deploySlots = MAX_ACTIVE_UNITS,
+  /** Learning maps: no wild Pokémon above this level (the party's highest). */
+  maxLevel?: number,
+): EncounterGroup {
+  if (maxLevel !== undefined && group.levels.some((lv) => lv > maxLevel)) group = { ...group, levels: group.levels.map((lv) => Math.min(lv, Math.max(1, maxLevel))) };
   const cap = Math.max(1, Math.min(deploySlots, healthyPartyMembers));
   if (group.species.length <= cap) return group;
   const keep = group.levels
