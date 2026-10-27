@@ -61,6 +61,7 @@ it.skipIf(!process.env.TREEBAL)("tree balance report", () => {
     const n = l.battles;
     const hits = l.hitsResisted + l.hitsNeutral + l.hitsSuper || 1;
     console.log(`${id.padEnd(11)} ${pct(w).padStart(4)}  dealt ${r1(l.dealt / n).padStart(5)}  taken ${r1(l.taken / n).padStart(5)}  alive ${r1(l.roundsAlive / n)}  KO ${r1(l.knockouts / n)}  1st ${r1(l.firstHitRound / n)}  idle ${pct(l.idleTurns / (l.turns || 1))} (still ${pct(l.idleStill / (l.idleTurns || 1))}, dist ${r1(l.idleDist / (l.idleTurns || 1))})  strikes ${r1(l.strikesTaken / n)} (${r1(l.strikeDamageTaken / n)})  B/S/b ${r1(l.bond / n)}/${r1(l.special / n)}/${r1(l.basic / n)}  res ${pct(l.hitsResisted / hits)} sup ${pct(l.hitsSuper / hits)}`);
+    if (process.env.TREEBAL_WHY) console.log(`   why still: ${Object.entries(l.idleWhy).sort((x, y) => y[1] - x[1]).map(([k, v]) => `${k} ${v}`).join(", ")}`);
   }
   logs.clear();
 

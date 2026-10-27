@@ -1,6 +1,6 @@
 import { CONTENT, PROGRESSION } from "../src/content";
 import { planTurn, type AiWeights } from "../src/core/ai";
-import { applyAction, createBattle, STAT_NAMES, type BattleState, type UnitSetup } from "../src/core/battle";
+import { applyAction, createBattle, movementPoints, reachableFor, validTargets, STAT_NAMES, type BattleState, type UnitSetup } from "../src/core/battle";
 import { hexDistance } from "../src/core/grid/hex";
 import { newMember, type PartyMember } from "../src/core/party";
 import { chooseFocus, chooseTalent, defaultActiveMoves, focusOptions, gainXp, memberStats, pendingChoice, statOffer, takeOffer, talentOptions, teamBond, xpToNext } from "../src/core/progression";
@@ -33,8 +33,11 @@ export function develop(m: PartyMember, pick: Pick, seed: number, candies = { n:
   const base = CONTENT.species[cur.speciesId]!.stats;
   // A sensible player: the focus stat, then the better of Attack / Defense, then HP.
   const best = [cur.focus ?? "attack", ...(["attack", "defense"] as const).filter((s) => s !== cur.focus).sort((a, b) => base[b] - base[a])];
-  for (let i = 0; cur.unspentPoints > 0; i++) {
-    const want = [best[0]!, "hp", best[1]!][i % 3]!;
+  // No player leaves a Pokémon at 1 movement: Speed first, up to the 2-movement step.
+  const twoMoves = CONTENT.rules.moveBySpeed.find((s) => s.move >= 2)?.speed ?? 0;
+  for (let i = 0; cur.unspentPoints > 0; ) {
+    const slow = memberStats(CONTENT, PROGRESSION, cur).stats.speed < twoMoves;
+    const want = slow ? "speed" : [best[0]!, "hp", best[1]!][i++ % 3]!;
     const offer = statOffer(CONTENT, PROGRESSION, cur);
     cur = takeOffer(CONTENT, PROGRESSION, cur, (offer.find((o) => o.stat === want) ?? offer[0]!).stat);
   }
@@ -76,12 +79,12 @@ export const bondOf = (members: readonly PartyMember[]): Bond => teamBond(CONTEN
 export interface UnitLog {
   battles: number; turns: number; roundsAlive: number; fainted: number;
   dealt: number; taken: number; strikesDealt: number; strikesTaken: number; strikeDamageTaken: number;
-  basic: number; special: number; bond: number; idleTurns: number; idleStill: number; idleDist: number; moved: number;
+  basic: number; special: number; bond: number; idleTurns: number; idleStill: number; idleDist: number; idleWhy: Record<string, number>; moved: number;
   hitsResisted: number; hitsNeutral: number; hitsSuper: number; knockouts: number; firstHitRound: number; combos: number;
 }
 export const logs = new Map<string, UnitLog>();
 const emptyLog = (): UnitLog => ({ battles: 0, turns: 0, roundsAlive: 0, fainted: 0, dealt: 0, taken: 0, strikesDealt: 0, strikesTaken: 0, strikeDamageTaken: 0,
-  basic: 0, special: 0, bond: 0, idleTurns: 0, idleStill: 0, idleDist: 0, moved: 0, hitsResisted: 0, hitsNeutral: 0, hitsSuper: 0, knockouts: 0, firstHitRound: 0, combos: 0 });
+  basic: 0, special: 0, bond: 0, idleTurns: 0, idleStill: 0, idleDist: 0, idleWhy: {}, moved: 0, hitsResisted: 0, hitsNeutral: 0, hitsSuper: 0, knockouts: 0, firstHitRound: 0, combos: 0 });
 /** Set to a key function to collect logs (e.g. by species line); null turns logging off. */
 export const logging: { key: ((unit: { id: string; speciesId: string; side: string }) => string | null) | null; aSide: "player" | "enemy" } = { key: null, aSide: "player" };
 
@@ -124,6 +127,22 @@ function tally(state: BattleState, events: readonly { type: string; [k: string]:
   }
 }
 
+/** Why a unit stood still without acting: what the turn offered it. */
+function idleReason(state: BattleState, id: string): string {
+  const u = state.units.find((x) => x.id === id)!;
+  const st = u.statuses.map((x) => x.id).filter((x) => CONTENT.statuses[x]?.noAction || CONTENT.statuses[x]?.noMove || x === "paralysis" || x === "sleep" || x === "flinched");
+  if (st.length) return `status:${st.join("+")}`;
+  if (u.engagedWith) {
+    const p = state.units.find((x) => x.id === u.engagedWith)!;
+    const any = u.moves.some((m) => validTargets(state, CONTENT, id, m).length > 0);
+    return `engaged(${CONTENT.species[p.speciesId]!.types.join("/")})${any ? ":targets" : ":none"}`;
+  }
+  if (movementPoints(CONTENT, u, state) === 0) return "mp0";
+  if (reachableFor(state, id).destinations.length === 0) return "boxed";
+  if (u.moves.some((m) => (CONTENT.moves[m]?.power ?? 0) > 0 && validTargets(state, CONTENT, id, m).length > 0)) return "declined-targets";
+  return "stayed";
+}
+
 /** Combo events tallied across battles, by side (reset by the sections that report them). */
 export const combos = { player: 0, enemy: 0 };
 
@@ -139,6 +158,7 @@ export function battle(players: Omit<UnitSetup, "id" | "side" | "pos">[], enemie
   for (let i = 0; i < 600 && state.outcome === "ongoing"; i++) {
     const acted = new Set<string>();
     const mover = state.turn?.unitId;
+    const before = state;
     let movedThisTurn = false;
     for (const a of planTurn(state, CONTENT, (state.turn?.unitId.startsWith("p") ? ai.player : ai.enemy))) if (state.outcome === "ongoing") {
       const r = applyAction(state, CONTENT, a);
@@ -152,7 +172,7 @@ export function battle(players: Omit<UnitSetup, "id" | "side" | "pos">[], enemie
       if (k) {
         if (!logs.has(k)) logs.set(k, emptyLog());
         const l = logs.get(k)!; l.idleTurns++;
-        if (!movedThisTurn) l.idleStill++;
+        if (!movedThisTurn) { l.idleStill++; const w = idleReason(before, mover); l.idleWhy[w] = (l.idleWhy[w] ?? 0) + 1; }
         const foes = state.units.filter((x) => x.side !== u.side && x.hp > 0);
         if (u.hp > 0 && foes.length) l.idleDist += Math.min(...foes.map((f) => hexDistance(f.pos, u.pos)));
       }

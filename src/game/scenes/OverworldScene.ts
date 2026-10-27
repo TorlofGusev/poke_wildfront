@@ -286,7 +286,8 @@ export class OverworldScene extends Phaser.Scene {
 
   private drawMap(): void {
     const grid = worldGrid(WORLD_CONTENT, currentWorld());
-    const g = this.add.graphics();
+    // Drawn once into a texture (see bake below): thousands of shapes per frame are heavy on phones.
+    const g = this.make.graphics({}, false);
     for (let y = 0; y < grid.height; y++)
       for (let x = 0; x < grid.width; x++) {
         const id = grid.terrainAt({ x, y }).id;
@@ -314,6 +315,8 @@ export class OverworldScene extends Phaser.Scene {
     g.lineStyle(1, 0x000000, 0.15);
     for (let x = 0; x <= grid.width; x++) g.lineBetween(MAP_X + x * T, MAP_Y, MAP_X + x * T, MAP_Y + grid.height * T);
     for (let y = 0; y <= grid.height; y++) g.lineBetween(MAP_X, MAP_Y + y * T, MAP_X + grid.width * T, MAP_Y + y * T);
+    this.add.renderTexture(0, 0, this.scale.width, this.scale.height).setOrigin(0).setDepth(-1).draw(g).render();
+    g.destroy();
   }
 
   private render(): void {

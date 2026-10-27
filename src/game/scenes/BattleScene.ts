@@ -124,6 +124,7 @@ export class BattleScene extends Phaser.Scene {
   /** Combo names over the foes the active Pokémon would combo. */
   private comboLabels: Phaser.GameObjects.Container | null = null;
   private boardGfx: Phaser.GameObjects.Graphics | null = null;
+  private boardImage: Phaser.GameObjects.RenderTexture | null = null;
   private units = new Map<string, UnitView>();
   private panel!: Phaser.GameObjects.Container;
   private infoText!: RichText;
@@ -162,6 +163,7 @@ export class BattleScene extends Phaser.Scene {
     this.logScroll = 0;
     this.units = new Map();
     this.boardGfx = null;
+    this.boardImage = null;
     this.orderStrip = null;
     this.previewLabels = null;
   }
@@ -244,7 +246,8 @@ export class BattleScene extends Phaser.Scene {
   // ------------------------------------------------------------ drawing
 
   private drawBoard(): void {
-    this.boardGfx ??= this.add.graphics().setDepth(-1);
+    // Drawn once into a texture: thousands of shapes redrawn every frame kept phones busy (and hot).
+    this.boardGfx ??= this.make.graphics({}, false);
     const g = this.boardGfx.clear();
     const theme = boardTheme(this.biome ?? this.npcMapId ?? this.scenario.id);
     for (let y = 0; y < this.grid.height; y++)
@@ -263,6 +266,9 @@ export class BattleScene extends Phaser.Scene {
           );
         }
       }
+    const { width, height } = this.scale;
+    this.boardImage ??= this.add.renderTexture(0, 0, width, height).setOrigin(0).setDepth(-1);
+    this.boardImage.clear().draw(g).render();
   }
 
   /** The middle of the other side's starting hexes. */
@@ -699,8 +705,8 @@ export class BattleScene extends Phaser.Scene {
         const used = move.kind === "basic" ? state.turn!.basicUsed : state.turn!.actionUsed;
         const status = cd > 0 ? t("wait {n}", { n: cd })
           : !used && !reason && targets.length === 0 ? t("no target {r}", { r: range.min === range.max ? range.max : `${range.min}-${range.max}` })
-          : move.kind === "basic" ? t("basic")
-          : move.kind === "special" ? t("special")
+          // Basic and special need no label: the "Basic attack" / "Action" headers above say it.
+          : move.kind === "basic" || move.kind === "special" ? ""
           : move.kind === "bond" ? `${CONTENT.terms.bond} ${bondCostFor(move, unit)}`
           : unit.usedUltimates.includes(moveId) ? t("ult used") : t("ult 1×");
         const ownBasic = basics.find((b) => b !== "struggle") ?? unit.moves.find((m) => m !== "struggle" && CONTENT.moves[m]!.kind === "basic");
@@ -790,6 +796,24 @@ export class BattleScene extends Phaser.Scene {
       return;
     }
     const s = CONTENT.species[unit.speciesId]!;
+    if (PHONE) {
+      // Phone: only what a turn needs. Name, types and HP (plus statuses); for an own Pokémon the
+      // selected move's rules, for a foe how well the selected move hits it.
+      const head = [
+        `${tag(`${unit.side === "player" ? "ally" : "foe"}:${s.types[0]}`, s.name)}  ${s.types.map((ty) => tag(ty, ty)).join("/")}  HP ${tag(unit.hp / unit.maxHp > 0.5 ? "heal" : "dmg", `${unit.hp}/${unit.maxHp}`)}`,
+        unit.statuses.length ? `${t("Status:")} ${unit.statuses.map((x) => `${tag("status", CONTENT.statuses[x.id]?.name ?? x.id)} (${x.turnsLeft})`).join(", ")}` : "",
+        this.engagementLine(unit),
+      ];
+      const active = this.state ? activeUnit(this.state) : null;
+      if (unit.side === "player" && this.selectedMove) head.push("", describeMove(CONTENT, CONTENT.moves[this.selectedMove]!));
+      if (active && active.side === "player" && unit.side === "enemy" && this.selectedMove) {
+        const mv = CONTENT.moves[this.selectedMove]!;
+        const eff = typeMultiplier(CONTENT.typeChart, mv.type, s.types);
+        if (eff !== 1) head.push(eff > 1 ? tag("good", t("{move} is super effective (×{eff})", { move: mv.name, eff })) : tag("bad", t("{move} is not very effective (×{eff})", { move: mv.name, eff })));
+      }
+      this.setInfo(head.filter(Boolean).join("\n"));
+      return;
+    }
     const lines = [
       `${tag(`${unit.side === "player" ? "ally" : "foe"}:${s.types[0]}`, s.name)} ${tag("dim", unit.side === "enemy" ? t("(foe)") : t("(yours)"))}  ${s.types.map((t) => tag(t, t)).join("/")}`,
       `HP ${tag(unit.hp / unit.maxHp > 0.5 ? "heal" : "dmg", `${unit.hp}/${unit.maxHp}`)}  ${statLine(unit.stats)}`,
