@@ -8,7 +8,7 @@
  ],
  "focus": [
   {
-   "stat": "speed",
+   "stat": "defense",
    "skill": "voltorb-electro-ball"
   },
   {
@@ -16,7 +16,7 @@
    "skill": "voltorb-zap-cannon"
   },
   {
-   "stat": "willpower",
+   "stat": "hp",
    "skill": "voltorb-light-screen"
   }
  ],

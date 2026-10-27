@@ -30,7 +30,8 @@ export function develop(m: PartyMember, pick: Pick, seed: number, candies = { n:
     } else break;
   }
   const base = CONTENT.species[cur.speciesId]!.stats;
-  const best = [...STAT_NAMES].filter((s) => s !== "hp").sort((a, b) => base[b] - base[a]);
+  // A sensible player: the focus stat, then the better of Attack / Defense, then HP.
+  const best = [cur.focus ?? "attack", ...(["attack", "defense"] as const).filter((s) => s !== cur.focus).sort((a, b) => base[b] - base[a])];
   for (let i = 0; cur.unspentPoints > 0; i++) {
     const want = [best[0]!, "hp", best[1]!][i % 3]!;
     const offer = statOffer(CONTENT, PROGRESSION, cur);

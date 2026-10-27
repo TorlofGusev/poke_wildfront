@@ -286,7 +286,7 @@ describe("mastery grid", () => {
   const charmander = (level: number, talents: string[] = []) => ({ ...starter("charmander", level), focus: "attack" as const, talents: ["charmander-flare-blitz", ...talents] });
 
   it("each line has one hand-made tree: three focuses, then the same rows whatever the focus", () => {
-    expect(focusOptions(PROGRESSION, "charmeleon").map((f) => f.stat)).toEqual(["attack", "attack", "speed"]);
+    expect(focusOptions(PROGRESSION, "charmeleon").map((f) => f.stat)).toEqual(["attack", "attack", "defense"]);
     expect(masteryGrid(PROGRESSION, "charizard").map((r) => r.level)).toEqual([4, 6, 9, 12, 15, 18, 21, 24, 27, 30]);
     expect(masteryGrid(PROGRESSION, "charmander")).toEqual(masteryGrid(PROGRESSION, "charizard"));
   });

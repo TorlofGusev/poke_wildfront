@@ -9,11 +9,11 @@
    "skill": "venonat-bug-buzz"
   },
   {
-   "stat": "speed",
+   "stat": "defense",
    "skill": "venonat-u-turn"
   },
   {
-   "stat": "willpower",
+   "stat": "hp",
    "skill": "venonat-quiver-dance"
   }
  ],

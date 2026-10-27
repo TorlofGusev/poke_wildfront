@@ -8,11 +8,11 @@
    "skill": "jynx-sheer-cold"
   },
   {
-   "stat": "speed",
+   "stat": "defense",
    "skill": "jynx-powder-snow"
   },
   {
-   "stat": "willpower",
+   "stat": "hp",
    "skill": "jynx-reflect"
   }
  ],

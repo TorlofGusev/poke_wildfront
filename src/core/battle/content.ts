@@ -102,6 +102,8 @@ export interface StatusDef {
   readonly damageDealt?: number;
   /** Multiplies damage taken by the affected unit (Curse). */
   readonly damageTaken?: number;
+  /** A helpful state (Protect, Pumped…): never counts as a status for "vs status" bonuses, Guts or spreading. */
+  readonly buff?: boolean;
   /** Re-applying adds the durations instead of keeping the longer one (Poison). */
   readonly stacks?: boolean;
 }

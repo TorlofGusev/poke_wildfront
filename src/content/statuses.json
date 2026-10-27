@@ -40,22 +40,26 @@
  "protected": {
   "id": "protected",
   "name": "Protected",
-  "damageTaken": 0
+  "damageTaken": 0,
+  "buff": true
  },
  "fortified": {
   "id": "fortified",
   "name": "Fortified",
-  "damageTaken": 0.6
+  "damageTaken": 0.6,
+  "buff": true
  },
  "focused": {
   "id": "focused",
   "name": "Focused",
-  "damageDealt": 1.5
+  "damageDealt": 1.5,
+  "buff": true
  },
  "hasted": {
   "id": "hasted",
   "name": "Hasted",
-  "movePenalty": -2
+  "movePenalty": -2,
+  "buff": true
  },
  "exposed": {
   "id": "exposed",
@@ -86,6 +90,7 @@
   "id": "pumped",
   "name": "Pumped",
   "damageDealt": 1.2,
-  "movePenalty": -1
+  "movePenalty": -1,
+  "buff": true
  }
 }

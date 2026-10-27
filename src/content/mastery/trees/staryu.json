@@ -9,11 +9,11 @@
    "skill": "staryu-surf"
   },
   {
-   "stat": "speed",
+   "stat": "defense",
    "skill": "staryu-rapid-spin"
   },
   {
-   "stat": "willpower",
+   "stat": "hp",
    "skill": "staryu-minimize"
   }
  ],

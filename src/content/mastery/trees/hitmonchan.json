@@ -11,11 +11,11 @@
    "skill": "hitmonchan-sky-uppercut"
   },
   {
-   "stat": "willpower",
+   "stat": "defense",
    "skill": "hitmonchan-detect"
   },
   {
-   "stat": "speed",
+   "stat": "hp",
    "skill": "hitmonchan-mach-punch"
   }
  ],

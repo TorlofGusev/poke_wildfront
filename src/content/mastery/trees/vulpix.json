@@ -9,11 +9,11 @@
    "skill": "vulpix-inferno"
   },
   {
-   "stat": "speed",
+   "stat": "defense",
    "skill": "vulpix-feint-attack"
   },
   {
-   "stat": "willpower",
+   "stat": "hp",
    "skill": "vulpix-safeguard"
   }
  ],

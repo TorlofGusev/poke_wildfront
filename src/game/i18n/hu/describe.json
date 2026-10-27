@@ -181,5 +181,7 @@
  " (more movement at {steps} Speed)": " (több mozgás {steps} Speed-nél)",
  "Willpower": "Akaraterő",
  "Crit": "Krit",
- "Will": "Akar"
+ "Will": "Akar",
+ "Vitality": "Vitalitás",
+ "Vit": "Vit"
 }

@@ -10,11 +10,11 @@
    "skill": "abra-future-sight"
   },
   {
-   "stat": "speed",
+   "stat": "defense",
    "skill": "abra-teleport"
   },
   {
-   "stat": "willpower",
+   "stat": "hp",
    "skill": "abra-reflect"
   }
  ],

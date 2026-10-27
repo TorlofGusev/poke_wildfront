@@ -117,7 +117,7 @@ export function movementPoints(content: BattleContent, unit: BattleUnit, state?:
   const base = Math.min(r.moveMax, baseMovement(content, unit.stats.speed));
   const penalty = unit.statuses.reduce((s, st) => s + (content.statuses[st.id]?.movePenalty ?? 0), 0);
   // Bonuses (abilities, items, masteries) help slow Pokémon but never lift anyone past the cap.
-  return Math.max(0, Math.min(r.moveMax, base - penalty + unit.mods.moveBonus + (unit.statuses.length ? unit.mods.statusedMove : 0)));
+  return Math.max(0, Math.min(r.moveMax, base - penalty + unit.mods.moveBonus + (ailments(content, unit).length ? unit.mods.statusedMove : 0)));
 }
 
 /** Combined battlefield traits of a Pokémon's types. */
@@ -268,6 +268,10 @@ export function validTargets(
     }
   return out;
 }
+
+/** The unit's harmful statuses (buffs such as Pumped or Protect left out). */
+export const ailments = (content: BattleContent, unit: BattleUnit): ActiveStatus[] =>
+  unit.statuses.filter((st) => !content.statuses[st.id]?.buff);
 
 /** Removes the statuses foes put on a unit (its own buffs stay). */
 function cleanse(state: BattleState, unit: BattleUnit, events: BattleEvent[]): void {
@@ -665,7 +669,7 @@ function onKnockout(state: BattleState, user: BattleUnit, events: BattleEvent[])
 
 /** Lingering Aroma / Toxic Debris: statuses on a fainted foe spread to its neighbours, if their source has the mod. */
 function spreadStatuses(state: BattleState, content: BattleContent, fallen: BattleUnit, events: BattleEvent[]): void {
-  for (const st of fallen.statuses) {
+  for (const st of ailments(content, fallen)) {
     const source = st.sourceId ? state.units.find((u) => u.id === st.sourceId) : undefined;
     if (!source?.mods.statusSpreadOnKo) continue;
     for (const n of livingUnits(state).filter((o) => o.side === fallen.side && gridDistance(o.pos, fallen.pos) === 1))
@@ -723,7 +727,7 @@ function resolveHits(
       // capped at +100%, so long chains of conditions cannot snowball; penalties still multiply.
       const ownFactors = [
         m.damageDealt, m.typeDamage[move.type] ?? 1,
-        t.statuses.length > 0 ? m.vsStatusDamage : 1,
+        ailments(content, t).length > 0 ? m.vsStatusDamage : 1,
         t.hp === t.maxHp ? m.fullHpTargetDamage : 1,
         dist >= 2 ? m.farDamage : m.closeDamage,
         // Melee moves hit harder (they must walk into reach); speed past the movement cap adds momentum after moving.
@@ -735,7 +739,7 @@ function resolveHits(
         pinner && pinner.id !== user.id && pinner.side === user.side ? pinner.mods.pinDamage : 1,
         state.mapRows[t.pos.y]?.[t.pos.x] === "m" ? m.vsMudDamage : 1,
         adjacentFoes >= 2 ? m.surroundedDamage : 1,
-        user.statuses.length > 0 ? m.statusedDamage : 1,
+        ailments(content, user).length > 0 ? m.statusedDamage : 1,
         ...t.statuses.map((st) => m.vsStatusIdDamage[st.id] ?? 1),
         1 + m.furyCutter * streak,
       ];

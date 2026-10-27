@@ -8,11 +8,11 @@
    "skill": "mr-mime-future-sight"
   },
   {
-   "stat": "willpower",
+   "stat": "defense",
    "skill": "mr-mime-barrier"
   },
   {
-   "stat": "speed",
+   "stat": "hp",
    "skill": "mr-mime-swift"
   }
  ],

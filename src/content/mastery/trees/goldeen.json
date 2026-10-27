@@ -9,11 +9,11 @@
    "skill": "goldeen-liquidation"
   },
   {
-   "stat": "speed",
+   "stat": "defense",
    "skill": "goldeen-upstream-charge"
   },
   {
-   "stat": "willpower",
+   "stat": "hp",
    "skill": "goldeen-aqua-ring"
   }
  ],

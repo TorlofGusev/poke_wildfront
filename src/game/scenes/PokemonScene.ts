@@ -263,7 +263,7 @@ export class PokemonScene extends Phaser.Scene {
       });
       y += 54;
       y += add(new RichText(this, DETAIL_X, y, DETAIL_W, 11)).setMarkup(tag("dim",
-        t("HP: +{hp} max HP per point · Atk/Def: damage dealt/taken · Speed: movement {steps}, acts earlier · Will: fills Spirit faster, resists statuses · Crit: critical hit chance and damage", { hp: CONTENT.rules.hpPerPoint, steps: CONTENT.rules.moveBySpeed.map((s) => `${s.speed}+ → ${s.move}`).join(", ") }))) + 6;
+        t("Vit: +{hp} max HP per point · Atk/Def: damage dealt/taken · Speed: movement {steps}, acts earlier · Will: fills Spirit faster, resists statuses · Crit: critical hit chance and damage", { hp: CONTENT.rules.hpPerPoint, steps: CONTENT.rules.moveBySpeed.map((s) => `${s.speed}+ → ${s.move}`).join(", ") }))) + 6;
     }
     return y;
   }

@@ -9,11 +9,11 @@
    "skill": "psyduck-brine"
   },
   {
-   "stat": "speed",
+   "stat": "defense",
    "skill": "psyduck-aqua-jet"
   },
   {
-   "stat": "willpower",
+   "stat": "hp",
    "skill": "psyduck-aqua-ring"
   }
  ],

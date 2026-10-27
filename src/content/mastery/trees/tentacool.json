@@ -8,7 +8,7 @@
  ],
  "focus": [
   {
-   "stat": "willpower",
+   "stat": "defense",
    "skill": "tentacool-acid-armor"
   },
   {
@@ -16,7 +16,7 @@
    "skill": "tentacool-sludge-wave"
   },
   {
-   "stat": "speed",
+   "stat": "hp",
    "skill": "tentacool-rapid-spin"
   }
  ],

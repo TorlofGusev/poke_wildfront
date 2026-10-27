@@ -1,9 +1,9 @@
 {
  "hpBase": 52,
- "hpPerPoint": 2,
+ "hpPerPoint": 4,
  "hpPerLevel": 1.5,
  "hpPerLevelPerDefense": 0.15,
- "statOffset": 6,
+ "statOffset": 20,
  "damageDivisor": 4,
  "moveMax": 3,
  "impactDamage": 8,
@@ -21,7 +21,7 @@
   "engagedRangedPenalty": 0.85
  },
  "momentum": {
-  "speedPerStep": 4,
+  "speedPerStep": 2,
   "stepBonus": 0.05,
   "max": 0.25
  },
@@ -50,8 +50,8 @@
   "perHit": 15,
   "perKnockout": 30,
   "perAllyKnockout": 10,
-  "perPoint": 0.1,
+  "perPoint": 0.2,
   "pumpedTurns": 1,
-  "resistPerPoint": 0.03
+  "resistPerPoint": 0.04
  }
 }

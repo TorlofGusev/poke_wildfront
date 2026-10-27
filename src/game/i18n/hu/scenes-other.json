@@ -116,5 +116,5 @@
  "Critical!": "Kritikus!",
  "{x} {unit} lands a critical hit on {target}": "{x} {unit} kritikus találatot visz be: {target}",
  "{unit} shrugs off {status} through willpower": "{unit} akaraterővel lerázza: {status}",
- "HP: +{hp} max HP per point · Atk/Def: damage dealt/taken · Speed: movement {steps}, acts earlier · Will: fills Spirit faster, resists statuses · Crit: critical hit chance and damage": "HP: +{hp} max HP pontonként · Atk/Def: okozott/kapott sebzés · Speed: mozgás {steps}, korábban lép · Akaraterő: gyorsabban telik a Lelkesedés, ellenáll a státuszoknak · Krit: kritikus találat esélye és ereje"
+ "Vit: +{hp} max HP per point · Atk/Def: damage dealt/taken · Speed: movement {steps}, acts earlier · Will: fills Spirit faster, resists statuses · Crit: critical hit chance and damage": "Vit: +{hp} max HP pontonként · Atk/Def: okozott/kapott sebzés · Speed: mozgás {steps}, korábban lép · Akaraterő: gyorsabban telik a Lelkesedés, ellenáll a státuszoknak · Krit: kritikus találat esélye és ereje"
 }

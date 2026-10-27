@@ -43,6 +43,8 @@ function treeProblems(tree: (typeof trees)[number]): string[] {
   if (tree.focus.length !== 3) at(`${tree.focus.length} focuses (want 3)`);
   // Two focuses may share a stat (two Attack picks with different Bond skills), never a skill.
   if (new Set(tree.focus.map((f) => f.skill)).size !== tree.focus.length) at("a focus skill twice");
+  // The Lv 3 focus grows Attack, Defense or Vitality (hp): the stats a point is worth most in.
+  for (const f of tree.focus) if (!["attack", "defense", "hp"].includes(f.stat)) at(`focus on ${f.stat}`);
   for (const f of tree.focus) {
     const mv = moveOf(f.skill);
     if (!mv) { at(`focus ${f.stat}: ${f.skill} teaches no move`); continue; }

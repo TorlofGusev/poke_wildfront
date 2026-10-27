@@ -8,11 +8,11 @@
    "skill": "mewtwo-psystrike"
   },
   {
-   "stat": "speed",
+   "stat": "defense",
    "skill": "mewtwo-agility"
   },
   {
-   "stat": "willpower",
+   "stat": "hp",
    "skill": "mewtwo-barrier"
   }
  ],
