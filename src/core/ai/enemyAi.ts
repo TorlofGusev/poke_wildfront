@@ -183,12 +183,17 @@ export function planTurn(
   }
   if (best) return best.actions;
 
-  // Nothing worth doing in reach: advance towards the closest opponent. Early on a careful unit stops
-  // at the edge of their reach, so the side that charges in first is the one that gets hit first.
+  // Nothing worth doing in reach: advance. Melee units charge at once and go for the ranged foes
+  // (one hex counts as closer), to engage them; ranged units early on stop at the edge of the foes'
+  // reach, so the side that charges in first is the one that gets hit first.
   const opponents = livingUnits(state).filter((u) => u.side !== self.side);
-  const distTo = (p: Point) => Math.min(...opponents.map((o) => gridDistance(p, o.pos)));
-  const patient = state.round <= weights.patienceRounds;
-  const cost = (p: Point) => distTo(p) + (weights.exposure > 0 ? exposureAt(content, state, self, p) * 2 : 0);
+  const melee = longestReach(content, self) <= 1;
+  const distTo = (p: Point) => Math.min(...opponents.map((o) => gridDistance(p, o.pos) - (melee && longestReach(content, o) > 1 ? 1 : 0)));
+  const patient = !melee && state.round <= weights.patienceRounds;
+  // Once patience is over, closing in comes first: exposure only breaks ties between equally close
+  // hexes (weighted fully, it outweighed every step forward and melee units never left their spot).
+  const exposureWeight = weights.exposure > 0 ? (patient ? 2 : 0.1) : 0;
+  const cost = (p: Point) => distTo(p) + exposureWeight * exposureAt(content, state, self, p);
   let bestStop: Point | null = null;
   let bestCost = cost(self.pos);
   for (const p of reachableFor(state, unitId).destinations) {
@@ -321,11 +326,15 @@ function exposureAt(content: BattleContent, state: BattleState, self: BattleUnit
 
 /** Furthest an opponent could strike from next round: its movement plus its longest reach. */
 function threatRange(content: BattleContent, state: BattleState, unit: BattleUnit): number {
-  const reach = Math.max(0, ...unit.moves.map((m) => {
+  return movementPoints(content, unit, state) + longestReach(content, unit);
+}
+
+/** The longest range of the unit's damaging moves (1 = melee only). */
+function longestReach(content: BattleContent, unit: BattleUnit): number {
+  return Math.max(0, ...unit.moves.map((m) => {
     const mv = content.moves[m]!;
     return mv.power > 0 ? mv.range.max : 0;
   }));
-  return movementPoints(content, unit, state) + reach;
 }
 
 /**

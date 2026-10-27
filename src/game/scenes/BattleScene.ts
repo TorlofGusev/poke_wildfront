@@ -55,6 +55,7 @@ import { statLine } from "../ui/describeEffects";
 import { stripMarkup, tag } from "../ui/markup";
 import { RichText } from "../ui/RichText";
 import { t } from "../i18n";
+import { boardTheme, drawFloorDecor, drawWallDecor, drawWaterDecor, floorColor } from "../ui/boardDecor";
 import { animKey, FACE_LEFT, FACE_RIGHT, facingFor, hasSprite, portraitKey, type Facing, type SpriteAnim } from "../sprites";
 import { BOARD_X, BOARD_Y, boardSize, COLORS, FONT, HEX_R, hexCorners, PANEL_X, PANEL_W, TILE, TYPE_COLORS, tileToWorld, UNIT_SCALE, worldToTile, px, PHONE } from "../ui/theme";
 
@@ -245,11 +246,15 @@ export class BattleScene extends Phaser.Scene {
   private drawBoard(): void {
     this.boardGfx ??= this.add.graphics().setDepth(-1);
     const g = this.boardGfx.clear();
+    const theme = boardTheme(this.biome ?? this.npcMapId ?? this.scenario.id);
     for (let y = 0; y < this.grid.height; y++)
       for (let x = 0; x < this.grid.width; x++) {
         const id = this.grid.terrainAt({ x, y }).id as keyof typeof COLORS;
         const c = tileToWorld({ x, y });
-        g.fillStyle(COLORS[id] as number, 1).fillPoints(hexCorners(c.x, c.y), true);
+        g.fillStyle(id === "floor" ? floorColor(theme, x, y) : COLORS[id] as number, 1).fillPoints(hexCorners(c.x, c.y), true);
+        if (id === "floor") drawFloorDecor(g, theme, x, y, c.x, c.y);
+        else if (id === "wall") drawWallDecor(g, x, y, c.x, c.y);
+        else if (id === "water") drawWaterDecor(g, x, y, c.x, c.y);
         g.lineStyle(1, COLORS.gridLine, 0.35).strokePoints(hexCorners(c.x, c.y), true);
         if (id === "grass") {
           g.fillStyle(0x3f8a45, 1);
@@ -403,6 +408,7 @@ export class BattleScene extends Phaser.Scene {
     this.overlay.clear();
     this.previewLabels?.destroy();
     this.previewLabels = null;
+    this.comboLabels?.setVisible(true);
     if (this.phase === "deploy") {
       this.fillTiles(this.scenario.deploymentZone, COLORS.zone, 0.4);
     } else if (this.phase === "battle" && this.state && this.isPlayerTurn() && !this.busy) {
@@ -482,6 +488,8 @@ export class BattleScene extends Phaser.Scene {
         fontFamily: FONT, fontSize: px(10), color: "#10141c", fontStyle: "bold", backgroundColor: "#f5d76e", padding: { x: 3, y: 1 },
       }).setOrigin(0.5, 1));
     }
+    // A damage preview takes the spot over the foe: the combo name would hide it.
+    if (this.previewLabels) this.comboLabels.setVisible(false);
   }
 
   // ------------------------------------------------------------ panel
@@ -541,7 +549,8 @@ export class BattleScene extends Phaser.Scene {
         backgroundColor: "#10141ccc", padding: { x: 3, y: 1 },
       }).setOrigin(0.5).setDepth(8)];
     });
-    this.previewLabels = this.add.container(0, 0, items);
+    this.previewLabels = this.add.container(0, 0, items).setDepth(16);
+    this.comboLabels?.setVisible(false);
     this.lastPreview = hits;
   }
 

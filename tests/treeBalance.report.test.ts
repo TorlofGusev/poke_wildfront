@@ -2,7 +2,7 @@ import { it } from "vitest";
 import process from "node:process";
 import { CONTENT, PROGRESSION } from "../src/content";
 import { toUnitSetup } from "../src/core/progression";
-import { fight, pct, raise, type Pick } from "./sim";
+import { bondOf, fight, logging, logs, pct, raise, type Bond, type Pick } from "./sim";
 
 /**
  * Mastery tree balance report (not a pass/fail test). Run with:
@@ -22,23 +22,47 @@ const first = (t: (typeof lines)[number]) => t.line[0]!;
 /** Picks the focus with Bond skill `focus` and `force` whenever offered, else seeded. */
 const picker = (focus: string | null, force: string | null): Pick => (o, seed) =>
   (focus && o.includes(focus) ? focus : force && o.includes(force) ? force : o[seed % o.length]!);
-const trio = (species: string, level: number, pick: Pick, seed: number) =>
-  [0, 1, 2].map((i) => toUnitSetup(CONTENT, PROGRESSION, raise(species, level, pick, seed + i)));
+/** Three raised Pokémon of a line, with the team Bond their masteries give (Leader…). */
+const trio = (species: string, level: number, pick: Pick, seed: number): { units: ReturnType<typeof toUnitSetup>[]; bond: Bond } => {
+  const members = [0, 1, 2].map((i) => raise(species, level, pick, seed + i));
+  return { units: members.map((m) => toUnitSetup(CONTENT, PROGRESSION, m)), bond: bondOf(members) };
+};
+/** Trio A vs trio B (see fight), each with its own team Bond. */
+const duel = (a: ReturnType<typeof trio>, b: ReturnType<typeof trio>, seed: number) => fight(a.units, b.units, seed, undefined, { a: a.bond, b: b.bond });
 
 it.skipIf(!process.env.TREEBAL)("tree balance report", () => {
   const t0 = Date.now();
   // 1) Line power vs a gauntlet.
-  const gauntletSpecies = [["charmander", "squirtle", "bulbasaur"], ["pidgey", "geodude", "pikachu"], ["machop", "abra", "gastly"], ["growlithe", "poliwag", "oddish"]];
-  const gauntlet = gauntletSpecies.map((team, k) => team.map((sp, i) => toUnitSetup(CONTENT, PROGRESSION, raise(sp, LEVEL, (o, s) => o[s % o.length]!, k * 7 + i))));
+  // Every line once, in mixed trios (a seeded shuffle), so every type faces the lines at its real share.
+  const shuffled = lines.map(first).map((id, i) => ({ id, key: (i * 7919 + 13) % 104729 })).sort((x, y) => x.key - y.key).map((x) => x.id);
+  const gauntletSpecies = Array.from({ length: Math.floor(shuffled.length / 3) }, (_, k) => shuffled.slice(k * 3, k * 3 + 3));
+  const gauntlet = gauntletSpecies.map((team, k) => {
+    const members = team.map((sp, i) => raise(sp, LEVEL, (o, s) => o[s % o.length]!, k * 7 + i));
+    return { units: members.map((m) => toUnitSetup(CONTENT, PROGRESSION, m)), bond: bondOf(members) };
+  });
   const power: [string, number][] = [];
   for (const t of lines) {
     let w = 0;
-    for (const seed of SEEDS) gauntlet.forEach((g, k) => { w += fight(trio(first(t), LEVEL, (o, s) => o[s % o.length]!, k + seed * 10), g, k + seed * 10).win; });
+    // Battle diagnostics for this line's trio (team A in every game).
+    logging.key = (u) => (u.side === logging.aSide ? first(t) : null);
+    for (const seed of SEEDS) gauntlet.forEach((g, k) => { w += duel(trio(first(t), LEVEL, (o, s) => o[s % o.length]!, k + seed * 10), g, k + seed * 10).win; });
     power.push([first(t), w / (gauntlet.length * SEEDS.length)]);
   }
+  logging.key = null;
   power.sort((a, b) => b[1] - a[1]);
   console.log(`=== line power at Lv ${LEVEL} vs ${gauntlet.length} mixed trios (win share) ===`);
   console.log(power.map(([id, w]) => `${id} ${pct(w)}`).join(" | "));
+
+  // What each line's Pokémon did, per Pokémon and battle (from the battle events).
+  console.log("=== line diagnostics per Pokémon and battle: dealt, taken, rounds alive, KOs, first hit (round), idle turns, free strikes taken (dmg), Bond/special/basic moves, hits resisted/super ===");
+  const r1 = (x: number) => x.toFixed(1);
+  for (const [id, w] of power) {
+    const l = logs.get(id)!;
+    const n = l.battles;
+    const hits = l.hitsResisted + l.hitsNeutral + l.hitsSuper || 1;
+    console.log(`${id.padEnd(11)} ${pct(w).padStart(4)}  dealt ${r1(l.dealt / n).padStart(5)}  taken ${r1(l.taken / n).padStart(5)}  alive ${r1(l.roundsAlive / n)}  KO ${r1(l.knockouts / n)}  1st ${r1(l.firstHitRound / n)}  idle ${pct(l.idleTurns / (l.turns || 1))} (still ${pct(l.idleStill / (l.idleTurns || 1))}, dist ${r1(l.idleDist / (l.idleTurns || 1))})  strikes ${r1(l.strikesTaken / n)} (${r1(l.strikeDamageTaken / n)})  B/S/b ${r1(l.bond / n)}/${r1(l.special / n)}/${r1(l.basic / n)}  res ${pct(l.hitsResisted / hits)} sup ${pct(l.hitsSuper / hits)}`);
+  }
+  logs.clear();
 
   if (process.env.TREEBAL_ONLY === "power") return;
   // 2) Focus spread: each focus against each other focus of the same line.
@@ -48,7 +72,7 @@ it.skipIf(!process.env.TREEBAL)("tree balance report", () => {
     const stats = t.focus.map((f) => f.skill);
     const score = Object.fromEntries(stats.map((s) => [s, 0]));
     for (let a = 0; a < stats.length; a++) for (let b = a + 1; b < stats.length; b++) for (const seed of SEEDS) {
-      const w = fight(trio(first(t), LEVEL, picker(stats[a]!, null), seed), trio(first(t), LEVEL, picker(stats[b]!, null), seed), seed).win;
+      const w = duel(trio(first(t), LEVEL, picker(stats[a]!, null), seed), trio(first(t), LEVEL, picker(stats[b]!, null), seed), seed).win;
       score[stats[a]!] = score[stats[a]!]! + w; score[stats[b]!] = score[stats[b]!]! + 1 - w;
     }
     const games = (stats.length - 1) * SEEDS.length;
@@ -67,7 +91,7 @@ it.skipIf(!process.env.TREEBAL)("tree balance report", () => {
     if (opts.length !== 2) continue;
     rows++;
     let w = 0;
-    for (const seed of SEEDS) w += fight(trio(first(t), 30, picker(null, opts[0]!), seed), trio(first(t), 30, picker(null, opts[1]!), seed), seed).win;
+    for (const seed of SEEDS) w += duel(trio(first(t), 30, picker(null, opts[0]!), seed), trio(first(t), 30, picker(null, opts[1]!), seed), seed).win;
     w /= SEEDS.length;
     if (w >= 0.75 || w <= 0.25) dominant.push(`${first(t)} Lv${lv}: ${opts[0]} ${pct(w)} vs ${opts[1]}`);
   }
