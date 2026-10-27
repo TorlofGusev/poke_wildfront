@@ -118,7 +118,8 @@ export class PokemonScene extends Phaser.Scene {
     add(new Button(this, LIST_X + 132, 12, 40, 26, " ◀", () => go(-1)).setEnabled(list.length > 1));
     text(LIST_X + 180, 17, list === roster.storage ? t("{i}/{n} in storage", { i: idx + 1, n: list.length }) : `${idx + 1}/${list.length}`, COLORS.dim, 13);
     add(new Button(this, LIST_X + 270, 12, 40, 26, " ▶", () => go(1)).setEnabled(list.length > 1));
-    text(LIST_X + 330, 18, `₽${money}`, "#f5d76e", 14);
+    // EV is spent here on stats; money pays for a mastery reset.
+    add(new RichText(this, LIST_X + 330, 18, 220, 14)).setMarkup(`EV ${tag("num", session.game.ev ?? 0)}   ${tag("num", `₽${money}`)}`);
 
     const member = this.selected ? findMember(session.game, this.selected) : undefined;
     if (member) this.renderDetail(member, add);

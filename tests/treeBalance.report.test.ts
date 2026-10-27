@@ -14,6 +14,8 @@ import { fight, pct, raise, type Pick } from "./sim";
 const LEVEL = Number(process.env.TREEBAL_LEVEL ?? 20);
 // Experiment knobs: override the melee rules without editing rules.json.
 if (process.env.MELEE) Object.assign(CONTENT.rules.melee, JSON.parse(process.env.MELEE));
+/** Fights per pairing (TREEBAL_SEEDS, default 2); more seeds, steadier numbers. */
+const SEEDS = Array.from({ length: Number(process.env.TREEBAL_SEEDS ?? 2) }, (_, i) => i + 1);
 const lines = [...new Set(Object.values(PROGRESSION.trees))];
 const first = (t: (typeof lines)[number]) => t.line[0]!;
 
@@ -31,8 +33,8 @@ it.skipIf(!process.env.TREEBAL)("tree balance report", () => {
   const power: [string, number][] = [];
   for (const t of lines) {
     let w = 0;
-    gauntlet.forEach((g, k) => { w += fight(trio(first(t), LEVEL, (o, s) => o[s % o.length]!, k), g, k).win; });
-    power.push([first(t), w / gauntlet.length]);
+    for (const seed of SEEDS) gauntlet.forEach((g, k) => { w += fight(trio(first(t), LEVEL, (o, s) => o[s % o.length]!, k + seed * 10), g, k + seed * 10).win; });
+    power.push([first(t), w / (gauntlet.length * SEEDS.length)]);
   }
   power.sort((a, b) => b[1] - a[1]);
   console.log(`=== line power at Lv ${LEVEL} vs ${gauntlet.length} mixed trios (win share) ===`);
@@ -45,11 +47,11 @@ it.skipIf(!process.env.TREEBAL)("tree balance report", () => {
   for (const t of lines) {
     const stats = t.focus.map((f) => f.skill);
     const score = Object.fromEntries(stats.map((s) => [s, 0]));
-    for (let a = 0; a < stats.length; a++) for (let b = a + 1; b < stats.length; b++) for (const seed of [1, 2]) {
+    for (let a = 0; a < stats.length; a++) for (let b = a + 1; b < stats.length; b++) for (const seed of SEEDS) {
       const w = fight(trio(first(t), LEVEL, picker(stats[a]!, null), seed), trio(first(t), LEVEL, picker(stats[b]!, null), seed), seed).win;
       score[stats[a]!] = score[stats[a]!]! + w; score[stats[b]!] = score[stats[b]!]! + 1 - w;
     }
-    const games = (stats.length - 1) * 2;
+    const games = (stats.length - 1) * SEEDS.length;
     const line = stats.map((s) => `${s} ${pct(score[s]! / games)}`).join(", ");
     const vals = stats.map((s) => score[s]! / games);
     if (Math.max(...vals) - Math.min(...vals) >= 0.75) lopsided.push(`${first(t)}: ${line}`);
@@ -65,10 +67,10 @@ it.skipIf(!process.env.TREEBAL)("tree balance report", () => {
     if (opts.length !== 2) continue;
     rows++;
     let w = 0;
-    for (const seed of [1, 2]) w += fight(trio(first(t), 30, picker(null, opts[0]!), seed), trio(first(t), 30, picker(null, opts[1]!), seed), seed).win;
-    w /= 2;
+    for (const seed of SEEDS) w += fight(trio(first(t), 30, picker(null, opts[0]!), seed), trio(first(t), 30, picker(null, opts[1]!), seed), seed).win;
+    w /= SEEDS.length;
     if (w >= 0.75 || w <= 0.25) dominant.push(`${first(t)} Lv${lv}: ${opts[0]} ${pct(w)} vs ${opts[1]}`);
   }
   console.log(`${dominant.length} of ${rows} two-option rows lopsided:\n  ${dominant.join("\n  ")}`);
   console.log(`(${Math.round((Date.now() - t0) / 1000)} s)`);
-}, 3_600_000);
+}, 4 * 3_600_000);
