@@ -33,7 +33,9 @@ export function describeMove(content: BattleContent, move: MoveDef): string {
         break;
       }
       case "pull": lines.push(t("Pulls up to {n} tiles towards the user", { n: tag("num", e.distance) })); break;
-      case "heal": lines.push(t("Heals {x}", { x: tag("heal", `${e.amount} HP`) })); break;
+      case "heal": lines.push(move.affects === "any" ? t("On an ally: heals {x} instead of damaging", { x: tag("heal", `${e.amount} HP`) }) : t("Heals {x}", { x: tag("heal", `${e.amount} HP`) })); break;
+      case "healShare": lines.push(t("On an ally: heals {x} of its max HP instead of damaging", { x: tag("heal", `${Math.round(e.share * 100)}%`) })); break;
+      case "drain": lines.push(t("Heals the user by {n} of the damage dealt", { n: tag("heal", `${Math.round(e.amount * 100)}%`) })); break;
       case "engage": lines.push(t("{x} the target (taking it over from any other engagement): they may only attack each other", { x: tag("bad", t("Engages")) })); break;
       case "bond": {
         const x = tag("good", t("+{n} Bond", { n: e.amount }));
@@ -54,9 +56,10 @@ export function describeMove(content: BattleContent, move: MoveDef): string {
       }
     }
   }
+  if (move.onlyVs) lines.push(t("Only targets a Pokémon with {status}", { status: tag("status", content.statuses[move.onlyVs]?.name ?? move.onlyVs) }));
   const typeRule = content.types[move.type]?.summary?.split(". ").slice(1).join(". ");
   if (typeRule && move.affects === "enemies") lines.push(`${tag(move.type, t("Type"))}: ${typeRule}`);
-  lines.push(tag("dim", move.range.max === 0 && move.affects === "allies" ? t("Targets itself") : move.affects === "enemies" ? t("Affects enemies only") : t("Affects allies")));
+  lines.push(tag("dim", move.range.max === 0 && move.affects === "allies" ? t("Targets itself") : move.affects === "enemies" ? t("Affects enemies only") : move.affects === "any" ? t("Affects enemies or allies") : t("Affects allies")));
   return lines.join("\n");
 }
 
@@ -66,6 +69,7 @@ export function statusEffectText(st: StatusDef): string {
   if (st.damagePerTurn) parts.push(t("loses {n}% max HP each turn", { n: Math.round(st.damagePerTurn * 100) }));
   if (st.movePenalty) parts.push(t("{v} movement", { v: st.movePenalty > 0 ? `−${st.movePenalty}` : `+${-st.movePenalty}` }));
   if (st.noMove) parts.push(t("cannot move"));
+  if (st.forcesTarget) parts.push(t("may only attack the Pokémon that applied it"));
   if (st.noAction) parts.push(t("cannot use moves"));
   if (st.damageDealt !== undefined && st.damageDealt !== 1) parts.push(t("{v} damage dealt", { v: `${st.damageDealt > 1 ? "+" : "−"}${Math.round(Math.abs(st.damageDealt - 1) * 100)}%` }));
   if (st.damageTaken !== undefined && st.damageTaken !== 1)

@@ -24,6 +24,17 @@ evolution adds none, levelling up teaches none); every other move is a tree skil
 one source: a line's tree never offers a move its species start with (tested). Wild and trainer Pokémon grow their
 tree too (wild ones pick by encounter, a group alike).
 
+**No empty names.** Every move in the library deals damage or has an effect (tested). Moves built on mechanics
+the game lacks (held items, weather, team rounds, switching partners, IVs) are left out (`EXCLUDED` in
+tools/build-move-library.mjs); terrain moves are out for now. Canon effects map onto ours: U-turn / Flip Turn /
+Volt Switch end the engagement, Dream Eater and Nightmare only aim at sleepers, Pollen Puff damages a foe or heals
+an ally, Taunt disables, Perish Song curses around the user. Pursuit is a tank passive (+50% free strikes).
+
+**Own options.** Each line adds one option of its own to every skill row (`lines[].rows`): a move of its other
+types or a coverage type the row lacks, at a power fitting the row (`tools/line-options.mjs` suggests and can fill
+them). Tested: every skill row offers two types, every type of the line appears, at most two Normal attacks
+(Normal lines excepted).
+
 **Bond moves.** Every focus skill and every row skill of canon power ≥ 100 (`progression.bondCanonPower`) teaches
 a Bond move (Bond cost 3 from canon 100 up, else 2), so a tree's big hits can't be spammed. Iconic moves now sit in
 focuses: Spore (Paras), Bonemerang (Cubone), Crabhammer (Krabby), Withdraw (Shellder), Recover (Staryu), Sing

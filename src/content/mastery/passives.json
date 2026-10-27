@@ -761,5 +761,13 @@
     "fairy": 1.15
    }
   }
+ },
+ "pursuit": {
+  "id": "pursuit",
+  "name": "Pursuit",
+  "description": "Its free attacks on foes stepping away from it deal 50% more damage.",
+  "mods": {
+   "strikeDamage": 1.5
+  }
  }
 }

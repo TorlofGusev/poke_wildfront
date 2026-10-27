@@ -21,7 +21,13 @@
      "stat": "hp",
      "skill": "skill:wish"
     }
-   ]
+   ],
+   "rows": {
+    "6": "skill:draining-kiss",
+    "12": "skill:upper-hand",
+    "18": "skill:dig",
+    "24": "skill:iron-tail"
+   }
   },
   {
    "line": [
@@ -40,7 +46,13 @@
      "stat": "defense",
      "skill": "skill:screech"
     }
-   ]
+   ],
+   "rows": {
+    "6": "skill:trailblaze",
+    "12": "skill:low-sweep",
+    "18": "skill:fire-punch",
+    "24": "skill:iron-tail"
+   }
   },
   {
    "line": [
@@ -59,7 +71,13 @@
      "stat": "hp",
      "skill": "skill:roost"
     }
-   ]
+   ],
+   "rows": {
+    "6": "skill:aerial-ace",
+    "12": "skill:steel-wing",
+    "18": "skill:extrasensory",
+    "24": "skill:heat-wave"
+   }
   }
  ],
  "rows": {

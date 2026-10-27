@@ -21,7 +21,13 @@
      "stat": "hp",
      "skill": "skill:drain-punch"
     }
-   ]
+   ],
+   "rows": {
+    "6": "skill:draining-kiss",
+    "12": "skill:low-sweep",
+    "18": "skill:fire-punch",
+    "24": "skill:zap-cannon"
+   }
   },
   {
    "line": [
@@ -40,7 +46,13 @@
      "stat": "hp",
      "skill": "skill:misty-terrain"
     }
-   ]
+   ],
+   "rows": {
+    "6": "skill:payback",
+    "12": "skill:wake-up-slap",
+    "18": "skill:energy-ball",
+    "24": "skill:zap-cannon"
+   }
   }
  ],
  "rows": {

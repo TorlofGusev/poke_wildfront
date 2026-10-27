@@ -214,7 +214,7 @@ export function moveArea(state: BattleState, move: MoveDef, user: BattleUnit, ta
 
 /** Units a move would affect if aimed at `target` from the user's current position. */
 export function affectedUnits(state: BattleState, move: MoveDef, user: BattleUnit, target: Point): BattleUnit[] {
-  const wantsSide = (u: BattleUnit) => (move.affects === "allies") === (u.side === user.side);
+  const wantsSide = (u: BattleUnit) => (move.affects === "any" ? u.id !== user.id : (move.affects === "allies") === (u.side === user.side));
   return moveArea(state, move, user, target)
     .map((p) => unitAt(state, p))
     .filter((u): u is BattleUnit => u !== undefined && wantsSide(u))
@@ -247,6 +247,8 @@ export function validTargets(
   const grid = gridOf(state);
   const range = moveRange(user, move);
   // Pokémon standing in the way block shots that need line of sight (a Tank can screen its allies).
+  const taunt = user.statuses.find((st) => content.statuses[st.id]?.forcesTarget && st.sourceId);
+  const taunter = taunt ? state.units.find((u) => u.id === taunt.sourceId && u.hp > 0 && !u.captured) : undefined;
   const bodyBlocks = (p: Point) => !user.mods.shootOver && state.units.some((u) => u.hp > 0 && !u.captured && samePoint(u.pos, p));
   const out: Point[] = [];
   for (let y = 0; y < grid.height; y++)
@@ -260,11 +262,15 @@ export function validTargets(
       if (move.shape.kind === "line" && !hexOnAxis(user.pos, p)) continue;
       // Engaged: attacks may only aim at the partner.
       if (user.engagedWith && move.affects === "enemies" && !samePoint(p, partnerOf(state, user)!.pos)) continue;
+      if (user.engagedWith && move.affects === "any" && unitAt(state, p)?.side !== user.side && !samePoint(p, partnerOf(state, user)!.pos)) continue;
+      // Taunted: its attacks may only aim at the Pokémon that taunted it.
+      if (taunter && move.affects !== "allies" && unitAt(state, p)?.side !== user.side && !samePoint(p, taunter.pos)) continue;
       if (move.shape.kind === "single") {
         const t = unitAt(state, p);
         if (!t) continue;
         // Enemies hiding in concealing terrain can only be targeted from an adjacent tile.
         if (t.side !== user.side && dist > 1 && grid.terrainAt(p).concealsAtRange && !user.ability?.keenEye) continue;
+        if (move.onlyVs && !t.statuses.some((st) => st.id === move.onlyVs)) continue;
       }
       if (affectedUnits(state, move, user, p).length === 0) continue;
       out.push(p);
@@ -718,7 +724,8 @@ function resolveHits(
   for (const t of affected) {
     if (t.hp <= 0) continue;
     const isFoe = t.side !== user.side;
-    if (move.power > 0) {
+    // A move that affects anyone (Pollen Puff) damages foes and only heals allies.
+    if (move.power > 0 && (isFoe || move.affects !== "any")) {
       const defender = content.species[t.speciesId]!;
       const typeEff = typeMultiplier(content.typeChart, move.type, defender.types);
       const eff = mech.neverResisted ? Math.max(1, typeEff) : typeEff;
@@ -805,13 +812,20 @@ function resolveHits(
         if (m.contactStatus && t.hp > 0) applyStatus(content, user, t, m.contactStatus.status, m.contactStatus.duration, events, state);
         if (t.mods.thorns && user.hp > 0) dealDamage(state, user, t.mods.thorns, "thorns", events);
       }
-      if (mech.drain && dealt > 0 && user.hp > 0) {
-        heal(user, Math.max(1, Math.round(dealt * (mech.drain + m.drainBonus))), events);
+      const drain = (mech.drain ?? 0) + (move.effects ?? []).reduce((sum, e) => sum + (e.kind === "drain" ? e.amount : 0), 0);
+      if (drain > 0 && dealt > 0 && user.hp > 0) {
+        heal(user, Math.max(1, Math.round(dealt * (drain + m.drainBonus))), events);
       }
     }
     for (const effect of move.effects ?? []) {
       if (t.hp <= 0) break;
+      if (move.affects === "any" && (effect.kind === "heal" || effect.kind === "healShare") === isFoe) continue;
       switch (effect.kind) {
+        case "drain":
+          break; // Resolved with the hit above.
+        case "healShare":
+          heal(t, Math.max(1, Math.round(t.maxHp * effect.share)), events);
+          break;
         case "heal":
           heal(t, effect.amount, events);
           break;

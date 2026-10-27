@@ -22,7 +22,13 @@
      "stat": "hp",
      "skill": "skill:heal-bell"
     }
-   ]
+   ],
+   "rows": {
+    "6": "skill:aerial-ace",
+    "12": "skill:breaking-swipe",
+    "18": "skill:waterfall",
+    "24": "skill:zap-cannon"
+   }
   }
  ],
  "rows": {
@@ -39,7 +45,7 @@
    "attack-training"
   ],
   "12": [
-   "skill:slam",
+   "skill:fire-punch",
    "skill:iron-head"
   ],
   "15": [

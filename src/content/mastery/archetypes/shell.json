@@ -22,7 +22,13 @@
      "stat": "hp",
      "skill": "skill:aqua-ring"
     }
-   ]
+   ],
+   "rows": {
+    "6": "skill:confusion",
+    "12": "skill:bite",
+    "18": "skill:dig",
+    "24": "skill:blizzard"
+   }
   },
   {
    "line": [
@@ -42,7 +48,13 @@
      "stat": "defense",
      "skill": "skill:withdraw"
     }
-   ]
+   ],
+   "rows": {
+    "6": "skill:icy-wind",
+    "12": "skill:aurora-beam",
+    "18": "skill:smart-strike",
+    "24": "skill:double-edge"
+   }
   },
   {
    "line": [
@@ -62,7 +74,13 @@
      "stat": "defense",
      "skill": "skill:wide-guard"
     }
-   ]
+   ],
+   "rows": {
+    "6": "skill:metal-claw",
+    "12": "skill:ancient-power",
+    "18": "skill:dig",
+    "24": "skill:blizzard"
+   }
   },
   {
    "line": [
@@ -82,7 +100,13 @@
      "stat": "hp",
      "skill": "skill:slack-off"
     }
-   ]
+   ],
+   "rows": {
+    "6": "skill:psybeam",
+    "12": "skill:avalanche",
+    "18": "skill:dig",
+    "24": "skill:zap-cannon"
+   }
   }
  ],
  "rows": {
@@ -112,11 +136,12 @@
   ],
   "21": [
    "rough-skin",
-   "second-wind"
+   "second-wind",
+   "pursuit"
   ],
   "24": [
    "skill:hydro-pump",
-   "skill:giga-impact"
+   "skill:ice-beam"
   ],
   "27": [
    "multiscale",

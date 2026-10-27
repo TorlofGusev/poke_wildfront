@@ -92,5 +92,10 @@
   "damageDealt": 1.2,
   "movePenalty": -1,
   "buff": true
+ },
+ "taunted": {
+  "id": "taunted",
+  "name": "Taunted",
+  "forcesTarget": true
  }
 }

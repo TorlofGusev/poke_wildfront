@@ -21,7 +21,13 @@
      "stat": "defense",
      "skill": "skill:detect"
     }
-   ]
+   ],
+   "rows": {
+    "6": "skill:smack-down",
+    "12": "skill:bubble-beam",
+    "18": "skill:iron-head",
+    "24": "skill:blizzard"
+   }
   },
   {
    "line": [
@@ -41,7 +47,13 @@
      "stat": "defense",
      "skill": "skill:sand-tomb"
     }
-   ]
+   ],
+   "rows": {
+    "6": "skill:smack-down",
+    "12": "skill:shadow-claw",
+    "18": "skill:throat-chop",
+    "24": "skill:sludge-bomb"
+   }
   },
   {
    "line": [
@@ -59,9 +71,15 @@
     },
     {
      "stat": "defense",
-     "skill": "skill:metal-burst"
+     "skill": "skill:block"
     }
-   ]
+   ],
+   "rows": {
+    "6": "skill:smack-down",
+    "12": "skill:fire-fang",
+    "18": "skill:body-press",
+    "24": "skill:zap-cannon"
+   }
   },
   {
    "line": [
@@ -75,13 +93,19 @@
     },
     {
      "stat": "attack",
-     "skill": "skill:steel-roller"
+     "skill": "skill:rock-climb"
     },
     {
      "stat": "defense",
      "skill": "skill:rapid-spin"
     }
-   ]
+   ],
+   "rows": {
+    "6": "skill:metal-claw",
+    "12": "skill:shadow-claw",
+    "18": "skill:leech-life",
+    "24": "skill:dynamic-punch"
+   }
   }
  ],
  "rows": {

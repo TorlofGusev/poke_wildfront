@@ -3,33 +3,141 @@
  "name": "Heavyweight",
  "type": "normal",
  "lines": [
-  { "line": ["snorlax"], "focus": [
-   { "stat": "attack", "skill": "skill:crunch" },
-   { "stat": "defense", "skill": "skill:stockpile" },
-   { "stat": "hp", "skill": "skill:swallow" } ] },
-  { "line": ["lickitung"], "focus": [
-   { "stat": "attack", "skill": "skill:power-whip" },
-   { "stat": "attack", "skill": "skill:wring-out" },
-   { "stat": "defense", "skill": "skill:bind" } ] },
-  { "line": ["chansey"], "focus": [
-   { "stat": "attack", "skill": "skill:endeavor" },
-   { "stat": "defense", "skill": "skill:light-screen" },
-   { "stat": "hp", "skill": "skill:soft-boiled" } ] }
+  {
+   "line": [
+    "snorlax"
+   ],
+   "focus": [
+    {
+     "stat": "attack",
+     "skill": "skill:crunch"
+    },
+    {
+     "stat": "defense",
+     "skill": "skill:stockpile"
+    },
+    {
+     "stat": "hp",
+     "skill": "skill:swallow"
+    }
+   ],
+   "rows": {
+    "6": "skill:chilling-water",
+    "12": "skill:bite",
+    "18": "skill:body-press",
+    "24": "skill:solar-beam"
+   }
+  },
+  {
+   "line": [
+    "lickitung"
+   ],
+   "focus": [
+    {
+     "stat": "attack",
+     "skill": "skill:power-whip"
+    },
+    {
+     "stat": "attack",
+     "skill": "skill:wring-out"
+    },
+    {
+     "stat": "defense",
+     "skill": "skill:bind"
+    }
+   ],
+   "rows": {
+    "6": "skill:icy-wind",
+    "12": "skill:bubble-beam",
+    "18": "skill:body-press",
+    "24": "skill:solar-beam"
+   }
+  },
+  {
+   "line": [
+    "chansey"
+   ],
+   "focus": [
+    {
+     "stat": "attack",
+     "skill": "skill:endeavor"
+    },
+    {
+     "stat": "defense",
+     "skill": "skill:light-screen"
+    },
+    {
+     "stat": "hp",
+     "skill": "skill:soft-boiled"
+    }
+   ],
+   "rows": {
+    "6": "skill:chilling-water",
+    "12": "skill:mud-bomb",
+    "18": "skill:dazzling-gleam",
+    "24": "skill:solar-beam"
+   }
+  }
  ],
  "rows": {
-  "4": ["thick-hide", "vitality-training"],
-  "6": ["skill:body-slam", "skill:defense-curl"],
-  "9": ["natural-recovery", "mean-look"],
-  "12": ["skill:ice-punch", "skill:protect"],
-  "15": ["sturdy", "cornered"],
-  "18": ["skill:double-edge", "skill:bulldoze"],
-  "21": ["multiscale", "second-wind"],
-  "24": ["skill:giga-impact", "skill:earthquake"],
-  "27": ["defense-training", "bulldozer"],
-  "30": ["heavyweight-thick-fat", "heavyweight-gluttony"]
+  "4": [
+   "thick-hide",
+   "vitality-training"
+  ],
+  "6": [
+   "skill:body-slam",
+   "skill:defense-curl"
+  ],
+  "9": [
+   "natural-recovery",
+   "mean-look"
+  ],
+  "12": [
+   "skill:ice-punch",
+   "skill:protect"
+  ],
+  "15": [
+   "sturdy",
+   "cornered",
+   "pursuit"
+  ],
+  "18": [
+   "skill:double-edge",
+   "skill:bulldoze"
+  ],
+  "21": [
+   "multiscale",
+   "second-wind"
+  ],
+  "24": [
+   "skill:giga-impact",
+   "skill:earthquake"
+  ],
+  "27": [
+   "defense-training",
+   "bulldozer"
+  ],
+  "30": [
+   "heavyweight-thick-fat",
+   "heavyweight-gluttony"
+  ]
  },
  "passives": {
-  "heavyweight-thick-fat": { "id": "heavyweight-thick-fat", "name": "Thick Fat", "description": "It takes 15% less damage.", "mods": { "damageTaken": 0.85 } },
-  "heavyweight-gluttony": { "id": "heavyweight-gluttony", "name": "Gluttony", "description": "It heals 6% of its max HP each turn.", "mods": { "healPerTurn": 0.06 } }
+  "heavyweight-thick-fat": {
+   "id": "heavyweight-thick-fat",
+   "name": "Thick Fat",
+   "description": "It takes 15% less damage.",
+   "mods": {
+    "damageTaken": 0.85
+   }
+  },
+  "heavyweight-gluttony": {
+   "id": "heavyweight-gluttony",
+   "name": "Gluttony",
+   "description": "It heals 6% of its max HP each turn.",
+   "mods": {
+    "healPerTurn": 0.06
+   }
+  }
  }
 }

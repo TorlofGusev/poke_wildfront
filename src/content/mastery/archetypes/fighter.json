@@ -22,7 +22,13 @@
      "stat": "defense",
      "skill": "skill:vital-throw"
     }
-   ]
+   ],
+   "rows": {
+    "6": "skill:payback",
+    "12": "skill:bulldoze",
+    "18": "skill:fire-punch",
+    "24": "skill:stone-edge"
+   }
   },
   {
    "line": [
@@ -42,7 +48,13 @@
      "stat": "defense",
      "skill": "skill:taunt"
     }
-   ]
+   ],
+   "rows": {
+    "6": "skill:payback",
+    "12": "skill:shadow-claw",
+    "18": "skill:dig",
+    "24": "skill:overheat"
+   }
   },
   {
    "line": [
@@ -61,7 +73,13 @@
      "stat": "hp",
      "skill": "skill:drain-punch"
     }
-   ]
+   ],
+   "rows": {
+    "6": "skill:trailblaze",
+    "12": "skill:bulldoze",
+    "18": "skill:throat-chop",
+    "24": "skill:stone-edge"
+   }
   },
   {
    "line": [
@@ -80,7 +98,13 @@
      "stat": "defense",
      "skill": "skill:rolling-kick"
     }
-   ]
+   ],
+   "rows": {
+    "6": "skill:bulldoze",
+    "12": "skill:rock-slide",
+    "18": "skill:lunge",
+    "24": "skill:earthquake"
+   }
   }
  ],
  "rows": {

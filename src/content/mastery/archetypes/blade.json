@@ -20,7 +20,13 @@
      "stat": "hp",
      "skill": "skill:morning-sun"
     }
-   ]
+   ],
+   "rows": {
+    "6": "skill:trailblaze",
+    "12": "skill:skitter-smack",
+    "18": "skill:air-slash",
+    "24": "skill:close-combat"
+   }
   },
   {
    "line": [
@@ -39,7 +45,13 @@
      "stat": "defense",
      "skill": "skill:harden"
     }
-   ]
+   ],
+   "rows": {
+    "6": "skill:smack-down",
+    "12": "skill:lunge",
+    "18": "skill:dig",
+    "24": "skill:close-combat"
+   }
   },
   {
    "line": [
@@ -59,7 +71,13 @@
      "stat": "hp",
      "skill": "skill:synthesis"
     }
-   ]
+   ],
+   "rows": {
+    "6": "skill:metal-claw",
+    "12": "skill:giga-drain",
+    "18": "skill:leech-life",
+    "24": "skill:sludge-bomb"
+   }
   }
  ],
  "rows": {
@@ -76,7 +94,7 @@
    "pursuit-instinct"
   ],
   "12": [
-   "skill:slash",
+   "skill:struggle-bug",
    "skill:brick-break"
   ],
   "15": [
@@ -84,7 +102,7 @@
    "guts"
   ],
   "18": [
-   "skill:knock-off",
+   "skill:slash",
    "skill:double-edge"
   ],
   "21": [
@@ -93,7 +111,7 @@
   ],
   "24": [
    "skill:swords-dance",
-   "skill:false-swipe"
+   "skill:substitute"
   ],
   "27": [
    "relentless",

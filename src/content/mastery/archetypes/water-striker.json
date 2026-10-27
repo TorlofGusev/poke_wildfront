@@ -18,10 +18,16 @@
      "skill": "skill:outrage"
     },
     {
-     "stat": "attack",
-     "skill": "skill:bounce"
+     "stat": "hp",
+     "skill": "skill:rest"
     }
-   ]
+   ],
+   "rows": {
+    "6": "skill:payback",
+    "12": "skill:ice-fang",
+    "18": "skill:bounce",
+    "24": "skill:zap-cannon"
+   }
   },
   {
    "line": [
@@ -41,7 +47,13 @@
      "stat": "defense",
      "skill": "skill:soak"
     }
-   ]
+   ],
+   "rows": {
+    "6": "skill:icy-wind",
+    "12": "skill:psybeam",
+    "18": "skill:throat-chop",
+    "24": "skill:aqua-tail"
+   }
   },
   {
    "line": [
@@ -61,7 +73,13 @@
      "stat": "defense",
      "skill": "skill:smokescreen"
     }
-   ]
+   ],
+   "rows": {
+    "6": "skill:clear-smog",
+    "12": "skill:aurora-beam",
+    "18": "skill:dragon-breath",
+    "24": "skill:blizzard"
+   }
   },
   {
    "line": [
@@ -82,7 +100,13 @@
      "stat": "hp",
      "skill": "skill:amnesia"
     }
-   ]
+   ],
+   "rows": {
+    "6": "skill:power-up-punch",
+    "12": "skill:mud-bomb",
+    "18": "skill:throat-chop",
+    "24": "skill:blizzard"
+   }
   },
   {
    "line": [
@@ -102,7 +126,13 @@
      "stat": "attack",
      "skill": "skill:synchronoise"
     }
-   ]
+   ],
+   "rows": {
+    "6": "skill:clear-smog",
+    "12": "skill:low-sweep",
+    "18": "skill:dig",
+    "24": "skill:blizzard"
+   }
   }
  ],
  "rows": {
@@ -136,7 +166,7 @@
   ],
   "24": [
    "skill:hydro-pump",
-   "skill:skull-bash"
+   "skill:ice-beam"
   ],
   "27": [
    "speed-training",

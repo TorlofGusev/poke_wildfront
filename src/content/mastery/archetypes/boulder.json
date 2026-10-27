@@ -22,7 +22,13 @@
      "stat": "defense",
      "skill": "skill:harden"
     }
-   ]
+   ],
+   "rows": {
+    "6": "skill:bulldoze",
+    "12": "skill:ancient-power",
+    "18": "skill:brick-break",
+    "24": "skill:fire-blast"
+   }
   },
   {
    "line": [
@@ -41,7 +47,13 @@
      "stat": "defense",
      "skill": "skill:dragon-tail"
     }
-   ]
+   ],
+   "rows": {
+    "6": "skill:bulldoze",
+    "12": "skill:ancient-power",
+    "18": "skill:dig",
+    "24": "skill:iron-tail"
+   }
   }
  ],
  "rows": {
@@ -71,11 +83,12 @@
   ],
   "21": [
    "bulldozer",
-   "forceful"
+   "forceful",
+   "pursuit"
   ],
   "24": [
    "skill:stone-edge",
-   "skill:double-edge"
+   "skill:earthquake"
   ],
   "27": [
    "relentless",

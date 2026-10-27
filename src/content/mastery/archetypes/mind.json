@@ -22,7 +22,13 @@
      "stat": "hp",
      "skill": "skill:drain-punch"
     }
-   ]
+   ],
+   "rows": {
+    "6": "skill:shock-wave",
+    "12": "skill:fire-punch",
+    "18": "skill:dazzling-gleam",
+    "24": "skill:dynamic-punch"
+   }
   },
   {
    "line": [
@@ -41,7 +47,13 @@
      "stat": "hp",
      "skill": "skill:life-dew"
     }
-   ]
+   ],
+   "rows": {
+    "6": "skill:chilling-water",
+    "12": "skill:hex",
+    "18": "skill:dark-pulse",
+    "24": "skill:solar-beam"
+   }
   },
   {
    "line": [
@@ -54,13 +66,19 @@
     },
     {
      "stat": "defense",
-     "skill": "skill:transform"
+     "skill": "skill:coaching"
     },
     {
      "stat": "hp",
      "skill": "skill:soft-boiled"
     }
-   ]
+   ],
+   "rows": {
+    "6": "skill:chilling-water",
+    "12": "skill:burning-jealousy",
+    "18": "skill:alluring-voice",
+    "24": "skill:close-combat"
+   }
   }
  ],
  "rows": {
@@ -77,7 +95,7 @@
    "overhead-shot"
   ],
   "12": [
-   "skill:expanding-force",
+   "skill:psycho-cut",
    "skill:calm-mind"
   ],
   "15": [
@@ -93,7 +111,7 @@
    "bond-focus"
   ],
   "24": [
-   "skill:hyper-beam",
+   "skill:zap-cannon",
    "skill:dream-eater"
   ],
   "27": [

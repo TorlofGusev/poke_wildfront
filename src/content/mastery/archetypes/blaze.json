@@ -22,7 +22,13 @@
      "stat": "attack",
      "skill": "skill:flare-blitz"
     }
-   ]
+   ],
+   "rows": {
+    "6": "skill:dragon-breath",
+    "12": "skill:air-slash",
+    "18": "skill:fly",
+    "24": "skill:dragon-rush"
+   }
   },
   {
    "line": [
@@ -42,7 +48,13 @@
      "stat": "hp",
      "skill": "skill:morning-sun"
     }
-   ]
+   ],
+   "rows": {
+    "6": "skill:thunder-fang",
+    "12": "skill:scorching-sands",
+    "18": "skill:play-rough",
+    "24": "skill:close-combat"
+   }
   },
   {
    "line": [
@@ -62,7 +74,13 @@
      "stat": "hp",
      "skill": "skill:morning-sun"
     }
-   ]
+   ],
+   "rows": {
+    "6": "skill:double-kick",
+    "12": "skill:smart-strike",
+    "18": "skill:wild-charge",
+    "24": "skill:solar-blade"
+   }
   }
  ],
  "rows": {
@@ -88,7 +106,7 @@
   ],
   "18": [
    "skill:fire-blast",
-   "skill:double-edge"
+   "skill:iron-tail"
   ],
   "21": [
    "moxie",
@@ -96,7 +114,7 @@
   ],
   "24": [
    "skill:overheat",
-   "skill:giga-impact"
+   "skill:solar-beam"
   ],
   "27": [
    "relentless",

@@ -21,7 +21,13 @@
      "stat": "hp",
      "skill": "skill:recover"
     }
-   ]
+   ],
+   "rows": {
+    "6": "skill:psybeam",
+    "12": "skill:ancient-power",
+    "18": "skill:dazzling-gleam",
+    "24": "skill:zap-cannon"
+   }
   },
   {
    "line": [
@@ -40,7 +46,13 @@
      "stat": "hp",
      "skill": "skill:life-dew"
     }
-   ]
+   ],
+   "rows": {
+    "6": "skill:ancient-power",
+    "12": "skill:avalanche",
+    "18": "skill:alluring-voice",
+    "24": "skill:solar-beam"
+   }
   },
   {
    "line": [
@@ -60,7 +72,13 @@
      "stat": "defense",
      "skill": "skill:perish-song"
     }
-   ]
+   ],
+   "rows": {
+    "6": "skill:peck",
+    "12": "skill:avalanche",
+    "18": "skill:alluring-voice",
+    "24": "skill:iron-tail"
+   }
   },
   {
    "line": [
@@ -80,7 +98,13 @@
      "stat": "defense",
      "skill": "skill:toxic-spikes"
     }
-   ]
+   ],
+   "rows": {
+    "6": "skill:acid-spray",
+    "12": "skill:hex",
+    "18": "skill:dazzling-gleam",
+    "24": "skill:sludge-bomb"
+   }
   }
  ],
  "rows": {

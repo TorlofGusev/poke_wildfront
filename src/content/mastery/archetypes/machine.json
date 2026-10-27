@@ -21,7 +21,13 @@
      "stat": "defense",
      "skill": "skill:magnet-rise"
     }
-   ]
+   ],
+   "rows": {
+    "6": "skill:magnet-bomb",
+    "12": "skill:mirror-shot",
+    "18": "skill:discharge",
+    "24": "skill:double-edge"
+   }
   },
   {
    "line": [
@@ -35,13 +41,19 @@
     },
     {
      "stat": "defense",
-     "skill": "skill:mirror-coat"
+     "skill": "skill:eerie-impulse"
     },
     {
      "stat": "attack",
      "skill": "skill:foul-play"
     }
-   ]
+   ],
+   "rows": {
+    "6": "skill:shock-wave",
+    "12": "skill:volt-switch",
+    "18": "skill:discharge",
+    "24": "skill:double-edge"
+   }
   }
  ],
  "rows": {

@@ -3,37 +3,169 @@
  "name": "Bird",
  "type": "flying",
  "lines": [
-  { "line": ["pidgey", "pidgeotto", "pidgeot"], "focus": [
-   { "stat": "attack", "skill": "skill:brave-bird" },
-   { "stat": "attack", "skill": "skill:hurricane" },
-   { "stat": "defense", "skill": "skill:defog" } ] },
-  { "line": ["spearow", "fearow"], "focus": [
-   { "stat": "attack", "skill": "skill:drill-run" },
-   { "stat": "attack", "skill": "skill:assurance" },
-   { "stat": "defense", "skill": "skill:scary-face" } ] },
-  { "line": ["doduo", "dodrio"], "focus": [
-   { "stat": "attack", "skill": "skill:double-hit" },
-   { "stat": "attack", "skill": "skill:acrobatics" },
-   { "stat": "defense", "skill": "skill:haze" } ] },
-  { "line": ["farfetchd"], "focus": [
-   { "stat": "attack", "skill": "skill:leaf-blade" },
-   { "stat": "attack", "skill": "skill:night-slash" },
-   { "stat": "defense", "skill": "skill:detect" } ] }
+  {
+   "line": [
+    "pidgey",
+    "pidgeotto",
+    "pidgeot"
+   ],
+   "focus": [
+    {
+     "stat": "attack",
+     "skill": "skill:brave-bird"
+    },
+    {
+     "stat": "attack",
+     "skill": "skill:hurricane"
+    },
+    {
+     "stat": "defense",
+     "skill": "skill:defog"
+    }
+   ],
+   "rows": {
+    "6": "skill:swift",
+    "12": "skill:steel-wing",
+    "18": "skill:u-turn",
+    "24": "skill:heat-wave"
+   }
+  },
+  {
+   "line": [
+    "spearow",
+    "fearow"
+   ],
+   "focus": [
+    {
+     "stat": "attack",
+     "skill": "skill:drill-run"
+    },
+    {
+     "stat": "attack",
+     "skill": "skill:assurance"
+    },
+    {
+     "stat": "defense",
+     "skill": "skill:scary-face"
+    }
+   ],
+   "rows": {
+    "6": "skill:quick-attack",
+    "12": "skill:steel-wing",
+    "18": "skill:throat-chop",
+    "24": "skill:heat-wave"
+   }
+  },
+  {
+   "line": [
+    "doduo",
+    "dodrio"
+   ],
+   "focus": [
+    {
+     "stat": "attack",
+     "skill": "skill:double-hit"
+    },
+    {
+     "stat": "attack",
+     "skill": "skill:drill-peck"
+    },
+    {
+     "stat": "defense",
+     "skill": "skill:haze"
+    }
+   ],
+   "rows": {
+    "6": "skill:swift",
+    "12": "skill:steel-wing",
+    "18": "skill:lunge",
+    "24": "skill:jump-kick"
+   }
+  },
+  {
+   "line": [
+    "farfetchd"
+   ],
+   "focus": [
+    {
+     "stat": "attack",
+     "skill": "skill:leaf-blade"
+    },
+    {
+     "stat": "attack",
+     "skill": "skill:night-slash"
+    },
+    {
+     "stat": "defense",
+     "skill": "skill:detect"
+    }
+   ],
+   "rows": {
+    "6": "skill:quick-attack",
+    "12": "skill:steel-wing",
+    "18": "skill:throat-chop",
+    "24": "skill:close-combat"
+   }
+  }
  ],
  "rows": {
-  "4": ["keen-eye", "run-away"],
-  "6": ["skill:aerial-ace", "skill:feather-dance"],
-  "9": ["flanker", "first-strike"],
-  "12": ["skill:pluck", "skill:substitute"],
-  "15": ["overhead-shot", "quick-feet"],
-  "18": ["skill:fly", "skill:tailwind"],
-  "21": ["speed-boost", "second-wind"],
-  "24": ["skill:double-edge", "skill:double-team"],
-  "27": ["hustle", "flying-power"],
-  "30": ["bird-sniper", "bird-big-pecks"]
+  "4": [
+   "keen-eye",
+   "run-away"
+  ],
+  "6": [
+   "skill:aerial-ace",
+   "skill:feather-dance"
+  ],
+  "9": [
+   "flanker",
+   "first-strike"
+  ],
+  "12": [
+   "skill:air-cutter",
+   "skill:substitute"
+  ],
+  "15": [
+   "overhead-shot",
+   "quick-feet"
+  ],
+  "18": [
+   "skill:fly",
+   "skill:tailwind"
+  ],
+  "21": [
+   "speed-boost",
+   "second-wind"
+  ],
+  "24": [
+   "skill:double-edge",
+   "skill:double-team"
+  ],
+  "27": [
+   "hustle",
+   "flying-power"
+  ],
+  "30": [
+   "bird-sniper",
+   "bird-big-pecks"
+  ]
  },
  "passives": {
-  "bird-sniper": { "id": "bird-sniper", "name": "Sniper", "description": "Its moves deal 25% more damage to foes beyond reach 1.", "mods": { "farDamage": 1.25 } },
-  "bird-big-pecks": { "id": "bird-big-pecks", "name": "Big Pecks", "description": "It takes 15% less damage.", "mods": { "damageTaken": 0.85 } }
+  "bird-sniper": {
+   "id": "bird-sniper",
+   "name": "Sniper",
+   "description": "Its moves deal 25% more damage to foes beyond reach 1.",
+   "mods": {
+    "farDamage": 1.25
+   }
+  },
+  "bird-big-pecks": {
+   "id": "bird-big-pecks",
+   "name": "Big Pecks",
+   "description": "It takes 15% less damage.",
+   "mods": {
+    "damageTaken": 0.85
+   }
+  }
  }
 }

@@ -22,7 +22,13 @@
      "stat": "hp",
      "skill": "skill:strength-sap"
     }
-   ]
+   ],
+   "rows": {
+    "6": "skill:clear-smog",
+    "12": "skill:leech-life",
+    "18": "skill:sludge-bomb",
+    "24": "skill:double-edge"
+   }
   },
   {
    "line": [
@@ -42,7 +48,13 @@
      "stat": "hp",
      "skill": "skill:synthesis"
     }
-   ]
+   ],
+   "rows": {
+    "6": "skill:psybeam",
+    "12": "skill:ancient-power",
+    "18": "skill:sludge-bomb",
+    "24": "skill:earthquake"
+   }
   }
  ],
  "rows": {
@@ -68,7 +80,7 @@
   ],
   "18": [
    "skill:giga-drain",
-   "skill:grassy-glide"
+   "skill:energy-ball"
   ],
   "21": [
    "exploit-opening",

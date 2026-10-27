@@ -45,6 +45,14 @@ describe("archetype trees", () => {
       for (const l of a.lines) {
         if (JSON.stringify(LINES[l.line[0]!]) !== JSON.stringify(l.line)) at(`line ${l.line.join("→")} is not an evolution line`);
         if (l.focus.length !== 3) at(`${l.line[0]}: three focus options`);
+        for (const [lv, id] of Object.entries(l.rows ?? {})) {
+          const mv = moveOf(id);
+          if (!SKILL_ROWS.has(lv) || !mv) at(`${l.line[0]}: own option ${id} at Lv ${lv} (own options are skills at 6/12/18/24)`);
+          else if (!CONTENT.moves[mv]) at(`${l.line[0]}: unknown move ${mv}`);
+          else if (!l.line.some((sp) => learn[sp]?.includes(mv))) at(`${l.line[0]}: cannot learn its own option ${mv}`);
+          if (a.rows[lv]?.includes(id)) at(`${l.line[0]}: own option ${id} is already a shared option`);
+          if ((a.rows[lv]?.length ?? 0) + 1 > 3) at(`${l.line[0]}: Lv ${lv} would offer more than 3 options`);
+        }
         if (new Set(l.focus.map((f) => f.skill)).size !== l.focus.length) at(`${l.line[0]}: a focus skill twice`);
         for (const f of l.focus) {
           const mv = moveOf(f.skill);
@@ -79,6 +87,21 @@ describe("archetype trees", () => {
     expect(problems).toEqual([]);
   });
 
+  it("each line's skill rows are varied: two types per row, every type of the line, at most two Normal attacks", () => {
+    const problems: string[] = [];
+    for (const a of ARCHETYPES) for (const l of a.lines) {
+      if (a.mimic || a.forms) continue;
+      const rows = [...SKILL_ROWS].map((lv) => [...a.rows[lv]!, ...(l.rows?.[lv] ? [l.rows[lv]!] : [])].map(moveOf).filter((m): m is string => !!m));
+      const typeOf = (m: string) => canon[m]?.type ?? CONTENT.moves[m]!.type;
+      rows.forEach((r, i) => { if (new Set(r.map(typeOf)).size < 2) problems.push(`${l.line[0]} Lv ${[...SKILL_ROWS][i]}: one type only`); });
+      const offered = new Set(rows.flat().map(typeOf));
+      for (const ty of new Set(l.line.flatMap((sp) => CONTENT.species[sp]!.types))) if (!offered.has(ty)) problems.push(`${l.line[0]}: no ${ty} skill`);
+      const normal = rows.flat().filter((m) => typeOf(m) === "normal" && CONTENT.moves[m]!.power > 0).length;
+      if (normal > 2 && !l.line.some((sp) => CONTENT.species[sp]!.types.includes("normal"))) problems.push(`${l.line[0]}: ${normal} Normal skills`);
+    }
+    expect(problems).toEqual([]);
+  });
+
   it("every species is in exactly one tree", () => {
     const counted = ARCHETYPES.flatMap((a) => a.lines.flatMap((l) => l.line));
     expect(counted.slice().sort()).toEqual(Object.keys(CONTENT.species).sort());
@@ -88,7 +111,7 @@ describe("archetype trees", () => {
     const problems: string[] = [];
     for (const a of ARCHETYPES) for (const l of a.lines) {
       const own = new Set(l.line.flatMap((sp) => CONTENT.species[sp]!.moves));
-      const skills = [...Object.values(a.rows).flat(), ...Object.values(a.forms ?? {}).flatMap((f) => Object.values(f.rows).flat()), ...l.focus.map((f) => f.skill)];
+      const skills = [...Object.values(a.rows).flat(), ...Object.values(l.rows ?? {}), ...Object.values(a.forms ?? {}).flatMap((f) => Object.values(f.rows).flat()), ...l.focus.map((f) => f.skill)];
       for (const id of skills) if (own.has(moveOf(id) ?? "")) problems.push(`${a.id}: ${l.line[0]} starts with ${moveOf(id)}`);
     }
     const lib = JSON.parse(readFileSync("src/content/mastery/moves.json", "utf8")) as Record<string, unknown>;
@@ -101,7 +124,7 @@ describe("archetype trees", () => {
     const problems: string[] = [];
     for (const a of ARCHETYPES) {
       for (const l of a.lines) for (const f of l.focus) if (taught(f.skill).kind !== "bond") problems.push(`${a.id}: focus ${f.skill}`);
-      for (const id of Object.values(a.rows).flat()) {
+      for (const id of [...Object.values(a.rows).flat(), ...a.lines.flatMap((l) => Object.values(l.rows ?? {}))]) {
         const mv = moveOf(id);
         if (!mv) continue;
         if (!PROGRESSION.talents[id]) { problems.push(`${a.id}: no talent ${id}`); continue; }
@@ -115,7 +138,7 @@ describe("archetype trees", () => {
 
   it("covers every line at most once; a focus (Bond) move is never also a row skill", () => {
     const seen = new Map<string, string>();
-    const rowMoves = new Set(ARCHETYPES.flatMap((a) => Object.values(a.rows).flat().map(moveOf).filter(Boolean)));
+    const rowMoves = new Set(ARCHETYPES.flatMap((a) => [...Object.values(a.rows).flat(), ...a.lines.flatMap((l) => Object.values(l.rows ?? {}))].map(moveOf).filter(Boolean)));
     const problems: string[] = [];
     for (const a of ARCHETYPES) for (const l of a.lines) {
       const first = l.line[0]!;

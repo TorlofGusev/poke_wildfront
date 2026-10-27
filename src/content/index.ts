@@ -46,7 +46,8 @@ export interface ArchetypeFile {
   readonly name: string;
   readonly type: string;
   readonly rows: Readonly<Record<string, readonly string[]>>;
-  readonly lines: readonly { readonly line: readonly string[]; readonly focus: MasteryTree["focus"] }[];
+  /** Each line's focus, and its own extra option per skill row (a move of its other types or a signature move). */
+  readonly lines: readonly { readonly line: readonly string[]; readonly focus: MasteryTree["focus"]; readonly rows?: Readonly<Record<string, string>> }[];
   readonly forms?: MasteryTree["forms"];
   readonly passives?: Readonly<Record<string, TalentDef>>;
   /** The tree's own moves (Ditto's). */
@@ -65,7 +66,7 @@ const strong = (id: string) => (moves[id]?.canonPower ?? 0) >= progression.bondC
 const taught = new Map<string, string>();
 const bonds = new Set<string>();
 for (const a of ARCHETYPES) {
-  for (const id of [a.rows, ...Object.values(a.forms ?? {}).map((f) => f.rows)].flatMap((r) => Object.values(r).flat())) {
+  for (const id of [a.rows, ...Object.values(a.forms ?? {}).map((f) => f.rows), ...a.lines.map((l) => l.rows ?? {})].flatMap((r) => Object.values(r).flat())) {
     const mv = moveOfSkill(id);
     if (mv) { taught.set(id, mv); if (strong(mv)) bonds.add(mv); }
   }
@@ -83,7 +84,8 @@ for (const [skill, id] of taught) {
   if (move && !talents[skill]) talents[skill] = { id: skill, name: move.name, description: "", grantsMove: move.id };
 }
 const ARCHETYPE_TREES: [string, MasteryTree][] = ARCHETYPES.flatMap((a) => a.lines.flatMap((l) => {
-  const tree: MasteryTree = { line: l.line, focus: l.focus, rows: a.rows, ...(a.forms && { forms: a.forms }) };
+  const rows = Object.fromEntries(Object.entries(a.rows).map(([lv, opts]) => [lv, l.rows?.[lv] ? [...opts, l.rows[lv]] : opts]));
+  const tree: MasteryTree = { line: l.line, focus: l.focus, rows, ...(a.forms && { forms: a.forms }) };
   return l.line.map((id) => [id, tree] as [string, MasteryTree]);
 }));
 

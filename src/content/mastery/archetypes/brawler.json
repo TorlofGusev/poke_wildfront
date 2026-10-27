@@ -3,38 +3,171 @@
  "name": "Brawler",
  "type": "normal",
  "lines": [
-  { "line": ["rattata", "raticate"], "focus": [
-   { "stat": "attack", "skill": "skill:super-fang" },
-   { "stat": "attack", "skill": "skill:crunch" },
-   { "stat": "hp", "skill": "skill:endeavor" } ] },
-  { "line": ["tauros"], "focus": [
-   { "stat": "attack", "skill": "skill:raging-bull" },
-   { "stat": "attack", "skill": "skill:high-horsepower" },
-   { "stat": "defense", "skill": "skill:zen-headbutt" } ] },
-  { "line": ["kangaskhan"], "focus": [
-   { "stat": "attack", "skill": "skill:dizzy-punch" },
-   { "stat": "defense", "skill": "skill:counter" },
-   { "stat": "hp", "skill": "skill:drain-punch" } ] },
-  { "line": ["meowth", "persian"], "focus": [
-   { "stat": "attack", "skill": "skill:fake-out" },
-   { "stat": "attack", "skill": "skill:night-slash" },
-   { "stat": "defense", "skill": "skill:charm" } ] }
+  {
+   "line": [
+    "rattata",
+    "raticate"
+   ],
+   "focus": [
+    {
+     "stat": "attack",
+     "skill": "skill:super-fang"
+    },
+    {
+     "stat": "attack",
+     "skill": "skill:crunch"
+    },
+    {
+     "stat": "hp",
+     "skill": "skill:endeavor"
+    }
+   ],
+   "rows": {
+    "6": "skill:bite",
+    "12": "skill:u-turn",
+    "18": "skill:dig",
+    "24": "skill:ice-beam"
+   }
+  },
+  {
+   "line": [
+    "tauros"
+   ],
+   "focus": [
+    {
+     "stat": "attack",
+     "skill": "skill:raging-bull"
+    },
+    {
+     "stat": "attack",
+     "skill": "skill:high-horsepower"
+    },
+    {
+     "stat": "defense",
+     "skill": "skill:zen-headbutt"
+    }
+   ],
+   "rows": {
+    "6": "skill:bulldoze",
+    "12": "skill:revenge",
+    "18": "skill:rock-slide",
+    "24": "skill:close-combat"
+   }
+  },
+  {
+   "line": [
+    "kangaskhan"
+   ],
+   "focus": [
+    {
+     "stat": "attack",
+     "skill": "skill:dizzy-punch"
+    },
+    {
+     "stat": "defense",
+     "skill": "skill:counter"
+    },
+    {
+     "stat": "hp",
+     "skill": "skill:drain-punch"
+    }
+   ],
+   "rows": {
+    "6": "skill:power-up-punch",
+    "12": "skill:shadow-claw",
+    "18": "skill:brick-break",
+    "24": "skill:earthquake"
+   }
+  },
+  {
+   "line": [
+    "meowth",
+    "persian"
+   ],
+   "focus": [
+    {
+     "stat": "attack",
+     "skill": "skill:fake-out"
+    },
+    {
+     "stat": "attack",
+     "skill": "skill:night-slash"
+    },
+    {
+     "stat": "defense",
+     "skill": "skill:charm"
+    }
+   ],
+   "rows": {
+    "6": "skill:payback",
+    "12": "skill:shadow-claw",
+    "18": "skill:dark-pulse",
+    "24": "skill:play-rough"
+   }
+  }
  ],
  "rows": {
-  "4": ["tough-claws", "thick-hide"],
-  "6": ["skill:headbutt", "skill:body-slam"],
-  "9": ["pursuit-instinct", "first-strike"],
-  "12": ["skill:take-down", "skill:facade"],
-  "15": ["guts", "desperation"],
-  "18": ["skill:double-edge", "skill:iron-tail"],
-  "21": ["moxie", "follow-through"],
-  "24": ["skill:giga-impact", "skill:retaliate"],
-  "27": ["hustle", "cornered"],
-  "30": ["brawler-intimidate", "brawler-sheer-force"]
+  "4": [
+   "tough-claws",
+   "thick-hide"
+  ],
+  "6": [
+   "skill:headbutt",
+   "skill:body-slam"
+  ],
+  "9": [
+   "pursuit-instinct",
+   "first-strike"
+  ],
+  "12": [
+   "skill:take-down",
+   "skill:facade"
+  ],
+  "15": [
+   "guts",
+   "desperation"
+  ],
+  "18": [
+   "skill:double-edge",
+   "skill:iron-tail"
+  ],
+  "21": [
+   "moxie",
+   "follow-through"
+  ],
+  "24": [
+   "skill:giga-impact",
+   "skill:retaliate"
+  ],
+  "27": [
+   "hustle",
+   "cornered"
+  ],
+  "30": [
+   "brawler-intimidate",
+   "brawler-sheer-force"
+  ]
  },
  "passives": {
-  "brawler-intimidate": { "id": "brawler-intimidate", "name": "Intimidate", "description": "Its hits on adjacent foes Weaken them for 1 turn, and it takes 10% less damage.",
-   "mods": { "contactStatus": { "status": "weakened", "duration": 1 }, "damageTaken": 0.9 } },
-  "brawler-sheer-force": { "id": "brawler-sheer-force", "name": "Sheer Force", "description": "All its moves deal 20% more damage.", "mods": { "damageDealt": 1.2 } }
+  "brawler-intimidate": {
+   "id": "brawler-intimidate",
+   "name": "Intimidate",
+   "description": "Its hits on adjacent foes Weaken them for 1 turn, and it takes 10% less damage.",
+   "mods": {
+    "contactStatus": {
+     "status": "weakened",
+     "duration": 1
+    },
+    "damageTaken": 0.9
+   }
+  },
+  "brawler-sheer-force": {
+   "id": "brawler-sheer-force",
+   "name": "Sheer Force",
+   "description": "All its moves deal 20% more damage.",
+   "mods": {
+    "damageDealt": 1.2
+   }
+  }
  }
 }

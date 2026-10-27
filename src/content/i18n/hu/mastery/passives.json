@@ -256,5 +256,8 @@
  },
  "fairy-power": {
   "description": "A Fairy támadások 15%-kal erősebbek."
+ },
+ "pursuit": {
+  "description": "Az engage-ből kilépő ellenfélre mért szabad támadásai 50%-kal többet sebeznek."
  }
 }

@@ -183,5 +183,11 @@
  "Crit": "Krit",
  "Will": "Akar",
  "Vitality": "Vitalitás",
- "Vit": "Vit"
+ "Vit": "Vit",
+ "On an ally: heals {x} instead of damaging": "Szövetségesen: {x} gyógyítás sebzés helyett",
+ "Heals the user by {n} of the damage dealt": "A használó a sebzés {n}-át visszagyógyítja",
+ "Only targets a Pokémon with {status}": "Csak {status} állapotú Pokémonra használható",
+ "Affects enemies or allies": "Ellenfélre vagy szövetségesre",
+ "On an ally: heals {x} of its max HP instead of damaging": "Szövetségesen: a max HP-ja {x}-át gyógyítja sebzés helyett",
+ "may only attack the Pokémon that applied it": "csak azt a Pokémont támadhatja, aki rátette"
 }

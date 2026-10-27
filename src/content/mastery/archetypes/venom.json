@@ -21,7 +21,13 @@
      "stat": "hp",
      "skill": "skill:swallow"
     }
-   ]
+   ],
+   "rows": {
+    "6": "skill:trailblaze",
+    "12": "skill:fire-fang",
+    "18": "skill:dark-pulse",
+    "24": "skill:earthquake"
+   }
   },
   {
    "line": [
@@ -41,7 +47,13 @@
      "stat": "hp",
      "skill": "skill:drain-punch"
     }
-   ]
+   ],
+   "rows": {
+    "6": "skill:power-up-punch",
+    "12": "skill:hex",
+    "18": "skill:dig",
+    "24": "skill:zap-cannon"
+   }
   },
   {
    "line": [
@@ -61,7 +73,13 @@
      "stat": "hp",
      "skill": "skill:pain-split"
     }
-   ]
+   ],
+   "rows": {
+    "6": "skill:shock-wave",
+    "12": "skill:psybeam",
+    "18": "skill:dark-pulse",
+    "24": "skill:fire-blast"
+   }
   },
   {
    "line": [
@@ -81,7 +99,13 @@
      "stat": "hp",
      "skill": "skill:roost"
     }
-   ]
+   ],
+   "rows": {
+    "6": "skill:aerial-ace",
+    "12": "skill:steel-wing",
+    "18": "skill:leech-life",
+    "24": "skill:heat-wave"
+   }
   }
  ],
  "rows": {

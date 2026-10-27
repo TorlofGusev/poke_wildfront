@@ -22,7 +22,13 @@
      "stat": "hp",
      "skill": "skill:pain-split"
     }
-   ]
+   ],
+   "rows": {
+    "6": "skill:clear-smog",
+    "12": "skill:shadow-claw",
+    "18": "skill:dazzling-gleam",
+    "24": "skill:zap-cannon"
+   }
   }
  ],
  "rows": {

@@ -22,7 +22,13 @@
      "stat": "defense",
      "skill": "skill:toxic-spikes"
     }
-   ]
+   ],
+   "rows": {
+    "6": "skill:venoshock",
+    "12": "skill:aerial-ace",
+    "18": "skill:throat-chop",
+    "24": "skill:sludge-bomb"
+   }
   },
   {
    "line": [
@@ -36,13 +42,19 @@
     },
     {
      "stat": "defense",
-     "skill": "skill:rage-powder"
+     "skill": "skill:supersonic"
     },
     {
      "stat": "hp",
      "skill": "skill:morning-sun"
     }
-   ]
+   ],
+   "rows": {
+    "6": "skill:acid-spray",
+    "12": "skill:psybeam",
+    "18": "skill:energy-ball",
+    "24": "skill:sludge-bomb"
+   }
   },
   {
    "line": [
@@ -63,7 +75,13 @@
      "stat": "hp",
      "skill": "skill:morning-sun"
     }
-   ]
+   ],
+   "rows": {
+    "6": "skill:aerial-ace",
+    "12": "skill:psybeam",
+    "18": "skill:shadow-ball",
+    "24": "skill:psychic"
+   }
   }
  ],
  "rows": {
@@ -96,7 +114,7 @@
    "flanker"
   ],
   "24": [
-   "skill:giga-impact",
+   "skill:solar-beam",
    "skill:tailwind"
   ],
   "27": [

@@ -22,7 +22,13 @@
      "stat": "hp",
      "skill": "skill:synthesis"
     }
-   ]
+   ],
+   "rows": {
+    "6": "skill:sludge",
+    "12": "skill:bulldoze",
+    "18": "skill:sludge-bomb",
+    "24": "skill:earthquake"
+   }
   },
   {
    "line": [
@@ -43,7 +49,13 @@
      "stat": "hp",
      "skill": "skill:strength-sap"
     }
-   ]
+   ],
+   "rows": {
+    "6": "skill:venoshock",
+    "12": "skill:dazzling-gleam",
+    "18": "skill:sludge-bomb",
+    "24": "skill:double-edge"
+   }
   },
   {
    "line": [
@@ -62,7 +74,13 @@
      "stat": "hp",
      "skill": "skill:ingrain"
     }
-   ]
+   ],
+   "rows": {
+    "6": "skill:ancient-power",
+    "12": "skill:wake-up-slap",
+    "18": "skill:sludge-bomb",
+    "24": "skill:hyper-beam"
+   }
   }
  ],
  "rows": {

@@ -53,6 +53,10 @@ export type MoveEffect =
   | { readonly kind: "disengage" }
   /** Removes every status a foe put on the target (Heal Bell, Aromatherapy). */
   | { readonly kind: "cleanse" }
+  /** Heals the target by this share of its own max HP (Pollen Puff on an ally). */
+  | { readonly kind: "healShare"; readonly share: number }
+  /** Heals the user by this share of the damage it deals (Dream Eater). */
+  | { readonly kind: "drain"; readonly amount: number }
   /** The team gains Bond when the move lands a combo or knocks a foe out (once per use). */
   | { readonly kind: "bond"; readonly amount: number; readonly when: "combo" | "knockout" };
 
@@ -68,8 +72,10 @@ export interface MoveDef {
   readonly range: { readonly min: number; readonly max: number };
   readonly requiresLineOfSight: boolean;
   readonly shape: TargetShape;
-  /** Which units the move affects. */
-  readonly affects: "enemies" | "allies";
+  /** Which units the move affects; "any": damages a foe, while its heal effects go to an ally (Pollen Puff). */
+  readonly affects: "enemies" | "allies" | "any";
+  /** Only aims at units carrying this status (Dream Eater: sleep). */
+  readonly onlyVs?: string;
   /** The canon physical/special category (flavour only: every move hits with Attack against Defense). */
   readonly category?: "physical" | "special";
   /** Turns before a special can be used again (special moves only). */
@@ -104,6 +110,8 @@ export interface StatusDef {
   readonly damageTaken?: number;
   /** A helpful state (Protect, Pumped…): never counts as a status for "vs status" bonuses, Guts or spreading. */
   readonly buff?: boolean;
+  /** May only attack the Pokémon that applied it (Taunt). */
+  readonly forcesTarget?: boolean;
   /** Re-applying adds the durations instead of keeping the longer one (Poison). */
   readonly stacks?: boolean;
 }

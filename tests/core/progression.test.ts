@@ -275,7 +275,8 @@ describe("money, shop and items", () => {
 describe("content", () => {
   it("species start with a basic attack and one more move; evolutions and items reference valid data", () => {
     for (const s of Object.values(CONTENT.species)) {
-      expect(s.moves, s.id).toHaveLength(2);
+      // Ditto has only its basic attack: every other move it copies through its tree.
+      expect(s.moves, s.id).toHaveLength(s.id === "ditto" ? 1 : 2);
       expect(CONTENT.moves[s.moves[0]!]?.kind, s.id).toBe("basic");
       for (const m of s.moves) expect(CONTENT.moves, `${s.id} starts with ${m}`).toHaveProperty(m);
       if (s.evolution) expect(CONTENT.species, `${s.id} evolves`).toHaveProperty(s.evolution.into);

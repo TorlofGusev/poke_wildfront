@@ -63,9 +63,19 @@ function derive(id, c) {
 }
 
 const out = {};
-let kept = 0, made = 0;
+// Moves whose whole point is a mechanic the game doesn't have (held items, weather, terrain, switching
+// partners, team rounds, IVs): no empty names in the library. Pursuit lives on as a passive.
+const EXCLUDED = new Set([
+  "thief", "covet", "knock-off", "incinerate", "pluck", "poltergeist", "acrobatics", "belch", "fling",
+  "weather-ball", "terrain-pulse", "grassy-glide", "rising-voltage", "expanding-force", "misty-explosion", "steel-roller", "secret-power",
+  "sandstorm", "rain-dance", "sunny-day", "hail", "snowscape", "grassy-terrain", "electric-terrain", "psychic-terrain", "baton-pass",
+  "round", "echoed-voice", "grass-pledge", "fire-pledge", "water-pledge", "hidden-power", "dive", "snore", "pursuit",
+]);
+/** Moves whose point is their reach (Taunt calls a foe from afar). */
+const LONG_REACH = new Set(["taunt"]);
+let kept = 0, made = 0, dropped = 0;
 for (const [id, c] of Object.entries(canon).sort(([a], [b]) => a.localeCompare(b))) {
-  if (!c || base[id]) continue; // base moves stay in moves.json
+  if (!c || base[id] || EXCLUDED.has(id)) continue; // base moves stay in moves.json
   const old = existing.get(id);
   const def = old ? { ...old } : derive(id, c);
   old ? kept++ : made++;
@@ -78,7 +88,7 @@ for (const [id, c] of Object.entries(canon).sort(([a], [b]) => a.localeCompare(b
   if (def.kind === "bond" || def.kind === "ultimate") def.kind = "special";
   def.cooldown ??= c.power >= 110 ? 4 : c.power >= 80 ? 3 : 2;
   // Reach cap for ordinary skills (bond moves may go further, see content tests): range + area ≤ 2.
-  if (def.range.max > 2) def.range = { ...def.range, max: 2 };
+  if (def.range.max > 2 && !LONG_REACH.has(id)) def.range = { ...def.range, max: 2 };
   if (def.shape.kind === "line" && def.shape.length > 2) def.shape = { kind: "line", length: 2 };
   if (def.shape.kind === "burst" && def.range.max + def.shape.radius > 2) def.range = { min: Math.min(def.range.min, Math.max(0, 2 - def.shape.radius)), max: Math.max(0, 2 - def.shape.radius) };
   if (c.power && c.cls !== "status") {
@@ -88,7 +98,9 @@ for (const [id, c] of Object.entries(canon).sort(([a], [b]) => a.localeCompare(b
     delete def.canonPower;
     if (c.cls === "status") def.power = 0;
   }
+  // No damage and no effect: nothing behind the name (Mimic, Helping Hand, Return…).
+  if (!def.power && !def.effects?.length) { dropped++; continue; }
   out[id] = def;
 }
 fs.writeFileSync(path.join(root, "src/content/mastery/moves.json"), JSON.stringify(out, null, 1) + "\n");
-console.log(`moves ${Object.keys(out).length} (kept tuned mechanics ${kept}, derived ${made})`);
+console.log(`moves ${Object.keys(out).length} (kept tuned mechanics ${kept}, derived ${made}; dropped ${dropped} with no effect)`);

@@ -21,7 +21,13 @@
      "stat": "hp",
      "skill": "skill:pain-split"
     }
-   ]
+   ],
+   "rows": {
+    "6": "skill:payback",
+    "12": "skill:hex",
+    "18": "skill:extrasensory",
+    "24": "skill:solar-beam"
+   }
   },
   {
    "line": [
@@ -40,7 +46,13 @@
      "stat": "defense",
      "skill": "skill:smokescreen"
     }
-   ]
+   ],
+   "rows": {
+    "6": "skill:clear-smog",
+    "12": "skill:low-sweep",
+    "18": "skill:psychic",
+    "24": "skill:iron-tail"
+   }
   },
   {
    "line": [
@@ -59,7 +71,13 @@
      "stat": "hp",
      "skill": "skill:morning-sun"
     }
-   ]
+   ],
+   "rows": {
+    "6": "skill:aerial-ace",
+    "12": "skill:steel-wing",
+    "18": "skill:extrasensory",
+    "24": "skill:solar-beam"
+   }
   }
  ],
  "rows": {
@@ -69,7 +87,7 @@
   ],
   "6": [
    "skill:flame-charge",
-   "skill:incinerate"
+   "skill:scorching-sands"
   ],
   "9": [
    "flame-body",

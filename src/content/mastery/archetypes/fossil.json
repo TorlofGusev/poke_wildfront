@@ -21,7 +21,13 @@
      "stat": "defense",
      "skill": "skill:tickle"
     }
-   ]
+   ],
+   "rows": {
+    "6": "skill:water-pulse",
+    "12": "skill:aurora-beam",
+    "18": "skill:earth-power",
+    "24": "skill:hydro-pump"
+   }
   },
   {
    "line": [
@@ -41,7 +47,13 @@
      "stat": "hp",
      "skill": "skill:mega-drain"
     }
-   ]
+   ],
+   "rows": {
+    "6": "skill:water-gun",
+    "12": "skill:aurora-beam",
+    "18": "skill:dig",
+    "24": "skill:hydro-pump"
+   }
   },
   {
    "line": [
@@ -60,7 +72,13 @@
      "stat": "hp",
      "skill": "skill:roost"
     }
-   ]
+   ],
+   "rows": {
+    "6": "skill:aerial-ace",
+    "12": "skill:fire-fang",
+    "18": "skill:iron-head",
+    "24": "skill:earthquake"
+   }
   }
  ],
  "rows": {
