@@ -1,10 +1,10 @@
 {
  "passives": {
   "bloom-chlorophyll": {
-   "description": "+1 mozgás, és Fű támadásai 15%-kal többet sebeznek."
+   "description": "+1 mozgás (a mozgás felső határáig), és Fű támadásai 15%-kal többet sebeznek."
   },
   "bloom-effect-spore": {
-   "description": "A szomszédos találatai 2 körre megmérgezik az ellenfelet, és minden körben max. HP-ja 3%-át gyógyítja."
+   "description": "A szomszédos hexről őt eltaláló ellenfelek 2 körre megmérgeződnek, és minden körben max HP-ja 3%-át gyógyítja."
   }
  }
 }

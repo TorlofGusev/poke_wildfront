@@ -1429,54 +1429,6 @@
    }
   ]
  },
- "conversion": {
-  "id": "conversion",
-  "name": "Conversion",
-  "type": "normal",
-  "kind": "special",
-  "cooldown": 4,
-  "power": 0,
-  "range": {
-   "min": 0,
-   "max": 0
-  },
-  "requiresLineOfSight": false,
-  "shape": {
-   "kind": "single"
-  },
-  "affects": "allies",
-  "effects": [
-   {
-    "kind": "status",
-    "status": "fortified",
-    "duration": 2
-   }
-  ]
- },
- "conversion-2": {
-  "id": "conversion-2",
-  "name": "Conversion 2",
-  "type": "normal",
-  "kind": "special",
-  "power": 0,
-  "range": {
-   "min": 0,
-   "max": 0
-  },
-  "requiresLineOfSight": false,
-  "shape": {
-   "kind": "single"
-  },
-  "affects": "allies",
-  "effects": [
-   {
-    "kind": "status",
-    "status": "protected",
-    "duration": 2
-   }
-  ],
-  "cooldown": 2
- },
  "cosmic-power": {
   "id": "cosmic-power",
   "name": "Cosmic Power",
@@ -1583,8 +1535,8 @@
   "effects": [
    {
     "kind": "status",
-    "status": "exposed",
-    "duration": 1
+    "status": "poison",
+    "duration": 2
    }
   ],
   "canonPower": 70
@@ -1960,7 +1912,7 @@
   "effects": [
    {
     "kind": "status",
-    "status": "protected",
+    "status": "fortified",
     "duration": 2
    }
   ],
@@ -2164,7 +2116,13 @@
   "affects": "enemies",
   "cooldown": 2,
   "category": "physical",
-  "canonPower": 75
+  "canonPower": 75,
+  "effects": [
+   {
+    "kind": "drain",
+    "amount": 0.5
+   }
+  ]
  },
  "draining-kiss": {
   "id": "draining-kiss",
@@ -2183,7 +2141,13 @@
   "affects": "enemies",
   "cooldown": 2,
   "category": "special",
-  "canonPower": 50
+  "canonPower": 50,
+  "effects": [
+   {
+    "kind": "drain",
+    "amount": 0.75
+   }
+  ]
  },
  "dream-eater": {
   "id": "dream-eater",
@@ -2307,8 +2271,8 @@
   "effects": [
    {
     "kind": "status",
-    "status": "slow",
-    "duration": 2
+    "status": "confused",
+    "duration": 1
    }
   ],
   "canonPower": 100,
@@ -2461,7 +2425,7 @@
   "effects": [
    {
     "kind": "status",
-    "status": "paralysis",
+    "status": "disabled",
     "duration": 1
    }
   ]
@@ -2648,7 +2612,7 @@
   "effects": [
    {
     "kind": "status",
-    "status": "freeze",
+    "status": "flinched",
     "duration": 1
    }
   ],
@@ -3034,7 +2998,7 @@
   "effects": [
    {
     "kind": "status",
-    "status": "marked",
+    "status": "weakened",
     "duration": 2
    }
   ]
@@ -3443,7 +3407,8 @@
   },
   "requiresLineOfSight": false,
   "shape": {
-   "kind": "single"
+   "kind": "burst",
+   "radius": 1
   },
   "affects": "enemies",
   "effects": [
@@ -4437,7 +4402,7 @@
   "effects": [
    {
     "kind": "status",
-    "status": "marked",
+    "status": "weakened",
     "duration": 2
    }
   ]
@@ -4562,7 +4527,14 @@
   "affects": "enemies",
   "cooldown": 2,
   "category": "special",
-  "canonPower": 65
+  "canonPower": 65,
+  "effects": [
+   {
+    "kind": "status",
+    "status": "weakened",
+    "duration": 1
+   }
+  ]
  },
  "leech-seed": {
   "id": "leech-seed",
@@ -4582,7 +4554,7 @@
   "effects": [
    {
     "kind": "status",
-    "status": "poison",
+    "status": "seeded",
     "duration": 3
    }
   ],
@@ -4645,7 +4617,7 @@
   "power": 0,
   "range": {
    "min": 0,
-   "max": 1
+   "max": 0
   },
   "requiresLineOfSight": false,
   "shape": {
@@ -4796,7 +4768,14 @@
    "kind": "single"
   },
   "affects": "enemies",
-  "canonPower": 80
+  "canonPower": 80,
+  "effects": [
+   {
+    "kind": "status",
+    "status": "weakened",
+    "duration": 2
+   }
+  ]
  },
  "mach-punch": {
   "id": "mach-punch",
@@ -5201,8 +5180,8 @@
   "effects": [
    {
     "kind": "status",
-    "status": "protected",
-    "duration": 1
+    "status": "fortified",
+    "duration": 2
    }
   ]
  },
@@ -5223,7 +5202,14 @@
   "affects": "enemies",
   "cooldown": 2,
   "category": "special",
-  "canonPower": 65
+  "canonPower": 65,
+  "effects": [
+   {
+    "kind": "status",
+    "status": "weakened",
+    "duration": 1
+   }
+  ]
  },
  "mist": {
   "id": "mist",
@@ -5301,7 +5287,7 @@
   "power": 0,
   "range": {
    "min": 0,
-   "max": 2
+   "max": 0
   },
   "requiresLineOfSight": false,
   "shape": {
@@ -5356,7 +5342,14 @@
    "radius": 1
   },
   "affects": "enemies",
-  "canonPower": 65
+  "canonPower": 65,
+  "effects": [
+   {
+    "kind": "status",
+    "status": "weakened",
+    "duration": 1
+   }
+  ]
  },
  "mud-shot": {
   "id": "mud-shot",
@@ -5402,7 +5395,7 @@
   "effects": [
    {
     "kind": "status",
-    "status": "slow",
+    "status": "weakened",
     "duration": 1
    }
   ],
@@ -5428,7 +5421,14 @@
    "radius": 1
   },
   "affects": "enemies",
-  "canonPower": 90
+  "canonPower": 90,
+  "effects": [
+   {
+    "kind": "status",
+    "status": "weakened",
+    "duration": 1
+   }
+  ]
  },
  "mystical-fire": {
   "id": "mystical-fire",
@@ -5447,7 +5447,14 @@
    "kind": "single"
   },
   "affects": "enemies",
-  "canonPower": 75
+  "canonPower": 75,
+  "effects": [
+   {
+    "kind": "status",
+    "status": "weakened",
+    "duration": 1
+   }
+  ]
  },
  "nasty-plot": {
   "id": "nasty-plot",
@@ -5587,8 +5594,8 @@
   "effects": [
    {
     "kind": "status",
-    "status": "marked",
-    "duration": 2
+    "status": "weakened",
+    "duration": 1
    }
   ],
   "canonPower": 65,
@@ -5937,7 +5944,14 @@
    "kind": "single"
   },
   "affects": "enemies",
-  "canonPower": 50
+  "canonPower": 50,
+  "effects": [
+   {
+    "kind": "status",
+    "status": "poison",
+    "duration": 2
+   }
+  ]
  },
  "pollen-puff": {
   "id": "pollen-puff",
@@ -6537,7 +6551,7 @@
   "power": 0,
   "range": {
    "min": 0,
-   "max": 1
+   "max": 0
   },
   "requiresLineOfSight": false,
   "shape": {
@@ -7299,7 +7313,7 @@
   "effects": [
    {
     "kind": "status",
-    "status": "slow",
+    "status": "confused",
     "duration": 1
    }
   ],
@@ -7697,19 +7711,18 @@
   "kind": "special",
   "power": 0,
   "range": {
-   "min": 0,
-   "max": 0
+   "min": 1,
+   "max": 2
   },
-  "requiresLineOfSight": false,
+  "requiresLineOfSight": true,
   "shape": {
-   "kind": "burst",
-   "radius": 1
+   "kind": "single"
   },
-  "affects": "allies",
+  "affects": "enemies",
   "effects": [
    {
     "kind": "status",
-    "status": "fortified",
+    "status": "weakened",
     "duration": 2
    }
   ],
@@ -7733,29 +7746,12 @@
   "affects": "enemies",
   "cooldown": 2,
   "category": "special",
-  "canonPower": 55
- },
- "soak": {
-  "id": "soak",
-  "name": "Soak",
-  "type": "water",
-  "kind": "special",
-  "cooldown": 3,
-  "power": 0,
-  "range": {
-   "min": 1,
-   "max": 2
-  },
-  "requiresLineOfSight": true,
-  "shape": {
-   "kind": "single"
-  },
-  "affects": "enemies",
+  "canonPower": 55,
   "effects": [
    {
     "kind": "status",
-    "status": "marked",
-    "duration": 2
+    "status": "weakened",
+    "duration": 1
    }
   ]
  },
@@ -7768,7 +7764,7 @@
   "power": 0,
   "range": {
    "min": 0,
-   "max": 2
+   "max": 0
   },
   "requiresLineOfSight": false,
   "shape": {
@@ -8246,7 +8242,14 @@
   "affects": "enemies",
   "cooldown": 2,
   "category": "special",
-  "canonPower": 50
+  "canonPower": 50,
+  "effects": [
+   {
+    "kind": "status",
+    "status": "weakened",
+    "duration": 1
+   }
+  ]
  },
  "stun-spore": {
   "id": "stun-spore",
@@ -8268,8 +8271,8 @@
   "effects": [
    {
     "kind": "status",
-    "status": "slow",
-    "duration": 2
+    "status": "paralysis",
+    "duration": 1
    }
   ]
  },
@@ -8788,32 +8791,6 @@
   "cooldown": 2,
   "category": "physical",
   "canonPower": 75
- },
- "tera-blast": {
-  "id": "tera-blast",
-  "name": "Tera Blast",
-  "type": "normal",
-  "kind": "special",
-  "power": 65,
-  "range": {
-   "min": 1,
-   "max": 2
-  },
-  "requiresLineOfSight": true,
-  "shape": {
-   "kind": "single"
-  },
-  "affects": "enemies",
-  "cooldown": 3,
-  "effects": [
-   {
-    "kind": "status",
-    "status": "weakened",
-    "duration": 2
-   }
-  ],
-  "category": "special",
-  "canonPower": 80
  },
  "thrash": {
   "id": "thrash",
@@ -9343,7 +9320,7 @@
   "effects": [
    {
     "kind": "status",
-    "status": "slow",
+    "status": "confused",
     "duration": 1
    }
   ],
@@ -9550,7 +9527,7 @@
   "power": 0,
   "range": {
    "min": 0,
-   "max": 2
+   "max": 0
   },
   "requiresLineOfSight": false,
   "shape": {

@@ -15,11 +15,12 @@
      "skill": "skill:psyshock"
     },
     {
-     "stat": "defense",
+     "stat": "attack",
      "skill": "skill:kinesis"
     },
     {
-     "stat": "hp",
+     "stat": "attack",
+     "second": "hp",
      "skill": "skill:drain-punch"
     }
    ],
@@ -40,11 +41,12 @@
      "skill": "skill:psystrike"
     },
     {
-     "stat": "defense",
+     "stat": "attack",
      "skill": "skill:barrier"
     },
     {
-     "stat": "hp",
+     "stat": "attack",
+     "second": "hp",
      "skill": "skill:life-dew"
     }
    ],
@@ -65,11 +67,12 @@
      "skill": "skill:aura-sphere"
     },
     {
-     "stat": "defense",
+     "stat": "attack",
      "skill": "skill:coaching"
     },
     {
-     "stat": "hp",
+     "stat": "attack",
+     "second": "hp",
      "skill": "skill:soft-boiled"
     }
    ],
@@ -83,7 +86,7 @@
  ],
  "rows": {
   "4": [
-   "keen-eye",
+   "far-sight",
    "long-reach"
   ],
   "6": [
@@ -139,7 +142,7 @@
   "mind-pressure": {
    "id": "mind-pressure",
    "name": "Pressure",
-   "description": "+1 range on moves that already reach 2 or more hexes, and +15% damage to foes 2 or more hexes away.",
+   "description": "+1 range on moves that already reach 2 or more hexes (up to 3; Bond moves no limit), and +15% damage to foes 2 or more hexes away.",
    "mods": {
     "rangeBonus": 1,
     "farDamage": 1.15

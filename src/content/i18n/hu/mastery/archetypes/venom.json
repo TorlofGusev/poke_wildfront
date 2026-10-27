@@ -4,7 +4,7 @@
    "description": "A szomszédos találatai 2 körre gyengítik az ellenfelet, és aki szomszédból megüti, 6 sebzést kap."
   },
   "venom-corrosion": {
-   "description": "+30% sebzés a megmérgezett ellenfelekre, és az általa okozott állapotok 1 körrel tovább tartanak."
+   "description": "+30% sebzés a megmérgezett ellenfelekre, és az általa okozott állapotok 1 körrel tovább tartanak (a Paralysis, Freeze és Sleep kivételével; összesen legfeljebb +2)."
   }
  }
 }

@@ -14,11 +14,12 @@
      "skill": "skill:gunk-shot"
     },
     {
-     "stat": "defense",
+     "stat": "attack",
+     "second": "defense",
      "skill": "skill:coil"
     },
     {
-     "stat": "hp",
+     "stat": "attack",
      "skill": "skill:swallow"
     }
    ],
@@ -40,11 +41,12 @@
      "skill": "skill:sludge-wave"
     },
     {
-     "stat": "defense",
+     "stat": "attack",
      "skill": "skill:acid-armor"
     },
     {
-     "stat": "hp",
+     "stat": "attack",
+     "second": "hp",
      "skill": "skill:drain-punch"
     }
    ],
@@ -62,7 +64,8 @@
    ],
    "focus": [
     {
-     "stat": "attack",
+     "stat": "defense",
+     "second": "attack",
      "skill": "skill:explosion"
     },
     {
@@ -70,7 +73,7 @@
      "skill": "skill:smokescreen"
     },
     {
-     "stat": "hp",
+     "stat": "defense",
      "skill": "skill:pain-split"
     }
    ],
@@ -92,11 +95,12 @@
      "skill": "skill:cross-poison"
     },
     {
-     "stat": "defense",
+     "stat": "attack",
      "skill": "skill:mean-look"
     },
     {
-     "stat": "hp",
+     "stat": "attack",
+     "second": "hp",
      "skill": "skill:roost"
     }
    ],
@@ -110,7 +114,7 @@
  ],
  "rows": {
   "4": [
-   "poison-point",
+   "poison-touch",
    "thick-hide"
   ],
   "6": [
@@ -166,7 +170,7 @@
   "venom-corrosion": {
    "id": "venom-corrosion",
    "name": "Corrosion",
-   "description": "+30% damage to Poisoned foes, and statuses it inflicts last 1 turn longer.",
+   "description": "+30% damage to Poisoned foes, and statuses it inflicts last 1 turn longer (not Paralysis, Freeze or Sleep; at most +2 in all).",
    "mods": {
     "vsStatusIdDamage": {
      "poison": 1.3

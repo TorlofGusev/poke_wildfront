@@ -97,5 +97,16 @@
   "id": "taunted",
   "name": "Taunted",
   "forcesTarget": true
+ },
+ "flinched": {
+  "id": "flinched",
+  "name": "Flinched",
+  "noAction": true
+ },
+ "seeded": {
+  "id": "seeded",
+  "name": "Seeded",
+  "damagePerTurn": 0.08,
+  "drainsToSource": true
  }
 }

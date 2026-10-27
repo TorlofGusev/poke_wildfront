@@ -24,6 +24,11 @@ evolution adds none, levelling up teaches none); every other move is a tree skil
 one source: a line's tree never offers a move its species start with (tested). Wild and trainer Pokémon grow their
 tree too (wild ones pick by encounter, a group alike).
 
+**Focus stats.** A line's three focuses all grow its main stat (Attack, Defense or Vitality, from its final
+form's stats; Slowbro, Weezing and Sandslash are Defense, Tentacruel Vitality, Eevee's forms Attack). Two are pure
+(+2 when chosen, then +1 every 2 levels); one is mixed with the line's second stat (+1/+1, then in turns). A
+Charizard never becomes a tank; a Snorlax stays one. Tested.
+
 **No empty names.** Every move in the library deals damage or has an effect (tested). Moves built on mechanics
 the game lacks (held items, weather, team rounds, switching partners, IVs) are left out (`EXCLUDED` in
 tools/build-move-library.mjs); terrain moves are out for now. Canon effects map onto ours: U-turn / Flip Turn /

@@ -27,7 +27,7 @@ import statuses from "./statuses.json";
 import viridianForestAmbush from "./scenarios/viridian-forest-ambush.json";
 import { localized } from "./lang";
 
-export const TYPES: Readonly<Record<string, TypeDef>> = types as Record<string, TypeDef>;
+export const TYPES: Readonly<Record<string, TypeDef>> = localized("types.json", types) as Record<string, TypeDef>;
 
 const moves: BattleContent["moves"] = Object.assign({}, masteryMoves as BattleContent["moves"], baseMoves as BattleContent["moves"]);
 const talents: Record<string, TalentDef> = {};

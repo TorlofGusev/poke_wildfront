@@ -12,7 +12,7 @@
   "description": "Aki szomszédból üti, 8 sebzést kap."
  },
  "shed-skin": {
-  "description": "Köre elején lerázza az ellenfél okozta státuszokat."
+  "description": "Köre elején, az állapot-sebzés után lerázza az ellenfél okozta státuszokat."
  },
  "natural-recovery": {
   "description": "Minden köre elején a max HP 4%-át gyógyítja."
@@ -44,9 +44,6 @@
  "long-reach": {
   "description": "+15% sebzés a legalább 2 hexre lévő ellenfelekre."
  },
- "keen-eye": {
-  "description": "+1 hatótáv a legalább 2 hexes támadásokra."
- },
  "overhead-shot": {
   "description": "Távolsági támadásai átlőnek a Pokémonok fölött."
  },
@@ -60,10 +57,10 @@
   "description": "+20% sebzés a szövetséges okozta státuszú ellenfélre."
  },
  "guts": {
-  "description": "+20% sebzés, amíg státusz van rajta."
+  "description": "+30% sebzés, amíg állapot van rajta, és az égés nem csökkenti a sebzését."
  },
  "quick-feet": {
-  "description": "+2 mozgás, amíg státusz van rajta."
+  "description": "+2 mozgás, amíg állapot van rajta, és a bénulás sem állítja meg."
  },
  "desperation": {
   "description": "+20% sebzés fél HP alatt."
@@ -105,25 +102,22 @@
   "description": "Bevetve a csapat +1 Bonddal kezdi a csatát."
  },
  "lingering-effects": {
-  "description": "Az általa okozott státuszok 1 körrel tovább tartanak."
+  "description": "Az általa okozott státuszok 1 körrel tovább tartanak (a Paralysis, Freeze és Sleep kivételével; összesen legfeljebb +2)."
  },
  "prankster": {
-  "description": "A nem sebző támadásai 1 körrel gyorsabban töltődnek."
+  "description": "A nem sebző támadásai 1 körrel gyorsabban töltődnek (legalább 1 kör marad)."
  },
  "lingering-aroma": {
-  "description": "Az elájult ellenfélen lévő státuszai átterjednek a szomszédaira."
+  "description": "Az elájult ellenfélen lévő státuszai 1 körre átterjednek a szomszédaira (csak az ártalmasak)."
  },
  "static": {
-  "description": "Szomszédos találatai 1 körre megbénítanak."
- },
- "poison-point": {
-  "description": "Szomszédos találatai 2 körre megmérgeznek."
+  "description": "A szomszédos hexről őt eltaláló ellenfelek 1 körre megbénulnak."
  },
  "flame-body": {
-  "description": "Szomszédos találatai 1 körre megégetnek."
+  "description": "A szomszédos hexről őt eltaláló ellenfelek 1 körre megégnek."
  },
  "gooey": {
-  "description": "Szomszédos találatai 1 körre lelassítanak."
+  "description": "A szomszédos hexről őt eltaláló ellenfelek 1 körre lelassulnak."
  },
  "limber": {
   "description": "Nem lehet megbénítani vagy lelassítani."
@@ -168,22 +162,22 @@
   "description": "Az elszívó támadásai a sebzés 20%-ával többet gyógyítanak."
  },
  "pincer": {
-  "description": "+20% oldalazó bónusz, ha egy szövetséges is a célpont mellett áll."
+  "description": "+20% Harci oldalazó bónusz, ha egy szövetséges is a célpont mellett áll."
  },
  "swarm-tactics": {
   "description": "Célpont melletti szövetségesenként +15% rajbónusz."
  },
  "blaze": {
-  "description": "Fél HP alatt a Fire támadások 25%-kal erősebbek."
+  "description": "Fél HP alatt a Fire támadások 30%-kal erősebbek."
  },
  "overgrow": {
-  "description": "Fél HP alatt a Grass támadások 25%-kal erősebbek."
+  "description": "Fél HP alatt a Grass támadások 30%-kal erősebbek."
  },
  "torrent": {
-  "description": "Fél HP alatt a Water támadások 25%-kal erősebbek."
+  "description": "Fél HP alatt a Water támadások 30%-kal erősebbek."
  },
  "swarm": {
-  "description": "Fél HP alatt a Bug támadások 25%-kal erősebbek."
+  "description": "Fél HP alatt a Bug támadások 30%-kal erősebbek."
  },
  "attack-training": {
   "description": "+1 Attack."
@@ -259,5 +253,11 @@
  },
  "pursuit": {
   "description": "Az engage-ből kilépő ellenfélre mért szabad támadásai 50%-kal többet sebeznek."
+ },
+ "poison-touch": {
+  "description": "Szomszédos találatai 2 körre megmérgeznek."
+ },
+ "far-sight": {
+  "description": "+1 hatótáv a legalább 2 hexes támadásokra (legfeljebb 3-ig; Bond támadásoknál nincs korlát)."
  }
 }

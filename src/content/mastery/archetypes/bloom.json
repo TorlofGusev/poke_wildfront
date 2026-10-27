@@ -11,11 +11,12 @@
    ],
    "focus": [
     {
-     "stat": "attack",
+     "stat": "hp",
+     "second": "attack",
      "skill": "skill:frenzy-plant"
     },
     {
-     "stat": "defense",
+     "stat": "hp",
      "skill": "skill:amnesia"
     },
     {
@@ -42,11 +43,12 @@
      "skill": "skill:petal-dance"
     },
     {
-     "stat": "defense",
+     "stat": "attack",
      "skill": "skill:teeter-dance"
     },
     {
-     "stat": "hp",
+     "stat": "attack",
+     "second": "hp",
      "skill": "skill:strength-sap"
     }
    ],
@@ -63,7 +65,8 @@
    ],
    "focus": [
     {
-     "stat": "attack",
+     "stat": "defense",
+     "second": "attack",
      "skill": "skill:power-whip"
     },
     {
@@ -71,7 +74,7 @@
      "skill": "skill:bind"
     },
     {
-     "stat": "hp",
+     "stat": "defense",
      "skill": "skill:ingrain"
     }
    ],
@@ -94,7 +97,7 @@
   ],
   "9": [
    "natural-recovery",
-   "poison-point"
+   "poison-touch"
   ],
   "12": [
    "skill:giga-drain",
@@ -129,7 +132,7 @@
   "bloom-chlorophyll": {
    "id": "bloom-chlorophyll",
    "name": "Chlorophyll",
-   "description": "+1 movement, and its Grass moves deal 15% more damage.",
+   "description": "+1 movement (up to the movement cap), and its Grass moves deal 15% more damage.",
    "mods": {
     "moveBonus": 1,
     "typeDamage": {
@@ -140,9 +143,9 @@
   "bloom-effect-spore": {
    "id": "bloom-effect-spore",
    "name": "Effect Spore",
-   "description": "Its hits on adjacent foes Poison them for 2 turns, and it heals 3% of its max HP each turn.",
+   "description": "Foes that hit it from an adjacent hex are Poisoned for 2 turns, and it heals 3% of its max HP each turn.",
    "mods": {
-    "contactStatus": {
+    "hitStatus": {
      "status": "poison",
      "duration": 2
     },

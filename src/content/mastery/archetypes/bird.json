@@ -19,7 +19,8 @@
      "skill": "skill:hurricane"
     },
     {
-     "stat": "defense",
+     "stat": "attack",
+     "second": "hp",
      "skill": "skill:defog"
     }
    ],
@@ -45,7 +46,8 @@
      "skill": "skill:assurance"
     },
     {
-     "stat": "defense",
+     "stat": "attack",
+     "second": "hp",
      "skill": "skill:scary-face"
     }
    ],
@@ -71,7 +73,8 @@
      "skill": "skill:drill-peck"
     },
     {
-     "stat": "defense",
+     "stat": "attack",
+     "second": "hp",
      "skill": "skill:haze"
     }
    ],
@@ -96,7 +99,8 @@
      "skill": "skill:night-slash"
     },
     {
-     "stat": "defense",
+     "stat": "attack",
+     "second": "hp",
      "skill": "skill:detect"
     }
    ],
@@ -110,7 +114,7 @@
  ],
  "rows": {
   "4": [
-   "keen-eye",
+   "far-sight",
    "run-away"
   ],
   "6": [
@@ -162,9 +166,12 @@
   "bird-big-pecks": {
    "id": "bird-big-pecks",
    "name": "Big Pecks",
-   "description": "It takes 15% less damage.",
+   "description": "Its Defense can't be lowered: immune to Exposed, and takes 10% less damage.",
    "mods": {
-    "damageTaken": 0.85
+    "statusImmune": [
+     "exposed"
+    ],
+    "damageTaken": 0.9
    }
   }
  }

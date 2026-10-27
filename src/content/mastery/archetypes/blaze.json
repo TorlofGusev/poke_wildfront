@@ -15,7 +15,8 @@
      "skill": "skill:blast-burn"
     },
     {
-     "stat": "defense",
+     "stat": "attack",
+     "second": "defense",
      "skill": "skill:dragon-tail"
     },
     {
@@ -41,11 +42,12 @@
      "skill": "skill:extreme-speed"
     },
     {
-     "stat": "defense",
+     "stat": "attack",
      "skill": "skill:snarl"
     },
     {
-     "stat": "hp",
+     "stat": "attack",
+     "second": "hp",
      "skill": "skill:morning-sun"
     }
    ],
@@ -67,11 +69,12 @@
      "skill": "skill:megahorn"
     },
     {
-     "stat": "defense",
+     "stat": "attack",
+     "second": "defense",
      "skill": "skill:charm"
     },
     {
-     "stat": "hp",
+     "stat": "attack",
      "skill": "skill:morning-sun"
     }
    ],
@@ -129,12 +132,14 @@
   "blaze-flash-fire": {
    "id": "blaze-flash-fire",
    "name": "Flash Fire",
-   "description": "Its Fire moves deal 25% more damage and it takes 10% less damage.",
+   "description": "Takes 50% less damage from Fire moves, and its Fire moves deal 25% more.",
    "mods": {
+    "typeDamageTaken": {
+     "fire": 0.5
+    },
     "typeDamage": {
      "fire": 1.25
-    },
-    "damageTaken": 0.9
+    }
    }
   },
   "blaze-intimidate": {

@@ -10,11 +10,12 @@
    ],
    "focus": [
     {
-     "stat": "attack",
+     "stat": "defense",
+     "second": "attack",
      "skill": "skill:mud-shot"
     },
     {
-     "stat": "attack",
+     "stat": "defense",
      "skill": "skill:shell-smash"
     },
     {
@@ -36,15 +37,16 @@
    ],
    "focus": [
     {
-     "stat": "attack",
+     "stat": "defense",
+     "second": "attack",
      "skill": "skill:razor-shell"
     },
     {
-     "stat": "attack",
+     "stat": "defense",
      "skill": "skill:aqua-jet"
     },
     {
-     "stat": "hp",
+     "stat": "defense",
      "skill": "skill:mega-drain"
     }
    ],
@@ -69,7 +71,8 @@
      "skill": "skill:dragon-claw"
     },
     {
-     "stat": "hp",
+     "stat": "attack",
+     "second": "defense",
      "skill": "skill:roost"
     }
    ],
@@ -92,7 +95,7 @@
   ],
   "9": [
    "rock-power",
-   "keen-eye"
+   "far-sight"
   ],
   "12": [
    "skill:rock-blast",
@@ -127,17 +130,21 @@
   "fossil-swift-swim": {
    "id": "fossil-swift-swim",
    "name": "Swift Swim",
-   "description": "It moves 1 extra tile each turn.",
+   "description": "+1 movement (up to the movement cap), and its Water moves deal 10% more damage.",
    "mods": {
-    "moveBonus": 1
+    "moveBonus": 1,
+    "typeDamage": {
+     "water": 1.1
+    }
    }
   },
   "fossil-battle-armor": {
    "id": "fossil-battle-armor",
    "name": "Battle Armor",
-   "description": "It takes 15% less damage.",
+   "description": "Never takes critical hits, and takes 10% less damage.",
    "mods": {
-    "damageTaken": 0.85
+    "critImmune": true,
+    "damageTaken": 0.9
    }
   }
  }

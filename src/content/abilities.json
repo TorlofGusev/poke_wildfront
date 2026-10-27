@@ -32,7 +32,7 @@
  "static": {
   "id": "static",
   "name": "Static",
-  "description": "Pokémon that hit it in melee become Paralyzed.",
+  "description": "Pokémon that hit it from an adjacent hex become Paralyzed.",
   "contactStatus": {
    "status": "paralysis",
    "duration": 1
@@ -53,9 +53,9 @@
  "run-away": {
   "id": "run-away",
   "name": "Run Away",
-  "description": "+1 movement.",
+  "description": "Steps away from engaged foes without free attacks.",
   "mods": {
-   "moveBonus": 1
+   "disengage": true
   }
  },
  "shield-dust": {
@@ -71,7 +71,7 @@
  "poison-point": {
   "id": "poison-point",
   "name": "Poison Point",
-  "description": "Pokémon that hit it in melee become Poisoned.",
+  "description": "Pokémon that hit it from an adjacent hex become Poisoned.",
   "contactStatus": {
    "status": "poison",
    "duration": 2
@@ -80,28 +80,26 @@
  "inner-focus": {
   "id": "inner-focus",
   "name": "Inner Focus",
-  "description": "Immune to Paralysis and Freeze.",
+  "description": "Can't be intimidated: immune to Weakened.",
   "mods": {
    "statusImmune": [
-    "paralysis",
-    "freeze"
+    "weakened"
    ]
   }
  },
  "effect-spore": {
   "id": "effect-spore",
   "name": "Effect Spore",
-  "description": "Grass moves also Poison the target.",
-  "moveStatus": {
-   "type": "grass",
+  "description": "Pokémon that hit it from an adjacent hex become Poisoned.",
+  "contactStatus": {
    "status": "poison",
-   "duration": 1
+   "duration": 2
   }
  },
  "anger-point": {
   "id": "anger-point",
   "name": "Anger Point",
-  "description": "+1 Attack each time it takes damage (max +3, this battle).",
+  "description": "+1 Attack each time a move hits it (max +3, this battle).",
   "angerPoint": true
  },
  "arena-trap": {
@@ -123,7 +121,7 @@
  "chlorophyll": {
   "id": "chlorophyll",
   "name": "Chlorophyll",
-  "description": "+1 movement.",
+  "description": "+1 movement (up to the movement cap).",
   "mods": {
    "moveBonus": 1
   }
@@ -141,7 +139,7 @@
  "cute-charm": {
   "id": "cute-charm",
   "name": "Cute Charm",
-  "description": "Pokémon that hit it in melee are charmed: Slow for 1 turn.",
+  "description": "Pokémon that hit it from an adjacent hex are charmed: Slow for 1 turn.",
   "contactStatus": {
    "status": "slow",
    "duration": 1
@@ -150,39 +148,47 @@
  "thick-fat": {
   "id": "thick-fat",
   "name": "Thick Fat",
-  "description": "Takes 10% less damage.",
+  "description": "Takes 50% less damage from Fire and Ice moves.",
   "mods": {
-   "damageTaken": 0.9
+   "typeDamageTaken": {
+    "fire": 0.5,
+    "ice": 0.5
+   }
   }
  },
  "swift-swim": {
   "id": "swift-swim",
   "name": "Swift Swim",
-  "description": "+1 movement.",
+  "description": "+1 movement (up to the movement cap), and its Water moves deal 10% more damage.",
   "mods": {
-   "moveBonus": 1
+   "moveBonus": 1,
+   "typeDamage": {
+    "water": 1.1
+   }
   }
  },
  "shell-armor": {
   "id": "shell-armor",
   "name": "Shell Armor",
-  "description": "Takes 10% less damage.",
+  "description": "Never takes critical hits, and takes 10% less damage.",
   "mods": {
+   "critImmune": true,
    "damageTaken": 0.9
   }
  },
  "battle-armor": {
   "id": "battle-armor",
   "name": "Battle Armor",
-  "description": "Takes 10% less damage.",
+  "description": "Never takes critical hits, and takes 10% less damage.",
   "mods": {
+   "critImmune": true,
    "damageTaken": 0.9
   }
  },
  "flame-body": {
   "id": "flame-body",
   "name": "Flame Body",
-  "description": "Pokémon that hit it in melee become Burned.",
+  "description": "Pokémon that hit it from an adjacent hex become Burned.",
   "contactStatus": {
    "status": "burn",
    "duration": 1
@@ -191,7 +197,7 @@
  "guts": {
   "id": "guts",
   "name": "Guts",
-  "description": "+30% damage while it carries a status.",
+  "description": "+30% damage while it carries a status, and Burn doesn't lower its damage.",
   "mods": {
    "statusedDamage": 1.3
   }
@@ -199,17 +205,20 @@
  "flash-fire": {
   "id": "flash-fire",
   "name": "Flash Fire",
-  "description": "+15% Fire damage.",
+  "description": "Takes 50% less damage from Fire moves, and its Fire moves deal 25% more.",
   "mods": {
+   "typeDamageTaken": {
+    "fire": 0.5
+   },
    "typeDamage": {
-    "fire": 1.15
+    "fire": 1.25
    }
   }
  },
  "pressure": {
   "id": "pressure",
   "name": "Pressure",
-  "description": "Statuses it inflicts last 1 turn longer.",
+  "description": "Statuses it inflicts last 1 turn longer (not Paralysis, Freeze or Sleep; at most +2 in all).",
   "mods": {
    "statusDurationBonus": 1
   }
@@ -217,40 +226,41 @@
  "oblivious": {
   "id": "oblivious",
   "name": "Oblivious",
-  "description": "Can't be charmed: Slow never applies.",
+  "description": "Can't be charmed or taunted: Slow and Taunted never apply.",
   "mods": {
    "statusImmune": [
-    "slow"
+    "slow",
+    "taunted"
    ]
   }
  },
  "clear-body": {
   "id": "clear-body",
   "name": "Clear Body",
-  "description": "Immune to Exposed.",
+  "description": "Its Attack can't be lowered: immune to Weakened.",
   "mods": {
    "statusImmune": [
-    "exposed"
+    "weakened"
    ]
   }
  },
  "hyper-cutter": {
   "id": "hyper-cutter",
   "name": "Hyper Cutter",
-  "description": "Immune to Exposed.",
+  "description": "Its Attack can't be lowered: immune to Weakened.",
   "mods": {
    "statusImmune": [
-    "exposed"
+    "weakened"
    ]
   }
  },
  "insomnia": {
   "id": "insomnia",
   "name": "Insomnia",
-  "description": "Can't be put to sleep: immune to Freeze.",
+  "description": "Can't be put to sleep: immune to Sleep.",
   "mods": {
    "statusImmune": [
-    "freeze"
+    "sleep"
    ]
   }
  },
@@ -268,15 +278,18 @@
  "water-absorb": {
   "id": "water-absorb",
   "name": "Water Absorb",
-  "description": "Heals 5% of max HP at the start of each of its turns.",
+  "description": "Takes 50% less damage from Water moves, and heals 5% of max HP at the start of each of its turns.",
   "mods": {
+   "typeDamageTaken": {
+    "water": 0.5
+   },
    "healPerTurn": 0.05
   }
  },
  "sniper": {
   "id": "sniper",
   "name": "Sniper",
-  "description": "+15% damage against targets 3+ tiles away.",
+  "description": "+15% damage against targets 2+ hexes away.",
   "mods": {
    "farDamage": 1.15
   }
@@ -284,9 +297,9 @@
  "sand-veil": {
   "id": "sand-veil",
   "name": "Sand Veil",
-  "description": "Takes 20% less damage while at full HP.",
+  "description": "Takes 15% less damage.",
   "mods": {
-   "fullHpDamageTaken": 0.8
+   "damageTaken": 0.85
   }
  },
  "compound-eyes": {
@@ -311,11 +324,9 @@
  "shed-skin": {
   "id": "shed-skin",
   "name": "Shed Skin",
-  "description": "Immune to Poison.",
+  "description": "Shakes off foes' statuses at the start of its turn, after status damage.",
   "mods": {
-   "statusImmune": [
-    "poison"
-   ]
+   "shedStatuses": true
   }
  },
  "moxie": {

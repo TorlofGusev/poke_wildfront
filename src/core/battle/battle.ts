@@ -111,7 +111,8 @@ export const baseMovement = (content: BattleContent, speed: number): number =>
   [...content.rules.moveBySpeed].reverse().find((s) => speed >= s.speed)?.move ?? content.rules.moveBySpeed[0]!.move;
 
 export function movementPoints(content: BattleContent, unit: BattleUnit, state?: BattleState): number {
-  if (unit.statuses.some((st) => content.statuses[st.id]?.noMove)) return 0;
+  // Quick Feet keeps it moving through Paralysis.
+  if (unit.statuses.some((st) => content.statuses[st.id]?.noMove) && !unit.mods.statusedMove) return 0;
   if (state && livingUnits(state).some((o) => o.side !== unit.side && o.ability?.arenaTrap && gridDistance(o.pos, unit.pos) === 1)) return 0;
   const r = content.rules;
   const base = Math.min(r.moveMax, baseMovement(content, unit.stats.speed));
@@ -579,6 +580,9 @@ function doUseMove(
 
 /** Abilities that react to being hit: Static/Poison Point punish melee attackers, Anger Point raises Attack. */
 function onDamaged(content: BattleContent, attacker: BattleUnit, target: BattleUnit, contact: boolean, events: BattleEvent[]): void {
+  // Masteries like Static or Flame Body punish a foe that hits it from an adjacent hex.
+  const hit = target.mods.hitStatus;
+  if (hit && contact && attacker.hp > 0) applyStatus(content, target, attacker, hit.status, hit.duration, events);
   const a = target.ability;
   if (!a) return;
   if (a.angerPoint && target.attackBoost < 3) {
@@ -590,6 +594,12 @@ function onDamaged(content: BattleContent, attacker: BattleUnit, target: BattleU
     applyStatus(content, target, attacker, a.contactStatus.status, a.contactStatus.duration, events);
   }
 }
+
+/** Sheer Force: +30% on a move that would inflict a status (which it then drops). */
+const SHEER_FORCE = 1.3;
+const hasStatusEffect = (content: BattleContent, user: BattleUnit, move: MoveDef): boolean =>
+  (move.effects ?? []).some((e) => e.kind === "status") || !!content.types[move.type]?.move?.appliesStatus
+  || (user.ability?.moveStatus?.type === move.type);
 
 /** Other living allies of `user` standing next to `target`. */
 function adjacentAllies(state: BattleState, user: BattleUnit, target: BattleUnit): number {
@@ -735,7 +745,9 @@ function resolveHits(
       const positional =
         (mech.flankBonus && helpers > 0 ? mech.flankBonus + m.flankBonus : 1) *
         (1 + (mech.swarmBonus ? (mech.swarmBonus + m.swarmBonus) * helpers : 0));
-      const statusMult = statusFactor(content, user, "damageDealt") * statusFactor(content, t, "damageTaken");
+      // Guts shrugs off the damage penalties of its own statuses (Burn).
+      const statusMult = (m.statusedDamage > 1 ? 1 : statusFactor(content, user, "damageDealt")) * statusFactor(content, t, "damageTaken");
+      const sheer = m.sheerForce && isFoe && hasStatusEffect(content, user, move);
       const setup = isFoe ? comboSetup(state, content, user, t) : null;
       const combo = setup ? content.rules.combos[setup]! : null;
       const pinner = isFoe ? partnerOf(state, t) : null;
@@ -759,6 +771,8 @@ function resolveHits(
         adjacentFoes >= 2 ? m.surroundedDamage : 1,
         ailments(content, user).length > 0 ? m.statusedDamage : 1,
         ...t.statuses.map((st) => m.vsStatusIdDamage[st.id] ?? 1),
+        content.species[user.speciesId]?.types.includes(move.type) ? m.ownTypeDamage : 1,
+        sheer ? SHEER_FORCE : 1,
         1 + m.furyCutter * streak,
         // Dark moves exploit a hurt or afflicted foe.
         mech.vsHurt && (t.hp * 2 < t.maxHp || ailments(content, t).length > 0) ? mech.vsHurt : 1,
@@ -768,12 +782,13 @@ function resolveHits(
       const bonus = ownFactors.reduce((sum, f) => sum + (f > 1 ? f - 1 : 0), 0);
       const penalty = ownFactors.reduce((prod, f) => prod * (f < 1 ? f : 1), 1);
       const own = penalty * (1 + Math.min(MAX_DAMAGE_BONUS, bonus));
-      const mult = own * eff * positional * (combo?.damage ?? 1) * statusMult * hitMult * t.mods.damageTaken * (t.traits.damageTaken ?? 1) * (t.hp === t.maxHp ? t.mods.fullHpDamageTaken : 1);
+      const mult = own * eff * positional * (combo?.damage ?? 1) * statusMult * hitMult * t.mods.damageTaken * (t.traits.damageTaken ?? 1) * (t.hp === t.maxHp ? t.mods.fullHpDamageTaken : 1)
+        * (eff > 1 ? t.mods.superEffectiveTaken : 1) * (t.mods.typeDamageTaken[move.type] ?? 1) * (ailments(content, t).length > 0 ? t.mods.statusedDamageTaken : 1);
       const off = content.rules.statOffset;
       const defense = mech.ignoresDefense ? 0 : t.stats.defense;
       const attack = move.scaleStat ? user.stats[move.scaleStat] : user.stats.attack;
       // Critical hit: Crit raises both the chance and the size (seeded, so replays match).
-      const crit = isFoe && mult > 0 && roll(state) < critChance(content, user);
+      const crit = isFoe && mult > 0 && !t.mods.critImmune && roll(state) < critChance(content, user);
       const raw = (move.power * (off + attack + user.attackBoost)) / (off + defense) * mult / content.rules.damageDivisor * (crit ? critMultiplier(content, user) : 1);
       if (crit) events.push({ type: "critical", unitId: user.id, targetId: t.id });
       // Any hit deals at least 1, unless something blocks all damage (Protect).
@@ -830,6 +845,7 @@ function resolveHits(
           heal(t, effect.amount, events);
           break;
         case "status":
+          if (user.mods.sheerForce && isFoe && move.power > 0) break; // Sheer Force trades the status for damage.
           applyStatus(content, user, t, effect.status, effect.duration, events, state);
           break;
         case "push":
@@ -859,6 +875,7 @@ function resolveHits(
       && !user.engagedWith && !t.engagedWith && !(move.effects ?? []).some((e) => e.kind === "disengage")) engage(user, t, events);
     // Type mechanics apply to the enemies a move hits.
     if (!isFoe || t.hp <= 0) continue;
+    if (user.mods.sheerForce && move.power > 0) continue;
     if (mech.appliesStatus) applyStatus(content, user, t, mech.appliesStatus.status, mech.appliesStatus.duration, events, state);
     const extra = user.ability?.moveStatus;
     if (extra && extra.type === move.type) applyStatus(content, user, t, extra.status, extra.duration, events, state);
@@ -982,9 +999,13 @@ function startTurn(state: BattleState, content: BattleContent, events: BattleEve
   if (!begins) return;
 
   for (const st of unit.statuses) {
-    const frac = content.statuses[st.id]?.damagePerTurn;
+    const def = content.statuses[st.id];
+    const frac = def?.damagePerTurn;
     if (frac && unit.hp > 0) {
-      dealDamage(state, unit, Math.max(1, Math.floor(unit.maxHp * frac)), "status", events);
+      const lost = Math.min(unit.hp, Math.max(1, Math.floor(unit.maxHp * frac)));
+      dealDamage(state, unit, lost, "status", events);
+      const source = def.drainsToSource ? state.units.find((u) => u.id === st.sourceId && u.hp > 0 && !u.captured) : undefined;
+      if (source) heal(source, lost, events);
       if (unit.hp <= 0) spreadStatuses(state, content, unit, events);
     }
   }

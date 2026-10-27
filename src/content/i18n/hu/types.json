@@ -1,0 +1,56 @@
+{
+ "normal": {
+  "summary": "Alkalmazkodó mindenes. A Normál támadásokra semmi sem ellenálló."
+ },
+ "fire": {
+  "summary": "Robbanékony támadó. A Tűz támadások megégetnek: körönként sebeznek, és −20% az okozott sebzés."
+ },
+ "water": {
+  "summary": "Kiszorítás és kitartás. A Víz támadások 1 mezővel tovább lökik a célpontot."
+ },
+ "grass": {
+  "summary": "Életszívás és irányítás. A Fű támadások a sebzés 25%-át visszagyógyítják."
+ },
+ "electric": {
+  "summary": "Gyors portyázó. Az Elektromos támadások megbénítanak: a célpont a következő körében nem mozoghat."
+ },
+ "ice": {
+  "summary": "Lefogó irányítás. A Jég támadások megfagyasztanak: a célpont a következő körében nem cselekedhet."
+ },
+ "fighting": {
+  "summary": "Közelharci verekedő. +25% sebzés, ha egy szövetséges is a célpont mellett áll."
+ },
+ "poison": {
+  "summary": "Felőrlés. A méreg halmozódik: minden újabb mérgezés hozzáadja a köreit."
+ },
+ "ground": {
+  "summary": "Terepformáló. A Föld támadások sárrá változtatják a célpont mezőjét."
+ },
+ "flying": {
+  "summary": "Mozgékonyság. Átrepül a vízen, a sáron és más Pokémonokon."
+ },
+ "psychic": {
+  "summary": "Távolsági manipuláció. A Pszichikus támadások 1 mezővel közelebb húzzák a célpontot."
+ },
+ "bug": {
+  "summary": "Raj-taktika. +10% sebzés minden, a célpont mellett álló szövetséges után."
+ },
+ "rock": {
+  "summary": "Erőd. Nem lehet ellökni vagy elhúzni."
+ },
+ "ghost": {
+  "summary": "Csaló. Átmegy az ellenfeleken; a Szellem támadások megátkoznak: +25% elszenvedett sebzés."
+ },
+ "dragon": {
+  "summary": "Ritka mindenes. A Sárkány támadások figyelmen kívül hagyják a Védelmet."
+ },
+ "dark": {
+  "summary": "Opportunista. A Sötét támadások +30%-ot sebeznek a félig sérült vagy állapotot viselő ellenfelekre."
+ },
+ "steel": {
+  "summary": "Védőbástya. Az Acél Pokémonok minden találatból 15%-kal kevesebb sebzést kapnak."
+ },
+ "fairy": {
+  "summary": "Bűvölő. A Tündér támadások gyengítenek: a célpont a következő körében 30%-kal kevesebbet sebez."
+ }
+}

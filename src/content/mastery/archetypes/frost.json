@@ -17,7 +17,8 @@
      "skill": "skill:sheer-cold"
     },
     {
-     "stat": "defense",
+     "stat": "attack",
+     "second": "hp",
      "skill": "skill:mist"
     }
    ],
@@ -42,7 +43,8 @@
      "skill": "skill:heart-stamp"
     },
     {
-     "stat": "defense",
+     "stat": "attack",
+     "second": "hp",
      "skill": "skill:captivate"
     }
    ],
@@ -64,7 +66,7 @@
    "skill:frost-breath"
   ],
   "9": [
-   "keen-eye",
+   "far-sight",
    "lingering-effects"
   ],
   "12": [

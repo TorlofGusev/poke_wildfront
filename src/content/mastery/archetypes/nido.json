@@ -11,15 +11,16 @@
    ],
    "focus": [
     {
-     "stat": "attack",
+     "stat": "hp",
+     "second": "attack",
      "skill": "skill:crunch"
     },
     {
-     "stat": "attack",
+     "stat": "hp",
      "skill": "skill:poison-fang"
     },
     {
-     "stat": "defense",
+     "stat": "hp",
      "skill": "skill:charm"
     }
    ],
@@ -46,7 +47,8 @@
      "skill": "skill:head-smash"
     },
     {
-     "stat": "defense",
+     "stat": "attack",
+     "second": "defense",
      "skill": "skill:amnesia"
     }
    ],
@@ -60,7 +62,7 @@
  ],
  "rows": {
   "4": [
-   "poison-point",
+   "poison-touch",
    "rough-skin"
   ],
   "6": [
@@ -104,9 +106,9 @@
   "nido-sheer-force": {
    "id": "nido-sheer-force",
    "name": "Sheer Force",
-   "description": "All its moves deal 20% more damage.",
+   "description": "Moves with a status effect deal 30% more damage but drop the status.",
    "mods": {
-    "damageDealt": 1.2
+    "sheerForce": true
    }
   },
   "nido-rivalry": {

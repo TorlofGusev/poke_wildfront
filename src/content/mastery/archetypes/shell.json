@@ -11,7 +11,8 @@
    ],
    "focus": [
     {
-     "stat": "attack",
+     "stat": "defense",
+     "second": "attack",
      "skill": "skill:hydro-cannon"
     },
     {
@@ -19,7 +20,7 @@
      "skill": "skill:rapid-spin"
     },
     {
-     "stat": "hp",
+     "stat": "defense",
      "skill": "skill:aqua-ring"
     }
    ],
@@ -37,11 +38,12 @@
    ],
    "focus": [
     {
-     "stat": "attack",
+     "stat": "defense",
+     "second": "attack",
      "skill": "skill:icicle-crash"
     },
     {
-     "stat": "attack",
+     "stat": "defense",
      "skill": "skill:shell-smash"
     },
     {
@@ -71,7 +73,8 @@
      "skill": "skill:crabhammer"
     },
     {
-     "stat": "defense",
+     "stat": "attack",
+     "second": "defense",
      "skill": "skill:wide-guard"
     }
    ],
@@ -89,15 +92,16 @@
    ],
    "focus": [
     {
-     "stat": "attack",
+     "stat": "defense",
      "skill": "skill:future-sight"
     },
     {
-     "stat": "attack",
+     "stat": "defense",
      "skill": "skill:psyshock"
     },
     {
-     "stat": "hp",
+     "stat": "defense",
+     "second": "hp",
      "skill": "skill:slack-off"
     }
    ],
@@ -156,9 +160,10 @@
   "shell-shell-armor": {
    "id": "shell-shell-armor",
    "name": "Shell Armor",
-   "description": "Takes 20% less damage.",
+   "description": "Never takes critical hits, and takes 10% less damage.",
    "mods": {
-    "damageTaken": 0.8
+    "critImmune": true,
+    "damageTaken": 0.9
    }
   },
   "shell-rain-dish": {

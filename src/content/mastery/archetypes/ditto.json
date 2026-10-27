@@ -172,7 +172,7 @@
   "ditto-imposter": {
    "id": "ditto-imposter",
    "name": "Imposter",
-   "description": "Capstone. +1 Attack for the battle per knockout (max +3); statuses it inflicts last 1 turn longer.",
+   "description": "Capstone. +1 Attack for the battle per knockout (max +3); statuses it inflicts last 1 turn longer (not Paralysis, Freeze or Sleep; at most +2 in all).",
    "mods": {
     "koAttackBoost": 1,
     "statusDurationBonus": 1

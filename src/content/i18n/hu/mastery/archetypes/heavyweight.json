@@ -1,6 +1,10 @@
 {
  "passives": {
-  "heavyweight-thick-fat": { "description": "15%-kal kevesebb sebzést kap." },
-  "heavyweight-gluttony": { "description": "Minden körben a maximális HP-ja 6%-át gyógyítja." }
+  "heavyweight-thick-fat": {
+   "description": "50%-kal kevesebb sebzést kap a Tűz és Jég támadásoktól."
+  },
+  "heavyweight-gluttony": {
+   "description": "Minden köre elején max HP-ja 6%-át gyógyítja."
+  }
  }
 }

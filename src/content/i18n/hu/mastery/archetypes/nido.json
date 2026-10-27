@@ -1,7 +1,7 @@
 {
  "passives": {
   "nido-sheer-force": {
-   "description": "Minden támadása 20%-kal többet sebez."
+   "description": "Az állapotot okozó támadásai 30%-kal többet sebeznek, de az állapot elmarad."
   },
   "nido-rivalry": {
    "description": "+15% sebzés a szomszédos ellenfelekre és +15% a szövetségeseivel harcban álló ellenfelekre."

@@ -4,7 +4,7 @@
    "description": "Az Electric típusú támadásai 25%-kal többet sebeznek."
   },
   "spark-motor-drive": {
-   "description": "+1 mozgás, és ha a saját körében kiüt egy ellenfelet, 2-vel többet mozoghat."
+   "description": "+1 mozgás (a mozgás felső határáig), és ha a saját körében kiüt egy ellenfelet, 2-vel többet mozoghat."
   }
  }
 }

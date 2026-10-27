@@ -14,11 +14,12 @@
      "skill": "skill:volt-tackle"
     },
     {
-     "stat": "defense",
+     "stat": "attack",
      "skill": "skill:nuzzle"
     },
     {
-     "stat": "hp",
+     "stat": "attack",
+     "second": "hp",
      "skill": "skill:wish"
     }
    ],
@@ -39,11 +40,12 @@
      "skill": "skill:electroweb"
     },
     {
-     "stat": "defense",
+     "stat": "attack",
+     "second": "hp",
      "skill": "skill:light-screen"
     },
     {
-     "stat": "defense",
+     "stat": "attack",
      "skill": "skill:screech"
     }
    ],
@@ -64,11 +66,12 @@
      "skill": "skill:hurricane"
     },
     {
-     "stat": "defense",
+     "stat": "attack",
      "skill": "skill:detect"
     },
     {
-     "stat": "hp",
+     "stat": "attack",
+     "second": "hp",
      "skill": "skill:roost"
     }
    ],
@@ -83,7 +86,7 @@
  "rows": {
   "4": [
    "static",
-   "keen-eye"
+   "far-sight"
   ],
   "6": [
    "skill:charge",
@@ -136,7 +139,7 @@
   "spark-motor-drive": {
    "id": "spark-motor-drive",
    "name": "Motor Drive",
-   "description": "+1 movement, and knocking out a foe on its turn gives 2 more movement.",
+   "description": "+1 movement (up to the movement cap), and knocking out a foe on its turn gives 2 more movement.",
    "mods": {
     "moveBonus": 1,
     "koMove": 2

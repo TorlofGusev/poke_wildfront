@@ -1,10 +1,10 @@
 {
  "passives": {
   "tide-swift-swim": {
-   "description": "1-gyel többet mozog, és a Víz támadásai 10%-kal többet sebeznek."
+   "description": "+1 mozgás (a mozgás felső határáig), és Víz támadásai 10%-kal többet sebeznek."
   },
   "tide-water-absorb": {
-   "description": "Minden kör elején a maximális HP 5%-át gyógyítja, és 10%-kal kevesebb sebzést kap."
+   "description": "50%-kal kevesebb sebzést kap a Víz támadásoktól, és minden köre elején max HP-ja 5%-át gyógyítja."
   }
  }
 }

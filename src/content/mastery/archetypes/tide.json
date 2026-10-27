@@ -14,11 +14,12 @@
      "skill": "skill:power-gem"
     },
     {
-     "stat": "defense",
+     "stat": "attack",
+     "second": "defense",
      "skill": "skill:cosmic-power"
     },
     {
-     "stat": "hp",
+     "stat": "attack",
      "skill": "skill:recover"
     }
    ],
@@ -35,11 +36,12 @@
    ],
    "focus": [
     {
-     "stat": "attack",
+     "stat": "hp",
+     "second": "attack",
      "skill": "skill:freeze-dry"
     },
     {
-     "stat": "defense",
+     "stat": "hp",
      "skill": "skill:haze"
     },
     {
@@ -65,11 +67,12 @@
      "skill": "skill:fake-out"
     },
     {
-     "stat": "defense",
+     "stat": "attack",
+     "second": "hp",
      "skill": "skill:encore"
     },
     {
-     "stat": "defense",
+     "stat": "attack",
      "skill": "skill:perish-song"
     }
    ],
@@ -87,15 +90,16 @@
    ],
    "focus": [
     {
-     "stat": "attack",
+     "stat": "hp",
+     "second": "attack",
      "skill": "skill:wring-out"
     },
     {
-     "stat": "attack",
+     "stat": "hp",
      "skill": "skill:cross-poison"
     },
     {
-     "stat": "defense",
+     "stat": "hp",
      "skill": "skill:toxic-spikes"
     }
    ],
@@ -117,7 +121,7 @@
    "skill:aurora-beam"
   ],
   "9": [
-   "keen-eye",
+   "far-sight",
    "water-veil"
   ],
   "12": [
@@ -153,7 +157,7 @@
   "tide-swift-swim": {
    "id": "tide-swift-swim",
    "name": "Swift Swim",
-   "description": "Gains 1 more movement, and its Water moves deal 10% more damage.",
+   "description": "+1 movement (up to the movement cap), and its Water moves deal 10% more damage.",
    "mods": {
     "moveBonus": 1,
     "typeDamage": {
@@ -164,10 +168,12 @@
   "tide-water-absorb": {
    "id": "tide-water-absorb",
    "name": "Water Absorb",
-   "description": "Heals 5% of max HP at the start of each turn and takes 10% less damage.",
+   "description": "Takes 50% less damage from Water moves, and heals 5% of max HP at the start of each of its turns.",
    "mods": {
-    "healPerTurn": 0.05,
-    "damageTaken": 0.9
+    "typeDamageTaken": {
+     "water": 0.5
+    },
+    "healPerTurn": 0.05
    }
   }
  }

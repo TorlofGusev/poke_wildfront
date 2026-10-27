@@ -13,11 +13,12 @@
      "skill": "skill:x-scissor"
     },
     {
-     "stat": "defense",
+     "stat": "attack",
+     "second": "defense",
      "skill": "skill:detect"
     },
     {
-     "stat": "hp",
+     "stat": "attack",
      "skill": "skill:morning-sun"
     }
    ],
@@ -42,7 +43,8 @@
      "skill": "skill:superpower"
     },
     {
-     "stat": "defense",
+     "stat": "attack",
+     "second": "defense",
      "skill": "skill:harden"
     }
    ],
@@ -64,11 +66,12 @@
      "skill": "skill:cross-poison"
     },
     {
-     "stat": "defense",
+     "stat": "attack",
+     "second": "defense",
      "skill": "skill:spore"
     },
     {
-     "stat": "hp",
+     "stat": "attack",
      "skill": "skill:synthesis"
     }
    ],

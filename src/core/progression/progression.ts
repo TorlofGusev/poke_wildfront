@@ -61,17 +61,26 @@ export function scaledXp(base: number, memberLevel: number, foeLevels: readonly 
   return Math.max(1, Math.round(base * factor));
 }
 
-/** Stats the focus adds: a bonus when chosen, then +1 every `focusGrowthEvery` levels (counted from Lv 1). */
-export function focusGrowth(prog: ProgressionContent, focus: StatName | null, level: number): BaseStats {
+/**
+ * Stats the focus adds: a bonus when chosen, then +1 every `focusGrowthEvery` levels (counted from Lv 1).
+ * A mixed focus splits the points between its two stats, the main one taking the odd point.
+ */
+export function focusGrowth(prog: ProgressionContent, focus: StatName | null, level: number, second?: StatName): BaseStats {
   const out = { ...NO_POINTS };
-  if (focus) out[focus] = prog.rules.focusBonus + Math.floor((level - 1) / prog.rules.focusGrowthEvery);
+  if (!focus) return out;
+  const total = prog.rules.focusBonus + Math.floor((level - 1) / prog.rules.focusGrowthEvery);
+  if (!second) out[focus] = total;
+  else { out[focus] = Math.ceil(total / 2); out[second] += Math.floor(total / 2); }
   return out;
 }
+
+/** The focus growth of a member, its mixed focus included. */
+export const memberFocusGrowth = (prog: ProgressionContent, m: Progress): BaseStats => focusGrowth(prog, m.focus, m.level, focusOf(prog, m)?.second);
 
 /** Effective battle stats: species level-1 stats + focus growth + spent points + talent points. */
 export function memberStats(content: BattleContent, prog: ProgressionContent, m: Progress): { stats: BaseStats; maxHp: number } {
   const base = content.species[m.speciesId]!.stats;
-  const growth = focusGrowth(prog, m.focus, m.level);
+  const growth = memberFocusGrowth(prog, m);
   const out = {} as Record<StatName, number>;
   for (const s of STAT_NAMES) {
     const fromTalents = m.talents.reduce((sum, t) => sum + (prog.talents[t]?.stats?.[s] ?? 0), 0);
@@ -160,7 +169,15 @@ export function toUnitSetup(content: BattleContent, prog: ProgressionContent, m:
 /** A wild Pokémon of a given level, with its default loadout. */
 function evolveInto<T extends Progress>(content: BattleContent, prog: ProgressionContent, m: T, into: string, events: ProgressEvent[]): T {
   events.push({ type: "evolved", from: m.speciesId, into });
-  return retrainForm(content, prog, { ...m, speciesId: into, unspentPoints: m.unspentPoints + prog.rules.evolutionPoints });
+  // An evolution may swap a starting move for one of its own type (Eevee's Quick Attack → Vaporeon's Water Pulse).
+  const next = startingMoves(content.species[into]!);
+  const dropped = startingMoves(content.species[m.speciesId]!).filter((mv) => !next.includes(mv));
+  const taught = new Set(m.talents.map((id) => prog.talents[id]?.grantsMove));
+  const keep = (mv: string) => !dropped.includes(mv) || taught.has(mv);
+  return retrainForm(content, prog, {
+    ...m, speciesId: into, unspentPoints: m.unspentPoints + prog.rules.evolutionPoints,
+    knownMoves: m.knownMoves.filter(keep), activeMoves: m.activeMoves.filter(keep),
+  });
 }
 
 function learnLevelMoves<T extends Progress>(content: BattleContent, prog: ProgressionContent, m: T, events: ProgressEvent[]): T {

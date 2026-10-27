@@ -1,10 +1,10 @@
 {
  "passives": {
   "swarm-compound-eyes": {
-   "description": "+1 hatótáv a távolsági támadásokon, és Bogár támadásai 15%-kal többet sebeznek."
+   "description": "+1 hatótáv a legalább 2 hexes támadásokon (legfeljebb 3-ig; Bond támadásoknál nincs korlát), és Bogár támadásai 15%-kal többet sebeznek."
   },
   "swarm-shield-dust": {
-   "description": "15%-kal kevesebb sebzést kap, és többet nyer, ha a társai is a célpontját támadják."
+   "description": "15%-kal kevesebb sebzést kap, és Bogár támadásainál célpontja minden szomszédos társa után +10% raj-bónuszt kap."
   }
  }
 }

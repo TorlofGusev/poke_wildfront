@@ -69,6 +69,7 @@ export function statusEffectText(st: StatusDef): string {
   if (st.damagePerTurn) parts.push(t("loses {n}% max HP each turn", { n: Math.round(st.damagePerTurn * 100) }));
   if (st.movePenalty) parts.push(t("{v} movement", { v: st.movePenalty > 0 ? `−${st.movePenalty}` : `+${-st.movePenalty}` }));
   if (st.noMove) parts.push(t("cannot move"));
+  if (st.drainsToSource) parts.push(t("the HP lost heals the Pokémon that applied it"));
   if (st.forcesTarget) parts.push(t("may only attack the Pokémon that applied it"));
   if (st.noAction) parts.push(t("cannot use moves"));
   if (st.damageDealt !== undefined && st.damageDealt !== 1) parts.push(t("{v} damage dealt", { v: `${st.damageDealt > 1 ? "+" : "−"}${Math.round(Math.abs(st.damageDealt - 1) * 100)}%` }));

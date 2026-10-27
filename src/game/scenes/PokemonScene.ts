@@ -20,7 +20,7 @@ import {
   basicMoveOf,
   chooseFocus,
   chooseTalent,
-  focusGrowth,
+  memberFocusGrowth,
   focusOptions,
   memberStats,
   pendingChoice,
@@ -33,6 +33,7 @@ import {
   talentOptions,
   xpToNext,
   statOffer,
+  type FocusOption,
 } from "../../core/progression";
 import { STAT_NAMES, type StatName } from "../../core/battle";
 import { session } from "../session";
@@ -52,6 +53,11 @@ const DETAIL_W = 928;
 /** One Pokémon: stats (and stat points), talent tree, moves, equipment. */
 /** Set once the player has read the EV explanation. */
 const EV_HELP_FLAG = "help-ev";
+
+/** What a focus adds when chosen: "+2 Atk", or "+1 Atk +1 Def" for a mixed focus. */
+const focusBonusLabel = (f: FocusOption): string => (f.second
+  ? `+${PROGRESSION.rules.focusBonus / 2} ${STAT_LABEL[f.stat]} +${PROGRESSION.rules.focusBonus / 2} ${STAT_LABEL[f.second]}`
+  : `+${PROGRESSION.rules.focusBonus} ${STAT_LABEL[f.stat]}`);
 
 export class PokemonScene extends Phaser.Scene {
   private root!: Phaser.GameObjects.Container;
@@ -254,7 +260,7 @@ export class PokemonScene extends Phaser.Scene {
   private statTooltip(m: PartyMember, st: StatName): string {
     const s = CONTENT.species[m.speciesId]!;
     const { stats, maxHp } = memberStats(CONTENT, PROGRESSION, m);
-    const growth = focusGrowth(PROGRESSION, m.focus, m.level)[st];
+    const growth = memberFocusGrowth(PROGRESSION, m)[st];
     const talents = m.talents.reduce((sum, id) => sum + (PROGRESSION.talents[id]?.stats?.[st] ?? 0), 0);
     const r = CONTENT.rules;
     const pct = (x: number) => `${Math.round(x * 100)}%`;
@@ -428,7 +434,7 @@ ${into.types.map((ty) => tag(ty, ty)).join("/")}`);
       const fx = rowX(focuses.length, focusW) + i * (focusW + 6);
       cell(fx, cy, focusW, PROGRESSION.talents[f.skill]?.name ?? f.skill, `focus:${f.skill}`, state, skillType(f.skill));
       // Under the skill: what the pick adds to its stat.
-      add(this.add.text(fx + focusW / 2, cy + 26, `+${PROGRESSION.rules.focusBonus} ${STAT_LABEL[f.stat]}`, { fontFamily: FONT, fontSize: px(11), color: "#7ed321" }).setOrigin(0.5, 0));
+      add(this.add.text(fx + focusW / 2, cy + 26, focusBonusLabel(f), { fontFamily: FONT, fontSize: px(11), color: "#7ed321" }).setOrigin(0.5, 0));
     });
     cy += rowH + 14;
 
@@ -455,7 +461,9 @@ ${into.types.map((ty) => tag(ty, ty)).join("/")}`);
       iy += add(new RichText(this, infoX, iy, infoW, 12)).setMarkup([
         tag("title", skill.name),
         tag("dim", t("Focus · Lv {lv}", { lv: PROGRESSION.rules.focusLevel })),
-        t("{stat} +{n} now, and it keeps growing as it levels up.", { stat: tag("good", STAT_LABEL[focus.stat]), n: PROGRESSION.rules.focusBonus }),
+        focus.second
+          ? t("{stat} +{n} and {second} +{n} now, and they keep growing in turns as it levels up.", { stat: tag("good", STAT_LABEL[focus.stat]), second: tag("good", STAT_LABEL[focus.second]), n: PROGRESSION.rules.focusBonus / 2 })
+          : t("{stat} +{n} now, and it keeps growing as it levels up.", { stat: tag("good", STAT_LABEL[focus.stat]), n: PROGRESSION.rules.focusBonus }),
         t("Learns the Bond skill {skill}:", { skill: tag("special", skill.name) }),
         ...describeTalent(CONTENT, PROGRESSION, skill),
       ].join("\n")) + 8;

@@ -1,7 +1,7 @@
 {
  "passives": {
   "earth-arena-trap": {
-   "description": "A vele harcban álló ellenfelek nem tudnak elmenekülni, és 15%-kal többet sebez rájuk."
+   "description": "A vele harcban álló ellenfelek nem léphetnek el a szabad ütése nélkül, és 15%-kal többet sebez rájuk."
   },
   "earth-sand-veil": {
    "description": "15%-kal kevesebb sebzést kap."

@@ -23,7 +23,6 @@
  "Attack": "Támadás",
  "Basic attack": "Alaptámadás",
  "Bug swarm bonus {x}": "Bogár rajbónusz: {x}",
- "Combo!": "Kombó!",
  "Def": "Def",
  "Defeat…": "Vereség…",
  "Defense": "Védekezés",
@@ -104,7 +103,6 @@
  "takes no damage": "nem kap sebzést",
  "without a free attack": "szabad támadás nélkül",
  "without free attacks": "szabad támadások nélkül",
- "{combo} {unit} exploits an ally's engagement on {target}": "{combo} {unit} kihasználja egy társ lekötését: {target}",
  "{combo} {unit} exploits an ally's setup on {target}": "{combo} {unit} kihasználja egy társ előkészítését: {target}",
  "{n} damage": "{n} sebzés",
  "{n} knockout mark": "{n} kiütésjelet",
@@ -189,5 +187,14 @@
  "Only targets a Pokémon with {status}": "Csak {status} állapotú Pokémonra használható",
  "Affects enemies or allies": "Ellenfélre vagy szövetségesre",
  "On an ally: heals {x} of its max HP instead of damaging": "Szövetségesen: a max HP-ja {x}-át gyógyítja sebzés helyett",
- "may only attack the Pokémon that applied it": "csak azt a Pokémont támadhatja, aki rátette"
+ "may only attack the Pokémon that applied it": "csak azt a Pokémont támadhatja, aki rátette",
+ "the HP lost heals the Pokémon that applied it": "az elvesztett HP azt gyógyítja, aki rátette",
+ "{v} damage with moves of its own types": "{v} sebzés a saját típusú támadásaival",
+ "{v} super-effective damage taken": "{v} elszenvedett szupereffektív sebzés",
+ "{v} damage taken while it carries a status": "{v} elszenvedett sebzés, amíg állapot van rajta",
+ "{v} damage taken from {type} moves": "{v} elszenvedett sebzés {type} támadásoktól",
+ "{x} critical hits": "{x} kritikus találatot",
+ "Never takes": "Sosem kap",
+ "Moves with a status effect deal {x} but drop the status": "Az állapotot okozó támadásai {x} sebzést okoznak, de az állapot elmarad",
+ "Foes that hit it from an adjacent hex get {status} ({n} turn)": "Akik szomszédos hexről megütik, {status} állapotot kapnak ({n} kör)"
 }

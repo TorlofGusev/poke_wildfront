@@ -9,11 +9,12 @@
    ],
    "focus": [
     {
-     "stat": "attack",
+     "stat": "hp",
+     "second": "attack",
      "skill": "skill:crunch"
     },
     {
-     "stat": "defense",
+     "stat": "hp",
      "skill": "skill:stockpile"
     },
     {
@@ -34,15 +35,16 @@
    ],
    "focus": [
     {
-     "stat": "attack",
+     "stat": "hp",
+     "second": "attack",
      "skill": "skill:power-whip"
     },
     {
-     "stat": "attack",
+     "stat": "hp",
      "skill": "skill:wring-out"
     },
     {
-     "stat": "defense",
+     "stat": "hp",
      "skill": "skill:bind"
     }
    ],
@@ -59,11 +61,12 @@
    ],
    "focus": [
     {
-     "stat": "attack",
+     "stat": "hp",
+     "second": "attack",
      "skill": "skill:endeavor"
     },
     {
-     "stat": "defense",
+     "stat": "hp",
      "skill": "skill:light-screen"
     },
     {
@@ -126,15 +129,18 @@
   "heavyweight-thick-fat": {
    "id": "heavyweight-thick-fat",
    "name": "Thick Fat",
-   "description": "It takes 15% less damage.",
+   "description": "Takes 50% less damage from Fire and Ice moves.",
    "mods": {
-    "damageTaken": 0.85
+    "typeDamageTaken": {
+     "fire": 0.5,
+     "ice": 0.5
+    }
    }
   },
   "heavyweight-gluttony": {
    "id": "heavyweight-gluttony",
    "name": "Gluttony",
-   "description": "It heals 6% of its max HP each turn.",
+   "description": "Heals 6% of max HP at the start of each of its turns.",
    "mods": {
     "healPerTurn": 0.06
    }

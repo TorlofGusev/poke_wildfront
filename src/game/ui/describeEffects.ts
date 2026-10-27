@@ -71,6 +71,16 @@ export function describeModifiers(content: BattleContent, m: Partial<UnitModifie
   if (m.noEscape) out.push(t("Foes it engages {x} without its free strike", { x: up(t("cannot slip away")) }));
   if (m.koHeal) out.push(t("Heals {v} of its max HP when it knocks out a foe", { v: up(pct(m.koHeal)) }));
   if (m.thorns) out.push(t("Foes that hit it from an adjacent tile take {x}", { x: up(t("{n} damage", { n: m.thorns })) }));
+  mul(m.ownTypeDamage, "{v} damage with moves of its own types");
+  mul(m.superEffectiveTaken, "{v} super-effective damage taken");
+  mul(m.statusedDamageTaken, "{v} damage taken while it carries a status");
+  for (const [ty, v] of Object.entries(m.typeDamageTaken ?? {})) mul(v, "{v} damage taken from {type} moves", { type: tag(ty, ty) });
+  if (m.critImmune) out.push(t("{x} critical hits", { x: up(t("Never takes")) }));
+  if (m.sheerForce) out.push(t("Moves with a status effect deal {x} but drop the status", { x: up("+30%") }));
+  if (m.hitStatus) {
+    const status = tag("status", content.statuses[m.hitStatus.status]?.name ?? m.hitStatus.status);
+    out.push(t("Foes that hit it from an adjacent hex get {status} ({n} turn)", { status, n: m.hitStatus.duration }));
+  }
   if (m.statusImmune?.length) out.push(m.statusImmune.includes("*") ? t("Immune to all statuses") : t("Immune to {list}", { list: m.statusImmune.join(", ") }));
   return out;
 }

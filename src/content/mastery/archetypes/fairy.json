@@ -10,11 +10,12 @@
    ],
    "focus": [
     {
-     "stat": "attack",
+     "stat": "hp",
+     "second": "attack",
      "skill": "skill:moonblast"
     },
     {
-     "stat": "defense",
+     "stat": "hp",
      "skill": "skill:cosmic-power"
     },
     {
@@ -36,11 +37,12 @@
    ],
    "focus": [
     {
-     "stat": "attack",
+     "stat": "hp",
+     "second": "attack",
      "skill": "skill:spit-up"
     },
     {
-     "stat": "defense",
+     "stat": "hp",
      "skill": "skill:sing"
     },
     {
@@ -102,12 +104,13 @@
   "fairy-cute-charm": {
    "id": "fairy-cute-charm",
    "name": "Cute Charm",
-   "description": "Its hits on adjacent foes Weaken them for 1 turn.",
+   "description": "Foes that hit it from an adjacent hex are charmed: Slow for 1 turn; it takes 10% less damage.",
    "mods": {
-    "contactStatus": {
-     "status": "weakened",
+    "hitStatus": {
+     "status": "slow",
      "duration": 1
-    }
+    },
+    "damageTaken": 0.9
    }
   },
   "fairy-magic-guard": {

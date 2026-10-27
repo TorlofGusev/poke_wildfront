@@ -15,11 +15,12 @@
      "skill": "skill:leaf-blade"
     },
     {
-     "stat": "defense",
+     "stat": "attack",
      "skill": "skill:stockpile"
     },
     {
-     "stat": "hp",
+     "stat": "attack",
+     "second": "hp",
      "skill": "skill:strength-sap"
     }
    ],
@@ -45,7 +46,8 @@
      "skill": "skill:future-sight"
     },
     {
-     "stat": "hp",
+     "stat": "attack",
+     "second": "hp",
      "skill": "skill:synthesis"
     }
    ],
@@ -103,7 +105,7 @@
   "thicket-harvest": {
    "id": "thicket-harvest",
    "name": "Harvest",
-   "description": "It heals 5% of its max HP each turn and drains more with Grass moves.",
+   "description": "It heals 5% of its max HP each turn and its draining moves heal 15% more of the damage dealt.",
    "mods": {
     "healPerTurn": 0.05,
     "drainBonus": 0.15
@@ -112,10 +114,9 @@
   "thicket-gluttony": {
    "id": "thicket-gluttony",
    "name": "Gluttony",
-   "description": "Its moves deal 25% more damage while it is below half HP, and it heals 15% of its max HP on a knockout.",
+   "description": "Heals 6% of max HP at the start of each of its turns.",
    "mods": {
-    "lowHpDamage": 1.25,
-    "koHeal": 0.15
+    "healPerTurn": 0.06
    }
   }
  }

@@ -5,6 +5,8 @@ import type { UnitModifiers } from "../battle/modifiers";
 /** A focus offered at the focus level: a stat that grows every level and the Bond skill that scales with it. */
 export interface FocusOption {
   readonly stat: StatName;
+  /** A mixed focus splits its growth between `stat` and this one (+1/+1 when chosen, then in turns). */
+  readonly second?: StatName;
   /** Skill talent learned with the focus (teaches a Bond move whose damage uses `stat`). */
   readonly skill: string;
 }

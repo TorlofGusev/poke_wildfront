@@ -18,7 +18,8 @@
      "skill": "skill:outrage"
     },
     {
-     "stat": "hp",
+     "stat": "attack",
+     "second": "hp",
      "skill": "skill:rest"
     }
    ],
@@ -44,8 +45,9 @@
      "skill": "skill:horn-drill"
     },
     {
-     "stat": "defense",
-     "skill": "skill:soak"
+     "stat": "attack",
+     "second": "defense",
+     "skill": "skill:endure"
     }
    ],
    "rows": {
@@ -70,7 +72,8 @@
      "skill": "skill:twister"
     },
     {
-     "stat": "defense",
+     "stat": "attack",
+     "second": "defense",
      "skill": "skill:smokescreen"
     }
    ],
@@ -93,11 +96,12 @@
      "skill": "skill:belly-drum"
     },
     {
-     "stat": "defense",
+     "stat": "attack",
+     "second": "defense",
      "skill": "skill:circle-throw"
     },
     {
-     "stat": "hp",
+     "stat": "attack",
      "skill": "skill:amnesia"
     }
    ],
@@ -119,7 +123,8 @@
      "skill": "skill:psychic-noise"
     },
     {
-     "stat": "defense",
+     "stat": "attack",
+     "second": "defense",
      "skill": "skill:disable"
     },
     {
@@ -181,7 +186,7 @@
   "water-striker-swift-swim": {
    "id": "water-striker-swift-swim",
    "name": "Swift Swim",
-   "description": "Gains 1 more movement, and its Water moves deal 10% more damage.",
+   "description": "+1 movement (up to the movement cap), and its Water moves deal 10% more damage.",
    "mods": {
     "moveBonus": 1,
     "typeDamage": {
@@ -192,9 +197,9 @@
   "water-striker-sheer-force": {
    "id": "water-striker-sheer-force",
    "name": "Sheer Force",
-   "description": "All its moves deal 20% more damage.",
+   "description": "Moves with a status effect deal 30% more damage but drop the status.",
    "mods": {
-    "damageDealt": 1.2
+    "sheerForce": true
    }
   }
  }

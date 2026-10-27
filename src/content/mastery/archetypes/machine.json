@@ -18,7 +18,8 @@
      "skill": "skill:steel-beam"
     },
     {
-     "stat": "defense",
+     "stat": "attack",
+     "second": "defense",
      "skill": "skill:magnet-rise"
     }
    ],
@@ -40,7 +41,8 @@
      "skill": "skill:explosion"
     },
     {
-     "stat": "defense",
+     "stat": "attack",
+     "second": "hp",
      "skill": "skill:eerie-impulse"
     },
     {

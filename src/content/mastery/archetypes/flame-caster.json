@@ -14,11 +14,12 @@
      "skill": "skill:inferno"
     },
     {
-     "stat": "defense",
+     "stat": "attack",
+     "second": "defense",
      "skill": "skill:confuse-ray"
     },
     {
-     "stat": "hp",
+     "stat": "attack",
      "skill": "skill:pain-split"
     }
    ],
@@ -43,7 +44,8 @@
      "skill": "skill:focus-blast"
     },
     {
-     "stat": "defense",
+     "stat": "attack",
+     "second": "defense",
      "skill": "skill:smokescreen"
     }
    ],
@@ -68,7 +70,8 @@
      "skill": "skill:hurricane"
     },
     {
-     "stat": "hp",
+     "stat": "attack",
+     "second": "hp",
      "skill": "skill:morning-sun"
     }
    ],
@@ -87,7 +90,7 @@
   ],
   "6": [
    "skill:flame-charge",
-   "skill:scorching-sands"
+   "skill:will-o-wisp"
   ],
   "9": [
    "flame-body",
@@ -95,11 +98,11 @@
   ],
   "12": [
    "skill:flamethrower",
-   "skill:will-o-wisp"
+   "skill:facade"
   ],
   "15": [
    "lingering-effects",
-   "keen-eye"
+   "far-sight"
   ],
   "18": [
    "skill:heat-wave",
@@ -126,7 +129,7 @@
   "flame-caster-drought": {
    "id": "flame-caster-drought",
    "name": "Drought",
-   "description": "Its Fire moves deal 20% more damage and the statuses it inflicts last 1 turn longer.",
+   "description": "Its Fire moves deal 20% more damage and the statuses it inflicts last 1 turn longer (not Paralysis, Freeze or Sleep; at most +2 in all).",
    "mods": {
     "typeDamage": {
      "fire": 1.2

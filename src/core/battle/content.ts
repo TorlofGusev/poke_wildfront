@@ -110,6 +110,8 @@ export interface StatusDef {
   readonly damageTaken?: number;
   /** A helpful state (Protect, Pumped…): never counts as a status for "vs status" bonuses, Guts or spreading. */
   readonly buff?: boolean;
+  /** The HP lost each turn heals the Pokémon that applied it (Leech Seed). */
+  readonly drainsToSource?: boolean;
   /** May only attack the Pokémon that applied it (Taunt). */
   readonly forcesTarget?: boolean;
   /** Re-applying adds the durations instead of keeping the longer one (Poison). */

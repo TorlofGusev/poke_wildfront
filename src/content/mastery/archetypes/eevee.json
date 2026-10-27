@@ -16,11 +16,12 @@
      "skill": "skill:last-resort"
     },
     {
-     "stat": "defense",
+     "stat": "attack",
+     "second": "defense",
      "skill": "skill:baby-doll-eyes"
     },
     {
-     "stat": "hp",
+     "stat": "attack",
      "skill": "skill:wish"
     }
    ]
@@ -158,25 +159,33 @@
   "eevee-adaptability": {
    "id": "eevee-adaptability",
    "name": "Adaptability",
-   "description": "All its moves deal 20% more damage.",
+   "description": "Moves of its own types deal 25% more damage.",
    "mods": {
-    "damageDealt": 1.2
+    "ownTypeDamage": 1.25
    }
   },
   "eevee-anticipation": {
    "id": "eevee-anticipation",
    "name": "Anticipation",
-   "description": "It takes 15% less damage.",
+   "description": "Senses danger: can't be Flinched, Taunted or Confused, and takes 10% less damage.",
    "mods": {
-    "damageTaken": 0.85
+    "statusImmune": [
+     "flinched",
+     "taunted",
+     "confused"
+    ],
+    "damageTaken": 0.9
    }
   },
   "eevee-water-absorb": {
    "id": "eevee-water-absorb",
    "name": "Water Absorb",
-   "description": "It heals 6% of its max HP each turn.",
+   "description": "Takes 50% less damage from Water moves, and heals 5% of max HP at the start of each of its turns.",
    "mods": {
-    "healPerTurn": 0.06
+    "typeDamageTaken": {
+     "water": 0.5
+    },
+    "healPerTurn": 0.05
    }
   },
   "eevee-volt-absorb": {
@@ -194,12 +203,14 @@
   "eevee-flash-fire": {
    "id": "eevee-flash-fire",
    "name": "Flash Fire",
-   "description": "It cannot be burned, and all its moves deal 15% more damage.",
+   "description": "Takes 50% less damage from Fire moves, and its Fire moves deal 25% more.",
    "mods": {
-    "statusImmune": [
-     "burn"
-    ],
-    "damageDealt": 1.15
+    "typeDamageTaken": {
+     "fire": 0.5
+    },
+    "typeDamage": {
+     "fire": 1.25
+    }
    }
   }
  }

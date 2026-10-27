@@ -1,10 +1,10 @@
 {
  "passives": {
   "trickster-filter": {
-   "description": "15%-kal kevesebb sebzést kap."
+   "description": "35%-kal kevesebb szupereffektív sebzést kap."
   },
   "trickster-forewarn": {
-   "description": "+25% sebzés a szövetséges által okozott állapotot viselő ellenfelekre, és a nem sebző támadásai 1 körrel gyorsabban töltődnek."
+   "description": "+25% sebzés a szövetséges által okozott állapotot viselő ellenfelekre, és a nem sebző támadásai 1 körrel gyorsabban töltődnek (legalább 1 kör marad)."
   }
  }
 }

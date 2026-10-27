@@ -3,6 +3,7 @@ import { CONTENT, PROGRESSION } from "../../src/content";
 import { applyAction, createBattle, maxHpAt, moveRange, moveUnavailableReason } from "../../src/core/battle";
 import { allocatePoint, useRareCandy, buy, equipItem, sell, newMember, resolveBattle, usePotion, type GameState } from "../../src/core/party";
 import {
+  focusGrowth,
   statOffer,
   chooseFocus,
   chooseTalent,
@@ -289,7 +290,7 @@ describe("mastery grid", () => {
   const charmander = (level: number, talents: string[] = []) => ({ ...starter("charmander", level), focus: "attack" as const, talents: ["skill:flare-blitz", ...talents] });
 
   it("each line has one hand-made tree: three focuses, then the same rows whatever the focus", () => {
-    expect(focusOptions(PROGRESSION, "charmeleon").map((f) => f.stat)).toEqual(["attack", "defense", "attack"]);
+    expect(focusOptions(PROGRESSION, "charmeleon").map((f) => [f.stat, f.second])).toEqual([["attack", undefined], ["attack", "defense"], ["attack", undefined]]);
     expect(masteryGrid(PROGRESSION, "charizard").map((r) => r.level)).toEqual([4, 6, 9, 12, 15, 18, 21, 24, 27, 30]);
     expect(masteryGrid(PROGRESSION, "charmander")).toEqual(masteryGrid(PROGRESSION, "charizard"));
   });
@@ -305,6 +306,9 @@ describe("mastery grid", () => {
     expect(pendingChoice(CONTENT, PROGRESSION, grown)).toBe("evolution");
     expect(evolutionChoices(CONTENT, grown)).toEqual(["vaporeon", "jolteon", "flareon"]);
     const up = chooseEvolution(CONTENT, PROGRESSION, grown, "vaporeon").member;
+    // The evolution swaps Eevee's Quick Attack for Vaporeon's own-type starting move.
+    expect(up.knownMoves).toContain("water-pulse");
+    expect(up.knownMoves).not.toContain("quick-attack");
     expect(up.speciesId).toBe("vaporeon");
     const tree = new Set([...focusOptions(PROGRESSION, "vaporeon").map((f) => f.skill), ...masteryGrid(PROGRESSION, "vaporeon").flatMap((r) => r.options)]);
     for (const id of up.talents) expect(tree.has(id), id).toBe(true);
@@ -407,5 +411,14 @@ describe("EV rewards", () => {
     expect(completeNpc(g, { id: "t", kind: "trainer", team: [] } as never, undefined, ev).ev).toBe(ev.trainerWin);
     expect(completeNpc(g, { id: "q", kind: "talk", reward: { money: 10 } } as never, undefined, ev).ev).toBe(ev.quest);
     expect(() => buy(CONTENT, PROGRESSION, { ...g, money: 99999 }, "candy")).toThrow(/not sold/);
+  });
+});
+
+describe("mixed focus", () => {
+  it("splits its growth between the two stats, the main one taking the odd point", () => {
+    expect(focusGrowth(PROGRESSION, "attack", 1)).toMatchObject({ attack: PROGRESSION.rules.focusBonus, defense: 0 });
+    const lv = 1 + PROGRESSION.rules.focusGrowthEvery;
+    const total = PROGRESSION.rules.focusBonus + 1;
+    expect(focusGrowth(PROGRESSION, "attack", lv, "defense")).toMatchObject({ attack: Math.ceil(total / 2), defense: Math.floor(total / 2) });
   });
 });

@@ -34,7 +34,7 @@
  "shed-skin": {
   "id": "shed-skin",
   "name": "Shed Skin",
-  "description": "Shakes off foes' statuses at the start of its turn.",
+  "description": "Shakes off foes' statuses at the start of its turn, after status damage.",
   "mods": {
    "shedStatuses": true
   }
@@ -119,14 +119,6 @@
    "farDamage": 1.15
   }
  },
- "keen-eye": {
-  "id": "keen-eye",
-  "name": "Keen Eye",
-  "description": "+1 range on moves that already reach 2 or more hexes.",
-  "mods": {
-   "rangeBonus": 1
-  }
- },
  "overhead-shot": {
   "id": "overhead-shot",
   "name": "Overhead Shot",
@@ -162,15 +154,15 @@
  "guts": {
   "id": "guts",
   "name": "Guts",
-  "description": "+20% damage while it carries a status.",
+  "description": "+30% damage while it carries a status, and Burn doesn't lower its damage.",
   "mods": {
-   "statusedDamage": 1.2
+   "statusedDamage": 1.3
   }
  },
  "quick-feet": {
   "id": "quick-feet",
   "name": "Quick Feet",
-  "description": "+2 movement while it carries a status.",
+  "description": "+2 movement while it carries a status, and Paralysis doesn't stop it moving.",
   "mods": {
    "statusedMove": 2
   }
@@ -282,7 +274,7 @@
  "lingering-effects": {
   "id": "lingering-effects",
   "name": "Lingering Effects",
-  "description": "Statuses it inflicts last 1 turn longer.",
+  "description": "Statuses it inflicts last 1 turn longer (not Paralysis, Freeze or Sleep; at most +2 in all).",
   "mods": {
    "statusDurationBonus": 1
   }
@@ -290,7 +282,7 @@
  "prankster": {
   "id": "prankster",
   "name": "Prankster",
-  "description": "Its non-damaging moves recharge 1 turn faster.",
+  "description": "Its non-damaging moves recharge 1 turn faster (to at least 1).",
   "mods": {
    "statusCooldownReduction": 1
   }
@@ -298,7 +290,7 @@
  "lingering-aroma": {
   "id": "lingering-aroma",
   "name": "Lingering Aroma",
-  "description": "Statuses it put on a fainted foe spread to that foe's neighbours.",
+  "description": "Statuses it put on a fainted foe spread to that foe's neighbours for 1 turn (harmful ones only).",
   "mods": {
    "statusSpreadOnKo": true
   }
@@ -306,31 +298,20 @@
  "static": {
   "id": "static",
   "name": "Static",
-  "description": "Its damaging hits on adjacent foes Paralyze them for 1 turn.",
+  "description": "Foes that hit it from an adjacent hex are Paralyzed for 1 turn.",
   "mods": {
-   "contactStatus": {
+   "hitStatus": {
     "status": "paralysis",
     "duration": 1
-   }
-  }
- },
- "poison-point": {
-  "id": "poison-point",
-  "name": "Poison Point",
-  "description": "Its damaging hits on adjacent foes Poison them for 2 turns.",
-  "mods": {
-   "contactStatus": {
-    "status": "poison",
-    "duration": 2
    }
   }
  },
  "flame-body": {
   "id": "flame-body",
   "name": "Flame Body",
-  "description": "Its damaging hits on adjacent foes Burn them for 1 turn.",
+  "description": "Foes that hit it from an adjacent hex are Burned for 1 turn.",
   "mods": {
-   "contactStatus": {
+   "hitStatus": {
     "status": "burn",
     "duration": 1
    }
@@ -339,9 +320,9 @@
  "gooey": {
   "id": "gooey",
   "name": "Gooey",
-  "description": "Its damaging hits on adjacent foes Slow them for 1 turn.",
+  "description": "Foes that hit it from an adjacent hex are Slowed for 1 turn.",
   "mods": {
-   "contactStatus": {
+   "hitStatus": {
     "status": "slow",
     "duration": 1
    }
@@ -481,7 +462,7 @@
  "pincer": {
   "id": "pincer",
   "name": "Pincer",
-  "description": "+20% to its flank bonus when an ally also stands next to the target.",
+  "description": "+20% to its Fighting flank bonus when an ally also stands next to the target.",
   "mods": {
    "flankBonus": 0.2
   }
@@ -497,40 +478,40 @@
  "blaze": {
   "id": "blaze",
   "name": "Blaze",
-  "description": "Fire moves deal 25% more damage while below half HP.",
+  "description": "Fire moves deal 30% more damage while below half HP.",
   "mods": {
    "lowHpTypeDamage": {
-    "fire": 1.25
+    "fire": 1.3
    }
   }
  },
  "overgrow": {
   "id": "overgrow",
   "name": "Overgrow",
-  "description": "Grass moves deal 25% more damage while below half HP.",
+  "description": "Grass moves deal 30% more damage while below half HP.",
   "mods": {
    "lowHpTypeDamage": {
-    "grass": 1.25
+    "grass": 1.3
    }
   }
  },
  "torrent": {
   "id": "torrent",
   "name": "Torrent",
-  "description": "Water moves deal 25% more damage while below half HP.",
+  "description": "Water moves deal 30% more damage while below half HP.",
   "mods": {
    "lowHpTypeDamage": {
-    "water": 1.25
+    "water": 1.3
    }
   }
  },
  "swarm": {
   "id": "swarm",
   "name": "Swarm",
-  "description": "Bug moves deal 25% more damage while below half HP.",
+  "description": "Bug moves deal 30% more damage while below half HP.",
   "mods": {
    "lowHpTypeDamage": {
-    "bug": 1.25
+    "bug": 1.3
    }
   }
  },
@@ -768,6 +749,25 @@
   "description": "Its free attacks on foes stepping away from it deal 50% more damage.",
   "mods": {
    "strikeDamage": 1.5
+  }
+ },
+ "poison-touch": {
+  "id": "poison-touch",
+  "name": "Poison Touch",
+  "description": "Its damaging hits on adjacent foes Poison them for 2 turns.",
+  "mods": {
+   "contactStatus": {
+    "status": "poison",
+    "duration": 2
+   }
+  }
+ },
+ "far-sight": {
+  "id": "far-sight",
+  "name": "Far Sight",
+  "description": "+1 range on moves that already reach 2 or more hexes (up to 3; Bond moves no limit).",
+  "mods": {
+   "rangeBonus": 1
   }
  }
 }

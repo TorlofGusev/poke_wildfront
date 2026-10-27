@@ -1,6 +1,10 @@
 {
  "passives": {
-  "oddball-download": { "description": "Minden támadása 15%-kal többet sebez, teljes HP-jú ellenfélre további 15%-kal." },
-  "oddball-adaptability": { "description": "10%-kal kevesebb sebzést kap, és köre elején lerázza az ellenfél státuszait." }
+  "oddball-download": {
+   "description": "Minden támadása 15%-kal többet sebez, teljes HP-jú ellenfélre további 15%-kal."
+  },
+  "oddball-adaptability": {
+   "description": "A saját típusú támadásai 25%-kal többet sebeznek."
+  }
  }
 }

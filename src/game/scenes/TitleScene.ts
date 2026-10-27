@@ -65,7 +65,7 @@ export class TitleScene extends Phaser.Scene {
     }
 
     this.add
-      .text(width / 2, height - 30, `v${GAME_VERSION} · ${DISCLAIMER}`, {
+      .text(width / 2, height - 30, `v${GAME_VERSION} · ${t(DISCLAIMER)}`, {
         fontFamily: "monospace", fontSize: px(11), color: "#7a8499", align: "center", wordWrap: { width: width - 40 },
       })
       .setOrigin(0.5);

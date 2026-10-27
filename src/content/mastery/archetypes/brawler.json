@@ -18,7 +18,8 @@
      "skill": "skill:crunch"
     },
     {
-     "stat": "hp",
+     "stat": "attack",
+     "second": "hp",
      "skill": "skill:endeavor"
     }
    ],
@@ -43,7 +44,8 @@
      "skill": "skill:high-horsepower"
     },
     {
-     "stat": "defense",
+     "stat": "attack",
+     "second": "hp",
      "skill": "skill:zen-headbutt"
     }
    ],
@@ -60,11 +62,12 @@
    ],
    "focus": [
     {
-     "stat": "attack",
+     "stat": "hp",
+     "second": "attack",
      "skill": "skill:dizzy-punch"
     },
     {
-     "stat": "defense",
+     "stat": "hp",
      "skill": "skill:counter"
     },
     {
@@ -94,7 +97,8 @@
      "skill": "skill:night-slash"
     },
     {
-     "stat": "defense",
+     "stat": "attack",
+     "second": "hp",
      "skill": "skill:charm"
     }
    ],
@@ -164,9 +168,9 @@
   "brawler-sheer-force": {
    "id": "brawler-sheer-force",
    "name": "Sheer Force",
-   "description": "All its moves deal 20% more damage.",
+   "description": "Moves with a status effect deal 30% more damage but drop the status.",
    "mods": {
-    "damageDealt": 1.2
+    "sheerForce": true
    }
   }
  }

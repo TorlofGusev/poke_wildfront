@@ -15,11 +15,12 @@
      "skill": "skill:phantom-force"
     },
     {
-     "stat": "defense",
+     "stat": "attack",
      "skill": "skill:perish-song"
     },
     {
-     "stat": "hp",
+     "stat": "attack",
+     "second": "hp",
      "skill": "skill:pain-split"
     }
    ],

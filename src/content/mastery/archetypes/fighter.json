@@ -19,7 +19,8 @@
      "skill": "skill:submission"
     },
     {
-     "stat": "defense",
+     "stat": "attack",
+     "second": "hp",
      "skill": "skill:vital-throw"
     }
    ],
@@ -45,7 +46,8 @@
      "skill": "skill:dual-chop"
     },
     {
-     "stat": "defense",
+     "stat": "attack",
+     "second": "hp",
      "skill": "skill:taunt"
     }
    ],
@@ -70,7 +72,8 @@
      "skill": "skill:sky-uppercut"
     },
     {
-     "stat": "hp",
+     "stat": "attack",
+     "second": "hp",
      "skill": "skill:drain-punch"
     }
    ],
@@ -95,7 +98,8 @@
      "skill": "skill:blaze-kick"
     },
     {
-     "stat": "defense",
+     "stat": "attack",
+     "second": "hp",
      "skill": "skill:rolling-kick"
     }
    ],

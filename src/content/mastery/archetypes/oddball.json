@@ -13,11 +13,12 @@
      "skill": "skill:charge-beam"
     },
     {
-     "stat": "defense",
-     "skill": "skill:conversion-2"
+     "stat": "attack",
+     "skill": "skill:gravity"
     },
     {
-     "stat": "hp",
+     "stat": "attack",
+     "second": "hp",
      "skill": "skill:pain-split"
     }
    ],
@@ -31,7 +32,7 @@
  ],
  "rows": {
   "4": [
-   "keen-eye",
+   "far-sight",
    "thick-hide"
   ],
   "6": [
@@ -84,10 +85,9 @@
   "oddball-adaptability": {
    "id": "oddball-adaptability",
    "name": "Adaptability",
-   "description": "Takes 10% less damage and shakes off foes' statuses at the start of its turn.",
+   "description": "Moves of its own types deal 25% more damage.",
    "mods": {
-    "damageTaken": 0.9,
-    "shedStatuses": true
+    "ownTypeDamage": 1.25
    }
   }
  }

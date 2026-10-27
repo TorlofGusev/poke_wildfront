@@ -1,10 +1,10 @@
 {
  "passives": {
   "water-striker-swift-swim": {
-   "description": "1-gyel többet mozog, és a Víz támadásai 10%-kal többet sebeznek."
+   "description": "+1 mozgás (a mozgás felső határáig), és Víz támadásai 10%-kal többet sebeznek."
   },
   "water-striker-sheer-force": {
-   "description": "Minden támadása 20%-kal többet sebez."
+   "description": "Az állapotot okozó támadásai 30%-kal többet sebeznek, de az állapot elmarad."
   }
  }
 }

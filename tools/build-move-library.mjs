@@ -69,7 +69,7 @@ const EXCLUDED = new Set([
   "thief", "covet", "knock-off", "incinerate", "pluck", "poltergeist", "acrobatics", "belch", "fling",
   "weather-ball", "terrain-pulse", "grassy-glide", "rising-voltage", "expanding-force", "misty-explosion", "steel-roller", "secret-power",
   "sandstorm", "rain-dance", "sunny-day", "hail", "snowscape", "grassy-terrain", "electric-terrain", "psychic-terrain", "baton-pass",
-  "round", "echoed-voice", "grass-pledge", "fire-pledge", "water-pledge", "hidden-power", "dive", "snore", "pursuit",
+  "round", "echoed-voice", "grass-pledge", "fire-pledge", "water-pledge", "hidden-power", "dive", "snore", "pursuit", "tera-blast", "conversion", "conversion-2", "soak",
 ]);
 /** Moves whose point is their reach (Taunt calls a foe from afar). */
 const LONG_REACH = new Set(["taunt"]);

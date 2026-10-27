@@ -1,6 +1,10 @@
 {
  "passives": {
-  "bird-sniper": { "description": "Az 1-nél távolabbi ellenfeleket 25%-kal jobban sebzi." },
-  "bird-big-pecks": { "description": "15%-kal kevesebb sebzést kap." }
+  "bird-sniper": {
+   "description": "Az 1-nél távolabbi ellenfeleket 25%-kal jobban sebzi."
+  },
+  "bird-big-pecks": {
+   "description": "A védelme nem csökkenthető: immunis az Exposedra, és 10%-kal kevesebb sebzést kap."
+  }
  }
 }

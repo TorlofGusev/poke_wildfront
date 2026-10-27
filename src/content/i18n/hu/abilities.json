@@ -9,7 +9,7 @@
   "description": "+30% Water sebzés, amíg HP-ja a fele alatt van."
  },
  "static": {
-  "description": "A közelharcban őt eltaláló Pokémonok Paralysis-t kapnak."
+  "description": "A szomszédos hexről őt eltaláló Pokémonok Paralysis-t kapnak."
  },
  "sturdy": {
   "description": "Csatánként egyszer 1 HP-val túlél egy kiütő csapást."
@@ -18,22 +18,22 @@
   "description": "Távolról is célba veheti a magas fűben rejtőző Pokémonokat."
  },
  "run-away": {
-  "description": "+1 mozgás."
+  "description": "Szabad ütés nélkül léphet el a lekötő ellenfél mellől."
  },
  "shield-dust": {
   "description": "Immunis minden állapotra."
  },
  "poison-point": {
-  "description": "A közelharcban őt eltaláló Pokémonok Poison-t kapnak."
+  "description": "A szomszédos hexről őt eltaláló Pokémonok Poison-t kapnak."
  },
  "inner-focus": {
-  "description": "Immunis a Paralysisre és a Freeze-re."
+  "description": "Nem lehet megfélemlíteni: immunis a Weakenedre."
  },
  "effect-spore": {
-  "description": "A Grass támadásai Poison-t is okoznak a célpontnak."
+  "description": "A szomszédos hexről őt eltaláló Pokémonok Poison-t kapnak."
  },
  "anger-point": {
-  "description": "+1 Attack minden alkalommal, amikor sebzést kap (max +3, erre a csatára)."
+  "description": "+1 Attack minden alkalommal, amikor egy támadás eltalálja (max +3, erre a csatára)."
  },
  "arena-trap": {
   "description": "A mellette kört kezdő ellenfelek nem mozoghatnak."
@@ -42,61 +42,61 @@
   "description": "+30% Bug sebzés, amíg HP-ja a fele alatt van."
  },
  "chlorophyll": {
-  "description": "+1 mozgás."
+  "description": "+1 mozgás (a mozgás felső határáig)."
  },
  "levitate": {
   "description": "A föld fölött lebeg: a Slow sosem hat rá."
  },
  "cute-charm": {
-  "description": "A közelharcban őt eltaláló Pokémonok elbűvölődnek: 1 körre Slow-t kapnak."
+  "description": "A szomszédos hexről őt eltaláló Pokémonok elbűvölődnek: 1 körre Slow-t kapnak."
  },
  "thick-fat": {
-  "description": "10%-kal kevesebb sebzést kap."
+  "description": "50%-kal kevesebb sebzést kap a Tűz és Jég támadásoktól."
  },
  "swift-swim": {
-  "description": "+1 mozgás."
+  "description": "+1 mozgás (a mozgás felső határáig), és Víz támadásai 10%-kal többet sebeznek."
  },
  "shell-armor": {
-  "description": "10%-kal kevesebb sebzést kap."
+  "description": "Sosem kap kritikus találatot, és 10%-kal kevesebb sebzést kap."
  },
  "battle-armor": {
-  "description": "10%-kal kevesebb sebzést kap."
+  "description": "Sosem kap kritikus találatot, és 10%-kal kevesebb sebzést kap."
  },
  "flame-body": {
-  "description": "A közelharcban őt eltaláló Pokémonok Burn-t kapnak."
+  "description": "A szomszédos hexről őt eltaláló Pokémonok Burn-t kapnak."
  },
  "guts": {
-  "description": "+30% sebzés, amíg állapot van rajta."
+  "description": "+30% sebzés, amíg állapot van rajta, és az égés nem csökkenti a sebzését."
  },
  "flash-fire": {
-  "description": "+15% Fire sebzés."
+  "description": "50%-kal kevesebb sebzést kap a Tűz támadásoktól, és Tűz támadásai 25%-kal többet sebeznek."
  },
  "pressure": {
-  "description": "Az általa okozott állapotok 1 körrel tovább tartanak."
+  "description": "Az általa okozott állapotok 1 körrel tovább tartanak (a Paralysis, Freeze és Sleep kivételével; összesen legfeljebb +2)."
  },
  "oblivious": {
-  "description": "Nem lehet elbűvölni: a Slow sosem hat rá."
+  "description": "Nem lehet elbűvölni vagy provokálni: a Slow és a Taunted nem hat rá."
  },
  "clear-body": {
-  "description": "Immunis az Exposedra."
+  "description": "A támadása nem csökkenthető: immunis a Weakenedre."
  },
  "hyper-cutter": {
-  "description": "Immunis az Exposedra."
+  "description": "A támadása nem csökkenthető: immunis a Weakenedre."
  },
  "insomnia": {
-  "description": "Nem lehet elaltatni: immunis a Freeze-re."
+  "description": "Nem lehet elaltatni: immunis a Sleep-re."
  },
  "natural-cure": {
   "description": "Immunis a Poisonra és a Burnre."
  },
  "water-absorb": {
-  "description": "Minden saját köre elején gyógyítja max HP-ja 5%-át."
+  "description": "50%-kal kevesebb sebzést kap a Víz támadásoktól, és minden köre elején max HP-ja 5%-át gyógyítja."
  },
  "sniper": {
   "description": "+15% sebzés legalább 2 hexnyire lévő célpontokra."
  },
  "sand-veil": {
-  "description": "20%-kal kevesebb sebzést kap, amíg teljes HP-n van."
+  "description": "15%-kal kevesebb sebzést kap."
  },
  "compound-eyes": {
   "description": "+1 max hatótáv a legalább 2 hexig érő támadásokra (legfeljebb 3-ig; Bond támadásoknál nincs korlát), és lövései átszállnak az útban álló Pokémonokon."
@@ -105,7 +105,7 @@
   "description": "Immunis a Paralysisre."
  },
  "shed-skin": {
-  "description": "Immunis a Poisonra."
+  "description": "Köre elején, az állapot-sebzés után lerázza az ellenfél okozta állapotokat."
  },
  "moxie": {
   "description": "+1 Attack minden kiütött ellenfél után (max +3, erre a csatára)."

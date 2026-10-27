@@ -52,4 +52,26 @@ describe("move mechanics behind canon names", () => {
     const eTurn = { ...r.state, turn: { ...r.state.turn!, unitId: "e" } };
     expect(validTargets(eTurn, CONTENT, "e", "tackle")).not.toContainEqual({ x: 4, y: 0 });
   });
+
+  it("Leech Seed drains each turn into the Pokémon that planted it; draining moves heal the user", () => {
+    const { state } = createBattle(CONTENT, ["....."], [u("p", "bulbasaur", "player", 0, ["vine-whip", "leech-seed"]), u("e", "rattata", "enemy", 2, ["tackle"])]);
+    const hurt = { ...state, units: state.units.map((x) => (x.id === "p" ? { ...x, hp: x.hp - 20 } : x)) };
+    const seeded = applyAction(hurt, CONTENT, { type: "useMove", unitId: "p", moveId: "leech-seed", target: { x: 2, y: 0 } });
+    const before = seeded.state.units.find((x) => x.id === "p")!.hp;
+    const next = applyAction(seeded.state, CONTENT, { type: "endTurn", unitId: "p" });
+    const lost = (next.events.find((e) => e.type === "damaged" && e.unitId === "e") as { amount: number }).amount;
+    expect(next.state.units.find((x) => x.id === "p")!.hp).toBe(before + lost);
+    for (const m of ["leech-life", "drain-punch", "draining-kiss"]) expect(CONTENT.moves[m]!.effects?.some((e) => e.kind === "drain"), m).toBe(true);
+  });
+
+  it("Fake Out makes the target flinch (it loses its next action), not freeze", () => {
+    expect(CONTENT.moves["fake-out"]!.effects).toEqual([{ kind: "status", status: "flinched", duration: 1 }]);
+    expect(CONTENT.statuses.flinched!.noAction).toBe(true);
+  });
+
+  it("abilities guard against the statuses their names promise", () => {
+    expect(CONTENT.abilities.insomnia!.mods!.statusImmune).toEqual(["sleep"]);
+    expect(CONTENT.abilities["clear-body"]!.mods!.statusImmune).toEqual(["weakened"]);
+    for (const a of Object.values(CONTENT.abilities)) for (const s of a.mods?.statusImmune ?? []) if (s !== "*") expect(CONTENT.statuses, `${a.id}: ${s}`).toHaveProperty(s);
+  });
 });

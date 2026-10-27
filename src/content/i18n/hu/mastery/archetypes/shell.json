@@ -1,7 +1,7 @@
 {
  "passives": {
   "shell-shell-armor": {
-   "description": "20%-kal kevesebb sebzést kap."
+   "description": "Sosem kap kritikus találatot, és 10%-kal kevesebb sebzést kap."
   },
   "shell-rain-dish": {
    "description": "Minden kör elején a maximális HP 6%-át gyógyítja."

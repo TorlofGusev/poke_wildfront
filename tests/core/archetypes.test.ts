@@ -102,6 +102,17 @@ describe("archetype trees", () => {
     expect(problems).toEqual([]);
   });
 
+  it("a line's focuses grow its main stat: two pure (+2), one mixed with its second stat (+1/+1)", () => {
+    const problems: string[] = [];
+    for (const a of ARCHETYPES) for (const l of a.lines) {
+      if (a.mimic) continue;
+      const mains = new Set(l.focus.map((f) => f.stat));
+      const mixed = l.focus.filter((f) => f.second);
+      if (mains.size !== 1 || mixed.length !== 1 || mixed[0]!.second === mixed[0]!.stat) problems.push(`${l.line[0]}: ${JSON.stringify(l.focus)}`);
+    }
+    expect(problems).toEqual([]);
+  });
+
   it("every species is in exactly one tree", () => {
     const counted = ARCHETYPES.flatMap((a) => a.lines.flatMap((l) => l.line));
     expect(counted.slice().sort()).toEqual(Object.keys(CONTENT.species).sort());

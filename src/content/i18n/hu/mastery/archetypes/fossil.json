@@ -1,10 +1,10 @@
 {
  "passives": {
   "fossil-swift-swim": {
-   "description": "Körönként 1 mezővel többet léphet."
+   "description": "+1 mozgás (a mozgás felső határáig), és Víz támadásai 10%-kal többet sebeznek."
   },
   "fossil-battle-armor": {
-   "description": "15%-kal kevesebb sebzést kap."
+   "description": "Sosem kap kritikus találatot, és 10%-kal kevesebb sebzést kap."
   }
  }
 }

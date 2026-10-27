@@ -24,7 +24,7 @@ export class CreditsScene extends Phaser.Scene {
       }
       return [l.replace(/^#+ /, "").replace(/\[([^\]]+)\]\(([^)]+)\)/g, "$1 ($2)").replace(/[*`]/g, "")];
     });
-    const body = this.add.text(24, 60, [...lines, "", DISCLAIMER].join("\n"), {
+    const body = this.add.text(24, 60, [t(LEGAL_NOTICE), "", ...lines, "", t(DISCLAIMER)].join("\n"), {
       fontFamily: FONT, fontSize: px(12), color: COLORS.text, wordWrap: { width: width - 48 }, lineSpacing: 3,
     });
     this.add.rectangle(0, 0, width, 52, 0x10141c).setOrigin(0).setDepth(1);

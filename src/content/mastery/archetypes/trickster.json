@@ -14,11 +14,12 @@
      "skill": "skill:nightmare"
     },
     {
-     "stat": "defense",
+     "stat": "attack",
      "skill": "skill:disable"
     },
     {
-     "stat": "hp",
+     "stat": "attack",
+     "second": "hp",
      "skill": "skill:drain-punch"
     }
    ],
@@ -39,11 +40,12 @@
      "skill": "skill:fake-out"
     },
     {
-     "stat": "defense",
+     "stat": "attack",
      "skill": "skill:barrier"
     },
     {
-     "stat": "hp",
+     "stat": "attack",
+     "second": "hp",
      "skill": "skill:misty-terrain"
     }
    ],
@@ -101,15 +103,15 @@
   "trickster-filter": {
    "id": "trickster-filter",
    "name": "Filter",
-   "description": "Takes 15% less damage.",
+   "description": "Takes 35% less super-effective damage.",
    "mods": {
-    "damageTaken": 0.85
+    "superEffectiveTaken": 0.65
    }
   },
   "trickster-forewarn": {
    "id": "trickster-forewarn",
    "name": "Forewarn",
-   "description": "+25% damage to foes carrying a status an ally applied, and its non-damaging moves recharge 1 turn faster.",
+   "description": "+25% damage to foes carrying a status an ally applied, and its non-damaging moves recharge 1 turn faster (to at least 1).",
    "mods": {
     "vsSetupDamage": 1.25,
     "statusCooldownReduction": 1

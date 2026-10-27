@@ -1,10 +1,10 @@
 {
  "passives": {
   "thicket-harvest": {
-   "description": "Minden körben max. HP-ja 5%-át gyógyítja, és Fű támadásai többet szívnak el."
+   "description": "Minden körben max. HP-ja 5%-át gyógyítja, és életszívó támadásai a sebzés további 15%-át gyógyítják."
   },
   "thicket-gluttony": {
-   "description": "Fél HP alatt 25%-kal többet sebez, és kiütéskor max. HP-ja 15%-át gyógyítja."
+   "description": "Minden köre elején max HP-ja 6%-át gyógyítja."
   }
  }
 }

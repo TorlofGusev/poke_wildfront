@@ -1,9 +1,19 @@
 {
  "passives": {
-  "eevee-adaptability": { "description": "Minden támadása 20%-kal többet sebez." },
-  "eevee-anticipation": { "description": "15%-kal kevesebb sebzést kap." },
-  "eevee-water-absorb": { "description": "Minden körben a maximális HP-ja 6%-át gyógyítja." },
-  "eevee-volt-absorb": { "description": "Nem bénítható és nem lassítható, és minden körben a maximális HP-ja 4%-át gyógyítja." },
-  "eevee-flash-fire": { "description": "Nem égethető meg, és minden támadása 15%-kal többet sebez." }
+  "eevee-adaptability": {
+   "description": "A saját típusú támadásai 25%-kal többet sebeznek."
+  },
+  "eevee-anticipation": {
+   "description": "Megérzi a veszélyt: nem lehet megriasztani, provokálni vagy összezavarni, és 10%-kal kevesebb sebzést kap."
+  },
+  "eevee-water-absorb": {
+   "description": "50%-kal kevesebb sebzést kap a Víz támadásoktól, és minden köre elején max HP-ja 5%-át gyógyítja."
+  },
+  "eevee-volt-absorb": {
+   "description": "Nem bénítható és nem lassítható, és minden körben a maximális HP-ja 4%-át gyógyítja."
+  },
+  "eevee-flash-fire": {
+   "description": "50%-kal kevesebb sebzést kap a Tűz támadásoktól, és Tűz támadásai 25%-kal többet sebeznek."
+  }
  }
 }

@@ -227,8 +227,8 @@
   "effects": [
    {
     "kind": "status",
-    "status": "slow",
-    "duration": 2
+    "status": "paralysis",
+    "duration": 1
    }
   ]
  },
@@ -488,7 +488,7 @@
  },
  "teleport": {
   "id": "teleport",
-  "name": "Fall Back",
+  "name": "Teleport",
   "type": "psychic",
   "kind": "special",
   "cooldown": 3,
@@ -591,7 +591,13 @@
    "kind": "single"
   },
   "affects": "enemies",
-  "canonPower": 80
+  "canonPower": 80,
+  "effects": [
+   {
+    "kind": "drain",
+    "amount": 0.5
+   }
+  ]
  },
  "double-kick": {
   "id": "double-kick",
@@ -857,7 +863,7 @@
   "effects": [
    {
     "kind": "status",
-    "status": "slow",
+    "status": "weakened",
     "duration": 2
    }
   ]

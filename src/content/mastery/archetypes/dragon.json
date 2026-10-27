@@ -15,11 +15,12 @@
      "skill": "skill:extreme-speed"
     },
     {
-     "stat": "defense",
+     "stat": "attack",
      "skill": "skill:dragon-tail"
     },
     {
-     "stat": "hp",
+     "stat": "attack",
+     "second": "hp",
      "skill": "skill:heal-bell"
     }
    ],
@@ -69,19 +70,11 @@
    "relentless"
   ],
   "30": [
-   "dragon-multiscale",
+   "dragon-marvel-scale",
    "dragon-inner-focus"
   ]
  },
  "passives": {
-  "dragon-multiscale": {
-   "id": "dragon-multiscale",
-   "name": "Multiscale",
-   "description": "Takes 35% less damage while at full HP.",
-   "mods": {
-    "fullHpDamageTaken": 0.65
-   }
-  },
   "dragon-inner-focus": {
    "id": "dragon-inner-focus",
    "name": "Inner Focus",
@@ -93,6 +86,14 @@
     "statusImmune": [
      "confused"
     ]
+   }
+  },
+  "dragon-marvel-scale": {
+   "id": "dragon-marvel-scale",
+   "name": "Marvel Scale",
+   "description": "Takes 30% less damage while it carries a status.",
+   "mods": {
+    "statusedDamageTaken": 0.7
    }
   }
  }

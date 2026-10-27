@@ -7,7 +7,7 @@ export interface UnitModifiers {
   readonly moveBonus: number;
   /** Extra max range on moves that already reach 2+ hexes; only Bond moves may go past 3 (see moveRange). */
   readonly rangeBonus: number;
-  /** Damage multipliers against targets 3+ tiles away, and adjacent targets. */
+  /** Damage multipliers against targets 2+ hexes away, and adjacent targets. */
   readonly farDamage: number;
   readonly closeDamage: number;
   /** Multiplies all damage this unit deals. */
@@ -103,6 +103,20 @@ export interface UnitModifiers {
   readonly shootOver: boolean;
   /** Damage multipliers against foes carrying a given status, e.g. Merciless { poison: 1.25 }. */
   readonly vsStatusIdDamage: Readonly<Record<string, number>>;
+  /** Damage multiplier of moves of its own types (Adaptability). */
+  readonly ownTypeDamage: number;
+  /** Multiplies super-effective damage it receives (Filter, Solid Rock). */
+  readonly superEffectiveTaken: number;
+  /** Multiplies damage it receives from moves of a type, e.g. Thick Fat { fire: 0.5, ice: 0.5 }. */
+  readonly typeDamageTaken: Readonly<Record<string, number>>;
+  /** Multiplies damage it receives while it carries a status (Marvel Scale). */
+  readonly statusedDamageTaken: number;
+  /** Never takes critical hits (Battle Armor, Shell Armor). */
+  readonly critImmune: boolean;
+  /** Moves with a status effect deal 30% more but lose the status (Sheer Force). */
+  readonly sheerForce: boolean;
+  /** Status a foe gets when it hits this unit from an adjacent hex (Static, Flame Body). */
+  readonly hitStatus: { readonly status: string; readonly duration: number } | null;
 }
 
 export const NO_MODIFIERS: UnitModifiers = {
@@ -110,6 +124,7 @@ export const NO_MODIFIERS: UnitModifiers = {
   lowHpDamage: 1, healPerTurn: 0, statusDurationBonus: 0, impactBonus: 0,
   flankBonus: 0, swarmBonus: 0, drainBonus: 0, pushBonus: 0, pullBonus: 0, lowHpTypeDamage: {}, bondOnKo: 0, bondOnFaint: 0, bondCostReduction: 0, contactStatus: null, koHeal: 0, thorns: 0, vsEngagedDamage: 1, vsSetupDamage: 1, comboBond: 0, disengage: false, statusImmune: [],
   pinDamage: 1, strikeDamage: 1, vsMudDamage: 1, surroundedDamage: 1, statusedDamage: 1, fullHpDamageTaken: 1, koAttackBoost: 0, koMove: 0, healWhileEngaged: 0, bondOnStrike: 0, furyCutter: 0, statusedMove: 0, statusCooldownReduction: 0, koRefreshBasic: false, koResetCooldowns: false, statusSpreadOnKo: false, shedStatuses: false, sturdy: false, noEscape: false, shootOver: false, vsStatusIdDamage: {},
+  ownTypeDamage: 1, superEffectiveTaken: 1, typeDamageTaken: {}, statusedDamageTaken: 1, critImmune: false, sheerForce: false, hitStatus: null,
 };
 
 export function combineModifiers(...parts: readonly Partial<UnitModifiers>[]): UnitModifiers {
@@ -120,6 +135,8 @@ export function combineModifiers(...parts: readonly Partial<UnitModifiers>[]): U
     const vsStatusIdDamage: Record<string, number> = { ...acc.vsStatusIdDamage };
     for (const [t, m] of Object.entries(p.vsStatusIdDamage ?? {})) vsStatusIdDamage[t] = (vsStatusIdDamage[t] ?? 1) * m;
     for (const [t, m] of Object.entries(p.lowHpTypeDamage ?? {})) lowHpTypeDamage[t] = (lowHpTypeDamage[t] ?? 1) * m;
+    const typeDamageTaken: Record<string, number> = { ...acc.typeDamageTaken };
+    for (const [t, m] of Object.entries(p.typeDamageTaken ?? {})) typeDamageTaken[t] = (typeDamageTaken[t] ?? 1) * m;
     return {
       moveBonus: acc.moveBonus + (p.moveBonus ?? 0),
       rangeBonus: acc.rangeBonus + (p.rangeBonus ?? 0),
@@ -172,6 +189,13 @@ export function combineModifiers(...parts: readonly Partial<UnitModifiers>[]): U
       noEscape: acc.noEscape || (p.noEscape ?? false),
       shootOver: acc.shootOver || (p.shootOver ?? false),
       vsStatusIdDamage,
+      ownTypeDamage: acc.ownTypeDamage * (p.ownTypeDamage ?? 1),
+      superEffectiveTaken: acc.superEffectiveTaken * (p.superEffectiveTaken ?? 1),
+      typeDamageTaken,
+      statusedDamageTaken: acc.statusedDamageTaken * (p.statusedDamageTaken ?? 1),
+      critImmune: acc.critImmune || (p.critImmune ?? false),
+      sheerForce: acc.sheerForce || (p.sheerForce ?? false),
+      hitStatus: p.hitStatus ?? acc.hitStatus,
     };
   }, NO_MODIFIERS);
 }

@@ -11,11 +11,12 @@
    ],
    "focus": [
     {
-     "stat": "attack",
+     "stat": "defense",
+     "second": "attack",
      "skill": "skill:explosion"
     },
     {
-     "stat": "attack",
+     "stat": "defense",
      "skill": "skill:hammer-arm"
     },
     {
@@ -36,7 +37,8 @@
    ],
    "focus": [
     {
-     "stat": "attack",
+     "stat": "defense",
+     "second": "attack",
      "skill": "skill:head-smash"
     },
     {
@@ -112,9 +114,9 @@
   "boulder-solid-rock": {
    "id": "boulder-solid-rock",
    "name": "Solid Rock",
-   "description": "It takes 20% less damage.",
+   "description": "Takes 35% less super-effective damage.",
    "mods": {
-    "damageTaken": 0.8
+    "superEffectiveTaken": 0.65
    }
   }
  }
