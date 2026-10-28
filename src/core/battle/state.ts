@@ -57,6 +57,7 @@ export interface BattleUnit {
 export interface TurnState {
   readonly unitId: string;
   movePointsLeft: number;
+  /** A ball has been thrown this turn (one a turn). */
   actionUsed: boolean;
   /** The basic attack is separate from the action: one of each per turn. */
   basicUsed: boolean;

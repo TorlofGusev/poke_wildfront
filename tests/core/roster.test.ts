@@ -117,7 +117,7 @@ describe("captured Pokémon after battle", () => {
     state = { ...state, units: state.units.map((u) => (u.id === "e" ? { ...u, captured: true } : u)), outcome: "victory", balls: { "poke-ball": 0 } };
     const full = game(Array.from({ length: MAX_PARTY_SIZE }, (_, i) => member(`m${i + 1}`)).map((m, i) => (i === 0 ? { ...m, uid: "a" } : m)));
     const { game: next, summary } = resolveBattle(content, prog, full, state);
-    expect(summary.captured).toEqual([{ member: pm("pk100", "slow", 0, 3, { activeMoves: ["ember"] }), to: "storage" }]);
+    expect(summary.captured).toEqual([{ member: pm("pk100", "slow", 0, 3, { activeMoves: [] }), to: "storage" }]);
     expect(next.nextUid).toBe(101);
     expect(next.inventory.balls["poke-ball"]).toBe(0);
     expect(newMember(content, prog, "mid", 5, 1)).toMatchObject({ uid: "pk5", speciesId: "mid", hp: 40, knockouts: 0, level: 1 });

@@ -59,9 +59,9 @@ describe("enemy AI self-buffs", () => {
       "e",
       [".......", ".......", "......."],
     );
+    // The knockout first; a buff may follow once nothing is left to hit.
     const moves = usedMoves(state);
-    expect(moves).toContain("zap");
-    expect(moves).not.toContain("protect");
+    expect(moves[0]).toBe("zap");
   });
 
   it("uses Agility while opponents are out of reach, and still advances", () => {

@@ -7,6 +7,9 @@ export class Button extends Phaser.GameObjects.Container {
   private readonly bg: Phaser.GameObjects.Rectangle;
   private readonly label: Phaser.GameObjects.Text;
   private enabled = true;
+  /** Fill when enabled and on hover (a type colour can replace the default slate). */
+  private fill = 0x2a3245;
+  private hoverFill = 0x3a4560;
 
   constructor(scene: Phaser.Scene, x: number, y: number, w: number, h: number, text: string, onClick: () => void) {
     super(scene, x, y);
@@ -15,8 +18,8 @@ export class Button extends Phaser.GameObjects.Container {
     this.add([this.bg, this.label]);
     this.setSize(w, h);
     this.bg.setInteractive({ useHandCursor: true });
-    this.bg.on("pointerover", () => this.enabled && this.bg.setFillStyle(0x3a4560));
-    this.bg.on("pointerout", () => this.bg.setFillStyle(this.enabled ? 0x2a3245 : 0x1c2130));
+    this.bg.on("pointerover", () => this.enabled && this.bg.setFillStyle(this.hoverFill));
+    this.bg.on("pointerout", () => this.bg.setFillStyle(this.enabled ? this.fill : 0x1c2130));
     this.bg.on("pointerdown", () => {
       if (!this.enabled) return;
       sfx(scene, "select");
@@ -40,6 +43,15 @@ export class Button extends Phaser.GameObjects.Container {
     return this;
   }
 
+  /** Fills the button with a dark shade of a colour (e.g. a move's type), lighter on hover. */
+  setFill(color: number): this {
+    const shade = (k: number) => Phaser.Display.Color.GetColor(((color >> 16) & 255) * k, ((color >> 8) & 255) * k, (color & 255) * k);
+    this.fill = shade(0.38);
+    this.hoverFill = shade(0.55);
+    if (this.enabled) this.bg.setFillStyle(this.fill);
+    return this;
+  }
+
   /** Centres the label in the button. */
   centerLabel(): this {
     this.label.setOrigin(0.5, 0.5).setX(this.width / 2);
@@ -53,7 +65,7 @@ export class Button extends Phaser.GameObjects.Container {
 
   setEnabled(enabled: boolean): this {
     this.enabled = enabled;
-    this.bg.setFillStyle(enabled ? 0x2a3245 : 0x1c2130);
+    this.bg.setFillStyle(enabled ? this.fill : 0x1c2130);
     this.label.setColor(enabled ? "#e8ecf4" : "#5a6378");
     return this;
   }

@@ -150,7 +150,6 @@ export function moveUnavailableReason(
   if (state.turn?.unitId !== unitId) return "not this unit's turn";
   const kind = content.moves[moveId]?.kind;
   if (kind === "basic" && state.turn.basicUsed) return "basic attack already used this turn";
-  if (kind !== "basic" && state.turn.actionUsed) return "action already used this turn";
   if ((unit.cooldowns[moveId] ?? 0) > 0) return `on cooldown (${unit.cooldowns[moveId]})`;
   if (unit.usedUltimates.includes(moveId)) return "already used this battle";
   const move = content.moves[moveId];
@@ -236,7 +235,8 @@ export function createBattle(
         speciesId: u.speciesId,
         side: u.side,
         maxHp,
-        hp: u.hp ?? maxHp,
+        // A saved HP above the max (stats recomputed, a level changed) starts full instead.
+        hp: Math.min(u.hp ?? maxHp, maxHp),
         pos: { ...u.pos },
         statuses: [],
         cooldowns: {},
@@ -418,8 +418,8 @@ export function commitMove(
   state: BattleState, content: BattleContent, user: BattleUnit, moveId: string, move: MoveDef, target: Point,
   affected: readonly BattleUnit[], events: BattleEvent[], area?: FreeArea,
 ): void {
+  // One basic attack a turn; specials only wait on their cooldown, Bond moves on the team's Bond.
   if (move.kind === "basic") state.turn!.basicUsed = true;
-  else state.turn!.actionUsed = true;
   if (move.kind === "special" && move.cooldown)
     user.cooldowns[moveId] = move.power > 0 ? move.cooldown : Math.max(1, move.cooldown - user.mods.statusCooldownReduction);
   if (move.kind === "ultimate") user.usedUltimates.push(moveId);
@@ -853,6 +853,9 @@ function displace(
   if ((dx === 0 && dy === 0) || distance <= 0) return;
   if (target.traits.immovable) return;
   displaceFree(state, content, user, target, kind, distance, events);
+  // Pushed (or pulled) out of its partner's reach: the engagement breaks, with no free attack.
+  const partner = partnerOf(state, target);
+  if (partner && apart(state, partner.pos, target.pos) > MELEE_REACH) disengage(state, target, events);
 }
 
 /** An engaged pair steps in until they touch (immovable ones hold their ground). */

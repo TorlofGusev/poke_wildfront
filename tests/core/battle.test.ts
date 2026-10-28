@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { IllegalActionError, movementPoints, unitById, switchTargets, type BattleAction, type BattleState, type UnitSetup } from "../../src/core/battle";
+import { IllegalActionError, moveUnavailableReason, movementPoints, unitById, switchTargets, type BattleAction, type BattleState, type UnitSetup } from "../../src/core/battle";
 import { applyAction, createBattle, hexPos, validTargets } from "./hexFixture";
 import { distance } from "../../src/core/free";
 import { key } from "../../src/core/grid";
@@ -65,12 +65,15 @@ describe("turn economy", () => {
     expect(() => act(state, { type: "move", unitId: "a", to: { x: 2, y: 4 } })).toThrow(IllegalActionError);
   });
 
-  it("permits one basic attack and one action per turn", () => {
-    let { state } = battle([u("a", "fast", "player", 0, 0), u("b", "slow", "enemy", 1, 0)]);
-    state = act(state, { type: "useMove", unitId: "a", moveId: "tackle", target: { x: 1, y: 0 } }).state;
-    expect(() => act(state, { type: "useMove", unitId: "a", moveId: "tackle", target: { x: 1, y: 0 } })).toThrow(/basic attack already used/);
-    state = act(state, { type: "useMove", unitId: "a", moveId: "shove", target: { x: 1, y: 0 } }).state;
-    expect(() => act(state, { type: "useMove", unitId: "a", moveId: "zap", target: { x: 1, y: 0 } })).toThrow(/action already used/);
+  it("permits one basic attack a turn, and every special that is off cooldown", () => {
+    let { state } = battle([u("a", "fast", "player", 0, 0), u("b", "slow", "enemy", 1, 0), u("c", "slow", "enemy", 5, 0)]);
+    // A special, then the basic attack, then the other special: only cooldowns hold specials back.
+    state = act(state, { type: "useMove", unitId: "a", moveId: "zap", target: { x: 1, y: 0 } }).state;
+    expect(moveUnavailableReason(state, content, "a", "zap")).not.toBeNull();
+    const b = state.units.find((x) => x.id === "b")!;
+    state = act(state, { type: "useMove", unitId: "a", moveId: "tackle", target: b.pos }).state;
+    expect(moveUnavailableReason(state, content, "a", "tackle")).toMatch(/basic attack already used/);
+    expect(moveUnavailableReason(state, content, "a", "shove")).toBeNull();
   });
 
   it("rejects actions from units whose turn it is not", () => {

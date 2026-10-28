@@ -10,7 +10,7 @@ import {
   type BattleUnit,
 } from "../battle";
 import type { Point } from "../grid/types";
-import { distance, freeAim, freeRange, freeReachFor, inArea, timedStrikeOutcome, CELL } from "../free";
+import { distance, freeAim, freeRange, freeReach, freeReachFor, inArea, timedStrikeOutcome, CELL } from "../free";
 
 /**
  * A delayed strike or a watch hits later, if at all: worth this share of the same hit landing now
@@ -19,6 +19,8 @@ import { distance, freeAim, freeRange, freeReachFor, inArea, timedStrikeOutcome,
 const TIMED_SHARE = { delayed: 0.7, watch: 0.4 } as const;
 /** Cost of ending a walk on burning or poisoned ground, or in a foe's watched area (per hazard or watch). */
 const DANGER = 1.5;
+/** How far the AI looks along walking paths when it has nothing in reach (hex widths; past it, straight-line × 3). */
+const WALK_HORIZON = 40;
 
 /** Hazards, foe watches and foe delayed strikes covering `pos`. */
 function dangerAt(state: BattleState, self: BattleUnit, pos: Point): number {
@@ -245,14 +247,14 @@ export function planTurn(
         if (mv.kind === "ultimate") score -= weights.ultimateCost;
         if (mv.kind === "bond") score -= weights.bondCost * (mv.bondCost ?? 0);
         if (score <= 0) continue;
-        // The basic attack and the main action are separate: greedily add the best follow-up of the other kind.
-        const follow = bestFollowUp(result.state, content, self, weights, mv.kind === "basic");
+        // The rest of the turn: greedily add the best further moves (the basic, specials off cooldown, Bond moves).
+        const follow = followUps(result.state, content, self, weights);
         // Where the turn ends matters: fewer foes able to strike back, more friends nearby.
         const at = unitById(result.state, unitId).pos;
         const exposed = (weights.exposure > 0 && result.state.outcome === "ongoing" ? weights.exposure * exposureAt(content, result.state, self, at) : 0)
           + DANGER * dangerAt(result.state, self, at);
         const total = score + (follow?.score ?? 0) - exposed;
-        const plan = { actions: [...(moveAction ? [moveAction] : []), use, ...(follow ? [follow.action] : []), end], score: total };
+        const plan = { actions: [...(moveAction ? [moveAction] : []), use, ...(follow?.actions ?? []), end], score: total };
         if (weights.slack > 0) plans.push(plan);
         if (!best || total > best.score) best = plan;
       }
@@ -269,7 +271,10 @@ export function planTurn(
   // reach, so the side that charges in first is the one that gets hit first.
   const opponents = livingUnits(state).filter((u) => u.side !== self.side);
   const melee = longestReach(content, self) <= 1;
-  const distTo = (p: Point) => Math.min(...opponents.map((o) => distance(p, o.pos) - (melee && longestReach(content, o) > 1 ? 1 : 0)));
+  // Walking distance, not straight-line: a rock between the sides would otherwise leave both waiting at its faces.
+  const walks = opponents.map((o) => ({ o, reach: freeReach(state.field, o.pos, WALK_HORIZON, [], !!self.traits.flies) }));
+  const walk = (p: Point, w: (typeof walks)[number]) => w.reach.costTo(p) ?? distance(p, w.o.pos) * 3;
+  const distTo = (p: Point) => Math.min(...walks.map((w) => walk(p, w) - (melee && longestReach(content, w.o) > 1 ? 1 : 0)));
   const patient = !melee && state.round <= weights.patienceRounds;
   // Once patience is over, closing in comes first: exposure only breaks ties between equally close
   // spots (weighted fully, it outweighed every step forward and melee units never left their spot).
@@ -298,18 +303,39 @@ function pickIndex(state: BattleState, unitId: string, n: number): number {
   return h % n;
 }
 
+/** How many more moves the AI chains after the first one in a turn (specials off cooldown, the basic, Bond moves). */
+const MAX_FOLLOW_UPS = 3;
+
+/** Greedily adds the best further move while one is worth using: the rest of the turn after the first move. */
+function followUps(
+  after: BattleState,
+  content: BattleContent,
+  self: BattleUnit,
+  w: AiWeights,
+): { actions: BattleAction[]; score: number } | null {
+  const actions: BattleAction[] = [];
+  let score = 0;
+  let state = after;
+  for (let k = 0; k < MAX_FOLLOW_UPS; k++) {
+    const next = bestFollowUp(state, content, self, w);
+    if (!next) break;
+    actions.push(next.action);
+    score += next.score;
+    state = applyAction(state, content, next.action).state;
+  }
+  return actions.length ? { actions, score } : null;
+}
+
 function bestFollowUp(
   after: BattleState,
   content: BattleContent,
   self: BattleUnit,
   w: AiWeights,
-  firstWasBasic: boolean,
 ): { action: BattleAction; score: number } | null {
   if (after.outcome !== "ongoing" || after.turn?.unitId !== self.id) return null;
   let best: { action: BattleAction; score: number } | null = null;
   for (const moveId of self.moves) {
     const mv = content.moves[moveId]!;
-    if ((mv.kind === "basic") === firstWasBasic) continue;
     for (const target of aimPoints(after, content, self.id, moveId)) {
       const action: BattleAction = { type: "useMove", unitId: self.id, moveId, target };
       const r = applyAction(after, content, action);

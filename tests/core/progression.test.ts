@@ -176,13 +176,17 @@ describe("focus and talents", () => {
 });
 
 describe("move loadout", () => {
-  it("allows up to 3 known moves besides the basic attack", () => {
-    const m = { ...starter("geodude", 20), knownMoves: ["tackle", "smack-down", "rock-throw", "rock-slide", "earthquake"] };
+  it("a loadout holds one basic attack, two skills and one Bond move", () => {
+    const m = { ...starter("geodude", 20), knownMoves: ["tackle", "smack-down", "rock-throw", "rock-slide", "earthquake", "magnitude"] };
     expect(setActiveMoves(CONTENT, PROGRESSION, m, ["rock-slide", "earthquake"]).activeMoves).toEqual(["rock-slide", "earthquake"]);
-    expect(() => setActiveMoves(CONTENT, PROGRESSION, m, ["smack-down", "rock-throw", "rock-slide", "earthquake"])).toThrow(/at most 3/);
+    expect(() => setActiveMoves(CONTENT, PROGRESSION, m, ["smack-down", "rock-throw", "rock-slide"])).toThrow(/at most 2 skill/);
+    expect(() => setActiveMoves(CONTENT, PROGRESSION, m, ["earthquake", "magnitude"])).toThrow(/at most 1 bond/);
     expect(() => setActiveMoves(CONTENT, PROGRESSION, m, ["thunder"])).toThrow(/does not know/);
     expect(() => setActiveMoves(CONTENT, PROGRESSION, m, ["tackle"])).toThrow(/basic attack/);
     expect(toUnitSetup(CONTENT, PROGRESSION, m).moves![0]).toBe("tackle");
+    // Extras from an old save are left out of battle.
+    expect(toUnitSetup(CONTENT, PROGRESSION, { ...m, activeMoves: ["smack-down", "rock-throw", "rock-slide", "earthquake", "magnitude"] }).moves)
+      .toEqual(["tackle", "smack-down", "rock-throw", "earthquake"]);
   });
 });
 

@@ -34,7 +34,10 @@ describe("enemy AI", () => {
   it("moves in and attacks when a target is reachable", () => {
     const state = enemyTurn([u("p", "slow", "player", 0, 1), u("e", "fast", "enemy", 5, 1)], "e");
     const { plan } = runPlan(state);
-    expect(plan.map((a) => a.type)).toEqual(["move", "useMove", "useMove", "endTurn"]);
+    const types = plan.map((a) => a.type);
+    expect(types[0]).toBe("move");
+    expect(types.at(-1)).toBe("endTurn");
+    expect(types.filter((x) => x === "useMove").length).toBeGreaterThanOrEqual(2);
   });
 
   it("prefers finishing off a low-HP target", () => {

@@ -474,6 +474,18 @@ export class OverworldScene extends Phaser.Scene {
     this.render();
   }
 
+  /** What was just picked up, framed over the map for a few seconds (the status line changes as soon as you walk on). */
+  private lootToast(found: readonly string[]): void {
+    const text = this.add.text(0, 0, t("Found {items}!", { items: found.join(", ") }), {
+      fontFamily: FONT, fontSize: px(14), color: "#f5d76e", fontStyle: "bold", align: "center", wordWrap: { width: 360 },
+    }).setOrigin(0.5);
+    const w = text.width + 28, h = text.height + 16;
+    const box = this.add.rectangle(0, 0, w, h, 0x10141c, 0.92).setStrokeStyle(2, 0xf5d76e);
+    const toast = this.add.container(this.scale.width / 2, 92, [box, text]).setDepth(40).setAlpha(0);
+    this.tweens.add({ targets: toast, alpha: 1, y: 84, duration: 180 });
+    this.tweens.add({ targets: toast, alpha: 0, delay: 3200, duration: 500, onComplete: () => toast.destroy() });
+  }
+
   private startNpcBattle(npc: NpcDef): void {
     this.closeDialog();
     const def = currentWorld();
@@ -749,7 +761,10 @@ export class OverworldScene extends Phaser.Scene {
     this.moving = false;
     const stopAt = this.world.pos;
     this.message = found.length ? tag("good", t("Found {items}!", { items: found.join(", ") })) : "";
-    if (found.length) sfx(this, "pickup");
+    if (found.length) {
+      sfx(this, "pickup");
+      this.lootToast(found);
+    }
     const exit = !encounter ? exitAt(currentWorld(), stopAt) : undefined;
     if (exit?.to && WORLDS[exit.to] && !meets(session.game, exit.requires)) {
       this.message = tag("bad", exit.lockedText ?? t("The way is shut for now."));

@@ -18,6 +18,9 @@ import {
 } from "../../core/party";
 import {
   basicMoveOf,
+  battleMoves,
+  LOADOUT,
+  slotOf,
   chooseFocus,
   chooseTalent,
   memberFocusGrowth,
@@ -313,8 +316,12 @@ export class PokemonScene extends Phaser.Scene {
   private renderMoves(m: PartyMember, y: number, add: <T extends Phaser.GameObjects.GameObject>(o: T) => T): void {
     const s = CONTENT.species[m.speciesId]!;
     const basic = basicMoveOf(CONTENT, s);
+    // What it fights with: one basic attack, two skills, one Bond move.
+    const fighting = battleMoves(CONTENT, m);
+    const activeBasic = fighting[0]!;
+    const count = (slot: "skill" | "bond") => fighting.filter((mv) => slotOf(CONTENT, mv) === slot).length;
     y += add(new RichText(this, DETAIL_X, y, DETAIL_W, 13)).setMarkup(
-      `${tag("title", t("Moves"))} ${tag("dim", t("({n}/{max} active besides the basic attack; tap to inspect, toggle on the right)", { n: m.activeMoves.length, max: PROGRESSION.rules.maxActiveMoves }))}`) + 4;
+      `${tag("title", t("Moves"))} ${tag("dim", t("(1 basic attack, skills {s}/{smax}, {bond} {b}/{bmax}; tap to inspect, toggle on the right)", { s: count("skill"), smax: LOADOUT.skill, bond: CONTENT.terms.bond, b: count("bond"), bmax: LOADOUT.bond }))}`) + 4;
     const listW = 440;
     const kindLabel = (id: string) => {
       const d = CONTENT.moves[id]!;
@@ -322,11 +329,11 @@ export class PokemonScene extends Phaser.Scene {
       const r = d.range.min === d.range.max ? `${d.range.max}` : `${d.range.min}-${d.range.max}`;
       return `${d.type} · ${kind} · ${t("range {r}", { r })}${d.power ? ` · ${t("Power {n}", { n: d.power })}` : ""}`;
     };
-    const shown = this.selectedMove && m.knownMoves.includes(this.selectedMove) ? this.selectedMove : basic;
+    const shown = this.selectedMove && m.knownMoves.includes(this.selectedMove) ? this.selectedMove : activeBasic;
     const rows = [basic, ...m.knownMoves.filter((mv) => mv !== basic)];
     rows.forEach((mv, i) => {
       const def = CONTENT.moves[mv]!;
-      const mark = mv === basic ? "◆" : m.activeMoves.includes(mv) ? "■" : "□";
+      const mark = mv === activeBasic ? "◆" : fighting.includes(mv) ? "■" : slotOf(CONTENT, mv) === "basic" ? "◇" : "□";
       add(new Button(this, DETAIL_X, y + i * 28, listW, 24, `${mark} ${def.name.padEnd(13)} ${kindLabel(mv)}`, () => {
         this.selectedMove = mv;
         this.render();
@@ -335,14 +342,26 @@ export class PokemonScene extends Phaser.Scene {
     const infoX = DETAIL_X + listW + 16;
     const infoW = DETAIL_X + DETAIL_W - infoX;
     const h = add(new RichText(this, infoX, y, infoW, 12)).setMarkup(describeMove(CONTENT, CONTENT.moves[shown]!));
-    if (shown === basic) {
+    const slot = slotOf(CONTENT, shown);
+    // Only the moves that fit the loadout (an old save may list more).
+    const current = fighting.filter((mv) => mv !== basic && m.activeMoves.includes(mv));
+    if (shown === activeBasic) {
       add(new RichText(this, infoX, y + h + 8, infoW, 12)).setMarkup(tag("dim", t("Basic attack: always available, once per turn.")));
+    } else if (slot === "basic") {
+      // Another basic attack: choosing it swaps it in for the current one.
+      add(new Button(this, infoX, y + h + 8, infoW, 26, t("Use as basic attack"), () => {
+        const others = current.filter((x) => slotOf(CONTENT, x) !== "basic");
+        this.act(() => this.updateMember(m, (x) => setActiveMoves(CONTENT, PROGRESSION, x, shown === basic ? others : [shown, ...others])));
+      }).setHighlighted(true));
     } else {
-      const active = m.activeMoves.includes(shown);
-      add(new Button(this, infoX, y + h + 8, infoW, 26, active ? t("Remove from active moves") : t("Make active"), () => {
-        const next = active ? m.activeMoves.filter((x) => x !== shown) : [...m.activeMoves, shown];
+      const active = current.includes(shown);
+      const full = !active && count(slot) >= LOADOUT[slot];
+      const label = active ? t("Remove from active moves") : full ? (slot === "bond" ? t("{bond} slot full: remove one first", { bond: CONTENT.terms.bond }) : t("Skill slots full: remove one first")) : t("Make active");
+      add(new Button(this, infoX, y + h + 8, infoW, 26, label, () => {
+        if (full) return;
+        const next = active ? current.filter((x) => x !== shown) : [...current, shown];
         this.act(() => this.updateMember(m, (x) => setActiveMoves(CONTENT, PROGRESSION, x, next)));
-      }).setHighlighted(!active));
+      }).setHighlighted(!active && !full));
     }
     y += rows.length * 28 + 6;
 

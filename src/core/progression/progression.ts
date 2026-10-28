@@ -35,17 +35,40 @@ export const basicMoveOf = (content: BattleContent, species: SpeciesDef): string
 /** The moves a species knows without its tree: a basic attack and one typed move (every other move comes from the tree). */
 export const startingMoves = (species: SpeciesDef): string[] => [...species.moves];
 
-/** Default loadout: the most recently learned non-basic moves. */
+/** Loadout slots: one basic attack, two skills (specials and ultimates), one Bond move. */
+export const LOADOUT = { basic: 1, skill: 2, bond: 1 } as const;
+export type LoadoutSlot = keyof typeof LOADOUT;
+export const slotOf = (content: BattleContent, moveId: string): LoadoutSlot => {
+  const kind = content.moves[moveId]?.kind;
+  return kind === "basic" ? "basic" : kind === "bond" ? "bond" : "skill";
+};
+
+/**
+ * The moves a member fights with: its chosen basic attack (the species' own unless another one is active),
+ * then up to two skills and one Bond move from its active list, in order (extras are left out).
+ */
+export function battleMoves(content: BattleContent, m: Progress): string[] {
+  const used: Record<LoadoutSlot, number> = { basic: 0, skill: 0, bond: 0 };
+  const picked = m.activeMoves.filter((mv) => content.moves[mv] && used[slotOf(content, mv)]++ < LOADOUT[slotOf(content, mv)]);
+  const basic = picked.find((mv) => slotOf(content, mv) === "basic") ?? basicMoveOf(content, content.species[m.speciesId]!);
+  return [basic, ...picked.filter((mv) => mv !== basic)];
+}
+
+/** Default loadout: the strongest skills (or the newest support ones), and the strongest Bond move. */
 export function defaultActiveMoves(content: BattleContent, prog: ProgressionContent, speciesId: string, known: readonly string[]): string[] {
+  void prog;
   const basic = basicMoveOf(content, content.species[speciesId]!);
-  const max = prog.rules.maxActiveMoves;
-  const options = known.filter((m) => m !== basic);
-  // A fighting loadout: the strongest damaging moves, plus the newest support move in the last slot.
-  const damaging = options.filter((m) => (content.moves[m]?.power ?? 0) > 0).sort((a, b) => content.moves[b]!.power - content.moves[a]!.power);
-  const support = options.filter((m) => !damaging.includes(m)).reverse();
-  const picks = [...damaging.slice(0, max - 1), ...support.slice(0, 1)];
-  for (const m of [...damaging, ...support]) if (picks.length < max && !picks.includes(m)) picks.push(m);
-  return options.filter((m) => picks.includes(m));
+  const best = (slot: LoadoutSlot, n: number) => {
+    const options = known.filter((m) => m !== basic && content.moves[m] && slotOf(content, m) === slot);
+    const damaging = options.filter((m) => content.moves[m]!.power > 0).sort((a, b) => content.moves[b]!.power - content.moves[a]!.power);
+    const support = options.filter((m) => !damaging.includes(m)).reverse();
+    // The strongest damaging moves, with the newest support move in the last skill slot.
+    const picks = slot === "skill" ? [...damaging.slice(0, n - 1), ...support.slice(0, 1)] : damaging.slice(0, n);
+    for (const m of [...damaging, ...support]) if (picks.length < n && !picks.includes(m)) picks.push(m);
+    return picks;
+  };
+  const picks = [...best("skill", LOADOUT.skill), ...best("bond", LOADOUT.bond)];
+  return known.filter((m) => picks.includes(m));
 }
 
 export const xpToNext = (prog: ProgressionContent, level: number): number => level * prog.rules.xpPerLevel;
@@ -162,7 +185,7 @@ export function toUnitSetup(content: BattleContent, prog: ProgressionContent, m:
   const basic = basicMoveOf(content, content.species[m.speciesId]!);
   return {
     speciesId: m.speciesId, level: m.level, stats, maxHp, hp: Math.min(m.hp, maxHp),
-    moves: [basic, ...m.activeMoves], mods: memberModifiers(prog, m),
+    moves: battleMoves(content, m), mods: memberModifiers(prog, m),
   };
 }
 
@@ -185,7 +208,8 @@ function learnLevelMoves<T extends Progress>(content: BattleContent, prog: Progr
   for (const move of startingMoves(content.species[cur.speciesId]!)) {
     if (cur.knownMoves.includes(move)) continue;
     const basic = basicMoveOf(content, content.species[cur.speciesId]!);
-    const activate = move !== basic && cur.activeMoves.length < prog.rules.maxActiveMoves;
+    const slot = slotOf(content, move);
+    const activate = move !== basic && slot !== "basic" && cur.activeMoves.filter((x) => slotOf(content, x) === slot).length < LOADOUT[slot];
     cur = { ...cur, knownMoves: [...cur.knownMoves, move], activeMoves: activate ? [...cur.activeMoves, move] : cur.activeMoves };
     events.push({ type: "learned", move, activated: activate });
   }
@@ -256,7 +280,7 @@ export function trainerSetup(
   m = developTree(content, prog, m, (options) => (options.find((o) => o.stat === mon.focus) ?? options[0]!).skill, (options) => options[0]!);
   if (mon.moves) {
     const basic = basicMoveOf(content, species);
-    m = { ...m, activeMoves: mon.moves.filter((id) => id !== basic && content.moves[id]).slice(0, prog.rules.maxActiveMoves) };
+    m = { ...m, activeMoves: mon.moves.filter((id) => id !== basic && content.moves[id]) };
   }
   return toUnitSetup(content, prog, m);
 }
@@ -411,12 +435,15 @@ export function resetMasteries<T extends Progress>(content: BattleContent, m: T)
 
 /** Sets the active moves (besides the basic attack). */
 export function setActiveMoves<T extends Progress>(content: BattleContent, prog: ProgressionContent, m: T, moves: readonly string[]): T {
+  void prog;
   const basic = basicMoveOf(content, content.species[m.speciesId]!);
-  if (moves.length > prog.rules.maxActiveMoves) throw new Error(`at most ${prog.rules.maxActiveMoves} moves besides ${basic}`);
   if (new Set(moves).size !== moves.length) throw new Error("a move is listed twice");
   for (const mv of moves) {
     if (!m.knownMoves.includes(mv)) throw new Error(`${m.speciesId} does not know ${mv}`);
-    if (mv === basic) throw new Error("the basic attack is always active");
+    if (mv === basic) throw new Error("the species' basic attack is used when no other basic is active");
+  }
+  for (const slot of Object.keys(LOADOUT) as LoadoutSlot[]) {
+    if (moves.filter((mv) => slotOf(content, mv) === slot).length > LOADOUT[slot]) throw new Error(`at most ${LOADOUT[slot]} ${slot} move(s)`);
   }
   return { ...m, activeMoves: [...moves] };
 }

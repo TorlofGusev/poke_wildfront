@@ -123,7 +123,7 @@ export class PartyScene extends Phaser.Scene {
     this.portrait(x + 6, y + 6, 40, m.speciesId);
 
     const max = memberMaxHp(CONTENT, PROGRESSION, m);
-    const frac = m.hp / max;
+    const frac = Math.min(1, m.hp / max);
     const role = m.focus ? focusLabel(m.focus) : t("no focus yet");
     const held = m.heldItem ? PROGRESSION.items[m.heldItem]!.name : t("no item");
     const pips = "●".repeat(m.knockouts) + "○".repeat(KNOCKOUTS_TO_DEATH - m.knockouts);
@@ -141,7 +141,8 @@ export class PartyScene extends Phaser.Scene {
     this.add.rectangle(x + 8, barY, CARD_W - 16, 6, 0x000000).setOrigin(0, 0.5);
     this.add.rectangle(x + 8, barY, (CARD_W - 16) * frac, 6, frac > 0.5 ? 0x7ed321 : frac > 0.25 ? 0xf5a623 : 0xd0021b).setOrigin(0, 0.5);
     new RichText(this, x + 8, barY + 8, CARD_W - 16, 12).setMarkup(
-      `${m.hp > 0 ? `HP ${m.hp}/${max}` : tag("ko", t("fainted"))}  KO ${tag(m.knockouts ? "ko" : "dim", pips)}${waiting.length ? `\n${tag("num", `★ ${waiting.join(", ")}`)}` : ""}`);
+      // A pending choice is just flagged here (the Pokémon's page has the details).
+      `${m.hp > 0 ? `HP ${Math.min(m.hp, max)}/${max}` : tag("ko", t("fainted"))}  KO ${tag(m.knockouts ? "ko" : "dim", pips)}${waiting.length ? `  ${tag("num", t("★ Lv up"))}` : ""}`);
   }
 
   private mini(x: number, y: number, m: PartyMember): void {

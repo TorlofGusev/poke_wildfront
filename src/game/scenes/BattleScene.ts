@@ -85,6 +85,26 @@ const SPOT_PICK = 0.45;
 const LOG_LINE_H = 15;
 /** How far a line or cone reaches from the user (null for other shapes). */
 const fanLength = (move: MoveDef): number | null => (move.shape.kind === "line" || move.shape.kind === "cone" ? move.shape.length + 0.3 : null);
+/** Top-half colours of the balls (the bottom is white), for the aiming cursor. */
+const BALL_TOPS: Readonly<Record<string, string>> = { "poke-ball": "#e3350d", "great-ball": "#2f6fd6", "ultra-ball": "#2a2a2a" };
+const ballCursors = new Map<string, string>();
+/** A small drawn ball as a CSS cursor, centred on the click point. */
+function ballCursor(ballId: string): string {
+  let css = ballCursors.get(ballId);
+  if (!css) {
+    const c = document.createElement("canvas");
+    c.width = c.height = 24;
+    const g = c.getContext("2d")!;
+    g.beginPath(); g.arc(12, 12, 10, Math.PI, 0); g.fillStyle = BALL_TOPS[ballId] ?? "#e3350d"; g.fill();
+    g.beginPath(); g.arc(12, 12, 10, 0, Math.PI); g.fillStyle = "#f4f4f4"; g.fill();
+    g.lineWidth = 2; g.strokeStyle = "#111";
+    g.beginPath(); g.arc(12, 12, 10, 0, Math.PI * 2); g.moveTo(2, 12); g.lineTo(22, 12); g.stroke();
+    g.beginPath(); g.arc(12, 12, 3.5, 0, Math.PI * 2); g.fillStyle = "#f4f4f4"; g.fill(); g.stroke();
+    css = `url(${c.toDataURL()}) 12 12, crosshair`;
+    ballCursors.set(ballId, css);
+  }
+  return css;
+}
 /** Hazard colours on the field. */
 const HAZARD_COLORS = { fire: 0xff6a1f, poison: 0xa04ad8, mud: 0x7a5a32 } as const;
 
@@ -207,6 +227,7 @@ export class BattleScene extends Phaser.Scene {
     const logButton = new Button(this, BOARD_X + board.w - 110, BOARD_Y + board.h + 6, 110, 22, PHONE ? t("Full log") : t("Full log [L]"), () => this.toggleLogOverlay());
     logButton.setDepth(5);
     this.input.keyboard?.on("keydown-L", () => this.toggleLogOverlay());
+    this.events.once("shutdown", () => this.input.setDefaultCursor("default"));
     this.input.on("wheel", (_p: unknown, _o: unknown, _dx: number, dy: number) => {
       if (!this.logOverlay) return;
       this.scrollLog(-dy * 0.6);
@@ -361,17 +382,21 @@ export class BattleScene extends Phaser.Scene {
     this.tweens.add({ targets: view.sprite, x: { from: -3, to: 0 }, duration: 160, ease: "Bounce.Out" });
   }
 
-  private syncUnits(): void {
+  /**
+   * Puts the views in step with the state. While events play, `positions` is false: the tweens move the
+   * Pokémon (the state already holds where they end up, after any knockback still to be shown).
+   */
+  private syncUnits(positions = true): void {
     if (!this.state) return;
     for (const u of this.state.units) {
       const view = this.units.get(u.id);
       if (!view) continue;
-      const { x, y } = fieldToWorld(u.pos);
-      // Lower on the field draws in front.
-      view.container.setPosition(x, y).setVisible(u.hp > 0).setDepth(2 + u.pos.y / 100);
-      const frac = u.hp / u.maxHp;
-      view.hpBar.width = 36 * frac;
-      view.hpBar.fillColor = frac > 0.5 ? 0x7ed321 : frac > 0.25 ? 0xf5a623 : 0xd0021b;
+      if (positions) {
+        const { x, y } = fieldToWorld(u.pos);
+        // Lower on the field draws in front.
+        view.container.setPosition(x, y).setVisible(u.hp > 0).setDepth(2 + u.pos.y / 100);
+      }
+      this.setHpBar(u.id, u.hp, u.maxHp);
       // Spirit: fills gold; full width (white) while Pumped.
       const pumped = u.statuses.some((s) => s.id === "pumped");
       view.spiritBar.width = pumped ? 36 : 36 * (u.spirit ?? 0) / CONTENT.rules.willpower.spiritMax;
@@ -379,6 +404,14 @@ export class BattleScene extends Phaser.Scene {
       const active = this.state.turn?.unitId === u.id;
       view.ring.setStrokeStyle(active ? 4 : 3, active ? COLORS.active : u.side === "player" ? COLORS.player : COLORS.enemy);
     }
+  }
+
+  private setHpBar(unitId: string, hp: number, maxHp: number): void {
+    const view = this.units.get(unitId);
+    if (!view) return;
+    const frac = Math.max(0, hp) / maxHp;
+    view.hpBar.width = 36 * frac;
+    view.hpBar.fillColor = frac > 0.5 ? 0x7ed321 : frac > 0.25 ? 0xf5a623 : 0xd0021b;
   }
 
   /** Hover (or tap) a foe: where it can walk next turn (orange) and how far its attacks reach from there (red ring). */
@@ -667,6 +700,8 @@ export class BattleScene extends Phaser.Scene {
       this.tweens.add({ targets: this.armedFrame, alpha: { from: 1, to: 0.25 }, duration: 350, yoyo: true, repeat: -1 });
     }
     this.armedFrame.setVisible(this.armed !== null);
+    // A mouse aiming a ball carries the ball as its cursor.
+    if (!PHONE) this.input.setDefaultCursor(this.selectedBall && this.phase === "battle" ? ballCursor(this.selectedBall) : "default");
     if (this.armed) {
       const c = fieldToWorld(this.armed);
       this.armedFrame.setPosition(c.x, c.y);
@@ -807,8 +842,11 @@ export class BattleScene extends Phaser.Scene {
       this.panel.add(t);
       y += t.height + 4;
     };
-    const button = (label: string, enabled: boolean, highlighted: boolean, onClick: () => void) => {
-      const b = new Button(this, 0, y, PANEL_W, 26, label, onClick).setEnabled(enabled).setHighlighted(highlighted);
+    const button = (label: string, enabled: boolean, highlighted: boolean, onClick: () => void, color?: number) => {
+      const b = new Button(this, 0, y, PANEL_W, 26, label, onClick);
+      // A move's button takes its type's colour.
+      if (color !== undefined) b.setFill(color);
+      b.setEnabled(enabled).setHighlighted(highlighted);
       this.panel.add(b);
       y += 30;
       return b;
@@ -894,20 +932,20 @@ export class BattleScene extends Phaser.Scene {
       // A short guide to what can be done now, for new players.
       if (!this.selectedMove && !this.selectedBall) text(t("Blue: move · pick a move to attack"), COLORS.dim, 11);
       if (switchTargets(state).length) text(t("Tap another of your Pokémon to act with it instead."), COLORS.dim, 11);
-      // Basic attack and action are separate budgets: one of each per turn, in any order.
+      // One basic attack a turn; specials as long as they are off cooldown; Bond moves while the Bond lasts.
       // Struggle only shows while it is the unit's way to fight (engaged, ranged basic attack).
       const basics = unit.moves.filter((m) => CONTENT.moves[m]!.kind === "basic" && (m !== "struggle" || !moveUnavailableReason(state, CONTENT, unit.id, m)));
       const others = unit.moves.filter((m) => CONTENT.moves[m]!.kind !== "basic");
       const ordered = [...basics, ...others];
       for (const moveId of ordered) {
         if (moveId === basics[0]) text(state.turn!.basicUsed ? t("Basic attack · used (1 per turn)") : t("Basic attack · ready (1 per turn)"), state.turn!.basicUsed ? COLORS.dim : "#9fd3ff", 12);
-        if (moveId === others[0]) text(state.turn!.actionUsed ? t("Action · used (1 per turn)") : t("Action · ready (1 per turn)"), state.turn!.actionUsed ? COLORS.dim : "#9fd3ff", 12);
+        if (moveId === others[0]) text(t("Skills · any number, each on its own cooldown"), "#9fd3ff", 12);
         const move = CONTENT.moves[moveId]!;
         const reason = moveUnavailableReason(state, CONTENT, unit.id, moveId);
         const hasTarget = !reason && freeHasTarget(state, CONTENT, unit.id, moveId);
         const cd = unit.cooldowns[moveId] ?? 0;
         const range = moveRange(unit, move);
-        const used = move.kind === "basic" ? state.turn!.basicUsed : state.turn!.actionUsed;
+        const used = move.kind === "basic" && state.turn!.basicUsed;
         const status = cd > 0 ? t("wait {n}", { n: cd })
           : !used && !reason && !hasTarget ? t("no target {r}", { r: range.min === range.max ? range.max : `${range.min}-${range.max}` })
           // Basic and special need no label: the "Basic attack" / "Action" headers above say it.
@@ -920,7 +958,7 @@ export class BattleScene extends Phaser.Scene {
           this.selectedBall = null;
           this.selectedMove = this.selectedMove === moveId ? null : moveId;
           this.refreshAll();
-        }).onHover((over) => {
+        }, TYPE_COLORS[move.type]).onHover((over) => {
           this.hoveredMove = over ? moveId : this.hoveredMove === moveId ? null : this.hoveredMove;
           this.refreshInfo();
           this.refreshOverlay();
@@ -1073,10 +1111,13 @@ export class BattleScene extends Phaser.Scene {
     const enemy = this.scenario.enemies.find((e) => e.id === id);
     const member = this.party.find((m) => m.id === id);
     const speciesId = enemy?.speciesId ?? member!.speciesId;
-    const maxHp = maxHpOf(CONTENT, speciesId);
+    // Its real level, stats and moves (from progression), not the species' level-1 ones.
+    const setup = enemy ?? member?.setup;
+    const maxHp = setup?.maxHp ?? maxHpOf(CONTENT, speciesId);
     return {
-      id, speciesId, side: enemy ? "enemy" : "player", maxHp, hp: member?.hp ?? maxHp,
-      pos: enemy?.pos ?? { x: 0, y: 0 }, statuses: [], cooldowns: {}, usedUltimates: [], captured: false, level: 1, stats: CONTENT.species[speciesId]!.stats, moves: CONTENT.species[speciesId]!.moves, mods: NO_MODIFIERS,
+      id, speciesId, side: enemy ? "enemy" : "player", maxHp, hp: Math.min(enemy?.hp ?? member?.hp ?? maxHp, maxHp),
+      pos: enemy?.pos ?? { x: 0, y: 0 }, statuses: [], cooldowns: {}, usedUltimates: [], captured: false, level: setup?.level ?? 1,
+      stats: setup?.stats ?? CONTENT.species[speciesId]!.stats, moves: setup?.moves ?? CONTENT.species[speciesId]!.moves, mods: { ...NO_MODIFIERS, ...setup?.mods },
       traits: unitTraits(CONTENT, CONTENT.species[speciesId]!.types),
       ability: CONTENT.abilities[CONTENT.species[speciesId]!.ability ?? ""] ?? null, attackBoost: 0, spirit: 0, sturdyUsed: false, furyTarget: null, furyStreak: 0, engagedWith: null,
     };
@@ -1373,22 +1414,26 @@ export class BattleScene extends Phaser.Scene {
           sfx(this, e.source === "status" ? "status" : e.effectiveness && e.effectiveness > 1 ? "superHit" : e.effectiveness && e.effectiveness < 1 ? "weakHit" : "hit");
           const eff = e.effectiveness && e.effectiveness !== 1 ? (e.effectiveness > 1 ? " !" : " ↓") : "";
           this.floatText(e.unitId, `-${e.amount}${eff}`, e.source === "status" ? "#c070ff" : "#ff6b6b");
-          this.syncUnits();
+          this.setHpBar(e.unitId, e.hp, unitById(this.state!, e.unitId).maxHp);
           await this.wait(220);
           break;
         }
         case "healed":
           sfx(this, "heal");
           this.floatText(e.unitId, `+${e.amount}`, "#7ed321");
-          this.syncUnits();
+          this.setHpBar(e.unitId, e.hp, unitById(this.state!, e.unitId).maxHp);
           break;
         case "displaced":
-          await this.tweenPath(e.unitId, [e.to]);
+          if (e.engage) await this.tweenPath(e.unitId, [e.to]);
+          else await this.shove(e.unitId, e.to);
           if (e.blocked) this.cameras.main.shake(120, 0.004);
+          break;
+        case "engaged":
+          this.faceEachOther(e.unitId, e.targetId);
           break;
         case "statusApplied":
           this.floatText(e.unitId, e.status === "pumped" ? t("Pumped!") : CONTENT.statuses[e.status]?.name ?? e.status, e.status === "pumped" ? "#f5d76e" : "#c070ff");
-          this.syncUnits();
+          this.syncUnits(false);
           break;
         case "statusResisted":
           this.floatText(e.unitId, t("Resisted"), "#e8ecf4");
@@ -1517,12 +1562,29 @@ export class BattleScene extends Phaser.Scene {
         const dx = to.x - view.container.x;
         const dy = to.y - view.container.y;
         this.animate(unitId, "walk", facingFor(dx, dy));
-        // About 130 ms per hex width walked.
-        const duration = Math.max(60, (Math.hypot(dx, dy) / S) * 130);
+        // About 320 ms per hex width: a walk, not a dash.
+        const duration = Math.max(120, (Math.hypot(dx, dy) / S) * 320);
         await new Promise<void>((resolve) => this.tweens.add({ targets: view.container, ...to, duration, onComplete: () => resolve() }));
       }
       this.animate(unitId, "idle");
     })();
+  }
+
+  /** A knockback: slid there quickly, without walking. */
+  private shove(unitId: string, to: Point): Promise<void> {
+    const view = this.units.get(unitId);
+    if (!view) return Promise.resolve();
+    const p = fieldToWorld(to);
+    return new Promise((resolve) => this.tweens.add({ targets: view.container, ...p, duration: 220, ease: "Cubic.easeOut", onComplete: () => resolve() }));
+  }
+
+  /** An engaged pair turns to face each other. */
+  private faceEachOther(a: string, b: string): void {
+    const va = this.units.get(a), vb = this.units.get(b);
+    if (!va || !vb) return;
+    const dx = vb.container.x - va.container.x, dy = vb.container.y - va.container.y;
+    this.animate(a, "idle", facingFor(dx, dy));
+    this.animate(b, "idle", facingFor(-dx, -dy));
   }
 
   private fadeOut(unitId: string): Promise<void> {

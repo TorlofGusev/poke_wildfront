@@ -25,9 +25,9 @@
   "max": 0.25
  },
  "movement": {
-  "base": 1.5,
-  "perSpeed": 0.5,
-  "max": 6
+  "base": 1,
+  "perSpeed": 0.35,
+  "max": 5
  },
  "crit": {
   "base": 0.05,

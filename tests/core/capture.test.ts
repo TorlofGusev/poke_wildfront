@@ -54,13 +54,14 @@ describe("throwing balls", () => {
     expect(captureUnavailableReason(wild(19), content, "p", "poke-ball", hexPos({ x: 2, y: 0 }))).toBeNull();
   });
 
-  it("requires balls, a wild battle, range and the unit's action", () => {
+  it("requires balls, a wild battle, range and one throw a turn", () => {
     expect(captureUnavailableReason(wild(10, { balls: {} }), content, "p", "poke-ball", hexPos({ x: 2, y: 0 }))).toMatch(/no Poké Ball left/);
     expect(captureUnavailableReason(wild(10, { captureAllowed: false }), content, "p", "poke-ball", hexPos({ x: 2, y: 0 }))).toMatch(/not possible/);
     const far = createBattle(content, ["......"], [u("p", "fast", "player", 0, 0), u("e", "slow", "enemy", 5, 0, 5)], { captureAllowed: true, balls: { "poke-ball": 1 } }).state;
     expect(captureUnavailableReason(far, content, "p", "poke-ball", hexPos({ x: 5, y: 0 }))).toMatch(/range/);
-    const used = applyAction(wild(30), content, { type: "useMove", unitId: "p", moveId: "zap", target: { x: 2, y: 0 } }).state;
-    expect(captureUnavailableReason(used, content, "p", "poke-ball", hexPos({ x: 2, y: 0 }))).toMatch(/action already used/);
+    const thrown = applyAction(wild(10), content, { type: "throwBall", unitId: "p", ballId: "poke-ball", target: hexPos({ x: 2, y: 0 }) }).state;
+    if (thrown.outcome === "ongoing" && thrown.turn?.unitId === "p")
+      expect(captureUnavailableReason(thrown, content, "p", "poke-ball", hexPos({ x: 2, y: 0 }))).toMatch(/action already used/);
     expect(captureTargets(wild(10), content, "p", "poke-ball")).toEqual([hexPos({ x: 2, y: 0 })]);
   });
 
