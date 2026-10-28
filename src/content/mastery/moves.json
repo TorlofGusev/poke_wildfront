@@ -32,8 +32,8 @@
   "cooldown": 2,
   "power": 40,
   "range": {
-   "min": 1,
-   "max": 2
+   "min": 2,
+   "max": 4
   },
   "requiresLineOfSight": true,
   "shape": {
@@ -47,7 +47,8 @@
     "duration": 1
    }
   ],
-  "canonPower": 40
+  "canonPower": 40,
+  "reach": "ranged"
  },
  "acupressure": {
   "id": "acupressure",
@@ -95,7 +96,8 @@
   },
   "affects": "enemies",
   "canonPower": 60,
-  "category": "physical"
+  "category": "physical",
+  "reach": "melee"
  },
  "agility": {
   "id": "agility",
@@ -128,17 +130,18 @@
   "kind": "special",
   "category": "special",
   "cooldown": 2,
-  "power": 55,
+  "power": 50,
   "range": {
-   "min": 1,
-   "max": 2
+   "min": 2,
+   "max": 4
   },
   "requiresLineOfSight": true,
   "shape": {
    "kind": "single"
   },
   "affects": "enemies",
-  "canonPower": 60
+  "canonPower": 60,
+  "reach": "ranged"
  },
  "air-slash": {
   "id": "air-slash",
@@ -147,27 +150,28 @@
   "kind": "special",
   "category": "special",
   "cooldown": 3,
-  "power": 65,
+  "power": 60,
   "range": {
-   "min": 1,
-   "max": 2
+   "min": 2,
+   "max": 4
   },
   "requiresLineOfSight": true,
   "shape": {
    "kind": "single"
   },
   "affects": "enemies",
-  "canonPower": 75
+  "canonPower": 75,
+  "reach": "ranged"
  },
  "alluring-voice": {
   "id": "alluring-voice",
   "name": "Alluring Voice",
   "type": "fairy",
   "kind": "special",
-  "power": 65,
+  "power": 60,
   "range": {
-   "min": 1,
-   "max": 2
+   "min": 2,
+   "max": 4
   },
   "requiresLineOfSight": true,
   "shape": {
@@ -176,7 +180,8 @@
   "affects": "enemies",
   "cooldown": 3,
   "category": "special",
-  "canonPower": 80
+  "canonPower": 80,
+  "reach": "ranged"
  },
  "amnesia": {
   "id": "amnesia",
@@ -208,10 +213,10 @@
   "type": "rock",
   "kind": "special",
   "cooldown": 3,
-  "power": 55,
+  "power": 50,
   "range": {
-   "min": 1,
-   "max": 2
+   "min": 2,
+   "max": 4
   },
   "requiresLineOfSight": true,
   "shape": {
@@ -219,7 +224,8 @@
   },
   "affects": "enemies",
   "canonPower": 60,
-  "category": "special"
+  "category": "special",
+  "reach": "ranged"
  },
  "aqua-jet": {
   "id": "aqua-jet",
@@ -243,7 +249,8 @@
    }
   ],
   "canonPower": 40,
-  "cooldown": 2
+  "cooldown": 2,
+  "reach": "melee"
  },
  "aqua-ring": {
   "id": "aqua-ring",
@@ -286,7 +293,8 @@
   },
   "affects": "enemies",
   "canonPower": 90,
-  "cooldown": 3
+  "cooldown": 3,
+  "reach": "melee"
  },
  "aromatherapy": {
   "id": "aromatherapy",
@@ -339,7 +347,8 @@
     "duration": 1
    }
   ],
-  "canonPower": 60
+  "canonPower": 60,
+  "reach": "melee"
  },
  "astonish": {
   "id": "astonish",
@@ -358,7 +367,8 @@
   "affects": "enemies",
   "cooldown": 2,
   "category": "physical",
-  "canonPower": 30
+  "canonPower": 30,
+  "reach": "melee"
  },
  "aura-sphere": {
   "id": "aura-sphere",
@@ -367,8 +377,8 @@
   "kind": "special",
   "power": 65,
   "range": {
-   "min": 1,
-   "max": 2
+   "min": 2,
+   "max": 4
   },
   "requiresLineOfSight": true,
   "shape": {
@@ -377,7 +387,8 @@
   "affects": "enemies",
   "cooldown": 3,
   "category": "special",
-  "canonPower": 80
+  "canonPower": 80,
+  "reach": "ranged"
  },
  "aurora-beam": {
   "id": "aurora-beam",
@@ -387,8 +398,8 @@
   "cooldown": 3,
   "power": 55,
   "range": {
-   "min": 1,
-   "max": 2
+   "min": 2,
+   "max": 4
   },
   "requiresLineOfSight": true,
   "shape": {
@@ -396,7 +407,8 @@
   },
   "affects": "enemies",
   "canonPower": 65,
-  "category": "special"
+  "category": "special",
+  "reach": "ranged"
  },
  "aurora-veil": {
   "id": "aurora-veil",
@@ -464,7 +476,8 @@
    "kind": "single"
   },
   "affects": "enemies",
-  "canonPower": 60
+  "canonPower": 60,
+  "reach": "melee"
  },
  "axe-kick": {
   "id": "axe-kick",
@@ -483,7 +496,8 @@
   "affects": "enemies",
   "cooldown": 4,
   "category": "physical",
-  "canonPower": 120
+  "canonPower": 120,
+  "reach": "melee"
  },
  "baby-doll-eyes": {
   "id": "baby-doll-eyes",
@@ -518,15 +532,16 @@
   "cooldown": 2,
   "power": 45,
   "range": {
-   "min": 1,
-   "max": 2
+   "min": 2,
+   "max": 4
   },
   "requiresLineOfSight": true,
   "shape": {
    "kind": "single"
   },
   "affects": "enemies",
-  "canonPower": 45
+  "canonPower": 45,
+  "reach": "ranged"
  },
  "barrier": {
   "id": "barrier",
@@ -609,7 +624,8 @@
     "duration": 2
    }
   ],
-  "canonPower": 15
+  "canonPower": 15,
+  "reach": "melee"
  },
  "blast-burn": {
   "id": "blast-burn",
@@ -619,8 +635,8 @@
   "category": "special",
   "power": 85,
   "range": {
-   "min": 1,
-   "max": 1
+   "min": 2,
+   "max": 4
   },
   "requiresLineOfSight": true,
   "shape": {
@@ -629,7 +645,8 @@
   },
   "affects": "enemies",
   "canonPower": 150,
-  "cooldown": 4
+  "cooldown": 4,
+  "reach": "ranged"
  },
  "blaze-kick": {
   "id": "blaze-kick",
@@ -648,7 +665,8 @@
   "affects": "enemies",
   "cooldown": 3,
   "category": "physical",
-  "canonPower": 85
+  "canonPower": 85,
+  "reach": "melee"
  },
  "blizzard": {
   "id": "blizzard",
@@ -657,8 +675,8 @@
   "kind": "special",
   "power": 70,
   "range": {
-   "min": 1,
-   "max": 1
+   "min": 2,
+   "max": 5
   },
   "requiresLineOfSight": true,
   "shape": {
@@ -668,7 +686,8 @@
   "affects": "enemies",
   "canonPower": 110,
   "category": "special",
-  "cooldown": 4
+  "cooldown": 4,
+  "reach": "ranged"
  },
  "block": {
   "id": "block",
@@ -710,7 +729,8 @@
   },
   "affects": "enemies",
   "canonPower": 80,
-  "cooldown": 3
+  "cooldown": 3,
+  "reach": "melee"
  },
  "body-slam": {
   "id": "body-slam",
@@ -736,7 +756,8 @@
    }
   ],
   "canonPower": 85,
-  "category": "physical"
+  "category": "physical",
+  "reach": "melee"
  },
  "bone-rush": {
   "id": "bone-rush",
@@ -755,7 +776,8 @@
   },
   "affects": "enemies",
   "canonPower": 75,
-  "cooldown": 2
+  "cooldown": 2,
+  "reach": "melee"
  },
  "bonemerang": {
   "id": "bonemerang",
@@ -765,8 +787,8 @@
   "cooldown": 2,
   "power": 75,
   "range": {
-   "min": 1,
-   "max": 2
+   "min": 2,
+   "max": 4
   },
   "requiresLineOfSight": true,
   "shape": {
@@ -774,7 +796,8 @@
   },
   "affects": "enemies",
   "canonPower": 100,
-  "category": "physical"
+  "category": "physical",
+  "reach": "ranged"
  },
  "bounce": {
   "id": "bounce",
@@ -800,7 +823,8 @@
    }
   ],
   "canonPower": 85,
-  "cooldown": 3
+  "cooldown": 3,
+  "reach": "melee"
  },
  "brave-bird": {
   "id": "brave-bird",
@@ -819,7 +843,8 @@
    "kind": "single"
   },
   "affects": "enemies",
-  "canonPower": 120
+  "canonPower": 120,
+  "reach": "melee"
  },
  "breaking-swipe": {
   "id": "breaking-swipe",
@@ -872,7 +897,8 @@
     "duration": 1
    }
   ],
-  "canonPower": 75
+  "canonPower": 75,
+  "reach": "melee"
  },
  "brine": {
   "id": "brine",
@@ -883,15 +909,16 @@
   "cooldown": 3,
   "power": 55,
   "range": {
-   "min": 1,
-   "max": 2
+   "min": 2,
+   "max": 4
   },
   "requiresLineOfSight": true,
   "shape": {
    "kind": "single"
   },
   "affects": "enemies",
-  "canonPower": 65
+  "canonPower": 65,
+  "reach": "ranged"
  },
  "brutal-swing": {
   "id": "brutal-swing",
@@ -921,8 +948,8 @@
   "cooldown": 2,
   "power": 55,
   "range": {
-   "min": 1,
-   "max": 2
+   "min": 2,
+   "max": 4
   },
   "requiresLineOfSight": true,
   "shape": {
@@ -937,7 +964,8 @@
    }
   ],
   "canonPower": 65,
-  "category": "special"
+  "category": "special",
+  "reach": "ranged"
  },
  "bug-buzz": {
   "id": "bug-buzz",
@@ -945,10 +973,10 @@
   "type": "bug",
   "kind": "special",
   "category": "special",
-  "power": 70,
+  "power": 65,
   "range": {
-   "min": 1,
-   "max": 2
+   "min": 2,
+   "max": 4
   },
   "requiresLineOfSight": true,
   "shape": {
@@ -956,7 +984,8 @@
   },
   "affects": "enemies",
   "canonPower": 90,
-  "cooldown": 3
+  "cooldown": 3,
+  "reach": "ranged"
  },
  "bulk-up": {
   "id": "bulk-up",
@@ -1031,17 +1060,18 @@
    "kind": "single"
   },
   "affects": "enemies",
-  "canonPower": 40
+  "canonPower": 40,
+  "reach": "melee"
  },
  "bullet-seed": {
   "id": "bullet-seed",
   "name": "Bullet Seed",
   "type": "grass",
   "kind": "special",
-  "power": 65,
+  "power": 60,
   "range": {
-   "min": 1,
-   "max": 2
+   "min": 2,
+   "max": 4
   },
   "requiresLineOfSight": true,
   "shape": {
@@ -1050,7 +1080,8 @@
   "affects": "enemies",
   "cooldown": 2,
   "category": "physical",
-  "canonPower": 75
+  "canonPower": 75,
+  "reach": "ranged"
  },
  "burn-up": {
   "id": "burn-up",
@@ -1059,8 +1090,8 @@
   "kind": "special",
   "power": 90,
   "range": {
-   "min": 1,
-   "max": 2
+   "min": 2,
+   "max": 4
   },
   "requiresLineOfSight": true,
   "shape": {
@@ -1069,7 +1100,8 @@
   "affects": "enemies",
   "cooldown": 4,
   "category": "special",
-  "canonPower": 130
+  "canonPower": 130,
+  "reach": "ranged"
  },
  "burning-jealousy": {
   "id": "burning-jealousy",
@@ -1178,8 +1210,8 @@
   "kind": "special",
   "power": 50,
   "range": {
-   "min": 1,
-   "max": 2
+   "min": 2,
+   "max": 4
   },
   "requiresLineOfSight": true,
   "shape": {
@@ -1188,7 +1220,8 @@
   "affects": "enemies",
   "cooldown": 2,
   "category": "special",
-  "canonPower": 50
+  "canonPower": 50,
+  "reach": "ranged"
  },
  "charm": {
   "id": "charm",
@@ -1219,10 +1252,10 @@
   "name": "Chilling Water",
   "type": "water",
   "kind": "special",
-  "power": 50,
+  "power": 45,
   "range": {
-   "min": 1,
-   "max": 2
+   "min": 2,
+   "max": 4
   },
   "requiresLineOfSight": true,
   "shape": {
@@ -1238,7 +1271,8 @@
    }
   ],
   "category": "special",
-  "canonPower": 50
+  "canonPower": 50,
+  "reach": "ranged"
  },
  "chip-away": {
   "id": "chip-away",
@@ -1257,7 +1291,8 @@
   "affects": "enemies",
   "cooldown": 2,
   "category": "physical",
-  "canonPower": 70
+  "canonPower": 70,
+  "reach": "melee"
  },
  "circle-throw": {
   "id": "circle-throw",
@@ -1282,7 +1317,8 @@
     "distance": 2
    }
   ],
-  "canonPower": 60
+  "canonPower": 60,
+  "reach": "melee"
  },
  "clear-smog": {
   "id": "clear-smog",
@@ -1291,17 +1327,18 @@
   "kind": "special",
   "category": "special",
   "cooldown": 2,
-  "power": 50,
+  "power": 45,
   "range": {
-   "min": 1,
-   "max": 2
+   "min": 2,
+   "max": 4
   },
   "requiresLineOfSight": true,
   "shape": {
    "kind": "single"
   },
   "affects": "enemies",
-  "canonPower": 50
+  "canonPower": 50,
+  "reach": "ranged"
  },
  "close-combat": {
   "id": "close-combat",
@@ -1320,7 +1357,8 @@
   },
   "affects": "enemies",
   "canonPower": 120,
-  "category": "physical"
+  "category": "physical",
+  "reach": "melee"
  },
  "coaching": {
   "id": "coaching",
@@ -1475,7 +1513,8 @@
     "kind": "push",
     "distance": 1
    }
-  ]
+  ],
+  "reach": "melee"
  },
  "crabhammer": {
   "id": "crabhammer",
@@ -1494,7 +1533,8 @@
   },
   "affects": "enemies",
   "canonPower": 100,
-  "category": "physical"
+  "category": "physical",
+  "reach": "melee"
  },
  "cross-chop": {
   "id": "cross-chop",
@@ -1513,7 +1553,8 @@
   "affects": "enemies",
   "cooldown": 3,
   "canonPower": 100,
-  "category": "physical"
+  "category": "physical",
+  "reach": "melee"
  },
  "cross-poison": {
   "id": "cross-poison",
@@ -1539,7 +1580,8 @@
     "duration": 2
    }
   ],
-  "canonPower": 70
+  "canonPower": 70,
+  "reach": "melee"
  },
  "crunch": {
   "id": "crunch",
@@ -1565,7 +1607,8 @@
     "duration": 1
    }
   ],
-  "canonPower": 80
+  "canonPower": 80,
+  "reach": "melee"
  },
  "crush-claw": {
   "id": "crush-claw",
@@ -1591,7 +1634,8 @@
    }
   ],
   "canonPower": 75,
-  "cooldown": 2
+  "cooldown": 2,
+  "reach": "melee"
  },
  "curse": {
   "id": "curse",
@@ -1624,17 +1668,18 @@
   "kind": "special",
   "category": "special",
   "cooldown": 5,
-  "power": 65,
+  "power": 60,
   "range": {
-   "min": 1,
-   "max": 2
+   "min": 2,
+   "max": 4
   },
   "requiresLineOfSight": true,
   "shape": {
    "kind": "single"
   },
   "affects": "enemies",
-  "canonPower": 80
+  "canonPower": 80,
+  "reach": "ranged"
  },
  "darkest-lariat": {
   "id": "darkest-lariat",
@@ -1653,7 +1698,8 @@
   "affects": "enemies",
   "cooldown": 3,
   "category": "physical",
-  "canonPower": 85
+  "canonPower": 85,
+  "reach": "melee"
  },
  "dazzling-gleam": {
   "id": "dazzling-gleam",
@@ -1662,10 +1708,10 @@
   "kind": "special",
   "category": "special",
   "cooldown": 4,
-  "power": 60,
+  "power": 50,
   "range": {
-   "min": 1,
-   "max": 1
+   "min": 2,
+   "max": 4
   },
   "requiresLineOfSight": true,
   "shape": {
@@ -1673,7 +1719,8 @@
    "radius": 1
   },
   "affects": "enemies",
-  "canonPower": 80
+  "canonPower": 80,
+  "reach": "ranged"
  },
  "defense-curl": {
   "id": "defense-curl",
@@ -1764,7 +1811,8 @@
   "affects": "enemies",
   "cooldown": 3,
   "canonPower": 80,
-  "category": "physical"
+  "category": "physical",
+  "reach": "melee"
  },
  "disable": {
   "id": "disable",
@@ -1797,10 +1845,10 @@
   "kind": "special",
   "category": "special",
   "cooldown": 2,
-  "power": 40,
+  "power": 30,
   "range": {
-   "min": 1,
-   "max": 1
+   "min": 2,
+   "max": 4
   },
   "requiresLineOfSight": false,
   "shape": {
@@ -1808,7 +1856,8 @@
    "radius": 1
   },
   "affects": "enemies",
-  "canonPower": 40
+  "canonPower": 40,
+  "reach": "ranged"
  },
  "discharge": {
   "id": "discharge",
@@ -1854,7 +1903,8 @@
    }
   ],
   "canonPower": 70,
-  "cooldown": 2
+  "cooldown": 2,
+  "reach": "melee"
  },
  "double-edge": {
   "id": "double-edge",
@@ -1873,7 +1923,8 @@
   "affects": "enemies",
   "canonPower": 120,
   "category": "physical",
-  "cooldown": 4
+  "cooldown": 4,
+  "reach": "melee"
  },
  "double-hit": {
   "id": "double-hit",
@@ -1892,7 +1943,8 @@
    "kind": "single"
   },
   "affects": "enemies",
-  "canonPower": 70
+  "canonPower": 70,
+  "reach": "melee"
  },
  "double-team": {
   "id": "double-team",
@@ -1926,8 +1978,8 @@
   "cooldown": 4,
   "power": 80,
   "range": {
-   "min": 1,
-   "max": 1
+   "min": 2,
+   "max": 5
   },
   "requiresLineOfSight": true,
   "shape": {
@@ -1936,7 +1988,8 @@
   },
   "affects": "enemies",
   "canonPower": 130,
-  "category": "special"
+  "category": "special",
+  "reach": "ranged"
  },
  "dragon-breath": {
   "id": "dragon-breath",
@@ -1945,10 +1998,10 @@
   "kind": "special",
   "category": "special",
   "cooldown": 4,
-  "power": 55,
+  "power": 50,
   "range": {
-   "min": 1,
-   "max": 2
+   "min": 2,
+   "max": 4
   },
   "requiresLineOfSight": true,
   "shape": {
@@ -1962,7 +2015,8 @@
     "duration": 1
    }
   ],
-  "canonPower": 60
+  "canonPower": 60,
+  "reach": "ranged"
  },
  "dragon-claw": {
   "id": "dragon-claw",
@@ -1981,7 +2035,8 @@
   },
   "affects": "enemies",
   "canonPower": 80,
-  "category": "physical"
+  "category": "physical",
+  "reach": "melee"
  },
  "dragon-dance": {
   "id": "dragon-dance",
@@ -2020,8 +2075,8 @@
   "category": "special",
   "power": 70,
   "range": {
-   "min": 1,
-   "max": 2
+   "min": 2,
+   "max": 4
   },
   "requiresLineOfSight": true,
   "shape": {
@@ -2029,7 +2084,8 @@
   },
   "affects": "enemies",
   "canonPower": 85,
-  "cooldown": 3
+  "cooldown": 3,
+  "reach": "ranged"
  },
  "dragon-rage": {
   "id": "dragon-rage",
@@ -2039,15 +2095,16 @@
   "cooldown": 3,
   "power": 60,
   "range": {
-   "min": 1,
-   "max": 2
+   "min": 2,
+   "max": 4
   },
   "requiresLineOfSight": true,
   "shape": {
    "kind": "single"
   },
   "affects": "enemies",
-  "category": "special"
+  "category": "special",
+  "reach": "ranged"
  },
  "dragon-rush": {
   "id": "dragon-rush",
@@ -2072,7 +2129,8 @@
    }
   ],
   "canonPower": 100,
-  "category": "physical"
+  "category": "physical",
+  "reach": "melee"
  },
  "dragon-tail": {
   "id": "dragon-tail",
@@ -2097,7 +2155,8 @@
    }
   ],
   "canonPower": 60,
-  "category": "physical"
+  "category": "physical",
+  "reach": "melee"
  },
  "drain-punch": {
   "id": "drain-punch",
@@ -2122,17 +2181,18 @@
     "kind": "drain",
     "amount": 0.5
    }
-  ]
+  ],
+  "reach": "melee"
  },
  "draining-kiss": {
   "id": "draining-kiss",
   "name": "Draining Kiss",
   "type": "fairy",
   "kind": "special",
-  "power": 50,
+  "power": 45,
   "range": {
-   "min": 1,
-   "max": 2
+   "min": 2,
+   "max": 4
   },
   "requiresLineOfSight": true,
   "shape": {
@@ -2147,7 +2207,8 @@
     "kind": "drain",
     "amount": 0.75
    }
-  ]
+  ],
+  "reach": "ranged"
  },
  "dream-eater": {
   "id": "dream-eater",
@@ -2156,8 +2217,8 @@
   "kind": "special",
   "power": 75,
   "range": {
-   "min": 1,
-   "max": 2
+   "min": 2,
+   "max": 4
   },
   "requiresLineOfSight": true,
   "shape": {
@@ -2173,7 +2234,8 @@
     "kind": "drain",
     "amount": 0.5
    }
-  ]
+  ],
+  "reach": "ranged"
  },
  "drill-peck": {
   "id": "drill-peck",
@@ -2192,7 +2254,8 @@
   "affects": "enemies",
   "cooldown": 2,
   "canonPower": 80,
-  "category": "physical"
+  "category": "physical",
+  "reach": "melee"
  },
  "drill-run": {
   "id": "drill-run",
@@ -2212,7 +2275,8 @@
    "length": 2
   },
   "affects": "enemies",
-  "canonPower": 80
+  "canonPower": 80,
+  "reach": "melee"
  },
  "dual-chop": {
   "id": "dual-chop",
@@ -2231,7 +2295,8 @@
   "affects": "enemies",
   "cooldown": 2,
   "category": "physical",
-  "canonPower": 80
+  "canonPower": 80,
+  "reach": "melee"
  },
  "dual-wingbeat": {
   "id": "dual-wingbeat",
@@ -2250,7 +2315,8 @@
   "affects": "enemies",
   "cooldown": 2,
   "category": "physical",
-  "canonPower": 80
+  "canonPower": 80,
+  "reach": "melee"
  },
  "dynamic-punch": {
   "id": "dynamic-punch",
@@ -2276,7 +2342,8 @@
    }
   ],
   "canonPower": 100,
-  "cooldown": 3
+  "cooldown": 3,
+  "reach": "melee"
  },
  "earth-power": {
   "id": "earth-power",
@@ -2285,17 +2352,18 @@
   "kind": "special",
   "category": "special",
   "cooldown": 4,
-  "power": 70,
+  "power": 65,
   "range": {
-   "min": 1,
-   "max": 2
+   "min": 2,
+   "max": 4
   },
   "requiresLineOfSight": true,
   "shape": {
    "kind": "single"
   },
   "affects": "enemies",
-  "canonPower": 90
+  "canonPower": 90,
+  "reach": "ranged"
  },
  "earthquake": {
   "id": "earthquake",
@@ -2350,7 +2418,7 @@
   "power": 75,
   "range": {
    "min": 2,
-   "max": 2
+   "max": 4
   },
   "requiresLineOfSight": true,
   "shape": {
@@ -2358,7 +2426,8 @@
   },
   "affects": "enemies",
   "canonPower": 100,
-  "category": "physical"
+  "category": "physical",
+  "reach": "ranged"
  },
  "electro-ball": {
   "id": "electro-ball",
@@ -2370,14 +2439,15 @@
   "cooldown": 4,
   "power": 80,
   "range": {
-   "min": 1,
-   "max": 2
+   "min": 2,
+   "max": 4
   },
   "requiresLineOfSight": true,
   "shape": {
    "kind": "single"
   },
-  "affects": "enemies"
+  "affects": "enemies",
+  "reach": "ranged"
  },
  "electroweb": {
   "id": "electroweb",
@@ -2386,8 +2456,8 @@
   "kind": "special",
   "power": 45,
   "range": {
-   "min": 1,
-   "max": 1
+   "min": 2,
+   "max": 4
   },
   "requiresLineOfSight": true,
   "shape": {
@@ -2404,7 +2474,8 @@
    }
   ],
   "canonPower": 55,
-  "category": "special"
+  "category": "special",
+  "reach": "ranged"
  },
  "encore": {
   "id": "encore",
@@ -2446,7 +2517,8 @@
    "kind": "single"
   },
   "affects": "enemies",
-  "cooldown": 2
+  "cooldown": 2,
+  "reach": "melee"
  },
  "endure": {
   "id": "endure",
@@ -2479,17 +2551,18 @@
   "kind": "special",
   "category": "special",
   "cooldown": 4,
-  "power": 70,
+  "power": 65,
   "range": {
-   "min": 1,
-   "max": 2
+   "min": 2,
+   "max": 4
   },
   "requiresLineOfSight": true,
   "shape": {
    "kind": "single"
   },
   "affects": "enemies",
-  "canonPower": 90
+  "canonPower": 90,
+  "reach": "ranged"
  },
  "explosion": {
   "id": "explosion",
@@ -2518,17 +2591,18 @@
   "kind": "special",
   "category": "special",
   "cooldown": 4,
-  "power": 65,
+  "power": 60,
   "range": {
-   "min": 1,
-   "max": 2
+   "min": 2,
+   "max": 4
   },
   "requiresLineOfSight": true,
   "shape": {
    "kind": "single"
   },
   "affects": "enemies",
-  "canonPower": 80
+  "canonPower": 80,
+  "reach": "ranged"
  },
  "extreme-speed": {
   "id": "extreme-speed",
@@ -2552,7 +2626,8 @@
    }
   ],
   "canonPower": 80,
-  "cooldown": 3
+  "cooldown": 3,
+  "reach": "melee"
  },
  "facade": {
   "id": "facade",
@@ -2571,26 +2646,8 @@
   "affects": "enemies",
   "cooldown": 2,
   "category": "physical",
-  "canonPower": 70
- },
- "fairy-wind": {
-  "id": "fairy-wind",
-  "name": "Fairy Wind",
-  "type": "fairy",
-  "kind": "special",
-  "power": 40,
-  "range": {
-   "min": 1,
-   "max": 2
-  },
-  "requiresLineOfSight": true,
-  "shape": {
-   "kind": "single"
-  },
-  "affects": "enemies",
-  "cooldown": 2,
-  "category": "special",
-  "canonPower": 40
+  "canonPower": 70,
+  "reach": "melee"
  },
  "fake-out": {
   "id": "fake-out",
@@ -2616,7 +2673,8 @@
     "duration": 1
    }
   ],
-  "canonPower": 40
+  "canonPower": 40,
+  "reach": "melee"
  },
  "fake-tears": {
   "id": "fake-tears",
@@ -2659,7 +2717,8 @@
   "affects": "enemies",
   "cooldown": 2,
   "category": "physical",
-  "canonPower": 40
+  "canonPower": 40,
+  "reach": "melee"
  },
  "feather-dance": {
   "id": "feather-dance",
@@ -2702,7 +2761,8 @@
   "affects": "enemies",
   "cooldown": 2,
   "category": "physical",
-  "canonPower": 30
+  "canonPower": 30,
+  "reach": "melee"
  },
  "feint-attack": {
   "id": "feint-attack",
@@ -2721,7 +2781,8 @@
   "affects": "enemies",
   "cooldown": 2,
   "category": "physical",
-  "canonPower": 60
+  "canonPower": 60,
+  "reach": "melee"
  },
  "fell-stinger": {
   "id": "fell-stinger",
@@ -2747,7 +2808,8 @@
     "when": "knockout"
    }
   ],
-  "canonPower": 50
+  "canonPower": 50,
+  "reach": "melee"
  },
  "fire-blast": {
   "id": "fire-blast",
@@ -2756,8 +2818,8 @@
   "kind": "special",
   "power": 70,
   "range": {
-   "min": 1,
-   "max": 1
+   "min": 2,
+   "max": 5
   },
   "requiresLineOfSight": true,
   "shape": {
@@ -2767,7 +2829,8 @@
   "affects": "enemies",
   "canonPower": 110,
   "category": "special",
-  "cooldown": 4
+  "cooldown": 4,
+  "reach": "ranged"
  },
  "fire-fang": {
   "id": "fire-fang",
@@ -2786,7 +2849,8 @@
    "kind": "single"
   },
   "affects": "enemies",
-  "canonPower": 65
+  "canonPower": 65,
+  "reach": "melee"
  },
  "fire-punch": {
   "id": "fire-punch",
@@ -2805,7 +2869,8 @@
   },
   "affects": "enemies",
   "canonPower": 75,
-  "category": "physical"
+  "category": "physical",
+  "reach": "melee"
  },
  "first-impression": {
   "id": "first-impression",
@@ -2824,7 +2889,8 @@
   "affects": "enemies",
   "cooldown": 3,
   "category": "physical",
-  "canonPower": 90
+  "canonPower": 90,
+  "reach": "melee"
  },
  "fissure": {
   "id": "fissure",
@@ -2843,7 +2909,8 @@
    "kind": "line",
    "length": 2
   },
-  "affects": "enemies"
+  "affects": "enemies",
+  "reach": "ranged"
  },
  "flail": {
   "id": "flail",
@@ -2861,7 +2928,8 @@
   "shape": {
    "kind": "single"
   },
-  "affects": "enemies"
+  "affects": "enemies",
+  "reach": "melee"
  },
  "flame-burst": {
   "id": "flame-burst",
@@ -2869,10 +2937,10 @@
   "type": "fire",
   "kind": "special",
   "cooldown": 3,
-  "power": 60,
+  "power": 55,
   "range": {
-   "min": 1,
-   "max": 2
+   "min": 2,
+   "max": 4
   },
   "requiresLineOfSight": true,
   "shape": {
@@ -2887,7 +2955,8 @@
     "hazard": "fire",
     "radius": 0.8
    }
-  ]
+  ],
+  "reach": "ranged"
  },
  "flame-charge": {
   "id": "flame-charge",
@@ -2911,7 +2980,8 @@
    }
   ],
   "canonPower": 50,
-  "cooldown": 2
+  "cooldown": 2,
+  "reach": "melee"
  },
  "flame-wheel": {
   "id": "flame-wheel",
@@ -2937,7 +3007,8 @@
     "duration": 1
    }
   ],
-  "canonPower": 60
+  "canonPower": 60,
+  "reach": "melee"
  },
  "flamethrower": {
   "id": "flamethrower",
@@ -2958,7 +3029,8 @@
   },
   "affects": "enemies",
   "canonPower": 90,
-  "category": "special"
+  "category": "special",
+  "reach": "ranged"
  },
  "flare-blitz": {
   "id": "flare-blitz",
@@ -2984,7 +3056,8 @@
    }
   ],
   "canonPower": 120,
-  "cooldown": 4
+  "cooldown": 4,
+  "reach": "melee"
  },
  "flash": {
   "id": "flash",
@@ -3020,15 +3093,16 @@
   "cooldown": 3,
   "power": 65,
   "range": {
-   "min": 1,
-   "max": 2
+   "min": 2,
+   "max": 4
   },
   "requiresLineOfSight": true,
   "shape": {
    "kind": "single"
   },
   "affects": "enemies",
-  "canonPower": 80
+  "canonPower": 80,
+  "reach": "ranged"
  },
  "flatter": {
   "id": "flatter",
@@ -3076,7 +3150,8 @@
    {
     "kind": "disengage"
    }
-  ]
+  ],
+  "reach": "melee"
  },
  "fly": {
   "id": "fly",
@@ -3095,7 +3170,8 @@
   },
   "affects": "enemies",
   "canonPower": 90,
-  "category": "physical"
+  "category": "physical",
+  "reach": "melee"
  },
  "focus-blast": {
   "id": "focus-blast",
@@ -3104,8 +3180,8 @@
   "kind": "special",
   "power": 85,
   "range": {
-   "min": 1,
-   "max": 2
+   "min": 2,
+   "max": 5
   },
   "requiresLineOfSight": true,
   "shape": {
@@ -3114,7 +3190,8 @@
   "affects": "enemies",
   "cooldown": 4,
   "category": "special",
-  "canonPower": 120
+  "canonPower": 120,
+  "reach": "ranged"
  },
  "focus-energy": {
   "id": "focus-energy",
@@ -3157,7 +3234,8 @@
    "kind": "single"
   },
   "affects": "enemies",
-  "canonPower": 150
+  "canonPower": 150,
+  "reach": "melee"
  },
  "foul-play": {
   "id": "foul-play",
@@ -3176,7 +3254,8 @@
   "affects": "enemies",
   "cooldown": 3,
   "category": "physical",
-  "canonPower": 95
+  "canonPower": 95,
+  "reach": "melee"
  },
  "freeze-dry": {
   "id": "freeze-dry",
@@ -3186,8 +3265,8 @@
   "category": "special",
   "power": 60,
   "range": {
-   "min": 1,
-   "max": 2
+   "min": 2,
+   "max": 4
   },
   "requiresLineOfSight": true,
   "shape": {
@@ -3202,7 +3281,8 @@
    }
   ],
   "canonPower": 70,
-  "cooldown": 2
+  "cooldown": 2,
+  "reach": "ranged"
  },
  "frenzy-plant": {
   "id": "frenzy-plant",
@@ -3212,8 +3292,8 @@
   "category": "special",
   "power": 95,
   "range": {
-   "min": 1,
-   "max": 2
+   "min": 2,
+   "max": 4
   },
   "requiresLineOfSight": true,
   "shape": {
@@ -3221,7 +3301,8 @@
   },
   "affects": "enemies",
   "canonPower": 150,
-  "cooldown": 4
+  "cooldown": 4,
+  "reach": "ranged"
  },
  "frost-breath": {
   "id": "frost-breath",
@@ -3230,10 +3311,10 @@
   "kind": "special",
   "category": "special",
   "cooldown": 3,
-  "power": 55,
+  "power": 50,
   "range": {
-   "min": 1,
-   "max": 2
+   "min": 2,
+   "max": 4
   },
   "requiresLineOfSight": true,
   "shape": {
@@ -3247,7 +3328,8 @@
     "duration": 1
    }
   ],
-  "canonPower": 60
+  "canonPower": 60,
+  "reach": "ranged"
  },
  "fury-cutter": {
   "id": "fury-cutter",
@@ -3266,7 +3348,8 @@
    "kind": "single"
   },
   "affects": "enemies",
-  "canonPower": 40
+  "canonPower": 40,
+  "reach": "melee"
  },
  "future-sight": {
   "id": "future-sight",
@@ -3276,8 +3359,8 @@
   "category": "special",
   "power": 85,
   "range": {
-   "min": 1,
-   "max": 2
+   "min": 2,
+   "max": 5
   },
   "requiresLineOfSight": false,
   "shape": {
@@ -3286,7 +3369,8 @@
   "affects": "enemies",
   "canonPower": 120,
   "cooldown": 4,
-  "timing": "delayed"
+  "timing": "delayed",
+  "reach": "ranged"
  },
  "giga-drain": {
   "id": "giga-drain",
@@ -3294,10 +3378,10 @@
   "type": "grass",
   "kind": "special",
   "cooldown": 3,
-  "power": 65,
+  "power": 60,
   "range": {
-   "min": 1,
-   "max": 2
+   "min": 2,
+   "max": 4
   },
   "requiresLineOfSight": true,
   "shape": {
@@ -3305,7 +3389,8 @@
   },
   "affects": "enemies",
   "canonPower": 75,
-  "category": "special"
+  "category": "special",
+  "reach": "ranged"
  },
  "giga-impact": {
   "id": "giga-impact",
@@ -3324,7 +3409,8 @@
    "kind": "single"
   },
   "affects": "enemies",
-  "canonPower": 150
+  "canonPower": 150,
+  "reach": "melee"
  },
  "glare": {
   "id": "glare",
@@ -3468,7 +3554,8 @@
    "kind": "single"
   },
   "affects": "enemies",
-  "cooldown": 2
+  "cooldown": 2,
+  "reach": "melee"
  },
  "gunk-shot": {
   "id": "gunk-shot",
@@ -3477,8 +3564,8 @@
   "kind": "special",
   "power": 85,
   "range": {
-   "min": 1,
-   "max": 2
+   "min": 2,
+   "max": 5
   },
   "requiresLineOfSight": true,
   "shape": {
@@ -3494,7 +3581,8 @@
    }
   ],
   "canonPower": 120,
-  "category": "physical"
+  "category": "physical",
+  "reach": "ranged"
  },
  "gyro-ball": {
   "id": "gyro-ball",
@@ -3518,7 +3606,8 @@
     "distance": 1
    }
   ],
-  "cooldown": 2
+  "cooldown": 2,
+  "reach": "melee"
  },
  "hammer-arm": {
   "id": "hammer-arm",
@@ -3543,7 +3632,8 @@
     "distance": 1
    }
   ],
-  "canonPower": 100
+  "canonPower": 100,
+  "reach": "melee"
  },
  "harden": {
   "id": "harden",
@@ -3611,7 +3701,8 @@
    "kind": "single"
   },
   "canonPower": 150,
-  "category": "physical"
+  "category": "physical",
+  "reach": "melee"
  },
  "heal-bell": {
   "id": "heal-bell",
@@ -3676,7 +3767,8 @@
   "affects": "enemies",
   "cooldown": 2,
   "category": "physical",
-  "canonPower": 60
+  "canonPower": 60,
+  "reach": "melee"
  },
  "heat-crash": {
   "id": "heat-crash",
@@ -3700,7 +3792,8 @@
     "kind": "push",
     "distance": 1
    }
-  ]
+  ],
+  "reach": "melee"
  },
  "heat-wave": {
   "id": "heat-wave",
@@ -3728,7 +3821,8 @@
    }
   ],
   "canonPower": 95,
-  "category": "special"
+  "category": "special",
+  "reach": "ranged"
  },
  "heavy-slam": {
   "id": "heavy-slam",
@@ -3752,7 +3846,8 @@
     "distance": 1
    }
   ],
-  "cooldown": 2
+  "cooldown": 2,
+  "reach": "melee"
  },
  "hex": {
   "id": "hex",
@@ -3763,15 +3858,16 @@
   "cooldown": 2,
   "power": 55,
   "range": {
-   "min": 1,
-   "max": 2
+   "min": 2,
+   "max": 4
   },
   "requiresLineOfSight": true,
   "shape": {
    "kind": "single"
   },
   "affects": "enemies",
-  "canonPower": 65
+  "canonPower": 65,
+  "reach": "ranged"
  },
  "high-horsepower": {
   "id": "high-horsepower",
@@ -3796,7 +3892,8 @@
     "distance": 1
    }
   ],
-  "canonPower": 95
+  "canonPower": 95,
+  "reach": "melee"
  },
  "high-jump-kick": {
   "id": "high-jump-kick",
@@ -3815,7 +3912,8 @@
    "kind": "single"
   },
   "affects": "enemies",
-  "canonPower": 130
+  "canonPower": 130,
+  "reach": "melee"
  },
  "hone-claws": {
   "id": "hone-claws",
@@ -3857,7 +3955,8 @@
   },
   "affects": "enemies",
   "category": "physical",
-  "cooldown": 2
+  "cooldown": 2,
+  "reach": "melee"
  },
  "howl": {
   "id": "howl",
@@ -3893,15 +3992,16 @@
   "cooldown": 4,
   "power": 80,
   "range": {
-   "min": 1,
-   "max": 2
+   "min": 2,
+   "max": 5
   },
   "requiresLineOfSight": true,
   "shape": {
    "kind": "single"
   },
   "affects": "enemies",
-  "canonPower": 110
+  "canonPower": 110,
+  "reach": "ranged"
  },
  "hydro-cannon": {
   "id": "hydro-cannon",
@@ -3910,8 +4010,8 @@
   "kind": "special",
   "power": 95,
   "range": {
-   "min": 1,
-   "max": 2
+   "min": 2,
+   "max": 4
   },
   "requiresLineOfSight": true,
   "shape": {
@@ -3926,7 +4026,8 @@
    }
   ],
   "canonPower": 150,
-  "category": "special"
+  "category": "special",
+  "reach": "ranged"
  },
  "hydro-pump": {
   "id": "hydro-pump",
@@ -3935,8 +4036,8 @@
   "kind": "special",
   "power": 90,
   "range": {
-   "min": 1,
-   "max": 1
+   "min": 2,
+   "max": 5
   },
   "requiresLineOfSight": false,
   "shape": {
@@ -3951,7 +4052,8 @@
   ],
   "canonPower": 110,
   "category": "special",
-  "cooldown": 4
+  "cooldown": 4,
+  "reach": "ranged"
  },
  "hyper-beam": {
   "id": "hyper-beam",
@@ -3971,7 +4073,8 @@
   "affects": "enemies",
   "canonPower": 150,
   "category": "special",
-  "cooldown": 4
+  "cooldown": 4,
+  "reach": "ranged"
  },
  "hyper-fang": {
   "id": "hyper-fang",
@@ -3997,7 +4100,8 @@
    }
   ],
   "canonPower": 80,
-  "category": "physical"
+  "category": "physical",
+  "reach": "melee"
  },
  "hyper-voice": {
   "id": "hyper-voice",
@@ -4005,10 +4109,10 @@
   "type": "normal",
   "kind": "special",
   "category": "special",
-  "power": 65,
+  "power": 55,
   "range": {
-   "min": 1,
-   "max": 1
+   "min": 2,
+   "max": 4
   },
   "requiresLineOfSight": true,
   "shape": {
@@ -4017,7 +4121,8 @@
   },
   "affects": "enemies",
   "canonPower": 90,
-  "cooldown": 3
+  "cooldown": 3,
+  "reach": "ranged"
  },
  "hypnosis": {
   "id": "hypnosis",
@@ -4048,10 +4153,10 @@
   "name": "Ice Ball",
   "type": "ice",
   "kind": "special",
-  "power": 40,
+  "power": 35,
   "range": {
-   "min": 1,
-   "max": 1
+   "min": 2,
+   "max": 4
   },
   "requiresLineOfSight": false,
   "shape": {
@@ -4060,7 +4165,8 @@
   "affects": "enemies",
   "cooldown": 2,
   "category": "physical",
-  "canonPower": 30
+  "canonPower": 30,
+  "reach": "ranged"
  },
  "ice-beam": {
   "id": "ice-beam",
@@ -4080,7 +4186,8 @@
   },
   "affects": "enemies",
   "canonPower": 90,
-  "category": "special"
+  "category": "special",
+  "reach": "ranged"
  },
  "ice-fang": {
   "id": "ice-fang",
@@ -4099,7 +4206,8 @@
   "affects": "enemies",
   "cooldown": 2,
   "category": "physical",
-  "canonPower": 65
+  "canonPower": 65,
+  "reach": "melee"
  },
  "ice-punch": {
   "id": "ice-punch",
@@ -4125,7 +4233,8 @@
    }
   ],
   "canonPower": 75,
-  "category": "physical"
+  "category": "physical",
+  "reach": "melee"
  },
  "ice-shard": {
   "id": "ice-shard",
@@ -4147,7 +4256,8 @@
   },
   "affects": "enemies",
   "canonPower": 40,
-  "timing": "watch"
+  "timing": "watch",
+  "reach": "ranged"
  },
  "ice-spinner": {
   "id": "ice-spinner",
@@ -4166,7 +4276,8 @@
   "affects": "enemies",
   "cooldown": 3,
   "category": "physical",
-  "canonPower": 80
+  "canonPower": 80,
+  "reach": "melee"
  },
  "icicle-crash": {
   "id": "icicle-crash",
@@ -4185,7 +4296,8 @@
    "kind": "single"
   },
   "affects": "enemies",
-  "canonPower": 85
+  "canonPower": 85,
+  "reach": "melee"
  },
  "icicle-spear": {
   "id": "icicle-spear",
@@ -4195,8 +4307,8 @@
   "category": "physical",
   "power": 65,
   "range": {
-   "min": 1,
-   "max": 2
+   "min": 2,
+   "max": 4
   },
   "requiresLineOfSight": true,
   "shape": {
@@ -4204,7 +4316,8 @@
   },
   "affects": "enemies",
   "canonPower": 75,
-  "cooldown": 2
+  "cooldown": 2,
+  "reach": "ranged"
  },
  "icy-wind": {
   "id": "icy-wind",
@@ -4232,7 +4345,8 @@
    }
   ],
   "canonPower": 55,
-  "category": "special"
+  "category": "special",
+  "reach": "ranged"
  },
  "inferno": {
   "id": "inferno",
@@ -4242,8 +4356,8 @@
   "category": "special",
   "power": 75,
   "range": {
-   "min": 1,
-   "max": 2
+   "min": 2,
+   "max": 4
   },
   "requiresLineOfSight": true,
   "shape": {
@@ -4258,7 +4372,8 @@
    }
   ],
   "canonPower": 100,
-  "cooldown": 3
+  "cooldown": 3,
+  "reach": "ranged"
  },
  "infestation": {
   "id": "infestation",
@@ -4267,8 +4382,8 @@
   "kind": "special",
   "power": 25,
   "range": {
-   "min": 1,
-   "max": 2
+   "min": 2,
+   "max": 4
   },
   "requiresLineOfSight": true,
   "shape": {
@@ -4284,7 +4399,8 @@
    }
   ],
   "category": "special",
-  "canonPower": 20
+  "canonPower": 20,
+  "reach": "ranged"
  },
  "ingrain": {
   "id": "ingrain",
@@ -4350,7 +4466,8 @@
    "kind": "single"
   },
   "affects": "enemies",
-  "canonPower": 80
+  "canonPower": 80,
+  "reach": "melee"
  },
  "iron-tail": {
   "id": "iron-tail",
@@ -4376,7 +4493,8 @@
     "duration": 1
    }
   ],
-  "canonPower": 100
+  "canonPower": 100,
+  "reach": "melee"
  },
  "jump-kick": {
   "id": "jump-kick",
@@ -4395,7 +4513,8 @@
   },
   "affects": "enemies",
   "canonPower": 100,
-  "category": "physical"
+  "category": "physical",
+  "reach": "melee"
  },
  "kinesis": {
   "id": "kinesis",
@@ -4438,7 +4557,8 @@
   "affects": "enemies",
   "cooldown": 2,
   "category": "physical",
-  "canonPower": 75
+  "canonPower": 75,
+  "reach": "melee"
  },
  "last-resort": {
   "id": "last-resort",
@@ -4457,7 +4577,8 @@
   },
   "affects": "enemies",
   "canonPower": 140,
-  "cooldown": 4
+  "cooldown": 4,
+  "reach": "melee"
  },
  "lava-plume": {
   "id": "lava-plume",
@@ -4503,7 +4624,8 @@
    "kind": "single"
   },
   "affects": "enemies",
-  "canonPower": 90
+  "canonPower": 90,
+  "reach": "melee"
  },
  "leaf-storm": {
   "id": "leaf-storm",
@@ -4514,15 +4636,16 @@
   "cooldown": 4,
   "power": 90,
   "range": {
-   "min": 1,
-   "max": 2
+   "min": 2,
+   "max": 4
   },
   "requiresLineOfSight": true,
   "shape": {
    "kind": "single"
   },
   "affects": "enemies",
-  "canonPower": 130
+  "canonPower": 130,
+  "reach": "ranged"
  },
  "leaf-tornado": {
   "id": "leaf-tornado",
@@ -4531,8 +4654,8 @@
   "kind": "special",
   "power": 55,
   "range": {
-   "min": 1,
-   "max": 2
+   "min": 2,
+   "max": 4
   },
   "requiresLineOfSight": true,
   "shape": {
@@ -4548,7 +4671,8 @@
     "status": "weakened",
     "duration": 1
    }
-  ]
+  ],
+  "reach": "ranged"
  },
  "leech-seed": {
   "id": "leech-seed",
@@ -4665,7 +4789,8 @@
   },
   "affects": "enemies",
   "canonPower": 85,
-  "cooldown": 3
+  "cooldown": 3,
+  "reach": "melee"
  },
  "lock-on": {
   "id": "lock-on",
@@ -4737,7 +4862,8 @@
     "distance": 1
    }
   ],
-  "category": "physical"
+  "category": "physical",
+  "reach": "melee"
  },
  "low-sweep": {
   "id": "low-sweep",
@@ -4763,7 +4889,8 @@
     "duration": 2
    }
   ],
-  "canonPower": 65
+  "canonPower": 65,
+  "reach": "melee"
  },
  "lunge": {
   "id": "lunge",
@@ -4789,7 +4916,8 @@
     "status": "weakened",
     "duration": 2
    }
-  ]
+  ],
+  "reach": "melee"
  },
  "mach-punch": {
   "id": "mach-punch",
@@ -4808,7 +4936,8 @@
   },
   "affects": "enemies",
   "canonPower": 40,
-  "cooldown": 2
+  "cooldown": 2,
+  "reach": "melee"
  },
  "magical-leaf": {
   "id": "magical-leaf",
@@ -4817,27 +4946,28 @@
   "kind": "special",
   "category": "special",
   "cooldown": 2,
-  "power": 55,
+  "power": 50,
   "range": {
-   "min": 1,
-   "max": 2
+   "min": 2,
+   "max": 4
   },
   "requiresLineOfSight": false,
   "shape": {
    "kind": "single"
   },
   "affects": "enemies",
-  "canonPower": 60
+  "canonPower": 60,
+  "reach": "ranged"
  },
  "magnet-bomb": {
   "id": "magnet-bomb",
   "name": "Magnet Bomb",
   "type": "steel",
   "kind": "special",
-  "power": 60,
+  "power": 50,
   "range": {
-   "min": 1,
-   "max": 1
+   "min": 2,
+   "max": 4
   },
   "requiresLineOfSight": false,
   "shape": {
@@ -4846,7 +4976,8 @@
   "affects": "enemies",
   "cooldown": 2,
   "category": "physical",
-  "canonPower": 60
+  "canonPower": 60,
+  "reach": "ranged"
  },
  "magnet-rise": {
   "id": "magnet-rise",
@@ -4973,15 +5104,16 @@
   "cooldown": 2,
   "power": 40,
   "range": {
-   "min": 1,
-   "max": 2
+   "min": 2,
+   "max": 4
   },
   "requiresLineOfSight": true,
   "shape": {
    "kind": "single"
   },
   "affects": "enemies",
-  "canonPower": 40
+  "canonPower": 40,
+  "reach": "ranged"
  },
  "mega-kick": {
   "id": "mega-kick",
@@ -5000,7 +5132,8 @@
   },
   "affects": "enemies",
   "canonPower": 120,
-  "category": "physical"
+  "category": "physical",
+  "reach": "melee"
  },
  "mega-punch": {
   "id": "mega-punch",
@@ -5019,7 +5152,8 @@
   },
   "affects": "enemies",
   "canonPower": 80,
-  "category": "physical"
+  "category": "physical",
+  "reach": "melee"
  },
  "megahorn": {
   "id": "megahorn",
@@ -5044,7 +5178,8 @@
    }
   ],
   "canonPower": 120,
-  "category": "physical"
+  "category": "physical",
+  "reach": "melee"
  },
  "memento": {
   "id": "memento",
@@ -5087,7 +5222,8 @@
    "kind": "single"
   },
   "affects": "enemies",
-  "canonPower": 50
+  "canonPower": 50,
+  "reach": "melee"
  },
  "metal-sound": {
   "id": "metal-sound",
@@ -5120,8 +5256,8 @@
   "kind": "special",
   "power": 85,
   "range": {
-   "min": 1,
-   "max": 2
+   "min": 2,
+   "max": 5
   },
   "requiresLineOfSight": true,
   "shape": {
@@ -5130,7 +5266,8 @@
   "affects": "enemies",
   "cooldown": 4,
   "category": "special",
-  "canonPower": 120
+  "canonPower": 120,
+  "reach": "ranged"
  },
  "meteor-mash": {
   "id": "meteor-mash",
@@ -5149,7 +5286,8 @@
   "affects": "enemies",
   "cooldown": 3,
   "category": "physical",
-  "canonPower": 90
+  "canonPower": 90,
+  "reach": "melee"
  },
  "mind-reader": {
   "id": "mind-reader",
@@ -5206,8 +5344,8 @@
   "kind": "special",
   "power": 55,
   "range": {
-   "min": 1,
-   "max": 2
+   "min": 2,
+   "max": 4
   },
   "requiresLineOfSight": true,
   "shape": {
@@ -5223,7 +5361,8 @@
     "status": "weakened",
     "duration": 1
    }
-  ]
+  ],
+  "reach": "ranged"
  },
  "mist": {
   "id": "mist",
@@ -5281,8 +5420,8 @@
   "category": "special",
   "power": 75,
   "range": {
-   "min": 1,
-   "max": 2
+   "min": 2,
+   "max": 4
   },
   "requiresLineOfSight": true,
   "shape": {
@@ -5290,7 +5429,8 @@
   },
   "affects": "enemies",
   "canonPower": 95,
-  "cooldown": 3
+  "cooldown": 3,
+  "reach": "ranged"
  },
  "moonlight": {
   "id": "moonlight",
@@ -5345,10 +5485,10 @@
   "kind": "special",
   "category": "special",
   "cooldown": 4,
-  "power": 50,
+  "power": 45,
   "range": {
-   "min": 1,
-   "max": 1
+   "min": 2,
+   "max": 4
   },
   "requiresLineOfSight": true,
   "shape": {
@@ -5368,7 +5508,8 @@
     "hazard": "mud",
     "radius": 0.8
    }
-  ]
+  ],
+  "reach": "ranged"
  },
  "mud-shot": {
   "id": "mud-shot",
@@ -5379,8 +5520,8 @@
   "cooldown": 4,
   "power": 50,
   "range": {
-   "min": 1,
-   "max": 2
+   "min": 2,
+   "max": 4
   },
   "requiresLineOfSight": true,
   "shape": {
@@ -5394,7 +5535,8 @@
     "duration": 1
    }
   ],
-  "canonPower": 55
+  "canonPower": 55,
+  "reach": "ranged"
  },
  "mud-slap": {
   "id": "mud-slap",
@@ -5403,8 +5545,8 @@
   "kind": "special",
   "power": 25,
   "range": {
-   "min": 1,
-   "max": 2
+   "min": 2,
+   "max": 4
   },
   "requiresLineOfSight": true,
   "shape": {
@@ -5420,7 +5562,8 @@
   ],
   "canonPower": 20,
   "category": "special",
-  "cooldown": 2
+  "cooldown": 2,
+  "reach": "ranged"
  },
  "muddy-water": {
   "id": "muddy-water",
@@ -5429,10 +5572,10 @@
   "kind": "special",
   "category": "special",
   "cooldown": 4,
-  "power": 65,
+  "power": 55,
   "range": {
-   "min": 1,
-   "max": 1
+   "min": 2,
+   "max": 4
   },
   "requiresLineOfSight": true,
   "shape": {
@@ -5452,7 +5595,8 @@
     "hazard": "mud",
     "radius": 0.8
    }
-  ]
+  ],
+  "reach": "ranged"
  },
  "mystical-fire": {
   "id": "mystical-fire",
@@ -5461,10 +5605,10 @@
   "kind": "special",
   "category": "special",
   "cooldown": 4,
-  "power": 65,
+  "power": 60,
   "range": {
-   "min": 1,
-   "max": 2
+   "min": 2,
+   "max": 4
   },
   "requiresLineOfSight": true,
   "shape": {
@@ -5478,7 +5622,8 @@
     "status": "weakened",
     "duration": 1
    }
-  ]
+  ],
+  "reach": "ranged"
  },
  "nasty-plot": {
   "id": "nasty-plot",
@@ -5511,8 +5656,8 @@
   "kind": "special",
   "power": 30,
   "range": {
-   "min": 1,
-   "max": 2
+   "min": 2,
+   "max": 4
   },
   "requiresLineOfSight": true,
   "shape": {
@@ -5520,7 +5665,8 @@
   },
   "affects": "enemies",
   "category": "special",
-  "cooldown": 2
+  "cooldown": 2,
+  "reach": "ranged"
  },
  "night-slash": {
   "id": "night-slash",
@@ -5546,7 +5692,8 @@
    }
   ],
   "canonPower": 70,
-  "cooldown": 2
+  "cooldown": 2,
+  "reach": "melee"
  },
  "nightmare": {
   "id": "nightmare",
@@ -5597,7 +5744,8 @@
    }
   ],
   "category": "physical",
-  "canonPower": 20
+  "canonPower": 20,
+  "reach": "melee"
  },
  "octazooka": {
   "id": "octazooka",
@@ -5607,8 +5755,8 @@
   "category": "special",
   "power": 55,
   "range": {
-   "min": 1,
-   "max": 2
+   "min": 2,
+   "max": 4
   },
   "requiresLineOfSight": true,
   "shape": {
@@ -5623,17 +5771,18 @@
    }
   ],
   "canonPower": 65,
-  "cooldown": 2
+  "cooldown": 2,
+  "reach": "ranged"
  },
  "ominous-wind": {
   "id": "ominous-wind",
   "name": "Ominous Wind",
   "type": "ghost",
   "kind": "special",
-  "power": 55,
+  "power": 50,
   "range": {
-   "min": 1,
-   "max": 2
+   "min": 2,
+   "max": 4
   },
   "requiresLineOfSight": true,
   "shape": {
@@ -5642,7 +5791,8 @@
   "affects": "enemies",
   "cooldown": 2,
   "category": "special",
-  "canonPower": 60
+  "canonPower": 60,
+  "reach": "ranged"
  },
  "outrage": {
   "id": "outrage",
@@ -5661,7 +5811,8 @@
   },
   "affects": "enemies",
   "canonPower": 120,
-  "cooldown": 4
+  "cooldown": 4,
+  "reach": "melee"
  },
  "overheat": {
   "id": "overheat",
@@ -5672,15 +5823,16 @@
   "cooldown": 5,
   "power": 90,
   "range": {
-   "min": 1,
-   "max": 2
+   "min": 2,
+   "max": 4
   },
   "requiresLineOfSight": true,
   "shape": {
    "kind": "single"
   },
   "affects": "enemies",
-  "canonPower": 130
+  "canonPower": 130,
+  "reach": "ranged"
  },
  "pain-split": {
   "id": "pain-split",
@@ -5722,7 +5874,8 @@
   "affects": "enemies",
   "cooldown": 2,
   "category": "physical",
-  "canonPower": 50
+  "canonPower": 50,
+  "reach": "melee"
  },
  "perish-song": {
   "id": "perish-song",
@@ -5777,8 +5930,8 @@
   "cooldown": 3,
   "power": 95,
   "range": {
-   "min": 1,
-   "max": 1
+   "min": 2,
+   "max": 4
   },
   "requiresLineOfSight": false,
   "shape": {
@@ -5786,7 +5939,8 @@
   },
   "affects": "enemies",
   "canonPower": 120,
-  "category": "special"
+  "category": "special",
+  "reach": "ranged"
  },
  "phantom-force": {
   "id": "phantom-force",
@@ -5810,7 +5964,8 @@
    }
   ],
   "canonPower": 90,
-  "category": "physical"
+  "category": "physical",
+  "reach": "melee"
  },
  "pin-missile": {
   "id": "pin-missile",
@@ -5818,10 +5973,10 @@
   "type": "bug",
   "kind": "special",
   "cooldown": 2,
-  "power": 65,
+  "power": 60,
   "range": {
-   "min": 1,
-   "max": 2
+   "min": 2,
+   "max": 4
   },
   "requiresLineOfSight": true,
   "shape": {
@@ -5829,7 +5984,8 @@
   },
   "affects": "enemies",
   "canonPower": 75,
-  "category": "physical"
+  "category": "physical",
+  "reach": "ranged"
  },
  "play-nice": {
   "id": "play-nice",
@@ -5872,7 +6028,8 @@
   },
   "affects": "enemies",
   "canonPower": 90,
-  "cooldown": 3
+  "cooldown": 3,
+  "reach": "melee"
  },
  "poison-fang": {
   "id": "poison-fang",
@@ -5898,7 +6055,8 @@
     "duration": 2
    }
   ],
-  "canonPower": 50
+  "canonPower": 50,
+  "reach": "melee"
  },
  "poison-jab": {
   "id": "poison-jab",
@@ -5924,7 +6082,8 @@
     "duration": 2
    }
   ],
-  "canonPower": 80
+  "canonPower": 80,
+  "reach": "melee"
  },
  "poison-powder": {
   "id": "poison-powder",
@@ -5975,7 +6134,8 @@
     "status": "poison",
     "duration": 2
    }
-  ]
+  ],
+  "reach": "melee"
  },
  "pollen-puff": {
   "id": "pollen-puff",
@@ -5984,10 +6144,10 @@
   "kind": "special",
   "category": "special",
   "cooldown": 4,
-  "power": 70,
+  "power": 65,
   "range": {
-   "min": 1,
-   "max": 2
+   "min": 2,
+   "max": 4
   },
   "requiresLineOfSight": true,
   "shape": {
@@ -6000,7 +6160,8 @@
     "kind": "healShare",
     "share": 0.3
    }
-  ]
+  ],
+  "reach": "ranged"
  },
  "pounce": {
   "id": "pounce",
@@ -6026,7 +6187,8 @@
    }
   ],
   "category": "physical",
-  "canonPower": 50
+  "canonPower": 50,
+  "reach": "melee"
  },
  "powder-snow": {
   "id": "powder-snow",
@@ -6036,8 +6198,8 @@
   "cooldown": 2,
   "power": 40,
   "range": {
-   "min": 1,
-   "max": 2
+   "min": 2,
+   "max": 4
   },
   "requiresLineOfSight": true,
   "shape": {
@@ -6052,7 +6214,8 @@
    }
   ],
   "canonPower": 40,
-  "category": "special"
+  "category": "special",
+  "reach": "ranged"
  },
  "power-gem": {
   "id": "power-gem",
@@ -6063,15 +6226,16 @@
   "cooldown": 5,
   "power": 65,
   "range": {
-   "min": 1,
-   "max": 2
+   "min": 2,
+   "max": 4
   },
   "requiresLineOfSight": true,
   "shape": {
    "kind": "single"
   },
   "affects": "enemies",
-  "canonPower": 80
+  "canonPower": 80,
+  "reach": "ranged"
  },
  "power-trip": {
   "id": "power-trip",
@@ -6090,7 +6254,8 @@
   "affects": "enemies",
   "cooldown": 2,
   "category": "physical",
-  "canonPower": 20
+  "canonPower": 20,
+  "reach": "melee"
  },
  "power-up-punch": {
   "id": "power-up-punch",
@@ -6109,7 +6274,8 @@
   "affects": "enemies",
   "cooldown": 2,
   "category": "physical",
-  "canonPower": 40
+  "canonPower": 40,
+  "reach": "melee"
  },
  "power-whip": {
   "id": "power-whip",
@@ -6128,7 +6294,8 @@
    "kind": "single"
   },
   "affects": "enemies",
-  "canonPower": 120
+  "canonPower": 120,
+  "reach": "melee"
  },
  "protect": {
   "id": "protect",
@@ -6179,7 +6346,8 @@
    }
   ],
   "canonPower": 65,
-  "category": "special"
+  "category": "special",
+  "reach": "ranged"
  },
  "psych-up": {
   "id": "psych-up",
@@ -6211,10 +6379,10 @@
   "type": "psychic",
   "kind": "special",
   "cooldown": 3,
-  "power": 70,
+  "power": 65,
   "range": {
-   "min": 1,
-   "max": 2
+   "min": 2,
+   "max": 4
   },
   "requiresLineOfSight": true,
   "shape": {
@@ -6222,7 +6390,8 @@
   },
   "affects": "enemies",
   "canonPower": 90,
-  "category": "special"
+  "category": "special",
+  "reach": "ranged"
  },
  "psychic-fangs": {
   "id": "psychic-fangs",
@@ -6241,7 +6410,8 @@
   "affects": "enemies",
   "cooldown": 3,
   "category": "physical",
-  "canonPower": 85
+  "canonPower": 85,
+  "reach": "melee"
  },
  "psychic-noise": {
   "id": "psychic-noise",
@@ -6250,8 +6420,8 @@
   "kind": "special",
   "power": 65,
   "range": {
-   "min": 1,
-   "max": 2
+   "min": 2,
+   "max": 4
   },
   "requiresLineOfSight": true,
   "shape": {
@@ -6260,7 +6430,8 @@
   "affects": "enemies",
   "cooldown": 2,
   "category": "special",
-  "canonPower": 75
+  "canonPower": 75,
+  "reach": "ranged"
  },
  "psycho-cut": {
   "id": "psycho-cut",
@@ -6279,7 +6450,8 @@
    "kind": "single"
   },
   "affects": "enemies",
-  "canonPower": 70
+  "canonPower": 70,
+  "reach": "melee"
  },
  "psyshock": {
   "id": "psyshock",
@@ -6290,15 +6462,16 @@
   "cooldown": 3,
   "power": 65,
   "range": {
-   "min": 1,
-   "max": 2
+   "min": 2,
+   "max": 4
   },
   "requiresLineOfSight": true,
   "shape": {
    "kind": "single"
   },
   "affects": "enemies",
-  "canonPower": 80
+  "canonPower": 80,
+  "reach": "ranged"
  },
  "psystrike": {
   "id": "psystrike",
@@ -6308,8 +6481,8 @@
   "category": "special",
   "power": 75,
   "range": {
-   "min": 1,
-   "max": 2
+   "min": 2,
+   "max": 5
   },
   "requiresLineOfSight": true,
   "shape": {
@@ -6317,7 +6490,8 @@
   },
   "affects": "enemies",
   "canonPower": 100,
-  "cooldown": 3
+  "cooldown": 3,
+  "reach": "ranged"
  },
  "psywave": {
   "id": "psywave",
@@ -6328,14 +6502,15 @@
   "cooldown": 2,
   "power": 55,
   "range": {
-   "min": 1,
-   "max": 2
+   "min": 2,
+   "max": 4
   },
   "requiresLineOfSight": true,
   "shape": {
    "kind": "single"
   },
-  "affects": "enemies"
+  "affects": "enemies",
+  "reach": "ranged"
  },
  "quick-guard": {
   "id": "quick-guard",
@@ -6408,7 +6583,8 @@
   "affects": "enemies",
   "canonPower": 20,
   "category": "physical",
-  "cooldown": 2
+  "cooldown": 2,
+  "reach": "melee"
  },
  "rage-fist": {
   "id": "rage-fist",
@@ -6427,7 +6603,8 @@
   "affects": "enemies",
   "cooldown": 2,
   "category": "physical",
-  "canonPower": 50
+  "canonPower": 50,
+  "reach": "melee"
  },
  "raging-bull": {
   "id": "raging-bull",
@@ -6453,7 +6630,8 @@
    }
   ],
   "canonPower": 90,
-  "cooldown": 3
+  "cooldown": 3,
+  "reach": "melee"
  },
  "raging-fury": {
   "id": "raging-fury",
@@ -6479,7 +6657,8 @@
     "duration": 2
    }
   ],
-  "canonPower": 120
+  "canonPower": 120,
+  "reach": "melee"
  },
  "rapid-spin": {
   "id": "rapid-spin",
@@ -6503,7 +6682,8 @@
    }
   ],
   "canonPower": 50,
-  "category": "physical"
+  "category": "physical",
+  "reach": "melee"
  },
  "razor-shell": {
   "id": "razor-shell",
@@ -6522,7 +6702,8 @@
    "kind": "single"
   },
   "affects": "enemies",
-  "canonPower": 75
+  "canonPower": 75,
+  "reach": "melee"
  },
  "razor-wind": {
   "id": "razor-wind",
@@ -6632,7 +6813,8 @@
   "affects": "enemies",
   "cooldown": 2,
   "category": "physical",
-  "canonPower": 70
+  "canonPower": 70,
+  "reach": "melee"
  },
  "revenge": {
   "id": "revenge",
@@ -6651,7 +6833,8 @@
   "affects": "enemies",
   "cooldown": 2,
   "category": "physical",
-  "canonPower": 60
+  "canonPower": 60,
+  "reach": "melee"
  },
  "reversal": {
   "id": "reversal",
@@ -6669,7 +6852,8 @@
    "kind": "single"
   },
   "affects": "enemies",
-  "cooldown": 2
+  "cooldown": 2,
+  "reach": "melee"
  },
  "roar": {
   "id": "roar",
@@ -6701,10 +6885,10 @@
   "kind": "special",
   "category": "physical",
   "cooldown": 5,
-  "power": 65,
+  "power": 60,
   "range": {
-   "min": 1,
-   "max": 2
+   "min": 2,
+   "max": 4
   },
   "requiresLineOfSight": true,
   "shape": {
@@ -6718,7 +6902,8 @@
     "duration": 1
    }
   ],
-  "canonPower": 75
+  "canonPower": 75,
+  "reach": "ranged"
  },
  "rock-climb": {
   "id": "rock-climb",
@@ -6737,7 +6922,8 @@
   "affects": "enemies",
   "cooldown": 3,
   "category": "physical",
-  "canonPower": 90
+  "canonPower": 90,
+  "reach": "melee"
  },
  "rock-polish": {
   "id": "rock-polish",
@@ -6768,10 +6954,10 @@
   "name": "Rock Slide",
   "type": "rock",
   "kind": "special",
-  "power": 55,
+  "power": 45,
   "range": {
-   "min": 1,
-   "max": 1
+   "min": 2,
+   "max": 4
   },
   "requiresLineOfSight": true,
   "shape": {
@@ -6781,7 +6967,8 @@
   "affects": "enemies",
   "cooldown": 3,
   "canonPower": 75,
-  "category": "physical"
+  "category": "physical",
+  "reach": "ranged"
  },
  "rock-smash": {
   "id": "rock-smash",
@@ -6807,7 +6994,8 @@
     "duration": 1
    }
   ],
-  "canonPower": 40
+  "canonPower": 40,
+  "reach": "melee"
  },
  "rock-tomb": {
   "id": "rock-tomb",
@@ -6816,10 +7004,10 @@
   "kind": "special",
   "category": "physical",
   "cooldown": 3,
-  "power": 55,
+  "power": 50,
   "range": {
-   "min": 1,
-   "max": 2
+   "min": 2,
+   "max": 4
   },
   "requiresLineOfSight": true,
   "shape": {
@@ -6833,7 +7021,8 @@
     "duration": 2
    }
   ],
-  "canonPower": 60
+  "canonPower": 60,
+  "reach": "ranged"
  },
  "rolling-kick": {
   "id": "rolling-kick",
@@ -6858,7 +7047,8 @@
    }
   ],
   "canonPower": 60,
-  "cooldown": 2
+  "cooldown": 2,
+  "reach": "melee"
  },
  "rollout": {
   "id": "rollout",
@@ -6883,7 +7073,8 @@
    }
   ],
   "canonPower": 30,
-  "category": "physical"
+  "category": "physical",
+  "reach": "melee"
  },
  "roost": {
   "id": "roost",
@@ -6945,8 +7136,8 @@
   "cooldown": 3,
   "power": 40,
   "range": {
-   "min": 1,
-   "max": 2
+   "min": 2,
+   "max": 4
   },
   "requiresLineOfSight": true,
   "shape": {
@@ -6960,7 +7151,8 @@
     "duration": 2
    }
   ],
-  "canonPower": 35
+  "canonPower": 35,
+  "reach": "ranged"
  },
  "scald": {
   "id": "scald",
@@ -6969,10 +7161,10 @@
   "kind": "special",
   "category": "special",
   "cooldown": 4,
-  "power": 65,
+  "power": 60,
   "range": {
-   "min": 1,
-   "max": 2
+   "min": 2,
+   "max": 4
   },
   "requiresLineOfSight": true,
   "shape": {
@@ -6986,17 +7178,18 @@
     "duration": 1
    }
   ],
-  "canonPower": 80
+  "canonPower": 80,
+  "reach": "ranged"
  },
  "scale-shot": {
   "id": "scale-shot",
   "name": "Scale Shot",
   "type": "dragon",
   "kind": "special",
-  "power": 70,
+  "power": 60,
   "range": {
-   "min": 1,
-   "max": 1
+   "min": 2,
+   "max": 4
   },
   "requiresLineOfSight": false,
   "shape": {
@@ -7005,7 +7198,8 @@
   "affects": "enemies",
   "cooldown": 2,
   "category": "physical",
-  "canonPower": 75
+  "canonPower": 75,
+  "reach": "ranged"
  },
  "scary-face": {
   "id": "scary-face",
@@ -7038,10 +7232,10 @@
   "kind": "special",
   "category": "special",
   "cooldown": 3,
-  "power": 60,
+  "power": 55,
   "range": {
-   "min": 1,
-   "max": 2
+   "min": 2,
+   "max": 4
   },
   "requiresLineOfSight": true,
   "shape": {
@@ -7055,7 +7249,8 @@
     "duration": 1
    }
   ],
-  "canonPower": 70
+  "canonPower": 70,
+  "reach": "ranged"
  },
  "screech": {
   "id": "screech",
@@ -7088,17 +7283,18 @@
   "kind": "special",
   "category": "physical",
   "cooldown": 4,
-  "power": 65,
+  "power": 60,
   "range": {
-   "min": 1,
-   "max": 2
+   "min": 2,
+   "max": 4
   },
   "requiresLineOfSight": true,
   "shape": {
    "kind": "single"
   },
   "affects": "enemies",
-  "canonPower": 80
+  "canonPower": 80,
+  "reach": "ranged"
  },
  "seismic-toss": {
   "id": "seismic-toss",
@@ -7122,7 +7318,8 @@
     "distance": 2
    }
   ],
-  "cooldown": 2
+  "cooldown": 2,
+  "reach": "melee"
  },
  "self-destruct": {
   "id": "self-destruct",
@@ -7150,10 +7347,10 @@
   "type": "ghost",
   "kind": "special",
   "cooldown": 3,
-  "power": 65,
+  "power": 60,
   "range": {
-   "min": 1,
-   "max": 2
+   "min": 2,
+   "max": 4
   },
   "requiresLineOfSight": true,
   "shape": {
@@ -7161,7 +7358,8 @@
   },
   "affects": "enemies",
   "canonPower": 80,
-  "category": "special"
+  "category": "special",
+  "reach": "ranged"
  },
  "shadow-claw": {
   "id": "shadow-claw",
@@ -7180,7 +7378,8 @@
    "kind": "single"
   },
   "affects": "enemies",
-  "canonPower": 70
+  "canonPower": 70,
+  "reach": "melee"
  },
  "shadow-punch": {
   "id": "shadow-punch",
@@ -7199,7 +7398,8 @@
   "affects": "enemies",
   "cooldown": 2,
   "category": "physical",
-  "canonPower": 60
+  "canonPower": 60,
+  "reach": "melee"
  },
  "shadow-sneak": {
   "id": "shadow-sneak",
@@ -7218,7 +7418,8 @@
   "affects": "enemies",
   "cooldown": 2,
   "canonPower": 40,
-  "category": "physical"
+  "category": "physical",
+  "reach": "melee"
  },
  "sharpen": {
   "id": "sharpen",
@@ -7252,8 +7453,8 @@
   "category": "special",
   "power": 110,
   "range": {
-   "min": 1,
-   "max": 2
+   "min": 2,
+   "max": 4
   },
   "requiresLineOfSight": true,
   "shape": {
@@ -7267,7 +7468,8 @@
     "duration": 1
    }
   ],
-  "cooldown": 2
+  "cooldown": 2,
+  "reach": "ranged"
  },
  "shell-smash": {
   "id": "shell-smash",
@@ -7305,17 +7507,18 @@
   "kind": "special",
   "category": "special",
   "cooldown": 3,
-  "power": 55,
+  "power": 50,
   "range": {
-   "min": 1,
-   "max": 2
+   "min": 2,
+   "max": 4
   },
   "requiresLineOfSight": true,
   "shape": {
    "kind": "single"
   },
   "affects": "enemies",
-  "canonPower": 60
+  "canonPower": 60,
+  "reach": "ranged"
  },
  "signal-beam": {
   "id": "signal-beam",
@@ -7326,8 +7529,8 @@
   "cooldown": 3,
   "power": 65,
   "range": {
-   "min": 1,
-   "max": 2
+   "min": 2,
+   "max": 4
   },
   "requiresLineOfSight": true,
   "shape": {
@@ -7341,7 +7544,8 @@
     "duration": 1
    }
   ],
-  "canonPower": 75
+  "canonPower": 75,
+  "reach": "ranged"
  },
  "silver-wind": {
   "id": "silver-wind",
@@ -7350,10 +7554,10 @@
   "kind": "special",
   "category": "special",
   "cooldown": 5,
-  "power": 50,
+  "power": 40,
   "range": {
-   "min": 1,
-   "max": 1
+   "min": 2,
+   "max": 4
   },
   "requiresLineOfSight": true,
   "shape": {
@@ -7361,7 +7565,8 @@
    "radius": 1
   },
   "affects": "enemies",
-  "canonPower": 60
+  "canonPower": 60,
+  "reach": "ranged"
  },
  "sing": {
   "id": "sing",
@@ -7411,7 +7616,8 @@
    }
   ],
   "category": "physical",
-  "canonPower": 70
+  "canonPower": 70,
+  "reach": "melee"
  },
  "skull-bash": {
   "id": "skull-bash",
@@ -7431,7 +7637,8 @@
   "affects": "enemies",
   "canonPower": 130,
   "category": "physical",
-  "timing": "delayed"
+  "timing": "delayed",
+  "reach": "melee"
  },
  "sky-attack": {
   "id": "sky-attack",
@@ -7451,7 +7658,8 @@
   },
   "affects": "enemies",
   "canonPower": 140,
-  "timing": "delayed"
+  "timing": "delayed",
+  "reach": "melee"
  },
  "sky-drop": {
   "id": "sky-drop",
@@ -7476,7 +7684,8 @@
     "distance": 2
    }
   ],
-  "canonPower": 60
+  "canonPower": 60,
+  "reach": "melee"
  },
  "sky-uppercut": {
   "id": "sky-uppercut",
@@ -7501,7 +7710,8 @@
    }
   ],
   "canonPower": 85,
-  "cooldown": 3
+  "cooldown": 3,
+  "reach": "melee"
  },
  "slack-off": {
   "id": "slack-off",
@@ -7543,7 +7753,8 @@
   },
   "affects": "enemies",
   "canonPower": 80,
-  "category": "physical"
+  "category": "physical",
+  "reach": "melee"
  },
  "slash": {
   "id": "slash",
@@ -7562,7 +7773,8 @@
   },
   "affects": "enemies",
   "canonPower": 70,
-  "category": "physical"
+  "category": "physical",
+  "reach": "melee"
  },
  "sleep-powder": {
   "id": "sleep-powder",
@@ -7596,8 +7808,8 @@
   "cooldown": 2,
   "power": 55,
   "range": {
-   "min": 1,
-   "max": 2
+   "min": 2,
+   "max": 4
   },
   "requiresLineOfSight": true,
   "shape": {
@@ -7612,7 +7824,8 @@
    }
   ],
   "canonPower": 65,
-  "category": "special"
+  "category": "special",
+  "reach": "ranged"
  },
  "sludge-bomb": {
   "id": "sludge-bomb",
@@ -7620,10 +7833,10 @@
   "type": "poison",
   "kind": "special",
   "category": "special",
-  "power": 70,
+  "power": 65,
   "range": {
-   "min": 1,
-   "max": 2
+   "min": 2,
+   "max": 4
   },
   "requiresLineOfSight": true,
   "shape": {
@@ -7638,7 +7851,8 @@
    }
   ],
   "canonPower": 90,
-  "cooldown": 3
+  "cooldown": 3,
+  "reach": "ranged"
  },
  "sludge-wave": {
   "id": "sludge-wave",
@@ -7674,10 +7888,10 @@
   "kind": "special",
   "category": "physical",
   "cooldown": 2,
-  "power": 50,
+  "power": 45,
   "range": {
-   "min": 1,
-   "max": 2
+   "min": 2,
+   "max": 4
   },
   "requiresLineOfSight": true,
   "shape": {
@@ -7690,7 +7904,8 @@
     "distance": 1
    }
   ],
-  "canonPower": 50
+  "canonPower": 50,
+  "reach": "ranged"
  },
  "smart-strike": {
   "id": "smart-strike",
@@ -7709,7 +7924,8 @@
   "affects": "enemies",
   "cooldown": 2,
   "category": "physical",
-  "canonPower": 70
+  "canonPower": 70,
+  "reach": "melee"
  },
  "smelling-salts": {
   "id": "smelling-salts",
@@ -7728,7 +7944,8 @@
   "affects": "enemies",
   "cooldown": 2,
   "category": "physical",
-  "canonPower": 70
+  "canonPower": 70,
+  "reach": "melee"
  },
  "smokescreen": {
   "id": "smokescreen",
@@ -7823,7 +8040,8 @@
   "canonPower": 120,
   "category": "special",
   "cooldown": 4,
-  "timing": "delayed"
+  "timing": "delayed",
+  "reach": "ranged"
  },
  "solar-blade": {
   "id": "solar-blade",
@@ -7842,7 +8060,8 @@
   "affects": "enemies",
   "cooldown": 4,
   "category": "physical",
-  "canonPower": 125
+  "canonPower": 125,
+  "reach": "melee"
  },
  "sonic-boom": {
   "id": "sonic-boom",
@@ -7852,8 +8071,8 @@
   "cooldown": 2,
   "power": 45,
   "range": {
-   "min": 1,
-   "max": 2
+   "min": 2,
+   "max": 4
   },
   "requiresLineOfSight": false,
   "shape": {
@@ -7867,7 +8086,8 @@
     "when": "combo"
    }
   ],
-  "category": "special"
+  "category": "special",
+  "reach": "ranged"
  },
  "spark": {
   "id": "spark",
@@ -7886,7 +8106,8 @@
    "kind": "single"
   },
   "affects": "enemies",
-  "canonPower": 65
+  "canonPower": 65,
+  "reach": "melee"
  },
  "sparkling-aria": {
   "id": "sparkling-aria",
@@ -7914,10 +8135,10 @@
   "type": "normal",
   "kind": "special",
   "cooldown": 2,
-  "power": 55,
+  "power": 50,
   "range": {
-   "min": 1,
-   "max": 2
+   "min": 2,
+   "max": 4
   },
   "requiresLineOfSight": true,
   "shape": {
@@ -7925,7 +8146,8 @@
   },
   "affects": "enemies",
   "canonPower": 60,
-  "category": "physical"
+  "category": "physical",
+  "reach": "ranged"
  },
  "spit-up": {
   "id": "spit-up",
@@ -7936,14 +8158,15 @@
   "cooldown": 5,
   "power": 90,
   "range": {
-   "min": 1,
-   "max": 2
+   "min": 2,
+   "max": 4
   },
   "requiresLineOfSight": true,
   "shape": {
    "kind": "single"
   },
-  "affects": "enemies"
+  "affects": "enemies",
+  "reach": "ranged"
  },
  "spore": {
   "id": "spore",
@@ -8011,7 +8234,8 @@
   "affects": "enemies",
   "cooldown": 2,
   "category": "physical",
-  "canonPower": 65
+  "canonPower": 65,
+  "reach": "melee"
  },
  "steel-beam": {
   "id": "steel-beam",
@@ -8022,15 +8246,16 @@
   "cooldown": 5,
   "power": 95,
   "range": {
-   "min": 1,
-   "max": 2
+   "min": 2,
+   "max": 4
   },
   "requiresLineOfSight": true,
   "shape": {
    "kind": "single"
   },
   "affects": "enemies",
-  "canonPower": 140
+  "canonPower": 140,
+  "reach": "ranged"
  },
  "steel-wing": {
   "id": "steel-wing",
@@ -8049,7 +8274,8 @@
    "kind": "single"
   },
   "affects": "enemies",
-  "canonPower": 70
+  "canonPower": 70,
+  "reach": "melee"
  },
  "stockpile": {
   "id": "stockpile",
@@ -8099,7 +8325,8 @@
    }
   ],
   "canonPower": 65,
-  "category": "physical"
+  "category": "physical",
+  "reach": "melee"
  },
  "stomping-tantrum": {
   "id": "stomping-tantrum",
@@ -8130,15 +8357,16 @@
   "cooldown": 4,
   "power": 75,
   "range": {
-   "min": 1,
-   "max": 2
+   "min": 2,
+   "max": 4
   },
   "requiresLineOfSight": false,
   "shape": {
    "kind": "single"
   },
   "affects": "enemies",
-  "canonPower": 100
+  "canonPower": 100,
+  "reach": "ranged"
  },
  "stored-power": {
   "id": "stored-power",
@@ -8147,8 +8375,8 @@
   "kind": "special",
   "power": 25,
   "range": {
-   "min": 1,
-   "max": 2
+   "min": 2,
+   "max": 4
   },
   "requiresLineOfSight": true,
   "shape": {
@@ -8157,7 +8385,8 @@
   "affects": "enemies",
   "cooldown": 2,
   "category": "special",
-  "canonPower": 20
+  "canonPower": 20,
+  "reach": "ranged"
  },
  "storm-throw": {
   "id": "storm-throw",
@@ -8176,7 +8405,8 @@
   "affects": "enemies",
   "cooldown": 2,
   "category": "physical",
-  "canonPower": 60
+  "canonPower": 60,
+  "reach": "melee"
  },
  "strength": {
   "id": "strength",
@@ -8201,7 +8431,8 @@
    }
   ],
   "canonPower": 80,
-  "category": "physical"
+  "category": "physical",
+  "reach": "melee"
  },
  "strength-sap": {
   "id": "strength-sap",
@@ -8223,30 +8454,6 @@
    {
     "kind": "status",
     "status": "weakened",
-    "duration": 2
-   }
-  ]
- },
- "string-shot": {
-  "id": "string-shot",
-  "name": "String Shot",
-  "type": "bug",
-  "kind": "special",
-  "cooldown": 2,
-  "power": 0,
-  "range": {
-   "min": 1,
-   "max": 2
-  },
-  "requiresLineOfSight": true,
-  "shape": {
-   "kind": "single"
-  },
-  "affects": "enemies",
-  "effects": [
-   {
-    "kind": "status",
-    "status": "slow",
     "duration": 2
    }
   ]
@@ -8320,7 +8527,8 @@
    "kind": "single"
   },
   "affects": "enemies",
-  "canonPower": 80
+  "canonPower": 80,
+  "reach": "melee"
  },
  "substitute": {
   "id": "substitute",
@@ -8383,7 +8591,8 @@
   "shape": {
    "kind": "single"
   },
-  "affects": "enemies"
+  "affects": "enemies",
+  "reach": "melee"
  },
  "supercell-slam": {
   "id": "supercell-slam",
@@ -8402,7 +8611,8 @@
   "affects": "enemies",
   "cooldown": 3,
   "category": "physical",
-  "canonPower": 100
+  "canonPower": 100,
+  "reach": "melee"
  },
  "superpower": {
   "id": "superpower",
@@ -8421,7 +8631,8 @@
    "kind": "single"
   },
   "affects": "enemies",
-  "canonPower": 120
+  "canonPower": 120,
+  "reach": "melee"
  },
  "supersonic": {
   "id": "supersonic",
@@ -8465,7 +8676,8 @@
   },
   "affects": "enemies",
   "canonPower": 90,
-  "category": "special"
+  "category": "special",
+  "reach": "ranged"
  },
  "swagger": {
   "id": "swagger",
@@ -8648,7 +8860,8 @@
   "affects": "enemies",
   "cooldown": 2,
   "category": "physical",
-  "canonPower": 75
+  "canonPower": 75,
+  "reach": "melee"
  },
  "tail-whip": {
   "id": "tail-whip",
@@ -8723,7 +8936,8 @@
    }
   ],
   "canonPower": 90,
-  "category": "physical"
+  "category": "physical",
+  "reach": "melee"
  },
  "taunt": {
   "id": "taunt",
@@ -8819,7 +9033,8 @@
   "affects": "enemies",
   "cooldown": 2,
   "category": "physical",
-  "canonPower": 75
+  "canonPower": 75,
+  "reach": "melee"
  },
  "thrash": {
   "id": "thrash",
@@ -8838,7 +9053,8 @@
   },
   "affects": "enemies",
   "canonPower": 120,
-  "category": "physical"
+  "category": "physical",
+  "reach": "melee"
  },
  "throat-chop": {
   "id": "throat-chop",
@@ -8857,7 +9073,8 @@
   "affects": "enemies",
   "cooldown": 3,
   "category": "physical",
-  "canonPower": 80
+  "canonPower": 80,
+  "reach": "melee"
  },
  "thunder": {
   "id": "thunder",
@@ -8866,8 +9083,8 @@
   "kind": "special",
   "power": 70,
   "range": {
-   "min": 1,
-   "max": 1
+   "min": 2,
+   "max": 5
   },
   "requiresLineOfSight": true,
   "shape": {
@@ -8877,7 +9094,8 @@
   "affects": "enemies",
   "canonPower": 110,
   "category": "special",
-  "cooldown": 4
+  "cooldown": 4,
+  "reach": "ranged"
  },
  "thunder-fang": {
   "id": "thunder-fang",
@@ -8903,7 +9121,8 @@
     "duration": 1
    }
   ],
-  "canonPower": 65
+  "canonPower": 65,
+  "reach": "melee"
  },
  "thunder-punch": {
   "id": "thunder-punch",
@@ -8922,17 +9141,18 @@
   },
   "affects": "enemies",
   "canonPower": 75,
-  "category": "physical"
+  "category": "physical",
+  "reach": "melee"
  },
  "thunderbolt": {
   "id": "thunderbolt",
   "name": "Thunderbolt",
   "type": "electric",
   "kind": "special",
-  "power": 70,
+  "power": 65,
   "range": {
-   "min": 1,
-   "max": 2
+   "min": 2,
+   "max": 4
   },
   "requiresLineOfSight": true,
   "shape": {
@@ -8941,7 +9161,8 @@
   "affects": "enemies",
   "cooldown": 2,
   "canonPower": 90,
-  "category": "special"
+  "category": "special",
+  "reach": "ranged"
  },
  "tickle": {
   "id": "tickle",
@@ -9038,7 +9259,8 @@
   "affects": "enemies",
   "cooldown": 2,
   "category": "physical",
-  "canonPower": 50
+  "canonPower": 50,
+  "reach": "melee"
  },
  "tri-attack": {
   "id": "tri-attack",
@@ -9046,10 +9268,10 @@
   "type": "normal",
   "kind": "special",
   "cooldown": 3,
-  "power": 65,
+  "power": 60,
   "range": {
-   "min": 1,
-   "max": 2
+   "min": 2,
+   "max": 4
   },
   "requiresLineOfSight": true,
   "shape": {
@@ -9064,7 +9286,8 @@
    }
   ],
   "canonPower": 80,
-  "category": "special"
+  "category": "special",
+  "reach": "ranged"
  },
  "triple-axel": {
   "id": "triple-axel",
@@ -9083,7 +9306,8 @@
   "affects": "enemies",
   "cooldown": 2,
   "category": "physical",
-  "canonPower": 60
+  "canonPower": 60,
+  "reach": "melee"
  },
  "twister": {
   "id": "twister",
@@ -9127,7 +9351,8 @@
    {
     "kind": "disengage"
    }
-  ]
+  ],
+  "reach": "melee"
  },
  "upper-hand": {
   "id": "upper-hand",
@@ -9146,7 +9371,8 @@
   "affects": "enemies",
   "cooldown": 2,
   "category": "physical",
-  "canonPower": 65
+  "canonPower": 65,
+  "reach": "melee"
  },
  "uproar": {
   "id": "uproar",
@@ -9188,7 +9414,8 @@
   },
   "affects": "enemies",
   "canonPower": 40,
-  "timing": "watch"
+  "timing": "watch",
+  "reach": "ranged"
  },
  "venom-drench": {
   "id": "venom-drench",
@@ -9229,15 +9456,16 @@
   "cooldown": 3,
   "power": 55,
   "range": {
-   "min": 1,
-   "max": 2
+   "min": 2,
+   "max": 4
   },
   "requiresLineOfSight": true,
   "shape": {
    "kind": "single"
   },
   "affects": "enemies",
-  "canonPower": 65
+  "canonPower": 65,
+  "reach": "ranged"
  },
  "vital-throw": {
   "id": "vital-throw",
@@ -9262,7 +9490,8 @@
     "distance": 1
    }
   ],
-  "canonPower": 70
+  "canonPower": 70,
+  "reach": "melee"
  },
  "volt-switch": {
   "id": "volt-switch",
@@ -9271,10 +9500,10 @@
   "kind": "special",
   "category": "special",
   "cooldown": 3,
-  "power": 60,
+  "power": 55,
   "range": {
-   "min": 1,
-   "max": 2
+   "min": 2,
+   "max": 4
   },
   "requiresLineOfSight": true,
   "shape": {
@@ -9286,7 +9515,8 @@
     "kind": "disengage"
    }
   ],
-  "canonPower": 70
+  "canonPower": 70,
+  "reach": "ranged"
  },
  "volt-tackle": {
   "id": "volt-tackle",
@@ -9312,7 +9542,8 @@
    }
   ],
   "canonPower": 120,
-  "cooldown": 4
+  "cooldown": 4,
+  "reach": "melee"
  },
  "wake-up-slap": {
   "id": "wake-up-slap",
@@ -9331,17 +9562,18 @@
   "affects": "enemies",
   "cooldown": 2,
   "category": "physical",
-  "canonPower": 70
+  "canonPower": 70,
+  "reach": "melee"
  },
  "water-pulse": {
   "id": "water-pulse",
   "name": "Water Pulse",
   "type": "water",
   "kind": "special",
-  "power": 55,
+  "power": 50,
   "range": {
-   "min": 1,
-   "max": 2
+   "min": 2,
+   "max": 4
   },
   "requiresLineOfSight": true,
   "shape": {
@@ -9357,7 +9589,8 @@
    }
   ],
   "canonPower": 60,
-  "category": "special"
+  "category": "special",
+  "reach": "ranged"
  },
  "water-spout": {
   "id": "water-spout",
@@ -9366,10 +9599,10 @@
   "kind": "special",
   "category": "special",
   "cooldown": 4,
-  "power": 85,
+  "power": 75,
   "range": {
-   "min": 1,
-   "max": 1
+   "min": 2,
+   "max": 4
   },
   "requiresLineOfSight": true,
   "shape": {
@@ -9377,7 +9610,8 @@
    "radius": 1
   },
   "affects": "enemies",
-  "canonPower": 150
+  "canonPower": 150,
+  "reach": "ranged"
  },
  "waterfall": {
   "id": "waterfall",
@@ -9402,7 +9636,8 @@
    }
   ],
   "canonPower": 80,
-  "category": "physical"
+  "category": "physical",
+  "reach": "melee"
  },
  "wave-crash": {
   "id": "wave-crash",
@@ -9421,17 +9656,18 @@
   "affects": "enemies",
   "cooldown": 4,
   "category": "physical",
-  "canonPower": 120
+  "canonPower": 120,
+  "reach": "melee"
  },
  "whirlpool": {
   "id": "whirlpool",
   "name": "Whirlpool",
   "type": "water",
   "kind": "special",
-  "power": 40,
+  "power": 35,
   "range": {
    "min": 2,
-   "max": 2
+   "max": 4
   },
   "requiresLineOfSight": true,
   "shape": {
@@ -9451,7 +9687,8 @@
    }
   ],
   "canonPower": 35,
-  "category": "special"
+  "category": "special",
+  "reach": "ranged"
  },
  "whirlwind": {
   "id": "whirlwind",
@@ -9525,7 +9762,8 @@
    }
   ],
   "canonPower": 90,
-  "category": "physical"
+  "category": "physical",
+  "reach": "melee"
  },
  "will-o-wisp": {
   "id": "will-o-wisp",
@@ -9615,7 +9853,8 @@
   },
   "affects": "enemies",
   "canonPower": 120,
-  "cooldown": 4
+  "cooldown": 4,
+  "reach": "melee"
  },
  "work-up": {
   "id": "work-up",
@@ -9649,8 +9888,8 @@
   "category": "special",
   "power": 80,
   "range": {
-   "min": 1,
-   "max": 1
+   "min": 2,
+   "max": 4
   },
   "requiresLineOfSight": false,
   "shape": {
@@ -9662,7 +9901,8 @@
     "kind": "engage"
    }
   ],
-  "cooldown": 2
+  "cooldown": 2,
+  "reach": "ranged"
  },
  "x-scissor": {
   "id": "x-scissor",
@@ -9681,7 +9921,8 @@
   },
   "affects": "enemies",
   "canonPower": 80,
-  "cooldown": 3
+  "cooldown": 3,
+  "reach": "melee"
  },
  "yawn": {
   "id": "yawn",
@@ -9715,8 +9956,8 @@
   "category": "special",
   "power": 85,
   "range": {
-   "min": 1,
-   "max": 2
+   "min": 2,
+   "max": 5
   },
   "requiresLineOfSight": true,
   "shape": {
@@ -9731,7 +9972,8 @@
    }
   ],
   "canonPower": 120,
-  "cooldown": 4
+  "cooldown": 4,
+  "reach": "ranged"
  },
  "zen-headbutt": {
   "id": "zen-headbutt",
@@ -9750,6 +9992,7 @@
   },
   "affects": "enemies",
   "canonPower": 80,
-  "cooldown": 3
+  "cooldown": 3,
+  "reach": "melee"
  }
 }

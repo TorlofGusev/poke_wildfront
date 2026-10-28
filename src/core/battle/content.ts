@@ -26,7 +26,11 @@ export interface SpeciesDef {
   /** `choices`: the player picks the form when the level is reached (Eevee); `into` is the default (wild Pokémon). */
   readonly evolution?: { readonly level: number; readonly into: string; readonly choices?: readonly string[] };
   readonly ability?: string;
+  /** Melee lines walk in and hit; ranged lines stay back and shoot (their moves fit the role, see MoveDef.reach). */
+  readonly role?: Role;
 }
+
+export type Role = "melee" | "ranged";
 
 /**
  * basic: the free attack. special: has a cooldown. ultimate: once per battle.
@@ -97,6 +101,8 @@ export interface MoveDef {
    * there then. watch: guards the area until the user's next turn; the first foe moving in it is struck.
    */
   readonly timing?: "delayed" | "watch";
+  /** Damaging moves: melee ones reach 1–2, ranged ones 2–4 (a few big ones 5); a line's tree only has its role's. */
+  readonly reach?: Role;
 }
 
 export interface StatusDef {
@@ -157,6 +163,8 @@ export interface BattleRules {
     /** A delayed strike can be dodged, so it hits harder. */
     readonly delayed: number;
   };
+  /** Base Speed a role adds (melee) or takes (ranged); the stat total stays the same. */
+  readonly roleSpeed: Readonly<Record<Role, number>>;
   /** Hazards: how many of their maker's turns they last, fire's damage (share of max HP) and poison's duration. */
   readonly zones: { readonly turns: number; readonly fireDamage: number; readonly poisonDuration: number };
   /** Critical hits: chance = base + perPoint × Crit, damage × (damage + damagePerPoint × Crit). */

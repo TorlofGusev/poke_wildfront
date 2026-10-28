@@ -34,16 +34,16 @@ describe("levels and stats", () => {
     const fresh = starter("charmander", 5);
     // Points from the 4 levels it arrived with are pre-spent along the Fire playstyle.
     expect(fresh.unspentPoints).toBe(0);
-    expect(fresh.statPoints).toEqual({ hp: 1, attack: 2, defense: 0, speed: 1, willpower: 0, crit: 0 });
+    expect(fresh.statPoints).toEqual({ hp: 1, attack: 2, defense: 1, speed: 0, willpower: 0, crit: 0 });
     const up = gainXp(CONTENT, PROGRESSION, fresh, xpToNext(PROGRESSION, 5)).member;
     expect(up.unspentPoints).toBe(1);
     expect(memberStats(CONTENT, PROGRESSION, up).stats).toEqual(memberStats(CONTENT, PROGRESSION, fresh).stats);
   });
 
   it("type profiles give small stats: Fire is a striker, Rock a fortress", () => {
-    expect(CONTENT.species.charmander!.stats).toEqual({ hp: 4, attack: 9, defense: 4, speed: 5, willpower: 4, crit: 4 });
-    // Geodude: Rock/Ground average, +1 Defense nudge, evened out to the same total.
-    expect(CONTENT.species.geodude!.stats).toEqual({ hp: 6, attack: 6, defense: 9, speed: 1, willpower: 5, crit: 3 });
+    // Charmander: Fire, a ranged line (less Speed); Geodude: Rock/Ground, +1 Defense, a melee line (more Speed).
+    expect(CONTENT.species.charmander!.stats).toEqual({ hp: 4, attack: 10, defense: 4, speed: 4, willpower: 4, crit: 4 });
+    expect(CONTENT.species.geodude!.stats).toEqual({ hp: 6, attack: 6, defense: 8, speed: 2, willpower: 5, crit: 3 });
     // Every first form has the same total; each evolution stage adds a little.
     const total = (id: string) => Object.values(CONTENT.species[id]!.stats).reduce((a, b) => a + b, 0);
     for (const id of ["bulbasaur", "charmander", "squirtle", "pikachu", "rattata", "geodude"]) expect(total(id), id).toBe(30);
@@ -148,10 +148,10 @@ describe("focus and talents", () => {
     m = { ...m, level: 3 };
     expect(pendingChoice(CONTENT, PROGRESSION, m)).toBe("focus");
     expect(() => chooseFocus(CONTENT, PROGRESSION, m, "skill:frenzy-plant")).toThrow();
-    m = chooseFocus(CONTENT, PROGRESSION, m, "skill:flare-blitz") as typeof m;
+    m = chooseFocus(CONTENT, PROGRESSION, m, "skill:blast-burn") as typeof m;
     expect(m.focus).toBe("attack");
-    expect(m.talents).toEqual(["skill:flare-blitz"]);
-    expect(m.knownMoves).toContain("flare-blitz");
+    expect(m.talents).toEqual(["skill:blast-burn"]);
+    expect(m.knownMoves).toContain("blast-burn");
     expect(pendingChoice(CONTENT, PROGRESSION, m)).toBeNull();
     m = { ...m, level: 4 };
     const [a, b] = talentOptions(CONTENT, PROGRESSION, m);

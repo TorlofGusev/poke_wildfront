@@ -120,10 +120,11 @@ describe("archetype trees", () => {
 
   it("a move comes from one place: a line's tree never offers a move its species start with, and every move has one definition", () => {
     const problems: string[] = [];
-    for (const a of ARCHETYPES) for (const l of a.lines) {
-      const own = new Set(l.line.flatMap((sp) => CONTENT.species[sp]!.moves));
-      const skills = [...Object.values(a.rows).flat(), ...Object.values(l.rows ?? {}), ...Object.values(a.forms ?? {}).flatMap((f) => Object.values(f.rows).flat()), ...l.focus.map((f) => f.skill)];
-      for (const id of skills) if (own.has(moveOf(id) ?? "")) problems.push(`${a.id}: ${l.line[0]} starts with ${moveOf(id)}`);
+    // Each species' own tree (after its role's swaps).
+    for (const [sp, tree] of Object.entries(PROGRESSION.trees)) {
+      const own = new Set(CONTENT.species[sp]!.moves);
+      const skills = [...Object.values(tree.rows).flat(), ...Object.values(tree.forms?.[sp]?.rows ?? {}).flat(), ...tree.focus.map((f) => f.skill)];
+      for (const id of skills) if (own.has(moveOf(id) ?? "")) problems.push(`${sp} starts with ${moveOf(id)}`);
     }
     const lib = JSON.parse(readFileSync("src/content/mastery/moves.json", "utf8")) as Record<string, unknown>;
     problems.push(...Object.keys(baseMoves).filter((id) => id in lib).map((id) => `${id} defined twice`));

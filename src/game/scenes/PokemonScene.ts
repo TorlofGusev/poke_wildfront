@@ -38,7 +38,7 @@ import {
   statOffer,
   type FocusOption,
 } from "../../core/progression";
-import { baseMovement, speedAtMoveCap, STAT_NAMES, type StatName } from "../../core/battle";
+import { type Role, baseMovement, speedAtMoveCap, STAT_NAMES, type StatName } from "../../core/battle";
 import { session } from "../session";
 import { portraitKey } from "../sprites";
 import { Button } from "../ui/Button";
@@ -61,6 +61,9 @@ const EV_HELP_FLAG = "help-ev";
 const focusBonusLabel = (f: FocusOption): string => (f.second
   ? `+${PROGRESSION.rules.focusBonus / 2} ${STAT_LABEL[f.stat]} +${PROGRESSION.rules.focusBonus / 2} ${STAT_LABEL[f.second]}`
   : `+${PROGRESSION.rules.focusBonus} ${STAT_LABEL[f.stat]}`);
+
+/** " · Melee" / " · Ranged": how the Pokémon fights (its tree and moves follow it). */
+const roleTag = (role: Role | undefined): string => (role ? `  ${tag("special", role === "melee" ? t("Melee") : t("Ranged"))}` : "");
 
 export class PokemonScene extends Phaser.Scene {
   private root!: Phaser.GameObjects.Container;
@@ -164,7 +167,7 @@ export class PokemonScene extends Phaser.Scene {
     const held = m.heldItem ? PROGRESSION.items[m.heldItem] : null;
     const evo = s.evolution ? t(" · evolves at Lv {lv}", { lv: s.evolution.level }) : "";
     const header = [
-      `${tag("title", s.name)}  ${s.types.map((t) => tag(t, t)).join("/")}  Lv ${tag("num", m.level)}  XP ${m.xp}/${xpToNext(PROGRESSION, m.level)}${tag("dim", evo)}`,
+      `${tag("title", s.name)}  ${s.types.map((t) => tag(t, t)).join("/")}${roleTag(s.role)}  Lv ${tag("num", m.level)}  XP ${m.xp}/${xpToNext(PROGRESSION, m.level)}${tag("dim", evo)}`,
       `HP ${tag(m.hp > 0 ? "heal" : "ko", `${m.hp}/${maxHp}`)}  ${statLine(stats)}  KO ${tag(m.knockouts ? "ko" : "dim", `${m.knockouts}/${KNOCKOUTS_TO_DEATH}`)}`,
       ...(s.ability && CONTENT.abilities[s.ability] ? [`${t("Ability:")} ${tag("special", CONTENT.abilities[s.ability]!.name)} ${tag("dim", CONTENT.abilities[s.ability]!.description)}`] : []),
       `${t("Focus:")} ${m.focus ? tag("special", focusLabel(m.focus)) : tag("dim", m.level < PROGRESSION.rules.focusLevel ? t("chosen at Lv {lv}", { lv: PROGRESSION.rules.focusLevel }) : t("not chosen"))}  ${t("Held:")} ${held ? tag("num", held.name) : tag("dim", t("nothing"))}`,

@@ -205,7 +205,8 @@
    "shape": {
     "kind": "single"
    },
-   "affects": "enemies"
+   "affects": "enemies",
+   "reach": "melee"
   },
   "ditto-envelop": {
    "id": "ditto-envelop",
@@ -233,7 +234,8 @@
      "status": "slow",
      "duration": 2
     }
-   ]
+   ],
+   "reach": "melee"
   },
   "ditto-shapeshift-dash": {
    "id": "ditto-shapeshift-dash",
@@ -256,7 +258,8 @@
     {
      "kind": "engage"
     }
-   ]
+   ],
+   "reach": "melee"
   }
  }
 }

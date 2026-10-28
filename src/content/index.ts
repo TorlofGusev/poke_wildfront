@@ -1,4 +1,4 @@
-import { powerFromCanon, speciesStats, STAT_TOTAL, STAT_TOTAL_PER_STAGE, type BaseStats, type BattleContent, type BattleScenario, type MoveDef, type SpeciesDef, type TypeDef } from "../core/battle";
+import { powerFromCanon, speciesStats, STAT_TOTAL, STAT_TOTAL_PER_STAGE, type Role, type BaseStats, type BattleContent, type BattleScenario, type MoveDef, type SpeciesDef, type TypeDef } from "../core/battle";
 import type { BiomeDef, FatigueRules, WorldContent, WorldDef } from "../core/expedition";
 import type { ItemDef, MasteryTree, ProgressionContent, TalentDef } from "../core/progression";
 import type { CampRules, MealDef } from "../core/party";
@@ -19,6 +19,7 @@ import fatigue from "./fatigue.json";
 import baseMoves from "./moves.json";
 import masteryMoves from "./mastery/moves.json";
 import passiveData from "./mastery/passives.json";
+import roleSwapData from "./mastery/roleSwaps.json";
 import route2 from "./worlds/route-2.json";
 import rules from "./rules.json";
 import speciesData from "./species.json";
@@ -59,8 +60,50 @@ export const ARCHETYPES: readonly ArchetypeFile[] = Object.entries(import.meta.g
 Object.assign(talents, localized("mastery/passives.json", passiveData) as Record<string, TalentDef>, ...ARCHETYPES.map((a) => a.passives ?? {}));
 Object.assign(moves, ...ARCHETYPES.map((a) => a.moves ?? {}));
 const SKILL = "skill:";
+/**
+ * A line's tree only teaches moves of its role (melee or ranged). Archetype trees are shared by lines, so
+ * a move of the other reach is swapped, line by line, for the first of its counterparts (same type, close in
+ * canon power; mastery/roleSwaps.json, editable) the tree does not have yet.
+ */
+const ROLE_SWAPS = roleSwapData as { readonly toMelee: Readonly<Record<string, readonly string[]>>; readonly toRanged: Readonly<Record<string, readonly string[]>> };
+const roleOfSpecies = (id: string): Role | undefined => (speciesData as Record<string, { role?: Role }>)[id]?.role;
 const moveOfSkill = (id: string) => (id.startsWith(SKILL) ? id.slice(SKILL.length) : null);
 const strong = (id: string) => (moves[id]?.canonPower ?? 0) >= progression.bondCanonPower;
+/** The tree as one species sees it: every skill of the other reach swapped for a counterpart of its role. */
+function treeForRole(tree: MasteryTree, role: Role | undefined, start: readonly string[] = []): MasteryTree {
+  if (!role) return tree;
+  // A swap never brings in a move the species starts with, or one the tree already teaches.
+  const used = new Set<string>(start);
+  const fit = (id: string): string => {
+    const mv = moveOfSkill(id);
+    const reach = mv ? moves[mv]?.reach : undefined;
+    // A move the species already starts with: another of the same type and reach, closest in power.
+    if (mv && start.includes(mv)) {
+      const alt = Object.values(moves).filter((m) => m.type === moves[mv]?.type && m.reach === (reach ?? role) && m.kind !== "basic" && !used.has(m.id) && !start.includes(m.id) && (masteryMoves as Record<string, unknown>)[m.id])
+        .sort((a, b) => Math.abs((a.canonPower ?? a.power) - (moves[mv]!.canonPower ?? moves[mv]!.power)) - Math.abs((b.canonPower ?? b.power) - (moves[mv]!.canonPower ?? moves[mv]!.power)) || (a.id < b.id ? -1 : 1))[0];
+      if (alt) { used.add(alt.id); return SKILL + alt.id; }
+    }
+    if (!mv || !reach || reach === role) { if (mv) used.add(mv); return id; }
+    const swap = (role === "melee" ? ROLE_SWAPS.toMelee : ROLE_SWAPS.toRanged)[mv]?.find((c) => !used.has(c)) ?? mv;
+    used.add(swap);
+    return SKILL + swap;
+  };
+  const rowsFit = (rows: MasteryTree["rows"]) =>
+    Object.fromEntries(Object.entries(rows).sort(([a], [b]) => Number(a) - Number(b)).map(([lv, opts]) => [lv, opts.map(fit)]));
+  return {
+    ...tree,
+    rows: rowsFit(tree.rows),
+    focus: tree.focus.map((f) => ({ ...f, skill: fit(f.skill) })),
+    ...(tree.forms && { forms: Object.fromEntries(Object.entries(tree.forms).map(([id, f]) => [id, { rows: treeForRole({ ...tree, rows: f.rows, forms: undefined }, roleOfSpecies(id) ?? role, start).rows }])) }),
+  };
+}
+
+const ARCHETYPE_TREES: [string, MasteryTree][] = ARCHETYPES.flatMap((a) => a.lines.flatMap((l) => {
+  const rows = Object.fromEntries(Object.entries(a.rows).map(([lv, opts]) => [lv, l.rows?.[lv] ? [...opts, l.rows[lv]] : opts]));
+  const tree: MasteryTree = { line: l.line, focus: l.focus, rows, ...(a.forms && { forms: a.forms }) };
+  return l.line.map((id) => [id, treeForRole(tree, roleOfSpecies(id), (speciesData as Record<string, { moves: string[] }>)[id]?.moves)] as [string, MasteryTree]);
+}));
+
 /** The move each skill teaches; focus skills and strong row skills make it a Bond move. */
 const taught = new Map<string, string>();
 const bonds = new Set<string>();
@@ -70,6 +113,14 @@ for (const a of ARCHETYPES) {
     if (mv) { taught.set(id, mv); if (strong(mv)) bonds.add(mv); }
   }
   for (const l of a.lines) for (const f of l.focus) { const mv = moveOfSkill(f.skill); if (mv) { taught.set(f.skill, mv); bonds.add(mv); } }
+}
+// The counterparts the lines actually got (role swaps) teach their moves the same way.
+for (const [, tree] of ARCHETYPE_TREES) {
+  for (const id of [...Object.values(tree.rows).flat(), ...Object.values(tree.forms ?? {}).flatMap((f) => Object.values(f.rows).flat())]) {
+    const mv = moveOfSkill(id);
+    if (mv && !taught.has(id)) { taught.set(id, mv); if (strong(mv)) bonds.add(mv); }
+  }
+  for (const f of tree.focus) { const mv = moveOfSkill(f.skill); if (mv && !taught.has(f.skill)) { taught.set(f.skill, mv); bonds.add(mv); } }
 }
 for (const id of bonds) {
   const def = moves[id];
@@ -82,11 +133,7 @@ for (const [skill, id] of taught) {
   const move = moves[id];
   if (move && !talents[skill]) talents[skill] = { id: skill, name: move.name, description: "", grantsMove: move.id };
 }
-const ARCHETYPE_TREES: [string, MasteryTree][] = ARCHETYPES.flatMap((a) => a.lines.flatMap((l) => {
-  const rows = Object.fromEntries(Object.entries(a.rows).map(([lv, opts]) => [lv, l.rows?.[lv] ? [...opts, l.rows[lv]] : opts]));
-  const tree: MasteryTree = { line: l.line, focus: l.focus, rows, ...(a.forms && { forms: a.forms }) };
-  return l.line.map((id) => [id, tree] as [string, MasteryTree]);
-}));
+
 
 /** Evolution stage of each species: 0 for a first form, 1 for what it evolves into, 2 after that. */
 const stageOf = (() => {
@@ -102,6 +149,10 @@ const stageOf = (() => {
   };
 })();
 
+/** The species' own nudge plus its role's Speed (melee faster, ranged slower; the total stays the same). */
+const roleNudge = (s: { statNudge?: Partial<BaseStats>; role?: Role }): Partial<BaseStats> =>
+  s.role ? { ...s.statNudge, speed: (s.statNudge?.speed ?? 0) + rules.roleSpeed[s.role] } : s.statNudge ?? {};
+
 /**
  * Species with level-1 stats derived from their types' playstyles plus a small nudge: every first form
  * has the same total, each evolution stage a little more.
@@ -109,7 +160,7 @@ const stageOf = (() => {
 const species: Record<string, SpeciesDef> = Object.fromEntries(
   Object.entries(speciesData).map(([id, s]) => [
     id,
-    { ...s, stats: speciesStats(TYPES, s.types, (s as { statNudge?: Partial<BaseStats> }).statNudge, STAT_TOTAL + STAT_TOTAL_PER_STAGE * stageOf(id)) } as SpeciesDef,
+    { ...s, stats: speciesStats(TYPES, s.types, roleNudge(s as { statNudge?: Partial<BaseStats>; role?: Role }), STAT_TOTAL + STAT_TOTAL_PER_STAGE * stageOf(id)) } as SpeciesDef,
   ]),
 );
 

@@ -97,5 +97,9 @@
   "turns": 2,
   "fireDamage": 0.1,
   "poisonDuration": 2
+ },
+ "roleSpeed": {
+  "melee": 1,
+  "ranged": -2
  }
 }

@@ -23,5 +23,9 @@
   "Strikes this ground at the start of its next turn": "A következő köre elején lecsap erre a területre",
   "Guards this area until its next turn: the first foe moving in is struck": "A következő köréig őrzi a területet: az első belépő ellenfelet megüti",
   "Charging…": "Töltődik…",
-  "On watch": "Őrködik"
+  "On watch": "Őrködik",
+  "engaged: only Struggle until it steps away": "lekötve: csak Struggle, amíg el nem lép",
+  "only while engaged, for a ranged Pokémon": "csak lekötve, távolsági Pokémonnál",
+  "Melee": "Közelharci",
+  "Ranged": "Távolsági"
 }

@@ -159,13 +159,24 @@ export function moveUnavailableReason(
   const sealed = unit.statuses.find((st) => content.statuses[st.id]?.noSkills);
   if (sealed && kind !== "basic" && moveId !== "struggle") return `${content.statuses[sealed.id]!.name.toLowerCase()}: only its basic attack`;
   const engaged = unit.engagedWith !== null;
+  const ranged = isRangedUnit(content, unit);
   if (moveId === "struggle") {
-    const basic = basicOf(content, unit);
-    if (!engaged || !basic || !isRangedMove(content.moves[basic]!)) return "only while engaged, when its basic attack is ranged";
+    if (!engaged || !ranged) return "only while engaged, for a ranged Pokémon";
+  } else if (engaged && ranged) {
+    // A shooter with a foe in its face only scuffles (Struggle) until it steps away.
+    return "engaged: only Struggle until it steps away";
   } else if (engaged && move?.affects === "enemies" && (isRangedMove(move) || move.range.max === 0)) {
     return "engaged: only melee moves on its partner";
   }
   return null;
+}
+
+/** A ranged Pokémon (its species' role, or a ranged basic attack for one without a role). */
+export function isRangedUnit(content: BattleContent, unit: BattleUnit): boolean {
+  const role = content.species[unit.speciesId]?.role;
+  if (role) return role === "ranged";
+  const basic = basicOf(content, unit);
+  return !!basic && isRangedMove(content.moves[basic]!);
 }
 
 /** The attacker's own damage bonuses add up to at most this (+100%). */
@@ -385,10 +396,10 @@ function disengage(state: BattleState, unit: BattleUnit, events: BattleEvent[]):
   events.push({ type: "disengaged", unitId: unit.id, targetId: partner.id });
 }
 
-/** The partner's free attack on a unit breaking away: its basic attack, or Struggle if that is ranged. */
+/** The partner's free attack on a unit breaking away: its basic attack, or Struggle for a ranged Pokémon. */
 function engagementStrike(state: BattleState, content: BattleContent, attacker: BattleUnit, target: BattleUnit, events: BattleEvent[]): void {
   const basic = basicOf(content, attacker)!;
-  const moveId = isRangedMove(content.moves[basic]!) ? "struggle" : basic;
+  const moveId = isRangedUnit(content, attacker) || isRangedMove(content.moves[basic]!) ? "struggle" : basic;
   events.push({ type: "engagementStrike", unitId: attacker.id, targetId: target.id });
   events.push({ type: "moveUsed", unitId: attacker.id, moveId, target: { ...target.pos }, affected: [target.id] });
   const before = target.hp;

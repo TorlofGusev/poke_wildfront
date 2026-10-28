@@ -58,8 +58,9 @@ describe("hazards", () => {
   });
 
   it("mud is real terrain while it lasts: walking through it costs more", () => {
-    let s = turnOf(start([u("p", "squirtle", "player", 2, 4, ["muddy-water"]), u("e", "rattata", "enemy", 3.2, 4), u("x", "rattata", "enemy", 10, 1)]), "p");
-    s = use(s, "p", "muddy-water", 3.2, 4).state;
+    let s = turnOf(start([u("p", "squirtle", "player", 2, 4, ["muddy-water"]), u("e", "rattata", "enemy", 4.3, 4), u("x", "rattata", "enemy", 10, 1)]), "p");
+    // A ranged move: aimed from 2+ away.
+    s = use(s, "p", "muddy-water", 4.3, 4).state;
     const mud = s.hazards!.find((h) => h.kind === "mud")!;
     expect(s.field.zones.some((z) => z.terrain === "mud")).toBe(true);
     const before = freeReachFor({ ...s, field: OPEN, turn: { ...s.turn!, unitId: "e", movePointsLeft: 3 } }, "e").cells.length;
@@ -122,8 +123,8 @@ describe("watches", () => {
 
 describe("AI and field control", () => {
   it("prefers not to end its walk on burning ground", () => {
-    let s = turnOf(start([u("p", "charmander", "player", 2, 4, ["fire-spin"]), u("e", "rattata", "enemy", 3.2, 4), u("x", "rattata", "enemy", 10, 1)]), "p");
-    s = use(s, "p", "fire-spin", 3.2, 4).state;
+    let s = turnOf(start([u("p", "charmander", "player", 2, 4, ["fire-spin"]), u("e", "rattata", "enemy", 4.3, 4), u("x", "rattata", "enemy", 10, 1)]), "p");
+    s = use(s, "p", "fire-spin", 4.3, 4).state;
     const ai = turnOf(s, "x", 6);
     const plan = planTurn(ai, CONTENT);
     for (const a of plan) if (a.type === "move") expect(s.hazards!.some((h) => distance(h.at, a.to) <= h.radius)).toBe(false);

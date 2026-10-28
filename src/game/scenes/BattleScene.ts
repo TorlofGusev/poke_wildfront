@@ -1045,7 +1045,7 @@ export class BattleScene extends Phaser.Scene {
       // Phone: only what a turn needs. Name, types and HP (plus statuses); for an own Pokémon the
       // selected move's rules, for a foe how well the selected move hits it.
       const head = [
-        `${tag(`${unit.side === "player" ? "ally" : "foe"}:${s.types[0]}`, s.name)}  ${s.types.map((ty) => tag(ty, ty)).join("/")}  HP ${tag(unit.hp / unit.maxHp > 0.5 ? "heal" : "dmg", `${unit.hp}/${unit.maxHp}`)}`,
+        `${tag(`${unit.side === "player" ? "ally" : "foe"}:${s.types[0]}`, s.name)}  ${s.types.map((ty) => tag(ty, ty)).join("/")}${s.role ? ` ${tag("special", s.role === "melee" ? t("Melee") : t("Ranged"))}` : ""}  HP ${tag(unit.hp / unit.maxHp > 0.5 ? "heal" : "dmg", `${unit.hp}/${unit.maxHp}`)}`,
         unit.statuses.length ? `${t("Status:")} ${unit.statuses.map((x) => `${tag("status", CONTENT.statuses[x.id]?.name ?? x.id)} (${x.turnsLeft})`).join(", ")}` : "",
         this.engagementLine(unit),
       ];
@@ -1060,7 +1060,7 @@ export class BattleScene extends Phaser.Scene {
       return;
     }
     const lines = [
-      `${tag(`${unit.side === "player" ? "ally" : "foe"}:${s.types[0]}`, s.name)} ${tag("dim", unit.side === "enemy" ? t("(foe)") : t("(yours)"))}  ${s.types.map((t) => tag(t, t)).join("/")}`,
+      `${tag(`${unit.side === "player" ? "ally" : "foe"}:${s.types[0]}`, s.name)} ${tag("dim", unit.side === "enemy" ? t("(foe)") : t("(yours)"))}  ${s.types.map((t) => tag(t, t)).join("/")}${s.role ? `  ${tag("special", s.role === "melee" ? t("Melee") : t("Ranged"))}` : ""}`,
       `HP ${tag(unit.hp / unit.maxHp > 0.5 ? "heal" : "dmg", `${unit.hp}/${unit.maxHp}`)}  ${statLine(unit.stats)}`,
       ...s.types.map((t) => `${tag(t, t)}: ${tag("dim", CONTENT.types[t]?.summary ?? "")}`),
       unit.ability ? `${tag("special", unit.ability.name)}: ${tag("dim", unit.ability.description)}${unit.attackBoost ? tag("num", ` (+${unit.attackBoost} Atk)`) : ""}` : "",

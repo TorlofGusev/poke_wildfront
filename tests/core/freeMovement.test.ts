@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest";
 import { CONTENT } from "../../src/content";
-import { applyAction, createBattle, unitById, type BattleState, type UnitSetup } from "../../src/core/battle";
+import { applyAction, createBattle, moveUnavailableReason, unitById, type BattleState, type UnitSetup } from "../../src/core/battle";
 import { planTurn } from "../../src/core/ai";
 import {
   distance, freeAim, freeReach, freeReachFor, previewFreeWalk, UNIT_RADIUS, type FreeField,
@@ -58,10 +58,11 @@ describe("free movement: attacks", () => {
   });
 
   it("melee needs touching range; Ember (range 2) cannot shoot point blank", () => {
-    const s = turnOf(start([u("p", "charmander", "player", 4, 4), u("e", "rattata", "enemy", 5, 4)]), "p");
+    const fighter = { ...u("p", "charmander", "player", 4, 4), moves: ["scratch", "ember"] };
+    const s = turnOf(start([fighter, u("e", "rattata", "enemy", 5, 4)]), "p");
     expect(freeAim(s, CONTENT, "p", "scratch", { x: 5, y: 4 }).ok).toBe(true);
     expect(freeAim(s, CONTENT, "p", "ember", { x: 5, y: 4 })).toMatchObject({ ok: false, reason: "too close" });
-    const far = turnOf(start([u("p", "charmander", "player", 4, 4), u("e", "rattata", "enemy", 5.6, 4)]), "p");
+    const far = turnOf(start([fighter, u("e", "rattata", "enemy", 5.6, 4)]), "p");
     expect(freeAim(far, CONTENT, "p", "scratch", { x: 5.6, y: 4 })).toMatchObject({ ok: false, reason: "out of range" });
   });
 });
@@ -107,8 +108,9 @@ describe("free movement: friendly fire", () => {
 
 describe("free movement: engagement", () => {
   const engaged = () => {
-    const s = turnOf(start([u("p", "charmander", "player", 4, 4), u("e", "geodude", "enemy", 5, 4)]), "p");
-    const hit = applyAction(s, CONTENT, { type: "useMove", unitId: "p", moveId: "scratch", target: { x: 5, y: 4 } });
+    // Growlithe: a melee line (a ranged one could only scuffle while engaged).
+    const s = turnOf(start([u("p", "growlithe", "player", 4, 4), u("e", "geodude", "enemy", 5, 4)]), "p");
+    const hit = applyAction(s, CONTENT, { type: "useMove", unitId: "p", moveId: "bite", target: { x: 5, y: 4 } });
     expect(unitById(hit.state, "p").engagedWith).toBe("e");
     return hit.state;
   };
@@ -126,9 +128,18 @@ describe("free movement: engagement", () => {
     expect(unitById(r.state, "p").engagedWith).toBeNull();
   });
 
+  it("an engaged ranged Pokémon can only scuffle (Struggle) until it steps away", () => {
+    const s = turnOf(start([u("p", "growlithe", "player", 4, 4), u("e", "squirtle", "enemy", 5, 4)]), "p");
+    const hit = applyAction(s, CONTENT, { type: "useMove", unitId: "p", moveId: "bite", target: { x: 5, y: 4 } }).state;
+    const theirs = turnOf(hit, "e");
+    expect(unitById(theirs, "e").engagedWith).toBe("p");
+    for (const m of unitById(theirs, "e").moves.filter((x) => x !== "struggle")) expect(moveUnavailableReason(theirs, CONTENT, "e", m)).toMatch(/only Struggle/);
+    expect(moveUnavailableReason(theirs, CONTENT, "e", "struggle")).toBeNull();
+  });
+
   it("an engaging hit pulls the pair together until they touch", () => {
-    const s = turnOf(start([u("p", "charmander", "player", 4, 4), u("e", "rattata", "enemy", 5.2, 4)]), "p");
-    const r = applyAction(s, CONTENT, { type: "useMove", unitId: "p", moveId: "scratch", target: { x: 5.2, y: 4 } });
+    const s = turnOf(start([u("p", "growlithe", "player", 4, 4), u("e", "rattata", "enemy", 5.2, 4)]), "p");
+    const r = applyAction(s, CONTENT, { type: "useMove", unitId: "p", moveId: "bite", target: { x: 5.2, y: 4 } });
     const gap = distance(unitById(r.state, "p").pos, unitById(r.state, "e").pos);
     expect(gap).toBeLessThan(UNIT_RADIUS * 2 + 0.15);
     expect(gap).toBeGreaterThanOrEqual(UNIT_RADIUS * 2);
