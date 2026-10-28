@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest";
 import { type UnitSetup } from "../../src/core/battle";
-import { applyAction, createBattle } from "./hexFixture";
+import { applyAction, createBattle, passUntil } from "./hexFixture";
 import ghost from "../../src/content/mastery/archetypes/ghost.json";
 import { content as c } from "./fixtures";
 
@@ -16,7 +16,7 @@ describe("Cursed Body (Ghost capstone)", () => {
 
   it("foes that hit it from an adjacent hex take 6 damage", () => {
     const { state } = createBattle(c, ["....."], [u("e", "fast", "enemy", 0), u("p", "slow", "player", 1, { mods: cursedBody })]);
-    const r = applyAction(state, c, { type: "useMove", unitId: "e", moveId: "tackle", target: { x: 1, y: 0 } });
+    const r = applyAction(passUntil(state, c, "e"), c, { type: "useMove", unitId: "e", moveId: "tackle", target: { x: 1, y: 0 } });
     expect(r.events).toContainEqual(expect.objectContaining({ type: "damaged", unitId: "e", amount: 6 }));
   });
 });

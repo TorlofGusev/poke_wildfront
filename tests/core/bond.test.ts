@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest";
 import { moveUnavailableReason, type BattleContent, type UnitSetup } from "../../src/core/battle";
-import { applyAction, createBattle } from "./hexFixture";
+import { applyAction, createBattle, passUntil } from "./hexFixture";
 import { teamBond } from "../../src/core/progression";
 import { content as base, pm, prog } from "./fixtures";
 
@@ -36,7 +36,7 @@ describe("team Bond", () => {
     let { state } = createBattle(c, ["....."], [u("p", "slow", "player", 0, { hp: 1, mods: { bondOnFaint: 2 } }), u("q", "slow", "player", 3), u("e", "fast", "enemy", 1)], {
       bond: { player: { start: 0, max: 6 } },
     });
-    state = applyAction(state, c, { type: "useMove", unitId: "e", moveId: "tackle", target: { x: 0, y: 0 } }).state;
+    state = applyAction(passUntil(state, c, "e"), c, { type: "useMove", unitId: "e", moveId: "tackle", target: { x: 0, y: 0 } }).state;
     expect(state.bond.player).toBe(2);
     const cheap = createBattle(c, ["....."], [u("p", "fast", "player", 0, { mods: { bondCostReduction: 1 } }), u("e", "slow", "enemy", 1)], { bond: { player: { start: 1, max: 6 } } }).state;
     expect(moveUnavailableReason(cheap, c, "p", "blast")).toBeNull();

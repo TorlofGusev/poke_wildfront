@@ -99,7 +99,7 @@
   "poisonDuration": 2
  },
  "roleSpeed": {
-  "melee": 1,
-  "ranged": -2
+  "melee": 5,
+  "ranged": 3
  }
 }

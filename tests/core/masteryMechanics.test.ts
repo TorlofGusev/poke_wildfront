@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest";
 import { unitById, type BattleContent, type BattleState, type UnitSetup } from "../../src/core/battle";
-import { applyAction, createBattle } from "./hexFixture";
+import { applyAction, createBattle, passUntil } from "./hexFixture";
 import { content as base } from "./fixtures";
 
 const content: BattleContent = {
@@ -47,7 +47,7 @@ describe("mastery mechanics", () => {
   it("Pursuit hits harder on a foe breaking away and Mean Look stops a free escape", () => {
     const units = (pm: object, em: object) => [u("e", "fast", "enemy", 2, 2, { mods: mods(em) }), u("p", "mid", "player", 3, 2, { mods: mods(pm) })];
     const engaged = (pm: object, em: object) => {
-      let s = start(units(pm, em));
+      let s = passUntil(start(units(pm, em)), content, "e");
       s = use(s, "e", "tackle", 3, 2).state;
       return applyAction(s, content, { type: "endTurn", unitId: "e" }).state;
     };

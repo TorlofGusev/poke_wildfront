@@ -149,18 +149,21 @@ const stageOf = (() => {
   };
 })();
 
-/** The species' own nudge plus its role's Speed (melee faster, ranged slower; the total stays the same). */
-const roleNudge = (s: { statNudge?: Partial<BaseStats>; role?: Role }): Partial<BaseStats> =>
-  s.role ? { ...s.statNudge, speed: (s.statNudge?.speed ?? 0) + rules.roleSpeed[s.role] } : s.statNudge ?? {};
-
 /**
- * Species with level-1 stats derived from their types' playstyles plus a small nudge: every first form
- * has the same total, each evolution stage a little more.
+ * Species with level-1 stats: Speed from the role (with its types' lean), the rest from its types' playstyles,
+ * plus a small nudge; every first form has the same total, each evolution stage a little more.
  */
 const species: Record<string, SpeciesDef> = Object.fromEntries(
   Object.entries(speciesData).map(([id, s]) => [
     id,
-    { ...s, stats: speciesStats(TYPES, s.types, roleNudge(s as { statNudge?: Partial<BaseStats>; role?: Role }), STAT_TOTAL + STAT_TOTAL_PER_STAGE * stageOf(id)) } as SpeciesDef,
+    {
+      ...s,
+      stats: speciesStats(
+        TYPES, s.types, (s as { statNudge?: Partial<BaseStats> }).statNudge, STAT_TOTAL + STAT_TOTAL_PER_STAGE * stageOf(id),
+        (s as { role?: Role }).role ? rules.roleSpeed[(s as { role: Role }).role] : undefined,
+        { min: 2, max: Math.min(10, 8 + stageOf(id)) },
+      ),
+    } as SpeciesDef,
   ]),
 );
 

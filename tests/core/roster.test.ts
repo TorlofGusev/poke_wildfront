@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest";
 import { type BattleState } from "../../src/core/battle";
-import { applyAction, createBattle } from "./hexFixture";
+import { applyAction, createBattle, passUntil } from "./hexFixture";
 import {
   addPokemon,
   memberMaxHp,
@@ -29,7 +29,7 @@ function battleWhereAFaints(extra: { id: string }[] = []): BattleState {
     ...extra.map((e, i) => ({ id: e.id, speciesId: "slow", side: "player" as const, pos: { x: 0, y: 1 + i }, hp: 40 })),
     { id: "e", speciesId: "fast", side: "enemy", pos: { x: 1, y: 0 } },
   ], { balls: { "poke-ball": 2 } });
-  state = applyAction(state, content, { type: "useMove", unitId: "e", moveId: "tackle", target: { x: 0, y: 0 } }).state;
+  state = applyAction(passUntil(state, content, "e"), content, { type: "useMove", unitId: "e", moveId: "tackle", target: { x: 0, y: 0 } }).state;
   if (state.outcome === "ongoing") state = applyAction(state, content, { type: "endTurn", unitId: "e" }).state;
   return state;
 }

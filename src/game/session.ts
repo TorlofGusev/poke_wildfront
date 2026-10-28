@@ -1,6 +1,6 @@
 import { CONTENT, PROGRESSION, WORLD, WORLD_CONTENT, WORLDS } from "../content";
 import type { WorldDef } from "../core/expedition";
-import { toUnitSetup } from "../core/progression";
+import { refreshMember, toUnitSetup } from "../core/progression";
 import { newWorld } from "../core/expedition";
 import type { DeployCandidate } from "../core/battle";
 import { newMember, type GameState } from "../core/party";
@@ -47,7 +47,10 @@ class Session {
     try {
       const raw = localStorage.getItem(SAVE_KEY);
       if (!raw) return false;
-      this.game = loadSaveFile(CONTENT, raw).game;
+      const game = loadSaveFile(CONTENT, raw).game;
+      // Content changes (new starting moves, roles, trees) reach saved Pokémon too.
+      const refresh = <M extends Parameters<typeof refreshMember>[2]>(list: readonly M[]): M[] => list.map((m) => refreshMember(CONTENT, PROGRESSION, m));
+      this.game = { ...game, roster: { ...game.roster, party: refresh(game.roster.party), storage: refresh(game.roster.storage), fallen: refresh(game.roster.fallen) } };
       this.loadError = null;
       return true;
     } catch (e) {

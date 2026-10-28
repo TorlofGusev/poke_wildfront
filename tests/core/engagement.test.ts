@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest";
 import { moveUnavailableReason, unitById, type BattleState, type UnitSetup } from "../../src/core/battle";
-import { applyAction, createBattle, hexPos, validTargets } from "./hexFixture";
+import { applyAction, createBattle, hexPos, passUntil, validTargets } from "./hexFixture";
 import { key } from "../../src/core/grid";
 import { content } from "./fixtures";
 
@@ -80,7 +80,7 @@ describe("engagement (one on one)", () => {
   it("an engaged unit with a ranged basic attack fights with Struggle at half its power", () => {
     // r (Ember 1–4 only) is engaged by e's melee hit.
     const units = [u("e", "fast", "enemy", 2, 2), u("r", "slow", "player", 3, 2, { moves: ["ember"] })];
-    const s1 = hit(start(units), "e", "tackle", 3, 2).state;
+    const s1 = hit(passUntil(start(units), content, "e"), "e", "tackle", 3, 2).state;
     const s2 = applyAction(s1, content, { type: "endTurn", unitId: "e" }).state;
     expect(moveUnavailableReason(s2, content, "r", "ember")).toMatch(/engaged/);
     expect(moveUnavailableReason(s2, content, "r", "struggle")).toBeNull();

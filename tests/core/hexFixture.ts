@@ -80,3 +80,9 @@ export function validTargets(state: BattleState, content: BattleContent, unitId:
 export function previewMove(state: BattleState, content: BattleContent, unitId: string, moveId: string, target: Point) {
   return previewFreeMove(state, content, unitId, moveId, toField(target));
 }
+
+/** Ends turns until it is `unitId`'s (the player side opens every round). */
+export function passUntil(state: BattleState, content: BattleContent, unitId: string): BattleState {
+  for (let i = 0; state.turn?.unitId !== unitId && i < 20; i++) state = applyAction(state, content, { type: "endTurn", unitId: state.turn!.unitId }).state;
+  return state;
+}

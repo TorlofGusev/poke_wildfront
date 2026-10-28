@@ -99,6 +99,8 @@ export interface BattleState {
   round: number;
   /** Unit ids still to act this round, in order; the head is acting now. */
   queue: string[];
+  /** The enemies' turn order, rolled once at the start of the battle. */
+  enemyOrder?: readonly string[];
   turn: TurnState | null;
   outcome: BattleOutcome;
   /** Team Bond points per side, spent by bond moves. */

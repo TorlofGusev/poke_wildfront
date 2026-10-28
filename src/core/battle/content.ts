@@ -164,6 +164,7 @@ export interface BattleRules {
     readonly delayed: number;
   };
   /** Base Speed a role adds (melee) or takes (ranged); the stat total stays the same. */
+  /** Base Speed of each role (a species' types lean it ±1). */
   readonly roleSpeed: Readonly<Record<Role, number>>;
   /** Hazards: how many of their maker's turns they last, fire's damage (share of max HP) and poison's duration. */
   readonly zones: { readonly turns: number; readonly fireDamage: number; readonly poisonDuration: number };

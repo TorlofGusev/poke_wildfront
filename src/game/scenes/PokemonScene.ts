@@ -332,7 +332,7 @@ export class PokemonScene extends Phaser.Scene {
       const r = d.range.min === d.range.max ? `${d.range.max}` : `${d.range.min}-${d.range.max}`;
       return `${d.type} · ${kind} · ${t("range {r}", { r })}${d.power ? ` · ${t("Power {n}", { n: d.power })}` : ""}`;
     };
-    const shown = this.selectedMove && m.knownMoves.includes(this.selectedMove) ? this.selectedMove : activeBasic;
+    const shown = this.selectedMove && (m.knownMoves.includes(this.selectedMove) || this.selectedMove === basic) ? this.selectedMove : activeBasic;
     const rows = [basic, ...m.knownMoves.filter((mv) => mv !== basic)];
     rows.forEach((mv, i) => {
       const def = CONTENT.moves[mv]!;

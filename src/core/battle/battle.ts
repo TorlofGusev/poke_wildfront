@@ -278,30 +278,38 @@ export function createBattle(
     balls: { ...(options.balls ?? {}) },
     captureAllowed: options.captureAllowed ?? false,
   };
+  state.enemyOrder = rollEnemyOrder(state);
   const events: BattleEvent[] = [];
   checkOutcome(state, events);
   if (state.outcome === "ongoing") startRound(state, content, events);
   return { state, events };
 }
 
+/** The enemies in a random order (seeded), kept for the whole battle. */
+function rollEnemyOrder(state: BattleState): string[] {
+  const ids = state.units.filter((u) => u.side === "enemy").map((u) => u.id);
+  for (let i = ids.length - 1; i > 0; i--) {
+    const j = Math.floor(roll(state) * (i + 1));
+    [ids[i], ids[j]] = [ids[j]!, ids[i]!];
+  }
+  return ids;
+}
+
 /**
- * Initiative (as in Wartales): the sides alternate, starting with the side of the fastest unit (ties to
- * the player); within a side, Speed descending. When one side runs out, the other acts in a row.
- * The player may hand any of their turns to another of their units that has not acted yet.
+ * Initiative (as in Wartales): the sides alternate, the player first; the player's units in party order
+ * (any turn can be handed to another unit that has not acted yet), the enemies in the order rolled at the
+ * start of the battle. Speed only moves a unit, it does not decide the order. When one side runs out, the
+ * other acts in a row.
  */
-export function initiativeOrder(state: BattleState, content: BattleContent): string[] {
-  const bySpeed = livingUnits(state)
-    .slice()
-    .sort((a, b) => {
-      const sa = a.stats.speed;
-      const sb = b.stats.speed;
-      if (sa !== sb) return sb - sa;
-      if (a.side !== b.side) return a.side === "player" ? -1 : 1;
-      return a.id < b.id ? -1 : a.id > b.id ? 1 : 0;
-    });
-  const sides = { player: bySpeed.filter((u) => u.side === "player"), enemy: bySpeed.filter((u) => u.side === "enemy") };
+export function initiativeOrder(state: BattleState, _content: BattleContent): string[] {
+  const living = livingUnits(state);
+  const rank = new Map((state.enemyOrder ?? []).map((id, i) => [id, i]));
+  const sides = {
+    player: living.filter((u) => u.side === "player"),
+    enemy: living.filter((u) => u.side === "enemy").sort((a, b) => (rank.get(a.id) ?? 99) - (rank.get(b.id) ?? 99)),
+  };
   const out: string[] = [];
-  let side: Side = bySpeed[0]?.side ?? "player";
+  let side: Side = "player";
   while (sides.player.length || sides.enemy.length) {
     const next = sides[side].shift() ?? sides[side === "player" ? "enemy" : "player"].shift()!;
     out.push(next.id);

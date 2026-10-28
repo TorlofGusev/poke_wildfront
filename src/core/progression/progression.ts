@@ -379,6 +379,26 @@ function retrainForm<T extends Progress>(content: BattleContent, prog: Progressi
   };
 }
 
+/**
+ * Brings a saved member up to date with the content: it knows its species' starting moves, forgets moves of
+ * the other reach (melee/ranged) and masteries its tree no longer has (their rows open again), and its loadout
+ * fits the slots.
+ */
+export function refreshMember<T extends Progress>(content: BattleContent, prog: ProgressionContent, m: T): T {
+  const role = content.species[m.speciesId]?.role;
+  const start = startingMoves(content.species[m.speciesId]!);
+  const fits = (mv: string) => start.includes(mv) || !role || !content.moves[mv]?.reach || content.moves[mv]!.reach === role;
+  let cur: T = retrainForm(content, prog, {
+    ...m,
+    knownMoves: [...new Set([...start, ...m.knownMoves.filter((mv) => content.moves[mv] && fits(mv))])],
+  });
+  const basic = basicMoveOf(content, content.species[cur.speciesId]!);
+  const active = cur.activeMoves.filter((mv) => mv !== basic && cur.knownMoves.includes(mv));
+  const used: Record<LoadoutSlot, number> = { basic: 0, skill: 0, bond: 0 };
+  cur = { ...cur, activeMoves: active.filter((mv) => used[slotOf(content, mv)]++ < LOADOUT[slotOf(content, mv)]) };
+  return cur;
+}
+
 /** The mastery picked in a row, if any. */
 export const rowPick = (row: GridRow, m: Progress): string | null => row.options.find((o) => m.talents.includes(o)) ?? null;
 

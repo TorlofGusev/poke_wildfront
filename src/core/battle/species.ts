@@ -4,8 +4,10 @@ export type StatName = keyof BaseStats;
 export const STAT_NAMES: readonly StatName[] = ["hp", "attack", "defense", "speed", "willpower", "crit"];
 
 export interface TypeProfile {
-  /** Level-1 stats of a Pokémon of this type (the type's playstyle). */
+  /** Level-1 stats of a Pokémon of this type (the type's playstyle); its Speed comes from the role instead. */
   readonly profile: BaseStats;
+  /** −1 slow, 0, +1 fast: added to the role's Speed. */
+  readonly speedLean?: number;
 }
 
 /** What every move of this type does in addition to its own effects (applied to each enemy hit). */
@@ -54,27 +56,39 @@ export const STAT_TOTAL = 30;
 export const STAT_TOTAL_PER_STAGE = 2;
 
 /**
- * Level-1 stats of a species: the average of its types' profiles plus the species' own nudge, shifted
- * evenly so they add up to exactly `total`, then rounded (largest remainders first, so the total holds).
- * Each stat stays within 0–10.
+ * Level-1 stats of a species. Speed is set apart: the role's base (`roleSpeed`, melee faster) plus its types'
+ * average lean (−1/0/+1, rounded away from zero) and the species' own Speed nudge, kept within 1–8. The rest is
+ * the average of its types' profiles plus the nudge, shifted evenly so everything adds up to exactly `total`,
+ * then rounded (largest remainders first, so the total holds). The other stats stay within `min`–`max`
+ * (no extremes: a first form tops out at 8). Without a role Speed is shared out like the other stats.
  */
 export function speciesStats(
-  types: Readonly<Record<string, TypeProfile>>, typeIds: readonly string[], nudge: Partial<BaseStats> = {}, total = STAT_TOTAL,
+  types: Readonly<Record<string, TypeProfile>>, typeIds: readonly string[], nudge: Partial<BaseStats> = {}, total = STAT_TOTAL, roleSpeed?: number,
+  { min, max }: { min: number; max: number } = { min: 0, max: 10 },
 ): BaseStats {
-  const raw = STAT_NAMES.map((s) => typeIds.reduce((sum, t) => {
+  const profiles = typeIds.map((t) => {
     const p = types[t];
     if (!p) throw new Error(`unknown type ${t}`);
-    return sum + p.profile[s];
-  }, 0) / typeIds.length + (nudge[s] ?? 0));
-  const shift = (total - raw.reduce((a, b) => a + b, 0)) / raw.length;
-  const want = raw.map((v) => Math.min(10, Math.max(0, v + shift)));
+    return p;
+  });
+  let speed: number | undefined;
+  if (roleSpeed !== undefined) {
+    const lean = profiles.reduce((sum, p) => sum + (p.speedLean ?? 0), 0) / profiles.length;
+    speed = Math.min(8, Math.max(1, roleSpeed + Math.sign(lean) * Math.round(Math.abs(lean)) + (nudge.speed ?? 0)));
+  }
+  const names = STAT_NAMES.filter((s) => speed === undefined || s !== "speed");
+  const rest = total - (speed ?? 0);
+  const raw = names.map((s) => profiles.reduce((sum, p) => sum + p.profile[s], 0) / profiles.length + (nudge[s] ?? 0));
+  const shift = (rest - raw.reduce((a, b) => a + b, 0)) / raw.length;
+  const want = raw.map((v) => Math.min(max, Math.max(min, v + shift)));
   const out = want.map(Math.floor);
   // Hand out the points left (or take back the excess) by the size of the remainders; ties in stat order.
-  const order = STAT_NAMES.map((_, i) => i).sort((a, b) => (want[b]! - out[b]!) - (want[a]! - out[a]!) || a - b);
-  for (let left = total - out.reduce((a, b) => a + b, 0), k = 0; left !== 0 && k < 60; k++) {
+  const order = names.map((_, i) => i).sort((a, b) => (want[b]! - out[b]!) - (want[a]! - out[a]!) || a - b);
+  for (let left = rest - out.reduce((a, b) => a + b, 0), k = 0; left !== 0 && k < 60; k++) {
     const i = order[k % order.length]!;
-    if (left > 0 && out[i]! < 10) (out[i]! += 1, left--);
-    else if (left < 0 && out[i]! > 0) (out[i]! -= 1, left++);
+    if (left > 0 && out[i]! < max) (out[i]! += 1, left--);
+    else if (left < 0 && out[i]! > min) (out[i]! -= 1, left++);
   }
-  return Object.fromEntries(STAT_NAMES.map((s, i) => [s, out[i]!])) as Record<StatName, number>;
+  const stats = Object.fromEntries(names.map((s, i) => [s, out[i]!])) as Record<StatName, number>;
+  return speed === undefined ? stats : { ...stats, speed };
 }

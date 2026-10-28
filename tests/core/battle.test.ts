@@ -20,15 +20,21 @@ const u = (id: string, speciesId: string, side: "player" | "enemy", x: number, y
 });
 
 describe("battle setup and initiative", () => {
-  it("orders turns by speed, ties to the player", () => {
-    const { state, events } = battle([
+  it("alternates sides, the player first: the party in order, the foes in an order rolled once per battle", () => {
+    const setup = [
       u("e-slow", "slow", "enemy", 6, 0),
       u("p-mid", "mid", "player", 0, 0),
       u("e-mid", "mid", "enemy", 6, 1),
       u("p-fast", "fast", "player", 0, 1),
-    ]);
-    expect(events[0]).toEqual({ type: "roundStarted", round: 1, order: ["p-fast", "e-mid", "p-mid", "e-slow"] });
-    expect(state.turn).toEqual({ unitId: "p-fast", movePointsLeft: 5, actionUsed: false, basicUsed: false, fresh: true });
+    ];
+    const { state, events } = battle(setup);
+    const order = (events[0] as { order: string[] }).order;
+    expect(order.filter((id) => id.startsWith("p"))).toEqual(["p-mid", "p-fast"]);
+    expect(order.map((id) => id[0])).toEqual(["p", "e", "p", "e"]);
+    expect(state.turn).toMatchObject({ unitId: "p-mid", fresh: true });
+    // Speed does not decide the foes' order: over many seeds both orders come up.
+    const firsts = new Set(Array.from({ length: 20 }, (_, seed) => (createBattle(content, OPEN, setup, { seed: seed + 1 }).events[0] as { order: string[] }).order[1]));
+    expect(firsts).toEqual(new Set(["e-slow", "e-mid"]));
   });
 
   it("rejects invalid placements", () => {

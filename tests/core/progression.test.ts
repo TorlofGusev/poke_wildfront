@@ -4,6 +4,7 @@ import { maxHpAt, moveRange, moveUnavailableReason } from "../../src/core/battle
 import { applyAction, createBattle, hexPos } from "./hexFixture";
 import { allocatePoint, useRareCandy, buy, equipItem, sell, newMember, resolveBattle, usePotion, type GameState } from "../../src/core/party";
 import {
+  refreshMember,
   focusGrowth,
   statOffer,
   chooseFocus,
@@ -41,17 +42,20 @@ describe("levels and stats", () => {
   });
 
   it("type profiles give small stats: Fire is a striker, Rock a fortress", () => {
-    // Charmander: Fire, a ranged line (less Speed); Geodude: Rock/Ground, +1 Defense, a melee line (more Speed).
-    expect(CONTENT.species.charmander!.stats).toEqual({ hp: 4, attack: 10, defense: 4, speed: 4, willpower: 4, crit: 4 });
-    expect(CONTENT.species.geodude!.stats).toEqual({ hp: 6, attack: 6, defense: 8, speed: 2, willpower: 5, crit: 3 });
+    // Speed is the role's (melee 5, ranged 3) leaned ±1 by the types: Charmander (ranged Fire) 3, Squirtle
+    // (ranged, slow Water) 2, Pikachu (ranged, fast Electric) 4+, Geodude (melee, slow Rock/Ground) 4.
+    expect(CONTENT.species.charmander!.stats).toEqual({ hp: 5, attack: 8, defense: 5, speed: 3, willpower: 5, crit: 4 });
+    expect(CONTENT.species.geodude!.stats).toEqual({ hp: 5, attack: 6, defense: 8, speed: 4, willpower: 4, crit: 3 });
+    expect(CONTENT.species.squirtle!.stats.speed).toBe(2);
+    // No extremes: a first form's other stats stay within 2–8, each stage allows one more at the top.
+    for (const id of ["bulbasaur", "charmander", "squirtle", "pikachu", "growlithe", "abra"]) for (const v of Object.values(CONTENT.species[id]!.stats)) expect(v, id).toBeLessThanOrEqual(8);
     // Every first form has the same total; each evolution stage adds a little.
     const total = (id: string) => Object.values(CONTENT.species[id]!.stats).reduce((a, b) => a + b, 0);
     for (const id of ["bulbasaur", "charmander", "squirtle", "pikachu", "rattata", "geodude"]) expect(total(id), id).toBe(30);
     expect([total("ivysaur"), total("venusaur")]).toEqual([32, 34]);
     for (const sp of Object.values(CONTENT.species)) for (const v of Object.values(sp.stats)) expect(v).toBeLessThanOrEqual(10);
-    // Every type spends the same budget; types differ only in where it goes.
-    const sums = Object.values(CONTENT.types).map((ty) => Object.values(ty.profile).reduce((a, b) => a + b, 0));
-    expect(new Set(sums).size).toBe(1);
+    // Types only lean Speed (slow / fast); the role sets it.
+    for (const ty of Object.values(CONTENT.types)) expect([-1, 0, 1]).toContain(ty.speedLean ?? 0);
   });
 
   it("the focus gives a bonus, then +1 every 2 levels; max HP grows with level and Defense", () => {
@@ -176,6 +180,16 @@ describe("focus and talents", () => {
 });
 
 describe("move loadout", () => {
+  it("a saved Pokémon is brought up to date: new starting moves, nothing of the other reach", () => {
+    // A Pidgey saved before roles: Gust (now ranged) known and chosen as its basic attack, Peck unknown.
+    const old = { ...starter("pidgey", 5), knownMoves: ["gust", "quick-attack"], activeMoves: ["gust", "quick-attack"] };
+    const m = refreshMember(CONTENT, PROGRESSION, old);
+    expect(CONTENT.species.pidgey!.role).toBe("melee");
+    expect(m.knownMoves).toContain("peck");
+    expect(m.knownMoves).not.toContain("gust");
+    expect(toUnitSetup(CONTENT, PROGRESSION, m).moves![0]).toBe("peck");
+  });
+
   it("a loadout holds one basic attack, two skills and one Bond move", () => {
     const m = { ...starter("geodude", 20), knownMoves: ["tackle", "smack-down", "rock-throw", "rock-slide", "earthquake", "magnitude"] };
     expect(setActiveMoves(CONTENT, PROGRESSION, m, ["rock-slide", "earthquake"]).activeMoves).toEqual(["rock-slide", "earthquake"]);
