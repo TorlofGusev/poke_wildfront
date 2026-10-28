@@ -1,5 +1,6 @@
 import {
   applyAction,
+  hazardsAt,
   livingUnits,
   movementPoints,
   unitById,
@@ -9,7 +10,21 @@ import {
   type BattleUnit,
 } from "../battle";
 import type { Point } from "../grid/types";
-import { distance, freeAim, freeRange, freeReachFor, CELL } from "../free";
+import { distance, freeAim, freeRange, freeReachFor, inArea, timedStrikeOutcome, CELL } from "../free";
+
+/**
+ * A delayed strike or a watch hits later, if at all: worth this share of the same hit landing now
+ * (foes can step out of a marked spot; a watch may never be walked into).
+ */
+const TIMED_SHARE = { delayed: 0.7, watch: 0.4 } as const;
+/** Cost of ending a walk on burning or poisoned ground, or in a foe's watched area (per hazard or watch). */
+const DANGER = 1.5;
+
+/** Hazards and foe watches covering `pos`. */
+function dangerAt(state: BattleState, self: BattleUnit, pos: Point): number {
+  const watches = (state.pending ?? []).filter((p) => p.kind === "watch" && unitById(state, p.unitId).side !== self.side && inArea(p.area, pos));
+  return hazardsAt(state, pos).length + watches.length;
+}
 
 export interface AiWeights {
   /** Value per HP of damage dealt to opponents. */
@@ -153,7 +168,7 @@ function anythingInReach(content: BattleContent, state: BattleState, self: Battl
   if (self.moves.some((m) => content.moves[m]!.range.max === 0 && content.moves[m]!.shape.kind === "single")) return true;
   const reach = Math.max(0, ...self.moves.map((m) => {
     const mv = content.moves[m]!;
-    const area = mv.shape.kind === "burst" ? mv.shape.radius + 0.5 : mv.shape.kind === "line" ? mv.shape.length : 0;
+    const area = mv.shape.kind === "burst" ? mv.shape.radius + 0.5 : mv.shape.kind === "line" || mv.shape.kind === "cone" ? mv.shape.length : 0;
     return Math.max(freeRange(self, mv).max, area);
   }));
   return livingUnits(state).some((u) => u.id !== self.id && distance(u.pos, pos) <= reach + 0.5);
@@ -200,13 +215,19 @@ export function planTurn(
         const result = applyAction(afterMove, content, use);
         let score = evaluate(content, state, result.state, self, weights, result.events);
         const mv = content.moves[moveId]!;
+        if (mv.timing) {
+          const later = timedStrikeOutcome(afterMove, content, unitId, moveId, target);
+          if (later) score += TIMED_SHARE[mv.timing] * evaluate(content, afterMove, later.state, self, weights, later.events);
+        }
         if (mv.kind === "ultimate") score -= weights.ultimateCost;
         if (mv.kind === "bond") score -= weights.bondCost * (mv.bondCost ?? 0);
         if (score <= 0) continue;
         // The basic attack and the main action are separate: greedily add the best follow-up of the other kind.
         const follow = bestFollowUp(result.state, content, self, weights, mv.kind === "basic");
         // Where the turn ends matters: fewer foes able to strike back, more friends nearby.
-        const exposed = weights.exposure > 0 && result.state.outcome === "ongoing" ? weights.exposure * exposureAt(content, result.state, self, stop ?? self.pos) : 0;
+        const at = unitById(result.state, unitId).pos;
+        const exposed = (weights.exposure > 0 && result.state.outcome === "ongoing" ? weights.exposure * exposureAt(content, result.state, self, at) : 0)
+          + DANGER * dangerAt(result.state, self, at);
         const total = score + (follow?.score ?? 0) - exposed;
         const plan = { actions: [...(moveAction ? [moveAction] : []), use, ...(follow ? [follow.action] : []), end], score: total };
         if (weights.slack > 0) plans.push(plan);
@@ -230,7 +251,7 @@ export function planTurn(
   // Once patience is over, closing in comes first: exposure only breaks ties between equally close
   // spots (weighted fully, it outweighed every step forward and melee units never left their spot).
   const exposureWeight = weights.exposure > 0 ? (patient ? 2 : 0.1) : 0;
-  const cost = (p: Point) => distTo(p) + exposureWeight * exposureAt(content, state, self, p);
+  const cost = (p: Point) => distTo(p) + exposureWeight * exposureAt(content, state, self, p) + DANGER * dangerAt(state, self, p);
   const reach = freeReachFor(state, unitId);
   let bestStop: Point | null = null;
   let bestCost = cost(self.pos);

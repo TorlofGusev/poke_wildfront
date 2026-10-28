@@ -1,13 +1,13 @@
 import {
-  applyBaseAction, breakAway, checkOutcome, cloneState, commitMove, effectiveMove, IllegalActionError, livingUnits, moveRange,
-  moveUnavailableReason, partnerOf, roll, unitById, type BattleAction, type StepResult,
+  applyBaseAction, breakAway, checkOutcome, cloneState, commitMove, effectiveMove, hazardsAt, IllegalActionError, livingUnits, moveRange,
+  moveUnavailableReason, movementPoints, partnerOf, roll, strike, touchHazard, unitById, type BattleAction, type StepResult,
 } from "../battle/battle";
 import type { BattleContent, MoveDef } from "../battle/content";
 import type { BattleEvent } from "../battle/events";
 import { summarizeHits, type HitPreview } from "../battle/preview";
-import type { BattleState, BattleUnit } from "../battle/state";
+import type { BattleState, BattleUnit, Hazard, PendingStrike } from "../battle/state";
 import type { Point } from "../grid/types";
-import { distance, distToSegment, inBounds, MELEE_REACH, sightBlocked, UNIT_RADIUS } from "./field";
+import { distance, distToSegment, inArea, inBounds, MELEE_REACH, sightBlocked, UNIT_RADIUS, type FreeArea } from "./field";
 import { freeReach, type FreeReach } from "./pathing";
 
 /**
@@ -39,12 +39,6 @@ export function freeRange(user: BattleUnit, move: MoveDef): { min: number; max: 
   const r = moveRange(user, move);
   return { min: r.min >= 2 ? MELEE_REACH : 0, max: r.max === 0 ? 0 : r.max <= 1 ? MELEE_REACH : r.max + RANGE_SLACK };
 }
-
-/** The ground a move covers when aimed: one body, a circle or a strip. */
-export type FreeArea =
-  | { readonly kind: "single"; readonly at: Point }
-  | { readonly kind: "circle"; readonly at: Point; readonly radius: number }
-  | { readonly kind: "line"; readonly from: Point; readonly to: Point; readonly width: number };
 
 export type FreeAim =
   | {
@@ -129,25 +123,21 @@ export function freeArea(state: BattleState, move: MoveDef, user: BattleUnit, ai
       }
       return { kind: "line", from: user.pos, to: { x: user.pos.x + dir.x * reach, y: user.pos.y + dir.y * reach }, width: UNIT_RADIUS };
     }
+    case "cone": {
+      const angle = Math.atan2(aim.y - user.pos.y, aim.x - user.pos.x);
+      return { kind: "cone", from: user.pos, angle, length: move.shape.length + RANGE_SLACK, halfAngle: (move.shape.angle * Math.PI) / 360 };
+    }
   }
 }
 
 function unitsIn(state: BattleState, area: FreeArea, keep: (u: BattleUnit) => boolean): BattleUnit[] {
-  const inside = (u: BattleUnit) => {
-    switch (area.kind) {
-      case "single":
-        return distance(u.pos, area.at) < 1e-6;
-      case "circle":
-        return distance(u.pos, area.at) <= area.radius;
-      case "line":
-        return distance(u.pos, area.from) > 1e-6 && distToSegment(u.pos, area.from, area.to) <= area.width + UNIT_RADIUS * 0.4;
-    }
-  };
-  return livingUnits(state).filter((u) => keep(u) && inside(u)).sort((a, b) => a.pos.y - b.pos.y || a.pos.x - b.pos.x);
+  return livingUnits(state).filter((u) => keep(u) && inArea(area, u.pos)).sort((a, b) => a.pos.y - b.pos.y || a.pos.x - b.pos.x);
 }
 
 /** Whether the move can be aimed at any Pokémon right now (so its button can be pressed). */
 export function freeHasTarget(state: BattleState, content: BattleContent, unitId: string, moveId: string): boolean {
+  // A watch guards ground: it needs no one there yet.
+  if (content.moves[moveId]?.timing === "watch") return !moveUnavailableReason(state, content, unitId, moveId) && !partnerOf(state, unitById(state, unitId));
   return livingUnits(state).some((u) => freeAim(state, content, unitId, moveId, u.pos).ok);
 }
 
@@ -171,18 +161,24 @@ export function freeAim(state: BattleState, content: BattleContent, unitId: stri
     if (!wants(move, user)(aimedUnit) && !(range.max === 0 && aimedUnit === user)) return fail("not a valid target");
     target = aimedUnit.pos;
   }
-  if (range.max > 0 && move.shape.kind !== "line") {
+  const fans = move.shape.kind === "line" || move.shape.kind === "cone";
+  if (range.max > 0 && !fans) {
     const d = distance(user.pos, target);
     if (d > range.max) return fail("out of range");
     if (d < range.min) return fail("too close");
   }
-  if (move.requiresLineOfSight && range.max > 0 && move.shape.kind !== "line" && !freeLineOfSight(state, user, target, aimedUnit))
+  if (move.requiresLineOfSight && range.max > 0 && !fans && !freeLineOfSight(state, user, target, aimedUnit))
     return fail("no line of sight");
   const affected = aimedUnit ? [aimedUnit] : unitsIn(state, area, caught(move, user));
+  const partner = partnerOf(state, user);
+  // A watch or a delayed strike needs the Pokémon free to aim it, and may cover empty ground.
+  if (move.timing) {
+    if (partner) return fail("engaged: only its partner");
+    return { ok: true, target: area.kind === "line" ? area.to : target, area, affected };
+  }
   if (!affected.some(wants(move, user))) return fail("hits nobody");
   const foes = affected.filter((u) => u.side !== user.side);
   // Engaged: attacks only go at the partner; taunted: only at the taunter.
-  const partner = partnerOf(state, user);
   if (partner && move.affects !== "allies" && foes.some((u) => u.id !== partner.id)) return fail("engaged: only its partner");
   const taunt = user.statuses.find((st) => content.statuses[st.id]?.forcesTarget && st.sourceId);
   if (taunt && move.affects !== "allies" && foes.length && !foes.some((u) => u.id === taunt.sourceId)) return fail("taunted");
@@ -223,11 +219,60 @@ function freeMove(state: BattleState, content: BattleContent, unitId: string, to
     breakAway(state, content, unit, events);
     if (unit.hp <= 0) return checkOutcome(state, events);
   }
-  unit.pos = { ...to };
-  state.turn!.movePointsLeft = Math.max(0, Math.round((state.turn!.movePointsLeft - cost) * 100) / 100);
+  const walk = walkOut(state, unit, path);
+  const spent = Math.round(cost * walk.share * 100) / 100;
+  unit.pos = { ...walk.stop };
+  state.turn!.movePointsLeft = Math.max(0, Math.round((state.turn!.movePointsLeft - spent) * 100) / 100);
   state.turn!.moved = true;
-  events.push({ type: "moved", unitId, path, cost });
+  events.push({ type: "moved", unitId, path: walk.path, cost: spent });
+  for (const h of walk.entered) touchHazard(state, content, unit, h, events);
+  const watch = walk.watch;
+  if (watch && unit.hp > 0 && state.outcome === "ongoing") {
+    state.pending = (state.pending ?? []).filter((p) => p !== watch);
+    const watcher = unitById(state, watch.unitId);
+    events.push({ type: "watchTriggered", unitId: watcher.id, targetId: unit.id, moveId: watch.moveId });
+    strike(state, content, watcher, watch.moveId, effectiveMove(content, watcher, watch.moveId), unit.pos, [unit], events);
+  }
   checkOutcome(state, events);
+}
+
+/** How finely a walk is checked for watched ground and hazards (hex widths). */
+const WALK_STEP = 0.1;
+
+/**
+ * Follows a walk step by step: it stops at the first spot a foe watches (where the body has room to stand),
+ * and notes the burning or poisoned ground it walks into. `share`: how much of the walk was made.
+ */
+function walkOut(
+  state: BattleState, unit: BattleUnit, path: readonly Point[],
+): { stop: Point; path: Point[]; share: number; entered: Hazard[]; watch?: PendingStrike } {
+  const watches = (state.pending ?? []).filter((p) => p.kind === "watch" && unitById(state, p.unitId).side !== unit.side && unitById(state, p.unitId).hp > 0);
+  const hazards = (state.hazards ?? []).filter((h) => h.kind !== "mud");
+  const startIn = new Set(hazardsAt(state, unit.pos).map((h) => h.id));
+  const others = livingUnits(state).filter((u) => u.id !== unit.id);
+  const total = path.reduce((s, p, i) => s + distance(i ? path[i - 1]! : unit.pos, p), 0);
+  const entered = new Map<number, Hazard>();
+  let walked = 0;
+  let from = unit.pos;
+  let pending: PendingStrike | undefined;
+  for (let i = 0; i < path.length; i++) {
+    const to = path[i]!;
+    const len = distance(from, to);
+    for (let d = Math.min(WALK_STEP, len); ; d = Math.min(d + WALK_STEP, len)) {
+      const p = { x: from.x + ((to.x - from.x) * d) / (len || 1), y: from.y + ((to.y - from.y) * d) / (len || 1) };
+      for (const h of hazards) if (!startIn.has(h.id) && distance(h.at, p) <= h.radius) entered.set(h.id, h);
+      pending ??= watches.find((w) => inArea(w.area, p));
+      // Caught: it stops at the first spot from here on where its body fits between the others.
+      if (pending && !others.some((o) => distance(o.pos, p) < UNIT_RADIUS * 2 - 1e-6)) {
+        const done = walked + d;
+        return { stop: p, path: [...path.slice(0, i), p], share: total ? done / total : 1, entered: [...entered.values()], watch: pending };
+      }
+      if (d >= len) break;
+    }
+    walked += len;
+    from = to;
+  }
+  return { stop: path[path.length - 1] ?? unit.pos, path: [...path], share: 1, entered: [...entered.values()], ...(pending && { watch: pending }) };
 }
 
 function freeUseMove(
@@ -256,7 +301,52 @@ function freeUseMove(
     target = check.interceptor.pos;
     affected = [unitById(state, check.interceptor.id)];
   }
-  commitMove(state, content, user, moveId, move, target, affected, events);
+  commitMove(state, content, user, moveId, move, target, affected, events, check.area);
+}
+
+/**
+ * What a delayed strike or a watch set up now would do when it lands, played out at once on a copy (for the
+ * AI and the aim preview): a delayed strike hits whoever stands in its area now; a watch hits the nearest foe
+ * able to walk into it next turn. Empty when nobody would be hit.
+ */
+export function timedStrikeOutcome(
+  state: BattleState, content: BattleContent, unitId: string, moveId: string, aim: Point,
+): { state: BattleState; events: BattleEvent[] } | null {
+  const check = freeAim(state, content, unitId, moveId, aim);
+  const move = content.moves[moveId]!;
+  if (!check.ok || !move.timing) return null;
+  const copy = cloneState(state);
+  const user = unitById(copy, unitId);
+  let hit: BattleUnit[];
+  if (move.timing === "delayed") hit = livingUnits(copy).filter((u) => u.id !== unitId && inArea(check.area, u.pos));
+  else {
+    const reach = (u: BattleUnit) => movementPoints(content, u, copy);
+    const near = livingUnits(copy)
+      .filter((u) => u.side !== user.side && areaGap(check.area, u.pos) <= reach(u))
+      .sort((a, b) => areaGap(check.area, a.pos) - areaGap(check.area, b.pos))[0];
+    hit = near ? [near] : [];
+  }
+  if (!hit.length) return null;
+  const events: BattleEvent[] = [];
+  strike(copy, content, user, moveId, effectiveMove(content, user, moveId), check.target, hit, events);
+  return { state: copy, events };
+}
+
+/** Roughly how far `p` is from stepping into the area (0 inside). */
+function areaGap(area: FreeArea, p: Point): number {
+  if (inArea(area, p)) return 0;
+  switch (area.kind) {
+    case "single":
+      return distance(p, area.at);
+    case "circle":
+      return distance(p, area.at) - area.radius;
+    case "line":
+      return distToSegment(p, area.from, area.to);
+    case "cone": {
+      const tip = { x: area.from.x + Math.cos(area.angle) * area.length / 2, y: area.from.y + Math.sin(area.angle) * area.length / 2 };
+      return Math.max(0, distance(p, tip) - area.length / 2);
+    }
+  }
 }
 
 /** What a move would do if used now (combat is seeded, so playing it on a copy is exact). */

@@ -40,7 +40,12 @@ export type TargetShape =
   /** All tiles within `radius` (Manhattan) of the target tile. */
   | { readonly kind: "burst"; readonly radius: number }
   /** Straight line from the user towards the target, `length` tiles long. Target must be orthogonal. */
-  | { readonly kind: "line"; readonly length: number };
+  | { readonly kind: "line"; readonly length: number }
+  /** A fan from the user towards the aim: `length` long, `angle` degrees wide. */
+  | { readonly kind: "cone"; readonly length: number; readonly angle: number };
+
+/** Ground left burning, poisoned or muddy by a move (a hazard, see rules.zones). */
+export type HazardKind = "fire" | "poison" | "mud";
 
 export type MoveEffect =
   | { readonly kind: "push"; readonly distance: number }
@@ -57,6 +62,8 @@ export type MoveEffect =
   | { readonly kind: "healShare"; readonly share: number }
   /** Heals the user by this share of the damage it deals (Dream Eater). */
   | { readonly kind: "drain"; readonly amount: number }
+  /** Leaves a hazard of this radius where the move lands, for rules.zones.turns of the user's turns. */
+  | { readonly kind: "zone"; readonly hazard: HazardKind; readonly radius: number }
   /** The team gains Bond when the move lands a combo or knocks a foe out (once per use). */
   | { readonly kind: "bond"; readonly amount: number; readonly when: "combo" | "knockout" };
 
@@ -85,6 +92,11 @@ export interface MoveDef {
   /** The user's stat its damage scales with instead of Attack / Sp. Atk (Body Press: Defense). */
   readonly scaleStat?: StatName;
   readonly effects?: readonly MoveEffect[];
+  /**
+   * delayed: marks the ground now and strikes it at the start of the user's next turn, hitting whoever stands
+   * there then. watch: guards the area until the user's next turn; the first foe moving in it is struck.
+   */
+  readonly timing?: "delayed" | "watch";
 }
 
 export interface StatusDef {
@@ -141,8 +153,12 @@ export interface BattleRules {
   readonly movePower: {
     readonly scale: number; readonly exponent: number; readonly round: number; readonly max: number;
     readonly basic: number; readonly paid: number; readonly range2: number; readonly range3: number;
-    readonly burst1: number; readonly burst2: number; readonly line: number;
+    readonly burst1: number; readonly burst2: number; readonly line: number; readonly cone: number;
+    /** A delayed strike can be dodged, so it hits harder. */
+    readonly delayed: number;
   };
+  /** Hazards: how many of their maker's turns they last, fire's damage (share of max HP) and poison's duration. */
+  readonly zones: { readonly turns: number; readonly fireDamage: number; readonly poisonDuration: number };
   /** Critical hits: chance = base + perPoint × Crit, damage × (damage + damagePerPoint × Crit). */
   readonly crit: { readonly base: number; readonly perPoint: number; readonly damage: number; readonly damagePerPoint: number };
   /** Willpower: Spirit bar gains (× 1 + perPoint × Willpower) and status resistance per point. */

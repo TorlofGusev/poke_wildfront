@@ -1,6 +1,7 @@
 import type { Point } from "../grid/types";
 import type { FreeField } from "../free/field";
-import type { AbilityDef, BaseStats } from "./content";
+import type { FreeArea } from "../free/field";
+import type { AbilityDef, BaseStats, HazardKind } from "./content";
 import type { UnitModifiers } from "./modifiers";
 import type { TypeUnitTraits } from "./species";
 
@@ -67,6 +68,27 @@ export interface TurnState {
 
 export type BattleOutcome = "ongoing" | "victory" | "defeat" | "retreated";
 
+/** Burning, poisoned or muddy ground a move left; it fades after its maker's next turns. */
+export interface Hazard {
+  readonly id: number;
+  readonly kind: HazardKind;
+  readonly at: Point;
+  readonly radius: number;
+  readonly sourceId: string;
+  turnsLeft: number;
+  /** Mud is real terrain while it lasts: the patch it added to the field. */
+  readonly poly?: readonly Point[];
+}
+
+/** A delayed strike waiting for its user's next turn, or an area a unit watches until then. */
+export interface PendingStrike {
+  readonly kind: "delayed" | "watch";
+  readonly unitId: string;
+  readonly moveId: string;
+  readonly area: FreeArea;
+  readonly target: Point;
+}
+
 /** Plain, serializable battle state. Never mutated by the public API. */
 export interface BattleState {
   /** Terrain rows; some type mechanics reshape them during battle. */
@@ -86,4 +108,6 @@ export interface BattleState {
   /** Poké Balls carried into this battle, by ball id. */
   balls: Record<string, number>;
   captureAllowed: boolean;
+  hazards?: Hazard[];
+  pending?: PendingStrike[];
 }

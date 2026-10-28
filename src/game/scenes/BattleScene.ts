@@ -44,8 +44,9 @@ import {
 import { samePoint, type Point } from "../../core/grid";
 import {
   breaksEngagement, CELL, distance, freeAim, freeHasTarget, freeRange, freeReachFor, freeUnitAt, MELEE_REACH,
-  previewFreeMove, previewFreeWalk, previewPushes, type PushPreview, terrainAt, UNIT_RADIUS, type FreeArea, type FreeReach, type FreeTerrainId,
+  previewFreeMove, previewFreeWalk, previewPushes, type PushPreview, terrainAt, timedStrikeOutcome, UNIT_RADIUS, type FreeArea, type FreeReach, type FreeTerrainId,
 } from "../../core/free";
+import { summarizeHits, type MoveDef } from "../../core/battle";
 import { typeMultiplier } from "../../core/rules/typeChart";
 import { Button } from "../ui/Button";
 import { formatEvent, type LogEntry, type LogTone } from "../ui/combatLog";
@@ -82,6 +83,10 @@ const ZONE_COLORS: Record<Exclude<FreeTerrainId, "floor">, number> = { mud: COLO
 /** A tap or click this close to a deploy spot picks it. */
 const SPOT_PICK = 0.45;
 const LOG_LINE_H = 15;
+/** How far a line or cone reaches from the user (null for other shapes). */
+const fanLength = (move: MoveDef): number | null => (move.shape.kind === "line" || move.shape.kind === "cone" ? move.shape.length + 0.3 : null);
+/** Hazard colours on the field. */
+const HAZARD_COLORS = { fire: 0xff6a1f, poison: 0xa04ad8, mud: 0x7a5a32 } as const;
 
 const LOG_COLORS: Record<LogTone, string> = {
   info: "#8a93a6", player: "#8fb8f0", enemy: "#f08f8f", damage: "#ffb070",
@@ -453,10 +458,57 @@ export class BattleScene extends Phaser.Scene {
       const c = fieldToWorld(area.at);
       g.fillStyle(color, alpha).fillCircle(c.x, c.y, area.radius * S);
       g.lineStyle(2, color, 0.9).strokeCircle(c.x, c.y, area.radius * S);
+    } else if (area.kind === "cone") {
+      const pts = this.conePoints(area);
+      g.fillStyle(color, alpha).fillPoints(pts, true);
+      g.lineStyle(2, color, 0.9).strokePoints(pts, true, true);
     } else {
       const a = fieldToWorld(area.from);
       const b = fieldToWorld(area.to);
       g.lineStyle(area.width * 2 * S, color, alpha).lineBetween(a.x, a.y, b.x, b.y);
+    }
+  }
+
+  private conePoints(area: Extract<FreeArea, { kind: "cone" }>): Phaser.Math.Vector2[] {
+    const pts = [area.from];
+    for (let i = 0; i <= 12; i++) {
+      const a = area.angle - area.halfAngle + (2 * area.halfAngle * i) / 12;
+      pts.push({ x: area.from.x + Math.cos(a) * area.length, y: area.from.y + Math.sin(a) * area.length });
+    }
+    return pts.map((p) => new Phaser.Math.Vector2(fieldToWorld(p).x, fieldToWorld(p).y));
+  }
+
+  /**
+   * Burning and poisoned ground, marked strikes (red, dashed) and watched areas (gold): only their outlines,
+   * so the field stays readable; the info and the log tell the rest.
+   */
+  private drawFieldEffects(): void {
+    const state = this.state;
+    if (!state) return;
+    const g = this.overlay;
+    for (const h of state.hazards ?? []) {
+      if (h.kind === "mud") continue;
+      const c = fieldToWorld(h.at);
+      g.fillStyle(HAZARD_COLORS[h.kind], 0.28).fillCircle(c.x, c.y, h.radius * S);
+      g.lineStyle(2, HAZARD_COLORS[h.kind], 0.8).strokeCircle(c.x, c.y, h.radius * S);
+    }
+    for (const p of state.pending ?? []) {
+      const color = p.kind === "delayed" ? COLORS.target : 0xf5d76e;
+      const outline = p.area.kind === "cone" ? this.conePoints(p.area)
+        : p.area.kind === "line" ? [p.area.from, p.area.to].map((q) => new Phaser.Math.Vector2(fieldToWorld(q).x, fieldToWorld(q).y))
+        : Array.from({ length: 24 }, (_, i) => {
+          const r = p.area.kind === "circle" ? p.area.radius : UNIT_RADIUS + 0.05;
+          const at = (p.area as { at: Point }).at;
+          return new Phaser.Math.Vector2(fieldToWorld({ x: at.x + Math.cos((i / 24) * Math.PI * 2) * r, y: at.y + Math.sin((i / 24) * Math.PI * 2) * r }).x,
+            fieldToWorld({ x: at.x + Math.cos((i / 24) * Math.PI * 2) * r, y: at.y + Math.sin((i / 24) * Math.PI * 2) * r }).y);
+        });
+      g.fillStyle(color, 0.1).fillPoints(outline, true);
+      // Dashed outline: every other edge.
+      g.lineStyle(2, color, 0.9);
+      for (let i = 0; i < outline.length; i += 2) {
+        const a = outline[i]!, b = outline[(i + 1) % outline.length]!;
+        g.lineBetween(a.x, a.y, b.x, b.y);
+      }
     }
   }
 
@@ -471,7 +523,7 @@ export class BattleScene extends Phaser.Scene {
     const move = CONTENT.moves[moveId]!;
     const range = freeRange(unit, move);
     const from = fieldToWorld(unit.pos);
-    const ring = move.shape.kind === "line" ? move.shape.length + 0.3 : range.max;
+    const ring = fanLength(move) ?? range.max;
     if (ring > 0) {
       this.overlay.fillStyle(COLORS.target, 0.08).fillCircle(from.x, from.y, ring * S);
       this.overlay.lineStyle(2, COLORS.target, 0.7).strokeCircle(from.x, from.y, ring * S);
@@ -493,6 +545,13 @@ export class BattleScene extends Phaser.Scene {
       return;
     }
     this.drawArea(aim.area, move.shape.kind !== "single" ? COLORS.areaAim : COLORS.target, 0.35);
+    if (move.timing) {
+      // Nothing is hit now: the preview shows what it would do if no one moves (or the foe likeliest to walk in).
+      const outcome = timedStrikeOutcome(state, CONTENT, unit.id, moveId, hover);
+      if (outcome) this.showPreview(summarizeHits(outcome.events));
+      this.aimNote = tag("dim", move.timing === "delayed" ? t("Strikes this ground at the start of its next turn") : t("Guards this area until its next turn: the first foe moving in is struck"));
+      return;
+    }
     const to = fieldToWorld(aim.target);
     if (move.requiresLineOfSight) this.overlay.lineStyle(2, 0x7ed321, 0.9).lineBetween(from.x, from.y, to.x, to.y);
     const hits = previewFreeMove(state, CONTENT, unit.id, moveId, hover);
@@ -569,6 +628,7 @@ export class BattleScene extends Phaser.Scene {
     this.comboLabels?.setVisible(true);
     this.aimNote = "";
     this.drawReach();
+    if (this.phase === "battle") this.drawFieldEffects();
     const hover = this.armed ?? this.hovered;
     if (this.phase === "deploy") {
       for (const p of this.scenario.deploymentZone) {
@@ -592,7 +652,7 @@ export class BattleScene extends Phaser.Scene {
         // Range preview: how far the move reaches from here.
         const move = CONTENT.moves[this.hoveredMove]!;
         const range = freeRange(unit, move);
-        const ring = move.shape.kind === "line" ? move.shape.length + 0.3 : range.max;
+        const ring = fanLength(move) ?? range.max;
         const c = fieldToWorld(unit.pos);
         if (ring > 0) this.overlay.fillStyle(COLORS.target, 0.15).fillCircle(c.x, c.y, ring * S).lineStyle(2, COLORS.target, 0.8).strokeCircle(c.x, c.y, ring * S);
       } else if (hover) {
@@ -1339,6 +1399,19 @@ export class BattleScene extends Phaser.Scene {
           break;
         case "terrainChanged":
           this.drawBoard();
+          break;
+        case "hazardCreated":
+        case "hazardExpired":
+          // Mud is real terrain while it lasts; fire and poison are drawn with the overlay.
+          if ((e.type === "hazardCreated" ? e.hazard.kind : e.kind) === "mud") this.drawBoard();
+          this.refreshOverlay();
+          break;
+        case "strikePrepared":
+          this.floatText(e.unitId, e.timing === "delayed" ? t("Charging…") : t("On watch"), "#f5d76e");
+          this.refreshOverlay();
+          break;
+        case "watchTriggered":
+          this.floatText(e.unitId, "!", "#f5d76e");
           break;
         case "captured":
           sfx(this, "capture");

@@ -116,3 +116,30 @@ export function sweep(field: FreeField, from: Point, dir: Point, max: number, bl
   }
   return { to: last, blocked: false };
 }
+
+/** The ground a move covers when aimed: one body, a circle, a strip or a cone fanning out from the user. */
+export type FreeArea =
+  | { readonly kind: "single"; readonly at: Point }
+  | { readonly kind: "circle"; readonly at: Point; readonly radius: number }
+  | { readonly kind: "line"; readonly from: Point; readonly to: Point; readonly width: number }
+  /** `angle`: the direction it points (radians); `halfAngle`: half its spread. */
+  | { readonly kind: "cone"; readonly from: Point; readonly angle: number; readonly length: number; readonly halfAngle: number };
+
+/** Whether a body standing at `p` is in the area (it counts when the body overlaps it a little). */
+export function inArea(area: FreeArea, p: Point): boolean {
+  switch (area.kind) {
+    case "single":
+      return distance(p, area.at) <= UNIT_RADIUS;
+    case "circle":
+      return distance(p, area.at) <= area.radius;
+    case "line":
+      return distance(p, area.from) > 1e-6 && distToSegment(p, area.from, area.to) <= area.width + UNIT_RADIUS * 0.4;
+    case "cone": {
+      const d = distance(p, area.from);
+      if (d < 1e-6 || d > area.length + UNIT_RADIUS * 0.5) return false;
+      const off = Math.abs(((Math.atan2(p.y - area.from.y, p.x - area.from.x) - area.angle + 3 * Math.PI) % (2 * Math.PI)) - Math.PI);
+      // A body near the edge still counts if part of it is inside.
+      return off <= area.halfAngle + Math.asin(Math.min(1, (UNIT_RADIUS * 0.5) / d));
+    }
+  }
+}

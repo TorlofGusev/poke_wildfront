@@ -14,6 +14,7 @@ export function describeMove(content: BattleContent, move: MoveDef): string {
   const shape =
     move.shape.kind === "single" ? t("single target")
     : move.shape.kind === "burst" ? t("area: a circle of radius {n} around the aim", { n: tag("num", move.shape.radius) })
+    : move.shape.kind === "cone" ? t("cone: {n} long, {a}° wide, hits everyone in it", { n: tag("num", move.shape.length), a: tag("num", move.shape.angle) })
     : t("line: {n} long in a straight direction, stopped by rocks and bushes", { n: tag("num", move.shape.length) });
   const los = move.requiresLineOfSight ? t(" · needs line of sight (Pokémon in the way block it)") : "";
   const lines = [
@@ -22,6 +23,8 @@ export function describeMove(content: BattleContent, move: MoveDef): string {
     t("Range {n} · {shape}{los}", { n: tag("num", range), shape, los }),
     move.power > 0 ? t("Power {n} {hint}", { n: tag("dmg", move.power), hint: tag("dim", t("(hover a target to see the exact damage)")) }) : tag("dim", t("No damage")),
   ];
+  if (move.timing === "delayed") lines.push(t("{x}: marks the ground now and strikes it at the start of its next turn, hitting whoever stands there (friend or foe)", { x: tag("special", t("Delayed")) }));
+  if (move.timing === "watch") lines.push(t("{x}: guards the area until its next turn; the first foe moving in it is struck and stopped", { x: tag("special", t("Watch")) }));
   if (move.id === "struggle") lines.push(t("Fallback while engaged when the basic attack is ranged: its basic attack's type at {n} power", { n: tag("num", `${Math.round(content.rules.engagement.fallbackPower * 100)}%`) }));
   for (const e of move.effects ?? []) {
     switch (e.kind) {
@@ -43,6 +46,13 @@ export function describeMove(content: BattleContent, move: MoveDef): string {
         break;
       }
       case "cleanse": lines.push(t("Removes the statuses foes put on the target")); break;
+      case "zone": {
+        const turns = tag("num", content.rules.zones.turns);
+        lines.push(e.hazard === "fire" ? t("Sets the ground on fire (radius {r}) for {n} turns: anyone walking in or starting a turn there loses {d} max HP", { r: tag("num", e.radius), n: turns, d: tag("dmg", `${Math.round(content.rules.zones.fireDamage * 100)}%`) })
+          : e.hazard === "poison" ? t("Leaves a poison cloud (radius {r}) for {n} turns: anyone walking in or starting a turn there is poisoned", { r: tag("num", e.radius), n: turns })
+          : t("Turns the ground to mud (radius {r}) for {n} turns: walking through it costs double", { r: tag("num", e.radius), n: turns }));
+        break;
+      }
       case "disengage": lines.push(t("Ends the user's engagement {x}", { x: tag("good", t("without a free attack")) })); break;
       case "status": {
         const st = content.statuses[e.status];

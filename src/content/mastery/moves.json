@@ -2880,7 +2880,14 @@
   },
   "affects": "enemies",
   "category": "special",
-  "canonPower": 70
+  "canonPower": 70,
+  "effects": [
+   {
+    "kind": "zone",
+    "hazard": "fire",
+    "radius": 0.8
+   }
+  ]
  },
  "flame-charge": {
   "id": "flame-charge",
@@ -2938,15 +2945,16 @@
   "type": "fire",
   "kind": "special",
   "cooldown": 3,
-  "power": 60,
+  "power": 55,
   "range": {
    "min": 1,
    "max": 2
   },
   "requiresLineOfSight": false,
   "shape": {
-   "kind": "line",
-   "length": 2
+   "kind": "cone",
+   "length": 2,
+   "angle": 60
   },
   "affects": "enemies",
   "canonPower": 90,
@@ -3277,7 +3285,8 @@
   },
   "affects": "enemies",
   "canonPower": 120,
-  "cooldown": 4
+  "cooldown": 4,
+  "timing": "delayed"
  },
  "giga-drain": {
   "id": "giga-drain",
@@ -3700,14 +3709,15 @@
   "kind": "special",
   "requiresLineOfSight": true,
   "affects": "enemies",
-  "power": 65,
+  "power": 60,
   "range": {
    "min": 1,
-   "max": 1
+   "max": 2
   },
   "shape": {
-   "kind": "burst",
-   "radius": 1
+   "kind": "cone",
+   "length": 2,
+   "angle": 90
   },
   "cooldown": 5,
   "effects": [
@@ -4124,17 +4134,20 @@
   "kind": "special",
   "category": "physical",
   "cooldown": 2,
-  "power": 40,
+  "power": 35,
   "range": {
    "min": 1,
    "max": 2
   },
   "requiresLineOfSight": true,
   "shape": {
-   "kind": "single"
+   "kind": "cone",
+   "length": 2,
+   "angle": 50
   },
   "affects": "enemies",
-  "canonPower": 40
+  "canonPower": 40,
+  "timing": "watch"
  },
  "ice-spinner": {
   "id": "ice-spinner",
@@ -4199,15 +4212,16 @@
   "type": "ice",
   "kind": "special",
   "cooldown": 3,
-  "power": 50,
+  "power": 40,
   "range": {
    "min": 1,
-   "max": 1
+   "max": 2
   },
   "requiresLineOfSight": true,
   "shape": {
-   "kind": "line",
-   "length": 2
+   "kind": "cone",
+   "length": 2,
+   "angle": 60
   },
   "affects": "enemies",
   "effects": [
@@ -5348,6 +5362,11 @@
     "kind": "status",
     "status": "weakened",
     "duration": 1
+   },
+   {
+    "kind": "zone",
+    "hazard": "mud",
+    "radius": 0.8
    }
   ]
  },
@@ -5427,6 +5446,11 @@
     "kind": "status",
     "status": "weakened",
     "duration": 1
+   },
+   {
+    "kind": "zone",
+    "hazard": "mud",
+    "radius": 0.8
    }
   ]
  },
@@ -7406,7 +7430,8 @@
   },
   "affects": "enemies",
   "canonPower": 130,
-  "category": "physical"
+  "category": "physical",
+  "timing": "delayed"
  },
  "sky-attack": {
   "id": "sky-attack",
@@ -7425,7 +7450,8 @@
    "kind": "single"
   },
   "affects": "enemies",
-  "canonPower": 140
+  "canonPower": 140,
+  "timing": "delayed"
  },
  "sky-drop": {
   "id": "sky-drop",
@@ -7796,7 +7822,8 @@
   "affects": "enemies",
   "canonPower": 120,
   "category": "special",
-  "cooldown": 4
+  "cooldown": 4,
+  "timing": "delayed"
  },
  "solar-blade": {
   "id": "solar-blade",
@@ -8327,16 +8354,18 @@
   "category": "physical",
   "power": 65,
   "range": {
-   "min": 1,
-   "max": 1
+   "min": 0,
+   "max": 0
   },
   "requiresLineOfSight": false,
   "shape": {
-   "kind": "single"
+   "kind": "burst",
+   "radius": 1
   },
   "affects": "enemies",
   "canonPower": 70,
-  "cooldown": 2
+  "cooldown": 2,
+  "timing": "watch"
  },
  "super-fang": {
   "id": "super-fang",
@@ -8986,9 +9015,9 @@
   "cooldown": 3,
   "effects": [
    {
-    "kind": "status",
-    "status": "poison",
-    "duration": 2
+    "kind": "zone",
+    "hazard": "poison",
+    "radius": 1.0
    }
   ]
  },
@@ -9146,17 +9175,20 @@
   "kind": "special",
   "category": "special",
   "cooldown": 3,
-  "power": 40,
+  "power": 35,
   "range": {
    "min": 1,
    "max": 2
   },
   "requiresLineOfSight": true,
   "shape": {
-   "kind": "single"
+   "kind": "cone",
+   "length": 2,
+   "angle": 50
   },
   "affects": "enemies",
-  "canonPower": 40
+  "canonPower": 40,
+  "timing": "watch"
  },
  "venom-drench": {
   "id": "venom-drench",

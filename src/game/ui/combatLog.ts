@@ -104,6 +104,23 @@ export function formatEvent(e: BattleEvent, ctx: LogContext): LogEntry | null {
       return { text: t("{unit}'s {ability}!", { unit: name(e.unitId), ability: tag("special", ctx.abilityName(e.ability)) }), tone: "info" };
     case "terrainChanged":
       return { text: tag("dim", t("The ground turns to mud.")), tone: "info" };
+    case "hazardCreated":
+      return { text: tag("dim", e.hazard.kind === "fire" ? t("The ground catches fire.") : e.hazard.kind === "poison" ? t("A poison cloud settles.") : t("The ground turns to mud.")), tone: "info" };
+    case "hazardExpired":
+      return { text: tag("dim", e.kind === "fire" ? t("The fire dies down.") : e.kind === "poison" ? t("The poison cloud clears.") : t("The mud dries up.")), tone: "info" };
+    case "hazardTouched":
+      return { text: e.kind === "fire" ? t("{unit} is caught in the fire", { unit: name(e.unitId) }) : t("{unit} breathes the poison cloud", { unit: name(e.unitId) }), tone: side(e.unitId) };
+    case "strikePrepared":
+      return {
+        text: e.timing === "delayed"
+          ? t("{unit} readies {move}: it strikes the marked ground next turn", { unit: name(e.unitId), move: tag("special", ctx.moveName(e.moveId)) })
+          : t("{unit} watches with {move}: the first foe moving there is struck", { unit: name(e.unitId), move: tag("special", ctx.moveName(e.moveId)) }),
+        tone: side(e.unitId),
+      };
+    case "watchTriggered":
+      return { text: t("{unit} strikes {target} on the move!", { unit: name(e.unitId), target: name(e.targetId) }), tone: side(e.unitId) };
+    case "strikeEnded":
+      return { text: tag("dim", t("{unit}'s {move} hits nothing", { unit: name(e.unitId), move: ctx.moveName(e.moveId) })), tone: "info" };
     case "turnEnded":
       return null;
     case "battleEnded":

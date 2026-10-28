@@ -468,7 +468,14 @@
    "radius": 1
   },
   "affects": "enemies",
-  "canonPower": 35
+  "canonPower": 35,
+  "effects": [
+   {
+    "kind": "zone",
+    "hazard": "fire",
+    "radius": 1.0
+   }
+  ]
  },
  "struggle": {
   "id": "struggle",
@@ -838,9 +845,9 @@
   "affects": "enemies",
   "effects": [
    {
-    "kind": "status",
-    "status": "poison",
-    "duration": 2
+    "kind": "zone",
+    "hazard": "poison",
+    "radius": 1.0
    }
   ]
  },

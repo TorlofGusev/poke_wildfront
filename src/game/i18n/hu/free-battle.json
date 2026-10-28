@@ -19,5 +19,9 @@
   "Pick up to {n}: tap a card, then a blue spot. Tap a foe: its reach (orange) and attack range (red).": "Legfeljebb {n}: koppints egy kártyára, majd egy kék pontra. Ellenfélre koppintva: hova ér el (narancs) és meddig támad (piros).",
   "Bush — walking costs 1.5×; blocks line of sight.": "Bokor — a mozgás 1,5× ennyibe kerül; takarja a rálátást.",
   "Mud — walking costs 2×.": "Sár — a mozgás 2× ennyibe kerül.",
-  "Water — walking costs 2× (fliers skim over).": "Víz — a mozgás 2× ennyibe kerül (a repülők könnyedén átsiklanak)."
+  "Water — walking costs 2× (fliers skim over).": "Víz — a mozgás 2× ennyibe kerül (a repülők könnyedén átsiklanak).",
+  "Strikes this ground at the start of its next turn": "A következő köre elején lecsap erre a területre",
+  "Guards this area until its next turn: the first foe moving in is struck": "A következő köréig őrzi a területet: az első belépő ellenfelet megüti",
+  "Charging…": "Töltődik…",
+  "On watch": "Őrködik"
 }

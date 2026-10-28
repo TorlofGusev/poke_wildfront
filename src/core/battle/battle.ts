@@ -1,15 +1,15 @@
 import type { ActiveStatus } from "./state";
 import { samePoint, type Point } from "../grid/types";
-import { bodyFits, distance, MELEE_REACH, sweep, terrainAt, UNIT_RADIUS, type FreeField, type FreeTerrainId } from "../free/field";
+import { bodyFits, distance, inArea, MELEE_REACH, sweep, terrainAt, UNIT_RADIUS, type FreeArea, type FreeField, type FreeTerrainId } from "../free/field";
 import { captureChance, captureUnavailableReason } from "../capture/capture";
 import { nextRandom } from "../rng";
 import { typeMultiplier } from "../rules/typeChart";
-import type { BaseStats, BattleContent, MoveDef } from "./content";
+import type { BaseStats, BattleContent, HazardKind, MoveDef } from "./content";
 import { combineModifiers, type UnitModifiers } from "./modifiers";
 import type { TypeUnitTraits } from "./species";
 
 import type { BattleEvent } from "./events";
-import type { BattleState, BattleUnit, Side } from "./state";
+import type { BattleState, BattleUnit, Hazard, Side } from "./state";
 
 export interface UnitSetup {
   readonly id: string;
@@ -416,7 +416,7 @@ export function breakAway(state: BattleState, content: BattleContent, unit: Batt
 /** Spends what a move costs (action, cooldown, Bond), then resolves it on the affected units. */
 export function commitMove(
   state: BattleState, content: BattleContent, user: BattleUnit, moveId: string, move: MoveDef, target: Point,
-  affected: readonly BattleUnit[], events: BattleEvent[],
+  affected: readonly BattleUnit[], events: BattleEvent[], area?: FreeArea,
 ): void {
   if (move.kind === "basic") state.turn!.basicUsed = true;
   else state.turn!.actionUsed = true;
@@ -428,10 +428,66 @@ export function commitMove(
     state.bond[user.side] -= cost;
     events.push({ type: "bondChanged", side: user.side, amount: -cost, total: state.bond[user.side], reason: "spent" });
   }
-  events.push({ type: "moveUsed", unitId: user.id, moveId, target: { ...target }, affected: affected.map((u) => u.id) });
+  // A delayed strike or a watch only marks its area now; it hits later (startTurn, or a foe's walk).
+  if (move.timing && area) {
+    (state.pending ??= []).push({ kind: move.timing, unitId: user.id, moveId, area, target: { ...target } });
+    events.push({ type: "strikePrepared", unitId: user.id, moveId, timing: move.timing, area });
+    return;
+  }
+  strike(state, content, user, moveId, move, target, affected, events);
+}
 
+/** The hit itself: what a move does to the Pokémon it reaches, and the hazards it leaves where it lands. */
+export function strike(
+  state: BattleState, content: BattleContent, user: BattleUnit, moveId: string, move: MoveDef, target: Point,
+  affected: readonly BattleUnit[], events: BattleEvent[],
+): void {
+  events.push({ type: "moveUsed", unitId: user.id, moveId, target: { ...target }, affected: affected.map((u) => u.id) });
   resolveHits(state, content, user, move, affected, events);
+  for (const e of move.effects ?? []) if (e.kind === "zone") createHazard(state, content, e.hazard, target, e.radius, user, events);
   checkOutcome(state, events);
+}
+
+/** Leaves burning, poisoned or muddy ground (mud is real terrain while it lasts). */
+function createHazard(state: BattleState, content: BattleContent, kind: HazardKind, at: Point, radius: number, user: BattleUnit, events: BattleEvent[]): void {
+  const hazards = (state.hazards ??= []);
+  const id = hazards.reduce((m, h) => Math.max(m, h.id), 0) + 1;
+  let poly: Point[] | undefined;
+  if (kind === "mud") {
+    poly = Array.from({ length: 10 }, (_, i) => ({
+      x: Math.round((at.x + Math.cos((i / 10) * Math.PI * 2) * radius) * 100) / 100,
+      y: Math.round((at.y + Math.sin((i / 10) * Math.PI * 2) * radius) * 100) / 100,
+    }));
+    const rocks = state.field.zones.filter((z) => z.terrain === "rock");
+    state.field = { ...state.field, zones: [...state.field.zones.filter((z) => z.terrain !== "rock"), { terrain: "mud", poly }, ...rocks] };
+  }
+  const hazard: Hazard = { id, kind, at: { ...at }, radius, sourceId: user.id, turnsLeft: content.rules.zones.turns, ...(poly && { poly }) };
+  hazards.push(hazard);
+  events.push({ type: "hazardCreated", hazard: { ...hazard } });
+}
+
+function expireHazard(state: BattleState, hazard: Hazard, events: BattleEvent[]): void {
+  state.hazards = (state.hazards ?? []).filter((h) => h.id !== hazard.id);
+  const poly = hazard.poly;
+  if (poly) state.field = { ...state.field, zones: state.field.zones.filter((z) => z.terrain !== "mud" || !samePoint(z.poly[0]!, poly[0]!)) };
+  events.push({ type: "hazardExpired", hazardId: hazard.id, kind: hazard.kind });
+}
+
+/** The fire and poison hazards covering `p` (mud only slows, as terrain). */
+export const hazardsAt = (state: BattleState, p: Point): Hazard[] =>
+  (state.hazards ?? []).filter((h) => h.kind !== "mud" && distance(h.at, p) <= h.radius);
+
+/** A unit on burning or poisoned ground: fire burns it, poison poisons it (friend or foe alike). */
+export function touchHazard(state: BattleState, content: BattleContent, unit: BattleUnit, hazard: Hazard, events: BattleEvent[]): void {
+  if (unit.hp <= 0) return;
+  events.push({ type: "hazardTouched", unitId: unit.id, kind: hazard.kind });
+  if (hazard.kind === "fire") {
+    dealDamage(state, unit, Math.max(1, Math.floor(unit.maxHp * content.rules.zones.fireDamage)), "status", events);
+    checkOutcome(state, events);
+  } else if (hazard.kind === "poison") {
+    const source = state.units.find((u) => u.id === hazard.sourceId) ?? unit;
+    applyStatus(content, source, unit, "poison", content.rules.zones.poisonDuration, events, state);
+  }
 }
 
 /** Abilities that react to being hit: Static/Poison Point punish melee attackers, Anger Point raises Attack. */
@@ -727,7 +783,8 @@ function resolveHits(
           }
           break;
         case "bond":
-          break; // Resolved with the hit above.
+        case "zone":
+          break; // Resolved with the hit above, or once where the move lands (strike).
         case "cleanse":
           cleanse(state, t, events);
           break;
@@ -858,6 +915,7 @@ function dealDamage(
   if (unit.hp === 0) {
     events.push({ type: "fainted", unitId: unit.id });
     disengage(state, unit, events);
+    if (state.pending?.some((p) => p.unitId === unit.id)) state.pending = state.pending.filter((p) => p.unitId !== unit.id);
     if (unit.mods.bondOnFaint) gainBond(state, unit.side, unit.mods.bondOnFaint, "fainted", events);
     state.queue = state.queue.filter((id, i) => i === 0 || id !== unit.id);
   }
@@ -868,6 +926,12 @@ function dealDamage(
 
 function startRound(state: BattleState, content: BattleContent, events: BattleEvent[]): void {
   state.round += 1;
+  // Hazards whose maker fell or was caught fade by the round instead of its turns.
+  for (const h of [...(state.hazards ?? [])]) {
+    const maker = state.units.find((u) => u.id === h.sourceId);
+    if (maker && maker.hp > 0 && !maker.captured) continue;
+    if (--h.turnsLeft <= 0) expireHazard(state, h, events);
+  }
   state.queue = initiativeOrder(state, content);
   events.push({ type: "roundStarted", round: state.round, order: [...state.queue] });
   startTurn(state, content, events);
@@ -895,12 +959,25 @@ function startTurn(state: BattleState, content: BattleContent, events: BattleEve
       if (unit.hp <= 0) spreadStatuses(state, content, unit, events);
     }
   }
+  // Standing on burning or poisoned ground.
+  for (const h of hazardsAt(state, unit.pos)) touchHazard(state, content, unit, h, events);
   if (unit.hp > 0 && unit.mods.shedStatuses) cleanse(state, unit, events);
   const healFrac = unit.mods.healPerTurn + (unit.engagedWith ? unit.mods.healWhileEngaged : 0);
   if (unit.hp > 0 && healFrac > 0 && unit.hp < unit.maxHp) {
     const amount = Math.min(unit.maxHp - unit.hp, Math.max(1, Math.floor(unit.maxHp * healFrac)));
     unit.hp += amount;
     events.push({ type: "healed", unitId: unit.id, amount, hp: unit.hp });
+  }
+  // Its hazards fade; its watch ends; its delayed strikes land on whoever stands there now.
+  for (const h of [...(state.hazards ?? [])]) if (h.sourceId === unit.id && --h.turnsLeft <= 0) expireHazard(state, h, events);
+  const mine = (state.pending ?? []).filter((p) => p.unitId === unit.id);
+  if (mine.length) state.pending = state.pending!.filter((p) => p.unitId !== unit.id);
+  for (const p of mine) {
+    if (unit.hp <= 0 || state.outcome !== "ongoing") break;
+    const move = effectiveMove(content, unit, p.moveId);
+    const hit = p.kind === "delayed" ? livingUnits(state).filter((u) => u.id !== unit.id && inArea(p.area, u.pos)) : [];
+    if (hit.length) strike(state, content, unit, p.moveId, move, p.target, hit, events);
+    else events.push({ type: "strikeEnded", unitId: unit.id, moveId: p.moveId });
   }
   checkOutcome(state, events);
   if (state.outcome === "ongoing" && unit.hp <= 0) endTurn(state, content, events);

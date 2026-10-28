@@ -1,5 +1,7 @@
 import type { Point } from "../grid/types";
-import type { BattleOutcome } from "./state";
+import type { FreeArea } from "../free/field";
+import type { HazardKind } from "./content";
+import type { BattleOutcome, Hazard } from "./state";
 
 /** Everything the presentation layer needs to animate what happened, in order. */
 export type BattleEvent =
@@ -28,6 +30,16 @@ export type BattleEvent =
   | { type: "ballThrown"; unitId: string; targetId: string; ballId: string; chance: number; success: boolean }
   | { type: "captured"; unitId: string }
   | { type: "terrainChanged"; pos: Point; terrain: string }
+  | { type: "hazardCreated"; hazard: Hazard }
+  | { type: "hazardExpired"; hazardId: number; kind: HazardKind }
+  /** A unit walked into (or started its turn on) a hazard: followed by its damage or status. */
+  | { type: "hazardTouched"; unitId: string; kind: HazardKind }
+  /** A delayed strike is marked, or a watch set: nothing is hit yet. */
+  | { type: "strikePrepared"; unitId: string; moveId: string; timing: "delayed" | "watch"; area: FreeArea }
+  /** A watching unit strikes the foe that moved into its area (followed by the moveUsed). */
+  | { type: "watchTriggered"; unitId: string; targetId: string; moveId: string }
+  /** A delayed strike or a watch ended without hitting anyone (or its user fell). */
+  | { type: "strikeEnded"; unitId: string; moveId: string }
   | { type: "abilityTriggered"; unitId: string; ability: string }
   | { type: "bondChanged"; side: "player" | "enemy"; amount: number; total: number; reason: "spent" | "knockout" | "fainted" | "combo" }
   | { type: "turnEnded"; unitId: string }
