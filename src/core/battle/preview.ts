@@ -1,5 +1,6 @@
 import { applyAction, unitById, validTargets } from "./battle";
 import type { BattleContent } from "./content";
+import type { BattleEvent } from "./events";
 import type { BattleState } from "./state";
 import { samePoint, type Point } from "../grid/types";
 
@@ -21,6 +22,13 @@ export interface HitPreview {
 export function previewMove(state: BattleState, content: BattleContent, unitId: string, moveId: string, target: Point): HitPreview[] {
   if (!validTargets(state, content, unitId, moveId).some((p) => samePoint(p, target))) return [];
   const { events } = applyAction(state, content, { type: "useMove", unitId, moveId, target });
+  // Order: the user's own changes (drain) last.
+  return summarizeHits(events)
+    .sort((a, b) => (a.unitId === unitId ? 1 : 0) - (b.unitId === unitId ? 1 : 0) || unitById(state, a.unitId).pos.y - unitById(state, b.unitId).pos.y);
+}
+
+/** Per unit: what a batch of events did to it (damage, healing, knockout, statuses). */
+export function summarizeHits(events: readonly BattleEvent[]): HitPreview[] {
   const byUnit = new Map<string, { damage: number; healed: number; knockedOut: boolean; statuses: string[]; effectiveness?: number }>();
   const entry = (id: string) => {
     if (!byUnit.has(id)) byUnit.set(id, { damage: 0, healed: 0, knockedOut: false, statuses: [] });
@@ -35,8 +43,5 @@ export function previewMove(state: BattleState, content: BattleContent, unitId: 
     else if (e.type === "fainted") entry(e.unitId).knockedOut = true;
     else if (e.type === "statusApplied") entry(e.unitId).statuses.push(e.status);
   }
-  // Order: the user's own changes (drain) last.
-  return [...byUnit.entries()]
-    .sort(([a], [b]) => (a === unitId ? 1 : 0) - (b === unitId ? 1 : 0) || unitById(state, a).pos.y - unitById(state, b).pos.y)
-    .map(([id, v]) => ({ unitId: id, ...v }));
+  return [...byUnit.entries()].map(([id, v]) => ({ unitId: id, ...v }));
 }

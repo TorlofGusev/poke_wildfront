@@ -1,4 +1,5 @@
 import type { Point } from "../grid/types";
+import type { FreeField } from "../free/field";
 import type { AbilityDef, BaseStats } from "./content";
 import type { UnitModifiers } from "./modifiers";
 import type { TypeUnitTraits } from "./species";
@@ -70,6 +71,8 @@ export type BattleOutcome = "ongoing" | "victory" | "defeat" | "retreated";
 export interface BattleState {
   /** Terrain rows; some type mechanics reshape them during battle. */
   mapRows: readonly string[];
+  /** Free-movement field (prototype); when set, positions are continuous and mapRows is unused. */
+  field?: FreeField;
   units: BattleUnit[];
   round: number;
   /** Unit ids still to act this round, in order; the head is acting now. */

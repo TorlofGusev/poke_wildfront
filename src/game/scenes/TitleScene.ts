@@ -45,6 +45,8 @@ export class TitleScene extends Phaser.Scene {
     if (addFullscreenButton(this, width / 2 - 140, y, 280)) y += 42;
     new Button(this, width / 2 - 140, y, 280, 32, t("ⓘ Credits"), () => this.scene.start("Credits"));
     y += 42;
+    // Experimental battle with free movement instead of hexes.
+    new Button(this, width / 2 + 150, height / 2 - 10, 180, 32, t("⚗ Prototype: free movement"), () => this.scene.start("FreeBattle"));
     this.volumeSlider(width / 2 - 140, y + 6, 280);
     y += 32;
     // Language: switching reloads, so content and texts are rebuilt in the new language.
