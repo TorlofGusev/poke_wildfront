@@ -1420,6 +1420,7 @@ export class BattleScene extends Phaser.Scene {
     for (const e of events) {
       if (e.type === "engaged" && (mine(e.unitId) || mine(e.targetId))) queueTip(this, "engage");
       else if (e.type === "displaced" && e.blocked) queueTip(this, "collision");
+      else if (e.type === "damaged" && e.source === "move" && e.effectiveness !== undefined && e.effectiveness !== 1) queueTip(this, "types");
       else if (e.type === "hazardCreated" || e.type === "strikePrepared") queueTip(this, "zones");
       else if (e.type === "fainted" && mine(e.unitId) && (this.scenario.countsKnockouts ?? true)) queueTip(this, "knockout");
     }

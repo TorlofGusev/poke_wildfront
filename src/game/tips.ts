@@ -7,14 +7,15 @@ import { RichText } from "./ui/RichText";
 import { t } from "./i18n";
 
 /** One-time tips, each shown the first time its situation comes up (and all of them again behind "?"). */
-export type TipId = "battle" | "engage" | "collision" | "zones" | "capture" | "focus" | "camp" | "knockout";
+export type TipId = "battle" | "types" | "engage" | "collision" | "zones" | "capture" | "focus" | "camp" | "knockout";
 
-const TIP_ORDER: readonly TipId[] = ["battle", "engage", "collision", "zones", "capture", "knockout", "focus", "camp"];
+const TIP_ORDER: readonly TipId[] = ["battle", "types", "engage", "collision", "zones", "capture", "knockout", "focus", "camp"];
 
 function tipText(id: TipId): { title: string; text: string } {
   const c = CONTENT.capture;
   switch (id) {
     case "battle": return { title: t("Your turn"), text: t("The Pokémon with the yellow ring acts. Click the field to walk, then pick a move: one basic attack per turn, skills whenever they are off cooldown, and Bond moves paid from the shared Bond bar. End the turn with End turn (Space). Tap a foe to see how far it reaches.") };
+    case "types": return { title: t("Types"), text: t("Type matchups count: super effective hits deal more, resisted ones less. There is no same-type bonus (STAB): a move hits as hard whoever uses it. Instead every type's moves carry an effect of their own, e.g. Fire burns, Water pushes further, Grass drains; a move's details show it.") };
     case "engage": return { title: t("Engaged"), text: t("A melee hit locks the two Pokémon together. Stepping away gives the foe a free strike. An engaged ranged Pokémon can only scuffle (Struggle) until it steps away, so keep your melee Pokémon in front.") };
     case "collision": return { title: t("Collision"), text: t("Knocking a Pokémon into a rock or another Pokémon hurts it extra. Water moves push one step further.") };
     case "zones": return { title: t("Marked ground"), text: t("Coloured circles are burning or poisoned ground: for two turns they hurt whoever stands in them, allies too; fresh mud slows walking. Dashed outlines are strikes landing next turn, or watches that hit the first foe stepping in: step out or keep away.") };
