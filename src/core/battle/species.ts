@@ -49,20 +49,32 @@ export interface TypeDef extends TypeProfile {
   readonly unit?: TypeUnitTraits;
 }
 
+/** Level-1 stat total of a species: 30, plus 2 for each evolution stage behind it. */
+export const STAT_TOTAL = 30;
+export const STAT_TOTAL_PER_STAGE = 2;
+
 /**
- * Level-1 stats of a species: the average of its types' profiles (rounded),
- * plus the species' own small nudge. Never below 0.
+ * Level-1 stats of a species: the average of its types' profiles plus the species' own nudge, shifted
+ * evenly so they add up to exactly `total`, then rounded (largest remainders first, so the total holds).
+ * Each stat stays within 0–10.
  */
-export function speciesStats(types: Readonly<Record<string, TypeProfile>>, typeIds: readonly string[], nudge: Partial<BaseStats> = {}): BaseStats {
-  const out = {} as Record<StatName, number>;
-  for (const s of STAT_NAMES) {
-    const avg = typeIds.reduce((sum, t) => {
-      const p = types[t];
-      if (!p) throw new Error(`unknown type ${t}`);
-      return sum + p.profile[s];
-    }, 0) / typeIds.length;
-    // Level-1 stats stay within 0–10.
-    out[s] = Math.min(10, Math.max(0, Math.round(avg) + (nudge[s] ?? 0)));
+export function speciesStats(
+  types: Readonly<Record<string, TypeProfile>>, typeIds: readonly string[], nudge: Partial<BaseStats> = {}, total = STAT_TOTAL,
+): BaseStats {
+  const raw = STAT_NAMES.map((s) => typeIds.reduce((sum, t) => {
+    const p = types[t];
+    if (!p) throw new Error(`unknown type ${t}`);
+    return sum + p.profile[s];
+  }, 0) / typeIds.length + (nudge[s] ?? 0));
+  const shift = (total - raw.reduce((a, b) => a + b, 0)) / raw.length;
+  const want = raw.map((v) => Math.min(10, Math.max(0, v + shift)));
+  const out = want.map(Math.floor);
+  // Hand out the points left (or take back the excess) by the size of the remainders; ties in stat order.
+  const order = STAT_NAMES.map((_, i) => i).sort((a, b) => (want[b]! - out[b]!) - (want[a]! - out[a]!) || a - b);
+  for (let left = total - out.reduce((a, b) => a + b, 0), k = 0; left !== 0 && k < 60; k++) {
+    const i = order[k % order.length]!;
+    if (left > 0 && out[i]! < 10) (out[i]! += 1, left--);
+    else if (left < 0 && out[i]! > 0) (out[i]! -= 1, left++);
   }
-  return out;
+  return Object.fromEntries(STAT_NAMES.map((s, i) => [s, out[i]!])) as Record<StatName, number>;
 }

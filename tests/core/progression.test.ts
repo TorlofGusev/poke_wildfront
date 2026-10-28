@@ -42,8 +42,12 @@ describe("levels and stats", () => {
 
   it("type profiles give small stats: Fire is a striker, Rock a fortress", () => {
     expect(CONTENT.species.charmander!.stats).toEqual({ hp: 4, attack: 9, defense: 4, speed: 5, willpower: 4, crit: 4 });
-    // Geodude: Rock/Ground average, +1 Defense nudge.
-    expect(CONTENT.species.geodude!.stats).toEqual({ hp: 6, attack: 7, defense: 9, speed: 2, willpower: 5, crit: 4 });
+    // Geodude: Rock/Ground average, +1 Defense nudge, evened out to the same total.
+    expect(CONTENT.species.geodude!.stats).toEqual({ hp: 6, attack: 6, defense: 9, speed: 1, willpower: 5, crit: 3 });
+    // Every first form has the same total; each evolution stage adds a little.
+    const total = (id: string) => Object.values(CONTENT.species[id]!.stats).reduce((a, b) => a + b, 0);
+    for (const id of ["bulbasaur", "charmander", "squirtle", "pikachu", "rattata", "geodude"]) expect(total(id), id).toBe(30);
+    expect([total("ivysaur"), total("venusaur")]).toEqual([32, 34]);
     for (const sp of Object.values(CONTENT.species)) for (const v of Object.values(sp.stats)) expect(v).toBeLessThanOrEqual(10);
     // Every type spends the same budget; types differ only in where it goes.
     const sums = Object.values(CONTENT.types).map((ty) => Object.values(ty.profile).reduce((a, b) => a + b, 0));

@@ -22,6 +22,10 @@ describe("content integrity", () => {
     }
   });
 
+  it("delayed strikes and watches are never a basic attack (they come from masteries)", () => {
+    expect(Object.values(CONTENT.moves).filter((m) => m.timing && m.kind === "basic").map((m) => m.id)).toEqual([]);
+  });
+
   it("moves are well-formed", () => {
     for (const [id, m] of Object.entries(CONTENT.moves)) {
       expect(m.id).toBe(id);

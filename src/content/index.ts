@@ -1,4 +1,4 @@
-import { powerFromCanon, speciesStats, type BaseStats, type BattleContent, type BattleScenario, type MoveDef, type SpeciesDef, type TypeDef } from "../core/battle";
+import { powerFromCanon, speciesStats, STAT_TOTAL, STAT_TOTAL_PER_STAGE, type BaseStats, type BattleContent, type BattleScenario, type MoveDef, type SpeciesDef, type TypeDef } from "../core/battle";
 import type { BiomeDef, FatigueRules, WorldContent, WorldDef } from "../core/expedition";
 import type { ItemDef, MasteryTree, ProgressionContent, TalentDef } from "../core/progression";
 import type { CampRules, MealDef } from "../core/party";
@@ -88,11 +88,28 @@ const ARCHETYPE_TREES: [string, MasteryTree][] = ARCHETYPES.flatMap((a) => a.lin
   return l.line.map((id) => [id, tree] as [string, MasteryTree]);
 }));
 
-/** Species with level-1 stats derived from their types' playstyles plus a small nudge. */
+/** Evolution stage of each species: 0 for a first form, 1 for what it evolves into, 2 after that. */
+const stageOf = (() => {
+  const parent = new Map<string, string>();
+  for (const [id, s] of Object.entries(speciesData)) {
+    const into = (s as { evolution?: { into: string } }).evolution?.into;
+    if (into) parent.set(into, id);
+  }
+  return (id: string): number => {
+    let n = 0;
+    for (let p = parent.get(id); p && n < 5; p = parent.get(p)) n++;
+    return n;
+  };
+})();
+
+/**
+ * Species with level-1 stats derived from their types' playstyles plus a small nudge: every first form
+ * has the same total, each evolution stage a little more.
+ */
 const species: Record<string, SpeciesDef> = Object.fromEntries(
   Object.entries(speciesData).map(([id, s]) => [
     id,
-    { ...s, stats: speciesStats(TYPES, s.types, (s as { statNudge?: Partial<BaseStats> }).statNudge) } as SpeciesDef,
+    { ...s, stats: speciesStats(TYPES, s.types, (s as { statNudge?: Partial<BaseStats> }).statNudge, STAT_TOTAL + STAT_TOTAL_PER_STAGE * stageOf(id)) } as SpeciesDef,
   ]),
 );
 

@@ -9,7 +9,8 @@ import type { BattleRules, MoveDef } from "./content";
  */
 export function powerFromCanon(rules: BattleRules["movePower"], move: Pick<MoveDef, "kind" | "range" | "shape" | "timing">, canonPower: number): number {
   const f = rules;
-  const shape = move.shape.kind === "burst" ? (move.shape.radius >= 2 ? f.burst2 : f.burst1)
+  // A watch strikes one foe whatever area it guards: no area discount.
+  const shape = move.timing === "watch" ? 1 : move.shape.kind === "burst" ? (move.shape.radius >= 2 ? f.burst2 : f.burst1)
     : move.shape.kind === "line" ? f.line : move.shape.kind === "cone" ? f.cone : 1;
   const reach = move.range.max >= 3 ? f.range3 : move.range.max === 2 ? f.range2 : 1;
   const kind = move.kind === "basic" ? f.basic : move.kind === "bond" || move.kind === "ultimate" ? f.paid : 1;

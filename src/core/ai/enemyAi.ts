@@ -20,10 +20,32 @@ const TIMED_SHARE = { delayed: 0.7, watch: 0.4 } as const;
 /** Cost of ending a walk on burning or poisoned ground, or in a foe's watched area (per hazard or watch). */
 const DANGER = 1.5;
 
-/** Hazards and foe watches covering `pos`. */
+/** Hazards, foe watches and foe delayed strikes covering `pos`. */
 function dangerAt(state: BattleState, self: BattleUnit, pos: Point): number {
-  const watches = (state.pending ?? []).filter((p) => p.kind === "watch" && unitById(state, p.unitId).side !== self.side && inArea(p.area, pos));
-  return hazardsAt(state, pos).length + watches.length;
+  const marks = (state.pending ?? []).filter((p) => unitById(state, p.unitId).side !== self.side && inArea(p.area, pos));
+  return hazardsAt(state, pos).length + marks.length;
+}
+
+/** Foes and allies a hazard can catch: those standing in it, or a short step from it. */
+const ZONE_REACH = 0.5;
+
+/**
+ * What the hazards a move leaves are worth: fire's damage and poison's turns on the foes standing in or
+ * near it (once each; they may walk out), less the same for allies. Mud only slows: not weighed.
+ */
+function zoneValue(content: BattleContent, state: BattleState, self: BattleUnit, moveId: string, at: Point, w: AiWeights): number {
+  let value = 0;
+  for (const e of content.moves[moveId]!.effects ?? []) {
+    if (e.kind !== "zone" || e.hazard === "mud") continue;
+    for (const u of livingUnits(state)) {
+      if (distance(u.pos, at) > e.radius + ZONE_REACH) continue;
+      const worth = e.hazard === "fire"
+        ? Math.max(1, Math.floor(u.maxHp * content.rules.zones.fireDamage)) * w.damage
+        : content.rules.zones.poisonDuration * w.statusPerTurn;
+      value += u.side === self.side ? -worth : worth;
+    }
+  }
+  return value;
 }
 
 export interface AiWeights {
@@ -215,6 +237,7 @@ export function planTurn(
         const result = applyAction(afterMove, content, use);
         let score = evaluate(content, state, result.state, self, weights, result.events);
         const mv = content.moves[moveId]!;
+        score += zoneValue(content, afterMove, self, moveId, target, weights);
         if (mv.timing) {
           const later = timedStrikeOutcome(afterMove, content, unitId, moveId, target);
           if (later) score += TIMED_SHARE[mv.timing] * evaluate(content, afterMove, later.state, self, weights, later.events);
