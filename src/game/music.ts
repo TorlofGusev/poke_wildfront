@@ -4,7 +4,7 @@ import { pulseWave } from "./gbSynth";
 /** Recorded loops (Juhani Junkala, CC0; see CREDITS.md), fetched on first use; the rest is synthesised. */
 const FILES = import.meta.glob("../assets/music/*.ogg", { eager: true, query: "?url", import: "default" }) as Record<string, string>;
 /** Recordings are mastered loud; this brings them level with the synthesised jingle and the sound effects. */
-const FILE_GAIN = 0.35;
+const FILE_GAIN = 0.2;
 const buffers = new Map<string, Promise<AudioBuffer | null>>();
 
 function loadBuffer(ctx: AudioContext, url: string): Promise<AudioBuffer | null> {
