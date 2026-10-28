@@ -56,7 +56,10 @@ export class FreeBattleScene extends Phaser.Scene {
   private panel: Phaser.GameObjects.GameObject[] = [];
   private header!: Phaser.GameObjects.Text;
   private info!: RichText;
-  private logText!: RichText;
+  private panelKey = "";
+  /** One RichText per log line, so a new entry builds one line instead of all of them. */
+  private logLines = new Map<LogEntry, RichText>();
+  private logY = 420;
   private log: LogEntry[] = [];
   private reach: FreeReach | null = null;
   private selectedMove: string | null = null;
@@ -93,7 +96,8 @@ export class FreeBattleScene extends Phaser.Scene {
     this.aimGfx = this.add.graphics().setDepth(3);
     for (const u of this.state.units) this.createUnitView(u.id);
     this.info = new RichText(this, PANEL_X, 300, PANEL_W, 12);
-    this.logText = new RichText(this, PANEL_X, 420, PANEL_W, 11, COLORS.dim, 14);
+    this.panelKey = "";
+    this.logLines = new Map();
 
     const field = this.add.zone(FX, FY, PROTO_FIELD.width * S, PROTO_FIELD.height * S).setOrigin(0).setInteractive();
     field.on("pointermove", (p: Phaser.Input.Pointer) => this.onHover(p));
@@ -367,10 +371,18 @@ export class FreeBattleScene extends Phaser.Scene {
   }
 
   private refreshPanel(): void {
-    this.panel.forEach((o) => o.destroy());
-    this.panel = [];
     const s = this.state;
     const active = activeUnit(s);
+    // Rebuilding the buttons and texts is slow on phones: skip it while nothing they show has changed.
+    const key = JSON.stringify([
+      s.outcome, s.round, s.queue, active?.id, active?.hp, s.turn?.movePointsLeft, active?.engagedWith, active?.statuses.map((st) => st.id),
+      this.isPlayerTurn(), this.selectedMove, active?.moves.map((m) => moveUnavailableReason(s, CONTENT, active.id, m)),
+      s.units.map((u) => u.hp > 0),
+    ]);
+    if (key === this.panelKey) return;
+    this.panelKey = key;
+    this.panel.forEach((o) => o.destroy());
+    this.panel = [];
     this.header.setText(s.outcome === "ongoing"
       ? t("Round {n} · {name}'s turn", { n: s.round, name: active ? stripMarkup(this.name(active.id)) : "" })
       : s.outcome === "victory" ? t("Victory!") : t("Defeat"));
@@ -413,7 +425,7 @@ export class FreeBattleScene extends Phaser.Scene {
     }
     add(new Button(this, PANEL_X, 506, PANEL_W, 26, t("← Back to the title"), () => this.scene.start("Title"))).centerLabel();
     this.info.setY(Math.max(y + 6, 250));
-    this.logText.setY(Math.max(y + 80, 380));
+    this.logY = Math.max(y + 80, 380);
     this.renderLog();
   }
 
@@ -432,10 +444,23 @@ export class FreeBattleScene extends Phaser.Scene {
   }
 
   private renderLog(): void {
-    this.logText.setMarkup(this.log.slice(-7).map((l) => {
-      const plain = stripMarkup(l.text);
-      return plain.length > 44 ? `${plain.slice(0, 43)}…` : l.text;
-    }).join("\n"));
+    const shown = this.log.slice(-7);
+    for (const [entry, line] of this.logLines) {
+      if (!shown.includes(entry)) {
+        line.destroy();
+        this.logLines.delete(entry);
+      }
+    }
+    shown.forEach((entry, i) => {
+      let line = this.logLines.get(entry);
+      if (!line) {
+        const plain = stripMarkup(entry.text);
+        line = new RichText(this, PANEL_X, 0, PANEL_W, 11, COLORS.dim, 14);
+        line.setMarkup(plain.length > 44 ? `${plain.slice(0, 43)}…` : entry.text);
+        this.logLines.set(entry, line);
+      }
+      line.setY(this.logY + i * 14);
+    });
   }
 
   // ------------------------------------------------------------ input

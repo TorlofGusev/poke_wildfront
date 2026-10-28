@@ -2,11 +2,15 @@ import Phaser from "phaser";
 import { parseMarkup } from "./markup";
 import { FONT, fs, markupStyle } from "./theme";
 
+// Word widths come from one shared 2D canvas: measuring through a Phaser Text redraws and re-uploads its texture.
+const measureCtx = document.createElement("canvas").getContext("2d")!;
+const widthCache = new Map<string, number>();
+
 /** Multi-colour, word-wrapped text built from `{key|text}` markup. */
 export class RichText extends Phaser.GameObjects.Container {
   private readonly fontSize: number;
   private readonly lineHeight: number;
-  private readonly measure: Phaser.GameObjects.Text;
+  private readonly font: string;
 
   constructor(
     scene: Phaser.Scene,
@@ -20,7 +24,7 @@ export class RichText extends Phaser.GameObjects.Container {
     super(scene, x, y);
     this.fontSize = fs(fontSize);
     this.lineHeight = lineHeight + (this.fontSize - fontSize);
-    this.measure = scene.make.text({ text: "", style: this.style("#000") }, false);
+    this.font = `${this.fontSize}px ${FONT}`;
     scene.add.existing(this);
   }
 
@@ -32,7 +36,15 @@ export class RichText extends Phaser.GameObjects.Container {
   }
 
   private textWidth(s: string): number {
-    return this.measure.setText(s).width;
+    const key = `${this.font}|${s}`;
+    let w = widthCache.get(key);
+    if (w === undefined) {
+      measureCtx.font = this.font;
+      w = measureCtx.measureText(s).width;
+      if (widthCache.size > 5000) widthCache.clear();
+      widthCache.set(key, w);
+    }
+    return w;
   }
 
   private lastMarkup: string | null = null;
@@ -94,8 +106,4 @@ export class RichText extends Phaser.GameObjects.Container {
     return this.lastHeight;
   }
 
-  override destroy(fromScene?: boolean): void {
-    this.measure.destroy();
-    super.destroy(fromScene);
-  }
 }

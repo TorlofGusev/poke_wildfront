@@ -27,10 +27,16 @@ interface Lattice {
   readonly cost: readonly (number | null)[];
 }
 
-const latticeCache = new WeakMap<FreeField, { walk?: Lattice; fly?: Lattice }>();
+// Battle states are cloned on every action, so the same field arrives as a new object each time:
+// lattices are keyed by the field's content (worked out once per object), not its identity.
+const fieldKeys = new WeakMap<FreeField, string>();
+const latticeCache = new Map<string, { walk?: Lattice; fly?: Lattice }>();
 
 function latticeFor(field: FreeField, flies: boolean): Lattice {
-  const entry = latticeCache.get(field) ?? latticeCache.set(field, {}).get(field)!;
+  let key = fieldKeys.get(field);
+  if (key === undefined) fieldKeys.set(field, (key = JSON.stringify(field)));
+  if (!latticeCache.has(key) && latticeCache.size >= 8) latticeCache.clear();
+  const entry = latticeCache.get(key) ?? latticeCache.set(key, {}).get(key)!;
   const hit = flies ? entry.fly : entry.walk;
   if (hit) return hit;
   const cols = Math.floor(field.width / CELL);
