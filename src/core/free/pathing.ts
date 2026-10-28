@@ -27,11 +27,11 @@ interface Lattice {
   readonly cost: readonly (number | null)[];
 }
 
-const latticeCache = new Map<string, Lattice>();
+const latticeCache = new WeakMap<FreeField, { walk?: Lattice; fly?: Lattice }>();
 
 function latticeFor(field: FreeField, flies: boolean): Lattice {
-  const id = `${flies}:${JSON.stringify(field)}`;
-  const hit = latticeCache.get(id);
+  const entry = latticeCache.get(field) ?? latticeCache.set(field, {}).get(field)!;
+  const hit = flies ? entry.fly : entry.walk;
   if (hit) return hit;
   const cols = Math.floor(field.width / CELL);
   const rows = Math.floor(field.height / CELL);
@@ -43,8 +43,8 @@ function latticeFor(field: FreeField, flies: boolean): Lattice {
       cost.push(bodyFits(field, p) ? (flies ? t.flyCost : t.moveCost) : null);
     }
   const lattice = { cols, rows, cost };
-  if (latticeCache.size > 8) latticeCache.clear();
-  latticeCache.set(id, lattice);
+  if (flies) entry.fly = lattice;
+  else entry.walk = lattice;
   return lattice;
 }
 
@@ -82,7 +82,18 @@ export function freeReach(field: FreeField, from: Point, budget: number, bodies:
   const foes = bodies.filter((b) => !b.passable);
   const blocked = (p: Point) => near(p, UNIT_RADIUS * 2, foes);
   const centre = (i: number): Point => ({ x: ((i % cols) + 0.5) * CELL, y: (Math.floor(i / cols) + 0.5) * CELL });
-  const walkable = (i: number) => lat.cost[i] != null && !blocked(centre(i));
+  // Cells a walker may pass: open ground, clear of foes' bodies (worked out once, not per step).
+  const open = new Uint8Array(cols * rows);
+  for (let i = 0; i < open.length; i++) open[i] = lat.cost[i] != null ? 1 : 0;
+  const reachCells = Math.ceil((UNIT_RADIUS * 2) / CELL) + 1;
+  for (const f of foes) {
+    const fc = Math.floor(f.pos.x / CELL);
+    const fr = Math.floor(f.pos.y / CELL);
+    for (let r = Math.max(0, fr - reachCells); r <= Math.min(rows - 1, fr + reachCells); r++)
+      for (let c = Math.max(0, fc - reachCells); c <= Math.min(cols - 1, fc + reachCells); c++)
+        if (open[r * cols + c] && blocked(centre(r * cols + c))) open[r * cols + c] = 0;
+  }
+  const walkable = (i: number) => open[i] === 1;
 
   const dist = new Float64Array(cols * rows).fill(Infinity);
   const prev = new Int32Array(cols * rows).fill(-1);
@@ -200,7 +211,8 @@ export function freeReach(field: FreeField, from: Point, budget: number, bodies:
 
   const cells: Point[] = [];
   for (let i = 0; i < dist.length; i++) {
-    if (dist[i]! <= budget && i !== start && canStand(centre(i))) cells.push(centre(i));
+    // A walkable cell centre already fits a body and is clear of foes; only allies remain to check.
+    if (dist[i]! <= budget && i !== start && open[i] && !near(centre(i), ALLY_GAP, allies)) cells.push(centre(i));
   }
   return { costTo, pathTo, cells };
 }

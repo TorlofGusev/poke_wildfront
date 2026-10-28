@@ -45,6 +45,10 @@ export class FreeBattleScene extends Phaser.Scene {
   private state!: BattleState;
   private units = new Map<string, UnitView>();
   private reachGfx!: Phaser.GameObjects.Graphics;
+  private reachImage!: Phaser.GameObjects.RenderTexture;
+  private reachFor: { state: BattleState; reach: FreeReach } | null = null;
+  /** Hover moved since the aim was last drawn (refreshed at most once a frame). */
+  private aimDirty = false;
   private aimGfx!: Phaser.GameObjects.Graphics;
   private markGfx!: Phaser.GameObjects.Graphics;
   /** Damage and hit chances shown over the Pokémon an aimed move would hit. */
@@ -72,6 +76,8 @@ export class FreeBattleScene extends Phaser.Scene {
     this.log = [];
     this.selectedMove = null;
     this.hovered = null;
+    this.aimDirty = false;
+    this.reachFor = null;
     this.armed = null;
     this.busy = false;
     this.alive = true;
@@ -81,7 +87,8 @@ export class FreeBattleScene extends Phaser.Scene {
     this.header = this.add.text(FX, 16, "", { fontFamily: FONT, fontSize: px(15), color: "#f5d76e" });
     this.add.text(FX, 38, t("Prototype: free movement · right click or Esc cancels a move"), { fontFamily: FONT, fontSize: px(11), color: COLORS.dim });
     this.drawField();
-    this.reachGfx = this.add.graphics().setDepth(1);
+    this.reachGfx = this.make.graphics({}, false);
+    this.reachImage = this.add.renderTexture(0, 0, this.scale.width, this.scale.height).setOrigin(0).setDepth(1);
     this.markGfx = this.add.graphics().setDepth(2);
     this.aimGfx = this.add.graphics().setDepth(3);
     for (const u of this.state.units) this.createUnitView(u.id);
@@ -105,7 +112,8 @@ export class FreeBattleScene extends Phaser.Scene {
   // ------------------------------------------------------------ drawing
 
   private drawField(): void {
-    const g = this.add.graphics().setDepth(0);
+    // Drawn once into a texture: a Graphics with hundreds of shapes is redrawn every frame (slow on phones).
+    const g = this.make.graphics({}, false);
     g.fillStyle(ZONE_COLORS.floor, 1).fillRect(FX, FY, PROTO_FIELD.width * S, PROTO_FIELD.height * S);
     // Grass tufts, seeded so the field looks the same every time.
     let seed = 7;
@@ -121,6 +129,8 @@ export class FreeBattleScene extends Phaser.Scene {
       g.fillStyle(ZONE_COLORS[z.terrain], 1).fillPoints(pts, true);
       g.lineStyle(2, z.terrain === "rock" ? 0x2a2c31 : 0x000000, z.terrain === "rock" ? 1 : 0.25).strokePoints(pts, true, true);
     }
+    this.add.renderTexture(0, 0, this.scale.width, this.scale.height).setOrigin(0).setDepth(0).draw(g).render();
+    g.destroy();
     // A legend under the field.
     const legend: [FreeTerrainId, string][] = [["mud", t("Mud ×2")], ["water", t("Water ×2")], ["bush", t("Bush ×1.5, blocks sight")], ["rock", t("Rock: impassable")]];
     legend.forEach(([id, label], i) => {
@@ -187,15 +197,34 @@ export class FreeBattleScene extends Phaser.Scene {
 
   private drawReach(): void {
     const g = this.reachGfx.clear();
+    this.reachImage.clear();
     this.reach = null;
     if (!this.isPlayerTurn() || this.busy || this.selectedMove) return;
-    this.reach = freeReachFor(this.state, this.state.turn!.unitId);
+    // The same state always gives the same reach: reuse it (selecting and cancelling moves redraws often).
+    if (this.reachFor?.state !== this.state) this.reachFor = { state: this.state, reach: freeReachFor(this.state, this.state.turn!.unitId) };
+    this.reach = this.reachFor.reach;
     g.fillStyle(COLORS.reach, 0.22);
-    const half = (CELL * S) / 2;
+    // Neighbouring cells on a row merge into one strip: far fewer shapes to draw.
+    const half = CELL / 2;
+    const rows = new Map<number, number[]>();
     for (const c of this.reach.cells) {
-      const p = toScreen(c);
-      g.fillRect(p.x - half, p.y - half, CELL * S, CELL * S);
+      const r = Math.floor(c.y / CELL);
+      (rows.get(r) ?? rows.set(r, []).get(r)!).push(c.x);
     }
+    for (const [r, xs] of rows) {
+      xs.sort((a, b) => a - b);
+      let start = xs[0]!;
+      let prev = start;
+      for (const x of [...xs.slice(1), Infinity]) {
+        if (x - prev > CELL * 1.5) {
+          const p = toScreen({ x: start - half, y: r * CELL });
+          g.fillRect(p.x, p.y, (prev - start + CELL) * S, CELL * S);
+          start = x;
+        }
+        prev = x;
+      }
+    }
+    this.reachImage.draw(g).render();
   }
 
   private drawArea(g: Phaser.GameObjects.Graphics, area: FreeArea, color: number, alpha: number): void {
@@ -423,6 +452,12 @@ export class FreeBattleScene extends Phaser.Scene {
   private onHover(p: Phaser.Input.Pointer): void {
     if (p.wasTouch) return;
     this.hovered = this.toField(p);
+    this.aimDirty = true;
+  }
+
+  update(): void {
+    if (!this.aimDirty) return;
+    this.aimDirty = false;
     this.refreshAim();
   }
 
