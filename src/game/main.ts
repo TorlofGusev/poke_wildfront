@@ -1,3 +1,6 @@
+import { CONTENT } from "../content";
+import { planTurn } from "../core/ai";
+import type { BattleState } from "../core/battle";
 import Phaser from "phaser";
 import { setupAudio } from "./audio";
 import { setupRotation } from "./rotation";
@@ -30,3 +33,5 @@ setupRotation(game);
 setupAudio(game);
 // For e2e scripts: lets them read scene state (e.g. enemy positions).
 (window as unknown as { __game: Phaser.Game }).__game = game;
+// For promo recordings: the AI can plan the player's turns, which the script then shows being aimed.
+(window as unknown as { __ai: object }).__ai = { planTurn: (state: BattleState) => planTurn(state, CONTENT) };
