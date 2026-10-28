@@ -149,7 +149,8 @@ describe("free movement: prototype battle", () => {
     for (let i = 0; i < 200 && s.outcome === "ongoing"; i++)
       for (const a of planTurn(s, CONTENT)) if (s.outcome === "ongoing") s = applyAction(s, CONTENT, a).state;
     expect(s.outcome).not.toBe("ongoing");
-  });
+    // A whole battle of AI turns: slow on a CI runner.
+  }, 60_000);
 
   it("every start spot is free and reachable ground", () => {
     const s = createBattle(CONTENT, PROTO_FIELD, PROTO_UNITS).state;
