@@ -75,6 +75,7 @@ export class PartyScene extends Phaser.Scene {
     new RichText(this, 100, 19, 400, 14).setMarkup(t("{money}   EV {ev}   Rare Candy {candy}   Fatigue {fatigue}", { money: tag("num", `₽${money}`), ev: tag("num", session.game.ev ?? 0), candy: tag("num", inventory.items.candy ?? 0), fatigue: tag("num", world.fatigue) }));
     new Button(this, 794, 12, 150, 26, t("➜ Back to map"), () => this.scene.start("Overworld", {}));
     new Button(this, 474, 12, 150, 26, t("🎒 Bag"), () => this.scene.start("Inventory", { from: "Party" }));
+    new Button(this, 314, 12, 150, 26, t("📖 Pokédex"), () => this.scene.start("Pokedex", { from: "Party" }));
     // Resting is a decision: pick a meal (or go hungry); wild groups move and this becomes the respawn point.
     new Button(this, 634, 12, 150, 26, this.choosingMeal ? t("✕ Cancel") : t("⛺ Rest here…"), () =>
       this.scene.restart({ rested: this.rested, choosingMeal: !this.choosingMeal })).setEnabled(!this.rested);
