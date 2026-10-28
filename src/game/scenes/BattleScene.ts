@@ -1331,6 +1331,7 @@ export class BattleScene extends Phaser.Scene {
   private playerEndTurn(): void {
     if (this.phase !== "battle" || this.busy || !this.isPlayerTurn()) return;
     this.selectedMove = null;
+    this.selectedBall = null;
     this.confirmRetreat = false;
     void this.perform({ type: "endTurn", unitId: activeUnit(this.state!)!.id });
   }
