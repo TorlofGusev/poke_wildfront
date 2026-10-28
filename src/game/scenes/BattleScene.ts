@@ -1075,7 +1075,8 @@ export class BattleScene extends Phaser.Scene {
       if (unit.side === "player" && this.selectedMove) head.push("", describeMove(CONTENT, CONTENT.moves[this.selectedMove]!));
       if (active && active.side === "player" && unit.side === "enemy" && this.selectedMove) {
         const mv = CONTENT.moves[this.selectedMove]!;
-        const eff = typeMultiplier(CONTENT.typeChart, mv.type, s.types);
+        // Only damaging moves: a status move's type changes nothing.
+        const eff = mv.power ? typeMultiplier(CONTENT.typeChart, mv.type, s.types) : 1;
         if (eff !== 1) head.push(eff > 1 ? tag("good", t("{move} is super effective (×{eff})", { move: mv.name, eff })) : tag("bad", t("{move} is not very effective (×{eff})", { move: mv.name, eff })));
       }
       this.setInfo(head.filter(Boolean).join("\n"));
@@ -1098,7 +1099,7 @@ export class BattleScene extends Phaser.Scene {
     const active = this.state ? activeUnit(this.state) : null;
     if (active && active.side === "player" && unit.side === "enemy" && this.selectedMove) {
       const mv = CONTENT.moves[this.selectedMove]!;
-      const eff = typeMultiplier(CONTENT.typeChart, mv.type, s.types);
+      const eff = mv.power ? typeMultiplier(CONTENT.typeChart, mv.type, s.types) : 1;
       if (eff !== 1) lines.push(eff > 1 ? tag("good", t("{move} is super effective (×{eff})", { move: mv.name, eff })) : tag("bad", t("{move} is not very effective (×{eff})", { move: mv.name, eff })));
     }
     if (active && active.side === "player" && unit.side === "enemy" && this.selectedBall && this.state) {
