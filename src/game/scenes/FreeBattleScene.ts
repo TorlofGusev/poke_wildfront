@@ -559,11 +559,13 @@ export class FreeBattleScene extends Phaser.Scene {
       }
       switch (e.type) {
         case "moved":
+          await this.settle();
           await this.tweenPath(e.unitId, e.path);
           break;
         case "moveUsed": {
           const view = this.units.get(e.unitId);
           if (!view) break;
+          await this.settle();
           const to = toScreen(e.target);
           const dx = to.x - view.container.x;
           const dy = to.y - view.container.y;
@@ -648,6 +650,14 @@ export class FreeBattleScene extends Phaser.Scene {
     const txt = this.add.text(view.container.x, view.container.y - 24, s, { fontFamily: FONT, fontSize: "16px", color, fontStyle: "bold" })
       .setOrigin(0.5).setStroke("#000000", 3).setDepth(40);
     this.tweens.add({ targets: txt, y: txt.y - 24, alpha: 0, duration: 900, onComplete: () => txt.destroy() });
+  }
+
+  /**
+   * Waits until a frame has been drawn. Heavy work (rules, AI, panel rebuild) makes one long frame; a tween started
+   * right after it would skip that time and lose half its animation on a phone.
+   */
+  private settle(): Promise<void> {
+    return new Promise((resolve) => this.events.once("postupdate", () => this.events.once("postupdate", () => resolve())));
   }
 
   private wait(ms: number): Promise<void> {

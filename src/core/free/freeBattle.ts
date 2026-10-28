@@ -64,12 +64,14 @@ const caught = (move: MoveDef, user: BattleUnit) => (u: BattleUnit) =>
 
 /** Half-angle of the cone in which an ally can step into a ranged shot (30° in all). */
 const INTERCEPT_HALF_ANGLE = (15 * Math.PI) / 180;
+/** An ally this close to the shooter (bodies touching, with a little room) stands beside it, not in the way. */
+const SHOULDER_TO_SHOULDER = UNIT_RADIUS * 2 + 0.15;
 /** Chance that an ally dead centre in the cone, right in front of the target, takes the shot instead. */
 export const INTERCEPT_MAX = 0.5;
 
 /**
  * The ally most likely to catch a shot at `target`, and how likely: higher the nearer the cone's centre line
- * and the nearer the target it stands (INTERCEPT_MAX at best). Allies right beside the shooter do not count.
+ * and the nearer the target it stands (INTERCEPT_MAX at best). Allies touching the shooter do not count.
  */
 function interceptorOf(
   state: BattleState, user: BattleUnit, move: MoveDef, target: BattleUnit,
@@ -82,7 +84,7 @@ function interceptorOf(
   for (const u of livingUnits(state)) {
     if (u.side !== user.side || u.id === user.id) continue;
     const d = distance(user.pos, u.pos);
-    if (d <= MELEE_REACH || d >= reach) continue;
+    if (d <= SHOULDER_TO_SHOULDER || d >= reach) continue;
     const off = Math.abs(((Math.atan2(u.pos.y - user.pos.y, u.pos.x - user.pos.x) - aim + 3 * Math.PI) % (2 * Math.PI)) - Math.PI);
     if (off > INTERCEPT_HALF_ANGLE) continue;
     const chance = Math.round(INTERCEPT_MAX * (1 - off / INTERCEPT_HALF_ANGLE) * (d / reach) * 100) / 100;

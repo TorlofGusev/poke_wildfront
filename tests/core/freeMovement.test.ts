@@ -90,8 +90,13 @@ describe("free movement: friendly fire", () => {
     expect(chance(3.6, 4.2)).toBeGreaterThan(0);
   });
 
-  it("an ally right beside the shooter or outside the cone never catches it", () => {
-    for (const s of [shot(2.9), shot(3.5, 5)]) {
+  it("an ally a step away, still within melee reach, can catch it", () => {
+    const aim = freeAim(shot(3.1), CONTENT, "p", "ember", { x: 4.2, y: 4 });
+    expect(aim.ok && aim.interceptor?.id).toBe("a");
+  });
+
+  it("an ally touching the shooter or outside the cone never catches it", () => {
+    for (const s of [shot(2.65), shot(3.5, 5)]) {
       const aim = freeAim(s, CONTENT, "p", "ember", { x: 4.2, y: 4 });
       expect(aim.ok && aim.interceptor).toBe(undefined);
     }
