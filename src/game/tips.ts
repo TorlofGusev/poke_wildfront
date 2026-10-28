@@ -7,13 +7,14 @@ import { RichText } from "./ui/RichText";
 import { t } from "./i18n";
 
 /** One-time tips, each shown the first time its situation comes up (and all of them again behind "?"). */
-export type TipId = "battle" | "types" | "engage" | "collision" | "zones" | "capture" | "focus" | "camp" | "knockout";
+export type TipId = "map" | "battle" | "types" | "engage" | "collision" | "zones" | "capture" | "focus" | "camp" | "knockout";
 
-const TIP_ORDER: readonly TipId[] = ["battle", "types", "engage", "collision", "zones", "capture", "knockout", "focus", "camp"];
+const TIP_ORDER: readonly TipId[] = ["map", "battle", "types", "engage", "collision", "zones", "capture", "knockout", "focus", "camp"];
 
 function tipText(id: TipId): { title: string; text: string } {
   const c = CONTENT.capture;
   switch (id) {
+    case "map": return { title: t("Map icons"), text: t("Red ring with a number: a wild group and its size; \"!\" means it has spotted you. People: \"!\" wants a battle, \"…\" has something to say, \"★\" has a gift; the ring's colour shows who they are (yellow Gym Leader, blue rival, red Team Rocket, purple Elite Four). On the ground: ★ rare find, ◆ held item, Poké Ball, ✚ healing, berry. In the way: ♣ tree to cut, ● boulder, ☾ dark cave, ✋ guard, ▲ rock. Blue-grey tiles are towns (Pokémon Center and Poké Mart), the pale triangle is your last camp, arrows at the edge lead to other maps.") };
     case "battle": return { title: t("Your turn"), text: t("The Pokémon with the yellow ring acts. Click the field to walk, then pick a move: one basic attack per turn, skills whenever they are off cooldown, and Bond moves paid from the shared Bond bar. End the turn with End turn (Space). Tap a foe to see how far it reaches.") };
     case "types": return { title: t("Types"), text: t("Type matchups count: super effective hits deal more, resisted ones less. There is no same-type bonus (STAB): a move hits as hard whoever uses it. Instead every type's moves carry an effect of their own, e.g. Fire burns, Water pushes further, Grass drains; a move's details show it.") };
     case "engage": return { title: t("Engaged"), text: t("A melee hit locks the two Pokémon together. Stepping away gives the foe a free strike. An engaged ranged Pokémon can only scuffle (Struggle) until it steps away, so keep your melee Pokémon in front.") };

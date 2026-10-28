@@ -80,6 +80,9 @@ interface UnitView {
 }
 
 const AI_STEP_MS = 350;
+/** A spent turn passes on its own after this pause; under this much walk left counts as none. */
+const AUTO_END_MS = 600;
+const MIN_STEP = 0.5;
 /** The title-screen replay is calmer than a real battle. */
 const DEMO_STEP_MS = 650;
 const S = FIELD_S;
@@ -1345,6 +1348,22 @@ export class BattleScene extends Phaser.Scene {
     await this.playEvents(events);
     this.busy = false;
     await this.continueFlow();
+    // Nothing left to do this turn (no walk, no usable move or ball): the turn passes on its own after a beat.
+    if (action.type !== "endTurn" && this.turnSpent()) {
+      await this.wait(AUTO_END_MS);
+      if (this.turnSpent() && activeUnit(this.state!)?.id === action.unitId) this.playerEndTurn();
+    }
+  }
+
+  /** The player's active Pokémon has acted and has nothing left: no walk, no usable move, no ball to throw. */
+  private turnSpent(): boolean {
+    const state = this.state;
+    if (!state || this.phase !== "battle" || this.busy || state.outcome !== "ongoing" || !this.isPlayerTurn() || tipOpen(this)) return false;
+    const turn = state.turn!;
+    if (turn.fresh || turn.movePointsLeft >= MIN_STEP) return false;
+    const unit = activeUnit(state)!;
+    if (unit.moves.some((m) => !moveUnavailableReason(state, CONTENT, unit.id, m))) return false;
+    return turn.actionUsed || !state.captureAllowed || !Object.keys(state.balls).some((b) => (state.balls[b] ?? 0) > 0 && captureTargets(state, CONTENT, unit.id, b).length > 0);
   }
 
   /** Runs enemy turns until it is the player's turn again or the battle ends. */

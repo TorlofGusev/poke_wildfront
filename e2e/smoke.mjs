@@ -31,7 +31,12 @@ try {
     await page.waitForTimeout(600);
     const s = await save();
     if (!s || s.game.roster.party.length !== 1) throw new Error("no save with the chosen starter");
-    // Continue from the title instead of clicking through the new-game intro.
+    // Continue from the title instead of clicking through the new-game intro (map legend tip already seen).
+    await page.evaluate(() => {
+      const s = JSON.parse(localStorage.getItem("pokemon-wildfront.save"));
+      s.game.flags = [...(s.game.flags ?? []), "tip-map"];
+      localStorage.setItem("pokemon-wildfront.save", JSON.stringify(s));
+    });
     await page.reload();
     await page.waitForFunction(() => document.querySelector("canvas"));
     await page.waitForTimeout(800);

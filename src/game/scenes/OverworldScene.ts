@@ -31,6 +31,7 @@ import { MAX_ACTIVE_UNITS } from "../../core/battle";
 import { battleArena, formationLabel } from "../../core/free/arena";
 import { currentWorld, session } from "../session";
 import { animKey, facingFor, hasSprite, portraitKey } from "../sprites";
+import { showHelp, showTip } from "../tips";
 import { Button } from "../ui/Button";
 import { addFullscreenButton } from "../ui/fullscreen";
 import { tag } from "../ui/markup";
@@ -145,6 +146,8 @@ export class OverworldScene extends Phaser.Scene {
       fontFamily: FONT, fontSize: px(11), color: COLORS.dim, wordWrap: { width: 672 },
     });
     this.drawMap();
+    // The map legend, once; after the intro if one opens.
+    this.time.delayedCall(400, () => this.dialog || showTip(this, "map"));
     this.preview = this.add.graphics();
     this.markers = this.add.container(0, 0);
     // The party leader walks the map; a yellow marker stands in if it has no sprite.
@@ -425,7 +428,10 @@ export class OverworldScene extends Phaser.Scene {
     const items: Phaser.GameObjects.GameObject[] = [
       this.add.rectangle(x0, y0, w, h, 0x10141c, 0.97).setOrigin(0).setStrokeStyle(2, 0xf5d76e).setInteractive(),
       text,
-      new Button(this, x0 + w / 2 - 90, y0 + h - 40, 180, 28, t("Let's go!"), () => this.closeDialog()).setHighlighted(true),
+      new Button(this, x0 + w / 2 - 90, y0 + h - 40, 180, 28, t("Let's go!"), () => {
+        this.closeDialog();
+        showTip(this, "map");
+      }).setHighlighted(true),
     ];
     this.dialog = this.add.container(0, 0, items).setDepth(30);
   }
@@ -603,7 +609,8 @@ export class OverworldScene extends Phaser.Scene {
       this.btnBox.add(new Button(this, 0, by, 240, 28, t("🛒 Poké Mart"), () => this.scene.start("Shop", {})));
       by += 34;
     }
-    half(0, t("⌂ Title"), () => this.scene.start("Title"));
+    this.btnBox.add(new Button(this, 0, by, 76, 28, t("⌂ Title"), () => this.scene.start("Title")));
+    this.btnBox.add(new Button(this, 84, by, 32, 28, "?", () => showHelp(this)).centerLabel());
     const full = addFullscreenButton(this, 124, by, 116);
     if (full) this.btnBox.add(full);
   }
