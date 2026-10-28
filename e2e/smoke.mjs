@@ -48,6 +48,8 @@ try {
   });
   await step("deploying and starting the battle", async () => {
     // Deploy spots are free points on the field (40 px per unit from the board's corner).
+    // The walk to the group may still be playing out: wait for the battle to open.
+    await page.waitForFunction(() => window.__game.scene.getScene("Battle")?.scenario?.deploymentZone, null, { timeout: 15000 });
     const spots = await page.evaluate(() => window.__game.scene.getScene("Battle").scenario.deploymentZone);
     for (const p of spots.slice(0, 3)) {
       await page.mouse.click(12 + p.x * 40, 72 + p.y * 40);
