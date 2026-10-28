@@ -6,6 +6,7 @@ import { describeModifiers, focusLabel } from "../ui/describeEffects";
 import { pendingChoice, xpToNext } from "../../core/progression";
 import { currentWorld, session } from "../session";
 import { portraitKey } from "../sprites";
+import { FEEDBACK_URL, openFeedback } from "../feedback";
 import { Button } from "../ui/Button";
 import { tag } from "../ui/markup";
 import { RichText } from "../ui/RichText";
@@ -76,6 +77,7 @@ export class PartyScene extends Phaser.Scene {
     new Button(this, 794, 12, 150, 26, t("➜ Back to map"), () => this.scene.start("Overworld", {}));
     new Button(this, 474, 12, 150, 26, t("🎒 Bag"), () => this.scene.start("Inventory", { from: "Party" }));
     new Button(this, 314, 12, 150, 26, t("📖 Pokédex"), () => this.scene.start("Pokedex", { from: "Party" }));
+    if (FEEDBACK_URL) new Button(this, 268, 12, 40, 26, "💬", () => openFeedback(this.game, "camp")).centerLabel();
     // Resting is a decision: pick a meal (or go hungry); wild groups move and this becomes the respawn point.
     new Button(this, 634, 12, 150, 26, this.choosingMeal ? t("✕ Cancel") : t("⛺ Rest here…"), () =>
       this.scene.restart({ rested: this.rested, choosingMeal: !this.choosingMeal })).setEnabled(!this.rested);

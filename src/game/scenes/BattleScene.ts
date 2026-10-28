@@ -2,6 +2,7 @@ import Phaser from "phaser";
 import { playMoveFx } from "../moveFx";
 import { playMusic, stopMusic } from "../music";
 import { CONTENT, type ScenarioDef } from "../../content";
+import type { DemoBattle } from "../../content/demoBattles";
 import { captureChance, captureTargets, captureUnavailableReason } from "../../core/capture";
 import { KNOCKOUTS_TO_DEATH, resolveBattle, type BattleSummary } from "../../core/party";
 import { currentWorld, session } from "../session";
@@ -10,7 +11,8 @@ import { fatigueLevel, fatigueModifiers, removeEncounter, returnToLastCamp, roll
 import { teamBond } from "../../core/progression";
 import { nextRandom } from "../../core/rng";
 import { AI_LEVELS, planTurn } from "../../core/ai";
-import { playCry, sfx } from "../audio";
+import { playCry, sfx, silence } from "../audio";
+import { FEEDBACK_URL, openFeedback } from "../feedback";
 import { completeNpc, failNpc } from "../../core/story";
 import { grantGifts } from "../storyFlow";
 import {
@@ -77,6 +79,8 @@ interface UnitView {
 }
 
 const AI_STEP_MS = 350;
+/** The title-screen replay is calmer than a real battle. */
+const DEMO_STEP_MS = 650;
 const S = FIELD_S;
 /** Terrain colours on the free field. */
 const ZONE_COLORS: Record<Exclude<FreeTerrainId, "floor">, number> = { mud: COLORS.mud, water: COLORS.water, bush: COLORS.grass, rock: 0x3a3d44 };
@@ -171,21 +175,26 @@ export class BattleScene extends Phaser.Scene {
   private orderStrip: Phaser.GameObjects.Container | null = null;
   private previewLabels: Phaser.GameObjects.Container | null = null;
   private lastPreview: readonly HitPreview[] = [];
+  /** A recorded battle replayed behind the title screen: no UI, no sound, nothing saved. */
+  private demo: DemoBattle | null = null;
+  /** Bumped by each replay, so one cut short (the scene restarted) stops instead of driving the new one. */
+  private demoRun = 0;
 
   constructor() {
     super("Battle");
   }
 
-  init(data: { scenario?: ScenarioDef; encounterId?: string; biome?: string; npcId?: string; mapId?: string }): void {
-    this.scenario = data.scenario!;
+  init(data: { scenario?: ScenarioDef; encounterId?: string; biome?: string; npcId?: string; mapId?: string; demo?: DemoBattle }): void {
+    this.demo = data.demo ?? null;
+    this.scenario = data.scenario ?? { id: "demo", name: "", field: data.demo!.field, deploymentZone: [], enemies: [] };
     this.npcId = data.npcId ?? null;
     this.npcMapId = data.mapId ?? null;
     this.encounterId = data.encounterId ?? null;
-    this.biome = data.biome ?? null;
+    this.biome = data.biome ?? data.demo?.style ?? null;
     this.rewardText = "";
     this.phase = "deploy";
     this.placements = [];
-    this.party = session.partyCandidates();
+    this.party = this.demo ? [] : session.partyCandidates();
     this.selectedCandidate = this.party.find((m) => m.hp > 0)?.id ?? null;
     this.selectedBall = null;
     this.summary = null;
@@ -213,6 +222,7 @@ export class BattleScene extends Phaser.Scene {
   }
 
   create(): void {
+    if (this.demo) return void this.playDemo(this.demo);
     this.panelKey = "";
     playMusic(this, "battle");
     this.header = this.add.text(BOARD_X, 16, "", { fontFamily: FONT, fontSize: "20px", color: "#f5d76e" });
@@ -656,6 +666,7 @@ export class BattleScene extends Phaser.Scene {
 
   private refreshOverlay(): void {
     this.overlay.clear();
+    if (this.demo) return this.drawFieldEffects();
     this.previewLabels?.destroy();
     this.previewLabels = null;
     this.comboLabels?.setVisible(true);
@@ -744,6 +755,7 @@ export class BattleScene extends Phaser.Scene {
   // ------------------------------------------------------------ panel
 
   private refreshAll(): void {
+    if (this.demo) return this.syncUnits();
     this.armed = null;
     this.markActive();
     this.syncUnits();
@@ -916,6 +928,9 @@ export class BattleScene extends Phaser.Scene {
       }
       if (this.rewardText) text(this.rewardText, COLORS.good);
       button(t("➜ Continue"), true, false, () => this.scene.start("Overworld", {}));
+      // The battle's log goes along, so the report can be replayed.
+      if (FEEDBACK_URL) button(t("💬 Feedback on this battle"), true, false, () =>
+        openFeedback(this.game, `battle ${this.scenario.id} (${this.biome ?? "-"})`, this.log.map((e) => stripMarkup(e.text)).join("\n")));
       this.infoY = 16 + y + 10;
       this.infoText.setY(this.infoY);
       return;
@@ -1249,6 +1264,41 @@ export class BattleScene extends Phaser.Scene {
   }
 
   // ------------------------------------------------------------ flow
+
+  /**
+   * Replays a recorded battle filling the screen, slowed down, then hands over to the next recording.
+   * The scene runs under the title screen, which dims it.
+   */
+  private async playDemo(demo: DemoBattle): Promise<void> {
+    const run = ++this.demoRun;
+    const live = () => this.scene.isActive() && run === this.demoRun;
+    silence(this);
+    this.drawBoard();
+    this.overlay = this.add.graphics();
+    this.logStrip = new RichText(this, -2000, -2000, 10, 11).setVisible(false);
+    const board = this.boardPx();
+    const cam = this.cameras.main;
+    cam.setZoom(Math.max(this.scale.width / board.w, this.scale.height / board.h));
+    cam.centerOn(BOARD_X + board.w / 2, BOARD_Y + board.h / 2);
+    this.state = createBattle(CONTENT, demo.field, demo.units, { seed: demo.seed }).state;
+    this.phase = "battle";
+    for (const u of this.state.units) this.createUnitView(u.id, u.speciesId, u.side, u.pos);
+    this.syncUnits();
+    cam.fadeIn(800);
+    for (const action of demo.actions) {
+      if (!live() || this.state.outcome !== "ongoing") break;
+      await this.wait(DEMO_STEP_MS);
+      const { state, events } = applyAction(this.state, CONTENT, action);
+      this.state = state;
+      await this.playEvents(events);
+      if (!live()) return;
+    }
+    await this.wait(2000);
+    if (!live()) return;
+    cam.fadeOut(800);
+    await this.wait(900);
+    if (live()) this.events.emit("demoOver");
+  }
 
   private startBattle(): void {
     const { state, events } = lockDeployment(CONTENT, this.scenario, this.party, this.placements, {

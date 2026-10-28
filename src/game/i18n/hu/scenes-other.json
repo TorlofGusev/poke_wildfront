@@ -75,5 +75,19 @@
  "Lv 1:": "Lv 1:",
  "Evolution:": "Fejlődés:",
  "Start": "Kezdő",
- "Tap a move or mastery to see its exact effect.": "Koppints egy lépésre vagy masteryre a pontos hatásáért."
+ "Tap a move or mastery to see its exact effect.": "Koppints egy lépésre vagy masteryre a pontos hatásáért.",
+ "Feedback": "Visszajelzés",
+ "💬 Feedback": "💬 Visszajelzés",
+ "💬 Feedback on this battle": "💬 Visszajelzés erről a csatáról",
+ "Bug": "Hiba",
+ "Balance": "Balansz",
+ "Idea": "Ötlet",
+ "Other": "Egyéb",
+ "What happened, or what would you change?": "Mi történt, vagy min változtatnál?",
+ "Attach a screenshot and my save": "Képernyőkép és mentés csatolása",
+ "Cancel": "Mégse",
+ "Send": "Küldés",
+ "Sending…": "Küldés…",
+ "Thank you! Your feedback was sent.": "Köszönjük! A visszajelzés elküldve.",
+ "Could not send it. Please try again later.": "Nem sikerült elküldeni. Próbáld újra később."
 }

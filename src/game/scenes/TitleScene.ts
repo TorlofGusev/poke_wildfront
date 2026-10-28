@@ -8,8 +8,8 @@ import { Button } from "../ui/Button";
 import { addFullscreenButton } from "../ui/fullscreen";
 import { getVolume, setVolume, sfx } from "../audio";
 import { t } from "../i18n";
-import { CONTENT } from "../../content";
-import { animKey, FACE_RIGHT, hasSprite } from "../sprites";
+import { FEEDBACK_URL, openFeedback } from "../feedback";
+import { DEMO_BATTLES } from "../../content/demoBattles";
 
 export class TitleScene extends Phaser.Scene {
   private confirmNew = false;
@@ -23,7 +23,7 @@ export class TitleScene extends Phaser.Scene {
     this.confirmNew = false;
     const { width, height } = this.scale;
     const hasSave = session.hasSave() && session.load();
-    this.backdrop(hasSave ? session.game.roster.party.map((m) => m.speciesId) : []);
+    this.backdrop();
     this.add
       .text(width / 2, height / 2 - 110, "Pokémon Wildfront", { fontFamily: "monospace", fontSize: "48px", color: "#f5d76e" })
       .setOrigin(0.5);
@@ -63,6 +63,10 @@ export class TitleScene extends Phaser.Scene {
       }).setHighlighted(l === LANG).centerLabel();
     });
     y += 36;
+    if (FEEDBACK_URL) {
+      new Button(this, width / 2 - 140, y, 280, 28, t("💬 Feedback"), () => openFeedback(this.game, "title")).centerLabel();
+      y += 36;
+    }
     if (session.loadError) {
       this.add
         .text(width / 2, y + 10, t("Your save could not be loaded ({error}).", { error: session.loadError }), {
@@ -79,38 +83,29 @@ export class TitleScene extends Phaser.Scene {
   }
 
   /**
-   * Dusk over the hills: a sky gradient with twinkling stars, two ridges, and Pokémon (the party, or a few
-   * wild ones) walking along the path at the bottom, round and round.
+   * A recorded battle replays behind the menu, dimmed; when it ends the next one starts (in random order).
+   * Without recordings: a plain dusk sky.
    */
-  private backdrop(party: readonly string[]): void {
+  private backdrop(): void {
     const { width, height } = this.scale;
-    const sky = this.add.graphics();
-    sky.fillGradientStyle(0x0b1022, 0x0b1022, 0x3a2a4a, 0x3a2a4a, 1);
-    sky.fillRect(0, 0, width, height);
-    const rnd = new Phaser.Math.RandomDataGenerator(["wildfront"]);
-    for (let i = 0; i < 70; i++) {
-      const star = this.add.circle(rnd.between(0, width), rnd.between(0, height * 0.55), rnd.realInRange(0.6, 1.6), 0xffffff, rnd.realInRange(0.3, 0.9));
-      this.tweens.add({ targets: star, alpha: 0.1, duration: rnd.between(1200, 3200), yoyo: true, repeat: -1, delay: rnd.between(0, 2000) });
+    if (!DEMO_BATTLES.length) {
+      this.add.graphics().fillGradientStyle(0x0b1022, 0x0b1022, 0x3a2a4a, 0x3a2a4a, 1).fillRect(0, 0, width, height);
+      return;
     }
-    const ridge = (base: number, amp: number, color: number, seed: number) => {
-      const g = this.add.graphics().fillStyle(color, 1);
-      const pts = [new Phaser.Math.Vector2(0, height)];
-      for (let x = 0; x <= width; x += 16) pts.push(new Phaser.Math.Vector2(x, base - amp * (Math.sin(x / 90 + seed) * 0.6 + Math.sin(x / 37 + seed * 2) * 0.25)));
-      pts.push(new Phaser.Math.Vector2(width, height));
-      g.fillPoints(pts, true);
+    const order = Phaser.Utils.Array.Shuffle([...DEMO_BATTLES.keys()]);
+    let i = 0;
+    const next = () => {
+      this.scene.stop("Battle");
+      this.scene.launch("Battle", { demo: DEMO_BATTLES[order[i++ % order.length]!] });
+      this.scene.bringToTop();
+      this.scene.get("Battle").events.once("demoOver", next);
     };
-    ridge(height - 120, 30, 0x1d2238, 1);
-    ridge(height - 70, 18, 0x14291f, 4);
-    this.add.rectangle(0, height - 52, width, 52, 0x10200f).setOrigin(0);
-
-    // Walkers: the party, else a few Pokémon that still evolve.
-    const pool = party.filter(hasSprite);
-    const ids = pool.length ? pool.slice(0, 6) : rnd.shuffle(Object.keys(CONTENT.species).filter((id) => hasSprite(id) && CONTENT.species[id]!.evolution)).slice(0, 5);
-    ids.forEach((id, i) => {
-      const s = this.add.sprite(-40 - i * 90, height - 52, `${id}-walk`).setOrigin(0.5, 0.85).setScale(1.5).play(animKey(id, "walk", FACE_RIGHT)).setAlpha(0.9);
-      const lap = (width + 80 + ids.length * 90) * 18;
-      this.tweens.add({ targets: s, x: width + 40 + (ids.length - 1 - i) * 90, duration: lap, repeat: -1 });
+    next();
+    this.events.once("shutdown", () => {
+      this.scene.get("Battle").events.off("demoOver", next);
+      this.scene.stop("Battle");
     });
+    this.add.rectangle(0, 0, width, height, 0x0b1022, 0.62).setOrigin(0);
   }
 
   /** Master volume: drag or tap the bar. */

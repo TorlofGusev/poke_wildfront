@@ -1,0 +1,12 @@
+name = "wildfront-feedback"
+main = "src/index.ts"
+workers_dev = true
+preview_urls = false
+compatibility_date = "2026-10-01"
+
+[vars]
+REPO = "TorlofGusev/poke_wildfront"
+# The game's hosts (GitHub Pages, Cloudflare Pages, local dev), comma-separated.
+ALLOWED_ORIGINS = "https://torlofgusev.github.io,https://poke-wildfront.pages.dev,http://localhost:5173"
+
+# The token is a secret: npx wrangler secret put GITHUB_TOKEN

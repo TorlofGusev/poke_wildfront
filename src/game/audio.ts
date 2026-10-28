@@ -69,8 +69,12 @@ export function preloadCries(scene: Phaser.Scene): void {
 }
 
 /** Plays a species' cry; a lower `rate` sounds like the classic fainting cry. */
+/** Scenes whose effects stay quiet (the title screen's background battle). */
+const SILENT = new WeakSet<Phaser.Scene>();
+export const silence = (scene: Phaser.Scene): void => void SILENT.add(scene);
+
 export function playCry(scene: Phaser.Scene, speciesId: string, rate = 1): void {
-  if (muted || !scene.cache.audio.exists(cryKey(speciesId))) return;
+  if (muted || SILENT.has(scene) || !scene.cache.audio.exists(cryKey(speciesId))) return;
   scene.sound.play(cryKey(speciesId), { volume: 0.45, rate });
 }
 
@@ -114,7 +118,7 @@ const PATTERNS: Record<Sfx, readonly Blip[]> = {
 };
 
 export function sfx(scene: Phaser.Scene, name: Sfx): void {
-  if (muted || volume <= 0) return;
+  if (muted || volume <= 0 || SILENT.has(scene)) return;
   const ctx = (scene.sound as Partial<Phaser.Sound.WebAudioSoundManager>).context;
   if (!ctx) return;
   // A still-locked context (first click of the session) plays the effect as soon as it resumes.
