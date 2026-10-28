@@ -244,6 +244,13 @@ export class FreeBattleScene extends Phaser.Scene {
             const to = toScreen(aim.target);
             if (move.requiresLineOfSight) g.lineStyle(2, 0x7ed321, 0.9).lineBetween(from.x, from.y, to.x, to.y);
             lines.push(...this.previewLines(previewFreeMove(this.state, CONTENT, unit.id, this.selectedMove, hover)));
+            if (aim.interceptor) {
+              const at = toScreen(aim.interceptor.pos);
+              g.lineStyle(2, 0xf5a623, 1).strokeCircle(at.x, at.y, UNIT_RADIUS * S + 6);
+              lines.push(tag("bad", t("⚠ {chance}% chance to hit {name} instead", {
+                chance: Math.round(aim.interceptChance! * 100), name: stripMarkup(this.name(aim.interceptor.id)),
+              })));
+            }
             if (this.armed) lines.push(tag("good", t("Tap again to confirm")));
           } else {
             if (aim.reason === "no line of sight") {

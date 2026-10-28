@@ -39,7 +39,9 @@ export interface FreeField {
 }
 
 /** Every Pokémon is a circle of this radius. */
-export const UNIT_RADIUS = 0.4;
+export const UNIT_RADIUS = 0.3;
+/** Allies may stand a little closer than their bodies (they shuffle together). */
+export const ALLY_GAP = 0.45;
 /** Two units this close (centre to centre) are in melee reach of each other; touching is 0.8. */
 export const MELEE_REACH = 1.25;
 /** Free movement: a base stride plus a share of Speed, so every Speed point counts. */
@@ -110,7 +112,8 @@ export function sightBlocked(field: FreeField, a: Point, b: Point, skipStart = U
 /** How far a body can travel from `from` towards `dir` (a unit vector), up to `max`, before hitting terrain or a blocker. */
 export function sweep(field: FreeField, from: Point, dir: Point, max: number, blockers: readonly Point[]): { to: Point; blocked: boolean } {
   let last = from;
-  for (let d = SIGHT_STEP; d <= max + 1e-9; d += SIGHT_STEP) {
+  // Steps of SIGHT_STEP, the last one landing exactly on `max`.
+  for (let d = Math.min(SIGHT_STEP, max); d <= max + 1e-9; d = d < max ? Math.min(d + SIGHT_STEP, max) : Infinity) {
     const p = { x: from.x + dir.x * d, y: from.y + dir.y * d };
     if (!bodyFits(field, p) || blockers.some((b) => distance(b, p) < UNIT_RADIUS * 2)) return { to: last, blocked: true };
     last = p;

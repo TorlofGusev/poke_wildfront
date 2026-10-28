@@ -1,5 +1,5 @@
 import type { Point } from "../grid/types";
-import { bodyFits, distance, terrainAt, UNIT_RADIUS, type FreeField } from "./field";
+import { ALLY_GAP, bodyFits, distance, terrainAt, UNIT_RADIUS, type FreeField } from "./field";
 
 /** Path-finding resolution: the field is sampled on a lattice this fine (in hex widths). */
 export const CELL = 0.125;
@@ -147,7 +147,8 @@ export function freeReach(field: FreeField, from: Point, budget: number, bodies:
     }
   }
 
-  const canStand = (p: Point) => bodyFits(field, p) && !near(p, UNIT_RADIUS * 2, bodies);
+  const allies = bodies.filter((b) => b.passable);
+  const canStand = (p: Point) => bodyFits(field, p) && !blocked(p) && !near(p, ALLY_GAP, allies);
   const nodeOf = (p: Point) => {
     const c = Math.floor(p.x / CELL);
     const r = Math.floor(p.y / CELL);

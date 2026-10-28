@@ -39,5 +39,6 @@
   "action already used this turn": "az akció már elhasználva",
   "only while engaged, when its basic attack is ranged": "csak lekötve, ha az alaptámadás távolsági",
   "engaged: only melee moves on its partner": "lekötve: csak közelharc a lekötő ellen",
-  "{unit} walks ({cost} movement)": "{unit} mozog ({cost} mozgás)"
+  "{unit} walks ({cost} movement)": "{unit} mozog ({cost} mozgás)",
+  "⚠ {chance}% chance to hit {name} instead": "⚠ {chance}% eséllyel {name} kapja a lövést"
 }

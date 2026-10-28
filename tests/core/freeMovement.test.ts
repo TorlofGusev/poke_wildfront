@@ -2,7 +2,7 @@ import { describe, expect, it } from "vitest";
 import { CONTENT } from "../../src/content";
 import { createBattle, unitById, type BattleState, type UnitSetup } from "../../src/core/battle";
 import {
-  applyFreeAction, freeAim, freeReach, freeReachFor, planFreeAction, previewFreeWalk, PROTO_FIELD, PROTO_UNITS, type FreeField,
+  applyFreeAction, distance, freeAim, freeReach, freeReachFor, planFreeAction, previewFreeWalk, PROTO_FIELD, PROTO_UNITS, UNIT_RADIUS, type FreeField,
 } from "../../src/core/free";
 
 const OPEN: FreeField = { width: 12, height: 8, zones: [] };
@@ -64,6 +64,40 @@ describe("free movement: attacks", () => {
   });
 });
 
+describe("free movement: friendly fire", () => {
+  const shot = (allyX: number, allyY = 4) =>
+    turnOf(start([u("p", "charmander", "player", 2, 4), u("a", "squirtle", "player", allyX, allyY), u("e", "rattata", "enemy", 4.2, 4)]), "p");
+
+  it("an ally in the 30° cone may catch a ranged shot, and does not block the line of sight", () => {
+    const aim = freeAim(shot(3.5), CONTENT, "p", "ember", { x: 4.2, y: 4 });
+    expect(aim.ok && aim.interceptor?.id).toBe("a");
+    const hit = new Set<string>();
+    for (let seed = 1; seed <= 20; seed++) {
+      const s = { ...shot(3.5), rngState: seed * 7919 };
+      const r = applyFreeAction(s, CONTENT, { type: "freeUseMove", unitId: "p", moveId: "ember", target: { x: 4.2, y: 4 } });
+      for (const id of ["a", "e"]) if (unitById(r.state, id).hp < unitById(s, id).hp) hit.add(id);
+    }
+    expect([...hit].sort()).toEqual(["a", "e"]);
+  });
+
+  it("the catch chance grows towards the cone's centre and towards the target", () => {
+    const chance = (x: number, y: number) => {
+      const aim = freeAim(shot(x, y), CONTENT, "p", "ember", { x: 4.2, y: 4 });
+      return aim.ok ? aim.interceptChance ?? 0 : -1;
+    };
+    expect(chance(3.9, 4)).toBeGreaterThan(chance(3.4, 4));
+    expect(chance(3.6, 4)).toBeGreaterThan(chance(3.6, 4.2));
+    expect(chance(3.6, 4.2)).toBeGreaterThan(0);
+  });
+
+  it("an ally right beside the shooter or outside the cone never catches it", () => {
+    for (const s of [shot(2.9), shot(3.5, 5)]) {
+      const aim = freeAim(s, CONTENT, "p", "ember", { x: 4.2, y: 4 });
+      expect(aim.ok && aim.interceptor).toBe(undefined);
+    }
+  });
+});
+
 describe("free movement: engagement", () => {
   const engaged = () => {
     const s = turnOf(start([u("p", "charmander", "player", 4, 4), u("e", "geodude", "enemy", 5, 4)]), "p");
@@ -83,6 +117,14 @@ describe("free movement: engagement", () => {
     const r = applyFreeAction(engaged(), CONTENT, { type: "freeMove", unitId: "p", to: { x: 4.4, y: 3.3 } });
     expect(r.events.some((e) => e.type === "engagementStrike")).toBe(false);
     expect(unitById(r.state, "p").engagedWith).toBe("e");
+  });
+
+  it("an engaging hit pulls the pair together until they touch", () => {
+    const s = turnOf(start([u("p", "charmander", "player", 4, 4), u("e", "rattata", "enemy", 5.2, 4)]), "p");
+    const r = applyFreeAction(s, CONTENT, { type: "freeUseMove", unitId: "p", moveId: "scratch", target: { x: 5.2, y: 4 } });
+    const gap = distance(unitById(r.state, "p").pos, unitById(r.state, "e").pos);
+    expect(gap).toBeLessThan(UNIT_RADIUS * 2 + 0.15);
+    expect(gap).toBeGreaterThanOrEqual(UNIT_RADIUS * 2);
   });
 
   it("leaving the partner's reach draws its free attack and ends the engagement", () => {

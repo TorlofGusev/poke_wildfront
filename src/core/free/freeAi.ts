@@ -48,7 +48,10 @@ function bestAttacks(state: BattleState, content: BattleContent, user: BattleUni
       if (distance(user.pos, foe.pos) > Math.max(range.max, move.shape.kind === "line" ? move.shape.length + 1 : 0) + 1.5) continue;
       const aim = freeAim(state, content, user.id, moveId, foe.pos);
       if (!aim.ok) continue;
-      const value = attackValue(content, user, moveId, aim.affected);
+      // A shot an ally may catch is worth the odds of each outcome.
+      const value = aim.interceptor
+        ? (1 - aim.interceptChance!) * attackValue(content, user, moveId, aim.affected) + aim.interceptChance! * attackValue(content, user, moveId, [aim.interceptor])
+        : attackValue(content, user, moveId, aim.affected);
       const slot = move.kind === "basic" ? "basic" : "action";
       if (value > 0 && value > (out[slot]?.value ?? 0)) out[slot] = { moveId, target: foe.pos, value };
     }

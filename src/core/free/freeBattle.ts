@@ -1,6 +1,6 @@
 import {
   applyAction, breakAway, checkOutcome, commitMove, effectiveMove, IllegalActionError, livingUnits, moveRange,
-  moveUnavailableReason, partnerOf, unitById, type BattleAction, type StepResult,
+  moveUnavailableReason, partnerOf, roll, unitById, type BattleAction, type StepResult,
 } from "../battle/battle";
 import type { BattleContent, MoveDef } from "../battle/content";
 import type { BattleEvent } from "../battle/events";
@@ -48,11 +48,48 @@ export type FreeArea =
   | { readonly kind: "line"; readonly from: Point; readonly to: Point; readonly width: number };
 
 export type FreeAim =
-  | { readonly ok: true; readonly target: Point; readonly area: FreeArea; readonly affected: readonly BattleUnit[] }
+  | {
+    readonly ok: true; readonly target: Point; readonly area: FreeArea; readonly affected: readonly BattleUnit[];
+    /** An ally in the shot's cone who may take a ranged single-target hit instead, and the chance it does. */
+    readonly interceptor?: BattleUnit;
+    readonly interceptChance?: number;
+  }
   | { readonly ok: false; readonly reason: string; readonly area?: FreeArea };
 
 const wants = (move: MoveDef, user: BattleUnit) => (u: BattleUnit) =>
   move.affects === "any" ? u.id !== user.id : (move.affects === "allies") === (u.side === user.side);
+/** Areas aimed at foes hit everyone inside them but the user: friendly fire. */
+const caught = (move: MoveDef, user: BattleUnit) => (u: BattleUnit) =>
+  move.affects === "enemies" ? u.id !== user.id : wants(move, user)(u);
+
+/** Half-angle of the cone in which an ally can step into a ranged shot (30° in all). */
+const INTERCEPT_HALF_ANGLE = (15 * Math.PI) / 180;
+/** Chance that an ally dead centre in the cone, right in front of the target, takes the shot instead. */
+export const INTERCEPT_MAX = 0.5;
+
+/**
+ * The ally most likely to catch a shot at `target`, and how likely: higher the nearer the cone's centre line
+ * and the nearer the target it stands (INTERCEPT_MAX at best). Allies right beside the shooter do not count.
+ */
+function interceptorOf(
+  state: BattleState, user: BattleUnit, move: MoveDef, target: BattleUnit,
+): { unit: BattleUnit; chance: number } | undefined {
+  if (move.shape.kind !== "single" || move.affects !== "enemies" || move.power <= 0 || user.mods.shootOver) return undefined;
+  if (freeRange(user, move).max <= MELEE_REACH) return undefined;
+  const reach = distance(user.pos, target.pos);
+  const aim = Math.atan2(target.pos.y - user.pos.y, target.pos.x - user.pos.x);
+  let best: { unit: BattleUnit; chance: number } | undefined;
+  for (const u of livingUnits(state)) {
+    if (u.side !== user.side || u.id === user.id) continue;
+    const d = distance(user.pos, u.pos);
+    if (d <= MELEE_REACH || d >= reach) continue;
+    const off = Math.abs(((Math.atan2(u.pos.y - user.pos.y, u.pos.x - user.pos.x) - aim + 3 * Math.PI) % (2 * Math.PI)) - Math.PI);
+    if (off > INTERCEPT_HALF_ANGLE) continue;
+    const chance = Math.round(INTERCEPT_MAX * (1 - off / INTERCEPT_HALF_ANGLE) * (d / reach) * 100) / 100;
+    if (chance > (best?.chance ?? 0)) best = { unit: u, chance };
+  }
+  return best;
+}
 
 /** The living unit whose body covers `p`, if any. */
 export function freeUnitAt(state: BattleState, p: Point): BattleUnit | undefined {
@@ -65,7 +102,8 @@ export function freeUnitAt(state: BattleState, p: Point): BattleUnit | undefined
 export function freeLineOfSight(state: BattleState, user: BattleUnit, to: Point, target?: BattleUnit): boolean {
   if (sightBlocked(state.field!, user.pos, to, UNIT_RADIUS, target ? UNIT_RADIUS : 0)) return false;
   if (user.mods.shootOver) return true;
-  return !livingUnits(state).some((u) => u.id !== user.id && u.id !== target?.id
+  // Allies never block a shot; they may catch it instead (interceptorOf).
+  return !livingUnits(state).some((u) => u.id !== user.id && u.id !== target?.id && u.side !== user.side
     && distance(u.pos, to) > UNIT_RADIUS && distToSegment(u.pos, user.pos, to) < UNIT_RADIUS * 0.9);
 }
 
@@ -132,8 +170,8 @@ export function freeAim(state: BattleState, content: BattleContent, unitId: stri
   const aimedUnit = move.shape.kind === "single" ? freeUnitAt(state, target) : undefined;
   if (move.requiresLineOfSight && range.max > 0 && move.shape.kind !== "line" && !freeLineOfSight(state, user, target, aimedUnit))
     return fail("no line of sight");
-  const affected = move.shape.kind === "single" ? [freeUnitAt(state, target)!] : unitsIn(state, area, wants(move, user));
-  if (affected.length === 0) return fail("hits nobody");
+  const affected = move.shape.kind === "single" ? [freeUnitAt(state, target)!] : unitsIn(state, area, caught(move, user));
+  if (!affected.some(wants(move, user))) return fail("hits nobody");
   const foes = affected.filter((u) => u.side !== user.side);
   // Engaged: attacks only go at the partner; taunted: only at the taunter.
   const partner = partnerOf(state, user);
@@ -141,7 +179,11 @@ export function freeAim(state: BattleState, content: BattleContent, unitId: stri
   const taunt = user.statuses.find((st) => content.statuses[st.id]?.forcesTarget && st.sourceId);
   if (taunt && move.affects !== "allies" && foes.length && !foes.some((u) => u.id === taunt.sourceId)) return fail("taunted");
   if (move.onlyVs && move.shape.kind === "single" && !affected[0]!.statuses.some((st) => st.id === move.onlyVs)) return fail("not affected");
-  return { ok: true, target: area.kind === "line" ? area.to : target, area, affected };
+  const interceptor = aimedUnit ? interceptorOf(state, user, move, aimedUnit) : undefined;
+  return {
+    ok: true, target: area.kind === "line" ? area.to : target, area, affected,
+    ...(interceptor ? { interceptor: interceptor.unit, interceptChance: interceptor.chance } : {}),
+  };
 }
 
 export function applyFreeAction(state: BattleState, content: BattleContent, action: FreeAction): StepResult {
@@ -180,7 +222,9 @@ function freeMove(state: BattleState, content: BattleContent, unitId: string, to
   checkOutcome(state, events);
 }
 
-function freeUseMove(state: BattleState, content: BattleContent, unitId: string, moveId: string, aim: Point, events: BattleEvent[]): void {
+function freeUseMove(
+  state: BattleState, content: BattleContent, unitId: string, moveId: string, aim: Point, events: BattleEvent[], intercept = true,
+): void {
   const check = freeAim(state, content, unitId, moveId, aim);
   if (!check.ok) throw new IllegalActionError(`${moveId}: ${check.reason}`);
   const user = unitById(state, unitId);
@@ -200,6 +244,9 @@ function freeUseMove(state: BattleState, content: BattleContent, unitId: string,
     }
     user.statuses = user.statuses.filter((st) => st !== confusion);
     events.push({ type: "statusExpired", unitId: user.id, status: confusion.id });
+  } else if (intercept && check.interceptor && roll(state) < check.interceptChance!) {
+    target = check.interceptor.pos;
+    affected = [unitById(state, check.interceptor.id)];
   }
   commitMove(state, content, user, moveId, move, target, affected, events);
 }
@@ -207,7 +254,11 @@ function freeUseMove(state: BattleState, content: BattleContent, unitId: string,
 /** What a move would do if used now (combat is seeded, so playing it on a copy is exact). */
 export function previewFreeMove(state: BattleState, content: BattleContent, unitId: string, moveId: string, aim: Point): HitPreview[] {
   if (!freeAim(state, content, unitId, moveId, aim).ok) return [];
-  return summarizeHits(applyFreeAction(state, content, { type: "freeUseMove", unitId, moveId, target: aim }).events);
+  // Shows the hit on the aimed Pokémon; the scene warns about an ally who may catch it.
+  const copy = structuredClone(state) as BattleState;
+  const events: BattleEvent[] = [];
+  freeUseMove(copy, content, unitId, moveId, aim, events, false);
+  return summarizeHits(events);
 }
 
 /** The free attack a unit would take walking to `to` (empty if it does not disengage). */

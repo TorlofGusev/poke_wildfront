@@ -5,7 +5,7 @@ import { hasLineOfSight } from "../grid/lineOfSight";
 import { hexDirToward, hexOnAxis, hexStep } from "../grid/hex";
 import { reachableTiles, type Occupancy, type Reachable } from "../grid/movement";
 import { gridDistance, key, samePoint, type Point } from "../grid/types";
-import { distance, FREE_MOVE_MAX, freeMovement, MELEE_REACH, sweep, terrainAt, type FreeField } from "../free/field";
+import { distance, FREE_MOVE_MAX, freeMovement, MELEE_REACH, sweep, terrainAt, UNIT_RADIUS, type FreeField } from "../free/field";
 import { captureChance, captureUnavailableReason } from "../capture/capture";
 import { nextRandom } from "../rng";
 import { typeMultiplier } from "../rules/typeChart";
@@ -647,7 +647,7 @@ function heal(unit: BattleUnit, amount: number, events: BattleEvent[]): void {
 }
 
 /** Next value of the battle's seeded PRNG (captures, crits, status resistance). */
-function roll(state: BattleState): number {
+export function roll(state: BattleState): number {
   const r = nextRandom(state.rngState);
   state.rngState = r.state;
   return r.value;
@@ -886,6 +886,7 @@ function resolveHits(
             disengage(state, user, events);
             disengage(state, t, events);
             engage(user, t, events);
+            closeIn(state, user, t, events);
           }
           break;
         case "bond":
@@ -901,7 +902,10 @@ function resolveHits(
     }
     // A damaging melee hit engages the two, if neither is engaged yet (one on one).
     if (isFoe && t.hp > 0 && user.hp > 0 && move.power > 0 && !isRangedMove(move) && adjacent(state, user.pos, t.pos)
-      && !user.engagedWith && !t.engagedWith && !(move.effects ?? []).some((e) => e.kind === "disengage")) engage(user, t, events);
+      && !user.engagedWith && !t.engagedWith && !(move.effects ?? []).some((e) => e.kind === "disengage")) {
+      engage(user, t, events);
+      closeIn(state, user, t, events);
+    }
     // Type mechanics apply to the enemies a move hits.
     if (!isFoe || t.hp <= 0) continue;
     if (user.mods.sheerForce && move.power > 0) continue;
@@ -975,6 +979,25 @@ function displace(
   if (partner && !adjacent(state, partner.pos, target.pos)) disengage(state, target, events);
   // Only a push into an obstacle hurts; a pull that reaches the user simply stops.
   if (blocked && kind === "push") dealDamage(state, target, content.rules.impactDamage + user.mods.impactBonus, "impact", events);
+}
+
+/** On a free field an engaged pair steps in until they touch, as neighbours do on hexes (immovable ones hold their ground). */
+function closeIn(state: BattleState, a: BattleUnit, b: BattleUnit, events: BattleEvent[]): void {
+  if (!state.field) return;
+  const gap = distance(a.pos, b.pos) - UNIT_RADIUS * 2 - 0.02;
+  if (gap <= 0.01) return;
+  const movers = [a, b].filter((u) => !u.traits.immovable);
+  for (const u of movers) {
+    const other = u === a ? b : a;
+    const len = distance(u.pos, other.pos);
+    const dir = { x: (other.pos.x - u.pos.x) / len, y: (other.pos.y - u.pos.y) / len };
+    const blockers = livingUnits(state).filter((o) => o.id !== u.id && o.id !== other.id).map((o) => o.pos);
+    const from = { ...u.pos };
+    const { to } = sweep(state.field, from, dir, gap / movers.length, blockers);
+    if (distance(from, to) < 0.01) continue;
+    u.pos = to;
+    events.push({ type: "displaced", unitId: u.id, from, to: { ...to }, blocked: false });
+  }
 }
 
 /** Push or pull on a free field: straight away from (or towards) the user, stopped by terrain and bodies. */
