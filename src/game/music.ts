@@ -1,8 +1,26 @@
 import Phaser from "phaser";
 import { pulseWave } from "./gbSynth";
 
+/** Recorded loops (Juhani Junkala, CC0; see CREDITS.md), fetched on first use; the rest is synthesised. */
+const FILES = import.meta.glob("../assets/music/*.ogg", { eager: true, query: "?url", import: "default" }) as Record<string, string>;
+/** Recordings are mastered loud; this brings them level with the synthesised jingle and the sound effects. */
+const FILE_GAIN = 0.35;
+const buffers = new Map<string, Promise<AudioBuffer | null>>();
+
+function loadBuffer(ctx: AudioContext, url: string): Promise<AudioBuffer | null> {
+  let p = buffers.get(url);
+  if (!p) {
+    p = fetch(url)
+      .then((r) => r.arrayBuffer())
+      .then((data) => ctx.decodeAudioData(data))
+      .catch(() => null);
+    buffers.set(url, p);
+  }
+  return p;
+}
+
 /**
- * Background music: a tiny chiptune step sequencer on Web Audio (original tunes, no files).
+ * Background music: recorded loops where there is a file, otherwise a tiny chiptune step sequencer on Web Audio.
  * Each track is 16th-note steps per voice: a note like "C5" starts, "-" holds it, "." rests.
  * Notes are scheduled slightly ahead by a timer so playback stays in time.
  */
@@ -124,7 +142,8 @@ const FADE = 0.4;
 interface Playing {
   readonly name: MusicTrack;
   readonly out: GainNode;
-  readonly timer: ReturnType<typeof setInterval>;
+  /** Stops the sequencer or the recording. */
+  readonly stop: () => void;
 }
 
 let level = 0;
@@ -142,7 +161,7 @@ function contextOf(scene: Phaser.Scene): AudioContext | undefined {
 }
 
 function fadeOut(p: Playing): void {
-  clearInterval(p.timer);
+  p.stop();
   const t = p.out.context.currentTime;
   p.out.gain.cancelScheduledValues(t);
   p.out.gain.setValueAtTime(p.out.gain.value, t);
@@ -166,6 +185,25 @@ export function playMusic(scene: Phaser.Scene, name: MusicTrack): void {
   out.gain.linearRampToValueAtTime(1, ctx.currentTime + 0.2);
   out.connect(master);
 
+  const url = FILES[`../assets/music/${name}.ogg`];
+  if (url) {
+    let src: AudioBufferSourceNode | null = null;
+    let stopped = false;
+    const playing: Playing = { name, out, stop: () => { stopped = true; src?.stop(ctx.currentTime + FADE + 0.1); } };
+    current = playing;
+    void loadBuffer(ctx, url).then((buffer) => {
+      // A quick scene change may have moved on before it loaded.
+      if (stopped || !buffer) return;
+      src = ctx.createBufferSource();
+      src.buffer = buffer;
+      src.loop = true;
+      const g = ctx.createGain();
+      g.gain.value = FILE_GAIN;
+      src.connect(g).connect(out);
+      src.start();
+    });
+    return;
+  }
   const voices = PARSED[name];
   const def = TRACKS[name];
   const length = Math.max(...voices.map((v) => v.events.length));
@@ -192,7 +230,7 @@ export function playMusic(scene: Phaser.Scene, name: MusicTrack): void {
     }
   };
   const timer = setInterval(tick, TICK_MS);
-  current = { name, out, timer };
+  current = { name, out, stop: () => clearInterval(timer) };
   tick();
 }
 
