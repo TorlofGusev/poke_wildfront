@@ -84,9 +84,7 @@
  "Tap twice (or drag) a tile to walk. Walking adds {fatigue}; rest at camp or heal at a Pokémon Center. A red ring marks a wild group: walk into it to battle.": "Bökj kétszer egy mezőre (vagy húzz), hogy odasétálj. A séta {fatigue} okoz; pihenj a táborban, vagy gyógyulj egy Pokémon Centerben. Piros gyűrű jelöli a vad csoportot: lépj bele a csatához.",
  "Click a tile to walk. Walking adds {fatigue}; rest at camp or heal at a Pokémon Center. A red ring marks a wild group: walk into it to battle.": "Kattints egy mezőre, hogy odasétálj. A séta {fatigue} okoz; pihenj a táborban, vagy gyógyulj egy Pokémon Centerben. Piros gyűrű jelöli a vad csoportot: lépj bele a csatához.",
  "Battle:": "Csata:",
- "place up to 3 Pokémon on the blue spots. On a turn a Pokémon can walk, use one basic attack and one action. Tap a foe to see how far it can reach.": "tegyél legfeljebb 3 Pokémont a kék pontokra. Egy körben a Pokémon mozoghat, használhat egy alaptámadást és egy akciót. Bökj egy ellenfélre, hogy lásd, meddig ér el.",
  "Grow:": "Fejlődés:",
- "Pokémon level up, pick a role at Lv 3 and masteries later (Camp → a Pokémon). Weaken wild Pokémon and throw a ball to catch them.": "A Pokémonok szintet lépnek, Lv 3-on szerepet, később mesterségeket választanak (Tábor → egy Pokémon). A vad Pokémonokat gyengítsd le, és dobj labdát az elkapásukhoz.",
  "Three knockouts and a Pokémon is gone for good, so retreat in time.": "Három kiütés után a Pokémon végleg elvész, ezért vonulj vissza időben.",
  "Let's go!": "Gyerünk!",
  "Battle!": "Harc!",
@@ -240,5 +238,7 @@
  "Use as basic attack": "Legyen ez az alaptámadás",
  "{bond} slot full: remove one first": "{bond} hely foglalt: előbb vegyél ki egyet",
  "Skill slots full: remove one first": "A képességhelyek foglaltak: előbb vegyél ki egyet",
- "★ Lv up": "★ Szintlépés"
+ "★ Lv up": "★ Szintlépés",
+ "place up to 3 Pokémon on the blue spots. On a turn a Pokémon can walk, use one basic attack, and use its skills whenever they are off cooldown. Tap a foe to see how far it can reach.": "tegyél legfeljebb 3 Pokémont a kék pontokra. Egy körben a Pokémon mozoghat, használhat egy alaptámadást, a skilljeit pedig bármikor, amikor nincsenek cooldownon. Bökj egy ellenfélre, hogy lásd, meddig ér el.",
+ "Pokémon level up, choose a focus at Lv 3 and masteries later (Camp → a Pokémon). Weaken wild Pokémon and throw a ball to catch them.": "A Pokémonok szintet lépnek, Lv 3-on fókuszt, később masterykat választanak (Tábor → egy Pokémon). A vad Pokémonokat gyengítsd le, és dobj labdát az elkapásukhoz."
 }

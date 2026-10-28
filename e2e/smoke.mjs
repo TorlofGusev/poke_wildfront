@@ -55,7 +55,7 @@ try {
       await page.mouse.click(12 + p.x * 40, 72 + p.y * 40);
       await page.waitForTimeout(100);
     }
-    await page.mouse.click(808, 230);
+    await page.mouse.click(808, 148);
     await page.waitForTimeout(3000);
   });
 } finally {

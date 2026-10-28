@@ -7,6 +7,7 @@ import { pendingChoice, xpToNext } from "../../core/progression";
 import { currentWorld, session } from "../session";
 import { portraitKey } from "../sprites";
 import { FEEDBACK_URL, openFeedback } from "../feedback";
+import { showHelp, showTip } from "../tips";
 import { Button } from "../ui/Button";
 import { tag } from "../ui/markup";
 import { RichText } from "../ui/RichText";
@@ -89,6 +90,8 @@ export class PartyScene extends Phaser.Scene {
     top(90, t("🎒 Bag"), () => this.scene.start("Inventory", { from: "Party" }));
     top(110, t("📖 Pokédex"), () => this.scene.start("Pokedex", { from: "Party" }));
     if (FEEDBACK_URL) top(140, t("💬 Feedback"), () => openFeedback(this.game, "camp"));
+    top(34, "?", () => showHelp(this));
+    this.time.delayedCall(300, () => showTip(this, "camp"));
     const meal = world.meal;
     new RichText(this, 16, 44, 928, 12).setMarkup(this.rested
       ? tag("good", meal && meal.id !== CAMP.hungry.effect.id

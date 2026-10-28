@@ -47,6 +47,7 @@ import { describeMove } from "../ui/describeMove";
 import { tag } from "../ui/markup";
 import { t } from "../i18n";
 import { RichText } from "../ui/RichText";
+import { showTip } from "../tips";
 import { COLORS, FONT, TYPE_COLORS, px } from "../ui/theme";
 
 const LIST_X = 16;
@@ -404,6 +405,7 @@ ${into.types.map((ty) => tag(ty, ty)).join("/")}`);
       });
       return;
     }
+    if (pending === "focus") this.time.delayedCall(200, () => showTip(this, "focus"));
     // The focus row (stat + Bond skill), then the line's rows; the whole tree can be looked at before choosing.
     const focuses = focusOptions(PROGRESSION, m.speciesId);
     const grid = memberGrid(PROGRESSION, m);

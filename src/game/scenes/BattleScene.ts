@@ -13,6 +13,7 @@ import { nextRandom } from "../../core/rng";
 import { AI_LEVELS, planTurn } from "../../core/ai";
 import { playCry, sfx, silence } from "../audio";
 import { FEEDBACK_URL, openFeedback } from "../feedback";
+import { flushTips, queueTip, showHelp, tipOpen } from "../tips";
 import { completeNpc, failNpc } from "../../core/story";
 import { grantGifts } from "../storyFlow";
 import {
@@ -236,6 +237,7 @@ export class BattleScene extends Phaser.Scene {
     this.logStrip = new RichText(this, BOARD_X, BOARD_Y + board.h + 4, 450, 11, COLORS.dim, 15);
     const logButton = new Button(this, BOARD_X + board.w - 110, BOARD_Y + board.h + 6, 110, 22, PHONE ? t("Full log") : t("Full log [L]"), () => this.toggleLogOverlay());
     logButton.setDepth(5);
+    new Button(this, BOARD_X + board.w - 150, BOARD_Y + board.h + 6, 34, 22, "?", () => showHelp(this)).centerLabel().setDepth(5);
     this.input.keyboard?.on("keydown-L", () => this.toggleLogOverlay());
     this.events.once("shutdown", () => this.input.setDefaultCursor("default"));
     this.input.on("wheel", (_p: unknown, _o: unknown, _dx: number, dy: number) => {
@@ -288,7 +290,7 @@ export class BattleScene extends Phaser.Scene {
     this.input.mouse?.disableContextMenu();
     this.input.keyboard?.on("keydown-ESC", () => this.cancelSelection());
     this.input.keyboard?.addCapture("SPACE");
-    this.input.keyboard?.on("keydown-SPACE", () => this.playerEndTurn());
+    this.input.keyboard?.on("keydown-SPACE", () => !tipOpen(this) && this.playerEndTurn());
 
     this.refreshAll();
   }
@@ -762,6 +764,7 @@ export class BattleScene extends Phaser.Scene {
     this.refreshPanel();
     this.refreshOverlay();
     this.refreshInfo();
+    this.showTips();
   }
 
   /** Exact predicted damage above every Pokémon the hovered aim would hit. */
@@ -1410,6 +1413,29 @@ export class BattleScene extends Phaser.Scene {
 
   // ------------------------------------------------------------ event playback
 
+  /** Queues the one-time tips this batch of events calls for (shown once the player has the turn). */
+  private noteTips(events: readonly BattleEvent[]): void {
+    const state = this.state!;
+    const mine = (id: string) => state.units.some((u) => u.id === id && u.side === "player");
+    for (const e of events) {
+      if (e.type === "engaged" && (mine(e.unitId) || mine(e.targetId))) queueTip(this, "engage");
+      else if (e.type === "displaced" && e.blocked) queueTip(this, "collision");
+      else if (e.type === "hazardCreated" || e.type === "strikePrepared") queueTip(this, "zones");
+      else if (e.type === "fainted" && mine(e.unitId) && (this.scenario.countsKnockouts ?? true)) queueTip(this, "knockout");
+    }
+  }
+
+  /** On the player's turn: the turn basics, catching when a foe can be caught, then any queued tip. */
+  private showTips(): void {
+    if (this.demo || this.busy || !this.state) return;
+    if (this.phase === "battle" && this.isPlayerTurn()) {
+      queueTip(this, "battle");
+      const unit = activeUnit(this.state)!;
+      if (this.state.captureAllowed && Object.keys(this.state.balls).some((b) => captureTargets(this.state!, CONTENT, unit.id, b).length > 0)) queueTip(this, "capture");
+    } else if (this.phase !== "over") return;
+    flushTips(this);
+  }
+
   private async playEvents(events: readonly BattleEvent[]): Promise<void> {
     const state = this.state!;
     const ctx = {
@@ -1430,6 +1456,7 @@ export class BattleScene extends Phaser.Scene {
       comboName: (id: string) => CONTENT.rules.combos[id]?.name ?? id,
       bondName: CONTENT.terms.bond,
     };
+    this.noteTips(events);
     for (const e of events) {
       const entry = formatEvent(e, ctx);
       if (entry) this.pushLog(entry);

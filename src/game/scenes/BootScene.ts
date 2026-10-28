@@ -9,7 +9,7 @@ const TIPS = [
   "Capture needs the target below half HP, and the ball is always used up.",
   "Push foes into rocks or other Pokémon for extra damage.",
   "Tall grass hides a Pokémon from attacks unless you stand next to it.",
-  "Choose a role at level 3, then a mastery every other level.",
+  "Choose a focus at level 3, then one mastery in each row that opens.",
 ];
 
 /** Loads the Pokémon sprites with a progress bar, then shows the title screen. */

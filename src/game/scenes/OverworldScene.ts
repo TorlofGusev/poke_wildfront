@@ -418,8 +418,8 @@ export class OverworldScene extends Phaser.Scene {
       `${tag("num", t("Map:"))} ${PHONE
         ? t("Tap twice (or drag) a tile to walk. Walking adds {fatigue}; rest at camp or heal at a Pokémon Center. A red ring marks a wild group: walk into it to battle.", { fatigue })
         : t("Click a tile to walk. Walking adds {fatigue}; rest at camp or heal at a Pokémon Center. A red ring marks a wild group: walk into it to battle.", { fatigue })}`,
-      `${tag("num", t("Battle:"))} ${t("place up to 3 Pokémon on the blue spots. On a turn a Pokémon can walk, use one basic attack and one action. Tap a foe to see how far it can reach.")}`,
-      `${tag("num", t("Grow:"))} ${t("Pokémon level up, pick a role at Lv 3 and masteries later (Camp → a Pokémon). Weaken wild Pokémon and throw a ball to catch them.")}`,
+      `${tag("num", t("Battle:"))} ${t("place up to 3 Pokémon on the blue spots. On a turn a Pokémon can walk, use one basic attack, and use its skills whenever they are off cooldown. Tap a foe to see how far it can reach.")}`,
+      `${tag("num", t("Grow:"))} ${t("Pokémon level up, choose a focus at Lv 3 and masteries later (Camp → a Pokémon). Weaken wild Pokémon and throw a ball to catch them.")}`,
       tag("dim", t("Three knockouts and a Pokémon is gone for good, so retreat in time.")),
     ].join("\n")) + 60;
     const items: Phaser.GameObjects.GameObject[] = [
