@@ -4,7 +4,7 @@ import {
   activeUnit, livingUnits, moveUnavailableReason, partnerOf, unitById, type BattleEvent, type BattleState, type HitPreview, type MoveDef,
 } from "../../core/battle";
 import {
-  applyFreeAction, breaksEngagement, CELL, createFreeBattle, freeAim, freeRange, freeReachFor, planFreeAction,
+  applyFreeAction, breaksEngagement, CELL, createFreeBattle, MELEE_REACH, freeAim, freeRange, freeReachFor, planFreeAction,
   previewFreeMove, previewFreeWalk, PROTO_FIELD, UNIT_RADIUS, type FreeAction, type FreeArea, type FreeReach, type FreeTerrainId,
 } from "../../core/free";
 import type { Point } from "../../core/grid";
@@ -47,6 +47,8 @@ export class FreeBattleScene extends Phaser.Scene {
   private reachGfx!: Phaser.GameObjects.Graphics;
   private aimGfx!: Phaser.GameObjects.Graphics;
   private markGfx!: Phaser.GameObjects.Graphics;
+  /** Damage and hit chances shown over the Pokémon an aimed move would hit. */
+  private aimLabels: Phaser.GameObjects.Text[] = [];
   private panel: Phaser.GameObjects.GameObject[] = [];
   private header!: Phaser.GameObjects.Text;
   private info!: RichText;
@@ -214,6 +216,8 @@ export class FreeBattleScene extends Phaser.Scene {
   /** Hover feedback: the walk and its cost, or the move's range, aim, line of sight and expected damage. */
   private refreshAim(): void {
     const g = this.aimGfx.clear();
+    for (const l of this.aimLabels) l.destroy();
+    this.aimLabels = [];
     const lines: string[] = [];
     const hover = this.armed ?? this.hovered;
     if (this.isPlayerTurn() && !this.busy) {
@@ -243,7 +247,17 @@ export class FreeBattleScene extends Phaser.Scene {
             this.drawArea(g, aim.area, move.shape.kind === "single" ? COLORS.target : COLORS.areaAim, 0.3);
             const to = toScreen(aim.target);
             if (move.requiresLineOfSight) g.lineStyle(2, 0x7ed321, 0.9).lineBetween(from.x, from.y, to.x, to.y);
-            lines.push(...this.previewLines(previewFreeMove(this.state, CONTENT, unit.id, this.selectedMove, hover)));
+            const hits = previewFreeMove(this.state, CONTENT, unit.id, this.selectedMove, hover);
+            lines.push(...this.previewLines(hits));
+            // A ranged shot at one Pokémon shows its odds: the rest go to the ally who may catch it.
+            const ranged = move.shape.kind === "single" && range.max > MELEE_REACH && move.affects === "enemies";
+            const catchChance = aim.interceptor ? Math.round(aim.interceptChance! * 100) : 0;
+            for (const h of hits) {
+              const odds = ranged && h.unitId === aim.affected[0]?.id ? ` ${100 - catchChance}%` : "";
+              const text = (h.damage ? `−${h.damage}` : h.healed ? `+${h.healed}` : "") + (h.knockedOut ? " KO" : "") + odds;
+              if (text.trim()) this.aimLabel(h.unitId, text.trim(), h.healed && !h.damage ? "#7ed321" : "#ff6b5e");
+            }
+            if (aim.interceptor) this.aimLabel(aim.interceptor.id, `${catchChance}%`, "#f5a623");
             if (aim.interceptor) {
               const at = toScreen(aim.interceptor.pos);
               g.lineStyle(2, 0xf5a623, 1).strokeCircle(at.x, at.y, UNIT_RADIUS * S + 6);
@@ -289,6 +303,17 @@ export class FreeBattleScene extends Phaser.Scene {
       g.lineStyle(3, 0xf5d76e, 1).strokeCircle(c.x, c.y, 6);
     }
     this.info.setMarkup(lines.join("\n"));
+  }
+
+  private aimLabel(unitId: string, text: string, color: string): void {
+    const at = toScreen(unitById(this.state, unitId).pos);
+    const label = this.add.text(at.x, at.y - 30, text, {
+      fontFamily: FONT, fontSize: px(13), color, stroke: "#000000", strokeThickness: 4,
+    }).setOrigin(0.5, 1).setDepth(20);
+    // Pokémon standing close together get their labels stacked instead of overlapping.
+    const clash = () => this.aimLabels.some((o) => Phaser.Geom.Intersects.RectangleToRectangle(o.getBounds(), label.getBounds()));
+    while (clash()) label.y -= label.height;
+    this.aimLabels.push(label);
   }
 
   private previewLines(hits: readonly HitPreview[]): string[] {
