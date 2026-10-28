@@ -11,6 +11,9 @@ import { t } from "../i18n";
 import { FEEDBACK_URL, openFeedback } from "../feedback";
 import { DEMO_BATTLES } from "../../content/demoBattles";
 
+/** Width of the menu column on the right. */
+const MENU_W = 200;
+
 export class TitleScene extends Phaser.Scene {
   private confirmNew = false;
 
@@ -24,65 +27,52 @@ export class TitleScene extends Phaser.Scene {
     const { width, height } = this.scale;
     const hasSave = session.hasSave() && session.load();
     this.backdrop();
-    this.add
-      .text(width / 2, height / 2 - 160, "Pokémon Wildfront", { fontFamily: "monospace", fontSize: "48px", color: "#f5d76e" })
-      .setOrigin(0.5);
-    this.add
-      .text(width / 2, height / 2 - 112, t("Tactical RPG"), { fontFamily: "monospace", fontSize: "18px", color: "#c8d0e0" })
-      .setOrigin(0.5);
+    // The name top left; the menu is a slim column on the right, so the replay behind stays in view.
+    this.add.text(24, 18, "Pokémon Wildfront", { fontFamily: "monospace", fontSize: "34px", color: "#f5d76e" }).setShadow(2, 2, "#000000", 4);
+    this.add.text(26, 60, t("Tactical RPG"), { fontFamily: "monospace", fontSize: "15px", color: "#c8d0e0" }).setShadow(1, 1, "#000000", 3);
 
-    let y = height / 2 - 60;
-    if (hasSave) {
-      new Button(this, width / 2 - 140, y, 280, 32, t("▶ Continue"), () => this.scene.start("Overworld", {}));
-      y += 42;
-    }
-    const newButton = new Button(this, width / 2 - 140, y, 280, 32, t("✦ New game"), () => {
+    const w = MENU_W;
+    const x = width - w - 20;
+    this.add.rectangle(x - 14, 0, w + 34, height, 0x0b1022, 0.55).setOrigin(0);
+    let y = 24;
+    const row = (h = 26) => (y += h + 6) - h - 6;
+    if (hasSave) new Button(this, x, row(), w, 26, t("▶ Continue"), () => this.scene.start("Overworld", {})).setHighlighted(true);
+    const newButton = new Button(this, x, row(), w, 26, t("✦ New game"), () => {
       if (hasSave && !this.confirmNew) {
         this.confirmNew = true;
-        newButton.setText(t("✦ New game: click again to overwrite"));
+        newButton.setText(t("✦ Again to overwrite"));
         return;
       }
       this.scene.start("Starter");
-    });
-    y += 42;
-    if (addFullscreenButton(this, width / 2 - 140, y, 280)) y += 42;
-    if (hasSave) {
-      new Button(this, width / 2 - 140, y, 136, 32, t("📖 Pokédex"), () => this.scene.start("Pokedex", { from: "Title" }));
-      new Button(this, width / 2 + 4, y, 136, 32, t("ⓘ Credits"), () => this.scene.start("Credits"));
-    } else new Button(this, width / 2 - 140, y, 280, 32, t("ⓘ Credits"), () => this.scene.start("Credits"));
-    y += 42;
-    // Experimental battle with free movement instead of hexes.
-    this.volumeSlider(width / 2 - 140, y + 6, 280);
-    y += 32;
+    }).setHighlighted(!hasSave);
+    if (hasSave) new Button(this, x, row(), w, 26, t("📖 Pokédex"), () => this.scene.start("Pokedex", { from: "Title" }));
+    if (FEEDBACK_URL) new Button(this, x, row(), w, 26, t("💬 Feedback"), () => openFeedback(this.game, "title"));
+    new Button(this, x, row(), w, 26, t("ⓘ Credits"), () => this.scene.start("Credits"));
+    y += 10;
+    if (addFullscreenButton(this, x, y, w)) y += 34;
+    this.volumeSlider(x, y + 10, w);
+    y += 30;
     // Language: switching reloads, so content and texts are rebuilt in the new language.
     (["en", "hu"] as const).forEach((l, i) => {
-      new Button(this, width / 2 - 140 + i * 144, y, 136, 26, l === "en" ? "English" : "Magyar", () => {
+      new Button(this, x + i * (w / 2 + 3), y, w / 2 - 3, 24, l === "en" ? "English" : "Magyar", () => {
         if (l === LANG) return;
         setLang(l);
         window.location.reload();
       }).setHighlighted(l === LANG).centerLabel();
     });
-    y += 36;
-    if (FEEDBACK_URL) {
-      new Button(this, width / 2 - 140, y, 280, 28, t("💬 Feedback"), () => openFeedback(this.game, "title")).centerLabel();
-      y += 36;
-    }
+    y += 32;
     if (session.loadError) {
-      this.add
-        .text(width / 2, y + 10, t("Your save could not be loaded ({error}).", { error: session.loadError }), {
-          fontFamily: "monospace", fontSize: px(12), color: "#ff6b6b",
-        })
-        .setOrigin(0.5);
+      this.add.text(x, y + 4, t("Your save could not be loaded ({error}).", { error: session.loadError }), {
+        fontFamily: "monospace", fontSize: px(11), color: "#ff6b6b", wordWrap: { width: w },
+      });
     }
 
-    this.add
-      .text(width / 2, height - 46, `♥ ${t(FREE_FOREVER)}`, { fontFamily: "monospace", fontSize: px(12), color: "#7ed321" })
-      .setOrigin(0.5);
-    this.add
-      .text(width / 2, height - 22, `v${GAME_VERSION} · ${t(DISCLAIMER)}`, {
-        fontFamily: "monospace", fontSize: px(11), color: "#7a8499", align: "center", wordWrap: { width: width - 40 },
-      })
-      .setOrigin(0.5);
+    // Bottom left, under the name's column: free forever, then the version and the disclaimer.
+    const footW = width - MENU_W - 80;
+    this.add.text(24, height - 64, `♥ ${t(FREE_FOREVER)}`, { fontFamily: "monospace", fontSize: px(12), color: "#7ed321", wordWrap: { width: footW } })
+      .setShadow(1, 1, "#000000", 3);
+    this.add.text(24, height - 42, `v${GAME_VERSION} · ${t(DISCLAIMER)}`, { fontFamily: "monospace", fontSize: px(11), color: "#9aa3b6", wordWrap: { width: footW } })
+      .setShadow(1, 1, "#000000", 3);
   }
 
   /**
@@ -108,7 +98,7 @@ export class TitleScene extends Phaser.Scene {
       this.scene.get("Battle").events.off("demoOver", next);
       this.scene.stop("Battle");
     });
-    this.add.rectangle(0, 0, width, height, 0x0b1022, 0.62).setOrigin(0);
+    this.add.rectangle(0, 0, width, height, 0x0b1022, 0.2).setOrigin(0);
   }
 
   /** Master volume: drag or tap the bar. */

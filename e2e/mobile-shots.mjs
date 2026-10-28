@@ -32,7 +32,7 @@ try {
   await page.waitForFunction(() => document.querySelector("canvas"));
   await page.waitForTimeout(1000);
   await shot("01-title");
-  await tap(480, 226, 700);
+  await tap(860, 37, 700);
   await shot("02-starter");
   await tap(172, 421, 900);
   await shot("03-overworld");
