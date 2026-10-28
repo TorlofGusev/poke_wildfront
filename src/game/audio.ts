@@ -135,6 +135,13 @@ export function setupAudio(game: Phaser.Game): void {
     if (ctx && ctx.state !== "running") ctx.resume().catch(() => undefined);
   };
   for (const type of ["pointerdown", "keydown", "touchstart"]) window.addEventListener(type, unlock, { capture: true });
+  // A hidden tab goes quiet (a phone browser would keep playing in the background); its clock stops too, so the music picks up where it was.
+  document.addEventListener("visibilitychange", () => {
+    const ctx = (game.sound as Partial<Phaser.Sound.WebAudioSoundManager>).context;
+    if (!ctx) return;
+    if (document.hidden) ctx.suspend().catch(() => undefined);
+    else unlock();
+  });
   window.addEventListener("keydown", (e) => {
     if (e.key === "m" || e.key === "M") toggleMute(game);
   });

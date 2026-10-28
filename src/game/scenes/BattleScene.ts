@@ -81,6 +81,7 @@ const S = FIELD_S;
 const ZONE_COLORS: Record<Exclude<FreeTerrainId, "floor">, number> = { mud: COLORS.mud, water: COLORS.water, bush: COLORS.grass, rock: 0x3a3d44 };
 /** A tap or click this close to a deploy spot picks it. */
 const SPOT_PICK = 0.45;
+const LOG_LINE_H = 15;
 
 const LOG_COLORS: Record<LogTone, string> = {
   info: "#8a93a6", player: "#8fb8f0", enemy: "#f08f8f", damage: "#ffb070",
@@ -117,7 +118,9 @@ export class BattleScene extends Phaser.Scene {
   private log: LogEntry[] = [];
   private logStrip!: RichText;
   private logOverlay: Phaser.GameObjects.Container | null = null;
+  /** How far the open log is scrolled back from the newest line, in pixels. */
   private logScroll = 0;
+  private logBody: { rich: RichText; first: number } | null = null;
   /** Set while a touch drag scrolls the log, so lifting the finger does not close it. */
   private logDragged = false;
   private logOpenedAt = 0;
@@ -201,8 +204,7 @@ export class BattleScene extends Phaser.Scene {
     this.input.keyboard?.on("keydown-L", () => this.toggleLogOverlay());
     this.input.on("wheel", (_p: unknown, _o: unknown, _dx: number, dy: number) => {
       if (!this.logOverlay) return;
-      this.logScroll = Math.max(0, this.logScroll + Math.sign(dy) * 3);
-      this.renderLogOverlay();
+      this.scrollLog(-dy * 0.6);
     });
     // Touch: drag up/down on the open log to scroll it.
     let dragY: number | null = null;
@@ -210,12 +212,10 @@ export class BattleScene extends Phaser.Scene {
     this.input.on("pointerup", () => { dragY = null; });
     this.input.on("pointermove", (p: Phaser.Input.Pointer) => {
       if (!this.logOverlay || dragY === null || !p.isDown) return;
-      const lines = Math.trunc((p.y - dragY) / 15);
-      if (lines === 0) return;
+      if (Math.abs(p.y - dragY) < 2) return;
       this.logDragged = true;
+      this.scrollLog(p.y - dragY);
       dragY = p.y;
-      this.logScroll = Math.max(0, this.logScroll + lines);
-      this.renderLogOverlay();
     });
 
     for (const e of this.scenario.enemies) this.createUnitView(e.id, e.speciesId, "enemy", e.pos);
@@ -580,7 +580,12 @@ export class BattleScene extends Phaser.Scene {
     } else if (this.phase === "battle" && this.state && this.isPlayerTurn() && !this.busy) {
       const unit = activeUnit(this.state)!;
       if (this.selectedBall) {
-        for (const p of captureTargets(this.state, CONTENT, unit.id, this.selectedBall)) this.ringAt(p, COLORS.active, 6, 3);
+        // The catch chance over every Pokémon the ball can reach (a phone has no hover to show it in the info).
+        for (const p of captureTargets(this.state, CONTENT, unit.id, this.selectedBall)) {
+          this.ringAt(p, COLORS.active, 6, 3);
+          const foe = this.state.units.find((u) => u.hp > 0 && distance(u.pos, p) < 0.01);
+          if (foe) this.previewLabel(foe.id, `${Math.round(captureChance(CONTENT, foe, this.selectedBall) * 100)}%`, "#7ed321");
+        }
       } else if (this.selectedMove) {
         this.drawAim(unit, this.selectedMove, hover);
       } else if (this.hoveredMove) {
@@ -632,9 +637,10 @@ export class BattleScene extends Phaser.Scene {
       const combo = foe.side === active.side || foe.hp <= 0 ? null : comboSetup(state, CONTENT, active, foe);
       if (!combo) continue;
       const c = fieldToWorld(foe.pos);
-      this.comboLabels.add(this.add.text(c.x, c.y - 30, `⚡ ${CONTENT.rules.combos[combo]!.name}`, {
-        fontFamily: FONT, fontSize: px(10), color: "#10141c", fontStyle: "bold", backgroundColor: "#f5d76e", padding: { x: 3, y: 1 },
-      }).setOrigin(0.5, 1));
+      // Just a mark on the field; the combo's name and bonus are in the info when the foe is selected.
+      this.comboLabels.add(this.add.text(c.x + 13, c.y - 24, "⚡", {
+        fontFamily: FONT, fontSize: px(11), color: "#10141c", fontStyle: "bold", backgroundColor: "#f5d76e", padding: { x: 2, y: 0 },
+      }).setOrigin(0.5));
     }
     // A damage preview takes the spot over the foe: the combo name would hide it.
     if (this.previewLabels) this.comboLabels.setVisible(false);
@@ -676,8 +682,9 @@ export class BattleScene extends Phaser.Scene {
     this.previewLabels ??= this.add.container(0, 0).setDepth(16);
     for (const h of hits) {
       const parts = [h.damage ? `-${h.damage}` : "", h.healed ? `+${h.healed}` : "", h.knockedOut ? "KO" : "", extra(h)].filter(Boolean);
+      // A status-only hit gets a small mark; its name is in the move's description.
       if (!parts.length && !h.statuses.length) continue;
-      this.previewLabel(h.unitId, parts.length ? parts.join(" ") : h.statuses.join(", "), h.knockedOut ? "#ff5050" : h.healed && !h.damage ? "#7ed321" : "#ffd27a");
+      this.previewLabel(h.unitId, parts.length ? parts.join(" ") : "●", h.knockedOut ? "#ff5050" : h.healed && !h.damage ? "#7ed321" : "#ffd27a");
     }
     this.comboLabels?.setVisible(false);
     this.lastPreview = hits;
@@ -1360,6 +1367,7 @@ export class BattleScene extends Phaser.Scene {
     if (this.logOverlay) {
       this.logOverlay.destroy();
       this.logOverlay = null;
+      this.logBody = null;
       return;
     }
     this.logScroll = 0;
@@ -1367,16 +1375,44 @@ export class BattleScene extends Phaser.Scene {
     this.renderLogOverlay();
   }
 
-  /** Full scrollable history drawn over the board; newest at the bottom, wheel scrolls back. */
+  /** Scrolls the open log by pixels (positive: back in time). */
+  private scrollLog(dy: number): void {
+    if (!this.logOverlay) return;
+    this.logScroll += dy;
+    this.layoutLogBody();
+  }
+
+  /**
+   * Places the open log's lines for the current scroll: only the lines in view (plus one) are built, and only
+   * when the scroll crosses a line; in between they just slide, so dragging is smooth on a phone.
+   */
+  private layoutLogBody(): void {
+    if (!this.logOverlay) return;
+    const { w, h } = this.boardPx();
+    const visible = Math.floor((h - 40) / LOG_LINE_H);
+    const maxScroll = Math.max(0, this.log.length - visible) * LOG_LINE_H;
+    this.logScroll = Phaser.Math.Clamp(this.logScroll, 0, maxScroll);
+    const first = Math.floor(this.logScroll / LOG_LINE_H);
+    if (this.logBody?.first !== first) {
+      this.logBody?.rich.destroy();
+      const end = this.log.length - first;
+      const lines = this.log.slice(Math.max(0, end - visible - 1), end);
+      const rich = new RichText(this, 10, 0, w - 20, 12, LOG_COLORS.info, LOG_LINE_H);
+      rich.setMarkup(lines.map((l) => this.fitLine(l.text, 76)).join("\n"));
+      // Behind the title and bottom bands, which hide the half lines at the edges.
+      this.logOverlay.addAt(rich, 1);
+      this.logBody = { rich, first };
+    }
+    const shown = Math.min(this.log.length - first, visible + 1);
+    this.logBody.rich.y = 32 + (visible - shown) * LOG_LINE_H + (this.logScroll - first * LOG_LINE_H);
+  }
+
+  /** Full scrollable history drawn over the board; newest at the bottom, wheel or drag scrolls back. */
   private renderLogOverlay(): void {
     this.logOverlay?.destroy();
+    this.logBody = null;
     const { w, h } = this.boardPx();
-    const lineH = 15;
-    const visible = Math.floor((h - 40) / lineH);
-    const maxScroll = Math.max(0, this.log.length - visible);
-    this.logScroll = Math.min(this.logScroll, maxScroll);
-    const end = this.log.length - this.logScroll;
-    const lines = this.log.slice(Math.max(0, end - visible), end);
+    const visible = Math.floor((h - 40) / LOG_LINE_H);
     const bg = this.add.rectangle(0, 0, w, h, 0x0b0e14, 0.94).setOrigin(0).setStrokeStyle(1, 0x5a6785).setInteractive();
     bg.on("pointerup", () => {
       // Ignore the finger lifting from the tap that opened the log.
@@ -1386,9 +1422,11 @@ export class BattleScene extends Phaser.Scene {
     const title = this.add.text(10, 8, t("Combat log ({n})  ·  scroll or drag  ·  tap or L to close", { n: this.log.length }), {
       fontFamily: FONT, fontSize: px(12), color: "#f5d76e",
     });
-    const body = new RichText(this, 10, 32, w - 20, 12, LOG_COLORS.info, lineH);
-    body.setMarkup(lines.map((l) => this.fitLine(l.text, 76)).join("\n"));
-    this.logOverlay = this.add.container(BOARD_X, BOARD_Y, [bg, title, body]).setDepth(10);
+    const top = this.add.rectangle(1, 1, w - 2, 30, 0x0b0e14).setOrigin(0);
+    const bottomY = 32 + visible * LOG_LINE_H;
+    const bottom = this.add.rectangle(1, bottomY, w - 2, h - bottomY - 1, 0x0b0e14).setOrigin(0);
+    this.logOverlay = this.add.container(BOARD_X, BOARD_Y, [bg, top, title, bottom]).setDepth(10);
+    this.layoutLogBody();
   }
 
   /** Keeps a log line on one row: long lines lose their colours and get an ellipsis. */

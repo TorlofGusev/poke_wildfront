@@ -120,10 +120,10 @@ describe("free movement: engagement", () => {
     expect(unitById(r.state, "p").engagedWith).toBeNull();
   });
 
-  it("moving while staying in reach keeps the engagement, without a free attack", () => {
+  it("any step, even one staying in reach, draws the free attack and ends the engagement", () => {
     const r = applyAction(engaged(), CONTENT, { type: "move", unitId: "p", to: { x: 4.4, y: 3.3 } });
-    expect(r.events.some((e) => e.type === "engagementStrike")).toBe(false);
-    expect(unitById(r.state, "p").engagedWith).toBe("e");
+    expect(r.events.some((e) => e.type === "engagementStrike")).toBe(true);
+    expect(unitById(r.state, "p").engagedWith).toBeNull();
   });
 
   it("an engaging hit pulls the pair together until they touch", () => {

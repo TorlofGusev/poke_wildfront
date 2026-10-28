@@ -48,11 +48,11 @@ describe("engagement (one on one)", () => {
     expect(unitById(s1, "f").engagedWith).toBeNull();
   });
 
-  it("leaving the partner's reach draws one free attack, before the move, and ends the engagement; circling it does not", () => {
+  it("leaving the partner's reach draws one free attack, before the move, and ends the engagement; so does circling it", () => {
     const s1 = hit(start([u("p", "fast", "player", 2, 2), u("e", "mid", "enemy", 3, 2)]), "p", "tackle", 3, 2).state;
     const around = applyAction(s1, content, { type: "move", unitId: "p", to: { x: 3, y: 1 } });
-    expect(around.events.filter((e) => e.type === "engagementStrike")).toHaveLength(0);
-    expect(unitById(around.state, "p").engagedWith).toBe("e");
+    expect(around.events.filter((e) => e.type === "engagementStrike")).toHaveLength(1);
+    expect(unitById(around.state, "p").engagedWith).toBeNull();
     const away = applyAction(s1, content, { type: "move", unitId: "p", to: { x: 0, y: 2 } });
     expect(away.events.filter((e) => e.type === "engagementStrike")).toEqual([{ type: "engagementStrike", unitId: "e", targetId: "p" }]);
     const types = away.events.map((e) => e.type);

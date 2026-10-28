@@ -207,10 +207,10 @@ export function applyAction(state: BattleState, content: BattleContent, action: 
   return { state: next, events };
 }
 
-/** Whether walking to `to` breaks the unit's engagement (it ends out of melee reach of its partner). */
+/** Whether walking to `to` breaks the unit's engagement: any step an engaged Pokémon takes does. */
 export function breaksEngagement(state: BattleState, unitId: string, to: Point): boolean {
-  const partner = partnerOf(state, unitById(state, unitId));
-  return !!partner && distance(partner.pos, to) > MELEE_REACH;
+  const unit = unitById(state, unitId);
+  return !!partnerOf(state, unit) && distance(unit.pos, to) > 0.01;
 }
 
 function freeMove(state: BattleState, content: BattleContent, unitId: string, to: Point, events: BattleEvent[]): void {
@@ -219,7 +219,6 @@ function freeMove(state: BattleState, content: BattleContent, unitId: string, to
   const path = reach.pathTo(to);
   if (cost === null || !path) throw new IllegalActionError(`cannot move ${unitId} there`);
   const unit = unitById(state, unitId);
-  // Only leaving the partner's reach is a disengage; moving around it is free.
   if (breaksEngagement(state, unitId, to)) {
     breakAway(state, content, unit, events);
     if (unit.hp <= 0) return checkOutcome(state, events);
@@ -279,13 +278,16 @@ export function previewPushes(state: BattleState, content: BattleContent, unitId
   const out: PushPreview[] = [];
   events.forEach((e, i) => {
     if (e.type !== "displaced" || e.engage) return;
+    // An engaged pair closing in again afterwards undoes the knockback: the arrow shows where it really ends up.
+    const settled = events.slice(i + 1).find((d) => d.type === "displaced" && d.unitId === e.unitId);
+    const to = settled?.type === "displaced" && settled.engage ? settled.to : e.to;
     // Its impact damage follows before the next knockback (a broken engagement may come in between).
     let impact = 0;
     for (let j = i + 1; j < events.length && events[j]!.type !== "displaced"; j++) {
       const d = events[j]!;
       if (d.type === "damaged" && d.unitId === e.unitId && d.source === "impact") impact += d.amount;
     }
-    if (distance(e.from, e.to) > 0.05 || impact) out.push({ unitId: e.unitId, from: e.from, to: e.to, impact });
+    if (distance(e.from, to) > 0.05 || impact) out.push({ unitId: e.unitId, from: e.from, to, impact });
   });
   return out;
 }
