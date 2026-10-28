@@ -73,14 +73,22 @@ export class PartyScene extends Phaser.Scene {
     playMusic(this, "overworld");
     const { roster, money, inventory, world } = session.game;
     this.add.text(16, 14, t("Camp"), { fontFamily: FONT, fontSize: "20px", color: "#f5d76e" });
-    new RichText(this, 100, 19, 400, 14).setMarkup(t("{money}   EV {ev}   Rare Candy {candy}   Fatigue {fatigue}", { money: tag("num", `₽${money}`), ev: tag("num", session.game.ev ?? 0), candy: tag("num", inventory.items.candy ?? 0), fatigue: tag("num", world.fatigue) }));
-    new Button(this, 794, 12, 150, 26, t("➜ Back to map"), () => this.scene.start("Overworld", {}));
-    new Button(this, 474, 12, 150, 26, t("🎒 Bag"), () => this.scene.start("Inventory", { from: "Party" }));
-    new Button(this, 314, 12, 150, 26, t("📖 Pokédex"), () => this.scene.start("Pokedex", { from: "Party" }));
-    if (FEEDBACK_URL) new Button(this, 268, 12, 40, 26, "💬", () => openFeedback(this.game, "camp")).centerLabel();
+    new RichText(this, 100, 19, 300, 14).setMarkup(t("{money}   EV {ev}   Fatigue {fatigue}", { money: tag("num", `₽${money}`), ev: tag("num", session.game.ev ?? 0), fatigue: tag("num", world.fatigue) }));
+    // The top row, packed from the right edge: back to the map (an arrow is enough), rest, bag, Pokédex, feedback.
+    let right = 944;
+    const top = (w: number, label: string, onClick: () => void) => {
+      right -= w;
+      const b = new Button(this, right, 12, w, 26, label, onClick).centerLabel();
+      right -= 6;
+      return b;
+    };
+    top(40, "➜", () => this.scene.start("Overworld", {}));
     // Resting is a decision: pick a meal (or go hungry); wild groups move and this becomes the respawn point.
-    new Button(this, 634, 12, 150, 26, this.choosingMeal ? t("✕ Cancel") : t("⛺ Rest here…"), () =>
+    top(130, this.choosingMeal ? t("✕ Cancel") : t("⛺ Rest here…"), () =>
       this.scene.restart({ rested: this.rested, choosingMeal: !this.choosingMeal })).setEnabled(!this.rested);
+    top(90, t("🎒 Bag"), () => this.scene.start("Inventory", { from: "Party" }));
+    top(110, t("📖 Pokédex"), () => this.scene.start("Pokedex", { from: "Party" }));
+    if (FEEDBACK_URL) top(140, t("💬 Feedback"), () => openFeedback(this.game, "camp"));
     const meal = world.meal;
     new RichText(this, 16, 44, 928, 12).setMarkup(this.rested
       ? tag("good", meal && meal.id !== CAMP.hungry.effect.id

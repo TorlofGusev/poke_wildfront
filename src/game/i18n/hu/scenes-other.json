@@ -91,5 +91,6 @@
  "Could not send it. Please try again later.": "Nem sikerült elküldeni. Próbáld újra később.",
  "Legal notice: Pokémon Wildfront is an unofficial, free, non-commercial fan project, and it will stay free forever. Pokémon, the Pokémon names, characters and related marks are trademarks and copyrights of Nintendo, Game Freak, Creatures Inc. and The Pokémon Company. This project is not affiliated with, endorsed or sponsored by them, makes no money and accepts no payments or donations. All rights to the original works stay with their owners.": "Jogi nyilatkozat: a Pokémon Wildfront nem hivatalos, ingyenes, nem kereskedelmi rajongói projekt, és örökre ingyenes marad. A Pokémon, a Pokémon nevek, karakterek és kapcsolódó jelölések a Nintendo, a Game Freak, a Creatures Inc. és a The Pokémon Company védjegyei és szerzői jogi oltalom alatt álló művei. A projekt nem kapcsolódik hozzájuk, nem támogatják vagy szponzorálják, nem termel bevételt, és nem fogad el fizetést vagy adományt. Az eredeti művekhez fűződő minden jog a tulajdonosaiké.",
  "Free, and it stays free forever: no purchases, no ads, no paywalls.": "Ingyenes, és örökre az is marad: nincs vásárlás, nincs reklám, nincs fizetős tartalom.",
- "✦ Again to overwrite": "✦ Még egyszer: felülírás"
+ "✦ Again to overwrite": "✦ Még egyszer: felülírás",
+ "{money}   EV {ev}   Fatigue {fatigue}": "{money}   EV {ev}   Fáradtság {fatigue}"
 }
