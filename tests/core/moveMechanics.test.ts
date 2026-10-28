@@ -1,6 +1,7 @@
 import { describe, expect, it } from "vitest";
 import { readFileSync } from "node:fs";
-import { applyAction, createBattle, validTargets, type UnitSetup } from "../../src/core/battle";
+import { type UnitSetup } from "../../src/core/battle";
+import { applyAction, createBattle, validTargets } from "./hexFixture";
 import { CONTENT } from "../../src/content";
 
 const u = (id: string, speciesId: string, side: "player" | "enemy", x: number, moves: string[], extra: Partial<UnitSetup> = {}): UnitSetup =>

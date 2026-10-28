@@ -4,7 +4,7 @@
    "description": "Nem mérgezhető és nem égethető meg, és 10%-kal kevesebb sebzést kap."
   },
   "mind-pressure": {
-   "description": "+1 hatótáv a legalább 2 mezőre érő támadásokon (legfeljebb 3-ig; Bond támadásoknál nincs korlát), és +15% sebzés a legalább 2 mezőre lévő ellenfelekre."
+   "description": "+1 hatótáv a legalább 2-es hatótávú támadásokon (legfeljebb 3-ig; Bond támadásoknál nincs korlát), és +15% sebzés a közelharci távolságon kívüli ellenfelekre."
   }
  }
 }

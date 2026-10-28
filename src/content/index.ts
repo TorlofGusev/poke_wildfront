@@ -24,7 +24,6 @@ import rules from "./rules.json";
 import speciesData from "./species.json";
 import types from "./types.json";
 import statuses from "./statuses.json";
-import viridianForestAmbush from "./scenarios/viridian-forest-ambush.json";
 import { localized } from "./lang";
 
 export const TYPES: Readonly<Record<string, TypeDef>> = localized("types.json", types) as Record<string, TypeDef>;
@@ -117,10 +116,6 @@ export interface ScenarioDef extends BattleScenario {
   /** Scripted battles can opt out of knockout counting. */
   readonly countsKnockouts?: boolean;
 }
-
-export const SCENARIOS: Readonly<Record<string, ScenarioDef>> = {
-  [viridianForestAmbush.id]: viridianForestAmbush as ScenarioDef,
-};
 
 /** Extra biome files (one per region) merged over biomes.json, so regions can be authored separately. */
 const REGION_BIOMES = import.meta.glob("./biomes/*.json", { eager: true, import: "default" }) as Record<string, Record<string, BiomeDef>>;

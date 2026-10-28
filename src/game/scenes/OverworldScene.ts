@@ -28,7 +28,7 @@ import {
 import { samePoint, type Point } from "../../core/grid";
 import { centerHeal, centerTreatment, centerTreatmentCost, KNOCKOUTS_TO_DEATH, knownSpecies, memberMaxHp, restAll } from "../../core/party";
 import { MAX_ACTIVE_UNITS } from "../../core/battle";
-import { battleArena, formationLabel } from "../../core/battle/arenaGen";
+import { battleArena, formationLabel } from "../../core/free/arena";
 import { currentWorld, session } from "../session";
 import { animKey, facingFor, hasSprite, portraitKey } from "../sprites";
 import { Button } from "../ui/Button";
@@ -418,7 +418,7 @@ export class OverworldScene extends Phaser.Scene {
       `${tag("num", t("Map:"))} ${PHONE
         ? t("Tap twice (or drag) a tile to walk. Walking adds {fatigue}; rest at camp or heal at a Pokémon Center. A red ring marks a wild group: walk into it to battle.", { fatigue })
         : t("Click a tile to walk. Walking adds {fatigue}; rest at camp or heal at a Pokémon Center. A red ring marks a wild group: walk into it to battle.", { fatigue })}`,
-      `${tag("num", t("Battle:"))} ${t("place up to 3 Pokémon on the blue hexes. On a turn a Pokémon can move, use one basic attack and one action. Tap a foe to see how far it can reach.")}`,
+      `${tag("num", t("Battle:"))} ${t("place up to 3 Pokémon on the blue spots. On a turn a Pokémon can walk, use one basic attack and one action. Tap a foe to see how far it can reach.")}`,
       `${tag("num", t("Grow:"))} ${t("Pokémon level up, pick a role at Lv 3 and masteries later (Camp → a Pokémon). Weaken wild Pokémon and throw a ball to catch them.")}`,
       tag("dim", t("Three knockouts and a Pokémon is gone for good, so retreat in time.")),
     ].join("\n")) + 60;

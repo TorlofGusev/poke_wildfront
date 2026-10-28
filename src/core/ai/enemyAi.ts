@@ -2,15 +2,14 @@ import {
   applyAction,
   livingUnits,
   movementPoints,
-  reachableFor,
   unitById,
-  validTargets,
   type BattleAction,
   type BattleContent,
   type BattleState,
   type BattleUnit,
 } from "../battle";
-import { gridDistance, type Point } from "../grid/types";
+import type { Point } from "../grid/types";
+import { distance, freeAim, freeRange, freeReachFor, CELL } from "../free";
 
 export interface AiWeights {
   /** Value per HP of damage dealt to opponents. */
@@ -36,9 +35,9 @@ export interface AiWeights {
   readonly guardLowHp: number;
   /** Value of an offensive buff (Focus Energy) per +100% damage, if an opponent is in reach by next turn. */
   readonly focusSetup: number;
-  /** Value of a speed buff (Agility) per extra tile, only while no opponent is in reach this turn. */
+  /** Value of a speed buff (Agility) per extra unit of movement, only while no opponent is in reach this turn. */
   readonly hastePerTile: number;
-  /** Penalty per tile to the nearest opponent for setup buffs, so the unit still advances while buffing. */
+  /** Penalty per unit of distance to the nearest opponent for setup buffs, so the unit still advances while buffing. */
   readonly buffApproach: number;
   /** Upper bound of any single buff, kept below `knockout` so a buff never beats a kill. */
   readonly buffCap: number;
@@ -132,11 +131,39 @@ interface Plan {
   readonly score: number;
 }
 
+/** Spacing of the spots the AI weighs walking to (in hex widths). */
+const STOP_SPACING = 0.75;
+
+/** Spots worth weighing: a lattice of the reach about STOP_SPACING apart. */
+function stopsFor(state: BattleState, unitId: string): Point[] {
+  const stride = Math.round(STOP_SPACING / CELL);
+  return freeReachFor(state, unitId).cells.filter((p) => Math.floor(p.x / CELL) % stride === 0 && Math.floor(p.y / CELL) % stride === 0);
+}
+
+/** Where a move can be aimed right now: at each Pokémon it may legally target (areas centre on them too). */
+function aimPoints(state: BattleState, content: BattleContent, unitId: string, moveId: string): Point[] {
+  return livingUnits(state).map((u) => u.pos).filter((p) => freeAim(state, content, unitId, moveId, p).ok);
+}
+
+/**
+ * Whether anything the unit could aim at stands within its longest reach of `pos` (a cheap check before
+ * simulating). A unit with a move on itself (a buff) can use it anywhere, so every spot counts.
+ */
+function anythingInReach(content: BattleContent, state: BattleState, self: BattleUnit, pos: Point): boolean {
+  if (self.moves.some((m) => content.moves[m]!.range.max === 0 && content.moves[m]!.shape.kind === "single")) return true;
+  const reach = Math.max(0, ...self.moves.map((m) => {
+    const mv = content.moves[m]!;
+    const area = mv.shape.kind === "burst" ? mv.shape.radius + 0.5 : mv.shape.kind === "line" ? mv.shape.length : 0;
+    return Math.max(freeRange(self, mv).max, area);
+  }));
+  return livingUnits(state).some((u) => u.id !== self.id && distance(u.pos, pos) <= reach + 0.5);
+}
+
 /**
  * Picks the active unit's turn as a list of actions ending with `endTurn`.
- * Exhaustively simulates every (destination, move, target) combination with the real
- * rules engine, so the AI can never attempt an illegal action and needs no separate
- * damage model. Deterministic: ties keep the first plan found in a fixed order.
+ * Simulates every (spot, move, target) combination with the real rules engine — spots sampled
+ * about STOP_SPACING apart over its reach — so the AI can never attempt an illegal action and
+ * needs no separate damage model. Deterministic: ties keep the first plan found in a fixed order.
  * Callers must stop applying the plan once the battle has ended.
  */
 export function planTurn(
@@ -150,15 +177,25 @@ export function planTurn(
   const self = unitById(state, unitId);
   const end: BattleAction = { type: "endTurn", unitId };
 
-  const stops: (Point | null)[] = [null, ...reachableFor(state, unitId).destinations];
+  const reachable = stopsFor(state, unitId);
+  const stops: (Point | null)[] = [null, ...reachable.filter((p) => anythingInReach(content, state, self, p))];
   let best: Plan | null = null;
   const plans: Plan[] = [];
 
   for (const stop of stops) {
     const moveAction: BattleAction | null = stop ? { type: "move", unitId, to: stop } : null;
-    const afterMove = moveAction ? applyAction(state, content, moveAction).state : state;
+    let afterMove = state;
+    if (moveAction) {
+      // A lattice spot can cost a hair more than the reach once walked exactly: skip it then.
+      try {
+        afterMove = applyAction(state, content, moveAction).state;
+      } catch {
+        continue;
+      }
+      if (afterMove.outcome !== "ongoing" || afterMove.turn?.unitId !== unitId) continue;
+    }
     for (const moveId of self.moves) {
-      for (const target of validTargets(afterMove, content, unitId, moveId)) {
+      for (const target of aimPoints(afterMove, content, unitId, moveId)) {
         const use: BattleAction = { type: "useMove", unitId, moveId, target };
         const result = applyAction(afterMove, content, use);
         let score = evaluate(content, state, result.state, self, weights, result.events);
@@ -184,19 +221,21 @@ export function planTurn(
   if (best) return best.actions;
 
   // Nothing worth doing in reach: advance. Melee units charge at once and go for the ranged foes
-  // (one hex counts as closer), to engage them; ranged units early on stop at the edge of the foes'
+  // (one step counts as closer), to engage them; ranged units early on stop at the edge of the foes'
   // reach, so the side that charges in first is the one that gets hit first.
   const opponents = livingUnits(state).filter((u) => u.side !== self.side);
   const melee = longestReach(content, self) <= 1;
-  const distTo = (p: Point) => Math.min(...opponents.map((o) => gridDistance(p, o.pos) - (melee && longestReach(content, o) > 1 ? 1 : 0)));
+  const distTo = (p: Point) => Math.min(...opponents.map((o) => distance(p, o.pos) - (melee && longestReach(content, o) > 1 ? 1 : 0)));
   const patient = !melee && state.round <= weights.patienceRounds;
   // Once patience is over, closing in comes first: exposure only breaks ties between equally close
-  // hexes (weighted fully, it outweighed every step forward and melee units never left their spot).
+  // spots (weighted fully, it outweighed every step forward and melee units never left their spot).
   const exposureWeight = weights.exposure > 0 ? (patient ? 2 : 0.1) : 0;
   const cost = (p: Point) => distTo(p) + exposureWeight * exposureAt(content, state, self, p);
+  const reach = freeReachFor(state, unitId);
   let bestStop: Point | null = null;
   let bestCost = cost(self.pos);
-  for (const p of reachableFor(state, unitId).destinations) {
+  for (const p of reachable) {
+    if (reach.costTo(p) === null) continue;
     if (distTo(p) >= distTo(self.pos)) continue;
     if (patient && exposureAt(content, state, self, p) > 0) continue;
     const c = cost(p);
@@ -227,7 +266,7 @@ function bestFollowUp(
   for (const moveId of self.moves) {
     const mv = content.moves[moveId]!;
     if ((mv.kind === "basic") === firstWasBasic) continue;
-    for (const target of validTargets(after, content, self.id, moveId)) {
+    for (const target of aimPoints(after, content, self.id, moveId)) {
       const action: BattleAction = { type: "useMove", unitId: self.id, moveId, target };
       const r = applyAction(after, content, action);
       let score = evaluate(content, after, r.state, self, w, r.events);
@@ -287,7 +326,7 @@ function debuffValue(content: BattleContent, state: BattleState, self: BattleUni
   let value = 0;
   if (def.damagePerTurn) value += target.maxHp * def.damagePerTurn * duration;
   if (def.damageTaken !== undefined && def.damageTaken > 1) {
-    const hitters = livingUnits(state).filter((a) => a.side === self.side && gridDistance(a.pos, target.pos) <= threatRange(content, state, a)).length;
+    const hitters = livingUnits(state).filter((a) => a.side === self.side && distance(a.pos, target.pos) <= threatRange(content, state, a)).length;
     value += hitters * hit * (def.damageTaken - 1) * duration;
   }
   if (def.damageDealt !== undefined && def.damageDealt < 1) value += hit * (1 - def.damageDealt) * duration;
@@ -299,7 +338,7 @@ function debuffValue(content: BattleContent, state: BattleState, self: BattleUni
   if (def.noMove) {
     // Rooted: worth most when it cannot already reach anyone from where it stands.
     const reach = Math.max(0, ...target.moves.map((m) => (content.moves[m]!.power > 0 ? content.moves[m]!.range.max : 0)));
-    const inReach = livingUnits(state).some((a) => a.side === self.side && gridDistance(a.pos, target.pos) <= reach);
+    const inReach = livingUnits(state).some((a) => a.side === self.side && distance(a.pos, target.pos) <= reach);
     value += hit * (inReach ? 0.3 : 0.8) * duration;
   }
   if (def.movePenalty !== undefined && def.movePenalty > 0) value += hit * 0.1 * def.movePenalty * duration;
@@ -310,17 +349,17 @@ function debuffValue(content: BattleContent, state: BattleState, self: BattleUni
 function engageValue(content: BattleContent, state: BattleState, self: BattleUnit, target: BattleUnit, w: AiWeights): number {
   if (target.hp <= 0) return 0;
   const flankers = livingUnits(state).filter((a) => a.side === self.side && a.id !== self.id
-    && gridDistance(a.pos, target.pos) <= threatRange(content, state, a)).length;
+    && distance(a.pos, target.pos) <= threatRange(content, state, a)).length;
   return flankers * w.engagePerFlanker;
 }
 
 /**
  * How exposed a unit would be standing at `pos`: opponents that could strike it there next round,
- * less one for each ally within 2 tiles to share the blows (never below 0).
+ * less one for each ally within 2 to share the blows (never below 0).
  */
 function exposureAt(content: BattleContent, state: BattleState, self: BattleUnit, pos: Point): number {
-  const threats = livingUnits(state).filter((o) => o.side !== self.side && gridDistance(o.pos, pos) <= threatRange(content, state, o)).length;
-  const friends = livingUnits(state).filter((a) => a.side === self.side && a.id !== self.id && gridDistance(a.pos, pos) <= 2).length;
+  const threats = livingUnits(state).filter((o) => o.side !== self.side && distance(o.pos, pos) <= threatRange(content, state, o)).length;
+  const friends = livingUnits(state).filter((a) => a.side === self.side && a.id !== self.id && distance(a.pos, pos) <= 2).length;
   return Math.max(0, threats - friends);
 }
 
@@ -329,7 +368,7 @@ function threatRange(content: BattleContent, state: BattleState, unit: BattleUni
   return movementPoints(content, unit, state) + longestReach(content, unit);
 }
 
-/** The longest range of the unit's damaging moves (1 = melee only). */
+/** The longest range of the unit's damaging moves, in hex widths (1 = melee only). */
 function longestReach(content: BattleContent, unit: BattleUnit): number {
   return Math.max(0, ...unit.moves.map((m) => {
     const mv = content.moves[m]!;
@@ -347,11 +386,11 @@ function buffValue(content: BattleContent, state: BattleState, unit: BattleUnit,
   if (!def) return 0;
   const opponents = livingUnits(state).filter((o) => o.side !== unit.side);
   if (opponents.length === 0) return 0;
-  const nearest = Math.min(...opponents.map((o) => gridDistance(o.pos, unit.pos)));
+  const nearest = Math.min(...opponents.map((o) => distance(o.pos, unit.pos)));
   const ownRange = threatRange(content, state, unit);
   let value = 0;
   if (def.damageTaken !== undefined && def.damageTaken < 1) {
-    const threats = opponents.filter((o) => gridDistance(o.pos, unit.pos) <= threatRange(content, state, o)).length;
+    const threats = opponents.filter((o) => distance(o.pos, unit.pos) <= threatRange(content, state, o)).length;
     const lost = 1 - unit.hp / unit.maxHp;
     value += threats * w.guardPerThreat * (1 - def.damageTaken) * (1 + w.guardLowHp * lost);
   }

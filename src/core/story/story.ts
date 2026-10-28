@@ -1,4 +1,5 @@
 import type { BattleScenario, UnitSetup } from "../battle";
+import type { FreeField } from "../free/field";
 import { key, type Point } from "../grid/types";
 import type { GameState } from "../party/roster";
 
@@ -175,7 +176,7 @@ export function failNpc(g: GameState, npc: NpcDef, allNpcs: readonly NpcDef[]): 
 export function trainerScenario(
   g: GameState,
   npc: NpcDef,
-  arena: { readonly mapRows: readonly string[]; readonly deploymentZone: readonly Point[]; readonly enemySpawns: readonly Point[] },
+  arena: { readonly field: FreeField; readonly deploymentZone: readonly Point[]; readonly enemySpawns: readonly Point[] },
   setup: (mon: TrainerMon) => Omit<UnitSetup, "id" | "side" | "pos">,
   maxDeploy: number,
 ): BattleScenario & { name: string; captureAllowed: boolean; countsKnockouts: boolean } {
@@ -183,7 +184,7 @@ export function trainerScenario(
   return {
     id: `npc-${npc.id}`,
     name: npc.name,
-    mapRows: arena.mapRows,
+    field: arena.field,
     deploymentZone: arena.deploymentZone,
     enemies: team.map((mon, i) => ({ ...setup(mon), id: `${npc.id}-${i}`, side: "enemy", pos: arena.enemySpawns[i]! })),
     captureAllowed: npc.capture ?? false,

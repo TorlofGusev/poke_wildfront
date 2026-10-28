@@ -1,5 +1,6 @@
 import { describe, expect, it } from "vitest";
-import { applyAction, createBattle, movementPoints, type UnitSetup } from "../../src/core/battle";
+import { movementPoints, type UnitSetup } from "../../src/core/battle";
+import { applyAction, createBattle } from "./hexFixture";
 import { CONTENT } from "../../src/content";
 
 const u = (id: string, speciesId: string, side: "player" | "enemy", x: number, moves: string[], extra: Partial<UnitSetup> = {}): UnitSetup =>

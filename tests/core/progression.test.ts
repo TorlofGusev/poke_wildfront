@@ -1,6 +1,7 @@
 import { describe, expect, it } from "vitest";
 import { CONTENT, PROGRESSION } from "../../src/content";
-import { applyAction, createBattle, maxHpAt, moveRange, moveUnavailableReason } from "../../src/core/battle";
+import { maxHpAt, moveRange, moveUnavailableReason } from "../../src/core/battle";
+import { applyAction, createBattle, hexPos } from "./hexFixture";
 import { allocatePoint, useRareCandy, buy, equipItem, sell, newMember, resolveBattle, usePotion, type GameState } from "../../src/core/party";
 import {
   focusGrowth,
@@ -82,12 +83,12 @@ describe("levels and stats", () => {
         { id: "e", speciesId: "rattata", side: "enemy", pos: foeAt, stats: { ...CONTENT.species.rattata!.stats, speed: 0 } },
       ]);
       if (moveFirst) state = applyAction(state, CONTENT, { type: "move", unitId: "p", to: { x: 1, y: 0 } }).state;
-      else state = { ...state, units: state.units.map((u) => (u.id === "p" ? { ...u, pos: { x: 1, y: 0 } } : u)) };
+      else state = { ...state, units: state.units.map((u) => (u.id === "p" ? { ...u, pos: hexPos({ x: 1, y: 0 }) } : u)) };
       const target = state.units.find((u) => u.id === "e")!.pos;
       const r = applyAction(state, CONTENT, { type: "useMove", unitId: "p", moveId, target });
       return (r.events.find((e) => e.type === "damaged") as { amount: number }).amount;
     };
-    // 3 movement from 6 Speed; 24 Speed = 18 past it = +20% after moving; none standing still or at low Speed.
+    // Movement caps at 9 Speed; 24 Speed is well past it = more damage after moving; none standing still or at low Speed.
     expect(hit(24, true)).toBeGreaterThan(hit(24, false));
     expect(hit(6, true)).toBe(hit(6, false));
     expect(CONTENT.rules.melee.closeBonus).toBeGreaterThan(1);

@@ -158,7 +158,7 @@
   "venom-stench": {
    "id": "venom-stench",
    "name": "Stench",
-   "description": "Its hits on adjacent foes Weaken them for 2 turns, and foes that hit it from an adjacent hex take 6 damage.",
+   "description": "Its hits on adjacent foes Weaken them for 2 turns, and foes that hit it in melee take 6 damage.",
    "mods": {
     "contactStatus": {
      "status": "weakened",

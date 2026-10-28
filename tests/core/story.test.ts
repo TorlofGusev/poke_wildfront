@@ -1,3 +1,4 @@
+import { battleArena } from "../../src/core/free";
 import { describe, expect, it } from "vitest";
 import { CONTENT, PROGRESSION, WORLD_CONTENT } from "../../src/content";
 import { travelPath, type WorldDef } from "../../src/core/expedition";
@@ -55,7 +56,7 @@ describe("story conditions", () => {
   });
 
   it("trainer Pokémon are developed and carry their held items", () => {
-    const arena = WORLD_CONTENT.biomes.cave!.arena!;
+    const arena = battleArena(WORLD_CONTENT.biomes.cave!.arena!, "cave", 5, "trainer", 4, 2);
     const sc = trainerScenario(game(), leader, arena, (mon) => trainerSetup(CONTENT, PROGRESSION, mon), 4);
     expect(sc.enemies).toHaveLength(2);
     expect(sc.captureAllowed).toBe(false);

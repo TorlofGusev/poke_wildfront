@@ -14,8 +14,8 @@ export const content: BattleContent = {
     hpPerPoint: 1,
     statOffset: 0,
     damageDivisor: 4,
-    moveBySpeed: [{ speed: 0, move: 3 }, { speed: 40, move: 4 }, { speed: 80, move: 5 }],
-    moveMax: 5,
+    // Slow (30) walks 2.9, Mid (70) 4.1, Fast (100) 5.
+    movement: { base: 2, perSpeed: 0.03, max: 5 },
     impactDamage: 5,
     bond: { start: 2, max: 6, perKnockout: 1 },
   },

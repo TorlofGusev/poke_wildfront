@@ -1,6 +1,7 @@
 import { describe, expect, it } from "vitest";
 import { CONTENT } from "../../src/content";
-import { applyAction, createBattle, unitById, type BattleState } from "../../src/core/battle";
+import { unitById, type BattleState } from "../../src/core/battle";
+import { applyAction, createBattle } from "./hexFixture";
 
 /** p1 tackles e, which carries `status` from ally p2 (or from nobody). */
 function hitStatused(status: string | null, sourceId = "p2") {

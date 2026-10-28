@@ -11,7 +11,7 @@ describe("move descriptions", () => {
   it("explains effects in plain words", () => {
     const text = stripMarkup(describeMove(CONTENT, CONTENT.moves["poison-powder"]!));
     expect(text).toContain("3-turn cooldown");
-    expect(text).toContain("area: target tile + 1 around it");
+    expect(text).toContain("area: a circle of radius 1 around the aim");
     expect(text).toContain("Inflicts Poison for 3 turns (loses 10% max HP each turn, stacks)");
   });
 });

@@ -70,9 +70,8 @@ export type BattleOutcome = "ongoing" | "victory" | "defeat" | "retreated";
 /** Plain, serializable battle state. Never mutated by the public API. */
 export interface BattleState {
   /** Terrain rows; some type mechanics reshape them during battle. */
-  mapRows: readonly string[];
-  /** Free-movement field (prototype); when set, positions are continuous and mapRows is unused. */
-  field?: FreeField;
+  /** The battlefield: Pokémon stand anywhere on it. Terrain-changing hits add patches. */
+  field: FreeField;
   units: BattleUnit[];
   round: number;
   /** Unit ids still to act this round, in order; the head is acting now. */

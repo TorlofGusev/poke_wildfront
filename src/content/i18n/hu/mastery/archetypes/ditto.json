@@ -7,7 +7,7 @@
    "description": "Bond képesség: nyálkával borítja be az ellenfelet (Erő 70), lefogja; 2 körig Lassú."
   },
   "ditto-shapeshift-dash": {
-   "description": "Bond képesség: 2 hexen belül az ellenfélhez folyik (Erő 60), és lefogja."
+   "description": "Bond képesség: legfeljebb 2 távolságra az ellenfélhez folyik (Erő 60), és lefogja."
   },
   "ditto-rubbery-body": {
    "description": "10%-kal kevesebb sebzést kap."
@@ -16,7 +16,7 @@
    "description": "15%-kal többet sebez a szövetségeseivel harcban álló ellenfelekre."
   },
   "ditto-gooey-grip": {
-   "description": "A szomszédos hexről eltalált ellenfelek 1 körig Lassúak."
+   "description": "A közelharcban eltalált ellenfelek 1 körig Lassúak."
   },
   "ditto-puddle-regrowth": {
    "description": "Minden köre elején a max HP 4%-át gyógyítja."
@@ -43,7 +43,7 @@
    "description": "Capstone. Minden kiütéssel 1 Attackot nyer a csata végéig (max +3); az általa okozott állapotok 1 körrel tovább tartanak (a Paralysis, Freeze és Sleep kivételével; összesen legfeljebb +2)."
   },
   "ditto-living-mirror": {
-   "description": "Csúcstudás. 15%-kal kevesebb sebzést kap; a szomszédos hexről őt ütő ellenfelek 8 sebzést kapnak."
+   "description": "Csúcstudás. 15%-kal kevesebb sebzést kap; a közelharcban őt ütő ellenfelek 8 sebzést kapnak."
   }
  }
 }

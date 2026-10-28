@@ -1,7 +1,7 @@
 import Phaser from "phaser";
 import { playMoveFx } from "../moveFx";
 import { playMusic, stopMusic } from "../music";
-import { CONTENT, SCENARIOS, type ScenarioDef } from "../../content";
+import { CONTENT, type ScenarioDef } from "../../content";
 import { captureChance, captureTargets, captureUnavailableReason } from "../../core/capture";
 import { KNOCKOUTS_TO_DEATH, resolveBattle, type BattleSummary } from "../../core/party";
 import { currentWorld, session } from "../session";
@@ -15,11 +15,10 @@ import { completeNpc, failNpc } from "../../core/story";
 import { grantGifts } from "../storyFlow";
 import {
   activeUnit,
-  affectedUnits,
-  moveArea,
-  previewMove,
-  type HitPreview,
   applyAction,
+  livingUnits,
+  type BattleAction,
+  type HitPreview,
   switchTargets,
   partnerOf,
   MAX_ACTIVE_UNITS,
@@ -27,16 +26,12 @@ import {
   deploymentErrors,
   lockDeployment,
   moveUnavailableReason,
-  reachableFor,
-  threatZone,
+  movementPoints,
   createBattle,
-  unitAt,
   maxHpOf,
   moveRange,
   unitTraits,
   unitById,
-  validTargets,
-  type BattleAction,
   type BattleEvent,
   type DeployCandidate,
   NO_MODIFIERS,
@@ -46,7 +41,11 @@ import {
   type BattleUnit,
   type Placement,
 } from "../../core/battle";
-import { Grid, gridDistance, key, samePoint, type Point } from "../../core/grid";
+import { samePoint, type Point } from "../../core/grid";
+import {
+  breaksEngagement, CELL, distance, freeAim, freeHasTarget, freeRange, freeReachFor, freeUnitAt, MELEE_REACH,
+  previewFreeMove, previewFreeWalk, previewPushes, type PushPreview, terrainAt, UNIT_RADIUS, type FreeArea, type FreeReach, type FreeTerrainId,
+} from "../../core/free";
 import { typeMultiplier } from "../../core/rules/typeChart";
 import { Button } from "../ui/Button";
 import { formatEvent, type LogEntry, type LogTone } from "../ui/combatLog";
@@ -57,7 +56,7 @@ import { RichText } from "../ui/RichText";
 import { t } from "../i18n";
 import { boardTheme, drawFloorDecor, drawWallDecor, drawWaterDecor, floorColor } from "../ui/boardDecor";
 import { animKey, FACE_LEFT, FACE_RIGHT, facingFor, hasSprite, portraitKey, type Facing, type SpriteAnim } from "../sprites";
-import { BOARD_X, BOARD_Y, boardSize, COLORS, FONT, HEX_R, hexCorners, PANEL_X, PANEL_W, TILE, TYPE_COLORS, tileToWorld, UNIT_SCALE, worldToTile, px, PHONE } from "../ui/theme";
+import { BOARD_X, BOARD_Y, COLORS, FIELD_S, fieldToWorld, FONT, PANEL_X, PANEL_W, TYPE_COLORS, UNIT_SCALE, worldToField, px, PHONE } from "../ui/theme";
 
 type Phase = "deploy" | "battle" | "over";
 
@@ -77,6 +76,11 @@ interface UnitView {
 }
 
 const AI_STEP_MS = 350;
+const S = FIELD_S;
+/** Terrain colours on the free field. */
+const ZONE_COLORS: Record<Exclude<FreeTerrainId, "floor">, number> = { mud: COLORS.mud, water: COLORS.water, bush: COLORS.grass, rock: 0x3a3d44 };
+/** A tap or click this close to a deploy spot picks it. */
+const SPOT_PICK = 0.45;
 
 const LOG_COLORS: Record<LogTone, string> = {
   info: "#8a93a6", player: "#8fb8f0", enemy: "#f08f8f", damage: "#ffb070",
@@ -96,7 +100,6 @@ export class BattleScene extends Phaser.Scene {
   private rewardText = "";
   /** EV the battle earned (wild win plus trainer or badge reward). */
   private evGained = 0;
-  private grid!: Grid;
   private phase: Phase = "deploy";
   private placements: Placement[] = [];
   private selectedCandidate: string | null = null;
@@ -110,8 +113,7 @@ export class BattleScene extends Phaser.Scene {
   /** Touch: the action tile tapped once; a second tap on it confirms. */
   private armed: Point | null = null;
   private activeRing: Phaser.GameObjects.Arc | null = null;
-  private armedFrame: Phaser.GameObjects.Polygon | null = null;
-  private revealed = new Set<string>();
+  private armedFrame: Phaser.GameObjects.Arc | null = null;
   private log: LogEntry[] = [];
   private logStrip!: RichText;
   private logOverlay: Phaser.GameObjects.Container | null = null;
@@ -121,6 +123,13 @@ export class BattleScene extends Phaser.Scene {
   private logOpenedAt = 0;
 
   private overlay!: Phaser.GameObjects.Graphics;
+  /** The walkable area, baked into a texture (redrawn only when the state changes). */
+  private reachGfx: Phaser.GameObjects.Graphics | null = null;
+  private reachImage: Phaser.GameObjects.RenderTexture | null = null;
+  private reachFor: { state: BattleState; reach: FreeReach } | null = null;
+  private reach: FreeReach | null = null;
+  /** Hover moved since the overlay was last drawn (refreshed at most once a frame). */
+  private hoverDirty = false;
   /** Combo names over the foes the active Pokémon would combo. */
   private comboLabels: Phaser.GameObjects.Container | null = null;
   private boardGfx: Phaser.GameObjects.Graphics | null = null;
@@ -139,14 +148,13 @@ export class BattleScene extends Phaser.Scene {
     super("Battle");
   }
 
-  init(data: { scenarioId?: string; scenario?: ScenarioDef; encounterId?: string; biome?: string; npcId?: string; mapId?: string }): void {
-    this.scenario = data.scenario ?? SCENARIOS[data.scenarioId!]!;
+  init(data: { scenario?: ScenarioDef; encounterId?: string; biome?: string; npcId?: string; mapId?: string }): void {
+    this.scenario = data.scenario!;
     this.npcId = data.npcId ?? null;
     this.npcMapId = data.mapId ?? null;
     this.encounterId = data.encounterId ?? null;
     this.biome = data.biome ?? null;
     this.rewardText = "";
-    this.grid = Grid.fromAscii(this.scenario.mapRows);
     this.phase = "deploy";
     this.placements = [];
     this.party = session.partyCandidates();
@@ -157,13 +165,21 @@ export class BattleScene extends Phaser.Scene {
     this.selectedMove = null;
     this.hoveredMove = null;
     this.busy = false;
-    this.revealed = new Set();
     this.log = [];
     this.logOverlay = null;
     this.logScroll = 0;
     this.units = new Map();
     this.boardGfx = null;
     this.boardImage = null;
+    this.reachGfx = null;
+    this.reachImage = null;
+    this.reachFor = null;
+    this.reach = null;
+    this.hoverDirty = false;
+    this.hovered = null;
+    this.armed = null;
+    this.activeRing = null;
+    this.armedFrame = null;
     this.orderStrip = null;
     this.previewLabels = null;
   }
@@ -178,7 +194,7 @@ export class BattleScene extends Phaser.Scene {
     this.panel = this.add.container(PANEL_X, 16);
     this.infoText = new RichText(this, PANEL_X, 330, PANEL_W, 12);
 
-    const board = boardSize(this.grid.width, this.grid.height);
+    const board = this.boardPx();
     this.logStrip = new RichText(this, BOARD_X, BOARD_Y + board.h + 4, 450, 11, COLORS.dim, 15);
     const logButton = new Button(this, BOARD_X + board.w - 110, BOARD_Y + board.h + 6, 110, 22, PHONE ? t("Full log") : t("Full log [L]"), () => this.toggleLogOverlay());
     logButton.setDepth(5);
@@ -205,21 +221,19 @@ export class BattleScene extends Phaser.Scene {
     for (const e of this.scenario.enemies) this.createUnitView(e.id, e.speciesId, "enemy", e.pos);
 
     this.input.on("pointermove", (p: Phaser.Input.Pointer) => {
-      // Redraw only when the pointer reaches another tile (touch drags fire many moves).
-      const t = this.pointerTile(p);
-      if (t === this.hovered || (t && this.hovered && samePoint(t, this.hovered))) return;
-      this.hovered = t;
-      this.refreshOverlay();
-      this.refreshInfo();
+      // Touch has no hover (a drag would only flicker previews); a mouse redraws at most once a frame.
+      if (p.wasTouch) return;
+      this.hovered = this.pointerPoint(p);
+      this.hoverDirty = true;
     });
     this.input.on("pointerdown", (p: Phaser.Input.Pointer, over: Phaser.GameObjects.GameObject[]) => {
       // Clicks on UI (buttons, the log overlay) never fall through to the board.
       if (over.length > 0) return;
       if (p.rightButtonDown()) return this.cancelSelection();
-      const t = this.pointerTile(p);
+      const t = this.pointerPoint(p);
       if (!t) return;
-      // Touch has no hover: the first tap on an action tile previews it, a second tap confirms.
-      if (p.wasTouch && this.isActionTile(t) && !(this.armed && samePoint(this.armed, t))) {
+      // Touch has no hover: the first tap on an action spot previews it, a second tap (close by) confirms.
+      if (p.wasTouch && this.isActionPoint(t) && !(this.armed && distance(this.armed, t) < 0.4)) {
         this.armed = t;
         this.hovered = t;
         this.refreshOverlay();
@@ -245,25 +259,45 @@ export class BattleScene extends Phaser.Scene {
 
   // ------------------------------------------------------------ drawing
 
+  /** The field's size on screen. */
+  private boardPx(): { w: number; h: number } {
+    return { w: this.scenario.field.width * S, h: this.scenario.field.height * S };
+  }
+
   private drawBoard(): void {
-    // Drawn once into a texture: thousands of shapes redrawn every frame kept phones busy (and hot).
+    // Drawn once into a texture: hundreds of shapes redrawn every frame kept phones busy (and hot).
     this.boardGfx ??= this.make.graphics({}, false);
     const g = this.boardGfx.clear();
+    const field = this.state?.field ?? this.scenario.field;
     const theme = boardTheme(this.biome ?? this.npcMapId ?? this.scenario.id);
-    for (let y = 0; y < this.grid.height; y++)
-      for (let x = 0; x < this.grid.width; x++) {
-        const id = this.grid.terrainAt({ x, y }).id as keyof typeof COLORS;
-        const c = tileToWorld({ x, y });
-        g.fillStyle(id === "floor" ? floorColor(theme, x, y) : COLORS[id] as number, 1).fillPoints(hexCorners(c.x, c.y), true);
-        if (id === "floor") drawFloorDecor(g, theme, x, y, c.x, c.y);
-        else if (id === "wall") drawWallDecor(g, x, y, c.x, c.y);
+    // Floor in one-unit squares of slightly varied colour, with small props on open ground.
+    for (let y = 0; y < field.height; y++)
+      for (let x = 0; x < field.width; x++) {
+        const c = fieldToWorld({ x, y });
+        g.fillStyle(floorColor(theme, x, y), 1).fillRect(c.x, c.y, S, S);
+      }
+    for (let y = 0; y < field.height; y++)
+      for (let x = 0; x < field.width; x++) {
+        if (terrainAt(field, { x: x + 0.5, y: y + 0.5 }).id !== "floor") continue;
+        const c = fieldToWorld({ x: x + 0.5, y: y + 0.5 });
+        drawFloorDecor(g, theme, x, y, c.x, c.y);
+      }
+    for (const z of field.zones) {
+      if (z.terrain === "floor") continue;
+      const pts = z.poly.map((p) => new Phaser.Math.Vector2(fieldToWorld(p).x, fieldToWorld(p).y));
+      g.fillStyle(ZONE_COLORS[z.terrain], 1).fillPoints(pts, true);
+      g.lineStyle(2, 0x000000, z.terrain === "rock" ? 0.6 : 0.25).strokePoints(pts, true, true);
+    }
+    // Texture inside the patches: rock faces, ripples, grass blades.
+    for (let y = 0; y < field.height; y++)
+      for (let x = 0; x < field.width; x++) {
+        const id = terrainAt(field, { x: x + 0.5, y: y + 0.5 }).id;
+        const c = fieldToWorld({ x: x + 0.5, y: y + 0.5 });
+        if (id === "rock") drawWallDecor(g, x, y, c.x, c.y);
         else if (id === "water") drawWaterDecor(g, x, y, c.x, c.y);
-        g.lineStyle(1, COLORS.gridLine, 0.35).strokePoints(hexCorners(c.x, c.y), true);
-        if (id === "grass") {
+        else if (id === "bush") {
           g.fillStyle(0x3f8a45, 1);
-          for (const [dx, dy] of [[-12, 8], [0, -4], [8, 10]] as const) g.fillTriangle(
-            c.x + dx, c.y + dy, c.x + dx + 4, c.y + dy - 10, c.x + dx + 8, c.y + dy,
-          );
+          for (const [dx, dy] of [[-12, 8], [0, -4], [8, 10]] as const) g.fillTriangle(c.x + dx, c.y + dy, c.x + dx + 4, c.y + dy - 10, c.x + dx + 8, c.y + dy);
         }
       }
     const { width, height } = this.scale;
@@ -271,47 +305,38 @@ export class BattleScene extends Phaser.Scene {
     this.boardImage.clear().draw(g).render();
   }
 
-  /** The middle of the other side's starting hexes. */
+  /** The middle of the other side's starting spots. */
   private startLookAt(side: "player" | "enemy"): Point | null {
     const pts = side === "enemy" ? this.scenario.deploymentZone : this.scenario.enemies.map((e) => e.pos);
     if (!pts.length) return null;
-    return { x: Math.round(pts.reduce((s, p) => s + p.x, 0) / pts.length), y: Math.round(pts.reduce((s, p) => s + p.y, 0) / pts.length) };
+    return { x: pts.reduce((s, p) => s + p.x, 0) / pts.length, y: pts.reduce((s, p) => s + p.y, 0) / pts.length };
   }
 
   private createUnitView(id: string, speciesId: string, side: "player" | "enemy", pos: Point): void {
     const species = CONTENT.species[speciesId]!;
-    const { x, y } = tileToWorld(pos);
+    const { x, y } = fieldToWorld(pos);
     const teamColor = side === "player" ? COLORS.player : COLORS.enemy;
-    const ring = this.add.ellipse(0, 12, 38, 14, teamColor, 0.3).setStrokeStyle(2, teamColor);
+    // The base is the body's true size: what blocks and collides (the container is scaled by UNIT_SCALE).
+    const foot = (UNIT_RADIUS * S * 2) / UNIT_SCALE;
+    const ring = this.add.ellipse(0, 0, foot, foot, teamColor, 0.3).setStrokeStyle(2, teamColor);
     const body = this.add.circle(0, 0, 16, TYPE_COLORS[species.types[0]!] ?? 0x888888);
     const label = this.add
       .text(0, -1, species.name.slice(0, 2), { fontFamily: FONT, fontSize: "14px", color: "#10141c", fontStyle: "bold" })
       .setOrigin(0.5);
     // At the start the two sides face each other: enemies look at the deployment spots, the party at the enemies.
     const look = this.startLookAt(side);
-    const facing = look ? facingFor(tileToWorld(look).x - x, tileToWorld(look).y - y) : side === "player" ? FACE_RIGHT : FACE_LEFT;
+    const facing = look ? facingFor(fieldToWorld(look).x - x, fieldToWorld(look).y - y) : side === "player" ? FACE_RIGHT : FACE_LEFT;
     const sprite = hasSprite(speciesId)
-      ? this.add.sprite(0, 14, `${speciesId}-idle`).setOrigin(0.5, 0.82).setScale(1.25).play(animKey(speciesId, "idle", facing))
+      ? this.add.sprite(0, 8, `${speciesId}-idle`).setOrigin(0.5, 0.82).setScale(1.25).play(animKey(speciesId, "idle", facing))
       : null;
     const hpBg = this.add.rectangle(-18, 21, 36, 4, 0x000000).setOrigin(0, 0.5);
     const hpBar = this.add.rectangle(-18, 21, 36, 4, 0x7ed321).setOrigin(0, 0.5);
     const spiritBar = this.add.rectangle(-18, 24, 0, 2, 0xf5d76e).setOrigin(0, 0.5);
     const container = this.add.container(x, y, [ring, ...(sprite ? [sprite] : []), body, label, hpBg, hpBar, spiritBar]).setScale(UNIT_SCALE);
     this.units.set(id, { container, hpBar, spiritBar, ring, body, label, sprite, speciesId, facing });
-    this.applyDisguise(id);
-  }
-
-  /** Hidden enemies show as a grey "?" until revealed. */
-  private applyDisguise(id: string): void {
-    const view = this.units.get(id)!;
-    const species = CONTENT.species[view.speciesId]!;
-    const hidden = this.isHidden(id);
-    view.body.setFillStyle(hidden ? 0x777777 : TYPE_COLORS[species.types[0]!] ?? 0x888888);
-    view.label.setText(hidden ? "?" : species.name.slice(0, 2));
-    const showSprite = Boolean(view.sprite) && !hidden;
-    view.sprite?.setVisible(showSprite);
-    view.body.setVisible(!showSprite);
-    view.label.setVisible(!showSprite);
+    // Species without a sprite show as a type-coloured disc with their initials.
+    body.setVisible(!sprite);
+    label.setVisible(!sprite);
   }
 
   /** Plays an animation on the unit's sprite, facing a direction. */
@@ -332,20 +357,13 @@ export class BattleScene extends Phaser.Scene {
   }
 
   private syncUnits(): void {
-    for (const id of this.units.keys()) this.applyDisguise(id);
     if (!this.state) return;
     for (const u of this.state.units) {
       const view = this.units.get(u.id);
       if (!view) continue;
-      let { x, y } = tileToWorld(u.pos);
-      // Engaged Pokémon lean towards each other, so a duel is visible at a glance.
-      const partner = u.engagedWith ? this.state.units.find((o) => o.id === u.engagedWith && o.hp > 0) : undefined;
-      if (partner) {
-        const to = tileToWorld(partner.pos);
-        x += (to.x - x) * 0.22;
-        y += (to.y - y) * 0.22;
-      }
-      view.container.setPosition(x, y).setVisible(u.hp > 0);
+      const { x, y } = fieldToWorld(u.pos);
+      // Lower on the field draws in front.
+      view.container.setPosition(x, y).setVisible(u.hp > 0).setDepth(2 + u.pos.y / 100);
       const frac = u.hp / u.maxHp;
       view.hpBar.width = 36 * frac;
       view.hpBar.fillColor = frac > 0.5 ? 0x7ed321 : frac > 0.25 ? 0xf5a623 : 0xd0021b;
@@ -358,35 +376,17 @@ export class BattleScene extends Phaser.Scene {
     }
   }
 
-  /** Hover (or tap) a foe: where it can move next turn (orange) and what it can hit from there (red). */
+  /** Hover (or tap) a foe: where it can walk next turn (orange) and how far its attacks reach from there (red ring). */
   private drawThreat(): void {
-    if (!this.hovered || this.selectedMove || this.selectedBall || this.hoveredMove || this.busy) return;
+    if (!this.hovered || this.selectedMove || this.selectedBall || this.hoveredMove || this.busy || this.phase === "over") return;
     const state = this.state ?? (this.phase === "deploy" ? this.deployPreviewState() : null);
-    const foe = state ? unitAt(state, this.hovered) : undefined;
-    if (!state || !foe || foe.side !== "enemy" || foe.hp <= 0 || this.isHidden(foe.id)) return;
-    const { reach, strike } = threatZone(state, CONTENT, foe.id);
-    // Near-solid colours, so the zone reads the same over any terrain.
-    this.fillTiles(strike, COLORS.target, 0.55);
-    this.fillTiles(reach, COLORS.engage, 0.85);
-    // Outlines keep the zones readable over any terrain colour.
-    this.outlineTiles([...reach, ...strike], COLORS.target);
-    this.outlineTiles([...reach, foe.pos], COLORS.engage);
-  }
-
-  /** Draws the outer border of a group of hexes. */
-  private outlineTiles(tiles: readonly Point[], color: number): void {
-    const inside = new Set(tiles.map((p) => `${p.x},${p.y}`));
-    this.overlay.lineStyle(2, color, 0.95);
-    for (const p of tiles) {
-      const c = tileToWorld(p);
-      const cs = hexCorners(c.x, c.y);
-      // Edge i joins corners i and i+1 and faces the neighbour whose centre is beyond its midpoint.
-      for (let i = 0; i < 6; i++) {
-        const a = cs[i]!, b = cs[(i + 1) % 6]!;
-        const n = worldToTile(c.x + ((a.x + b.x) / 2 - c.x) * 2, c.y + ((a.y + b.y) / 2 - c.y) * 2, this.grid.width, this.grid.height);
-        if (!n || !inside.has(`${n.x},${n.y}`)) this.overlay.lineBetween(a.x, a.y, b.x, b.y);
-      }
-    }
+    const foe = state ? freeUnitAt(state, this.hovered) : undefined;
+    if (!state || !foe || foe.side !== "enemy" || foe.hp <= 0) return;
+    const mp = movementPoints(CONTENT, foe, state);
+    this.fillCells(freeReachFor(state, foe.id, mp).cells, 0xffb347, 0.4);
+    const strike = Math.max(0, ...foe.moves.map((m) => CONTENT.moves[m]).filter((m) => m && m.power > 0).map((m) => freeRange(foe, m!).max));
+    const c = fieldToWorld(foe.pos);
+    this.overlay.lineStyle(2, COLORS.target, 0.9).strokeCircle(c.x, c.y, (mp + strike) * S);
   }
 
   /** The battle as it would start with the current placements, for previews during deployment. */
@@ -396,73 +396,215 @@ export class BattleScene extends Phaser.Scene {
         const m = this.party.find((c) => c.id === p.unitId)!;
         return { ...m.setup, id: m.id, speciesId: m.speciesId, side: "player" as const, pos: p.pos, hp: m.hp };
       });
-      return createBattle(CONTENT, this.scenario.mapRows, [...players, ...this.scenario.enemies], { seed: 1 }).state;
+      return createBattle(CONTENT, this.scenario.field, [...players, ...this.scenario.enemies], { seed: 1 }).state;
     } catch {
       return null;
     }
   }
 
-  private fillTiles(tiles: readonly Point[], color: number, alpha: number): void {
-    this.overlay.fillStyle(color, alpha);
-    for (const p of tiles) {
-      const c = tileToWorld(p);
-      this.overlay.fillPoints(hexCorners(c.x, c.y, HEX_R - 1.5), true);
+  /** Lattice cells (from a reach) as merged row strips: far fewer shapes than one square each. */
+  private fillCells(cells: readonly Point[], color: number, alpha: number, g: Phaser.GameObjects.Graphics = this.overlay): void {
+    g.fillStyle(color, alpha);
+    const rows = new Map<number, number[]>();
+    for (const c of cells) {
+      const r = Math.floor(c.y / CELL);
+      (rows.get(r) ?? rows.set(r, []).get(r)!).push(c.x);
+    }
+    for (const [r, xs] of rows) {
+      xs.sort((a, b) => a - b);
+      let start = xs[0]!;
+      let prev = start;
+      for (const x of [...xs.slice(1), Infinity]) {
+        if (x - prev > CELL * 1.5) {
+          const p = fieldToWorld({ x: start - CELL / 2, y: r * CELL });
+          g.fillRect(p.x, p.y, (prev - start + CELL) * S, CELL * S);
+          start = x;
+        }
+        prev = x;
+      }
     }
   }
+
+  /** The active Pokémon's walkable area, kept in a texture until the state changes. */
+  private drawReach(): void {
+    this.reachGfx ??= this.make.graphics({}, false);
+    this.reachImage ??= this.add.renderTexture(0, 0, this.scale.width, this.scale.height).setOrigin(0).setDepth(0);
+    const show = this.phase === "battle" && this.state && this.isPlayerTurn() && !this.busy && !this.selectedMove && !this.selectedBall && !this.hoveredMove;
+    if (!show) {
+      if (this.reach) this.reachImage.clear();
+      this.reach = null;
+      return;
+    }
+    const state = this.state!;
+    if (this.reachFor?.state !== state) this.reachFor = { state, reach: freeReachFor(state, state.turn!.unitId) };
+    if (this.reach === this.reachFor.reach) return;
+    this.reach = this.reachFor.reach;
+    const g = this.reachGfx.clear();
+    this.fillCells(this.reach.cells, COLORS.reach, 0.3, g);
+    this.reachImage.clear().draw(g).render();
+  }
+
+  private drawArea(area: FreeArea, color: number, alpha: number): void {
+    const g = this.overlay;
+    if (area.kind === "single") {
+      const c = fieldToWorld(area.at);
+      g.fillStyle(color, alpha).fillCircle(c.x, c.y, UNIT_RADIUS * S + 3);
+    } else if (area.kind === "circle") {
+      const c = fieldToWorld(area.at);
+      g.fillStyle(color, alpha).fillCircle(c.x, c.y, area.radius * S);
+      g.lineStyle(2, color, 0.9).strokeCircle(c.x, c.y, area.radius * S);
+    } else {
+      const a = fieldToWorld(area.from);
+      const b = fieldToWorld(area.to);
+      g.lineStyle(area.width * 2 * S, color, alpha).lineBetween(a.x, a.y, b.x, b.y);
+    }
+  }
+
+  private ringAt(p: Point, color: number, extra = 6, width = 2): void {
+    const c = fieldToWorld(p);
+    this.overlay.lineStyle(width, color, 1).strokeCircle(c.x, c.y, UNIT_RADIUS * S + extra);
+  }
+
+  /** Aiming the selected move at the hover: range, valid targets, area, line of sight and the expected hits. */
+  private drawAim(unit: BattleUnit, moveId: string, hover: Point | null): void {
+    const state = this.state!;
+    const move = CONTENT.moves[moveId]!;
+    const range = freeRange(unit, move);
+    const from = fieldToWorld(unit.pos);
+    const ring = move.shape.kind === "line" ? move.shape.length + 0.3 : range.max;
+    if (ring > 0) {
+      this.overlay.fillStyle(COLORS.target, 0.08).fillCircle(from.x, from.y, ring * S);
+      this.overlay.lineStyle(2, COLORS.target, 0.7).strokeCircle(from.x, from.y, ring * S);
+      if (range.min > 0) this.overlay.lineStyle(1, COLORS.target, 0.5).strokeCircle(from.x, from.y, range.min * S);
+    }
+    for (const u of livingUnits(state)) {
+      if (u.id === unit.id && range.max > 0) continue;
+      if (freeAim(state, CONTENT, unit.id, moveId, u.pos).ok) this.ringAt(u.pos, COLORS.target);
+    }
+    if (!hover) return;
+    const aim = freeAim(state, CONTENT, unit.id, moveId, hover);
+    if (!aim.ok) {
+      if (aim.area) this.drawArea(aim.area, 0x8a93a6, 0.3);
+      if (aim.reason === "no line of sight") {
+        const to = fieldToWorld(hover);
+        this.overlay.lineStyle(2, COLORS.target, 0.9).lineBetween(from.x, from.y, to.x, to.y);
+      }
+      this.aimNote = tag("bad", t(aim.reason));
+      return;
+    }
+    this.drawArea(aim.area, move.shape.kind !== "single" ? COLORS.areaAim : COLORS.target, 0.35);
+    const to = fieldToWorld(aim.target);
+    if (move.requiresLineOfSight) this.overlay.lineStyle(2, 0x7ed321, 0.9).lineBetween(from.x, from.y, to.x, to.y);
+    const hits = previewFreeMove(state, CONTENT, unit.id, moveId, hover);
+    // A ranged shot at one Pokémon shows its odds: the rest go to the ally who may catch it.
+    const ranged = move.shape.kind === "single" && range.max > MELEE_REACH && move.affects === "enemies";
+    const catchChance = aim.interceptor ? Math.round(aim.interceptChance! * 100) : 0;
+    this.showPreview(hits, (h) => (ranged && h.unitId === aim.affected[0]?.id ? `${100 - catchChance}%` : ""));
+    for (const push of previewPushes(state, CONTENT, unit.id, moveId, hover)) this.drawPush(unit.pos, push);
+    if (aim.interceptor) {
+      this.ringAt(aim.interceptor.pos, 0xf5a623);
+      this.previewLabel(aim.interceptor.id, `${catchChance}%`, "#f5a623");
+      this.aimNote = tag("bad", t("⚠ {chance}% chance to hit {name} instead", { chance: catchChance, name: CONTENT.species[aim.interceptor.speciesId]!.name }));
+    }
+  }
+
+  /**
+   * A knockback as an arrow from where the Pokémon stands to where it would land; hitting an obstacle
+   * shows the impact damage at the arrow's tip. A Pokémon pinned in place gets a short arrow away from the user.
+   */
+  private drawPush(userPos: Point, push: PushPreview): void {
+    let to = push.to;
+    if (distance(push.from, push.to) < 0.2) {
+      const d = distance(userPos, push.from) || 1;
+      to = { x: push.from.x + ((push.from.x - userPos.x) / d) * 0.5, y: push.from.y + ((push.from.y - userPos.y) / d) * 0.5 };
+    }
+    const a = fieldToWorld(push.from);
+    const b = fieldToWorld(to);
+    const ang = Math.atan2(b.y - a.y, b.x - a.x);
+    const head = 9;
+    const color = push.impact ? COLORS.target : 0xf5d76e;
+    this.overlay.lineStyle(3, color, 0.95).lineBetween(a.x, a.y, b.x - Math.cos(ang) * 4, b.y - Math.sin(ang) * 4);
+    this.overlay.fillStyle(color, 0.95).fillTriangle(
+      b.x, b.y,
+      b.x - Math.cos(ang - 0.5) * head, b.y - Math.sin(ang - 0.5) * head,
+      b.x - Math.cos(ang + 0.5) * head, b.y - Math.sin(ang + 0.5) * head,
+    );
+    if (!push.impact) return;
+    this.previewLabels ??= this.add.container(0, 0).setDepth(16);
+    this.previewLabels.add(this.add.text(b.x + Math.cos(ang) * 10, b.y + Math.sin(ang) * 10, `-${push.impact}`, {
+      fontFamily: FONT, fontSize: "13px", fontStyle: "bold", color: "#ff5050", backgroundColor: "#10141ccc", padding: { x: 3, y: 1 },
+    }).setOrigin(0.5));
+  }
+
+  /** Hovering a walk: the path, its cost, and the free attack it would draw. */
+  private drawWalk(unit: BattleUnit, hover: Point): void {
+    const reach = this.reach;
+    if (!reach) return;
+    const cost = reach.costTo(hover);
+    const path = reach.pathTo(hover);
+    if (cost === null || !path) return;
+    const from = fieldToWorld(unit.pos);
+    this.overlay.lineStyle(3, 0xffffff, 0.85).beginPath().moveTo(from.x, from.y);
+    for (const p of path) this.overlay.lineTo(fieldToWorld(p).x, fieldToWorld(p).y);
+    this.overlay.strokePath();
+    const end = fieldToWorld(hover);
+    this.overlay.lineStyle(2, 0xffffff, 0.9).strokeCircle(end.x, end.y, UNIT_RADIUS * S);
+    this.aimNote = t("Walk: {cost} of {left} movement", { cost: tag("num", cost.toFixed(1)), left: this.state!.turn!.movePointsLeft.toFixed(1) });
+    if (breaksEngagement(this.state!, unit.id, hover)) {
+      this.showPreview(previewFreeWalk(this.state!, CONTENT, unit.id, hover));
+      const p = fieldToWorld(hover);
+      this.previewLabels!.add(this.add.text(p.x, p.y - 22, t("⚔ {n} free attack", { n: 1 }), {
+        fontFamily: FONT, fontSize: "12px", fontStyle: "bold", color: "#ff8080", backgroundColor: "#10141ccc", padding: { x: 3, y: 1 },
+      }).setOrigin(0.5).setDepth(8));
+    }
+  }
+
+  /** One extra line under the info: why an aim fails, the walk's cost, a catch warning. */
+  private aimNote = "";
 
   private refreshOverlay(): void {
     this.overlay.clear();
     this.previewLabels?.destroy();
     this.previewLabels = null;
     this.comboLabels?.setVisible(true);
+    this.aimNote = "";
+    this.drawReach();
+    const hover = this.armed ?? this.hovered;
     if (this.phase === "deploy") {
-      this.fillTiles(this.scenario.deploymentZone, COLORS.zone, 0.4);
+      for (const p of this.scenario.deploymentZone) {
+        const taken = this.placements.some((pl) => samePoint(pl.pos, p));
+        const c = fieldToWorld(p);
+        this.overlay.fillStyle(COLORS.zone, taken ? 0.15 : 0.35).fillCircle(c.x, c.y, UNIT_RADIUS * S + 2);
+        this.overlay.lineStyle(2, COLORS.zone, 0.9).strokeCircle(c.x, c.y, UNIT_RADIUS * S + 2);
+      }
     } else if (this.phase === "battle" && this.state && this.isPlayerTurn() && !this.busy) {
       const unit = activeUnit(this.state)!;
       if (this.selectedBall) {
-        this.fillTiles(captureTargets(this.state, CONTENT, unit.id, this.selectedBall), COLORS.active, 0.35);
+        for (const p of captureTargets(this.state, CONTENT, unit.id, this.selectedBall)) this.ringAt(p, COLORS.active, 6, 3);
       } else if (this.selectedMove) {
-        const move = CONTENT.moves[this.selectedMove]!;
-        const targets = validTargets(this.state, CONTENT, unit.id, this.selectedMove);
-        // Aim tiles: red for single-target moves, violet for area moves (they hit everything in the shape).
-        const isArea = move.shape.kind !== "single";
-        this.fillTiles(targets, isArea ? COLORS.areaAim : COLORS.target, 0.3);
-        if (this.hovered && targets.some((t) => samePoint(t, this.hovered!))) {
-          this.fillTiles(moveArea(this.state, move, unit, this.hovered), COLORS.area, 0.3);
-          this.fillTiles(affectedUnits(this.state, move, unit, this.hovered).map((u) => u.pos), COLORS.area, 0.5);
-          this.showPreview(previewMove(this.state, CONTENT, unit.id, this.selectedMove, this.hovered));
-        }
+        this.drawAim(unit, this.selectedMove, hover);
       } else if (this.hoveredMove) {
-        // Range preview: every tile the move could reach from here, whether or not a target stands there.
-        const range = moveRange(unit, CONTENT.moves[this.hoveredMove]!);
-        const inRange: Point[] = [];
-        for (let y = 0; y < this.grid.height; y++)
-          for (let x = 0; x < this.grid.width; x++) {
-            const d = gridDistance({ x, y }, unit.pos);
-            if (d >= range.min && d <= range.max) inRange.push({ x, y });
-          }
-        this.fillTiles(inRange, COLORS.target, 0.18);
-      } else {
-        const reach = reachableFor(this.state, unit.id);
-        this.fillTiles(reach.destinations, COLORS.reach, 0.25);
-        if (this.hovered && reach.destinations.some((p) => samePoint(p, this.hovered!))) this.previewEngagement(unit.id, this.hovered);
+        // Range preview: how far the move reaches from here.
+        const move = CONTENT.moves[this.hoveredMove]!;
+        const range = freeRange(unit, move);
+        const ring = move.shape.kind === "line" ? move.shape.length + 0.3 : range.max;
+        const c = fieldToWorld(unit.pos);
+        if (ring > 0) this.overlay.fillStyle(COLORS.target, 0.15).fillCircle(c.x, c.y, ring * S).lineStyle(2, COLORS.target, 0.8).strokeCircle(c.x, c.y, ring * S);
+      } else if (hover) {
+        this.drawWalk(unit, hover);
       }
     }
     this.drawThreat();
     if (this.phase === "battle" && this.state) this.drawCombatMarks();
-    // Touch: the tapped action tile pulses in gold until it is tapped again (confirm).
+    // Touch: the tapped spot pulses in gold until it is tapped again (confirm).
     if (!this.armedFrame) {
-      this.armedFrame = this.add.polygon(0, 0, hexCorners(0, 0, HEX_R - 3)).setOrigin(0).setStrokeStyle(4, 0xf5d76e).setDepth(20).setVisible(false);
+      this.armedFrame = this.add.circle(0, 0, UNIT_RADIUS * S + 4).setStrokeStyle(4, 0xf5d76e).setDepth(20).setVisible(false);
       this.tweens.add({ targets: this.armedFrame, alpha: { from: 1, to: 0.25 }, duration: 350, yoyo: true, repeat: -1 });
     }
     this.armedFrame.setVisible(this.armed !== null);
     if (this.armed) {
-      const c = tileToWorld(this.armed);
+      const c = fieldToWorld(this.armed);
       this.armedFrame.setPosition(c.x, c.y);
-    }
-    if (this.hovered && this.grid.inBounds(this.hovered)) {
-      const c = tileToWorld(this.hovered);
-      this.overlay.lineStyle(2, 0xffffff, 0.8).strokePoints(hexCorners(c.x, c.y, HEX_R - 1.5), true);
     }
   }
 
@@ -472,11 +614,11 @@ export class BattleScene extends Phaser.Scene {
    */
   private drawCombatMarks(): void {
     const state = this.state!;
-    const centre = tileToWorld;
+    const centre = fieldToWorld;
     this.overlay.lineStyle(3, COLORS.engage, 0.85);
     for (const u of state.units) {
       const partner = u.hp > 0 ? partnerOf(state, u) : null;
-      if (!partner || u.id > partner.id || this.isHidden(u.id) || this.isHidden(partner.id)) continue;
+      if (!partner || u.id > partner.id) continue;
       const a = centre(u.pos), b = centre(partner.pos);
       this.overlay.lineBetween(a.x, a.y, b.x, b.y);
     }
@@ -487,10 +629,10 @@ export class BattleScene extends Phaser.Scene {
     // Named combo the active Pokémon would land: its name over the foe.
     this.comboLabels = this.add.container(0, 0).setDepth(15);
     for (const foe of state.units) {
-      const combo = foe.side === active.side || foe.hp <= 0 || this.isHidden(foe.id) ? null : comboSetup(state, CONTENT, active, foe);
+      const combo = foe.side === active.side || foe.hp <= 0 ? null : comboSetup(state, CONTENT, active, foe);
       if (!combo) continue;
-      const c = tileToWorld(foe.pos);
-      this.comboLabels.add(this.add.text(c.x, c.y - HEX_R - 6, `⚡ ${CONTENT.rules.combos[combo]!.name}`, {
+      const c = fieldToWorld(foe.pos);
+      this.comboLabels.add(this.add.text(c.x, c.y - 30, `⚡ ${CONTENT.rules.combos[combo]!.name}`, {
         fontFamily: FONT, fontSize: px(10), color: "#10141c", fontStyle: "bold", backgroundColor: "#f5d76e", padding: { x: 3, y: 1 },
       }).setOrigin(0.5, 1));
     }
@@ -529,35 +671,29 @@ export class BattleScene extends Phaser.Scene {
     return `${tag("good", t("Combo: {name}", { name: c.name }))} ${tag("dim", `${why}: ×${c.damage} ${t("damage")}${c.consumes ? t(", uses the status up") : ""}`)}`;
   }
 
-  /** Hovering a destination: the free attacks the move would draw, shown like a damage preview. */
-  private previewEngagement(unitId: string, to: Point): void {
-    const { events } = applyAction(this.state!, CONTENT, { type: "move", unitId, to });
-    if (!events.some((e) => e.type === "engagementStrike")) return;
-    const damage = events.filter((e) => e.type === "damaged" && e.unitId === unitId).reduce((s, e) => s + (e as { amount: number }).amount, 0);
-    const knockedOut = events.some((e) => e.type === "fainted" && e.unitId === unitId);
-    this.showPreview([{ unitId, damage, healed: 0, knockedOut, statuses: [] }]);
-    const strikes = events.filter((e) => e.type === "engagementStrike").length;
-    const p = tileToWorld(to);
-    this.previewLabels!.add(this.add.text(p.x, p.y - 22, strikes > 1 ? t("⚔ {n} free attacks", { n: strikes }) : t("⚔ {n} free attack", { n: strikes }), {
-      fontFamily: FONT, fontSize: "12px", fontStyle: "bold", color: "#ff8080", backgroundColor: "#10141ccc", padding: { x: 3, y: 1 },
-    }).setOrigin(0.5).setDepth(8));
-  }
-
-  private showPreview(hits: readonly HitPreview[]): void {
-    const items = hits.flatMap((h) => {
-      const view = this.units.get(h.unitId);
-      if (!view) return [];
-      const parts = [h.damage ? `-${h.damage}` : "", h.healed ? `+${h.healed}` : "", h.knockedOut ? "KO" : ""].filter(Boolean);
-      if (!parts.length && !h.statuses.length) return [];
-      const label = parts.length ? parts.join(" ") : h.statuses.join(", ");
-      return [this.add.text(view.container.x, view.container.y - 30, label, {
-        fontFamily: FONT, fontSize: "14px", fontStyle: "bold", color: h.knockedOut ? "#ff5050" : h.healed && !h.damage ? "#7ed321" : "#ffd27a",
-        backgroundColor: "#10141ccc", padding: { x: 3, y: 1 },
-      }).setOrigin(0.5).setDepth(8)];
-    });
-    this.previewLabels = this.add.container(0, 0, items).setDepth(16);
+  /** Exact predicted damage above every Pokémon a hit would touch; `extra` adds e.g. the hit chance. */
+  private showPreview(hits: readonly HitPreview[], extra: (h: HitPreview) => string = () => ""): void {
+    this.previewLabels ??= this.add.container(0, 0).setDepth(16);
+    for (const h of hits) {
+      const parts = [h.damage ? `-${h.damage}` : "", h.healed ? `+${h.healed}` : "", h.knockedOut ? "KO" : "", extra(h)].filter(Boolean);
+      if (!parts.length && !h.statuses.length) continue;
+      this.previewLabel(h.unitId, parts.length ? parts.join(" ") : h.statuses.join(", "), h.knockedOut ? "#ff5050" : h.healed && !h.damage ? "#7ed321" : "#ffd27a");
+    }
     this.comboLabels?.setVisible(false);
     this.lastPreview = hits;
+  }
+
+  /** A label over a Pokémon; labels of Pokémon standing close stack instead of overlapping. */
+  private previewLabel(unitId: string, text: string, color: string): void {
+    const view = this.units.get(unitId);
+    if (!view) return;
+    this.previewLabels ??= this.add.container(0, 0).setDepth(16);
+    const label = this.add.text(view.container.x, view.container.y - 30, text, {
+      fontFamily: FONT, fontSize: "14px", fontStyle: "bold", color, backgroundColor: "#10141ccc", padding: { x: 3, y: 1 },
+    }).setOrigin(0.5);
+    const others = this.previewLabels.list as Phaser.GameObjects.Text[];
+    while (others.some((o) => Phaser.Geom.Intersects.RectangleToRectangle(o.getBounds(), label.getBounds()))) label.y -= label.height;
+    this.previewLabels.add(label);
   }
 
   /** Who acts this round, in order, next to the round counter: portraits ringed in team colours. */
@@ -571,7 +707,7 @@ export class BattleScene extends Phaser.Scene {
       const active = i === 0;
       const color = u.side === "player" ? COLORS.player : COLORS.enemy;
       items.push(this.add.rectangle(x, 10, 26, 26, 0x10141c).setOrigin(0).setStrokeStyle(active ? 3 : 2, active ? COLORS.active : color));
-      if (this.textures.exists(portraitKey(u.speciesId)) && !this.isHidden(u.id)) items.push(this.add.image(x + 13, 23, portraitKey(u.speciesId)).setDisplaySize(22, 22));
+      if (this.textures.exists(portraitKey(u.speciesId))) items.push(this.add.image(x + 13, 23, portraitKey(u.speciesId)).setDisplaySize(22, 22));
       else items.push(this.add.text(x + 13, 23, "?", { fontFamily: FONT, fontSize: "14px", color: COLORS.text }).setOrigin(0.5));
       if (i < state.queue.length - 1) items.push(this.add.text(x + 27, 23, "›", { fontFamily: FONT, fontSize: "12px", color: COLORS.dim }).setOrigin(0, 0.5));
     });
@@ -613,7 +749,7 @@ export class BattleScene extends Phaser.Scene {
 
     if (this.phase === "deploy") {
       this.header.setText(t("Deployment"));
-      text(t("Pick up to {n}: tap a card, then a blue tile. Tap a foe: its reach (orange) and attack range (red).", { n: this.scenario.maxDeploy ?? MAX_ACTIVE_UNITS }), COLORS.dim, 12);
+      text(t("Pick up to {n}: tap a card, then a blue spot. Tap a foe: its reach (orange) and attack range (red).", { n: this.scenario.maxDeploy ?? MAX_ACTIVE_UNITS }), COLORS.dim, 12);
       const level = fatigueLevel(WORLD_CONTENT.fatigue, session.game.world.fatigue);
       if (level.movePenalty || level.damageMultiplier !== 1)
         text(level.damageMultiplier !== 1
@@ -675,6 +811,8 @@ export class BattleScene extends Phaser.Scene {
       }
       if (this.rewardText) text(this.rewardText, COLORS.good);
       button(t("➜ Continue"), true, false, () => this.scene.start("Overworld", {}));
+      this.infoY = 16 + y + 10;
+      this.infoText.setY(this.infoY);
       return;
     }
 
@@ -685,7 +823,7 @@ export class BattleScene extends Phaser.Scene {
     text(`${CONTENT.terms.bond} ${"●".repeat(bond)}${"○".repeat(Math.max(0, state.bondMax.player - bond))} ${bond}/${state.bondMax.player}`, "#f5d76e", 13);
     if (unit && unit.side === "player" && !this.busy) {
       const species = CONTENT.species[unit.speciesId]!;
-      text(t("{name} · move {n}", { name: species.name, n: state.turn!.movePointsLeft }), COLORS.good);
+      text(t("{name} · move {n}", { name: species.name, n: state.turn!.movePointsLeft.toFixed(1) }), COLORS.good);
       // A short guide to what can be done now, for new players.
       if (!this.selectedMove && !this.selectedBall) text(t("Blue: move · pick a move to attack"), COLORS.dim, 11);
       if (switchTargets(state).length) text(t("Tap another of your Pokémon to act with it instead."), COLORS.dim, 11);
@@ -699,19 +837,19 @@ export class BattleScene extends Phaser.Scene {
         if (moveId === others[0]) text(state.turn!.actionUsed ? t("Action · used (1 per turn)") : t("Action · ready (1 per turn)"), state.turn!.actionUsed ? COLORS.dim : "#9fd3ff", 12);
         const move = CONTENT.moves[moveId]!;
         const reason = moveUnavailableReason(state, CONTENT, unit.id, moveId);
-        const targets = reason ? [] : validTargets(state, CONTENT, unit.id, moveId);
+        const hasTarget = !reason && freeHasTarget(state, CONTENT, unit.id, moveId);
         const cd = unit.cooldowns[moveId] ?? 0;
         const range = moveRange(unit, move);
         const used = move.kind === "basic" ? state.turn!.basicUsed : state.turn!.actionUsed;
         const status = cd > 0 ? t("wait {n}", { n: cd })
-          : !used && !reason && targets.length === 0 ? t("no target {r}", { r: range.min === range.max ? range.max : `${range.min}-${range.max}` })
+          : !used && !reason && !hasTarget ? t("no target {r}", { r: range.min === range.max ? range.max : `${range.min}-${range.max}` })
           // Basic and special need no label: the "Basic attack" / "Action" headers above say it.
           : move.kind === "basic" || move.kind === "special" ? ""
           : move.kind === "bond" ? `${CONTENT.terms.bond} ${bondCostFor(move, unit)}`
           : unit.usedUltimates.includes(moveId) ? t("ult used") : t("ult 1×");
         const ownBasic = basics.find((b) => b !== "struggle") ?? unit.moves.find((m) => m !== "struggle" && CONTENT.moves[m]!.kind === "basic");
         const power = moveId === "struggle" && ownBasic ? Math.round(CONTENT.moves[ownBasic]!.power * CONTENT.rules.engagement.fallbackPower) : move.power;
-        button(`${move.name.padEnd(13)} ${power ? t("Power {n}", { n: String(power).padStart(2) }) : "        "}  ${status}`, targets.length > 0, this.selectedMove === moveId, () => {
+        button(`${move.name.padEnd(13)} ${power ? t("Power {n}", { n: String(power).padStart(2) }) : "        "}  ${status}`, hasTarget, this.selectedMove === moveId, () => {
           this.selectedBall = null;
           this.selectedMove = this.selectedMove === moveId ? null : moveId;
           this.refreshAll();
@@ -767,32 +905,34 @@ export class BattleScene extends Phaser.Scene {
       const unit = this.state ? activeUnit(this.state) : null;
       if (unit) {
         const raw = moveUnavailableReason(this.state!, CONTENT, unit.id, this.hoveredMove);
-        const reason = raw ? t(raw) : validTargets(this.state!, CONTENT, unit.id, this.hoveredMove).length === 0 ? t("no valid target from here") : null;
+        const reason = raw ? t(raw) : !freeHasTarget(this.state!, CONTENT, unit.id, this.hoveredMove) ? t("no valid target from here") : null;
         if (reason) text += `\n\n${tag("bad", t("Not usable now: {reason}", { reason }))}`;
       }
       this.setInfo(text);
       return;
     }
     let unit: BattleUnit | undefined;
-    if (this.hovered && this.grid.inBounds(this.hovered)) {
-      if (this.state) unit = unitAt(this.state, this.hovered);
+    const hover = this.armed ?? this.hovered;
+    if (hover && this.inField(hover)) {
+      if (this.state) unit = freeUnitAt(this.state, hover);
       else {
-        const e = this.scenario.enemies.find((x) => samePoint(x.pos, this.hovered!));
-        const pl = this.placements.find((x) => samePoint(x.pos, this.hovered!));
+        const near = (p: Point) => distance(p, hover) <= UNIT_RADIUS;
+        const e = this.scenario.enemies.find((x) => near(x.pos));
+        const pl = this.placements.find((x) => near(x.pos));
         const id = e?.id ?? pl?.unitId;
         if (id) unit = this.previewUnit(id);
       }
     }
+    // While aiming or walking, the aim's note (cost, failure reason, catch warning) leads.
+    if (this.aimNote && (this.selectedMove || !unit)) {
+      this.setInfo([this.aimNote, unit ? "" : this.selectedMove ? describeMove(CONTENT, CONTENT.moves[this.selectedMove]!) : ""].filter(Boolean).join("\n\n"));
+      return;
+    }
     if (!unit) {
-      const terrain = this.hovered && this.grid.inBounds(this.hovered) ? this.grid.terrainAt(this.hovered) : null;
-      const terrainText = terrain ? this.terrainInfo(terrain.id) : "";
+      const terrainText = hover && this.inField(hover) ? this.terrainInfo(terrainAt(this.scenario.field, hover).id) : "";
       // Without a hovered unit, show the selected move's rules (also covers touch screens).
       const moveText = this.selectedMove ? describeMove(CONTENT, CONTENT.moves[this.selectedMove]!) : "";
       this.infoText.setMarkup([moveText, terrainText].filter(Boolean).join("\n\n"));
-      return;
-    }
-    if (unit.side === "enemy" && this.isHidden(unit.id)) {
-      this.infoText.setMarkup(`${tag("enemy", t("??? Unknown Pokémon"))}\n${tag("dim", t("Its details are revealed once it acts or is hit."))}`);
       return;
     }
     const s = CONTENT.species[unit.speciesId]!;
@@ -852,12 +992,12 @@ export class BattleScene extends Phaser.Scene {
     return session.game.roster.party.find((m) => m.uid === uid)?.knockouts ?? 0;
   }
 
-  private terrainInfo(id: string): string {
+  private terrainInfo(id: FreeTerrainId): string {
     switch (id) {
-      case "grass": return t("Tall grass — units here can only be targeted from adjacent tiles.");
-      case "mud": return t("Mud — costs 2 movement.");
-      case "wall": return t("Rock — blocks movement and line of sight.");
-      case "water": return t("Water — impassable.");
+      case "bush": return t("Bush — walking costs 1.5×; blocks line of sight.");
+      case "mud": return t("Mud — walking costs 2×.");
+      case "rock": return t("Rock — blocks movement and line of sight.");
+      case "water": return t("Water — walking costs 2× (fliers skim over).");
       default: return "";
     }
   }
@@ -875,27 +1015,41 @@ export class BattleScene extends Phaser.Scene {
     };
   }
 
-  private isHidden(id: string): boolean {
-    return (this.scenario.hiddenEnemies ?? []).includes(id) && !this.revealed.has(id);
-  }
-
-  private displayName(u: BattleUnit): string {
-    return u.side === "enemy" && this.isHidden(u.id) ? "???" : CONTENT.species[u.speciesId]!.name;
-  }
 
   // ------------------------------------------------------------ input
 
-  private pointerTile(p: Phaser.Input.Pointer): Point | null {
-    return worldToTile(p.worldX, p.worldY, this.grid.width, this.grid.height);
+  private inField(p: Point): boolean {
+    return p.x >= 0 && p.y >= 0 && p.x <= this.scenario.field.width && p.y <= this.scenario.field.height;
   }
 
-  /** Tiles where a tap acts (move there, use the selected move or ball); others just inspect. */
-  private isActionTile(t: Point): boolean {
+  /** The field point under the pointer, or null off the field. */
+  private pointerPoint(p: Phaser.Input.Pointer): Point | null {
+    const f = worldToField(p.worldX, p.worldY);
+    return this.inField(f) ? f : null;
+  }
+
+  update(): void {
+    if (!this.hoverDirty) return;
+    this.hoverDirty = false;
+    this.refreshOverlay();
+    this.refreshInfo();
+  }
+
+  /** The deploy spot under a point, if any. */
+  private spotAt(p: Point): Point | undefined {
+    return this.scenario.deploymentZone.filter((z) => distance(z, p) <= SPOT_PICK).sort((a, b) => distance(a, p) - distance(b, p))[0];
+  }
+
+  /** Whether a tap here acts (walk there, use the selected move or ball); otherwise it just inspects. */
+  private isActionPoint(t: Point): boolean {
     if (this.phase !== "battle" || this.busy || !this.state || !this.isPlayerTurn()) return false;
     const unit = activeUnit(this.state)!;
-    if (this.selectedBall) return captureTargets(this.state, CONTENT, unit.id, this.selectedBall).some((p) => samePoint(p, t));
-    if (this.selectedMove) return validTargets(this.state, CONTENT, unit.id, this.selectedMove).some((p) => samePoint(p, t));
-    return reachableFor(this.state, unit.id).destinations.some((p) => samePoint(p, t));
+    if (this.selectedBall) {
+      const foe = freeUnitAt(this.state, t);
+      return !!foe && captureTargets(this.state, CONTENT, unit.id, this.selectedBall).some((p) => samePoint(p, foe.pos));
+    }
+    if (this.selectedMove) return freeAim(this.state, CONTENT, unit.id, this.selectedMove, t).ok;
+    return (this.reach ?? freeReachFor(this.state, unit.id)).costTo(t) !== null;
   }
 
   /** A pulsing ring under the Pokémon whose turn it is, so new players see who acts. */
@@ -906,10 +1060,10 @@ export class BattleScene extends Phaser.Scene {
       return;
     }
     if (!this.activeRing) {
-      this.activeRing = this.add.circle(0, 0, TILE / 2 - 2).setStrokeStyle(3, 0xf5d76e).setDepth(1);
+      this.activeRing = this.add.circle(0, 0, UNIT_RADIUS * S + 5).setStrokeStyle(3, 0xf5d76e).setDepth(1);
       this.tweens.add({ targets: this.activeRing, alpha: { from: 1, to: 0.35 }, duration: 600, yoyo: true, repeat: -1 });
     }
-    const c = tileToWorld(unit.pos);
+    const c = fieldToWorld(unit.pos);
     this.activeRing.setPosition(c.x, c.y).setVisible(true);
   }
 
@@ -921,16 +1075,17 @@ export class BattleScene extends Phaser.Scene {
     const unit = activeUnit(state)!;
     if (this.selectedBall) {
       const ballId = this.selectedBall;
-      if (captureTargets(state, CONTENT, unit.id, ballId).some((p) => samePoint(p, t))) {
+      const foe = freeUnitAt(state, t);
+      if (foe && captureTargets(state, CONTENT, unit.id, ballId).some((p) => samePoint(p, foe.pos))) {
         this.selectedBall = null;
-        void this.perform({ type: "throwBall", unitId: unit.id, ballId, target: t });
+        void this.perform({ type: "throwBall", unitId: unit.id, ballId, target: foe.pos });
       } else {
         this.cancelSelection();
       }
       return;
     }
     if (this.selectedMove) {
-      if (validTargets(state, CONTENT, unit.id, this.selectedMove).some((p) => samePoint(p, t))) {
+      if (freeAim(state, CONTENT, unit.id, this.selectedMove, t).ok) {
         const moveId = this.selectedMove;
         this.selectedMove = null;
         void this.perform({ type: "useMove", unitId: unit.id, moveId, target: t });
@@ -939,12 +1094,12 @@ export class BattleScene extends Phaser.Scene {
       }
       return;
     }
-    const other = unitAt(state, t);
+    const other = freeUnitAt(state, t);
     if (other && switchTargets(state).includes(other.id)) {
       void this.perform({ type: "switchUnit", unitId: unit.id, to: other.id });
       return;
     }
-    if (reachableFor(state, unit.id).destinations.some((p) => samePoint(p, t))) {
+    if ((this.reach ?? freeReachFor(state, unit.id)).costTo(t) !== null) {
       void this.perform({ type: "move", unitId: unit.id, to: t });
     } else {
       this.refreshInfo();
@@ -952,7 +1107,8 @@ export class BattleScene extends Phaser.Scene {
   }
 
   private onDeployClick(t: Point): void {
-    const existing = this.placements.find((p) => samePoint(p.pos, t));
+    const near = (p: Point) => distance(p, t) <= SPOT_PICK;
+    const existing = this.placements.find((p) => near(p.pos));
     if (existing) {
       this.placements = this.placements.filter((p) => p !== existing);
       this.units.get(existing.unitId)?.container.destroy();
@@ -961,12 +1117,13 @@ export class BattleScene extends Phaser.Scene {
       return this.refreshAll();
     }
     const id = this.selectedCandidate;
-    if (!id || !this.scenario.deploymentZone.some((z) => samePoint(z, t))) return;
+    const spot = this.spotAt(t);
+    if (!id || !spot) return;
     const without = this.placements.filter((p) => p.unitId !== id);
     if (without.length >= (this.scenario.maxDeploy ?? MAX_ACTIVE_UNITS)) return;
-    this.placements = [...without, { unitId: id, pos: t }];
+    this.placements = [...without, { unitId: id, pos: spot }];
     this.units.get(id)?.container.destroy();
-    this.createUnitView(id, this.party.find((m) => m.id === id)!.speciesId, "player", t);
+    this.createUnitView(id, this.party.find((m) => m.id === id)!.speciesId, "player", spot);
     // Auto-advance to the next unplaced, healthy party member for quick deployment.
     this.selectedCandidate = this.party.find((m) => m.hp > 0 && !this.placements.some((p) => p.unitId === m.id))?.id ?? null;
     this.refreshAll();
@@ -1098,12 +1255,13 @@ export class BattleScene extends Phaser.Scene {
     const ctx = {
       name: (id: string) => {
         const u = unitById(state, id);
-        return u.side === "enemy" ? t("Foe {name}", { name: this.displayName(u) }) : this.displayName(u);
+        const name = CONTENT.species[u.speciesId]!.name;
+        return u.side === "enemy" ? t("Foe {name}", { name }) : name;
       },
       isPlayer: (id: string) => unitById(state, id).side === "player",
       typeOf: (id: string) => {
         const u = unitById(state, id);
-        return u.side === "enemy" && this.isHidden(u.id) ? null : CONTENT.species[u.speciesId]!.types[0]!;
+        return CONTENT.species[u.speciesId]!.types[0]!;
       },
       moveName: (id: string) => CONTENT.moves[id]!.name,
       statusName: (id: string) => CONTENT.statuses[id]?.name ?? id,
@@ -1113,21 +1271,19 @@ export class BattleScene extends Phaser.Scene {
       bondName: CONTENT.terms.bond,
     };
     for (const e of events) {
-      if (e.type === "moveUsed") {
-        this.revealed.add(e.unitId);
-        e.affected.forEach((id) => this.revealed.add(id));
-      }
       const entry = formatEvent(e, ctx);
       if (entry) this.pushLog(entry);
       switch (e.type) {
         case "moved":
+          await this.settle();
           await this.tweenPath(e.unitId, e.path);
           break;
         case "moveUsed": {
           // Face the target and lunge towards it.
           const view = this.units.get(e.unitId);
           if (view) {
-            const to = tileToWorld(e.target);
+            await this.settle();
+            const to = fieldToWorld(e.target);
             const dx = to.x - view.container.x;
             const dy = to.y - view.container.y;
             if (dx || dy) {
@@ -1138,10 +1294,10 @@ export class BattleScene extends Phaser.Scene {
                 duration: 90, yoyo: true, onComplete: () => resolve(),
               }));
             }
-            // The move's effect, styled by its type, on everyone it touches (or the aimed hex).
-            const hit = e.affected.map((id) => this.state?.units.find((u) => u.id === id)).filter((u) => u !== undefined).map((u) => tileToWorld(u.pos));
+            // The move's effect, styled by its type, on everyone it touches (or the aimed spot).
+            const hit = e.affected.map((id) => this.state?.units.find((u) => u.id === id)).filter((u) => u !== undefined).map((u) => fieldToWorld(u.pos));
             const move = CONTENT.moves[e.moveId];
-            if (move) await playMoveFx(this, move, { x: view.container.x, y: view.container.y }, hit.length ? hit : [tileToWorld(e.target)]);
+            if (move) await playMoveFx(this, move, { x: view.container.x, y: view.container.y }, hit.length ? hit : [fieldToWorld(e.target)]);
           }
           break;
         }
@@ -1175,7 +1331,6 @@ export class BattleScene extends Phaser.Scene {
           this.cameras.main.shake(100, 0.003);
           break;
         case "terrainChanged":
-          this.grid = Grid.fromAscii(this.state!.mapRows);
           this.drawBoard();
           break;
         case "captured":
@@ -1215,7 +1370,7 @@ export class BattleScene extends Phaser.Scene {
   /** Full scrollable history drawn over the board; newest at the bottom, wheel scrolls back. */
   private renderLogOverlay(): void {
     this.logOverlay?.destroy();
-    const { w, h } = boardSize(this.grid.width, this.grid.height);
+    const { w, h } = this.boardPx();
     const lineH = 15;
     const visible = Math.floor((h - 40) / lineH);
     const maxScroll = Math.max(0, this.log.length - visible);
@@ -1247,9 +1402,13 @@ export class BattleScene extends Phaser.Scene {
     if (!view || path.length === 0) return Promise.resolve();
     return (async () => {
       for (const p of path) {
-        const to = tileToWorld(p);
-        this.animate(unitId, "walk", facingFor(to.x - view.container.x, to.y - view.container.y));
-        await new Promise<void>((resolve) => this.tweens.add({ targets: view.container, ...to, duration: 110, onComplete: () => resolve() }));
+        const to = fieldToWorld(p);
+        const dx = to.x - view.container.x;
+        const dy = to.y - view.container.y;
+        this.animate(unitId, "walk", facingFor(dx, dy));
+        // About 130 ms per hex width walked.
+        const duration = Math.max(60, (Math.hypot(dx, dy) / S) * 130);
+        await new Promise<void>((resolve) => this.tweens.add({ targets: view.container, ...to, duration, onComplete: () => resolve() }));
       }
       this.animate(unitId, "idle");
     })();
@@ -1271,6 +1430,14 @@ export class BattleScene extends Phaser.Scene {
       .setOrigin(0.5)
       .setStroke("#000000", 3);
     this.tweens.add({ targets: t, y: t.y - 24, alpha: 0, duration: 900, onComplete: () => t.destroy() });
+  }
+
+  /**
+   * Waits until a frame has been drawn. Heavy work (rules, AI, panel rebuild) makes one long frame; a tween started
+   * right after it would skip that time and lose half its animation on a phone.
+   */
+  private settle(): Promise<void> {
+    return new Promise((resolve) => this.events.once("postupdate", () => this.events.once("postupdate", () => resolve())));
   }
 
   private wait(ms: number): Promise<void> {

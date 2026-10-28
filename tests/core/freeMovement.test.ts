@@ -1,13 +1,15 @@
 import { describe, expect, it } from "vitest";
 import { CONTENT } from "../../src/content";
-import { createBattle, unitById, type BattleState, type UnitSetup } from "../../src/core/battle";
+import { applyAction, createBattle, unitById, type BattleState, type UnitSetup } from "../../src/core/battle";
+import { planTurn } from "../../src/core/ai";
 import {
-  applyFreeAction, distance, freeAim, freeReach, freeReachFor, planFreeAction, previewFreeWalk, PROTO_FIELD, PROTO_UNITS, UNIT_RADIUS, type FreeField,
+  distance, freeAim, freeReach, freeReachFor, previewFreeWalk, UNIT_RADIUS, type FreeField,
 } from "../../src/core/free";
+import { PROTO_FIELD, PROTO_UNITS } from "./freeFixture";
 
 const OPEN: FreeField = { width: 12, height: 8, zones: [] };
 const u = (id: string, speciesId: string, side: "player" | "enemy", x: number, y: number): UnitSetup => ({ id, speciesId, side, pos: { x, y } });
-const start = (units: UnitSetup[], field = OPEN): BattleState => createBattle(CONTENT, [], units, { field }).state;
+const start = (units: UnitSetup[], field = OPEN): BattleState => createBattle(CONTENT, field, units).state;
 /** Hands the turn to `id` with `mp` movement points (tests drive turns directly). */
 const turnOf = (s: BattleState, id: string, mp = 4): BattleState =>
   ({ ...s, turn: { unitId: id, movePointsLeft: mp, actionUsed: false, basicUsed: false } });
@@ -74,7 +76,7 @@ describe("free movement: friendly fire", () => {
     const hit = new Set<string>();
     for (let seed = 1; seed <= 20; seed++) {
       const s = { ...shot(3.5), rngState: seed * 7919 };
-      const r = applyFreeAction(s, CONTENT, { type: "freeUseMove", unitId: "p", moveId: "ember", target: { x: 4.2, y: 4 } });
+      const r = applyAction(s, CONTENT, { type: "useMove", unitId: "p", moveId: "ember", target: { x: 4.2, y: 4 } });
       for (const id of ["a", "e"]) if (unitById(r.state, id).hp < unitById(s, id).hp) hit.add(id);
     }
     expect([...hit].sort()).toEqual(["a", "e"]);
@@ -85,7 +87,7 @@ describe("free movement: friendly fire", () => {
       const aim = freeAim(shot(x, y), CONTENT, "p", "ember", { x: 4.2, y: 4 });
       return aim.ok ? aim.interceptChance ?? 0 : -1;
     };
-    expect(chance(3.9, 4)).toBeGreaterThan(chance(3.4, 4));
+    expect(chance(3.55, 4)).toBeGreaterThan(chance(3.0, 4));
     expect(chance(3.6, 4)).toBeGreaterThan(chance(3.6, 4.2));
     expect(chance(3.6, 4.2)).toBeGreaterThan(0);
   });
@@ -106,27 +108,27 @@ describe("free movement: friendly fire", () => {
 describe("free movement: engagement", () => {
   const engaged = () => {
     const s = turnOf(start([u("p", "charmander", "player", 4, 4), u("e", "geodude", "enemy", 5, 4)]), "p");
-    const hit = applyFreeAction(s, CONTENT, { type: "freeUseMove", unitId: "p", moveId: "scratch", target: { x: 5, y: 4 } });
+    const hit = applyAction(s, CONTENT, { type: "useMove", unitId: "p", moveId: "scratch", target: { x: 5, y: 4 } });
     expect(unitById(hit.state, "p").engagedWith).toBe("e");
     return hit.state;
   };
 
   it("a melee hit engages; walking near the foe (not engaged) costs nothing extra", () => {
     const s = turnOf(start([u("p", "rattata", "player", 2, 4), u("e", "geodude", "enemy", 5, 4)]), "p");
-    const r = applyFreeAction(s, CONTENT, { type: "freeMove", unitId: "p", to: { x: 4, y: 4 } });
+    const r = applyAction(s, CONTENT, { type: "move", unitId: "p", to: { x: 4, y: 4 } });
     expect(r.events.some((e) => e.type === "engagementStrike")).toBe(false);
     expect(unitById(r.state, "p").engagedWith).toBeNull();
   });
 
   it("moving while staying in reach keeps the engagement, without a free attack", () => {
-    const r = applyFreeAction(engaged(), CONTENT, { type: "freeMove", unitId: "p", to: { x: 4.4, y: 3.3 } });
+    const r = applyAction(engaged(), CONTENT, { type: "move", unitId: "p", to: { x: 4.4, y: 3.3 } });
     expect(r.events.some((e) => e.type === "engagementStrike")).toBe(false);
     expect(unitById(r.state, "p").engagedWith).toBe("e");
   });
 
   it("an engaging hit pulls the pair together until they touch", () => {
     const s = turnOf(start([u("p", "charmander", "player", 4, 4), u("e", "rattata", "enemy", 5.2, 4)]), "p");
-    const r = applyFreeAction(s, CONTENT, { type: "freeUseMove", unitId: "p", moveId: "scratch", target: { x: 5.2, y: 4 } });
+    const r = applyAction(s, CONTENT, { type: "useMove", unitId: "p", moveId: "scratch", target: { x: 5.2, y: 4 } });
     const gap = distance(unitById(r.state, "p").pos, unitById(r.state, "e").pos);
     expect(gap).toBeLessThan(UNIT_RADIUS * 2 + 0.15);
     expect(gap).toBeGreaterThanOrEqual(UNIT_RADIUS * 2);
@@ -135,7 +137,7 @@ describe("free movement: engagement", () => {
   it("leaving the partner's reach draws its free attack and ends the engagement", () => {
     const s = engaged();
     expect(previewFreeWalk(s, CONTENT, "p", { x: 2, y: 4 }).find((h) => h.unitId === "p")?.damage).toBeGreaterThan(0);
-    const r = applyFreeAction(s, CONTENT, { type: "freeMove", unitId: "p", to: { x: 2, y: 4 } });
+    const r = applyAction(s, CONTENT, { type: "move", unitId: "p", to: { x: 2, y: 4 } });
     expect(r.events.some((e) => e.type === "engagementStrike")).toBe(true);
     expect(unitById(r.state, "p").engagedWith).toBeNull();
   });
@@ -143,13 +145,14 @@ describe("free movement: engagement", () => {
 
 describe("free movement: prototype battle", () => {
   it("the AI plays the prototype arena to an end with legal actions", () => {
-    let s = createBattle(CONTENT, [], PROTO_UNITS, { field: PROTO_FIELD }).state;
-    for (let i = 0; i < 600 && s.outcome === "ongoing"; i++) s = applyFreeAction(s, CONTENT, planFreeAction(s, CONTENT)).state;
+    let s = createBattle(CONTENT, PROTO_FIELD, PROTO_UNITS).state;
+    for (let i = 0; i < 200 && s.outcome === "ongoing"; i++)
+      for (const a of planTurn(s, CONTENT)) if (s.outcome === "ongoing") s = applyAction(s, CONTENT, a).state;
     expect(s.outcome).not.toBe("ongoing");
   });
 
   it("every start spot is free and reachable ground", () => {
-    const s = createBattle(CONTENT, [], PROTO_UNITS, { field: PROTO_FIELD }).state;
+    const s = createBattle(CONTENT, PROTO_FIELD, PROTO_UNITS).state;
     expect(freeReachFor(s, s.turn!.unitId).cells.length).toBeGreaterThan(50);
   });
 });

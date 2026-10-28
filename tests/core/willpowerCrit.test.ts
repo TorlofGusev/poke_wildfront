@@ -1,6 +1,7 @@
 import { describe, expect, it } from "vitest";
 import { CONTENT } from "../../src/content";
-import { applyAction, createBattle, critChance, statusResistChance, type BattleEvent } from "../../src/core/battle";
+import { critChance, statusResistChance, type BattleEvent } from "../../src/core/battle";
+import { applyAction, createBattle } from "./hexFixture";
 
 const base = CONTENT.species.rattata!.stats;
 /** One hit from p onto e (adjacent), with chosen stats, on a given seed. */

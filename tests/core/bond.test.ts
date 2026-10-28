@@ -1,5 +1,6 @@
 import { describe, expect, it } from "vitest";
-import { applyAction, createBattle, moveUnavailableReason, type BattleContent, type UnitSetup } from "../../src/core/battle";
+import { moveUnavailableReason, type BattleContent, type UnitSetup } from "../../src/core/battle";
+import { applyAction, createBattle } from "./hexFixture";
 import { teamBond } from "../../src/core/progression";
 import { content as base, pm, prog } from "./fixtures";
 

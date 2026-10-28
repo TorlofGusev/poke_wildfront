@@ -1,12 +1,14 @@
 import { CONTENT, PROGRESSION } from "../src/content";
 import { planTurn, type AiWeights } from "../src/core/ai";
-import { applyAction, createBattle, movementPoints, reachableFor, validTargets, STAT_NAMES, type BattleState, type UnitSetup } from "../src/core/battle";
-import { hexDistance } from "../src/core/grid/hex";
+import { movementPoints, STAT_NAMES, type BattleState, type UnitSetup } from "../src/core/battle";
+import { distance, freeReachFor } from "../src/core/free";
+import { applyAction, createBattle, validTargets } from "./core/hexFixture";
 import { newMember, type PartyMember } from "../src/core/party";
 import { chooseFocus, chooseTalent, defaultActiveMoves, focusOptions, gainXp, memberStats, pendingChoice, statOffer, takeOffer, talentOptions, teamBond, xpToNext } from "../src/core/progression";
 
 /** AI-vs-AI battle helpers shared by the report tests (not pass/fail tests). */
-// Mirror-symmetric arena and start positions, so neither side has a terrain advantage.
+// Mirror-symmetric arena and start positions, so neither side has a terrain advantage
+// (an ASCII map laid out as a free field, see hexFixture).
 export const HALF = ["......", "..\"\"..", ".....#", "..##..", "......", "....\"\"", ".#....", "......"];
 export const arena = HALF.map((row) => row + [...row].reverse().join(""));
 export const START = [{ x: 1, y: 1 }, { x: 1, y: 3 }, { x: 1, y: 5 }];
@@ -33,11 +35,8 @@ export function develop(m: PartyMember, pick: Pick, seed: number, candies = { n:
   const base = CONTENT.species[cur.speciesId]!.stats;
   // A sensible player: the focus stat, then the better of Attack / Defense, then HP.
   const best = [cur.focus ?? "attack", ...(["attack", "defense"] as const).filter((s) => s !== cur.focus).sort((a, b) => base[b] - base[a])];
-  // No player leaves a Pokémon at 1 movement: Speed first, up to the 2-movement step.
-  const twoMoves = CONTENT.rules.moveBySpeed.find((s) => s.move >= 2)?.speed ?? 0;
   for (let i = 0; cur.unspentPoints > 0; ) {
-    const slow = memberStats(CONTENT, PROGRESSION, cur).stats.speed < twoMoves;
-    const want = slow ? "speed" : [best[0]!, "hp", best[1]!][i++ % 3]!;
+    const want = [best[0]!, "hp", best[1]!][i++ % 3]!;
     const offer = statOffer(CONTENT, PROGRESSION, cur);
     cur = takeOffer(CONTENT, PROGRESSION, cur, (offer.find((o) => o.stat === want) ?? offer[0]!).stat);
   }
@@ -138,7 +137,7 @@ function idleReason(state: BattleState, id: string): string {
     return `engaged(${CONTENT.species[p.speciesId]!.types.join("/")})${any ? ":targets" : ":none"}`;
   }
   if (movementPoints(CONTENT, u, state) === 0) return "mp0";
-  if (reachableFor(state, id).destinations.length === 0) return "boxed";
+  if (freeReachFor(state, id).cells.length === 0) return "boxed";
   if (u.moves.some((m) => (CONTENT.moves[m]?.power ?? 0) > 0 && validTargets(state, CONTENT, id, m).length > 0)) return "declined-targets";
   return "stayed";
 }
@@ -174,7 +173,7 @@ export function battle(players: Omit<UnitSetup, "id" | "side" | "pos">[], enemie
         const l = logs.get(k)!; l.idleTurns++;
         if (!movedThisTurn) { l.idleStill++; const w = idleReason(before, mover); l.idleWhy[w] = (l.idleWhy[w] ?? 0) + 1; }
         const foes = state.units.filter((x) => x.side !== u.side && x.hp > 0);
-        if (u.hp > 0 && foes.length) l.idleDist += Math.min(...foes.map((f) => hexDistance(f.pos, u.pos)));
+        if (u.hp > 0 && foes.length) l.idleDist += Math.min(...foes.map((f) => distance(f.pos, u.pos)));
       }
     }
   }

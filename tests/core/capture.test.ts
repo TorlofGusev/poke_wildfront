@@ -1,5 +1,7 @@
 import { describe, expect, it } from "vitest";
-import { applyAction, createBattle, unitById, type BattleState, type UnitSetup } from "../../src/core/battle";
+import { unitById, type BattleState, type UnitSetup } from "../../src/core/battle";
+import { applyAction, createBattle } from "./hexFixture";
+import { hexPos } from "./hexFixture";
 import { captureChance, captureTargets, captureUnavailableReason } from "../../src/core/capture";
 import { nextRandom } from "../../src/core/rng";
 import { content } from "./fixtures";
@@ -48,18 +50,18 @@ describe("capture chance", () => {
 
 describe("throwing balls", () => {
   it("requires the target below 50% HP", () => {
-    expect(captureUnavailableReason(wild(20), content, "p", "poke-ball", { x: 2, y: 0 })).toMatch(/below 50%/);
-    expect(captureUnavailableReason(wild(19), content, "p", "poke-ball", { x: 2, y: 0 })).toBeNull();
+    expect(captureUnavailableReason(wild(20), content, "p", "poke-ball", hexPos({ x: 2, y: 0 }))).toMatch(/below 50%/);
+    expect(captureUnavailableReason(wild(19), content, "p", "poke-ball", hexPos({ x: 2, y: 0 }))).toBeNull();
   });
 
   it("requires balls, a wild battle, range and the unit's action", () => {
-    expect(captureUnavailableReason(wild(10, { balls: {} }), content, "p", "poke-ball", { x: 2, y: 0 })).toMatch(/no Poké Ball left/);
-    expect(captureUnavailableReason(wild(10, { captureAllowed: false }), content, "p", "poke-ball", { x: 2, y: 0 })).toMatch(/not possible/);
+    expect(captureUnavailableReason(wild(10, { balls: {} }), content, "p", "poke-ball", hexPos({ x: 2, y: 0 }))).toMatch(/no Poké Ball left/);
+    expect(captureUnavailableReason(wild(10, { captureAllowed: false }), content, "p", "poke-ball", hexPos({ x: 2, y: 0 }))).toMatch(/not possible/);
     const far = createBattle(content, ["......"], [u("p", "fast", "player", 0, 0), u("e", "slow", "enemy", 5, 0, 5)], { captureAllowed: true, balls: { "poke-ball": 1 } }).state;
-    expect(captureUnavailableReason(far, content, "p", "poke-ball", { x: 5, y: 0 })).toMatch(/range/);
+    expect(captureUnavailableReason(far, content, "p", "poke-ball", hexPos({ x: 5, y: 0 }))).toMatch(/range/);
     const used = applyAction(wild(30), content, { type: "useMove", unitId: "p", moveId: "zap", target: { x: 2, y: 0 } }).state;
-    expect(captureUnavailableReason(used, content, "p", "poke-ball", { x: 2, y: 0 })).toMatch(/action already used/);
-    expect(captureTargets(wild(10), content, "p", "poke-ball")).toEqual([{ x: 2, y: 0 }]);
+    expect(captureUnavailableReason(used, content, "p", "poke-ball", hexPos({ x: 2, y: 0 }))).toMatch(/action already used/);
+    expect(captureTargets(wild(10), content, "p", "poke-ball")).toEqual([hexPos({ x: 2, y: 0 })]);
   });
 
   it("always consumes the ball and uses the action", () => {

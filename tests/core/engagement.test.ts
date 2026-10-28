@@ -1,6 +1,7 @@
 import { describe, expect, it } from "vitest";
-import { applyAction, createBattle, moveUnavailableReason, unitById, validTargets, type BattleState, type UnitSetup } from "../../src/core/battle";
-import { gridDistance, Grid, key, reachableTiles } from "../../src/core/grid";
+import { moveUnavailableReason, unitById, type BattleState, type UnitSetup } from "../../src/core/battle";
+import { applyAction, createBattle, hexPos, validTargets } from "./hexFixture";
+import { key } from "../../src/core/grid";
 import { content } from "./fixtures";
 
 const OPEN = [".......", ".......", ".......", ".......", "......."];
@@ -10,23 +11,7 @@ const u = (id: string, speciesId: string, side: "player" | "enemy", x: number, y
 /** "fast" acts first (Speed 100), so the player unit p moves on the first turn. */
 const start = (units: UnitSetup[], map = OPEN): BattleState => createBattle(content, map, units).state;
 
-describe("hex grid", () => {
-  it("has six neighbours at distance 1 (odd rows are shifted right)", () => {
-    expect(gridDistance({ x: 2, y: 2 }, { x: 2, y: 3 })).toBe(1);
-    expect(gridDistance({ x: 2, y: 2 }, { x: 1, y: 3 })).toBe(1);
-    expect(gridDistance({ x: 2, y: 2 }, { x: 3, y: 3 })).toBe(2);
-    expect(gridDistance({ x: 0, y: 0 }, { x: 3, y: 0 })).toBe(3);
-  });
-
-  it("moves to the six neighbours for one point each, around walls", () => {
-    const grid = Grid.fromAscii([".....", ".....", "....."]);
-    const r = reachableTiles(grid, { x: 2, y: 1 }, 1, undefined, true);
-    expect(r.destinations.length).toBe(6);
-    const walled = Grid.fromAscii([".#.", "#..", "..."]);
-    // (0,0) has only two neighbours on the map, (1,0) and (0,1): both walls.
-    expect(reachableTiles(walled, { x: 0, y: 0 }, 3, undefined, true).destinations).toEqual([]);
-  });
-
+describe("free field basics", () => {
   it("melee attacks reach every neighbouring hex", () => {
     const state = start([u("p", "fast", "player", 2, 2), u("e", "slow", "enemy", 2, 3)]);
     expect(validTargets(state, content, "p", "tackle").map(key)).toEqual(["2,3"]);
@@ -63,17 +48,17 @@ describe("engagement (one on one)", () => {
     expect(unitById(s1, "f").engagedWith).toBeNull();
   });
 
-  it("any step draws one free attack from the partner, before the move, and ends the engagement", () => {
+  it("leaving the partner's reach draws one free attack, before the move, and ends the engagement; circling it does not", () => {
     const s1 = hit(start([u("p", "fast", "player", 2, 2), u("e", "mid", "enemy", 3, 2)]), "p", "tackle", 3, 2).state;
-    // Even a step that stays next to the partner breaks away: no circling around it.
     const around = applyAction(s1, content, { type: "move", unitId: "p", to: { x: 3, y: 1 } });
-    expect(around.events.filter((e) => e.type === "engagementStrike")).toHaveLength(1);
-    const types = around.events.map((e) => e.type);
-    expect(types.indexOf("engagementStrike")).toBeLessThan(types.indexOf("moved"));
+    expect(around.events.filter((e) => e.type === "engagementStrike")).toHaveLength(0);
+    expect(unitById(around.state, "p").engagedWith).toBe("e");
     const away = applyAction(s1, content, { type: "move", unitId: "p", to: { x: 0, y: 2 } });
     expect(away.events.filter((e) => e.type === "engagementStrike")).toEqual([{ type: "engagementStrike", unitId: "e", targetId: "p" }]);
+    const types = away.events.map((e) => e.type);
+    expect(types.indexOf("engagementStrike")).toBeLessThan(types.indexOf("moved"));
     expect(away.events).toContainEqual(expect.objectContaining({ type: "damaged", unitId: "p" }));
-    expect(unitById(away.state, "p").pos).toEqual({ x: 0, y: 2 });
+    expect(unitById(away.state, "p").pos).toEqual(hexPos({ x: 0, y: 2 }));
     expect(unitById(away.state, "e").engagedWith).toBeNull();
   });
 
@@ -81,7 +66,7 @@ describe("engagement (one on one)", () => {
     const s1 = hit(start([u("p", "fast", "player", 2, 2, { hp: 1 }), u("e", "mid", "enemy", 3, 2)]), "p", "tackle", 3, 2).state;
     const r = applyAction(s1, content, { type: "move", unitId: "p", to: { x: 0, y: 2 } });
     expect(unitById(r.state, "p").hp).toBe(0);
-    expect(unitById(r.state, "p").pos).toEqual({ x: 2, y: 2 });
+    expect(unitById(r.state, "p").pos).toEqual(unitById(s1, "p").pos);
   });
 
   it("disengage (Skirmisher) slips away freely", () => {

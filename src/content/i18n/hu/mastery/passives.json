@@ -42,7 +42,7 @@
   "description": "+15% sebzés a szomszédos ellenfelekre."
  },
  "long-reach": {
-  "description": "+15% sebzés a legalább 2 hexre lévő ellenfelekre."
+  "description": "+15% sebzés a közelharci távolságon kívüli ellenfelekre."
  },
  "overhead-shot": {
   "description": "Távolsági támadásai átlőnek a Pokémonok fölött."
@@ -111,13 +111,13 @@
   "description": "Az elájult ellenfélen lévő státuszai 1 körre átterjednek a szomszédaira (csak az ártalmasak)."
  },
  "static": {
-  "description": "A szomszédos hexről őt eltaláló ellenfelek 1 körre megbénulnak."
+  "description": "A közelharcban őt eltaláló ellenfelek 1 körre megbénulnak."
  },
  "flame-body": {
-  "description": "A szomszédos hexről őt eltaláló ellenfelek 1 körre megégnek."
+  "description": "A közelharcban őt eltaláló ellenfelek 1 körre megégnek."
  },
  "gooey": {
-  "description": "A szomszédos hexről őt eltaláló ellenfelek 1 körre lelassulnak."
+  "description": "A közelharcban őt eltaláló ellenfelek 1 körre lelassulnak."
  },
  "limber": {
   "description": "Nem lehet megbénítani vagy lelassítani."
@@ -150,10 +150,10 @@
   "description": "+20% sebzés sárban álló ellenfélre."
  },
  "forceful": {
-  "description": "A lökései 1 hexszel messzebbre viszik az ellenfelet."
+  "description": "A lökései 1-gyel messzebbre viszik az ellenfelet."
  },
  "magnet-pull": {
-  "description": "A húzásai 1 hexszel közelebb hozzák az ellenfelet."
+  "description": "A húzásai 1-gyel közelebb hozzák az ellenfelet."
  },
  "bulldozer": {
   "description": "Akadálynak lökött ellenfél +10 sebzést kap."
@@ -258,6 +258,6 @@
   "description": "Szomszédos találatai 2 körre megmérgeznek."
  },
  "far-sight": {
-  "description": "+1 hatótáv a legalább 2 hexes támadásokra (legfeljebb 3-ig; Bond támadásoknál nincs korlát)."
+  "description": "+1 hatótáv a legalább 2-es hatótávú támadásokra (legfeljebb 3-ig; Bond támadásoknál nincs korlát)."
  }
 }

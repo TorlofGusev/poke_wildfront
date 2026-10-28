@@ -1,5 +1,6 @@
 import { describe, expect, it } from "vitest";
-import { applyAction, createBattle, unitById, type BattleContent, type BattleState, type UnitSetup } from "../../src/core/battle";
+import { unitById, type BattleContent, type BattleState, type UnitSetup } from "../../src/core/battle";
+import { applyAction, createBattle } from "./hexFixture";
 import { content as base } from "./fixtures";
 
 const content: BattleContent = {

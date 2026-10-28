@@ -1,8 +1,9 @@
 import { describe, expect, it } from "vitest";
+import { deploymentErrors, lockDeployment } from "../src/core/battle";
+import { applyAction } from "../src/core/battle";
+import { battleArena } from "../src/core/free";
 import { planTurn } from "../src/core/ai";
-import { applyAction, deploymentErrors, lockDeployment } from "../src/core/battle";
-import { Grid, key } from "../src/core/grid";
-import { CONTENT, SCENARIOS } from "../src/content";
+import { CONTENT, WORLD_CONTENT } from "../src/content";
 import { maxHpOf } from "../src/core/battle";
 
 describe("content integrity", () => {
@@ -35,24 +36,16 @@ describe("content integrity", () => {
     }
   });
 
-  it("scenarios are valid", () => {
-    for (const s of Object.values(SCENARIOS)) {
-      const grid = Grid.fromAscii(s.mapRows);
-      for (const p of s.deploymentZone) expect(grid.isPassable(p), key(p)).toBe(true);
-      for (const e of s.enemies) {
-        expect(grid.isPassable(e.pos)).toBe(true);
-        expect(CONTENT.species).toHaveProperty(e.speciesId);
-      }
-      for (const h of s.hiddenEnemies ?? []) expect(s.enemies.map((e) => e.id)).toContain(h);
-    }
-  });
-
-  it("prototype battle is completable by AI vs AI", () => {
-    const PROTOTYPE_PARTY = ["bulbasaur", "charmander", "squirtle"].map((s) => ({ id: s, speciesId: s, hp: maxHpOf(CONTENT, s) }));
-    const scenario = SCENARIOS["viridian-forest-ambush"]!;
-    const placements = PROTOTYPE_PARTY.slice(0, 3).map((m, i) => ({ unitId: m.id, pos: scenario.deploymentZone[i * 2]! }));
-    expect(deploymentErrors(scenario, PROTOTYPE_PARTY, placements)).toEqual([]);
-    let { state } = lockDeployment(CONTENT, scenario, PROTOTYPE_PARTY, placements);
+  it("a generated wild battle is completable by AI vs AI", () => {
+    const party = ["bulbasaur", "charmander", "squirtle"].map((s) => ({ id: s, speciesId: s, hp: maxHpOf(CONTENT, s) }));
+    const arena = battleArena(WORLD_CONTENT.biomes.forest!.arena!, "forest", 11, "wild", 3, 3);
+    const scenario = {
+      id: "t", field: arena.field, deploymentZone: arena.deploymentZone,
+      enemies: ["rattata", "pidgey", "caterpie"].map((s, i) => ({ id: `e${i}`, speciesId: s, side: "enemy" as const, pos: arena.enemySpawns[i]! })),
+    };
+    const placements = party.map((m, i) => ({ unitId: m.id, pos: scenario.deploymentZone[i]! }));
+    expect(deploymentErrors(scenario, party, placements)).toEqual([]);
+    let { state } = lockDeployment(CONTENT, scenario, party, placements);
     for (let i = 0; i < 300 && state.outcome === "ongoing"; i++)
       for (const a of planTurn(state, CONTENT)) if (state.outcome === "ongoing") state = applyAction(state, CONTENT, a).state;
     expect(state.outcome).not.toBe("ongoing");

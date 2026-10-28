@@ -1,17 +1,7 @@
 import { describe, expect, it } from "vitest";
-import {
-  applyAction,
-  createBattle,
-  movementPoints,
-  reachableFor,
-  unitById,
-  type BattleContent,
-  type BattleState,
-  type MoveDef,
-  type TypeDef,
-  type UnitSetup,
-} from "../../src/core/battle";
-import { key } from "../../src/core/grid";
+import { movementPoints, unitById, type BattleContent, type BattleState, type MoveDef, type TypeDef, type UnitSetup } from "../../src/core/battle";
+import { applyAction, createBattle, hexPos } from "./hexFixture";
+import { freeReachFor, terrainAt } from "../../src/core/free";
 import { content as base } from "./fixtures";
 
 const single = { kind: "single" } as const;
@@ -77,8 +67,9 @@ describe("type mechanics", () => {
   it("Water pushes 1 extra tile; Rock cannot be moved", () => {
     const c = withTypes({ water: { move: { extraPush: 1 } }, rock: { unit: { immovable: true } } });
     const { state } = createBattle(c, OPEN, [u("p", "water", "player", 0, 0), u("e", "normal", "enemy", 1, 0), u("r", "rock", "enemy", 0, 1)]);
-    expect(unitById(hit(c, state, "p", "water-hit", 1, 0).state, "e").pos).toEqual({ x: 2, y: 0 });
-    expect(unitById(hit(c, state, "p", "water-hit", 0, 1).state, "r").pos).toEqual({ x: 0, y: 1 });
+    // The hit engages (the pair steps together), then the extra push sends the foe a hex further off.
+    expect(unitById(hit(c, state, "p", "water-hit", 1, 0).state, "e").pos.x).toBeGreaterThan(hexPos({ x: 1, y: 0 }).x + 0.7);
+    expect(unitById(hit(c, state, "p", "water-hit", 0, 1).state, "r").pos).toEqual(hexPos({ x: 0, y: 1 }));
   });
 
   it("Grass drains HP back to the user", () => {
@@ -128,20 +119,24 @@ describe("type mechanics", () => {
     const c = withTypes({ ground: { move: { terrainOnHit: "m" } } });
     const { state } = createBattle(c, OPEN, [u("p", "ground", "player", 0, 0), u("e", "normal", "enemy", 1, 0)]);
     const r = hit(c, state, "p", "ground-hit", 1, 0);
-    expect(r.state.mapRows[0]![1]).toBe("m");
-    expect(r.events).toContainEqual({ type: "terrainChanged", pos: { x: 1, y: 0 }, terrain: "m" });
+    expect(terrainAt(r.state.field, hexPos({ x: 1, y: 0 })).id).toBe("mud");
+    expect(r.events).toContainEqual(expect.objectContaining({ type: "terrainChanged", terrain: "m" }));
   });
 
-  it("Flying crosses water and passes over units; Ghost passes through enemies", () => {
+  it("Flying skims water at normal cost; Ghost passes through enemies, walkers go around", () => {
     const c = withTypes({ flying: { unit: { flies: true } }, ghost: { unit: { phases: true } } });
     const map = ["..~..", "....."];
+    const across = hexPos({ x: 3, y: 0 });
     const flyer = createBattle(c, map, [u("p", "flying", "player", 0, 0), u("e", "normal", "enemy", 4, 1)]).state;
-    expect(reachableFor(flyer, "p").destinations.map(key)).toContain("3,0");
+    const wader = createBattle(c, map, [u("p", "normal", "player", 0, 0), u("e", "slow", "enemy", 4, 1)]).state;
+    expect(freeReachFor(flyer, "p", 10).costTo(across)).toBeCloseTo(3, 1);
+    expect(freeReachFor(wader, "p", 10).costTo(across)!).toBeGreaterThan(3.3);
+    const behind = hexPos({ x: 2, y: 0 });
     const walker = createBattle(c, ["....."], [u("p", "normal", "player", 0, 0), u("e", "slow", "enemy", 1, 0)]).state;
-    expect(reachableFor(walker, "p").destinations.map(key)).not.toContain("2,0");
+    expect(freeReachFor(walker, "p", 10).costTo(behind)!).toBeGreaterThan(2.2);
     const ghost = createBattle(c, ["....."], [u("p", "ghost", "player", 0, 0), u("e", "slow", "enemy", 1, 0)]).state;
-    expect(reachableFor(ghost, "p").destinations.map(key)).toContain("2,0");
-    expect(reachableFor(ghost, "p").destinations.map(key)).not.toContain("1,0");
+    expect(freeReachFor(ghost, "p", 10).costTo(behind)).toBeCloseTo(2, 1);
+    expect(freeReachFor(ghost, "p", 10).costTo(hexPos({ x: 1, y: 0 }))).toBeNull();
   });
 
   it("Psychic pulls; Ghost curses; Dragon ignores Defense", () => {
@@ -152,7 +147,7 @@ describe("type mechanics", () => {
     });
     const c = { ...raw, moves: { ...raw.moves, "psychic-hit": move("psychic-hit", "psychic", 40, 3) } };
     const pull = createBattle(c, OPEN, [u("p", "psychic", "player", 0, 0), u("e", "normal", "enemy", 3, 0)]).state;
-    expect(unitById(hit(c, pull, "p", "psychic-hit", 3, 0).state, "e").pos).toEqual({ x: 2, y: 0 });
+    expect(unitById(hit(c, pull, "p", "psychic-hit", 3, 0).state, "e").pos).toEqual(hexPos({ x: 2, y: 0 }));
     let s = createBattle(c, OPEN, [u("p", "ghost", "player", 0, 0), u("e", "normal", "enemy", 1, 0)]).state;
     s = hit(c, s, "p", "ghost-hit", 1, 0).state;
     expect(unitById(s, "e").statuses.map((x) => x.id)).toEqual(["curse"]);

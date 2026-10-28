@@ -34,8 +34,10 @@ try {
   await shot("01-title");
   await tap(480, 276, 700);
   await shot("02-starter");
-  await tap(480, 476, 900);
+  await tap(172, 421, 900);
   await shot("03-overworld");
+  // A new game opens with the welcome note: close it.
+  await tap(344, 399, 600);
   const s = await save();
   const target = s.game.world.encounters[0].pos;
   const tx = 16 + target.x * 28 + 14, ty = 60 + target.y * 28 + 14;
@@ -60,12 +62,21 @@ try {
   const t0 = Date.now();
   await tap(tx, ty, 4500);
   await shot("05-deploy");
-  for (const [x, y] of [[1, 2], [1, 4], [1, 5]]) await tap(12 + 19.4 + x * 38.8 + (y & 1 ? 19.4 : 0), 72 + 22.4 + y * 33.6, 150);
+  // Deploy spots are free points on the field (40 px per unit from the board's corner).
+  const spots = await page.evaluate(() => window.__game.scene.getScene("Battle").scenario.deploymentZone);
+  for (const p of spots.slice(0, 3)) await tap(12 + p.x * 40, 72 + p.y * 40, 150);
   await shot("06-deploy-placed");
-  await tap(808, 230, 3000);
+  await tap(808, 154, 3000);
   await shot("07-battle");
-  // Tap a reachable tile once (armed), screenshot, and measure a second tap's response.
-  await tap(12 + 19.4 + 3 * 38.8, 72 + 22.4 + 2 * 33.6, 400);
+  // Tap a spot a little ahead of the active Pokémon once (armed), screenshot, and measure a second tap's response.
+  const ahead = await page.evaluate(() => {
+    const sc = window.__game.scene.getScene("Battle");
+    const u = sc.state.units.find((x) => x.id === sc.state.turn.unitId);
+    const foe = sc.state.units.find((x) => x.side === "enemy");
+    const d = Math.hypot(foe.pos.x - u.pos.x, foe.pos.y - u.pos.y);
+    return { x: u.pos.x + (foe.pos.x - u.pos.x) / d, y: u.pos.y + (foe.pos.y - u.pos.y) / d };
+  });
+  await tap(12 + ahead.x * 40, 72 + ahead.y * 40, 400);
   await shot("08-battle-armed");
   const lag = await page.evaluate(async () => {
     const a = performance.now();

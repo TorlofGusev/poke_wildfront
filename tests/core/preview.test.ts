@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { applyAction, createBattle, previewMove } from "../../src/core/battle";
+import { applyAction, createBattle, previewMove } from "./hexFixture";
 import { content } from "./fixtures";
 
 describe("move preview", () => {

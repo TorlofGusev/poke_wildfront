@@ -1,5 +1,5 @@
-import { Grid } from "../grid/Grid";
-import { key, type Point } from "../grid/types";
+import { key, samePoint, type Point } from "../grid/types";
+import type { FreeField } from "../free/field";
 import type { BattleContent } from "./content";
 import { createBattle, type BattleOptions, type StepResult, type UnitSetup } from "./battle";
 
@@ -8,14 +8,12 @@ export const MAX_ACTIVE_UNITS = 3;
 /** A hand-authored or generated battle before the player has deployed. */
 export interface BattleScenario {
   readonly id: string;
-  readonly mapRows: readonly string[];
-  /** Tiles the player may deploy on. */
+  readonly field: FreeField;
+  /** Spots the player may deploy on. */
   readonly deploymentZone: readonly Point[];
   readonly enemies: readonly UnitSetup[];
   /** How many Pokémon the player may deploy (default MAX_ACTIVE_UNITS). */
   readonly maxDeploy?: number;
-  /** Enemy unit ids whose details are hidden until revealed in battle. */
-  readonly hiddenEnemies?: readonly string[];
 }
 
 /** A party member available for deployment. */
@@ -39,9 +37,6 @@ export function deploymentErrors(
   placements: readonly Placement[],
 ): string[] {
   const errors: string[] = [];
-  const grid = Grid.fromAscii(scenario.mapRows);
-  const zone = new Set(scenario.deploymentZone.map(key));
-  const enemyTiles = new Set(scenario.enemies.map((e) => key(e.pos)));
   const usedUnits = new Set<string>();
   const usedTiles = new Set<string>();
 
@@ -56,9 +51,7 @@ export function deploymentErrors(
     if (usedUnits.has(p.unitId)) errors.push(`${p.unitId} is placed twice`);
     usedUnits.add(p.unitId);
     const k = key(p.pos);
-    if (!zone.has(k)) errors.push(`${k} is outside the deployment zone`);
-    else if (!grid.isPassable(p.pos)) errors.push(`${k} is not passable`);
-    if (enemyTiles.has(k)) errors.push(`${k} is occupied by an enemy`);
+    if (!scenario.deploymentZone.some((z) => samePoint(z, p.pos))) errors.push(`${k} is not a deploy spot`);
     if (usedTiles.has(k)) errors.push(`${k} has two Pokémon`);
     usedTiles.add(k);
   }
@@ -79,5 +72,5 @@ export function lockDeployment(
     const member = party.find((m) => m.id === p.unitId)!;
     return { ...member.setup, id: member.id, speciesId: member.speciesId, side: "player", pos: p.pos, hp: member.hp };
   });
-  return createBattle(content, scenario.mapRows, [...players, ...scenario.enemies], options);
+  return createBattle(content, scenario.field, [...players, ...scenario.enemies], options);
 }

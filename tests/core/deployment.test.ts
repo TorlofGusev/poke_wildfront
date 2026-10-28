@@ -4,9 +4,9 @@ import { content } from "./fixtures";
 
 const scenario: BattleScenario = {
   id: "test",
-  mapRows: ["#....", ".....", "....."],
-  deploymentZone: [{ x: 0, y: 0 }, { x: 0, y: 1 }, { x: 0, y: 2 }, { x: 1, y: 1 }, { x: 1, y: 2 }],
-  enemies: [{ id: "e", speciesId: "slow", side: "enemy", pos: { x: 4, y: 1 } }],
+  field: { width: 6, height: 4, zones: [{ terrain: "rock", poly: [{ x: 0, y: 0 }, { x: 1, y: 0 }, { x: 1, y: 1 }, { x: 0, y: 1 }] }] },
+  deploymentZone: [{ x: 1.5, y: 1.5 }, { x: 1.5, y: 2.5 }, { x: 2.5, y: 1.5 }, { x: 2.5, y: 2.5 }, { x: 0.5, y: 3.4 }],
+  enemies: [{ id: "e", speciesId: "slow", side: "enemy", pos: { x: 5, y: 2 } }],
 };
 
 const party: DeployCandidate[] = [
@@ -18,28 +18,28 @@ const party: DeployCandidate[] = [
 ];
 
 describe("deployment", () => {
-  it("accepts up to three placements in the zone", () => {
+  it("accepts up to three placements on deploy spots, on a free field", () => {
     const placements = [
-      { unitId: "a", pos: { x: 0, y: 1 } },
-      { unitId: "b", pos: { x: 1, y: 1 } },
-      { unitId: "c", pos: { x: 0, y: 2 } },
+      { unitId: "a", pos: { x: 1.5, y: 1.5 } },
+      { unitId: "b", pos: { x: 2.5, y: 1.5 } },
+      { unitId: "c", pos: { x: 1.5, y: 2.5 } },
     ];
     expect(deploymentErrors(scenario, party, placements)).toEqual([]);
     const { state } = lockDeployment(content, scenario, party, placements);
     expect(state.units.map((u) => u.id)).toEqual(["a", "b", "c", "e"]);
     expect(state.units[1]!.hp).toBe(20);
+    expect(state.field).toEqual(scenario.field);
   });
 
-  it("rejects more than three, empty, outside-zone, impassable, duplicate and fainted placements", () => {
+  it("rejects more than three, empty, off-spot, duplicate and fainted placements", () => {
     expect(deploymentErrors(scenario, party, [])).toContain("deploy at least one Pokémon");
-    const four = ["a", "b", "c", "d"].map((id, i) => ({ unitId: id, pos: { x: i < 3 ? 0 : 1, y: i < 3 ? i : 1 } }));
+    const four = ["a", "b", "c", "d"].map((id, i) => ({ unitId: id, pos: scenario.deploymentZone[i]! }));
     expect(deploymentErrors(scenario, party, four)).toContain("at most 3 Pokémon can be deployed");
-    expect(deploymentErrors(scenario, party, [{ unitId: "a", pos: { x: 3, y: 1 } }])).toContain("3,1 is outside the deployment zone");
-    expect(deploymentErrors(scenario, party, [{ unitId: "a", pos: { x: 0, y: 0 } }])).toContain("0,0 is not passable");
-    expect(deploymentErrors(scenario, party, [{ unitId: "a", pos: { x: 0, y: 1 } }, { unitId: "a", pos: { x: 0, y: 2 } }])).toContain("a is placed twice");
-    expect(deploymentErrors(scenario, party, [{ unitId: "a", pos: { x: 0, y: 1 } }, { unitId: "b", pos: { x: 0, y: 1 } }])).toContain("0,1 has two Pokémon");
-    expect(deploymentErrors(scenario, party, [{ unitId: "ko", pos: { x: 0, y: 1 } }])).toContain("ko cannot fight (0 HP)");
-    expect(deploymentErrors(scenario, party, [{ unitId: "zz", pos: { x: 0, y: 1 } }])).toContain("zz is not in the party");
+    expect(deploymentErrors(scenario, party, [{ unitId: "a", pos: { x: 3.5, y: 1.5 } }])).toContain("3.5,1.5 is not a deploy spot");
+    expect(deploymentErrors(scenario, party, [{ unitId: "a", pos: { x: 1.5, y: 1.5 } }, { unitId: "a", pos: { x: 1.5, y: 2.5 } }])).toContain("a is placed twice");
+    expect(deploymentErrors(scenario, party, [{ unitId: "a", pos: { x: 1.5, y: 1.5 } }, { unitId: "b", pos: { x: 1.5, y: 1.5 } }])).toContain("1.5,1.5 has two Pokémon");
+    expect(deploymentErrors(scenario, party, [{ unitId: "ko", pos: { x: 1.5, y: 1.5 } }])).toContain("ko cannot fight (0 HP)");
+    expect(deploymentErrors(scenario, party, [{ unitId: "zz", pos: { x: 1.5, y: 1.5 } }])).toContain("zz is not in the party");
   });
 
   it("refuses to lock an invalid deployment", () => {

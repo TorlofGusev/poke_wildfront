@@ -5,7 +5,6 @@
  "hpPerLevelPerDefense": 0.15,
  "statOffset": 20,
  "damageDivisor": 4,
- "moveMax": 3,
  "impactDamage": 8,
  "bond": {
   "start": 2,
@@ -25,20 +24,11 @@
   "stepBonus": 0.05,
   "max": 0.25
  },
- "moveBySpeed": [
-  {
-   "speed": 0,
-   "move": 1
-  },
-  {
-   "speed": 4,
-   "move": 2
-  },
-  {
-   "speed": 8,
-   "move": 3
-  }
- ],
+ "movement": {
+  "base": 1.5,
+  "perSpeed": 0.5,
+  "max": 6
+ },
  "crit": {
   "base": 0.05,
   "perPoint": 0.02,

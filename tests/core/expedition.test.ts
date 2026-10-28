@@ -152,10 +152,10 @@ describe("world", () => {
 
   it("builds a valid wild battle for every spawned group", () => {
     for (const g of world.encounters) {
-      const scenario = wildScenario(WORLD_CONTENT, g, (s, lv) => wildSetup(CONTENT, PROGRESSION, s, lv));
+      const scenario = wildScenario(WORLD_CONTENT, g, (s, lv) => wildSetup(CONTENT, PROGRESSION, s, lv), 3, 7);
       expect(scenario.enemies.map((e) => e.level)).toEqual(g.levels);
       expect(scenario.captureAllowed).toBe(true);
-      expect(() => createBattle(CONTENT, scenario.mapRows, [
+      expect(() => createBattle(CONTENT, scenario.field, [
         { id: "p", speciesId: "pikachu", side: "player", pos: scenario.deploymentZone[0]! },
         ...scenario.enemies,
       ])).not.toThrow();

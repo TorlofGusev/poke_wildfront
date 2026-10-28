@@ -1,6 +1,7 @@
 import { describe, expect, it } from "vitest";
 import { NOVICE_AI_WEIGHTS, planTurn } from "../../src/core/ai";
-import { applyAction, createBattle, type BattleContent, type BattleState, type MoveDef, type UnitSetup } from "../../src/core/battle";
+import { type BattleContent, type BattleState, type MoveDef, type UnitSetup } from "../../src/core/battle";
+import { applyAction, createBattle } from "./hexFixture";
 import { content as base } from "./fixtures";
 
 const selfBuff = (id: string, status: string): MoveDef => ({
@@ -66,7 +67,8 @@ describe("enemy AI self-buffs", () => {
   it("uses Agility while opponents are out of reach, and still advances", () => {
     const state = enemyTurn([u("p", "slow", "player", 0, 0), u("e", "speedy", "enemy", 14, 0)], "e", ["..............."]);
     const plan = planTurn(state, content);
-    expect(plan[0]).toEqual({ type: "move", unitId: "e", to: { x: 11, y: 0 } });
+    expect(plan[0]?.type).toBe("move");
+    expect(plan[0]!.type === "move" && plan[0]!.to.x).toBeLessThan(state.units.find((x) => x.id === "e")!.pos.x - 2);
     expect(usedMoves(state)).toContain("agility");
   });
 

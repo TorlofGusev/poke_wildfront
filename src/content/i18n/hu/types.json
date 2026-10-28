@@ -6,7 +6,7 @@
   "summary": "Robbanékony támadó. A Tűz támadások megégetnek: körönként sebeznek, és −20% az okozott sebzés."
  },
  "water": {
-  "summary": "Kiszorítás és kitartás. A Víz támadások 1 mezővel tovább lökik a célpontot."
+  "summary": "Kiszorítás és kitartás. A Víz támadások 1-gyel tovább lökik a célpontot."
  },
  "grass": {
   "summary": "Életszívás és irányítás. A Fű támadások a sebzés 25%-át visszagyógyítják."
@@ -24,13 +24,13 @@
   "summary": "Felőrlés. A méreg halmozódik: minden újabb mérgezés hozzáadja a köreit."
  },
  "ground": {
-  "summary": "Terepformáló. A Föld támadások sárrá változtatják a célpont mezőjét."
+  "summary": "Terepformáló. A Föld támadások sárrá változtatják a talajt a célpont alatt."
  },
  "flying": {
   "summary": "Mozgékonyság. Átrepül a vízen, a sáron és más Pokémonokon."
  },
  "psychic": {
-  "summary": "Távolsági manipuláció. A Pszichikus támadások 1 mezővel közelebb húzzák a célpontot."
+  "summary": "Távolsági manipuláció. A Pszichikus támadások 1-gyel közelebb húzzák a célpontot."
  },
  "bug": {
   "summary": "Raj-taktika. +10% sebzés minden, a célpont mellett álló szövetséges után."

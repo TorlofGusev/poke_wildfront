@@ -1,8 +1,8 @@
-import { gridOf, unitAt, unitById } from "../battle/battle";
+import { unitAt, unitById } from "../battle/battle";
 import type { BattleContent } from "../battle/content";
 import type { BattleState, BattleUnit } from "../battle/state";
-import { hasLineOfSight } from "../grid/lineOfSight";
-import { gridDistance, type Point } from "../grid/types";
+import type { Point } from "../grid/types";
+import { distance, MELEE_REACH, sightBlocked } from "../free/field";
 
 /** Success probability of one throw; see docs/design/phase3-capture-and-death.md. */
 export function captureChance(content: BattleContent, target: BattleUnit, ballId: string): number {
@@ -41,16 +41,15 @@ export function captureUnavailableReason(
   if (!victim || victim.side === "player") return "no wild Pokémon there";
   if (!isCapturable(content, victim)) return `target must be below ${Math.round(content.capture.hpThreshold * 100)}% HP`;
   const user = unitById(state, unitId);
-  const grid = gridOf(state);
-  const dist = gridDistance(user.pos, target);
   const { min, max } = content.capture.throwRange;
-  if (dist < min || dist > max) return `out of throwing range (${min}–${max})`;
-  if (!hasLineOfSight(grid, user.pos, target)) return "no line of sight";
-  if (dist > 1 && grid.terrainAt(target).concealsAtRange) return "target is hidden in tall grass";
+  // Range is a distance (a step of slack at the far end); rocks and bushes block sight.
+  const d = distance(user.pos, target);
+  if (d > max + 0.3 || (min >= 2 && d < MELEE_REACH)) return `out of throwing range (${min}–${max})`;
+  if (sightBlocked(state.field, user.pos, target)) return "no line of sight";
   return null;
 }
 
-/** Tiles where the unit could throw the given ball right now. */
+/** Positions of the Pokémon the unit could throw the given ball right now. */
 export function captureTargets(state: BattleState, content: BattleContent, unitId: string, ballId: string): Point[] {
   return state.units
     .filter((u) => u.side === "enemy" && u.hp > 0 && !u.captured)

@@ -39,7 +39,7 @@
    "willpower": 5,
    "crit": 4
   },
-  "summary": "Displacement and sustain. Water moves push the target 1 extra tile.",
+  "summary": "Displacement and sustain. Water moves push the target 1 further.",
   "move": {
    "extraPush": 1
   }
@@ -126,7 +126,7 @@
    "willpower": 5,
    "crit": 4
   },
-  "summary": "Terrain shaper. Ground moves turn the target's tile into mud.",
+  "summary": "Terrain shaper. Ground moves turn the ground under the target into mud.",
   "move": {
    "terrainOnHit": "m"
   }
@@ -154,7 +154,7 @@
    "willpower": 7,
    "crit": 3
   },
-  "summary": "Ranged manipulation. Psychic moves pull the target 1 tile closer.",
+  "summary": "Ranged manipulation. Psychic moves pull the target 1 closer.",
   "move": {
    "extraPull": 1
   }

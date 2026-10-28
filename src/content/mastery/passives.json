@@ -26,7 +26,7 @@
  "rough-skin": {
   "id": "rough-skin",
   "name": "Rough Skin",
-  "description": "Foes that hit it from an adjacent hex take 8 damage.",
+  "description": "Foes that hit it in melee take 8 damage.",
   "mods": {
    "thorns": 8
   }
@@ -114,7 +114,7 @@
  "long-reach": {
   "id": "long-reach",
   "name": "Long Reach",
-  "description": "+15% damage to foes 2 or more hexes away.",
+  "description": "+15% damage to foes out of melee reach.",
   "mods": {
    "farDamage": 1.15
   }
@@ -298,7 +298,7 @@
  "static": {
   "id": "static",
   "name": "Static",
-  "description": "Foes that hit it from an adjacent hex are Paralyzed for 1 turn.",
+  "description": "Foes that hit it in melee are Paralyzed for 1 turn.",
   "mods": {
    "hitStatus": {
     "status": "paralysis",
@@ -309,7 +309,7 @@
  "flame-body": {
   "id": "flame-body",
   "name": "Flame Body",
-  "description": "Foes that hit it from an adjacent hex are Burned for 1 turn.",
+  "description": "Foes that hit it in melee are Burned for 1 turn.",
   "mods": {
    "hitStatus": {
     "status": "burn",
@@ -320,7 +320,7 @@
  "gooey": {
   "id": "gooey",
   "name": "Gooey",
-  "description": "Foes that hit it from an adjacent hex are Slowed for 1 turn.",
+  "description": "Foes that hit it in melee are Slowed for 1 turn.",
   "mods": {
    "hitStatus": {
     "status": "slow",
@@ -430,7 +430,7 @@
  "forceful": {
   "id": "forceful",
   "name": "Forceful",
-  "description": "Its pushes move foes 1 more hex.",
+  "description": "Its pushes move foes 1 further.",
   "mods": {
    "pushBonus": 1
   }
@@ -438,7 +438,7 @@
  "magnet-pull": {
   "id": "magnet-pull",
   "name": "Magnet Pull",
-  "description": "Its pulls move foes 1 more hex.",
+  "description": "Its pulls move foes 1 further.",
   "mods": {
    "pullBonus": 1
   }
@@ -765,7 +765,7 @@
  "far-sight": {
   "id": "far-sight",
   "name": "Far Sight",
-  "description": "+1 range on moves that already reach 2 or more hexes (up to 3; Bond moves no limit).",
+  "description": "+1 range on moves that already reach 2 or more (up to 3; Bond moves no limit).",
   "mods": {
    "rangeBonus": 1
   }

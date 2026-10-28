@@ -1,5 +1,6 @@
 import { describe, expect, it } from "vitest";
-import { applyAction, createBattle, unitById, validTargets, type AbilityDef, type BattleContent, type UnitSetup } from "../../src/core/battle";
+import { unitById, type AbilityDef, type BattleContent, type UnitSetup } from "../../src/core/battle";
+import { applyAction, createBattle, validTargets } from "./hexFixture";
 import { CONTENT } from "../../src/content";
 import { content as base } from "./fixtures";
 
@@ -33,9 +34,9 @@ describe("abilities", () => {
     expect(unitById(r.state, "p").statuses.map((s) => s.id)).toEqual(["slow"]);
   });
 
-  it("Keen Eye targets Pokémon hidden in tall grass", () => {
+  it("Keen Eye sees through bushes", () => {
     const c = withAbility({ keenEye: true });
-    // The Keen Eye user acts first thanks to its Speed; the foe hides in grass 3 tiles away.
+    // The Keen Eye user acts first thanks to its Speed; the foe hides in a bush 3 away.
     const fastStats = { hp: 40, attack: 40, defense: 40, speed: 200, willpower: 0, crit: 0 };
     const { state } = createBattle(c, ['...""'], [u("p", "slow", "player", 0, 0, { stats: fastStats }), u("e", "fast", "enemy", 3, 0)]);
     expect(validTargets(state, c, "p", "ember").length).toBe(1);

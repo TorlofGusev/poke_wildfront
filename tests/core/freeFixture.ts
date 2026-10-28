@@ -1,6 +1,6 @@
-import { createBattle, type StepResult, type UnitSetup } from "../battle/battle";
-import type { BattleContent } from "../battle/content";
-import type { FreeField } from "./field";
+import { createBattle, type StepResult, type UnitSetup } from "../../src/core/battle/battle";
+import type { BattleContent } from "../../src/core/battle/content";
+import type { FreeField } from "../../src/core/free/field";
 
 /**
  * The hand-made prototype arena: a rock ridge splits it, with a quick but narrow pass at the top
@@ -32,4 +32,4 @@ export const PROTO_UNITS: readonly UnitSetup[] = [
 
 /** A fresh prototype battle on the hand-made arena. */
 export const createFreeBattle = (content: BattleContent): StepResult =>
-  createBattle(content, [], PROTO_UNITS, { field: PROTO_FIELD, seed: 1 });
+  createBattle(content, PROTO_FIELD, PROTO_UNITS, { seed: 1 });

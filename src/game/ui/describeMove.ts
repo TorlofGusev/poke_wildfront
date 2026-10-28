@@ -13,8 +13,8 @@ export function describeMove(content: BattleContent, move: MoveDef): string {
   const range = move.range.min === move.range.max ? `${move.range.max}` : `${move.range.min}–${move.range.max}`;
   const shape =
     move.shape.kind === "single" ? t("single target")
-    : move.shape.kind === "burst" ? t("area: target tile + {n} around it", { n: tag("num", move.shape.radius) })
-    : t("line: {n} tiles in a straight direction, stopped by rocks", { n: tag("num", move.shape.length) });
+    : move.shape.kind === "burst" ? t("area: a circle of radius {n} around the aim", { n: tag("num", move.shape.radius) })
+    : t("line: {n} long in a straight direction, stopped by rocks and bushes", { n: tag("num", move.shape.length) });
   const los = move.requiresLineOfSight ? t(" · needs line of sight (Pokémon in the way block it)") : "";
   const lines = [
     `${tag("title", move.name)} — ${tag(move.type, move.type.toUpperCase())}`,
@@ -28,11 +28,11 @@ export function describeMove(content: BattleContent, move: MoveDef): string {
       case "push": {
         const vars = { n: tag("num", e.distance), dmg: tag("dmg", content.rules.impactDamage) };
         lines.push(e.distance > 1
-          ? t("Pushes {n} tiles away; hitting an obstacle deals {dmg} damage", vars)
-          : t("Pushes {n} tile away; hitting an obstacle deals {dmg} damage", vars));
+          ? t("Pushes {n} away; hitting an obstacle deals {dmg} damage", vars)
+          : t("Pushes {n} away; hitting an obstacle deals {dmg} damage", vars));
         break;
       }
-      case "pull": lines.push(t("Pulls up to {n} tiles towards the user", { n: tag("num", e.distance) })); break;
+      case "pull": lines.push(t("Pulls up to {n} towards the user", { n: tag("num", e.distance) })); break;
       case "heal": lines.push(move.affects === "any" ? t("On an ally: heals {x} instead of damaging", { x: tag("heal", `${e.amount} HP`) }) : t("Heals {x}", { x: tag("heal", `${e.amount} HP`) })); break;
       case "healShare": lines.push(t("On an ally: heals {x} of its max HP instead of damaging", { x: tag("heal", `${Math.round(e.share * 100)}%`) })); break;
       case "drain": lines.push(t("Heals the user by {n} of the damage dealt", { n: tag("heal", `${Math.round(e.amount * 100)}%`) })); break;

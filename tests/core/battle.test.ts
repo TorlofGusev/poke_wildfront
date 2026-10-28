@@ -1,16 +1,7 @@
 import { describe, expect, it } from "vitest";
-import {
-  applyAction,
-  createBattle,
-  IllegalActionError,
-  movementPoints,
-  unitById,
-  switchTargets,
-  validTargets,
-  type BattleAction,
-  type BattleState,
-  type UnitSetup,
-} from "../../src/core/battle";
+import { IllegalActionError, movementPoints, unitById, switchTargets, type BattleAction, type BattleState, type UnitSetup } from "../../src/core/battle";
+import { applyAction, createBattle, hexPos, validTargets } from "./hexFixture";
+import { distance } from "../../src/core/free";
 import { key } from "../../src/core/grid";
 import { content } from "./fixtures";
 
@@ -48,7 +39,9 @@ describe("battle setup and initiative", () => {
 
   it("derives movement points from speed", () => {
     const { state } = battle([u("a", "fast", "player", 0, 0), u("b", "mid", "enemy", 6, 0), u("c", "slow", "enemy", 6, 1)]);
-    expect(state.units.map((x) => movementPoints(content, x))).toEqual([5, 4, 3]);
+    // Movement = 2 + 0.03 × Speed (at most 5) in the test rules: every Speed point counts.
+    const mp = state.units.map((x) => movementPoints(content, x));
+    [5, 4.1, 2.9].forEach((want, i) => expect(mp[i]).toBeCloseTo(want));
   });
 
   it("starts a new round after everyone acted", () => {
@@ -68,7 +61,7 @@ describe("turn economy", () => {
     expect(state.turn?.movePointsLeft).toBe(3);
     state = act(state, { type: "useMove", unitId: "a", moveId: "tackle", target: { x: 3, y: 0 } }).state;
     state = act(state, { type: "move", unitId: "a", to: { x: 2, y: 3 } }).state;
-    expect(state.turn?.movePointsLeft).toBe(0);
+    expect(state.turn?.movePointsLeft).toBeLessThan(0.5);
     expect(() => act(state, { type: "move", unitId: "a", to: { x: 2, y: 4 } })).toThrow(IllegalActionError);
   });
 
@@ -125,31 +118,31 @@ describe("targeting", () => {
     expect(validTargets(state, content, "p", "ember").map(key)).toEqual(["0,2"]);
   });
 
-  it("hides enemies in grass from range but not from adjacent tiles", () => {
+  it("bushes block line of sight; a melee hit needs none", () => {
     const map = ['..""', "...."];
     let { state } = battle([u("p", "slow", "player", 0, 0), u("e", "slow", "enemy", 3, 0)], map);
     expect(validTargets(state, content, "p", "ember")).toEqual([]);
     state = act(state, { type: "move", unitId: "p", to: { x: 2, y: 0 } }).state;
-    expect(validTargets(state, content, "p", "ember").map(key)).toEqual(["3,0"]);
+    expect(validTargets(state, content, "p", "tackle").map(key)).toEqual(["3,0"]);
   });
 
-  it("line hits every enemy on the line until a wall", () => {
+  it("line hits everyone on the line until a wall, allies too (friendly fire)", () => {
     const map = ["......#.", "........"];
     const { state } = battle(
       [u("p", "fast", "player", 0, 0), u("e1", "slow", "enemy", 1, 0), u("e2", "slow", "enemy", 3, 0), u("e3", "slow", "enemy", 7, 0), u("ally", "slow", "player", 2, 0)],
       map,
     );
     const r = act(state, { type: "useMove", unitId: "p", moveId: "zap", target: { x: 1, y: 0 } });
-    expect(r.events.find((e) => e.type === "moveUsed")).toMatchObject({ affected: ["e1", "e2"] });
+    expect(r.events.find((e) => e.type === "moveUsed")).toMatchObject({ affected: ["e1", "ally", "e2"] });
   });
 
-  it("burst affects all enemies around the target tile, not allies", () => {
+  it("burst hits everyone around the target, allies too (friendly fire)", () => {
     const { state } = battle([
       u("p", "mid", "player", 0, 2), u("ally", "slow", "player", 3, 1),
       u("e1", "slow", "enemy", 3, 2), u("e2", "slow", "enemy", 4, 2), u("e3", "slow", "enemy", 5, 2),
     ]);
     const r = act(state, { type: "useMove", unitId: "p", moveId: "spray", target: { x: 3, y: 2 } });
-    expect(r.events.find((e) => e.type === "moveUsed")).toMatchObject({ affected: ["e1", "e2"] });
+    expect(r.events.find((e) => e.type === "moveUsed")).toMatchObject({ affected: ["ally", "e1", "e2"] });
   });
 });
 
@@ -181,21 +174,24 @@ describe("displacement", () => {
   it("pushes the target away", () => {
     const { state } = battle([u("a", "fast", "player", 0, 0), u("b", "slow", "enemy", 1, 0)]);
     const r = act(state, { type: "useMove", unitId: "a", moveId: "shove", target: { x: 1, y: 0 } });
-    expect(unitById(r.state, "b").pos).toEqual({ x: 3, y: 0 });
-    expect(r.events).toContainEqual({ type: "displaced", unitId: "b", from: { x: 1, y: 0 }, to: { x: 3, y: 0 }, blocked: false });
+    // Straight away from the user, by the push distance (2).
+    expect(distance(unitById(r.state, "b").pos, hexPos({ x: 3, y: 0 }))).toBeLessThan(0.01);
+    expect(r.events).toContainEqual(expect.objectContaining({ type: "displaced", unitId: "b", from: hexPos({ x: 1, y: 0 }), blocked: false }));
   });
 
   it("deals impact damage when pushed into a wall or unit", () => {
     const { state } = battle([u("a", "fast", "player", 0, 0), u("b", "slow", "enemy", 1, 0)], [".".repeat(2) + "#...."]);
     const r = act(state, { type: "useMove", unitId: "a", moveId: "shove", target: { x: 1, y: 0 } });
-    expect(unitById(r.state, "b").pos).toEqual({ x: 1, y: 0 });
+    // It stops at the rock, short of the full push.
+    expect(distance(unitById(r.state, "b").pos, hexPos({ x: 1, y: 0 }))).toBeLessThan(0.5);
     expect(r.events).toContainEqual({ type: "damaged", unitId: "b", amount: 5, hp: 40 - 5 - 5, source: "impact" });
   });
 
   it("pulls the target towards the user and stops adjacent", () => {
     let { state } = battle([u("p", "mid", "player", 0, 0), u("e", "slow", "enemy", 3, 0)]);
     const r = act(state, { type: "useMove", unitId: "p", moveId: "lasso", target: { x: 3, y: 0 } });
-    expect(unitById(r.state, "e").pos).toEqual({ x: 1, y: 0 });
+    // Pulled until the bodies (nearly) touch.
+    expect(distance(unitById(r.state, "e").pos, unitById(r.state, "p").pos)).toBeLessThan(0.8);
     expect(r.events.some((e) => e.type === "damaged")).toBe(false);
   });
 });
@@ -206,7 +202,8 @@ describe("statuses and healing", () => {
     state = act(state, { type: "useMove", unitId: "p", moveId: "toxin", target: { x: 2, y: 0 } }).state;
     const r = act(state, { type: "endTurn", unitId: "p" });
     expect(r.events).toContainEqual({ type: "damaged", unitId: "e", amount: 5, hp: 35, source: "status" });
-    expect(r.state.turn).toMatchObject({ unitId: "e", movePointsLeft: 1 });
+    expect(r.state.turn?.unitId).toBe("e");
+    expect(r.state.turn?.movePointsLeft).toBeCloseTo(0.9);
     const r2 = act(r.state, { type: "endTurn", unitId: "e" });
     expect(r2.events).toContainEqual({ type: "statusExpired", unitId: "e", status: "slow" });
     expect(unitById(r2.state, "e").statuses).toMatchObject([{ id: "poison", turnsLeft: 2 }]);
@@ -231,8 +228,8 @@ describe("player modifiers (fatigue)", () => {
     const { state } = createBattle(content, OPEN, [u("p", "slow", "player", 0, 0), u("e", "slow", "enemy", 1, 0)], {
       playerModifiers: { moveBonus: -1, damageDealt: 0.5 },
     });
-    expect(state.turn?.movePointsLeft).toBe(2);
-    expect(movementPoints(content, unitById(state, "e"))).toBe(3);
+    expect(state.turn?.movePointsLeft).toBeCloseTo(1.9);
+    expect(movementPoints(content, unitById(state, "e"))).toBeCloseTo(2.9);
     const r = act(state, { type: "useMove", unitId: "p", moveId: "tackle", target: { x: 1, y: 0 } });
     // tackle normal 40 vs grass: 40 * 1 * 0.5 / 4 = 5
     expect(r.events).toContainEqual({ type: "damaged", unitId: "e", amount: 5, hp: 35, source: "move", effectiveness: 1 });

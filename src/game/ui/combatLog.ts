@@ -35,10 +35,9 @@ export function formatEvent(e: BattleEvent, ctx: LogContext): LogEntry | null {
       return { text: t("— Round {n} —", { n: e.round }), tone: "info" };
     case "turnStarted":
       return null;
-    case "moved": {
-      const vars = { unit: name(e.unitId), n: e.path.length };
-      return { text: e.path.length === 1 ? t("{unit} moves {n} tile", vars) : t("{unit} moves {n} tiles", vars), tone: side(e.unitId) };
-    }
+    case "moved":
+      // Walks are measured in movement spent.
+      return { text: t("{unit} walks ({cost} movement)", { unit: name(e.unitId), cost: e.cost.toFixed(1) }), tone: side(e.unitId) };
     case "engagementStrike":
       return { text: t("{unit} strikes {target} as it breaks away", { unit: name(e.unitId), target: name(e.targetId) }), tone: side(e.unitId) };
     case "combo":
@@ -64,6 +63,8 @@ export function formatEvent(e: BattleEvent, ctx: LogContext): LogEntry | null {
     case "healed":
       return { text: t("{unit} recovers {x} — {hp} HP", { unit: name(e.unitId), x: tag("heal", `${e.amount} HP`), hp: e.hp }), tone: "heal" };
     case "displaced": {
+      // An engaged pair stepping together needs no line: "are engaged" says it.
+      if (e.engage) return null;
       const unit = name(e.unitId);
       return {
         text: e.blocked && e.from.x === e.to.x && e.from.y === e.to.y

@@ -1,8 +1,4 @@
-import { applyAction, unitById, validTargets } from "./battle";
-import type { BattleContent } from "./content";
 import type { BattleEvent } from "./events";
-import type { BattleState } from "./state";
-import { samePoint, type Point } from "../grid/types";
 
 export interface HitPreview {
   readonly unitId: string;
@@ -13,18 +9,6 @@ export interface HitPreview {
   readonly statuses: readonly string[];
   /** Type effectiveness of the move against this unit, if it deals damage. */
   readonly effectiveness?: number;
-}
-
-/**
- * Exactly what a move would do if used now. Combat has no randomness, so this simply
- * plays the action on a copy of the state and reads the resulting events.
- */
-export function previewMove(state: BattleState, content: BattleContent, unitId: string, moveId: string, target: Point): HitPreview[] {
-  if (!validTargets(state, content, unitId, moveId).some((p) => samePoint(p, target))) return [];
-  const { events } = applyAction(state, content, { type: "useMove", unitId, moveId, target });
-  // Order: the user's own changes (drain) last.
-  return summarizeHits(events)
-    .sort((a, b) => (a.unitId === unitId ? 1 : 0) - (b.unitId === unitId ? 1 : 0) || unitById(state, a.unitId).pos.y - unitById(state, b.unitId).pos.y);
 }
 
 /** Per unit: what a batch of events did to it (damage, healing, knockout, statuses). */

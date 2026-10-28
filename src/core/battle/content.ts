@@ -123,7 +123,7 @@ export interface StatusDef {
  * - Max HP = hpBase + hpPerPoint × HP + (level − 1) × (hpPerLevel + hpPerLevelPerDefense × species base Def)
  * - Damage = max(1, round(power × (statOffset + Atk) / (statOffset + Def) × multipliers / damageDivisor)),
  *   × the crit multiplier on a critical hit (chance and size from Crit)
- * - Movement by Speed: the highest `moveBySpeed` step the Speed reaches (1 hex up to 3 Speed, 2 from 4, 3 from 6)
+ * - Movement = base + perSpeed × Speed, at most max (in hex widths)
  */
 export interface BattleRules {
   readonly hpBase: number;
@@ -152,10 +152,8 @@ export interface BattleRules {
   };
   readonly statOffset: number;
   readonly damageDivisor: number;
-  /** Movement points by Speed: each step's `move` applies from its `speed` on (ascending). */
-  readonly moveBySpeed: readonly { readonly speed: number; readonly move: number }[];
-  /** Cap on movement including bonuses. */
-  readonly moveMax: number;
+  /** Movement points (hex widths walked per turn) = base + perSpeed × Speed; `max` caps it, bonuses included. */
+  readonly movement: { readonly base: number; readonly perSpeed: number; readonly max: number };
   /** Damage taken when pushed into an obstacle or another unit. */
   readonly impactDamage: number;
   /**
@@ -205,7 +203,7 @@ export interface AbilityDef {
   readonly moveStatus?: { readonly type: string; readonly status: string; readonly duration: number };
   /** Once per battle, a knockout blow leaves it at 1 HP instead. */
   readonly sturdy?: boolean;
-  /** Can target Pokémon hidden in tall grass from range. */
+  /** Sees through bushes: they no longer block its line of sight. */
   readonly keenEye?: boolean;
   /** +1 Attack for the rest of the battle each time it is damaged (max +3). */
   readonly angerPoint?: boolean;

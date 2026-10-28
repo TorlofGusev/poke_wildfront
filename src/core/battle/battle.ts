@@ -1,11 +1,6 @@
 import type { ActiveStatus } from "./state";
-import { ASCII_LEGEND, Grid } from "../grid/Grid";
-import type { TerrainDef } from "../grid/terrain";
-import { hasLineOfSight } from "../grid/lineOfSight";
-import { hexDirToward, hexOnAxis, hexStep } from "../grid/hex";
-import { reachableTiles, type Occupancy, type Reachable } from "../grid/movement";
-import { gridDistance, key, samePoint, type Point } from "../grid/types";
-import { distance, FREE_MOVE_MAX, freeMovement, MELEE_REACH, sweep, terrainAt, UNIT_RADIUS, type FreeField } from "../free/field";
+import { samePoint, type Point } from "../grid/types";
+import { bodyFits, distance, MELEE_REACH, sweep, terrainAt, UNIT_RADIUS, type FreeField, type FreeTerrainId } from "../free/field";
 import { captureChance, captureUnavailableReason } from "../capture/capture";
 import { nextRandom } from "../rng";
 import { typeMultiplier } from "../rules/typeChart";
@@ -13,10 +8,6 @@ import type { BaseStats, BattleContent, MoveDef } from "./content";
 import { combineModifiers, type UnitModifiers } from "./modifiers";
 import type { TypeUnitTraits } from "./species";
 
-/** Fliers cross water and mud at normal cost; rocks still block them. */
-const FLYING_LEGEND: Readonly<Record<string, TerrainDef>> = Object.fromEntries(
-  Object.entries(ASCII_LEGEND).map(([ch, t]) => [ch, t.id === "water" || t.id === "mud" ? { ...t, moveCost: 1 } : t]),
-);
 import type { BattleEvent } from "./events";
 import type { BattleState, BattleUnit, Side } from "./state";
 
@@ -37,6 +28,7 @@ export interface UnitSetup {
   readonly mods?: Partial<UnitModifiers>;
 }
 
+/** Walks go to any point the unit can reach; moves are aimed at any point (a Pokémon, or the ground for areas). */
 export type BattleAction =
   | { readonly type: "move"; readonly unitId: string; readonly to: Point }
   | { readonly type: "useMove"; readonly unitId: string; readonly moveId: string; readonly target: Point }
@@ -56,8 +48,6 @@ export interface BattleOptions {
   readonly playerModifiers?: Partial<UnitModifiers>;
   /** Team Bond at the start of the battle and its cap, per side; rules defaults otherwise. */
   readonly bond?: Partial<Record<Side, { readonly start: number; readonly max: number }>>;
-  /** Free-movement field (prototype): units stand anywhere on it instead of on the hex map. */
-  readonly field?: FreeField;
 }
 
 export interface StepResult {
@@ -69,8 +59,6 @@ export class IllegalActionError extends Error {}
 
 // ---------------------------------------------------------------- queries
 
-export const gridOf = (state: BattleState): Grid => Grid.fromAscii(state.mapRows);
-
 export const unitById = (state: BattleState, id: string): BattleUnit => {
   const u = state.units.find((x) => x.id === id);
   if (!u) throw new Error(`Unknown unit '${id}'`);
@@ -81,15 +69,17 @@ export const unitById = (state: BattleState, id: string): BattleUnit => {
 export const livingUnits = (state: BattleState): BattleUnit[] =>
   state.units.filter((u) => u.hp > 0 && !u.captured);
 
+/** The living unit whose body covers `p`, if any (the nearest when bodies overlap the point). */
 export const unitAt = (state: BattleState, p: Point): BattleUnit | undefined =>
-  livingUnits(state).find((u) => samePoint(u.pos, p));
+  livingUnits(state)
+    .filter((u) => distance(u.pos, p) <= UNIT_RADIUS)
+    .sort((a, b) => distance(a.pos, p) - distance(b.pos, p))[0];
 
-/** Distance between two positions: hexes, or on a free field straight-line hex widths. */
-export const apart = (state: BattleState, a: Point, b: Point): number => (state.field ? distance(a, b) : gridDistance(a, b));
+/** Distance between two positions, in hex widths. */
+export const apart = (_state: BattleState, a: Point, b: Point): number => distance(a, b);
 
-/** Whether two positions are in melee reach of each other (neighbouring hexes, or close on a free field). */
-export const adjacent = (state: BattleState, a: Point, b: Point): boolean =>
-  state.field ? distance(a, b) <= MELEE_REACH : gridDistance(a, b) === 1;
+/** Whether two positions are in melee reach of each other. */
+export const adjacent = (_state: BattleState, a: Point, b: Point): boolean => distance(a, b) <= MELEE_REACH;
 
 export const activeUnit = (state: BattleState): BattleUnit | null =>
   state.turn ? unitById(state, state.turn.unitId) : null;
@@ -106,28 +96,34 @@ function gainBond(state: BattleState, side: Side, amount: number, reason: "knock
 }
 
 /**
- * Speed beyond the last movement step turns into momentum: after moving this turn, every
+ * Speed beyond the movement cap turns into momentum: after moving this turn, every
  * `speedPerStep` Speed past it adds `stepBonus` damage (at most `max`).
  */
 export function momentumBonus(content: BattleContent, unit: BattleUnit, state: BattleState): number {
   if (state.turn?.unitId !== unit.id || !state.turn.moved) return 0;
   const r = content.rules;
-  const excess = unit.stats.speed - r.moveBySpeed[r.moveBySpeed.length - 1]!.speed;
+  const excess = unit.stats.speed - speedAtMoveCap(content);
   return Math.min(r.momentum.max, Math.max(0, Math.floor(excess / r.momentum.speedPerStep)) * r.momentum.stepBonus);
 }
 
-/** Movement points a Speed gives before statuses and bonuses. */
-export const baseMovement = (content: BattleContent, speed: number): number =>
-  [...content.rules.moveBySpeed].reverse().find((s) => speed >= s.speed)?.move ?? content.rules.moveBySpeed[0]!.move;
+/** Movement points a Speed gives before statuses and bonuses: every Speed point counts. */
+export const baseMovement = (content: BattleContent, speed: number): number => {
+  const m = content.rules.movement;
+  return Math.min(m.max, m.base + m.perSpeed * speed);
+};
+
+/** The Speed at which movement reaches its cap (momentum builds past it). */
+export const speedAtMoveCap = (content: BattleContent): number => {
+  const m = content.rules.movement;
+  return Math.ceil((m.max - m.base) / m.perSpeed);
+};
 
 export function movementPoints(content: BattleContent, unit: BattleUnit, state?: BattleState): number {
   // Quick Feet keeps it moving through Paralysis.
   if (unit.statuses.some((st) => content.statuses[st.id]?.noMove) && !unit.mods.statusedMove) return 0;
   if (state && livingUnits(state).some((o) => o.side !== unit.side && o.ability?.arenaTrap && adjacent(state, o.pos, unit.pos))) return 0;
-  const r = content.rules;
-  // A free field grows movement smoothly with Speed instead of in hex steps.
-  const max = state?.field ? FREE_MOVE_MAX : r.moveMax;
-  const base = state?.field ? freeMovement(unit.stats.speed) : Math.min(r.moveMax, baseMovement(content, unit.stats.speed));
+  const max = content.rules.movement.max;
+  const base = baseMovement(content, unit.stats.speed);
   const penalty = unit.statuses.reduce((s, st) => s + (content.statuses[st.id]?.movePenalty ?? 0), 0);
   // Bonuses (abilities, items, masteries) help slow Pokémon but never lift anyone past the cap.
   return Math.max(0, Math.min(max, base - penalty + unit.mods.moveBonus + (ailments(content, unit).length ? unit.mods.statusedMove : 0)));
@@ -140,28 +136,6 @@ export function unitTraits(content: BattleContent, types: readonly string[]): Ty
     flies: all.some((t) => t.flies), phases: all.some((t) => t.phases), immovable: all.some((t) => t.immovable),
     damageTaken: all.reduce((m, t) => m * (t.damageTaken ?? 1), 1),
   };
-}
-
-function occupancyFor(state: BattleState, unit: BattleUnit): Occupancy {
-  // Fliers and ghosts pass over/through enemies but still cannot stop on them.
-  if (unit.traits.flies || unit.traits.phases) {
-    return { isAlly: (p) => unitAt(state, p) !== undefined, isEnemy: () => false };
-  }
-  return {
-    isAlly: (p) => unitAt(state, p)?.side === unit.side,
-    isEnemy: (p) => {
-      const o = unitAt(state, p);
-      return o !== undefined && o.side !== unit.side;
-    },
-  };
-}
-
-/** Tiles the active unit can still move to this turn. */
-export function reachableFor(state: BattleState, unitId: string): Reachable {
-  const unit = unitById(state, unitId);
-  const mp = state.turn?.unitId === unitId ? state.turn.movePointsLeft : 0;
-  const grid = unit.traits.flies ? Grid.fromAscii(state.mapRows, FLYING_LEGEND) : gridOf(state);
-  return reachableTiles(grid, unit.pos, mp, occupancyFor(state, unit), true);
 }
 
 /** Why a move is currently unavailable, or null if it can be used. */
@@ -195,101 +169,18 @@ export function moveUnavailableReason(
   return null;
 }
 
-/** Every tile a move would cover if aimed at `target` (its area of effect). */
-export function moveArea(state: BattleState, move: MoveDef, user: BattleUnit, target: Point): Point[] {
-  const grid = gridOf(state);
-  switch (move.shape.kind) {
-    case "single":
-      return [target];
-    case "burst": {
-      const r = move.shape.radius;
-      const tiles: Point[] = [];
-      for (let dy = -r; dy <= r; dy++)
-        for (let dx = -r - 1; dx <= r + 1; dx++) {
-          const p = { x: target.x + dx, y: target.y + dy };
-          if (gridDistance(target, p) <= r && grid.inBounds(p)) tiles.push(p);
-        }
-      return tiles;
-    }
-    case "line": {
-      const dir = hexDirToward(user.pos, target);
-      const tiles: Point[] = [];
-      let p = user.pos;
-      for (let i = 1; i <= move.shape.length; i++) {
-        p = hexStep(p, dir);
-        if (!grid.inBounds(p) || grid.terrainAt(p).blocksSight) break;
-        tiles.push(p);
-      }
-      return tiles;
-    }
-  }
-}
-
-/** Units a move would affect if aimed at `target` from the user's current position. */
-export function affectedUnits(state: BattleState, move: MoveDef, user: BattleUnit, target: Point): BattleUnit[] {
-  const wantsSide = (u: BattleUnit) => (move.affects === "any" ? u.id !== user.id : (move.affects === "allies") === (u.side === user.side));
-  return moveArea(state, move, user, target)
-    .map((p) => unitAt(state, p))
-    .filter((u): u is BattleUnit => u !== undefined && wantsSide(u))
-    .sort((a, b) => a.pos.y - b.pos.y || a.pos.x - b.pos.x);
-}
-
 /** The attacker's own damage bonuses add up to at most this (+100%). */
 export const MAX_DAMAGE_BONUS = 1;
 
 /** Only Bond moves reach further than this. */
 export const MAX_RANGE = 3;
 
-/** A move's range for this unit: ranged moves (2+ hexes) reach further with a range bonus, up to MAX_RANGE unless a Bond move. */
+/** A move's range for this unit (in hex widths): ranged moves (2+) reach further with a range bonus, up to MAX_RANGE unless a Bond move. */
 export const moveRange = (unit: { readonly mods: UnitModifiers }, move: MoveDef): { min: number; max: number } => {
   if (move.range.max < 2) return { min: move.range.min, max: move.range.max };
   const max = move.range.max + unit.mods.rangeBonus;
   return { min: move.range.min, max: move.kind === "bond" ? max : Math.min(MAX_RANGE, Math.max(move.range.max, max)) };
 };
-
-/** Target tiles the unit may legally aim the move at right now. */
-export function validTargets(
-  state: BattleState,
-  content: BattleContent,
-  unitId: string,
-  moveId: string,
-): Point[] {
-  if (moveUnavailableReason(state, content, unitId, moveId)) return [];
-  const user = unitById(state, unitId);
-  const move = content.moves[moveId]!;
-  const grid = gridOf(state);
-  const range = moveRange(user, move);
-  // Pokémon standing in the way block shots that need line of sight (a Tank can screen its allies).
-  const taunt = user.statuses.find((st) => content.statuses[st.id]?.forcesTarget && st.sourceId);
-  const taunter = taunt ? state.units.find((u) => u.id === taunt.sourceId && u.hp > 0 && !u.captured) : undefined;
-  const bodyBlocks = (p: Point) => !user.mods.shootOver && state.units.some((u) => u.hp > 0 && !u.captured && samePoint(u.pos, p));
-  const out: Point[] = [];
-  for (let y = 0; y < grid.height; y++)
-    for (let x = 0; x < grid.width; x++) {
-      const p = { x, y };
-      const dist = gridDistance(user.pos, p);
-      if (dist < range.min || dist > range.max) continue;
-      if (grid.terrainAt(p).blocksSight) continue;
-      if (move.requiresLineOfSight && !hasLineOfSight(grid, user.pos, p, bodyBlocks)) continue;
-      // Lines go along one of the six hex directions.
-      if (move.shape.kind === "line" && !hexOnAxis(user.pos, p)) continue;
-      // Engaged: attacks may only aim at the partner.
-      if (user.engagedWith && move.affects === "enemies" && !samePoint(p, partnerOf(state, user)!.pos)) continue;
-      if (user.engagedWith && move.affects === "any" && unitAt(state, p)?.side !== user.side && !samePoint(p, partnerOf(state, user)!.pos)) continue;
-      // Taunted: its attacks may only aim at the Pokémon that taunted it.
-      if (taunter && move.affects !== "allies" && unitAt(state, p)?.side !== user.side && !samePoint(p, taunter.pos)) continue;
-      if (move.shape.kind === "single") {
-        const t = unitAt(state, p);
-        if (!t) continue;
-        // Enemies hiding in concealing terrain can only be targeted from an adjacent tile.
-        if (t.side !== user.side && dist > 1 && grid.terrainAt(p).concealsAtRange && !user.ability?.keenEye) continue;
-        if (move.onlyVs && !t.statuses.some((st) => st.id === move.onlyVs)) continue;
-      }
-      if (affectedUnits(state, move, user, p).length === 0) continue;
-      out.push(p);
-    }
-  return out;
-}
 
 /** The unit's harmful statuses (buffs such as Pumped or Protect left out). */
 export const ailments = (content: BattleContent, unit: BattleUnit): ActiveStatus[] =>
@@ -324,22 +215,18 @@ export const maxHpOf = (content: BattleContent, speciesId: string): number => hp
 
 export function createBattle(
   content: BattleContent,
-  mapRows: readonly string[],
+  field: FreeField,
   units: readonly UnitSetup[],
   options: BattleOptions = {},
 ): StepResult {
-  const grid = options.field ? null : Grid.fromAscii(mapRows);
-  const seen = new Set<string>();
-  for (const u of units) {
+  units.forEach((u, i) => {
     if (!content.species[u.speciesId]) throw new Error(`Unknown species '${u.speciesId}'`);
-    if (!grid) continue;
-    if (!grid.isPassable(u.pos)) throw new Error(`Unit '${u.id}' placed on impassable tile`);
-    if (seen.has(key(u.pos))) throw new Error(`Two units on tile ${key(u.pos)}`);
-    seen.add(key(u.pos));
-  }
+    if (!bodyFits(field, u.pos)) throw new Error(`Unit '${u.id}' placed where its body does not fit`);
+    const other = units.slice(0, i).find((o) => distance(o.pos, u.pos) < UNIT_RADIUS * 2);
+    if (other) throw new Error(`Units '${other.id}' and '${u.id}' overlap`);
+  });
   const state: BattleState = {
-    mapRows: [...mapRows],
-    ...(options.field && { field: options.field }),
+    field,
     units: units.map((u) => {
       const species = content.species[u.speciesId]!;
       const ability = species.ability ? content.abilities[species.ability] ?? null : null;
@@ -424,10 +311,23 @@ export function switchTargets(state: BattleState): string[] {
 
 // ---------------------------------------------------------------- actions
 
-export function applyAction(state: BattleState, content: BattleContent, action: BattleAction): StepResult {
+/**
+ * A deep copy to apply an action to. The field is shared, not copied: it is never mutated
+ * (a terrain change replaces it), and copying its polygons on every simulated action was slow.
+ */
+export function cloneState(state: BattleState): BattleState {
+  const { field, ...rest } = state;
+  return { ...(structuredClone(rest) as Omit<BattleState, "field">), field };
+}
+
+/**
+ * The rules side of an action: ball throws, retreats, turn ends and hand-overs. Walks and moves are
+ * resolved by `applyAction` (core/free), which works out where a unit can go and what a move reaches.
+ */
+export function applyBaseAction(state: BattleState, content: BattleContent, action: BattleAction): StepResult {
   if (state.outcome !== "ongoing") throw new IllegalActionError("battle is over");
   if (state.turn?.unitId !== action.unitId) throw new IllegalActionError(`not ${action.unitId}'s turn`);
-  const next = structuredClone(state) as BattleState;
+  const next = cloneState(state);
   const events: BattleEvent[] = [];
   if (action.type === "switchUnit") {
     if (!switchTargets(state).includes(action.to)) throw new IllegalActionError(`cannot hand the turn to ${action.to}`);
@@ -441,11 +341,8 @@ export function applyAction(state: BattleState, content: BattleContent, action: 
   next.turn!.fresh = false;
   switch (action.type) {
     case "move":
-      doMove(next, content, action.unitId, action.to, events);
-      break;
     case "useMove":
-      doUseMove(next, content, action.unitId, action.moveId, action.target, events);
-      break;
+      throw new IllegalActionError(`${action.type} goes through applyAction`);
     case "throwBall":
       doThrowBall(next, content, action.unitId, action.ballId, action.target, events);
       break;
@@ -463,11 +360,11 @@ export function applyAction(state: BattleState, content: BattleContent, action: 
 }
 
 /** The unit's own basic attack (not Struggle). */
-const basicOf = (content: BattleContent, unit: BattleUnit): string | undefined =>
+export const basicOf = (content: BattleContent, unit: BattleUnit): string | undefined =>
   unit.moves.find((m) => m !== "struggle" && content.moves[m]?.kind === "basic");
 
 /** Whether a move is ranged: it can reach 2 or more tiles. */
-const isRangedMove = (move: MoveDef): boolean => move.range.max >= 2;
+export const isRangedMove = (move: MoveDef): boolean => move.range.max >= 2;
 
 /** The foe a unit is engaged with, if any. */
 export function partnerOf(state: BattleState, unit: BattleUnit): BattleUnit | undefined {
@@ -516,75 +413,6 @@ export function breakAway(state: BattleState, content: BattleContent, unit: Batt
   if (unit.hp > 0) disengage(state, unit, events);
 }
 
-/**
- * Moves a unit along its path. Stepping away from its engaged partner draws one free attack from it
- * (unless the unit disengages freely) and ends the engagement; a unit knocked out by it stays where it was.
- */
-function doMove(state: BattleState, content: BattleContent, unitId: string, to: Point, events: BattleEvent[]): void {
-  const reach = reachableFor(state, unitId);
-  const path = reach.pathTo(to);
-  if (!path) throw new IllegalActionError(`cannot move ${unitId} to ${key(to)}`);
-  const unit = unitById(state, unitId);
-  let segment: Point[] = [];
-  let spent = 0;
-  const flush = () => {
-    if (!segment.length) return;
-    const cost = reach.cost.get(key(segment[segment.length - 1]!))! - spent;
-    spent += cost;
-    state.turn!.movePointsLeft -= cost;
-    state.turn!.moved = true;
-    events.push({ type: "moved", unitId, path: segment, cost });
-    segment = [];
-  };
-  for (const step of path) {
-    // Any step breaks an engagement, even one that stays next to the partner (no circling around it);
-    // the partner's free attack lands before the unit moves.
-    if (partnerOf(state, unit)) {
-      flush();
-      breakAway(state, content, unit, events);
-      if (unit.hp <= 0) break;
-    }
-    unit.pos = { ...step };
-    segment.push(step);
-  }
-  flush();
-  checkOutcome(state, events);
-}
-
-function doUseMove(
-  state: BattleState,
-  content: BattleContent,
-  unitId: string,
-  moveId: string,
-  aimedAt: Point,
-  events: BattleEvent[],
-): void {
-  let target = aimedAt;
-  const reason = moveUnavailableReason(state, content, unitId, moveId);
-  if (reason) throw new IllegalActionError(`${moveId}: ${reason}`);
-  if (!validTargets(state, content, unitId, moveId).some((p) => samePoint(p, target)))
-    throw new IllegalActionError(`${moveId}: invalid target ${key(target)}`);
-
-  const user = unitById(state, unitId);
-  const move = effectiveMove(content, user, moveId);
-  let affected = affectedUnits(state, move, user, target);
-  // Confusion: the attack goes to the nearest unit in reach, an ally if one is as close as any foe.
-  const confusion = move.affects === "enemies" && move.power > 0 ? user.statuses.find((st) => content.statuses[st.id]?.misdirects) : undefined;
-  if (confusion) {
-    const reach = moveRange(user, move);
-    const nearest = livingUnits(state)
-      .filter((u) => u.id !== user.id && gridDistance(u.pos, user.pos) >= reach.min && gridDistance(u.pos, user.pos) <= reach.max)
-      .sort((a, b) => gridDistance(a.pos, user.pos) - gridDistance(b.pos, user.pos) || Number(b.side === user.side) - Number(a.side === user.side) || (a.id < b.id ? -1 : 1))[0];
-    if (nearest) {
-      target = nearest.pos;
-      affected = moveArea(state, move, user, target).map((p) => unitAt(state, p)).filter((u): u is BattleUnit => u !== undefined && u.id !== user.id);
-    }
-    user.statuses = user.statuses.filter((st) => st !== confusion);
-    events.push({ type: "statusExpired", unitId: user.id, status: confusion.id });
-  }
-  commitMove(state, content, user, moveId, move, target, affected, events);
-}
-
 /** Spends what a move costs (action, cooldown, Bond), then resolves it on the affected units. */
 export function commitMove(
   state: BattleState, content: BattleContent, user: BattleUnit, moveId: string, move: MoveDef, target: Point,
@@ -608,7 +436,7 @@ export function commitMove(
 
 /** Abilities that react to being hit: Static/Poison Point punish melee attackers, Anger Point raises Attack. */
 function onDamaged(content: BattleContent, attacker: BattleUnit, target: BattleUnit, contact: boolean, events: BattleEvent[]): void {
-  // Masteries like Static or Flame Body punish a foe that hits it from an adjacent hex.
+  // Masteries like Static or Flame Body punish a foe that hits it in melee.
   const hit = target.mods.hitStatus;
   if (hit && contact && attacker.hp > 0) applyStatus(content, target, attacker, hit.status, hit.duration, events);
   const a = target.ability;
@@ -694,14 +522,23 @@ function applyStatus(content: BattleContent, user: BattleUnit, t: BattleUnit, st
   events.push({ type: "statusApplied", unitId: t.id, status, duration });
 }
 
-/** Ground and similar mechanics reshape the battlefield: floor and grass become the new terrain. */
+/** Terrain a mechanic's map character stands for. */
+const TERRAIN_OF: Readonly<Record<string, FreeTerrainId>> = { m: "mud", "~": "water", '"': "bush", "#": "rock" };
+/** Radius of the patch a terrain-changing hit leaves (about one hex). */
+const TERRAIN_PATCH = 0.6;
+
+/** Ground and similar mechanics reshape the battlefield: open ground or a bush under the target turns into the new terrain. */
 function changeTerrain(state: BattleState, p: Point, char: string, events: BattleEvent[]): void {
-  if (state.field) return; // Free fields keep their zones (prototype).
-  const row = state.mapRows[p.y]!;
-  if (row[p.x] !== "." && row[p.x] !== '"') return;
-  const rows = [...state.mapRows];
-  rows[p.y] = row.slice(0, p.x) + char + row.slice(p.x + 1);
-  state.mapRows = rows;
+  const terrain = TERRAIN_OF[char];
+  const here = terrainAt(state.field, p).id;
+  if (!terrain || terrain === here || (here !== "floor" && here !== "bush")) return;
+  const poly = Array.from({ length: 8 }, (_, i) => ({
+    x: Math.round((p.x + Math.cos((i / 8) * Math.PI * 2) * TERRAIN_PATCH) * 100) / 100,
+    y: Math.round((p.y + Math.sin((i / 8) * Math.PI * 2) * TERRAIN_PATCH) * 100) / 100,
+  }));
+  // New ground goes under any rock patch already there.
+  const rocks = state.field.zones.filter((z) => z.terrain === "rock");
+  state.field = { ...state.field, zones: [...state.field.zones.filter((z) => z.terrain !== "rock"), { terrain, poly }, ...rocks] };
   events.push({ type: "terrainChanged", pos: { ...p }, terrain: char });
 }
 
@@ -796,7 +633,7 @@ function resolveHits(
         combo?.engaged ? m.vsEngagedDamage : 1,
         isFoe && hasAllySetupStatus(state, user, t) ? m.vsSetupDamage : 1,
         pinner && pinner.id !== user.id && pinner.side === user.side ? pinner.mods.pinDamage : 1,
-        (state.field ? terrainAt(state.field, t.pos).id === "mud" : state.mapRows[t.pos.y]?.[t.pos.x] === "m") ? m.vsMudDamage : 1,
+        terrainAt(state.field, t.pos).id === "mud" ? m.vsMudDamage : 1,
         adjacentFoes >= 2 ? m.surroundedDamage : 1,
         ailments(content, user).length > 0 ? m.statusedDamage : 1,
         ...t.statuses.map((st) => m.vsStatusIdDamage[st.id] ?? 1),
@@ -958,32 +795,11 @@ function displace(
   const dy = target.pos.y - user.pos.y;
   if ((dx === 0 && dy === 0) || distance <= 0) return;
   if (target.traits.immovable) return;
-  if (state.field) return displaceFree(state, content, user, target, kind, distance, events);
-  // Along the hex direction that points most straight away from the user (or back towards it).
-  const away = hexDirToward(user.pos, target.pos);
-  const dir = kind === "push" ? away : away + 3;
-  const grid = gridOf(state);
-  const from = { ...target.pos };
-  let blocked = false;
-  for (let i = 0; i < distance; i++) {
-    const next = hexStep(target.pos, dir);
-    if (!grid.isPassable(next) || unitAt(state, next)) {
-      blocked = true;
-      break;
-    }
-    target.pos = next;
-  }
-  if (!samePoint(from, target.pos) || blocked)
-    events.push({ type: "displaced", unitId: target.id, from, to: { ...target.pos }, blocked });
-  const partner = partnerOf(state, target);
-  if (partner && !adjacent(state, partner.pos, target.pos)) disengage(state, target, events);
-  // Only a push into an obstacle hurts; a pull that reaches the user simply stops.
-  if (blocked && kind === "push") dealDamage(state, target, content.rules.impactDamage + user.mods.impactBonus, "impact", events);
+  displaceFree(state, content, user, target, kind, distance, events);
 }
 
-/** On a free field an engaged pair steps in until they touch, as neighbours do on hexes (immovable ones hold their ground). */
+/** An engaged pair steps in until they touch (immovable ones hold their ground). */
 function closeIn(state: BattleState, a: BattleUnit, b: BattleUnit, events: BattleEvent[]): void {
-  if (!state.field) return;
   const gap = distance(a.pos, b.pos) - UNIT_RADIUS * 2 - 0.02;
   if (gap <= 0.01) return;
   const movers = [a, b].filter((u) => !u.traits.immovable);
@@ -996,7 +812,7 @@ function closeIn(state: BattleState, a: BattleUnit, b: BattleUnit, events: Battl
     const { to } = sweep(state.field, from, dir, gap / movers.length, blockers);
     if (distance(from, to) < 0.01) continue;
     u.pos = to;
-    events.push({ type: "displaced", unitId: u.id, from, to: { ...to }, blocked: false });
+    events.push({ type: "displaced", unitId: u.id, from, to: { ...to }, blocked: false, engage: true });
   }
 }
 
@@ -1009,7 +825,7 @@ function displaceFree(
   const dir = { x: ((target.pos.x - user.pos.x) / len) * sign, y: ((target.pos.y - user.pos.y) / len) * sign };
   const others = livingUnits(state).filter((u) => u.id !== target.id).map((u) => u.pos);
   const from = { ...target.pos };
-  const { to, blocked } = sweep(state.field!, from, dir, dist, others);
+  const { to, blocked } = sweep(state.field, from, dir, dist, others);
   target.pos = to;
   events.push({ type: "displaced", unitId: target.id, from, to: { ...to }, blocked });
   const partner = partnerOf(state, target);
@@ -1117,23 +933,3 @@ export function checkOutcome(state: BattleState, events: BattleEvent[]): void {
   events.push({ type: "battleEnded", outcome: state.outcome });
 }
 
-/**
- * Where a unit could hurt you on its next turn: the tiles it can move to with full movement,
- * and the further tiles its damaging moves reach from any of them (line of sight ignored, so it errs on the safe side).
- */
-export function threatZone(state: BattleState, content: BattleContent, unitId: string): { reach: readonly Point[]; strike: Point[] } {
-  const unit = unitById(state, unitId);
-  const grid = unit.traits.flies ? Grid.fromAscii(state.mapRows, FLYING_LEGEND) : gridOf(state);
-  const reach = reachableTiles(grid, unit.pos, movementPoints(content, unit, state), occupancyFor(state, unit), true).destinations;
-  const stands = [unit.pos, ...reach];
-  const ranges = unit.moves.map((m) => content.moves[m]).filter((m): m is MoveDef => !!m && m.power > 0).map((m) => moveRange(unit, m));
-  const covered = new Set(stands.map(key));
-  const strike: Point[] = [];
-  for (let y = 0; y < grid.height; y++)
-    for (let x = 0; x < grid.width; x++) {
-      const p = { x, y };
-      if (covered.has(key(p))) continue;
-      if (stands.some((s) => ranges.some((r) => { const d = gridDistance(s, p); return d >= r.min && d <= r.max; }))) strike.push(p);
-    }
-  return { reach, strike };
-}

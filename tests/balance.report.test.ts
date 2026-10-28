@@ -2,7 +2,8 @@ import { it } from "vitest";
 import process from "node:process";
 import { CONTENT, PROGRESSION } from "../src/content";
 import { planTurn } from "../src/core/ai";
-import { applyAction, createBattle, movementPoints } from "../src/core/battle";
+import { movementPoints } from "../src/core/battle";
+import { applyAction, createBattle } from "./core/hexFixture";
 import { newMember } from "../src/core/party";
 import { toUnitSetup, wildSetup } from "../src/core/progression";
 
@@ -38,4 +39,4 @@ it.skipIf(!process.env.BALANCE)("balance report", () => {
     const res = [0, 1, 2].map((seed) => fight(team, foes, seed));
     console.log(team.join("/"), "vs", foes.map((f) => f.join("")).join(","), JSON.stringify(res));
   }
-});
+}, 600_000);

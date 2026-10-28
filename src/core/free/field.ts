@@ -44,11 +44,6 @@ export const UNIT_RADIUS = 0.3;
 export const ALLY_GAP = 0.45;
 /** Two units this close (centre to centre) are in melee reach of each other; touching is 0.8. */
 export const MELEE_REACH = 1.25;
-/** Free movement: a base stride plus a share of Speed, so every Speed point counts. */
-export const FREE_MOVE_BASE = 1.5;
-export const FREE_MOVE_PER_SPEED = 0.5;
-export const FREE_MOVE_MAX = 6;
-export const freeMovement = (speed: number): number => Math.min(FREE_MOVE_MAX, FREE_MOVE_BASE + speed * FREE_MOVE_PER_SPEED);
 
 export const distance = (a: Point, b: Point): number => Math.hypot(a.x - b.x, a.y - b.y);
 
@@ -100,11 +95,12 @@ const SIGHT_STEP = 0.1;
  * Whether sight-blocking terrain (rock, bush) lies between a and b. The first and last `skip` units
  * (the bodies of the shooter and the target) are ignored, so a Pokémon standing in a bush can still be seen.
  */
-export function sightBlocked(field: FreeField, a: Point, b: Point, skipStart = UNIT_RADIUS, skipEnd = UNIT_RADIUS): boolean {
+export function sightBlocked(field: FreeField, a: Point, b: Point, skipStart = UNIT_RADIUS, skipEnd = UNIT_RADIUS, throughBushes = false): boolean {
   const len = distance(a, b);
   for (let d = skipStart; d <= len - skipEnd; d += SIGHT_STEP) {
     const t = d / len;
-    if (terrainAt(field, { x: a.x + (b.x - a.x) * t, y: a.y + (b.y - a.y) * t }).blocksSight) return true;
+    const terrain = terrainAt(field, { x: a.x + (b.x - a.x) * t, y: a.y + (b.y - a.y) * t });
+    if (terrain.blocksSight && !(throughBushes && terrain.id === "bush")) return true;
   }
   return false;
 }

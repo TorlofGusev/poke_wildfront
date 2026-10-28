@@ -104,7 +104,7 @@
   "machine-magnet-pull": {
    "id": "machine-magnet-pull",
    "name": "Magnet Pull",
-   "description": "Its pulls move foes 1 more hex, and foes engaged with it cannot slip away without its free attack.",
+   "description": "Its pulls move foes 1 further, and foes engaged with it cannot slip away without its free attack.",
    "mods": {
     "pullBonus": 1,
     "noEscape": true

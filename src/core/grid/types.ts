@@ -11,9 +11,6 @@ export const samePoint = (a: Point, b: Point): boolean => a.x === b.x && a.y ===
 export const manhattan = (a: Point, b: Point): number =>
   Math.abs(a.x - b.x) + Math.abs(a.y - b.y);
 
-/** Battle distance: battles use a hex grid (see hex.ts), so the six surrounding hexes are at distance 1. */
-export { hexDistance as gridDistance } from "./hex";
-
 export const DIAGONAL_OFFSETS: readonly Point[] = [
   { x: 1, y: -1 },
   { x: 1, y: 1 },

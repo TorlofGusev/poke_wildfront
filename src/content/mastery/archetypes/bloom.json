@@ -143,7 +143,7 @@
   "bloom-effect-spore": {
    "id": "bloom-effect-spore",
    "name": "Effect Spore",
-   "description": "Foes that hit it from an adjacent hex are Poisoned for 2 turns, and it heals 3% of its max HP each turn.",
+   "description": "Foes that hit it in melee are Poisoned for 2 turns, and it heals 3% of its max HP each turn.",
    "mods": {
     "hitStatus": {
      "status": "poison",

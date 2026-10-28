@@ -4,7 +4,6 @@ import { setupRotation } from "./rotation";
 import { BattleScene } from "./scenes/BattleScene";
 import { BootScene } from "./scenes/BootScene";
 import { CreditsScene } from "./scenes/CreditsScene";
-import { FreeBattleScene } from "./scenes/FreeBattleScene";
 import { InventoryScene } from "./scenes/InventoryScene";
 import { PartyScene } from "./scenes/PartyScene";
 import { PokemonScene } from "./scenes/PokemonScene";
@@ -24,7 +23,7 @@ const game = new Phaser.Game({
     width: 960,
     height: 540,
   },
-  scene: [BootScene, TitleScene, StarterScene, OverworldScene, PartyScene, PokemonScene, ShopScene, InventoryScene, BattleScene, FreeBattleScene, CreditsScene],
+  scene: [BootScene, TitleScene, StarterScene, OverworldScene, PartyScene, PokemonScene, ShopScene, InventoryScene, BattleScene, CreditsScene],
 });
 setupRotation(game);
 setupAudio(game);

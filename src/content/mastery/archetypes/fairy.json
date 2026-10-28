@@ -104,7 +104,7 @@
   "fairy-cute-charm": {
    "id": "fairy-cute-charm",
    "name": "Cute Charm",
-   "description": "Foes that hit it from an adjacent hex are charmed: Slow for 1 turn; it takes 10% less damage.",
+   "description": "Foes that hit it in melee are charmed: Slow for 1 turn; it takes 10% less damage.",
    "mods": {
     "hitStatus": {
      "status": "slow",

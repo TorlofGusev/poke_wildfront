@@ -35,7 +35,7 @@ import {
   statOffer,
   type FocusOption,
 } from "../../core/progression";
-import { STAT_NAMES, type StatName } from "../../core/battle";
+import { baseMovement, speedAtMoveCap, STAT_NAMES, type StatName } from "../../core/battle";
 import { session } from "../session";
 import { portraitKey } from "../sprites";
 import { Button } from "../ui/Button";
@@ -268,8 +268,8 @@ export class PokemonScene extends Phaser.Scene {
       hp: t("Max HP: +{n} per point. Now {max} HP; sturdier species also gain more HP per level.", { n: r.hpPerPoint, max: tag("num", maxHp) }),
       attack: t("Raises the damage of every move."),
       defense: t("Lowers the damage of every move that hits it."),
-      speed: t("Movement: {steps} hexes. Past {last} Speed it hits harder after moving (momentum).", {
-        steps: r.moveBySpeed.map((x) => `${x.speed}+ → ${x.move}`).join(", "), last: r.moveBySpeed[r.moveBySpeed.length - 1]!.speed }),
+      speed: t("Movement: {base} + {per} per Speed point, at most {max}; now {n}. Past {last} Speed it hits harder after moving (momentum).", {
+        base: r.movement.base, per: r.movement.perSpeed, max: r.movement.max, n: tag("num", baseMovement(CONTENT, stats.speed).toFixed(1)), last: speedAtMoveCap(CONTENT) }),
       willpower: t("Fills the Spirit bar faster (full: Pumped, more damage and +1 move) and shrugs off statuses foes inflict: {n} chance now.", {
         n: tag("num", pct(Math.min(0.5, r.willpower.resistPerPoint * stats.willpower))) }),
       crit: t("Critical hits: {c} chance, ×{x} damage now.", {

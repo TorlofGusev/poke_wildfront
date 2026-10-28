@@ -1,5 +1,6 @@
 import { describe, expect, it } from "vitest";
-import { applyAction, createBattle, type BattleState } from "../../src/core/battle";
+import { type BattleState } from "../../src/core/battle";
+import { applyAction, createBattle } from "./hexFixture";
 import {
   addPokemon,
   memberMaxHp,

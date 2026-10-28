@@ -47,8 +47,10 @@ try {
     if (after.game.world.fatigue <= 0) throw new Error("travel did not add fatigue");
   });
   await step("deploying and starting the battle", async () => {
-    for (const [x, y] of [[1, 2], [1, 4], [1, 5]]) {
-      await page.mouse.click(12 + 19.4 + x * 38.8 + (y & 1 ? 19.4 : 0), 72 + 22.4 + y * 33.6);
+    // Deploy spots are free points on the field (40 px per unit from the board's corner).
+    const spots = await page.evaluate(() => window.__game.scene.getScene("Battle").scenario.deploymentZone);
+    for (const p of spots.slice(0, 3)) {
+      await page.mouse.click(12 + p.x * 40, 72 + p.y * 40);
       await page.waitForTimeout(100);
     }
     await page.mouse.click(808, 230);

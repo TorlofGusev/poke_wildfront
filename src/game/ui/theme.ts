@@ -53,6 +53,11 @@ export const tileToWorld = (p: { x: number; y: number }) => ({
 });
 
 /** Screen size of a battle board of w × h hexes. */
+/** Free battlefield: pixels per field unit (a hex width), and conversions to and from screen space. */
+export const FIELD_S = 40;
+export const fieldToWorld = (p: { x: number; y: number }) => ({ x: BOARD_X + p.x * FIELD_S, y: BOARD_Y + p.y * FIELD_S });
+export const worldToField = (x: number, y: number) => ({ x: (x - BOARD_X) / FIELD_S, y: (y - BOARD_Y) / FIELD_S });
+
 export const boardSize = (w: number, h: number) => ({ w: TILE * (w + 0.5), h: HEX_R * (1.5 * (h - 1) + 2) });
 
 /** The six corners of a hex around (cx, cy). */

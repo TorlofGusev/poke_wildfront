@@ -83,7 +83,7 @@
   "ditto-shapeshift-dash": {
    "id": "ditto-shapeshift-dash",
    "name": "Shapeshift Dash",
-   "description": "Bond skill: streams up to 2 hexes into a foe (Power 60) and engages it.",
+   "description": "Bond skill: streams into a foe up to 2 away (Power 60) and engages it.",
    "grantsMove": "ditto-shapeshift-dash"
   },
   "ditto-rubbery-body": {
@@ -105,7 +105,7 @@
   "ditto-gooey-grip": {
    "id": "ditto-gooey-grip",
    "name": "Gooey Grip",
-   "description": "Foes it hits from an adjacent hex become Slow for 1 turn.",
+   "description": "Foes it hits in melee become Slow for 1 turn.",
    "mods": {
     "contactStatus": {
      "status": "slow",
@@ -181,7 +181,7 @@
   "ditto-living-mirror": {
    "id": "ditto-living-mirror",
    "name": "Living Mirror",
-   "description": "Capstone. Takes 15% less damage; foes that hit it from an adjacent hex take 8 damage.",
+   "description": "Capstone. Takes 15% less damage; foes that hit it in melee take 8 damage.",
    "mods": {
     "damageTaken": 0.85,
     "thorns": 8

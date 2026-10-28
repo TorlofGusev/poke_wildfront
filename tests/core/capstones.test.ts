@@ -1,5 +1,6 @@
 import { describe, expect, it } from "vitest";
-import { applyAction, createBattle, type UnitSetup } from "../../src/core/battle";
+import { type UnitSetup } from "../../src/core/battle";
+import { applyAction, createBattle } from "./hexFixture";
 import ghost from "../../src/content/mastery/archetypes/ghost.json";
 import { content as c } from "./fixtures";
 

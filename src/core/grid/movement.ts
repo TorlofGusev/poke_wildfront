@@ -1,5 +1,4 @@
 import type { Grid } from "./Grid";
-import { hexNeighbors } from "./hex";
 import { key, NEIGHBOR_OFFSETS, type Point } from "./types";
 
 /**
@@ -24,16 +23,14 @@ export interface Reachable {
 }
 
 /**
- * Dijkstra flood fill limited by movement points. Deterministic tie-breaking.
- * With `hex`, the grid is read as hexes (battles): six neighbours, each step paying the terrain cost.
- * Without it, four-directional squares (the overworld).
+ * Dijkstra flood fill over the overworld's squares (four directions), limited by movement points.
+ * Deterministic tie-breaking.
  */
 export function reachableTiles(
   grid: Grid,
   start: Point,
   movePoints: number,
   occupancy: Occupancy = EMPTY_OCCUPANCY,
-  hex = false,
 ): Reachable {
   type Node = { readonly p: Point; readonly odd: boolean };
   const nodeKey = (n: Node) => `${key(n.p)}|${n.odd ? 1 : 0}`;
@@ -50,7 +47,7 @@ export function reachableTiles(
     const current = frontier.shift()!;
     const currentCost = best.get(nodeKey(current))!;
 
-    const nexts = hex ? hexNeighbors(current.p) : NEIGHBOR_OFFSETS.map((o) => ({ x: current.p.x + o.x, y: current.p.y + o.y }));
+    const nexts = NEIGHBOR_OFFSETS.map((o) => ({ x: current.p.x + o.x, y: current.p.y + o.y }));
     for (const next of nexts) {
       if (!grid.inBounds(next)) continue;
       const step = grid.terrainAt(next).moveCost;

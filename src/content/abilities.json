@@ -32,7 +32,7 @@
  "static": {
   "id": "static",
   "name": "Static",
-  "description": "Pokémon that hit it from an adjacent hex become Paralyzed.",
+  "description": "Pokémon that hit it in melee become Paralyzed.",
   "contactStatus": {
    "status": "paralysis",
    "duration": 1
@@ -47,7 +47,7 @@
  "keen-eye": {
   "id": "keen-eye",
   "name": "Keen Eye",
-  "description": "Can target Pokémon hidden in tall grass from range.",
+  "description": "Sees through bushes: they do not block its line of sight.",
   "keenEye": true
  },
  "run-away": {
@@ -71,7 +71,7 @@
  "poison-point": {
   "id": "poison-point",
   "name": "Poison Point",
-  "description": "Pokémon that hit it from an adjacent hex become Poisoned.",
+  "description": "Pokémon that hit it in melee become Poisoned.",
   "contactStatus": {
    "status": "poison",
    "duration": 2
@@ -90,7 +90,7 @@
  "effect-spore": {
   "id": "effect-spore",
   "name": "Effect Spore",
-  "description": "Pokémon that hit it from an adjacent hex become Poisoned.",
+  "description": "Pokémon that hit it in melee become Poisoned.",
   "contactStatus": {
    "status": "poison",
    "duration": 2
@@ -139,7 +139,7 @@
  "cute-charm": {
   "id": "cute-charm",
   "name": "Cute Charm",
-  "description": "Pokémon that hit it from an adjacent hex are charmed: Slow for 1 turn.",
+  "description": "Pokémon that hit it in melee are charmed: Slow for 1 turn.",
   "contactStatus": {
    "status": "slow",
    "duration": 1
@@ -188,7 +188,7 @@
  "flame-body": {
   "id": "flame-body",
   "name": "Flame Body",
-  "description": "Pokémon that hit it from an adjacent hex become Burned.",
+  "description": "Pokémon that hit it in melee become Burned.",
   "contactStatus": {
    "status": "burn",
    "duration": 1
@@ -289,7 +289,7 @@
  "sniper": {
   "id": "sniper",
   "name": "Sniper",
-  "description": "+15% damage against targets 2+ hexes away.",
+  "description": "+15% damage against targets out of melee reach.",
   "mods": {
    "farDamage": 1.15
   }
@@ -305,7 +305,7 @@
  "compound-eyes": {
   "id": "compound-eyes",
   "name": "Compound Eyes",
-  "description": "+1 max range on moves that reach 2+ hexes (up to 3; Bond moves no limit), and its shots pass over Pokémon in the way.",
+  "description": "+1 max range on moves that reach 2 or more (up to 3; Bond moves no limit), and its shots pass over Pokémon in the way.",
   "mods": {
    "rangeBonus": 1,
    "shootOver": true

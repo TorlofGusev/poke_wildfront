@@ -1,5 +1,5 @@
 import {
-  applyAction, breakAway, checkOutcome, commitMove, effectiveMove, IllegalActionError, livingUnits, moveRange,
+  applyBaseAction, breakAway, checkOutcome, cloneState, commitMove, effectiveMove, IllegalActionError, livingUnits, moveRange,
   moveUnavailableReason, partnerOf, roll, unitById, type BattleAction, type StepResult,
 } from "../battle/battle";
 import type { BattleContent, MoveDef } from "../battle/content";
@@ -11,23 +11,22 @@ import { distance, distToSegment, inBounds, MELEE_REACH, sightBlocked, UNIT_RADI
 import { freeReach, type FreeReach } from "./pathing";
 
 /**
- * Battle actions on a free field (prototype). Damage, statuses, turns and engagement are the hex battle's own;
- * only where units stand, how far they walk and what a move reaches are worked out in continuous space.
+ * Battle actions on the free field: where units can walk, what a move reaches and hits, and the action
+ * entry point. Damage, statuses, turns and engagement are the rules core's (battle.ts).
  */
-export type FreeAction =
-  | { readonly type: "freeMove"; readonly unitId: string; readonly to: Point }
-  | { readonly type: "freeUseMove"; readonly unitId: string; readonly moveId: string; readonly target: Point }
-  | Extract<BattleAction, { type: "endTurn" | "switchUnit" | "retreat" }>;
 
 /** How far around the aim point a burst reaches a body (radius 1 ≈ the six hexes around it). */
 const BURST_SLACK = UNIT_RADIUS * 0.5;
 /** Ranged moves reach the edge of a body standing at their range. */
 const RANGE_SLACK = 0.3;
 
-/** Where the unit can still walk this turn. Allies can be crossed; fliers and ghosts cross foes too. */
-export function freeReachFor(state: BattleState, unitId: string): FreeReach {
+/**
+ * Where the unit can still walk this turn (or, with `mp`, could walk with that much movement: a foe's threat).
+ * Allies can be crossed; fliers and ghosts cross foes too.
+ */
+export function freeReachFor(state: BattleState, unitId: string, mp?: number): FreeReach {
   const unit = unitById(state, unitId);
-  const mp = state.turn?.unitId === unitId ? state.turn.movePointsLeft : 0;
+  mp ??= state.turn?.unitId === unitId ? state.turn.movePointsLeft : 0;
   const crossesFoes = !!(unit.traits.flies || unit.traits.phases);
   const bodies = livingUnits(state)
     .filter((u) => u.id !== unitId)
@@ -102,7 +101,8 @@ export function freeUnitAt(state: BattleState, p: Point): BattleUnit | undefined
 
 /** Whether `user` sees `to`: no rock or bush between them, and (unless it shoots over) no other Pokémon in the way. */
 export function freeLineOfSight(state: BattleState, user: BattleUnit, to: Point, target?: BattleUnit): boolean {
-  if (sightBlocked(state.field!, user.pos, to, UNIT_RADIUS, target ? UNIT_RADIUS : 0)) return false;
+  // Keen Eye sees through bushes.
+  if (sightBlocked(state.field, user.pos, to, UNIT_RADIUS, target ? UNIT_RADIUS : 0, !!user.ability?.keenEye)) return false;
   if (user.mods.shootOver) return true;
   // Allies never block a shot; they may catch it instead (interceptorOf).
   return !livingUnits(state).some((u) => u.id !== user.id && u.id !== target?.id && u.side !== user.side
@@ -146,6 +146,11 @@ function unitsIn(state: BattleState, area: FreeArea, keep: (u: BattleUnit) => bo
   return livingUnits(state).filter((u) => keep(u) && inside(u)).sort((a, b) => a.pos.y - b.pos.y || a.pos.x - b.pos.x);
 }
 
+/** Whether the move can be aimed at any Pokémon right now (so its button can be pressed). */
+export function freeHasTarget(state: BattleState, content: BattleContent, unitId: string, moveId: string): boolean {
+  return livingUnits(state).some((u) => freeAim(state, content, unitId, moveId, u.pos).ok);
+}
+
 /** Whether a move can be aimed at `aim` right now, and what it would hit. */
 export function freeAim(state: BattleState, content: BattleContent, unitId: string, moveId: string, aim: Point): FreeAim {
   const reason = moveUnavailableReason(state, content, unitId, moveId);
@@ -158,21 +163,22 @@ export function freeAim(state: BattleState, content: BattleContent, unitId: stri
   if (!inBounds(state.field!, aim)) return fail("off the field");
 
   let target = aim;
+  // The Pokémon a single-target move is aimed at (the user itself for a move on itself).
+  let aimedUnit: BattleUnit | undefined;
   if (move.shape.kind === "single") {
-    const t = range.max === 0 ? user : freeUnitAt(state, aim);
-    if (!t) return fail("no Pokémon there");
-    if (!wants(move, user)(t) && !(range.max === 0 && t === user)) return fail("not a valid target");
-    target = t.pos;
+    aimedUnit = range.max === 0 ? user : freeUnitAt(state, aim);
+    if (!aimedUnit) return fail("no Pokémon there");
+    if (!wants(move, user)(aimedUnit) && !(range.max === 0 && aimedUnit === user)) return fail("not a valid target");
+    target = aimedUnit.pos;
   }
   if (range.max > 0 && move.shape.kind !== "line") {
     const d = distance(user.pos, target);
     if (d > range.max) return fail("out of range");
     if (d < range.min) return fail("too close");
   }
-  const aimedUnit = move.shape.kind === "single" ? freeUnitAt(state, target) : undefined;
   if (move.requiresLineOfSight && range.max > 0 && move.shape.kind !== "line" && !freeLineOfSight(state, user, target, aimedUnit))
     return fail("no line of sight");
-  const affected = move.shape.kind === "single" ? [freeUnitAt(state, target)!] : unitsIn(state, area, caught(move, user));
+  const affected = aimedUnit ? [aimedUnit] : unitsIn(state, area, caught(move, user));
   if (!affected.some(wants(move, user))) return fail("hits nobody");
   const foes = affected.filter((u) => u.side !== user.side);
   // Engaged: attacks only go at the partner; taunted: only at the taunter.
@@ -188,14 +194,15 @@ export function freeAim(state: BattleState, content: BattleContent, unitId: stri
   };
 }
 
-export function applyFreeAction(state: BattleState, content: BattleContent, action: FreeAction): StepResult {
-  if (action.type !== "freeMove" && action.type !== "freeUseMove") return applyAction(state, content, action);
+/** Applies one action: walks and moves here, everything else by the rules core. Never mutates `state`. */
+export function applyAction(state: BattleState, content: BattleContent, action: BattleAction): StepResult {
+  if (action.type !== "move" && action.type !== "useMove") return applyBaseAction(state, content, action);
   if (state.outcome !== "ongoing") throw new IllegalActionError("battle is over");
   if (state.turn?.unitId !== action.unitId) throw new IllegalActionError(`not ${action.unitId}'s turn`);
-  const next = structuredClone(state) as BattleState;
+  const next = cloneState(state);
   const events: BattleEvent[] = [];
   next.turn!.fresh = false;
-  if (action.type === "freeMove") freeMove(next, content, action.unitId, action.to, events);
+  if (action.type === "move") freeMove(next, content, action.unitId, action.to, events);
   else freeUseMove(next, content, action.unitId, action.moveId, action.target, events);
   return { state: next, events };
 }
@@ -255,16 +262,46 @@ function freeUseMove(
 
 /** What a move would do if used now (combat is seeded, so playing it on a copy is exact). */
 export function previewFreeMove(state: BattleState, content: BattleContent, unitId: string, moveId: string, aim: Point): HitPreview[] {
+  return summarizeHits(previewFreeMoveEvents(state, content, unitId, moveId, aim));
+}
+
+/** A knockback a move would cause: where the Pokémon ends up, and the impact damage if it hits an obstacle. */
+export interface PushPreview {
+  readonly unitId: string;
+  readonly from: Point;
+  readonly to: Point;
+  readonly impact: number;
+}
+
+/** The pushes and pulls a move would cause (not an engaged pair stepping together). */
+export function previewPushes(state: BattleState, content: BattleContent, unitId: string, moveId: string, aim: Point): PushPreview[] {
+  const events = previewFreeMoveEvents(state, content, unitId, moveId, aim);
+  const out: PushPreview[] = [];
+  events.forEach((e, i) => {
+    if (e.type !== "displaced" || e.engage) return;
+    // Its impact damage follows before the next knockback (a broken engagement may come in between).
+    let impact = 0;
+    for (let j = i + 1; j < events.length && events[j]!.type !== "displaced"; j++) {
+      const d = events[j]!;
+      if (d.type === "damaged" && d.unitId === e.unitId && d.source === "impact") impact += d.amount;
+    }
+    if (distance(e.from, e.to) > 0.05 || impact) out.push({ unitId: e.unitId, from: e.from, to: e.to, impact });
+  });
+  return out;
+}
+
+/** Everything a move would do if used now, as events (played on a copy; the shot lands where it is aimed). */
+function previewFreeMoveEvents(state: BattleState, content: BattleContent, unitId: string, moveId: string, aim: Point): BattleEvent[] {
   if (!freeAim(state, content, unitId, moveId, aim).ok) return [];
   // Shows the hit on the aimed Pokémon; the scene warns about an ally who may catch it.
-  const copy = structuredClone(state) as BattleState;
+  const copy = cloneState(state);
   const events: BattleEvent[] = [];
   freeUseMove(copy, content, unitId, moveId, aim, events, false);
-  return summarizeHits(events);
+  return events;
 }
 
 /** The free attack a unit would take walking to `to` (empty if it does not disengage). */
 export function previewFreeWalk(state: BattleState, content: BattleContent, unitId: string, to: Point): HitPreview[] {
   if (!breaksEngagement(state, unitId, to) || freeReachFor(state, unitId).costTo(to) === null) return [];
-  return summarizeHits(applyFreeAction(state, content, { type: "freeMove", unitId, to }).events);
+  return summarizeHits(applyAction(state, content, { type: "move", unitId, to }).events);
 }

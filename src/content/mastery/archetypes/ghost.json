@@ -78,7 +78,7 @@
   "ghost-cursed-body": {
    "id": "ghost-cursed-body",
    "name": "Cursed Body",
-   "description": "Its hits on adjacent foes Disable them for 1 turn, and foes that hit it from an adjacent hex take 6 damage.",
+   "description": "Its hits on adjacent foes Disable them for 1 turn, and foes that hit it in melee take 6 damage.",
    "mods": {
     "contactStatus": {
      "status": "disabled",

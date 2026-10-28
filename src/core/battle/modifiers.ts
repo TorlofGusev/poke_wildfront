@@ -7,7 +7,7 @@ export interface UnitModifiers {
   readonly moveBonus: number;
   /** Extra max range on moves that already reach 2+ hexes; only Bond moves may go past 3 (see moveRange). */
   readonly rangeBonus: number;
-  /** Damage multipliers against targets 2+ hexes away, and adjacent targets. */
+  /** Damage multipliers against targets out of melee reach, and in it. */
   readonly farDamage: number;
   readonly closeDamage: number;
   /** Multiplies all damage this unit deals. */
@@ -115,7 +115,7 @@ export interface UnitModifiers {
   readonly critImmune: boolean;
   /** Moves with a status effect deal 30% more but lose the status (Sheer Force). */
   readonly sheerForce: boolean;
-  /** Status a foe gets when it hits this unit from an adjacent hex (Static, Flame Body). */
+  /** Status a foe gets when it hits this unit in melee (Static, Flame Body). */
   readonly hitStatus: { readonly status: string; readonly duration: number } | null;
 }
 
