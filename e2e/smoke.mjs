@@ -24,7 +24,7 @@ try {
     await page.waitForTimeout(800);
   });
   await step("new game shows the starter choice; choosing one creates a save", async () => {
-    await page.mouse.click(480, 276);
+    await page.mouse.click(480, 226);
     await page.waitForTimeout(600);
     if (await save()) throw new Error("a save was created before choosing a starter");
     await page.mouse.click(172, 421);
@@ -35,7 +35,7 @@ try {
     await page.reload();
     await page.waitForFunction(() => document.querySelector("canvas"));
     await page.waitForTimeout(800);
-    await page.mouse.click(480, 276);
+    await page.mouse.click(480, 226);
     await page.waitForTimeout(600);
   });
   await step("walking into a wild group opens deployment", async () => {

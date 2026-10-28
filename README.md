@@ -1,6 +1,6 @@
 # Pokémon Wildfront
 
-A free, open-source, browser-only Pokémon tactical RPG fan game inspired by Wartales: grid-based tactics, mandatory deployment, capture, expedition fatigue and three-knockout permadeath.
+A free (and free forever: no purchases, no ads, no paywalls), open-source, browser-only Pokémon tactical RPG fan game inspired by Wartales: grid-based tactics, mandatory deployment, capture, expedition fatigue and three-knockout permadeath.
 
 > **Unofficial fan project.** Not affiliated with or endorsed by Nintendo, Game Freak, Creatures Inc. or The Pokémon Company. Pokémon names and characters are their property. The code licence below covers only this project's original code and grants no rights to Pokémon IP. No monetization, ever.
 

@@ -222,7 +222,7 @@ export class BattleScene extends Phaser.Scene {
   }
 
   create(): void {
-    if (this.demo) return void this.playDemo(this.demo);
+    if (this.demo) return void this.playDemo(this.demo).catch((e: unknown) => console.error("title replay stopped:", e));
     this.panelKey = "";
     playMusic(this, "battle");
     this.header = this.add.text(BOARD_X, 16, "", { fontFamily: FONT, fontSize: "20px", color: "#f5d76e" });
@@ -1270,8 +1270,10 @@ export class BattleScene extends Phaser.Scene {
    * The scene runs under the title screen, which dims it.
    */
   private async playDemo(demo: DemoBattle): Promise<void> {
+    // isActive() is still false while create() runs: a stop (shutdown) ends the replay instead.
     const run = ++this.demoRun;
-    const live = () => this.scene.isActive() && run === this.demoRun;
+    this.events.once("shutdown", () => run === this.demoRun && this.demoRun++);
+    const live = () => run === this.demoRun;
     silence(this);
     this.drawBoard();
     this.overlay = this.add.graphics();

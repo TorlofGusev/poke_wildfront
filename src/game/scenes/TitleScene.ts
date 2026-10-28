@@ -2,7 +2,7 @@ import Phaser from "phaser";
 import { LANG, setLang } from "../../content/lang";
 import { playMusic } from "../music";
 import { px } from "../ui/theme";
-import { DISCLAIMER, GAME_VERSION } from "../../core/version";
+import { DISCLAIMER, FREE_FOREVER, GAME_VERSION } from "../../core/version";
 import { session } from "../session";
 import { Button } from "../ui/Button";
 import { addFullscreenButton } from "../ui/fullscreen";
@@ -25,13 +25,13 @@ export class TitleScene extends Phaser.Scene {
     const hasSave = session.hasSave() && session.load();
     this.backdrop();
     this.add
-      .text(width / 2, height / 2 - 110, "Pokémon Wildfront", { fontFamily: "monospace", fontSize: "48px", color: "#f5d76e" })
+      .text(width / 2, height / 2 - 160, "Pokémon Wildfront", { fontFamily: "monospace", fontSize: "48px", color: "#f5d76e" })
       .setOrigin(0.5);
     this.add
-      .text(width / 2, height / 2 - 60, t("Tactical RPG"), { fontFamily: "monospace", fontSize: "18px", color: "#c8d0e0" })
+      .text(width / 2, height / 2 - 112, t("Tactical RPG"), { fontFamily: "monospace", fontSize: "18px", color: "#c8d0e0" })
       .setOrigin(0.5);
 
-    let y = height / 2 - 10;
+    let y = height / 2 - 60;
     if (hasSave) {
       new Button(this, width / 2 - 140, y, 280, 32, t("▶ Continue"), () => this.scene.start("Overworld", {}));
       y += 42;
@@ -76,7 +76,10 @@ export class TitleScene extends Phaser.Scene {
     }
 
     this.add
-      .text(width / 2, height - 30, `v${GAME_VERSION} · ${t(DISCLAIMER)}`, {
+      .text(width / 2, height - 46, `♥ ${t(FREE_FOREVER)}`, { fontFamily: "monospace", fontSize: px(12), color: "#7ed321" })
+      .setOrigin(0.5);
+    this.add
+      .text(width / 2, height - 22, `v${GAME_VERSION} · ${t(DISCLAIMER)}`, {
         fontFamily: "monospace", fontSize: px(11), color: "#7a8499", align: "center", wordWrap: { width: width - 40 },
       })
       .setOrigin(0.5);
