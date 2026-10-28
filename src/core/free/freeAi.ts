@@ -13,7 +13,7 @@ import { CELL } from "./pathing";
  */
 
 /** Stands are tried on a coarser lattice than the walk itself: every other cell. */
-const STAND_STRIDE = 2;
+const STAND_STRIDE = Math.round(0.5 / CELL);
 /** A Pokémon that fights from range dislikes ending its walk next to a foe. */
 const SHOOTER_CROWDED = 25;
 const KO_BONUS = 40;

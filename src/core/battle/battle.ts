@@ -5,7 +5,7 @@ import { hasLineOfSight } from "../grid/lineOfSight";
 import { hexDirToward, hexOnAxis, hexStep } from "../grid/hex";
 import { reachableTiles, type Occupancy, type Reachable } from "../grid/movement";
 import { gridDistance, key, samePoint, type Point } from "../grid/types";
-import { distance, MELEE_REACH, sweep, terrainAt, type FreeField } from "../free/field";
+import { distance, FREE_MOVE_MAX, freeMovement, MELEE_REACH, sweep, terrainAt, type FreeField } from "../free/field";
 import { captureChance, captureUnavailableReason } from "../capture/capture";
 import { nextRandom } from "../rng";
 import { typeMultiplier } from "../rules/typeChart";
@@ -125,10 +125,12 @@ export function movementPoints(content: BattleContent, unit: BattleUnit, state?:
   if (unit.statuses.some((st) => content.statuses[st.id]?.noMove) && !unit.mods.statusedMove) return 0;
   if (state && livingUnits(state).some((o) => o.side !== unit.side && o.ability?.arenaTrap && adjacent(state, o.pos, unit.pos))) return 0;
   const r = content.rules;
-  const base = Math.min(r.moveMax, baseMovement(content, unit.stats.speed));
+  // A free field grows movement smoothly with Speed instead of in hex steps.
+  const max = state?.field ? FREE_MOVE_MAX : r.moveMax;
+  const base = state?.field ? freeMovement(unit.stats.speed) : Math.min(r.moveMax, baseMovement(content, unit.stats.speed));
   const penalty = unit.statuses.reduce((s, st) => s + (content.statuses[st.id]?.movePenalty ?? 0), 0);
   // Bonuses (abilities, items, masteries) help slow Pokémon but never lift anyone past the cap.
-  return Math.max(0, Math.min(r.moveMax, base - penalty + unit.mods.moveBonus + (ailments(content, unit).length ? unit.mods.statusedMove : 0)));
+  return Math.max(0, Math.min(max, base - penalty + unit.mods.moveBonus + (ailments(content, unit).length ? unit.mods.statusedMove : 0)));
 }
 
 /** Combined battlefield traits of a Pokémon's types. */

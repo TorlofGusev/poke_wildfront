@@ -2,7 +2,7 @@ import type { Point } from "../grid/types";
 import { bodyFits, distance, terrainAt, UNIT_RADIUS, type FreeField } from "./field";
 
 /** Path-finding resolution: the field is sampled on a lattice this fine (in hex widths). */
-export const CELL = 0.25;
+export const CELL = 0.125;
 
 /** Other bodies on the field, as the walker sees them. */
 export interface FreeBody {

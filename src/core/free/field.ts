@@ -42,6 +42,11 @@ export interface FreeField {
 export const UNIT_RADIUS = 0.4;
 /** Two units this close (centre to centre) are in melee reach of each other; touching is 0.8. */
 export const MELEE_REACH = 1.25;
+/** Free movement: a base stride plus a share of Speed, so every Speed point counts. */
+export const FREE_MOVE_BASE = 1.5;
+export const FREE_MOVE_PER_SPEED = 0.5;
+export const FREE_MOVE_MAX = 6;
+export const freeMovement = (speed: number): number => Math.min(FREE_MOVE_MAX, FREE_MOVE_BASE + speed * FREE_MOVE_PER_SPEED);
 
 export const distance = (a: Point, b: Point): number => Math.hypot(a.x - b.x, a.y - b.y);
 
