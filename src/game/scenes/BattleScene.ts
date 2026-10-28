@@ -7,7 +7,7 @@ import { captureChance, captureTargets, captureUnavailableReason } from "../../c
 import { KNOCKOUTS_TO_DEATH, resolveBattle, type BattleSummary } from "../../core/party";
 import { currentWorld, session } from "../session";
 import { PROGRESSION, WORLD_CONTENT, WORLDS } from "../../content";
-import { fatigueLevel, fatigueModifiers, removeEncounter, returnToLastCamp, rollLoot } from "../../core/expedition";
+import { calmEncounter, fatigueLevel, fatigueModifiers, removeEncounter, returnToLastCamp, rollLoot } from "../../core/expedition";
 import { teamBond } from "../../core/progression";
 import { nextRandom } from "../../core/rng";
 import { AI_LEVELS, planTurn } from "../../core/ai";
@@ -904,7 +904,11 @@ export class BattleScene extends Phaser.Scene {
       const errors = deploymentErrors(this.scenario, this.party, this.placements);
       y += 4;
       button(t("▶ Lock deployment & start ({n}/{max})", { n: this.placements.length, max: this.scenario.maxDeploy ?? MAX_ACTIVE_UNITS }), errors.length === 0, false, () => this.startBattle());
-      button(t("← Avoid this battle"), true, false, () => this.scene.start("Overworld", {}));
+      button(t("← Avoid this battle"), true, false, () => {
+        // The group lets the party walk away instead of catching it again at the next step.
+        if (this.encounterId) session.update({ ...session.game, world: calmEncounter(session.game.world, this.encounterId) });
+        this.scene.start("Overworld", {});
+      });
       return;
     }
 
@@ -1396,6 +1400,7 @@ export class BattleScene extends Phaser.Scene {
         game = granted.game;
         this.rewardText = [t("{name} is defeated!", { name: npc.name }), ...granted.notes].join(" ");
       } else if (npc) game = failNpc(game, npc, npcs);
+      if (this.state.outcome === "retreated" && this.encounterId) game = { ...game, world: calmEncounter(game.world, this.encounterId) };
       if (this.state.outcome === "defeat") game = { ...game, world: returnToLastCamp(WORLD_CONTENT, currentWorld(), game.world) };
       this.evGained = (game.ev ?? 0) - evBefore;
       session.update(game);

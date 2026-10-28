@@ -2,6 +2,7 @@ import { describe, expect, it } from "vitest";
 import { WORLD, WORLD_CONTENT, WORLDS, CONTENT, PROGRESSION } from "../../src/content";
 import { wildSetup } from "../../src/core/progression";
 import {
+  calmEncounter,
   addTravelFatigue,
   biomeAt,
   changeMap,
@@ -258,6 +259,17 @@ describe("moving wild groups", () => {
     }
     expect(r.caught?.id).toBe("g");
     expect(steps).toBeGreaterThanOrEqual(2);
+  });
+
+  it("after its battle is avoided or fled, a group lets the party walk away instead of catching it again", () => {
+    // The party right next to the group, walking away along the row.
+    let r = { world: calmEncounter({ ...base, pos: { x: 4, y: 1 }, encounters: [group(3)] }, "g"), caught: null as unknown };
+    for (let x = 5; x <= 9; x++) {
+      r = stepGroups(WORLD_CONTENT, def, { ...r.world, pos: { x, y: 1 } });
+      expect(r.caught).toBeNull();
+    }
+    // Calm wears off: it notices the party again (now out of reach).
+    expect(r.world.encounters[0]!.calm).toBeUndefined();
   });
 
   it("towns are safe: groups never step into one and do not chase a party standing in it", () => {

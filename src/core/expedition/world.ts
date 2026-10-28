@@ -97,6 +97,8 @@ export interface EncounterGroup {
   readonly home?: Point;
   /** It has seen the party and is coming for it. */
   readonly chasing?: boolean;
+  /** Steps left during which it leaves the party alone (after a battle with it was avoided or fled). */
+  readonly calm?: number;
 }
 
 export interface WorldState {
@@ -276,6 +278,14 @@ export function removeEncounter(world: WorldState, id: string): WorldState {
 }
 
 /**
+ * The party avoided or fled this group's battle: it does not chase or catch the party for a few steps, enough
+ * to walk out of its sight.
+ */
+export function calmEncounter(world: WorldState, id: string): WorldState {
+  return { ...world, encounters: world.encounters.map((e) => (e.id === id ? { ...e, chasing: false, calm: SIGHT + 2 } : e)) };
+}
+
+/**
  * The part of a wild group that actually fights: never more Pokémon than the player can field
  * (healthy party members, at most the map's deploy slots), so a lone starter is not swarmed.
  * Keeps the strongest members.
@@ -334,7 +344,8 @@ export function stepGroups(content: WorldContent, def: WorldDef, world: WorldSta
   let caught: EncounterGroup | null = null;
   const encounters = world.encounters.map((g) => {
     const home = g.home ?? g.pos;
-    const sees = !safe(party) && manhattan(g.pos, party) <= SIGHT && manhattan(party, home) <= LEASH + 1;
+    const calm = Math.max(0, (g.calm ?? 0) - 1);
+    const sees = !g.calm && !safe(party) && manhattan(g.pos, party) <= SIGHT && manhattan(party, home) <= LEASH + 1;
     let pos = g.pos;
     const roll = nextRandom(rng);
     rng = roll.state;
@@ -359,7 +370,7 @@ export function stepGroups(content: WorldContent, def: WorldDef, world: WorldSta
     }
     occupied.delete(key(g.pos));
     occupied.add(key(pos));
-    const moved: EncounterGroup = { ...g, pos, home, chasing: sees };
+    const moved: EncounterGroup = { ...g, pos, home, chasing: sees, calm: calm || undefined };
     if (sees && !caught && manhattan(pos, party) <= 1) caught = moved;
     return moved;
   });
