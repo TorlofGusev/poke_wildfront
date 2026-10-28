@@ -1,6 +1,6 @@
 import { nextRandom } from "../rng";
 import type { Point } from "../grid/types";
-import { bodyFits, distance, terrainAt, type FreeField, type FreeTerrainId, type FreeZone } from "./field";
+import { bodyFits, distance, distToSegment, pointInPoly, terrainAt, UNIT_RADIUS, type FreeField, type FreeTerrainId, type FreeZone } from "./field";
 import { freeReach } from "./pathing";
 
 /**
@@ -248,11 +248,97 @@ function place(rng: Rng, field: FreeField, zones: Zones, playerCount: number, en
   return { field, deploymentZone: spots, enemySpawns: enemies };
 }
 
+/** Three Pokémon side by side must fit through any passage: half that width, from a passage's middle to its sides. */
+const ABREAST = 3;
+const ROOM = ABREAST * UNIT_RADIUS;
+/** How finely passages are measured (hex widths). */
+const CLEAR_STEP = 0.2;
+/** A narrow nook smaller than this (area) is a corner, not a passage: left alone. */
+const NOOK_AREA = 0.6;
+
+interface Rock { readonly poly: readonly Point[]; readonly x0: number; readonly y0: number; readonly x1: number; readonly y1: number }
+
+/** Distance from `p` to the nearest rock or field edge (0 inside rock). */
+function clearance(field: FreeField, rocks: readonly Rock[], p: Point): number {
+  let d = Math.min(p.x, p.y, field.width - p.x, field.height - p.y);
+  for (const z of rocks) {
+    // Rocks whose bounding box is already further than the nearest edge found cannot be nearer.
+    if (Math.max(z.x0 - p.x, p.x - z.x1, 0) ** 2 + Math.max(z.y0 - p.y, p.y - z.y1, 0) ** 2 >= d * d) continue;
+    if (pointInPoly(p, z.poly)) return 0;
+    for (let i = 0; i < z.poly.length; i++) d = Math.min(d, distToSegment(p, z.poly[i]!, z.poly[(i + 1) % z.poly.length]!));
+  }
+  return d;
+}
+
+/**
+ * Narrow passages: ground a Pokémon can stand on that no three-abreast-wide space reaches (a morphological
+ * opening of the walkable ground). Each is returned as its points; tiny corner nooks are left out.
+ */
+export function narrowPassages(field: FreeField): Point[][] {
+  const rocks: Rock[] = field.zones.filter((z) => z.terrain === "rock").map((z) => ({
+    poly: z.poly, x0: Math.min(...z.poly.map((q) => q.x)), y0: Math.min(...z.poly.map((q) => q.y)),
+    x1: Math.max(...z.poly.map((q) => q.x)), y1: Math.max(...z.poly.map((q) => q.y)),
+  }));
+  const cols = Math.floor(field.width / CLEAR_STEP), rows = Math.floor(field.height / CLEAR_STEP);
+  const at = (c: number, r: number): Point => ({ x: (c + 0.5) * CLEAR_STEP, y: (r + 0.5) * CLEAR_STEP });
+  const clear = new Float32Array(cols * rows);
+  for (let r = 0; r < rows; r++) for (let c = 0; c < cols; c++) clear[r * cols + c] = clearance(field, rocks, at(c, r));
+  // Covered: within ROOM of a point with ROOM of clearance (a three-wide disc fits there).
+  const covered = new Uint8Array(cols * rows);
+  const k = Math.ceil(ROOM / CLEAR_STEP);
+  for (let r = 0; r < rows; r++) for (let c = 0; c < cols; c++) {
+    if (clear[r * cols + c]! < ROOM) continue;
+    for (let dr = -k; dr <= k; dr++) for (let dc = -k; dc <= k; dc++) {
+      const rr = r + dr, cc = c + dc;
+      if (rr < 0 || cc < 0 || rr >= rows || cc >= cols || (dr * dr + dc * dc) * CLEAR_STEP * CLEAR_STEP > ROOM * ROOM) continue;
+      covered[rr * cols + cc] = 1;
+    }
+  }
+  const narrow = (i: number) => clear[i]! >= UNIT_RADIUS && !covered[i];
+  const seen = new Uint8Array(cols * rows);
+  const out: Point[][] = [];
+  for (let i = 0; i < cols * rows; i++) {
+    if (seen[i] || !narrow(i)) continue;
+    const part: Point[] = [];
+    const stack = [i];
+    seen[i] = 1;
+    while (stack.length) {
+      const j = stack.pop()!;
+      part.push(at(j % cols, Math.floor(j / cols)));
+      for (const n of [j - 1, j + 1, j - cols, j + cols]) {
+        if (n < 0 || n >= cols * rows || seen[n] || (Math.abs((n % cols) - (j % cols)) > 1) || !narrow(n)) continue;
+        seen[n] = 1;
+        stack.push(n);
+      }
+    }
+    if (part.length * CLEAR_STEP * CLEAR_STEP >= NOOK_AREA) out.push(part);
+  }
+  return out;
+}
+
+/** Widens every narrow passage: the rock nearest to each goes, until three Pokémon fit abreast everywhere. */
+function widenPassages(field: FreeField): FreeField {
+  let cur = field;
+  for (let guard = 0; guard < 12; guard++) {
+    const passages = narrowPassages(cur);
+    const rocks = cur.zones.filter((z) => z.terrain === "rock");
+    if (!passages.length || !rocks.length) return cur;
+    // One rock per passage each round (the one nearest its middle), then measure again.
+    const gone = new Set(passages.map((passage) => {
+      const mid = passage[Math.floor(passage.length / 2)]!;
+      const edge = (z: FreeZone) => Math.min(...z.poly.map((q, i) => distToSegment(mid, q, z.poly[(i + 1) % z.poly.length]!)));
+      return rocks.reduce((best, z) => (edge(z) < edge(best) ? z : best));
+    }));
+    cur = { ...cur, zones: cur.zones.filter((z) => !gone.has(z)) };
+  }
+  return cur;
+}
+
 export function generateFreeArena(opts: FreeArenaOptions): FreeArena {
   const palette = paletteFor(opts.style, opts.base);
   const rng = new Rng((opts.seed ^ 0x9e3779b9) >>> 0);
   for (let attempt = 0; attempt < MAX_TRIES; attempt++) {
-    const field: FreeField = { width: ARENA_WIDTH, height: ARENA_HEIGHT, zones: buildTerrain(rng, palette) };
+    const field = widenPassages({ width: ARENA_WIDTH, height: ARENA_HEIGHT, zones: buildTerrain(rng, palette) });
     const result = place(rng, field, zonesFor(rng, opts.formation), opts.playerCount, opts.enemyCount);
     if (result) return result;
   }
