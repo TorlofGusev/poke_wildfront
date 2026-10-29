@@ -732,7 +732,11 @@ export class OverworldScene extends Phaser.Scene {
     const after = Math.min(WORLD_CONTENT.fatigue.max, this.world.fatigue + cost);
     const rawEnc = this.world.encounters.find((e) => samePoint(e.pos, to));
     const enc = rawEnc ? effectiveGroup(rawEnc, this.healthy(), this.slots(), this.levelCap()) : undefined;
-    const hint = `${t("{tiles}, fatigue {cost} → {after} ({level})", { tiles: tag("num", t("{n} tiles", { n: path.length })), cost: tag("dmg", `+${cost}`), after, level: fatigueLevel(WORLD_CONTENT.fatigue, after).name })}${enc ? `\n${tag("enemy", t("Wild group — battle!"))}\n${enc.species.map((sp, i) => `${tag(`foe:${CONTENT.species[sp]!.types[0]}`, CONTENT.species[sp]!.name)} Lv ${enc.levels[i]}`).join("\n")}` : ""}`;
+    const hint = `${t("{tiles}, fatigue {cost} → {after} ({level})", { tiles: tag("num", t("{n} tiles", { n: path.length })), cost: tag("dmg", `+${cost}`), after, level: fatigueLevel(WORLD_CONTENT.fatigue, after).name })}${enc ? `\n${tag("enemy", t("Wild group — battle!"))}\n${enc.species.map((base, i) => {
+      // The form it will fight in: a Lv 10 Zubat is already a Golbat.
+      const sp = wildForm(CONTENT, base, enc.levels[i]!, enc.id);
+      return `${tag(`foe:${CONTENT.species[sp]!.types[0]}`, CONTENT.species[sp]!.name)} Lv ${enc.levels[i]}`;
+    }).join("\n")}` : ""}`;
     this.message = hint;
     this.renderHudSoon();
   }
