@@ -63,6 +63,7 @@ import { ballCanvas, ballIcon } from "../ui/ballIcon";
 import { describeMove, reachShort, selfCentred } from "../ui/describeMove";
 import { stripMarkup, tag } from "../ui/markup";
 import { RichText } from "../ui/RichText";
+import { pixText, setPixText } from "../ui/pixelFont";
 import { t } from "../i18n";
 import { boardTheme, drawFloorDecor, drawWaterDecor, floorColor, tileRand } from "../ui/boardDecor";
 import { footOrigin, animKey, FACE_LEFT, FACE_RIGHT, facingFor, hasSprite, portraitKey, type Facing, type SpriteAnim } from "../sprites";
@@ -234,7 +235,7 @@ export class BattleScene extends Phaser.Scene {
   private infoText!: RichText;
   /** Where the info text starts: right under the panel's last button. */
   private infoY = 330;
-  private header!: Phaser.GameObjects.Text;
+  private header!: Phaser.GameObjects.BitmapText;
   private orderStrip: Phaser.GameObjects.Container | null = null;
   /** Who led the turn order when it was last drawn (a change slides the row along). */
   private orderHead: string | null = null;
@@ -311,7 +312,7 @@ export class BattleScene extends Phaser.Scene {
     this.tweens.timeScale = 1;
     this.time.timeScale = 1;
     playMusic(this, "battle");
-    this.header = this.add.text(BOARD_X, 16, "", { fontFamily: FONT, fontSize: "20px", color: "#f5d76e" });
+    this.header = pixText(this, BOARD_X, 12, "", 0xf5d76e);
     this.add.text(BOARD_X, 44, this.scenario.name, { fontFamily: FONT, fontSize: px(13), color: COLORS.dim });
     this.drawBoard();
     this.overlay = this.add.graphics();
@@ -602,8 +603,7 @@ export class BattleScene extends Phaser.Scene {
         const st = this.add.star(ball.x, ball.y - 4, 5, 2, 5, 0xfff3a0).setDepth(41);
         this.tweens.add({ targets: st, x: ball.x + Math.cos(a) * 22, y: ball.y - 4 + Math.sin(a) * 16, alpha: 0, duration: 600, onComplete: () => st.destroy() });
       }
-      const word = this.add.text(ball.x, ball.y - 30, t("Gotcha!"), { fontFamily: FONT, fontSize: "16px", color: "#f5d76e", fontStyle: "bold" })
-        .setOrigin(0.5).setStroke("#000000", 4).setDepth(41);
+      const word = pixText(this, ball.x, ball.y - 30, t("Gotcha!"), 0xf5d76e).setOrigin(0.5).setDepth(41);
       this.tweens.add({ targets: word, y: word.y - 12, alpha: { from: 1, to: 0 }, delay: 700, duration: 500, onComplete: () => word.destroy() });
       ball.setTint(0x9a9a9a);
       await this.wait(900);
@@ -1312,7 +1312,7 @@ export class BattleScene extends Phaser.Scene {
     };
 
     if (this.phase === "deploy") {
-      this.header.setText(t("Deployment"));
+      setPixText(this.header, t("Deployment"));
       text(t("Pick up to {n}: tap a card, then a blue spot. Tap a foe: its reach (orange) and attack range (red).", { n: this.scenario.maxDeploy ?? MAX_ACTIVE_UNITS }), COLORS.dim, 12);
       const level = fatigueLevel(WORLD_CONTENT.fatigue, session.game.world.fatigue);
       if (level.movePenalty || level.damageMultiplier !== 1)
@@ -1367,7 +1367,7 @@ export class BattleScene extends Phaser.Scene {
 
     const state = this.state!;
     if (this.phase === "over") {
-      this.header.setText(state.outcome === "victory" ? t("Victory!") : state.outcome === "defeat" ? t("Defeat") : t("Retreated"));
+      setPixText(this.header, state.outcome === "victory" ? t("Victory!") : state.outcome === "defeat" ? t("Defeat") : t("Retreated"));
       // Everything else is on the results card over the field.
       // The battle's log goes along, so the report can be replayed.
       if (FEEDBACK_URL) button(t("💬 Feedback on this battle"), true, false, () =>
@@ -1378,7 +1378,7 @@ export class BattleScene extends Phaser.Scene {
     }
 
     const unit = activeUnit(state);
-    this.header.setText(t("Round {n}", { n: state.round }));
+    setPixText(this.header, t("Round {n}", { n: state.round }));
     this.renderTurnOrder(state);
     const bond = state.bond.player;
     text(`${CONTENT.terms.bond} ${"●".repeat(bond)}${"○".repeat(Math.max(0, state.bondMax.player - bond))} ${bond}/${state.bondMax.player}`, "#f5d76e", 13);
@@ -2438,9 +2438,8 @@ export class BattleScene extends Phaser.Scene {
     const add = <T extends Phaser.GameObjects.GameObject>(o: T): T => (parts.push(o), o);
     const text = (x: number, y: number, s: string, color: string, size: number, wrap?: number) =>
       add(this.add.text(x, y, s, { fontFamily: FONT, fontSize: px(size), color, wordWrap: wrap ? { width: wrap } : undefined }));
-    const title = add(this.add.text(W / 2, 28, (win ? t("Victory!") : state.outcome === "defeat" ? t("Defeat") : t("Retreated")).toUpperCase(),
-      { fontFamily: FONT, fontSize: "30px", color: win ? "#f5d76e" : state.outcome === "defeat" ? "#ff8a80" : "#c8ccd8", fontStyle: "bold" })
-      .setOrigin(0.5).setStroke("#000000", 6).setLetterSpacing(3));
+    const title = add(pixText(this, W / 2, 28, (win ? t("Victory!") : state.outcome === "defeat" ? t("Defeat") : t("Retreated")).toUpperCase(),
+      win ? 0xf5d76e : state.outcome === "defeat" ? 0xff8a80 : 0xc8ccd8, 3).setOrigin(0.5).setLetterSpacing(1));
     let y = 58;
     if (badge) {
       // The badge ceremony: the emblem spins in, a ring of light opens behind it, sparks fly.
@@ -2517,8 +2516,7 @@ export class BattleScene extends Phaser.Scene {
                 sfx(this, "levelUp");
               }
               // Beside the bar, over the news column for a moment.
-              const pop = this.add.text(barX + barW + 10, ry + 15, t("Level up!"), { fontFamily: FONT, fontSize: "13px", color: "#fff3a0", fontStyle: "bold" })
-                .setOrigin(0, 0.5).setStroke("#10141c", 4);
+              const pop = pixText(this, barX + barW + 10, ry + 15, t("Level up!"), 0xfff3a0).setOrigin(0, 0.5);
               newsText.setAlpha(0);
               box.add(pop);
               this.tweens.add({ targets: pop, y: ry + 6, alpha: { from: 1, to: 0 }, delay: 450, duration: 400, onComplete: () => {
@@ -2581,10 +2579,9 @@ export class BattleScene extends Phaser.Scene {
     const stack = this.floatStack.get(unitId);
     const n = stack && now - stack.at < 450 ? stack.n + 1 : 0;
     this.floatStack.set(unitId, { n, at: now });
-    const t = this.add
-      .text(view.container.x, view.container.y - 28 - n * 15, s, { fontFamily: FONT, fontSize: `${size}px`, color, fontStyle: "bold" })
+    // The pixel font: 2× for numbers and calls, 1× is too small to read at a glance.
+    const t = pixText(this, view.container.x, view.container.y - 28 - n * (size >= 16 ? 18 : 16), s, parseInt(color.slice(1), 16), 2)
       .setOrigin(0.5)
-      .setStroke("#000000", 4)
       .setDepth(45)
       .setScale(1.5);
     // Kept on the board, so a Pokémon at the edge does not push its words off screen.

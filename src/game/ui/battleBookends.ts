@@ -1,5 +1,5 @@
 import Phaser from "phaser";
-import { FONT } from "./theme";
+import { pixText, setPixText } from "./pixelFont";
 
 /**
  * The battle's bookends, drawn in code: the handhelds' flash-and-wipe out of the map, the message box,
@@ -59,7 +59,7 @@ export function messageFrame(g: Phaser.GameObjects.Graphics, x: number, y: numbe
 export function messageBox(scene: Phaser.Scene, x: number, y: number, w: number, text: string): { box: Phaser.GameObjects.Container; typed: Promise<void> } {
   const h = 44;
   const g = messageFrame(scene.add.graphics(), 0, 0, w, h);
-  const label = scene.add.text(16, h / 2, "", { fontFamily: FONT, fontSize: "15px", color: "#ffffff", fontStyle: "bold" }).setOrigin(0, 0.5).setStroke("#10141c", 3);
+  const label = pixText(scene, 16, h / 2, "").setOrigin(0, 0.5);
   const box = scene.add.container(x, y, [g, label]).setDepth(60);
   box.setAlpha(0);
   scene.tweens.add({ targets: box, alpha: 1, duration: 120 });
@@ -67,7 +67,7 @@ export function messageBox(scene: Phaser.Scene, x: number, y: number, w: number,
     let n = 0;
     const step = () => {
       if (!label.active) return resolve();
-      label.setText(text.slice(0, ++n));
+      setPixText(label, text.slice(0, ++n));
       if (n >= text.length) resolve();
       else scene.time.delayedCall(22, step);
     };
@@ -117,8 +117,7 @@ export function versusBands(scene: Phaser.Scene, area: { x: number; y: number; w
     g.fillStyle(0xffffff, 0.12).fillRect(left ? 0 : skew, bandH * 0.32, bw - skew, bandH * 0.18);
     const fig = scene.add.image(left ? 46 : bw - 46, bandH - 4, side.figure).setOrigin(0.5, 1).setScale(4);
     if (!left) fig.setFlipX(true);
-    const name = scene.add.text(left ? 96 : bw - 96, 20, side.name, { fontFamily: FONT, fontSize: "20px", color: "#ffffff", fontStyle: "bold" })
-      .setOrigin(left ? 0 : 1, 0).setStroke("#10141c", 4);
+    const name = pixText(scene, left ? 96 : bw - 96, 16, side.name).setOrigin(left ? 0 : 1, 0);
     const balls = side.balls.map((ok, i) => {
       const bx = left ? 104 + i * 18 : bw - 104 - i * 18;
       const b = scene.add.graphics({ x: bx, y: 62 });
@@ -134,8 +133,7 @@ export function versusBands(scene: Phaser.Scene, area: { x: number; y: number; w
     return { c, home: left ? area.x : area.x + area.w - bw, away: left ? area.x - bw : area.x + area.w };
   };
   const a = band(you, true, 0), b = band(foe, false, 1);
-  const vs = scene.add.text(area.x + area.w / 2, cy, "VS", { fontFamily: FONT, fontSize: "46px", color: "#f5d76e", fontStyle: "bold" })
-    .setOrigin(0.5).setStroke("#10141c", 7).setDepth(57).setScale(3).setAlpha(0);
+  const vs = pixText(scene, area.x + area.w / 2, cy, "VS", 0xf5d76e, 4).setOrigin(0.5).setDepth(57).setScale(3).setAlpha(0);
   parts.push(vs);
   const tw = (cfg: Phaser.Types.Tweens.TweenBuilderConfig) => new Promise<void>((r) => scene.tweens.add({ ...cfg, onComplete: () => r() }));
   return (async () => {
@@ -164,8 +162,7 @@ export function versusBands(scene: Phaser.Scene, area: { x: number; y: number; w
 export function roundSweep(scene: Phaser.Scene, area: { x: number; y: number; w: number; h: number }, label: string): Promise<void> {
   const bandH = 50, skew = 40, cy = area.y + area.h * 0.42;
   const g = scene.add.graphics().setDepth(30);
-  const text = scene.add.text(area.x + area.w / 2, cy, label.toUpperCase(), { fontFamily: FONT, fontSize: "28px", color: "#f5d76e", fontStyle: "bold" })
-    .setOrigin(0.5).setStroke("#000000", 5).setLetterSpacing(4).setDepth(31).setAlpha(0);
+  const text = pixText(scene, area.x + area.w / 2, cy, label.toUpperCase(), 0xf5d76e, 3).setOrigin(0.5).setLetterSpacing(3).setDepth(31).setAlpha(0);
   // Redrawn each frame between a left and a right edge, clipped to the board (a geometry mask would not clip).
   const clip = (x: number) => Phaser.Math.Clamp(x, area.x, area.x + area.w);
   const draw = (l: number, r: number) => {
