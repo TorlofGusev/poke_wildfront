@@ -1,4 +1,10 @@
 [
+ {"version": "0.104",
+  "date": "2026-10-29",
+  "items": [
+  "Battlefields reworked to look like a Pokémon route: rocks, cover and water never pile on each other any more; cover is tall grass (moss in caves, dune grass on the shore); brighter grass and warmer sand; Pokémon stand on a flat shadow with a thin team ring and a framed HP bar; the Full log button fits its label."
+  ]
+ },
  {"version": "0.103",
   "date": "2026-10-29",
   "items": [

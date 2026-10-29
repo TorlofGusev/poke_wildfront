@@ -13,9 +13,9 @@ export function boardTheme(id: string | null): BoardTheme {
 
 /** Floor colours per theme; each hex gets one of them, picked by its hash. */
 const FLOOR: Record<BoardTheme, readonly number[]> = {
-  field: [0x3b4a3a, 0x3f4f3c, 0x384736, 0x41503b],
+  field: [0x4e7a36, 0x52803a, 0x4a7433, 0x55853d],
   cave: [0x4a4440, 0x45403c, 0x4f4843, 0x433d39],
-  shore: [0x6b6448, 0x706a4c, 0x655e44, 0x5f5a42],
+  shore: [0xc2ad74, 0xc9b47a, 0xbba66e, 0xcdb980],
   indoor: [0x4a4d57, 0x474a54, 0x4d505a, 0x44474f],
 };
 
@@ -51,10 +51,10 @@ export function drawFloorDecor(g: Phaser.GameObjects.Graphics, theme: BoardTheme
   }
   if (r > 0.45) return;
   if (theme === "field") {
-    if (r < 0.2) tuft(g, px, py, 0x5a8f4a);
+    if (r < 0.2) tuft(g, px, py, 0x3a6528);
     else if (r < 0.3) flowers(g, px, py, tileRand(x, y, 5) < 0.5 ? 0xf2e36b : 0xe98bd0);
     else if (r < 0.38) pebbles(g, px, py, 0x7d7a70);
-    else g.fillStyle(0x2f3d2e, 0.6).fillEllipse(px, py, 12, 5);
+    else tuft(g, px, py, 0x6ea24a);
   } else if (theme === "cave") {
     if (r < 0.18) pebbles(g, px, py, 0x6e6660);
     else if (r < 0.3) g.lineStyle(1, 0x2a2624, 0.8).lineBetween(px - 6, py - 2, px, py + 1).lineBetween(px, py + 1, px + 5, py - 3);

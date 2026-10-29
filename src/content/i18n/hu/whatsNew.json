@@ -1,5 +1,9 @@
 [
  {"items": [
+  "Pokémon-útvonal hangulatú csatatér: a sziklák, a búvóhelyek és a víz már nem kerülnek egymásra; a búvóhely magas fű (barlangban moha, a parton dűnefű); élénkebb fű és melegebb homok; a Pokémonok lapos árnyékon állnak vékony csapatgyűrűvel és keretes HP-csíkkal; a Teljes napló gomb felirata nem lóg ki."
+  ]
+ },
+ {"items": [
   "A barlangi csatatereken ismét apró kövek hevernek szerteszét.",
   "A csatatér talaja visszakapta a rajzolt kinézetét (árnyékolt sziklák, leveles bokrok, virágos fű); az effektek maradnak rajta: hullámzó víz, valódi lángok, bugyogó méreg, és a tűz és a támadások fénye.",
   "Gyorsabb csaták, kíméletesebb telefonon: a csatatér mozdulatlan részét egyszer számolja ki minden képkocka helyett, a mozgó rész (víz, láng, fény) fél felbontásban és 30 fps-sel fut, és ellenfélre mutatva már nem számolja újra minden egérmozdulatnál a mozgási területét.",

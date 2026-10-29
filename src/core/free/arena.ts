@@ -104,8 +104,15 @@ function patch(rng: Rng, terrain: FreeTerrainId, c: Point, rx: number, ry: numbe
 
 const round = (v: number): number => Math.round(v * 100) / 100;
 
+/** Where a patch sits, roughly: its centre and outer radius (for keeping patches apart). */
+interface Spot {
+  readonly c: Point;
+  readonly r: number;
+  readonly terrain: FreeTerrainId;
+}
+
 /** A ridge of rocks across the field with one or two gaps (chokepoints). */
-function ridge(rng: Rng, zones: FreeZone[]): void {
+function ridge(rng: Rng, zones: FreeZone[], spots: Spot[]): void {
   const vertical = rng.next() < 0.6;
   const len = vertical ? ARENA_HEIGHT : ARENA_WIDTH;
   const at = vertical ? rng.range(6, ARENA_WIDTH - 6) : rng.range(3.5, ARENA_HEIGHT - 3.5);
@@ -113,13 +120,25 @@ function ridge(rng: Rng, zones: FreeZone[]): void {
   for (let t = 0.6; t < len; t += 1.1) {
     if (gaps.some((g) => Math.abs(g - t) < 1.1)) continue;
     const c = vertical ? { x: at + rng.range(-0.3, 0.3), y: t } : { x: t, y: at + rng.range(-0.3, 0.3) };
-    zones.push(patch(rng, "rock", c, rng.range(0.55, 0.8), rng.range(0.55, 0.8)));
+    const rx = rng.range(0.55, 0.8), ry = rng.range(0.55, 0.8);
+    zones.push(patch(rng, "rock", c, rx, ry));
+    spots.push({ c, r: Math.max(rx, ry) * 1.2, terrain: "rock" });
   }
+}
+
+/**
+ * Whether a new patch would sit on another one. Rocks, bushes and water each stand on open ground,
+ * a little apart, as on a drawn route: no rock lying on a bush, no bush in a pond. Only a muddy shore
+ * may run under its own water.
+ */
+function crowded(spots: readonly Spot[], c: Point, r: number): boolean {
+  return spots.some((s) => Math.hypot(s.c.x - c.x, s.c.y - c.y) < s.r + r + 0.35);
 }
 
 function buildTerrain(rng: Rng, p: Palette): FreeZone[] {
   const zones: FreeZone[] = [];
-  if (p.enclosed || (p.rock && rng.next() < 0.35)) ridge(rng, zones);
+  const spots: Spot[] = [];
+  if (p.enclosed || (p.rock && rng.next() < 0.35)) ridge(rng, zones, spots);
   const kinds: FreeTerrainId[] = [];
   if (p.mud) kinds.push("mud");
   if (p.water) kinds.push("water", "water");
@@ -133,11 +152,21 @@ function buildTerrain(rng: Rng, p: Palette): FreeZone[] {
   for (let i = 0; i < count; i++) {
     const terrain = rng.pick(kinds);
     const big = terrain === "mud" || terrain === "water";
-    const c = { x: rng.range(1, ARENA_WIDTH - 1), y: rng.range(1, ARENA_HEIGHT - 1) };
     const r = big ? rng.range(1.1, 2) : rng.range(0.6, 1.2);
-    extra.push(patch(rng, terrain, c, r * rng.range(0.8, 1.3), r * rng.range(0.7, 1.1)));
+    const kx = rng.range(0.8, 1.3), ky = rng.range(0.7, 1.1);
+    const outer = r * Math.max(kx, ky) * 1.2;
+    // A free spot for it, or it is left out.
+    let c: Point | null = null;
+    for (let tries = 0; tries < 12 && !c; tries++) {
+      const at = { x: rng.range(1, ARENA_WIDTH - 1), y: rng.range(1, ARENA_HEIGHT - 1) };
+      if (!crowded(spots, at, outer * (terrain === "water" && p.mud ? 1.4 : 1))) c = at;
+    }
+    if (!c) continue;
+    extra.push(patch(rng, terrain, c, r * kx, r * ky));
     // Water usually comes with a muddy shore.
-    if (terrain === "water" && p.mud && rng.next() < 0.5) extra.push(patch(rng, "mud", c, r * 1.4, r * 1.3));
+    const shore = terrain === "water" && p.mud && rng.next() < 0.5;
+    if (shore) extra.push(patch(rng, "mud", c, r * 1.4, r * 1.3));
+    spots.push({ c, r: outer * (shore ? 1.4 : 1), terrain });
   }
   extra.sort((a, b) => order[a.terrain] - order[b.terrain]);
   return [...extra.filter((z) => z.terrain !== "rock"), ...zones, ...extra.filter((z) => z.terrain === "rock")];

@@ -246,9 +246,14 @@ export class BattleScene extends Phaser.Scene {
 
     const board = this.boardPx();
     this.logStrip = new RichText(this, BOARD_X, BOARD_Y + board.h + 4, 450, 11, COLORS.dim, 15);
-    const logButton = new Button(this, BOARD_X + board.w - 110, BOARD_Y + board.h + 6, 110, 22, PHONE ? t("Full log") : t("Full log [L]"), () => this.toggleLogOverlay());
+    // As wide as its label in either language.
+    const logLabel = PHONE ? t("Full log") : t("Full log [L]");
+    const probe = this.add.text(0, 0, logLabel, { fontFamily: FONT, fontSize: "14px" });
+    const logW = Math.ceil(probe.width) + 20;
+    probe.destroy();
+    const logButton = new Button(this, BOARD_X + board.w - logW, BOARD_Y + board.h + 6, logW, 22, logLabel, () => this.toggleLogOverlay());
     logButton.setDepth(5);
-    new Button(this, BOARD_X + board.w - 150, BOARD_Y + board.h + 6, 34, 22, "?", () => showHelp(this)).centerLabel().setDepth(5);
+    new Button(this, BOARD_X + board.w - logW - 40, BOARD_Y + board.h + 6, 34, 22, "?", () => showHelp(this)).centerLabel().setDepth(5);
     this.input.keyboard?.on("keydown-L", () => this.toggleLogOverlay());
     this.events.once("shutdown", () => this.input.setDefaultCursor("default"));
     this.input.on("wheel", (_p: unknown, _o: unknown, _dx: number, dy: number) => {
@@ -330,8 +335,8 @@ export class BattleScene extends Phaser.Scene {
           const bx = c.x + (tileRand(x, y, 20 + k) - 0.5) * S, by = c.y + (tileRand(x, y, 30 + k) - 0.5) * S;
           // Kept inside the board: no blotch spills past its edge.
           const edge = Math.min(bx - o.x, o.x + field.width * S - bx, by - o.y, o.y + field.height * S - by);
-          const r = Math.min(edge, S * (0.25 + tileRand(x, y, 40 + k) * 0.25));
-          if (r > 2) g.fillStyle(floorColor(theme, x + k, y - k), 0.35).fillCircle(bx, by, r);
+          const r = Math.min(edge, S * (0.4 + tileRand(x, y, 40 + k) * 0.35));
+          if (r > 2) g.fillStyle(floorColor(theme, x + k, y - k), 0.18).fillCircle(bx, by, r);
         }
       }
     for (let y = 0; y < field.height; y++)
@@ -345,7 +350,7 @@ export class BattleScene extends Phaser.Scene {
       if (z.terrain === "floor") return;
       const pts = z.poly.map((p) => new Phaser.Math.Vector2(fieldToWorld(p).x, fieldToWorld(p).y));
       if (z.terrain === "rock") drawRock(g, pts, theme);
-      else if (z.terrain === "bush") drawBush(g, pts, i + 11);
+      else if (z.terrain === "bush") drawBush(g, pts, i + 11, theme);
       else if (z.terrain === "water") drawWater(g, pts, i + 13);
       else drawMud(g, pts, i + 17);
     });
@@ -393,8 +398,9 @@ export class BattleScene extends Phaser.Scene {
     // The base is the body's true size: what blocks and collides (the container is scaled by UNIT_SCALE).
     const foot = (UNIT_RADIUS * S * 2) / UNIT_SCALE;
     // A soft shadow grounds the Pokémon on the field.
-    const shadow = this.add.ellipse(0, 6, foot * 0.95, foot * 0.5, 0x000000, 0.35);
-    const ring = this.add.ellipse(0, 0, foot, foot, teamColor, 0.3).setStrokeStyle(2, teamColor);
+    // Seen from above at a slant, as in the handheld games: a flat shadow and a thin team ring around the feet.
+    const shadow = this.add.ellipse(0, 6, foot * 0.9, foot * 0.42, 0x000000, 0.38);
+    const ring = this.add.ellipse(0, 5, foot * 1.05, foot * 0.55, teamColor, 0.12).setStrokeStyle(2, teamColor);
     const body = this.add.circle(0, 0, 16, TYPE_COLORS[species.types[0]!] ?? 0x888888);
     const label = this.add
       .text(0, -1, species.name.slice(0, 2), { fontFamily: FONT, fontSize: "14px", color: "#10141c", fontStyle: "bold" })
@@ -405,9 +411,10 @@ export class BattleScene extends Phaser.Scene {
     const sprite = hasSprite(speciesId)
       ? this.add.sprite(0, 8, `${speciesId}-idle`).setOrigin(0.5, 0.82).setScale(1.25).play(animKey(speciesId, "idle", facing))
       : null;
-    const hpBg = this.add.rectangle(-18, 21, 36, 4, 0x000000).setOrigin(0, 0.5);
+    // A framed HP bar like the handhelds' (dark case, light rim), the Spirit line tucked under it.
+    const hpBg = this.add.rectangle(-19, 21, 38, 6, 0x202830).setOrigin(0, 0.5).setStrokeStyle(1, 0xe8ecf4, 0.85);
     const hpBar = this.add.rectangle(-18, 21, 36, 4, 0x7ed321).setOrigin(0, 0.5);
-    const spiritBar = this.add.rectangle(-18, 24, 0, 2, 0xf5d76e).setOrigin(0, 0.5);
+    const spiritBar = this.add.rectangle(-18, 25.5, 0, 2, 0xf5d76e).setOrigin(0, 0.5);
     const container = this.add.container(x, y, [shadow, ring, ...(sprite ? [sprite] : []), body, label, hpBg, hpBar, spiritBar]).setScale(UNIT_SCALE);
     this.units.set(id, { container, hpBar, spiritBar, ring, body, label, sprite, speciesId, facing });
     // Species without a sprite show as a type-coloured disc with their initials.
@@ -452,7 +459,7 @@ export class BattleScene extends Phaser.Scene {
       view.spiritBar.width = pumped ? 36 : 36 * (u.spirit ?? 0) / CONTENT.rules.willpower.spiritMax;
       view.spiritBar.fillColor = pumped ? 0xffffff : 0xf5d76e;
       const active = this.state.turn?.unitId === u.id;
-      view.ring.setStrokeStyle(active ? 4 : 3, active ? COLORS.active : u.side === "player" ? COLORS.player : COLORS.enemy);
+      view.ring.setStrokeStyle(active ? 3 : 2, active ? COLORS.active : u.side === "player" ? COLORS.player : COLORS.enemy);
     }
   }
 
@@ -472,7 +479,7 @@ export class BattleScene extends Phaser.Scene {
     if (!state || !foe || foe.side !== "enemy" || foe.hp <= 0) return;
     const mp = movementPoints(CONTENT, foe, state);
     this.reachGfx ??= this.make.graphics({}, false);
-    this.threatImage ??= this.add.renderTexture(0, 0, this.scale.width, this.scale.height).setOrigin(0).setDepth(0).setAlpha(0.4);
+    this.threatImage ??= this.add.renderTexture(0, 0, this.scale.width, this.scale.height).setOrigin(0).setDepth(0).setAlpha(0.28);
     // Same foe, same state: the texture already shows it.
     if (this.threatFor?.state !== state || this.threatFor.unitId !== foe.id) {
       this.threatFor = { state, unitId: foe.id };

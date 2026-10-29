@@ -67,32 +67,48 @@ export function drawRock(g: Phaser.GameObjects.Graphics, pts: V[], theme: BoardT
   g.lineStyle(2, 0x0e0f12, 0.75).strokePoints(pts, true, true);
 }
 
-export function drawBush(g: Phaser.GameObjects.Graphics, pts: V[], seed: number): void {
-  // Round leafy silhouette: clumps along the edge instead of the polygon's straight sides.
-  const rim: V[] = [];
-  for (let i = 0; i < pts.length; i++) {
-    const a = pts[i]!, b = pts[(i + 1) % pts.length]!;
-    const n = Math.max(1, Math.round(Math.hypot(b.x - a.x, b.y - a.y) / 8));
-    for (let k = 0; k < n; k++) rim.push(vec(a.x + ((b.x - a.x) * k) / n, a.y + ((b.y - a.y) * k) / n));
+/**
+ * Cover as the games' tall grass: a soft-edged darker patch packed with rows of pointed blades, each row
+ * a little lower in front, dark at the root and light at the tips.
+ */
+/** Cover colours per theme: tall grass on routes, moss in caves, dune grass on the shore. */
+const GRASS: Record<BoardTheme, { edge: number; base: number; dark: number; mid: number; tip: number }> = {
+  field: { edge: 0x1c4a1e, base: 0x2c6a2a, dark: 0x1a4a1c, mid: 0x3f8a36, tip: 0x78c050 },
+  cave: { edge: 0x1e2a24, base: 0x2e4034, dark: 0x1f2e26, mid: 0x46604a, tip: 0x7a9a78 },
+  shore: { edge: 0x5a5a26, base: 0x7d7a36, dark: 0x5c5a28, mid: 0x9a9a44, tip: 0xd2d07a },
+  indoor: { edge: 0x1c4a1e, base: 0x2c6a2a, dark: 0x1a4a1c, mid: 0x3f8a36, tip: 0x78c050 },
+};
+
+export function drawBush(g: Phaser.GameObjects.Graphics, pts: V[], seed: number, theme: BoardTheme = "field"): void {
+  const c = GRASS[theme];
+  const rim = rimOf(pts, 7);
+  g.fillStyle(0x000000, 0.18);
+  rim.forEach((p) => g.fillCircle(p.x + 2, p.y + 4, 6));
+  g.fillPoints(shift(pts, 2, 4), true);
+  g.fillStyle(c.edge, 1);
+  rim.forEach((p) => g.fillCircle(p.x, p.y, 7));
+  g.fillPoints(pts, true);
+  g.fillStyle(c.base, 1);
+  rim.forEach((p) => g.fillCircle(p.x, p.y, 5.5));
+  g.fillPoints(shrink(pts, 0.97), true);
+  // Blade tufts on a staggered grid, back rows first.
+  const xs = pts.map((p) => p.x), ys = pts.map((p) => p.y);
+  const x0 = Math.min(...xs) - 6, x1 = Math.max(...xs) + 6, y0 = Math.min(...ys) - 4, y1 = Math.max(...ys) + 6;
+  let row = 0;
+  for (let y = y0; y <= y1; y += 8, row++) {
+    for (let x = x0 + (row % 2) * 6; x <= x1; x += 12) {
+      const jx = x + (tileRand(Math.round(x), Math.round(y), seed) - 0.5) * 3;
+      if (!inside(pts, jx, y - 2) && !inside(pts, jx, y + 3)) continue;
+      const h = 10 + tileRand(Math.round(x), Math.round(y), seed + 1) * 3;
+      // Three blades: a dark body, a lit left edge, a bright tip.
+      for (const [dx, lean] of [[-4, -2.5], [0, 0], [4, 2.5]] as const) {
+        const bx = jx + dx, by = y + 3;
+        g.fillStyle(c.dark, 1).fillTriangle(bx - 2.5, by, bx + 2.5, by, bx + lean, by - h);
+        g.fillStyle(c.mid, 1).fillTriangle(bx - 1.5, by - 1, bx + 0.5, by - 1, bx + lean, by - h + 2);
+        g.fillStyle(c.tip, 1).fillTriangle(bx + lean - 1, by - h + 4, bx + lean + 0.5, by - h + 4, bx + lean, by - h);
+      }
+    }
   }
-  const r = (i: number) => 6 + tileRand(i, seed, 3) * 3;
-  g.fillStyle(0x000000, 0.28);
-  rim.forEach((p, i) => g.fillCircle(p.x + 3, p.y + 6, r(i)));
-  g.fillPoints(shift(pts, 3, 6), true);
-  g.fillStyle(0x10301a, 1);
-  rim.forEach((p, i) => g.fillCircle(p.x, p.y, r(i) + 1.5));
-  g.fillPoints(pts, true);
-  g.fillStyle(0x1f4826, 1);
-  rim.forEach((p, i) => g.fillCircle(p.x, p.y, r(i)));
-  g.fillPoints(pts, true);
-  // The canopy: round clumps, each lit on its top left.
-  const clumps = scatter(shrink(pts, 0.92), 10, seed).concat(rim.filter((_, i) => i % 2 === 0));
-  clumps.forEach((p, i) => {
-    const cr = 5 + tileRand(i, seed, 3) * 4;
-    g.fillStyle(0x2a6232, 1).fillCircle(p.x, p.y, cr);
-    g.fillStyle(0x3f8a45, 1).fillCircle(p.x - cr * 0.25, p.y - cr * 0.3, cr * 0.6);
-    if (tileRand(i, seed, 4) < 0.35) g.fillStyle(0x86c96e, 0.9).fillCircle(p.x - cr * 0.4, p.y - cr * 0.5, 1.4);
-  });
 }
 
 /** Points every `step` px along the patch's edge. */
