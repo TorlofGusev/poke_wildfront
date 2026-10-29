@@ -15,9 +15,13 @@ import { COLORS, FONT, TYPE_COLORS, px } from "../ui/theme";
 import { t } from "../i18n";
 
 /** Five compact cards per row: the full party of 10 fits in two rows. */
-const CARD_COLS = 5;
+const CARD_COLS = 3;
 const CARD_W = 178;
-const CARD_H = 150;
+const CARD_H = 130;
+/** Storage fills the right side, two columns of small cards. */
+const STORE_X = 16 + CARD_COLS * (CARD_W + 10) + 6;
+const STORE_COLS = 2;
+const STORE_ROWS = 9;
 
 /** Camp: party overview (what needs attention) and the choice to rest. Details open per Pokémon. */
 export class PartyScene extends Phaser.Scene {
@@ -108,10 +112,12 @@ export class PartyScene extends Phaser.Scene {
     });
     roster.party.forEach((m, i) => this.card(16 + (i % CARD_COLS) * (CARD_W + 10), 84 + Math.floor(i / CARD_COLS) * (CARD_H + 8), m));
 
-    const sy = 84 + 2 * (CARD_H + 8) + 4;
-    this.add.text(16, sy, t("Storage ({n})", { n: roster.storage.length }), { fontFamily: FONT, fontSize: px(12), color: COLORS.dim });
-    roster.storage.slice(0, 6).forEach((m, i) => this.mini(16 + i * 154, sy + 18, m));
-    if (roster.storage.length > 6) this.add.text(16, sy + 62, t("+{n} more", { n: roster.storage.length - 6 }), { fontFamily: FONT, fontSize: px(11), color: COLORS.dim });
+    this.add.text(STORE_X, 64, t("Storage ({n})", { n: roster.storage.length }), { fontFamily: FONT, fontSize: px(12), color: COLORS.dim });
+    const room = STORE_COLS * STORE_ROWS;
+    const shown = roster.storage.length > room ? room - 1 : roster.storage.length;
+    const at = (i: number) => ({ x: STORE_X + (i % STORE_COLS) * 154, y: 84 + Math.floor(i / STORE_COLS) * 46 });
+    roster.storage.slice(0, shown).forEach((m, i) => this.mini(at(i).x, at(i).y, m));
+    if (roster.storage.length > shown) this.add.text(at(shown).x + 8, at(shown).y + 12, t("+{n} more", { n: roster.storage.length - shown }), { fontFamily: FONT, fontSize: px(11), color: COLORS.dim });
     if (roster.fallen.length) {
       new RichText(this, 16, 512, 928, 12).setMarkup(`${tag("ko", t("Fallen"))}: ${roster.fallen.map((m) => CONTENT.species[m.speciesId]!.name).join(", ")}`);
     }
@@ -147,8 +153,7 @@ export class PartyScene extends Phaser.Scene {
       t("Lv {level} {xp}", { level: tag("num", m.level), xp: tag("dim", t("XP {xp}/{next}", { xp: m.xp, next: xpToNext(PROGRESSION, m.level) })) }),
     ].join("\n"));
     const textH = new RichText(this, x + 6, y + 50, CARD_W - 12, 11).setMarkup([
-      s.types.map((ty) => tag(ty, ty)).join("/"),
-      tag("dim", role),
+      `${s.types.map((ty) => tag(ty, ty)).join("/")} ${tag("dim", `· ${role}`)}`,
       tag("dim", held),
     ].join("\n"));
     const barY = y + 50 + textH + 8;

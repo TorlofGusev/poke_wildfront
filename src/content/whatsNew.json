@@ -1,5 +1,6 @@
 [
  {"version": "0.99", "date": "2026-10-29", "items": [
+  "Camp: the party in a 3×3 grid, storage on the right in two columns (up to 17 shown).",
   "Deployment: compact party cards (name beside the portrait, level and knockouts on the card).", "The party holds 9 Pokémon (was 10), so every one fits the deployment cards; a 10th from an old save waits in storage.", "A foe's info shows its level; the raw stats are gone from it.",
   "A new round slides in over the battlefield (\"Round 2\"), so it is clear why a Pokémon acts again.",
   "Pokémon screen: To storage / To party sits in the header by the pager, on every tab.",
