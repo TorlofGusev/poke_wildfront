@@ -43,6 +43,12 @@ export function drawFloorDecor(g: Phaser.GameObjects.Graphics, theme: BoardTheme
     else if (r < 0.2) g.fillStyle(0x000000, 0.15).fillEllipse(px, py, 10, 4);
     return;
   }
+  // Caves: loose stones lie about on many more of the tiles (decoration only).
+  if (theme === "cave" && r > 0.45 && r < 0.8) {
+    stone(g, px, py, 3 + tileRand(x, y, 8) * 4);
+    if (tileRand(x, y, 9) < 0.5) stone(g, px + 9, py + 5, 2 + tileRand(x, y, 10) * 2);
+    return;
+  }
   if (r > 0.45) return;
   if (theme === "field") {
     if (r < 0.2) tuft(g, px, py, 0x5a8f4a);
@@ -79,6 +85,13 @@ function flowers(g: Phaser.GameObjects.Graphics, x: number, y: number, color: nu
     g.fillStyle(color, 1).fillCircle(x + dx, y + dy, 1.8);
     g.fillStyle(0xffffff, 0.8).fillCircle(x + dx, y + dy, 0.7);
   }
+}
+
+/** A loose stone: a shadow, a body and a lit top. */
+function stone(g: Phaser.GameObjects.Graphics, x: number, y: number, r: number): void {
+  g.fillStyle(0x000000, 0.35).fillEllipse(x + 1.5, y + 2, r * 2.2, r * 1.5);
+  g.fillStyle(0x5e554c, 1).fillEllipse(x, y, r * 2.2, r * 1.6);
+  g.fillStyle(0x8a7e70, 1).fillEllipse(x - r * 0.25, y - r * 0.3, r * 1.2, r * 0.8);
 }
 
 function pebbles(g: Phaser.GameObjects.Graphics, x: number, y: number, color: number): void {
