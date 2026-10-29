@@ -316,16 +316,89 @@ export function narrowPassages(field: FreeField): Point[][] {
   return out;
 }
 
+/**
+ * Bottlenecks between open areas: where three abreast fit, the ground splits into areas; when one can only be
+ * reached from the largest through a gap narrower than that, the narrowest point of the way there (one per area;
+ * for an area walled off entirely, the wall between it and the largest).
+ * (A thin wall's gap can sit close to open ground on both sides, so narrowPassages alone misses it.)
+ */
+export function bottlenecks(field: FreeField): Point[] {
+  const rocks: Rock[] = field.zones.filter((z) => z.terrain === "rock").map((z) => ({
+    poly: z.poly, x0: Math.min(...z.poly.map((q) => q.x)), y0: Math.min(...z.poly.map((q) => q.y)),
+    x1: Math.max(...z.poly.map((q) => q.x)), y1: Math.max(...z.poly.map((q) => q.y)),
+  }));
+  const cols = Math.floor(field.width / CLEAR_STEP), rows = Math.floor(field.height / CLEAR_STEP);
+  const at = (i: number): Point => ({ x: ((i % cols) + 0.5) * CLEAR_STEP, y: (Math.floor(i / cols) + 0.5) * CLEAR_STEP });
+  const clear = new Float32Array(cols * rows);
+  for (let i = 0; i < cols * rows; i++) clear[i] = clearance(field, rocks, at(i));
+  const near = (j: number) => [j - 1, j + 1, j - cols, j + cols].filter((n) => n >= 0 && n < cols * rows && Math.abs((n % cols) - (j % cols)) <= 1);
+  // Open areas: connected ground where three abreast fit.
+  const area = new Int32Array(cols * rows).fill(-1);
+  const sizes: number[] = [];
+  for (let i = 0; i < cols * rows; i++) {
+    if (area[i]! >= 0 || clear[i]! < ROOM) continue;
+    const id = sizes.length;
+    let size = 0;
+    const stack = [i];
+    area[i] = id;
+    while (stack.length) {
+      const j = stack.pop()!;
+      size++;
+      for (const n of near(j)) if (area[n]! < 0 && clear[n]! >= ROOM) { area[n] = id; stack.push(n); }
+    }
+    sizes.push(size);
+  }
+  const big = sizes.map((s, id) => (s * CLEAR_STEP * CLEAR_STEP >= NOOK_AREA ? id : -1)).filter((id) => id >= 0);
+  if (big.length < 2) return [];
+  const main = big.reduce((a, b) => (sizes[b]! > sizes[a]! ? b : a));
+  // Widest-path search from the main area over walkable ground: each other area's best way in and its narrowest point.
+  const width = new Float32Array(cols * rows).fill(-1);
+  const pinch = new Int32Array(cols * rows).fill(-1);
+  const queue: number[] = [];
+  for (let i = 0; i < cols * rows; i++) if (area[i] === main) { width[i] = Infinity; queue.push(i); }
+  while (queue.length) {
+    // Largest bottleneck first (a simple widest-path search; the grid is small).
+    let bi = 0;
+    for (let q = 1; q < queue.length; q++) if (width[queue[q]!]! > width[queue[bi]!]!) bi = q;
+    const j = queue.splice(bi, 1)[0]!;
+    for (const n of near(j)) {
+      if (clear[n]! < UNIT_RADIUS) continue;
+      const w = Math.min(width[j]!, clear[n]!);
+      if (w <= width[n]!) continue;
+      width[n] = w;
+      pinch[n] = clear[n]! < width[j]! ? n : pinch[j]!;
+      queue.push(n);
+    }
+  }
+  const out: Point[] = [];
+  for (const id of big) {
+    if (id === main) continue;
+    let cell = -1;
+    for (let i = 0; i < cols * rows; i++) if (area[i] === id && width[i]! >= 0 && (cell < 0 || width[i]! > width[cell]!)) cell = i;
+    if (cell >= 0) {
+      if (width[cell]! < ROOM && pinch[cell]! >= 0) out.push(at(pinch[cell]!));
+      continue;
+    }
+    // Walled off entirely: the wall between it and the main area, halfway along their nearest points.
+    let a = -1, b = -1, best = Infinity;
+    for (let i = 0; i < cols * rows; i += 3) if (area[i] === id) for (let j = 0; j < cols * rows; j += 3) if (area[j] === main) {
+      const p = at(i), q = at(j), d = (p.x - q.x) ** 2 + (p.y - q.y) ** 2;
+      if (d < best) { best = d; a = i; b = j; }
+    }
+    if (a >= 0) out.push({ x: (at(a).x + at(b).x) / 2, y: (at(a).y + at(b).y) / 2 });
+  }
+  return out;
+}
+
 /** Widens every narrow passage: the rock nearest to each goes, until three Pokémon fit abreast everywhere. */
 function widenPassages(field: FreeField): FreeField {
   let cur = field;
   for (let guard = 0; guard < 12; guard++) {
-    const passages = narrowPassages(cur);
+    const points = [...narrowPassages(cur).map((passage) => passage[Math.floor(passage.length / 2)]!), ...bottlenecks(cur)];
     const rocks = cur.zones.filter((z) => z.terrain === "rock");
-    if (!passages.length || !rocks.length) return cur;
+    if (!points.length || !rocks.length) return cur;
     // One rock per passage each round (the one nearest its middle), then measure again.
-    const gone = new Set(passages.map((passage) => {
-      const mid = passage[Math.floor(passage.length / 2)]!;
+    const gone = new Set(points.map((mid) => {
       const edge = (z: FreeZone) => Math.min(...z.poly.map((q, i) => distToSegment(mid, q, z.poly[(i + 1) % z.poly.length]!)));
       return rocks.reduce((best, z) => (edge(z) < edge(best) ? z : best));
     }));

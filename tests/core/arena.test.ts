@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest";
 import { WORLD_CONTENT } from "../../src/content";
-import { bodyFits, distance, formationLabel, freeReach, generateFreeArena, narrowPassages, pickFormation, terrainAt, type Formation } from "../../src/core/free";
+import { bodyFits, bottlenecks, distance, formationLabel, freeReach, generateFreeArena, narrowPassages, pickFormation, terrainAt, type Formation } from "../../src/core/free";
 
 const FORMATIONS: Formation[] = ["sides", "cornerVsCorner", "pincer", "topBottom", "surrounded", "bossCenter"];
 const BIOMES = Object.values(WORLD_CONTENT.biomes).filter((b) => b.arena);
@@ -36,14 +36,14 @@ describe("free arena generator", () => {
         }
   }, 60_000);
 
-  it("three Pokémon fit abreast through every passage (no narrow corridors), in every biome", () => {
+  it("three Pokémon fit abreast through every passage (no narrow corridors or gaps in a wall), in every biome", () => {
     const narrow: string[] = [];
     let rocky = 0;
     for (const biome of BIOMES)
       for (const seed of SEEDS) {
         const a = generateFreeArena({ seed, style: biome.id, formation: pickFormation(seed, "wild"), playerCount: 3, enemyCount: 3, base: biome.arena });
         if (a.field.zones.some((z) => z.terrain === "rock")) rocky++;
-        if (narrowPassages(a.field).length) narrow.push(`${biome.id}/${seed}`);
+        if (narrowPassages(a.field).length || bottlenecks(a.field).length) narrow.push(`${biome.id}/${seed}`);
       }
     expect(narrow).toEqual([]);
     // Rocks still shape the fields: the check widens passages, it does not clear the map.
