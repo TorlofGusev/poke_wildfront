@@ -908,6 +908,7 @@
   "category": "special",
   "cooldown": 3,
   "power": 55,
+  "vsLowHpPower": 0.8,
   "range": {
    "min": 2,
    "max": 4
@@ -9890,7 +9891,8 @@
   "type": "normal",
   "kind": "special",
   "category": "special",
-  "power": 80,
+  "power": 40,
+  "vsFullHpPower": 1.5,
   "range": {
    "min": 2,
    "max": 4

@@ -24,6 +24,8 @@ export function describeMove(content: BattleContent, move: MoveDef): string {
     move.currentHpDamage ? t("Deals {n} of the target's current HP, whatever the stats and type", { n: tag("dmg", `${Math.round(move.currentHpDamage * 100)}%`) })
     : move.power > 0 ? t("Power {n} {hint}", { n: tag("dmg", move.power), hint: tag("dim", t("(hover a target to see the exact damage)")) }) : tag("dim", t("No damage")),
   ];
+  if (move.vsLowHpPower) lines.push(t("Hits harder the more HP the target has lost: up to {n} power against a target at 0 HP", { n: tag("dmg", Math.round(move.power * (1 + move.vsLowHpPower))) }));
+  if (move.vsFullHpPower) lines.push(t("Hits harder the more HP the target has left: {n} power against a target at full HP", { n: tag("dmg", Math.round(move.power * (1 + move.vsFullHpPower))) }));
   if (move.lowHpPower) lines.push(t("Hits harder the more HP the user has lost: up to {n} power at 0 HP", { n: tag("dmg", Math.round(move.power * (1 + move.lowHpPower))) }));
   if (move.timing === "delayed") lines.push(t("{x}: marks the ground now and strikes it at the start of its next turn, hitting whoever stands there (friend or foe)", { x: tag("special", t("Delayed")) }));
   if (move.timing === "watch") lines.push(t("{x}: guards the area until its next turn; the first foe moving in it is struck and stopped", { x: tag("special", t("Watch")) }));

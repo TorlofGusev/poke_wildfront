@@ -1,4 +1,4 @@
-import { powerFromCanon, speciesStats, STAT_TOTAL, STAT_TOTAL_PER_STAGE, type Role, type BaseStats, type BattleContent, type BattleScenario, type MoveDef, type SpeciesDef, type TypeDef } from "../core/battle";
+import { BOND_VARIANT, powerFromCanon, speciesStats, STAT_TOTAL, STAT_TOTAL_PER_STAGE, type Role, type BaseStats, type BattleContent, type BattleScenario, type MoveDef, type SpeciesDef, type TypeDef } from "../core/battle";
 import type { BiomeDef, FatigueRules, WorldContent, WorldDef } from "../core/expedition";
 import type { ItemDef, MasteryTree, ProgressionContent, TalentDef } from "../core/progression";
 import type { CampRules, MealDef } from "../core/party";
@@ -67,8 +67,6 @@ const SKILL = "skill:";
  */
 const ROLE_SWAPS = roleSwapData as { readonly toMelee: Readonly<Record<string, readonly string[]>>; readonly toRanged: Readonly<Record<string, readonly string[]>> };
 const roleOfSpecies = (id: string): Role | undefined => (speciesData as Record<string, { role?: Role }>)[id]?.role;
-/** Every move some species starts with: a swap never brings one in, as a tree move would turn it Bond everywhere. */
-const STARTING = new Set(Object.values(speciesData as Record<string, { moves: string[] }>).flatMap((s) => s.moves));
 const moveOfSkill = (id: string) => (id.startsWith(SKILL) ? id.slice(SKILL.length) : null);
 const strong = (id: string) => (moves[id]?.canonPower ?? 0) >= progression.bondCanonPower;
 /** The tree as one species sees it: every skill of the other reach swapped for a counterpart of its role. */
@@ -86,7 +84,7 @@ function treeForRole(tree: MasteryTree, role: Role | undefined, start: readonly 
       if (alt) { used.add(alt.id); return SKILL + alt.id; }
     }
     if (!mv || !reach || reach === role) { if (mv) used.add(mv); return id; }
-    const swap = (role === "melee" ? ROLE_SWAPS.toMelee : ROLE_SWAPS.toRanged)[mv]?.find((c) => !used.has(c) && !STARTING.has(c)) ?? mv;
+    const swap = (role === "melee" ? ROLE_SWAPS.toMelee : ROLE_SWAPS.toRanged)[mv]?.find((c) => !used.has(c)) ?? mv;
     used.add(swap);
     return SKILL + swap;
   };
@@ -124,14 +122,21 @@ for (const [, tree] of ARCHETYPE_TREES) {
   }
   for (const f of tree.focus) { const mv = moveOfSkill(f.skill); if (mv && !taught.has(f.skill)) { taught.set(f.skill, mv); bonds.add(mv); } }
 }
+/**
+ * A move some species starts with keeps its kind for them; a tree teaching it as a Bond move teaches a
+ * separate Bond version (BOND_VARIANT suffix), so the same move can be a starting skill and a tree's Bond move.
+ */
+const starting = new Set(Object.values(speciesData as Record<string, { moves: string[] }>).flatMap((s) => s.moves));
+const bondId = (id: string) => (starting.has(id) ? id + BOND_VARIANT : id);
 for (const id of bonds) {
   const def = moves[id];
   if (!def || def.kind === "bond") continue;
-  const bond = { ...def, kind: "bond" as const, bondCost: strong(id) ? 3 : 2 };
+  const bond = { ...def, id: bondId(id), kind: "bond" as const, bondCost: strong(id) ? 3 : 2 };
   delete (bond as { cooldown?: number }).cooldown;
-  (moves as Record<string, MoveDef>)[id] = def.canonPower ? { ...bond, power: powerFromCanon(rules.movePower, bond, def.canonPower) } : bond;
+  (moves as Record<string, MoveDef>)[bond.id] = def.canonPower ? { ...bond, power: powerFromCanon(rules.movePower, bond, def.canonPower) } : bond;
 }
-for (const [skill, id] of taught) {
+for (const [skill, mv] of taught) {
+  const id = bonds.has(mv) ? bondId(mv) : mv;
   const move = moves[id];
   if (move && !talents[skill]) talents[skill] = { id: skill, name: move.name, description: "", grantsMove: move.id };
 }

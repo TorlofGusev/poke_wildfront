@@ -1,5 +1,5 @@
 import Phaser from "phaser";
-import type { MoveDef } from "../core/battle";
+import { baseMoveId, type MoveDef } from "../core/battle";
 import { TYPE_COLORS } from "./ui/theme";
 
 /**
@@ -55,7 +55,7 @@ const FAMILIES: readonly (readonly [Family, RegExp])[] = [
 ];
 
 function familyOf(move: MoveDef): Family {
-  for (const [f, re] of FAMILIES) if (re.test(move.id)) return f;
+  for (const [f, re] of FAMILIES) if (re.test(baseMoveId(move.id))) return f;
   if (move.range.max === 0) return move.power > 0 ? "blast" : "aura";
   return move.range.max <= 1 ? "melee" : "orb";
 }

@@ -56,6 +56,8 @@
  "Non-damaging specials recharge {x}": "A nem sebző speciális lépések {x} töltődnek",
  "Power {n} {hint}": "Erő {n} {hint}",
  "Deals {n} of the target's current HP, whatever the stats and type": "A célpont jelenlegi HP-jának {n}-át sebzi, a statoktól és típustól függetlenül",
+ "Hits harder the more HP the target has lost: up to {n} power against a target at 0 HP": "Annál erősebb, minél több HP-t vesztett a célpont: 0 HP-s célpont ellen akár {n} erő",
+ "Hits harder the more HP the target has left: {n} power against a target at full HP": "Annál erősebb, minél több HP-ja van még a célpontnak: teli HP-s célpont ellen {n} erő",
  "Hits harder the more HP the user has lost: up to {n} power at 0 HP": "Annál erősebb, minél több HP-t vesztett a használója: 0 HP-nál akár {n} erő",
  "Pulls it causes go {x}": "Húzásai {x} messzebbre visznek",
  "Pulls up to {n} towards the user": "Legfeljebb {n} távolságra húz a használó felé",

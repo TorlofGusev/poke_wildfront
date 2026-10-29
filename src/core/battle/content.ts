@@ -38,6 +38,10 @@ export type Role = "melee" | "ranged";
  * A unit uses one of them per turn.
  */
 export type MoveKind = "basic" | "special" | "ultimate" | "bond";
+/** Suffix of a tree's Bond version of a move that some species start with as a skill. */
+export const BOND_VARIANT = "+bond";
+/** The canon move behind an id (a Bond version shares its move's look and sound). */
+export const baseMoveId = (id: string): string => (id.endsWith(BOND_VARIANT) ? id.slice(0, -BOND_VARIANT.length) : id);
 
 export type TargetShape =
   | { readonly kind: "single" }
@@ -99,6 +103,10 @@ export interface MoveDef {
   readonly currentHpDamage?: number;
   /** Power grows as the user loses HP: up to +this share at 0 HP, by the share of HP lost (Endeavor, Flail, Reversal). */
   readonly lowHpPower?: number;
+  /** Power grows as the target loses HP: up to +this share against a target at 0 HP (Brine). */
+  readonly vsLowHpPower?: number;
+  /** Power grows with the target's HP: +this share against a target at full HP (Wring Out). */
+  readonly vsFullHpPower?: number;
   readonly effects?: readonly MoveEffect[];
   /**
    * delayed: marks the ground now and strikes it at the start of the user's next turn, hitting whoever stands
