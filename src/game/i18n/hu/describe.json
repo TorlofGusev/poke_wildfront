@@ -149,6 +149,7 @@
  "{v} less damage": "{v}-kal kevesebb sebzést",
  "{v} more damage": "{v}-kal több sebzést",
  "{v} movement": "{v} mozgás",
+ "−{n} reach on its ranged moves": "−{n} hatótáv a távolsági move-jain",
  "{v} of max HP": "a max HP {v}-át",
  "{v} per helper": "{v} segítőnként",
  "{who} gain {x} — {total} left{reason}": "{who} +{x} — maradt {total}{reason}",

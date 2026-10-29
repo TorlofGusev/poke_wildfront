@@ -189,10 +189,13 @@ export const MAX_DAMAGE_BONUS = 1;
 export const MAX_RANGE = 3;
 
 /** A move's range for this unit (in hex widths): ranged moves (2+) reach further with a range bonus, up to MAX_RANGE unless a Bond move. */
-export const moveRange = (unit: { readonly mods: UnitModifiers }, move: MoveDef): { min: number; max: number } => {
+export const moveRange = (unit: { readonly mods: UnitModifiers; readonly statuses: readonly ActiveStatus[] }, move: MoveDef, content: BattleContent): { min: number; max: number } => {
   if (move.range.max < 2) return { min: move.range.min, max: move.range.max };
-  const max = move.range.max + unit.mods.rangeBonus;
-  return { min: move.range.min, max: move.kind === "bond" ? max : Math.min(MAX_RANGE, Math.max(move.range.max, max)) };
+  const bonus = unit.mods.rangeBonus;
+  const reach = move.kind === "bond" ? move.range.max + bonus : Math.min(MAX_RANGE, Math.max(move.range.max, move.range.max + bonus));
+  // Blinded: a shorter reach, never below the move's minimum.
+  const penalty = unit.statuses.reduce((s, st) => s + (content.statuses[st.id]?.rangePenalty ?? 0), 0);
+  return { min: move.range.min, max: Math.max(move.range.min, reach - penalty) };
 };
 
 /** The unit's harmful statuses (buffs such as Pumped or Protect left out). */

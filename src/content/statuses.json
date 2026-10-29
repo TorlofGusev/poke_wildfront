@@ -71,6 +71,11 @@
   "name": "Marked",
   "damageTaken": 1.15
  },
+ "blinded": {
+  "id": "blinded",
+  "name": "Blinded",
+  "rangePenalty": 1
+ },
  "weakened": {
   "id": "weakened",
   "name": "Weakened",

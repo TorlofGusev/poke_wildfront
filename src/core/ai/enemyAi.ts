@@ -198,7 +198,7 @@ function anythingInReach(content: BattleContent, state: BattleState, self: Battl
   const reach = Math.max(0, ...self.moves.map((m) => {
     const mv = content.moves[m]!;
     const area = mv.shape.kind === "burst" ? mv.shape.radius + 0.5 : mv.shape.kind === "line" || mv.shape.kind === "cone" ? mv.shape.length : 0;
-    return Math.max(freeRange(self, mv).max, area);
+    return Math.max(freeRange(self, mv, content).max, area);
   }));
   return livingUnits(state).some((u) => u.id !== self.id && distance(u.pos, pos) <= reach + 0.5);
 }
@@ -426,6 +426,8 @@ function debuffValue(content: BattleContent, state: BattleState, self: BattleUni
     value += hit * (inReach ? 0.3 : 0.8) * duration;
   }
   if (def.movePenalty !== undefined && def.movePenalty > 0) value += hit * 0.1 * def.movePenalty * duration;
+  // Blinded: only hurts a Pokémon whose attacks reach past melee.
+  if (def.rangePenalty && target.moves.some((m) => content.moves[m]!.power > 0 && content.moves[m]!.range.max >= 2)) value += hit * 0.15 * def.rangePenalty * duration;
   return value;
 }
 

@@ -134,6 +134,8 @@ export interface StatusDef {
   readonly name: string;
   /** Fraction of max HP lost at the start of the unit's turn. */
   readonly damagePerTurn?: number;
+  /** Reach removed from its ranged moves while active (Blinded), never below their minimum. */
+  readonly rangePenalty?: number;
   /** Movement points removed while active. */
   readonly movePenalty?: number;
   /** Cannot move at all while active (Paralysis). */

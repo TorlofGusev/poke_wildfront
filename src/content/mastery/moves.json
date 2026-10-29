@@ -8004,7 +8004,7 @@
   "effects": [
    {
     "kind": "status",
-    "status": "weakened",
+    "status": "blinded",
     "duration": 2
    }
   ],

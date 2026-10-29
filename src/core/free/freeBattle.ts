@@ -35,8 +35,8 @@ export function freeReachFor(state: BattleState, unitId: string, mp?: number): F
 }
 
 /** A move's reach in hex widths: melee is touching range; ranged moves need room unless their minimum is 1. */
-export function freeRange(user: BattleUnit, move: MoveDef): { min: number; max: number } {
-  const r = moveRange(user, move);
+export function freeRange(user: BattleUnit, move: MoveDef, content: BattleContent): { min: number; max: number } {
+  const r = moveRange(user, move, content);
   return { min: r.min >= 2 ? MELEE_REACH : 0, max: r.max === 0 ? 0 : r.max <= 1 ? MELEE_REACH : r.max + RANGE_SLACK };
 }
 
@@ -70,7 +70,7 @@ function interceptorOf(
   state: BattleState, user: BattleUnit, move: MoveDef, target: BattleUnit,
 ): { unit: BattleUnit; chance: number } | undefined {
   if (move.shape.kind !== "single" || move.affects !== "enemies" || move.power <= 0 || user.mods.shootOver) return undefined;
-  if (freeRange(user, move).max <= MELEE_REACH) return undefined;
+  if (move.range.max <= 1) return undefined;
   const reach = distance(user.pos, target.pos);
   const aim = Math.atan2(target.pos.y - user.pos.y, target.pos.x - user.pos.x);
   let best: { unit: BattleUnit; chance: number } | undefined;
@@ -109,7 +109,7 @@ export function freeArea(state: BattleState, move: MoveDef, user: BattleUnit, ai
     case "single":
       return { kind: "single", at: freeUnitAt(state, aim)?.pos ?? aim };
     case "burst":
-      return { kind: "circle", at: freeRange(user, move).max === 0 ? user.pos : aim, radius: move.shape.radius + BURST_SLACK };
+      return { kind: "circle", at: move.range.max === 0 ? user.pos : aim, radius: move.shape.radius + BURST_SLACK };
     case "line": {
       const len = distance(user.pos, aim) || 1;
       const dir = { x: (aim.x - user.pos.x) / len, y: (aim.y - user.pos.y) / len };
@@ -147,7 +147,7 @@ export function freeAim(state: BattleState, content: BattleContent, unitId: stri
   if (reason) return { ok: false, reason };
   const user = unitById(state, unitId);
   const move = content.moves[moveId]!;
-  const range = freeRange(user, move);
+  const range = freeRange(user, move, content);
   const area = freeArea(state, move, user, aim);
   const fail = (why: string): FreeAim => ({ ok: false, reason: why, area });
   if (!inBounds(state.field!, aim)) return fail("off the field");
@@ -287,7 +287,7 @@ function freeUseMove(
   // Confusion: the attack goes to the nearest Pokémon in reach, an ally if one is as close as any foe.
   const confusion = move.affects === "enemies" && move.power > 0 ? user.statuses.find((st) => content.statuses[st.id]?.misdirects) : undefined;
   if (confusion) {
-    const range = freeRange(user, move);
+    const range = freeRange(user, move, content);
     const nearest = livingUnits(state)
       .filter((u) => u.id !== user.id && distance(u.pos, user.pos) >= range.min && distance(u.pos, user.pos) <= Math.max(range.max, MELEE_REACH))
       .sort((a, b) => distance(a.pos, user.pos) - distance(b.pos, user.pos) || Number(b.side === user.side) - Number(a.side === user.side) || (a.id < b.id ? -1 : 1))[0];

@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest";
 import { readFileSync } from "node:fs";
-import { type UnitSetup } from "../../src/core/battle";
+import { moveRange, type UnitSetup } from "../../src/core/battle";
 import { applyAction, createBattle, validTargets } from "./hexFixture";
 import { CONTENT } from "../../src/content";
 
@@ -160,5 +160,16 @@ describe("move mechanics behind canon names", () => {
     expect(CONTENT.abilities.insomnia!.mods!.statusImmune).toEqual(["sleep"]);
     expect(CONTENT.abilities["clear-body"]!.mods!.statusImmune).toEqual(["weakened"]);
     for (const a of Object.values(CONTENT.abilities)) for (const s of a.mods?.statusImmune ?? []) if (s !== "*") expect(CONTENT.statuses, `${a.id}: ${s}`).toHaveProperty(s);
+  });
+
+  it("Smokescreen blinds: ranged reach shrinks by 1, never below the minimum; Confide weakens instead", () => {
+    const { state } = createBattle(CONTENT, ["....."], [u("p", "koffing", "player", 0, ["smokescreen"]), u("e", "pidgey", "enemy", 2, ["gust"])]);
+    const r = applyAction(state, CONTENT, { type: "useMove", unitId: "p", moveId: "smokescreen", target: { x: 2, y: 0 } });
+    const foe = r.state.units.find((x) => x.id === "e")!;
+    expect(foe.statuses).toContainEqual(expect.objectContaining({ id: "blinded" }));
+    const ranged = { ...CONTENT.moves.gust!, range: { min: 1, max: 3 } };
+    expect(moveRange(foe, ranged, CONTENT).max).toBe(moveRange({ ...foe, statuses: [] }, ranged, CONTENT).max - 1);
+    expect(moveRange(foe, { ...ranged, range: { min: 2, max: 2 } }, CONTENT)).toEqual({ min: 2, max: 2 });
+    expect(CONTENT.moves.confide!.effects).toEqual([expect.objectContaining({ status: "weakened" })]);
   });
 });

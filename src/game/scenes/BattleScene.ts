@@ -446,7 +446,7 @@ export class BattleScene extends Phaser.Scene {
     if (!state || !foe || foe.side !== "enemy" || foe.hp <= 0) return;
     const mp = movementPoints(CONTENT, foe, state);
     this.fillCells(freeReachFor(state, foe.id, mp).cells, 0xffb347, 0.4);
-    const strike = Math.max(0, ...foe.moves.map((m) => CONTENT.moves[m]).filter((m) => m && m.power > 0).map((m) => freeRange(foe, m!).max));
+    const strike = Math.max(0, ...foe.moves.map((m) => CONTENT.moves[m]).filter((m) => m && m.power > 0).map((m) => freeRange(foe, m!, CONTENT).max));
     const c = fieldToWorld(foe.pos);
     this.overlay.lineStyle(2, COLORS.target, 0.9).strokeCircle(c.x, c.y, (mp + strike) * S);
   }
@@ -578,7 +578,7 @@ export class BattleScene extends Phaser.Scene {
   private drawAim(unit: BattleUnit, moveId: string, hover: Point | null): void {
     const state = this.state!;
     const move = CONTENT.moves[moveId]!;
-    const range = freeRange(unit, move);
+    const range = freeRange(unit, move, CONTENT);
     const from = fieldToWorld(unit.pos);
     const ring = fanLength(move) ?? range.max;
     if (ring > 0) {
@@ -709,7 +709,7 @@ export class BattleScene extends Phaser.Scene {
       } else if (this.hoveredMove) {
         // Range preview: how far the move reaches from here.
         const move = CONTENT.moves[this.hoveredMove]!;
-        const range = freeRange(unit, move);
+        const range = freeRange(unit, move, CONTENT);
         const ring = fanLength(move) ?? range.max;
         const c = fieldToWorld(unit.pos);
         if (ring > 0) this.overlay.fillStyle(COLORS.target, 0.15).fillCircle(c.x, c.y, ring * S).lineStyle(2, COLORS.target, 0.8).strokeCircle(c.x, c.y, ring * S);
@@ -987,7 +987,7 @@ export class BattleScene extends Phaser.Scene {
         const reason = moveUnavailableReason(state, CONTENT, unit.id, moveId);
         const hasTarget = !reason && freeHasTarget(state, CONTENT, unit.id, moveId);
         const cd = unit.cooldowns[moveId] ?? 0;
-        const range = moveRange(unit, move);
+        const range = moveRange(unit, move, CONTENT);
         const used = move.kind === "basic" && state.turn!.basicUsed;
         const status = used ? t("used") : cd > 0 ? `⏳${cd}`
           // ✕ and the reach: nobody to aim at within it.
@@ -1122,7 +1122,7 @@ export class BattleScene extends Phaser.Scene {
       ...unit.moves.filter((m) => m !== "struggle").map((m) => {
         const mv = CONTENT.moves[m]!;
         const shape = mv.shape.kind === "single" ? "" : mv.shape.kind === "burst" ? t(", area {n}", { n: mv.shape.radius }) : t(", line {n}", { n: mv.shape.length });
-        return `· ${tag(mv.kind, mv.name)} ${tag(mv.type, mv.type)}${t(", range {min}-{max}", { min: moveRange(unit, mv).min, max: moveRange(unit, mv).max })}${shape}${mv.power ? t(", power {n}", { n: tag("dmg", mv.power) }) : ""}`;
+        return `· ${tag(mv.kind, mv.name)} ${tag(mv.type, mv.type)}${t(", range {min}-{max}", { min: moveRange(unit, mv, CONTENT).min, max: moveRange(unit, mv, CONTENT).max })}${shape}${mv.power ? t(", power {n}", { n: tag("dmg", mv.power) }) : ""}`;
       }),
     ];
     const active = this.state ? activeUnit(this.state) : null;
