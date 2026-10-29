@@ -58,5 +58,8 @@ export class InventoryScene extends Phaser.Scene {
         y = 52;
       }
     }
+    const keyItems = (session.game.keyItems ?? []).map((k) => PROGRESSION.keyItems?.[k]).filter((k) => k !== undefined);
+    const keyRows = keyItems.map((k) => `${tag("title", k.name)} ${tag("dim", "—")} ${k.description}`);
+    new RichText(this, col.x, y, 450, 12).setMarkup([tag("special", t("Key items")), ...(keyRows.length ? keyRows : [tag("dim", t("none"))])].join("\n"));
   }
 }
