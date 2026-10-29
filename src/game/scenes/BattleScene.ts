@@ -74,6 +74,10 @@ interface UnitView {
   hpLag: Phaser.GameObjects.Rectangle;
   /** Bobbing marker over the head of the Pokémon whose turn it is. */
   chevron: Phaser.GameObjects.Graphics;
+  /** The classic status pill at the end of the HP bar (BRN, PAR…). */
+  pill: Phaser.GameObjects.Container;
+  /** Which status the looping effect on the sprite shows, and how to stop it. */
+  statusFx: { id: string | null; stop: () => void };
   /** Gold Spirit bar under the HP bar. */
   spiritBar: Phaser.GameObjects.Rectangle;
   /** Team-coloured base under the Pokémon's feet. */
@@ -111,6 +115,17 @@ function ballCursor(ballId: string): string {
   return css;
 }
 /** Hazard colours on the field. */
+/** The handhelds' status pills: label and colour (dark text on the light ones). */
+const STATUS_PILLS: Readonly<Record<string, { label: string; color: number; dark?: boolean }>> = {
+  burn: { label: "BRN", color: 0xf08030 },
+  paralysis: { label: "PAR", color: 0xf8d030, dark: true },
+  poison: { label: "PSN", color: 0xa040a0 },
+  sleep: { label: "SLP", color: 0x8c888c },
+  freeze: { label: "FRZ", color: 0x98d8d8, dark: true },
+  confused: { label: "CNF", color: 0xe878c8 },
+  curse: { label: "CRS", color: 0x705898 },
+};
+
 const HAZARD_COLORS = { fire: 0xff6a1f, poison: 0xa04ad8, mud: 0x7a5a32 } as const;
 
 const LOG_COLORS: Record<LogTone, string> = {
@@ -178,6 +193,10 @@ export class BattleScene extends Phaser.Scene {
   /** The GPU-painted ground (WebGL); without it the board is drawn with shapes. */
   private ground: TerrainShader | null = null;
   private units = new Map<string, UnitView>();
+  /** Recent floating texts per Pokémon, so new ones stack above. */
+  private floatStack = new Map<string, { n: number; at: number }>();
+  /** Where the last attack came from (hits knock the target back away from it). */
+  private lastAttackFrom: { x: number; y: number } | null = null;
   private panel!: Phaser.GameObjects.Container;
   private infoText!: RichText;
   /** Where the info text starts: right under the panel's last button. */
@@ -427,14 +446,15 @@ export class BattleScene extends Phaser.Scene {
     const hpBg = this.add.rectangle(-19, 21, 38, 6, 0x202830).setOrigin(0, 0.5).setStrokeStyle(1, side === "player" ? 0xa8d4ff : 0xffa8a8, 0.95);
     const hpLag = this.add.rectangle(-18, 21, 36, 4, 0xf0a0a0).setOrigin(0, 0.5);
     const hpBar = this.add.rectangle(-18, 21, 36, 4, 0x7ed321).setOrigin(0, 0.5);
+    const pill = this.add.container(21, 21).setVisible(false);
     // The turn marker: a small gold arrow over the head, bobbing (hidden until it is this one's turn).
     const top = sprite ? sprite.y - sprite.displayHeight * sprite.originY : -18;
     const chevron = this.add.graphics({ x: 0, y: top - 7 }).setVisible(false);
     chevron.fillStyle(0x10141c, 1).fillTriangle(-6, -5, 6, -5, 0, 3).fillStyle(0xf5d76e, 1).fillTriangle(-4, -4, 4, -4, 0, 1);
     this.tweens.add({ targets: chevron, y: top - 11, duration: 450, yoyo: true, repeat: -1, ease: "Sine.easeInOut" });
     const spiritBar = this.add.rectangle(-18, 25.5, 0, 2, 0xf5d76e).setOrigin(0, 0.5);
-    const container = this.add.container(x, y, [shadow, ring, ...(sprite ? [sprite] : []), body, label, hpBg, hpLag, hpBar, spiritBar, chevron]).setScale(UNIT_SCALE);
-    this.units.set(id, { container, hpBar, hpLag, chevron, spiritBar, ring, body, label, sprite, speciesId, facing });
+    const container = this.add.container(x, y, [shadow, ring, ...(sprite ? [sprite] : []), body, label, hpBg, hpLag, hpBar, spiritBar, chevron, pill]).setScale(UNIT_SCALE);
+    this.units.set(id, { container, hpBar, hpLag, chevron, pill, statusFx: { id: null, stop: () => {} }, spiritBar, ring, body, label, sprite, speciesId, facing });
     // Species without a sprite show as a type-coloured disc with their initials.
     body.setVisible(!sprite);
     label.setVisible(!sprite);
@@ -449,13 +469,155 @@ export class BattleScene extends Phaser.Scene {
   }
 
   /** Red flash and a small shake when a unit takes damage. */
+  /** The handhelds' hit: the Pokémon blinks out and in a few times and is knocked back a step from the attacker. */
   private flinch(unitId: string): void {
     const view = this.units.get(unitId);
     if (!view?.sprite) return;
-    view.sprite.setTint(0xff4040);
-    this.time.delayedCall(90, () => view.sprite?.clearTint());
-    this.tweens.add({ targets: view.sprite, x: { from: -3, to: 0 }, duration: 160, ease: "Bounce.Out" });
+    const sprite = view.sprite;
+    this.tweens.add({ targets: sprite, alpha: { from: 0, to: 1 }, duration: 70, repeat: 3, onComplete: () => sprite.setAlpha(1) });
+    const from = this.lastAttackFrom;
+    if (from) {
+      const dx = view.container.x - from.x, dy = view.container.y - from.y;
+      const len = Math.hypot(dx, dy) || 1;
+      this.tweens.add({ targets: sprite, x: ((dx / len) * 5) / UNIT_SCALE, duration: 80, yoyo: true, ease: "Quad.easeOut", onComplete: () => sprite.setX(0) });
+    }
   }
+
+  /** Down it goes, into the ground (the handhelds' faint): it sinks below its own feet line. */
+  private sink(unitId: string): Promise<void> {
+    const view = this.units.get(unitId);
+    if (!view) return Promise.resolve();
+    view.statusFx.stop();
+    view.chevron.setVisible(false);
+    view.pill.setVisible(false);
+    const sprite = view.sprite;
+    if (!sprite) return this.fadeOut(unitId);
+    sprite.anims.stop();
+    const h = sprite.frame.cutHeight, w = sprite.frame.cutWidth;
+    const y0 = sprite.y;
+    const p = { v: 0 };
+    return new Promise((resolve) => this.tweens.add({
+      targets: p, v: 1, duration: 420, delay: 200, ease: "Quad.easeIn",
+      onUpdate: () => {
+        sprite.setCrop(0, 0, w, Math.max(0, h * (1 - p.v)));
+        sprite.y = y0 + h * sprite.scaleY * p.v;
+      },
+      onComplete: () => this.tweens.add({ targets: view.container, alpha: 0, duration: 200, onComplete: () => resolve() }),
+    }));
+  }
+
+  /**
+   * A Poké Ball flies in an arc, opens with a flash, draws the Pokémon in, drops, wobbles (more the likelier
+   * the catch) and clicks shut with stars, or bursts open and the Pokémon pops back out.
+   */
+  private async throwBallFx(throwerId: string, targetId: string, ballId: string, chance: number, success: boolean): Promise<void> {
+    const from = this.units.get(throwerId)?.container, target = this.units.get(targetId);
+    if (!from || !target) return;
+    const to = { x: target.container.x, y: target.container.y - 10 };
+    const ball = this.add.image(from.x, from.y - 14, ballIcon(this, ballId)).setDisplaySize(14, 14).setDepth(40);
+    const tw = (cfg: Phaser.Types.Tweens.TweenBuilderConfig) => new Promise<void>((r) => this.tweens.add({ ...cfg, onComplete: () => r() }));
+    const arc = { t: 0 };
+    const sx = ball.x, sy = ball.y;
+    await tw({ targets: arc, t: 1, duration: 450, ease: "Sine.easeInOut", onUpdate: () => {
+      ball.setPosition(sx + (to.x - sx) * arc.t, sy + (to.y - sy) * arc.t - Math.sin(arc.t * Math.PI) * 50).setAngle(arc.t * 720);
+    } });
+    ball.setAngle(0);
+    const flash = this.add.circle(to.x, to.y, 6, 0xffffff, 0.9).setDepth(39).setBlendMode(Phaser.BlendModes.ADD);
+    this.tweens.add({ targets: flash, scale: 5, alpha: 0, duration: 300, onComplete: () => flash.destroy() });
+    const home = { x: target.container.x, y: target.container.y };
+    await tw({ targets: target.container, scale: 0.05, alpha: 0.2, x: to.x, y: to.y, duration: 260, ease: "Quad.easeIn" });
+    target.container.setVisible(false);
+    await tw({ targets: ball, y: to.y + 12, duration: 220, ease: "Bounce.easeOut" });
+    const wobbles = success ? 3 : Math.max(0, Math.min(2, Math.floor(chance * 3)));
+    for (let i = 0; i < wobbles; i++) {
+      await this.wait(260);
+      sfx(this, "select");
+      await tw({ targets: ball, angle: { from: 0, to: i % 2 ? 22 : -22 }, duration: 150, yoyo: true, ease: "Sine.easeInOut" });
+    }
+    await this.wait(300);
+    if (success) {
+      for (let i = 0; i < 6; i++) {
+        const a = (i / 6) * Math.PI * 2;
+        const st = this.add.star(ball.x, ball.y - 4, 5, 2, 5, 0xfff3a0).setDepth(41);
+        this.tweens.add({ targets: st, x: ball.x + Math.cos(a) * 22, y: ball.y - 4 + Math.sin(a) * 16, alpha: 0, duration: 600, onComplete: () => st.destroy() });
+      }
+      const word = this.add.text(ball.x, ball.y - 30, t("Gotcha!"), { fontFamily: FONT, fontSize: "16px", color: "#f5d76e", fontStyle: "bold" })
+        .setOrigin(0.5).setStroke("#000000", 4).setDepth(41);
+      this.tweens.add({ targets: word, y: word.y - 12, alpha: { from: 1, to: 0 }, delay: 700, duration: 500, onComplete: () => word.destroy() });
+      ball.setTint(0x9a9a9a);
+      await this.wait(900);
+      await tw({ targets: ball, alpha: 0, duration: 300 });
+    } else {
+      const burst = this.add.circle(ball.x, ball.y, 6, 0xffffff, 0.9).setDepth(39).setBlendMode(Phaser.BlendModes.ADD);
+      this.tweens.add({ targets: burst, scale: 4, alpha: 0, duration: 260, onComplete: () => burst.destroy() });
+      target.container.setVisible(true);
+      await tw({ targets: target.container, scale: UNIT_SCALE, alpha: 1, x: home.x, y: home.y, duration: 260, ease: "Back.easeOut" });
+    }
+    ball.destroy();
+  }
+
+  /** The status as a pill at the HP bar's end (BRN, PAR…), and its loop on the sprite (Zzz, sparks, embers…). */
+  private syncStatusLook(view: UnitView, statuses: readonly { id: string }[]): void {
+    const order = ["freeze", "sleep", "paralysis", "burn", "poison", "confused", "curse"];
+    const main = order.find((id) => statuses.some((s) => s.id === id)) ?? null;
+    if (view.statusFx.id === main) return;
+    view.statusFx.stop();
+    view.pill.removeAll(true).setVisible(!!main);
+    view.statusFx = { id: main, stop: () => {} };
+    if (!main) return;
+    const look = STATUS_PILLS[main]!;
+    view.pill.add([
+      this.add.rectangle(0, 0, 17, 8, look.color).setOrigin(0, 0.5).setStrokeStyle(1, 0x10141c),
+      this.add.text(8.5, 0, look.label, { fontFamily: FONT, fontSize: "7px", color: look.dark ? "#10141c" : "#ffffff", fontStyle: "bold" }).setOrigin(0.5),
+    ]);
+    const sprite = view.sprite;
+    if (!sprite) return;
+    const top = sprite.y - sprite.displayHeight * sprite.originY;
+    const extras: { destroy: () => void }[] = [];
+    let timer: Phaser.Time.TimerEvent | null = null;
+    const every = (ms: number, f: () => void) => { timer = this.time.addEvent({ delay: ms, loop: true, callback: f }); };
+    if (main === "sleep") {
+      sprite.anims.timeScale = 0.3;
+      every(900, () => {
+        const z = this.add.text(6, top + 2, "z", { fontFamily: FONT, fontSize: "9px", color: "#e8ecf4", fontStyle: "bold" }).setStroke("#10141c", 2);
+        view.container.add(z);
+        this.tweens.add({ targets: z, x: 14, y: top - 14, alpha: 0, scale: 1.4, duration: 1400, onComplete: () => z.destroy() });
+      });
+    } else if (main === "paralysis") {
+      every(1500, () => {
+        sprite.setTint(0xfff070);
+        this.time.delayedCall(80, () => sprite.clearTint());
+        this.tweens.add({ targets: sprite, x: { from: -1.5, to: 1.5 }, duration: 40, yoyo: true, repeat: 2, onComplete: () => sprite.setX(0) });
+      });
+    } else if (main === "burn" || main === "poison") {
+      const burn = main === "burn";
+      every(burn ? 400 : 600, () => {
+        const d = this.add.circle(Phaser.Math.Between(-7, 7), sprite.y - Phaser.Math.Between(4, 14), burn ? 1.6 : 2, burn ? 0xff8a30 : 0xb060e0);
+        view.container.add(d);
+        this.tweens.add({ targets: d, y: d.y - 12, alpha: 0, duration: 800, onComplete: () => d.destroy() });
+      });
+    } else if (main === "freeze") {
+      sprite.setTint(0x98d8f8);
+      sprite.anims.timeScale = 0;
+    } else {
+      // Confusion (and curse): little stars circling over the head.
+      const stars = [0, 1, 2].map(() => this.add.star(0, top - 2, 5, 1.2, 3, main === "curse" ? 0xb070ff : 0xf5d76e));
+      view.container.add(stars);
+      const spin = { a: 0 };
+      const tween = this.tweens.add({ targets: spin, a: Math.PI * 2, duration: 1200, repeat: -1, onUpdate: () => stars.forEach((st, i) => {
+        const a = spin.a + (i / 3) * Math.PI * 2;
+        st.setPosition(Math.cos(a) * 8, top - 2 + Math.sin(a) * 3);
+      }) });
+      extras.push(...stars, { destroy: () => tween.remove() });
+    }
+    view.statusFx.stop = () => {
+      (timer as Phaser.Time.TimerEvent | null)?.remove();
+      extras.forEach((o) => o.destroy());
+      sprite.anims.timeScale = 1;
+      sprite.clearTint();
+    };
+  }
+
 
   /**
    * Puts the views in step with the state. While events play, `positions` is false: the tweens move the
@@ -479,6 +641,7 @@ export class BattleScene extends Phaser.Scene {
       const active = this.state.turn?.unitId === u.id;
       view.ring.setStrokeStyle(active ? 3 : 2, active ? COLORS.active : u.side === "player" ? COLORS.player : COLORS.enemy);
       view.chevron.setVisible(active && !this.busy && this.phase === "battle");
+      if (u.hp > 0 && !u.captured) this.syncStatusLook(view, u.statuses);
     }
   }
 
@@ -1667,6 +1830,7 @@ export class BattleScene extends Phaser.Scene {
                 duration: 90, yoyo: true, onComplete: () => resolve(),
               }));
             }
+            this.lastAttackFrom = { x: view.container.x, y: view.container.y };
             // The move's effect, styled by its type, on everyone it touches (or the aimed spot).
             const hit = e.affected.map((id) => this.state?.units.find((u) => u.id === id)).filter((u) => u !== undefined).map((u) => fieldToWorld(u.pos));
             const move = CONTENT.moves[e.moveId];
@@ -1683,12 +1847,18 @@ export class BattleScene extends Phaser.Scene {
           break;
         }
         case "damaged": {
+          // A beat of hit-stop on contact, then the blink.
+          if (e.source !== "status") await this.wait(70);
           this.flinch(e.unitId);
           sfx(this, e.source === "status" ? "status" : e.effectiveness && e.effectiveness > 1 ? "superHit" : e.effectiveness && e.effectiveness < 1 ? "weakHit" : "hit");
           const eff = e.effectiveness && e.effectiveness !== 1 ? (e.effectiveness > 1 ? " !" : " ↓") : "";
           this.floatText(e.unitId, `-${e.amount}${eff}`, e.source === "status" ? "#c070ff" : "#ff6b6b");
+          if (e.effectiveness && e.effectiveness > 1) {
+            this.floatText(e.unitId, t("It's super effective!"), "#ffe066", 13);
+            this.cameras.main.shake(150, 0.006);
+          } else if (e.effectiveness && e.effectiveness < 1) this.floatText(e.unitId, t("Not very effective…"), "#b8bcc8", 12);
           this.setHpBar(e.unitId, e.hp, unitById(this.state!, e.unitId).maxHp, true);
-          await this.wait(220);
+          await this.wait(320);
           break;
         }
         case "healed":
@@ -1735,15 +1905,24 @@ export class BattleScene extends Phaser.Scene {
         case "watchTriggered":
           this.floatText(e.unitId, "!", "#f5d76e");
           break;
-        case "captured":
+        case "ballThrown":
+          await this.throwBallFx(e.unitId, e.targetId, e.ballId, e.chance, e.success);
+          break;
+        case "captured": {
           sfx(this, "capture");
           playCry(this, unitById(this.state!, e.unitId).speciesId);
-          await this.fadeOut(e.unitId);
+          // The ball already took it in (throwBallFx); only hide what is left.
+          const v = this.units.get(e.unitId);
+          if (v) {
+            v.statusFx.stop();
+            v.container.setVisible(false);
+          }
           break;
+        }
         case "fainted":
           playCry(this, unitById(this.state!, e.unitId).speciesId, 0.75);
+          await this.sink(e.unitId);
           this.arena?.dust(fieldToWorld(unitById(this.state!, e.unitId).pos));
-          await this.fadeOut(e.unitId);
           break;
         default:
           break;
@@ -1889,14 +2068,26 @@ export class BattleScene extends Phaser.Scene {
       .then(() => void box.destroy());
   }
 
-  private floatText(unitId: string, s: string, color: string): void {
+  /** A word or number popping up over a Pokémon; several at once stack upwards instead of overlapping. */
+  private floatText(unitId: string, s: string, color: string, size = 16): void {
     const view = this.units.get(unitId);
     if (!view) return;
+    const now = this.time.now;
+    const stack = this.floatStack.get(unitId);
+    const n = stack && now - stack.at < 450 ? stack.n + 1 : 0;
+    this.floatStack.set(unitId, { n, at: now });
     const t = this.add
-      .text(view.container.x, view.container.y - 24, s, { fontFamily: FONT, fontSize: "16px", color, fontStyle: "bold" })
+      .text(view.container.x, view.container.y - 28 - n * 15, s, { fontFamily: FONT, fontSize: `${size}px`, color, fontStyle: "bold" })
       .setOrigin(0.5)
-      .setStroke("#000000", 3);
-    this.tweens.add({ targets: t, y: t.y - 24, alpha: 0, duration: 900, onComplete: () => t.destroy() });
+      .setStroke("#000000", 4)
+      .setDepth(45)
+      .setScale(1.5);
+    // Kept on the board, so a Pokémon at the edge does not push its words off screen.
+    const o = fieldToWorld({ x: 0, y: 0 });
+    const half = t.width / 2 + 4;
+    t.setX(Phaser.Math.Clamp(t.x, o.x + half, o.x + this.boardPx().w - half));
+    this.tweens.add({ targets: t, scale: 1, duration: 120, ease: "Back.easeOut" });
+    this.tweens.add({ targets: t, y: t.y - 22, alpha: 0, delay: 350, duration: 800, onComplete: () => t.destroy() });
   }
 
   /**

@@ -244,5 +244,8 @@
  "Skill slots full: remove one first": "A képességhelyek foglaltak: előbb vegyél ki egyet",
  "★ Lv up": "★ Szintlépés",
  "place up to 3 Pokémon on the blue spots. On a turn a Pokémon can walk, use one basic attack, and use its skills whenever they are off cooldown. Tap a foe to see how far it can reach.": "tegyél legfeljebb 3 Pokémont a kék pontokra. Egy körben a Pokémon mozoghat, használhat egy alaptámadást, a skilljeit pedig bármikor, amikor nincsenek cooldownon. Bökj egy ellenfélre, hogy lásd, meddig ér el.",
- "Pokémon level up, choose a focus at Lv 3 and masteries later (Camp → a Pokémon). Weaken wild Pokémon and throw a ball to catch them.": "A Pokémonok szintet lépnek, Lv 3-on fókuszt, később masterykat választanak (Tábor → egy Pokémon). A vad Pokémonokat gyengítsd le, és dobj labdát az elkapásukhoz."
+ "Pokémon level up, choose a focus at Lv 3 and masteries later (Camp → a Pokémon). Weaken wild Pokémon and throw a ball to catch them.": "A Pokémonok szintet lépnek, Lv 3-on fókuszt, később masterykat választanak (Tábor → egy Pokémon). A vad Pokémonokat gyengítsd le, és dobj labdát az elkapásukhoz.",
+ "It's super effective!": "Nagyon hatásos!",
+ "Not very effective…": "Nem túl hatásos…",
+ "Gotcha!": "Megvan!"
 }
