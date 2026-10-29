@@ -62,13 +62,6 @@ export function drawFloorDecor(g: Phaser.GameObjects.Graphics, theme: BoardTheme
   }
 }
 
-/** Texture on a rock hex: a lighter face and a crack. */
-export function drawWallDecor(g: Phaser.GameObjects.Graphics, x: number, y: number, cx: number, cy: number): void {
-  g.fillStyle(0x3a3d44, 1).fillTriangle(cx - 12, cy + 8, cx - 2, cy - 12, cx + 10, cy + 8);
-  g.fillStyle(0x4a4e57, 1).fillTriangle(cx - 6, cy + 2, cx - 2, cy - 10, cx + 2, cy + 2);
-  if (tileRand(x, y, 6) < 0.5) g.lineStyle(1, 0x15161a, 1).lineBetween(cx + 2, cy - 4, cx + 6, cy + 6);
-}
-
 /** Ripples on a water hex. */
 export function drawWaterDecor(g: Phaser.GameObjects.Graphics, x: number, y: number, cx: number, cy: number): void {
   const oy = (tileRand(x, y, 7) - 0.5) * 8;

@@ -1,4 +1,5 @@
 import Phaser from "phaser";
+import { drawBush, drawMud, drawRock, drawWater } from "../ui/terrainArt";
 import { ArenaFx } from "../arenaFx";
 import { playMoveFx } from "../moveFx";
 import { playMusic, stopMusic } from "../music";
@@ -59,7 +60,7 @@ import { describeMove, reachShort, selfCentred } from "../ui/describeMove";
 import { stripMarkup, tag } from "../ui/markup";
 import { RichText } from "../ui/RichText";
 import { t } from "../i18n";
-import { boardTheme, drawFloorDecor, drawWallDecor, drawWaterDecor, floorColor } from "../ui/boardDecor";
+import { boardTheme, drawFloorDecor, drawWaterDecor, floorColor, tileRand } from "../ui/boardDecor";
 import { animKey, FACE_LEFT, FACE_RIGHT, facingFor, hasSprite, portraitKey, type Facing, type SpriteAnim } from "../sprites";
 import { BOARD_X, BOARD_Y, COLORS, FIELD_S, fieldToWorld, FONT, PANEL_X, PANEL_W, TYPE_COLORS, UNIT_SCALE, worldToField, px, PHONE } from "../ui/theme";
 
@@ -87,7 +88,6 @@ const AUTO_END_MS = 600;
 const DEMO_STEP_MS = 650;
 const S = FIELD_S;
 /** Terrain colours on the free field. */
-const ZONE_COLORS: Record<Exclude<FreeTerrainId, "floor">, number> = { mud: COLORS.mud, water: COLORS.water, bush: COLORS.grass, rock: 0x3a3d44 };
 /** A tap or click this close to a deploy spot picks it. */
 const SPOT_PICK = 0.45;
 const LOG_LINE_H = 15;
@@ -310,10 +310,19 @@ export class BattleScene extends Phaser.Scene {
     const field = this.state?.field ?? this.scenario.field;
     const theme = boardTheme(this.biome ?? this.npcMapId ?? this.scenario.id);
     // Floor in one-unit squares of slightly varied colour, with small props on open ground.
+    // No grid: one base colour, then soft overlapping blotches of the varied tones.
+    const o = fieldToWorld({ x: 0, y: 0 });
+    g.fillStyle(floorColor(theme, 0, 0), 1).fillRect(o.x, o.y, field.width * S, field.height * S);
     for (let y = 0; y < field.height; y++)
       for (let x = 0; x < field.width; x++) {
-        const c = fieldToWorld({ x, y });
-        g.fillStyle(floorColor(theme, x, y), 1).fillRect(c.x, c.y, S, S);
+        const c = fieldToWorld({ x: x + 0.5, y: y + 0.5 });
+        for (let k = 0; k < 4; k++) {
+          const bx = c.x + (tileRand(x, y, 20 + k) - 0.5) * S, by = c.y + (tileRand(x, y, 30 + k) - 0.5) * S;
+          // Kept inside the board: no blotch spills past its edge.
+          const edge = Math.min(bx - o.x, o.x + field.width * S - bx, by - o.y, o.y + field.height * S - by);
+          const r = Math.min(edge, S * (0.25 + tileRand(x, y, 40 + k) * 0.25));
+          if (r > 2) g.fillStyle(floorColor(theme, x + k, y - k), 0.35).fillCircle(bx, by, r);
+        }
       }
     for (let y = 0; y < field.height; y++)
       for (let x = 0; x < field.width; x++) {
@@ -321,23 +330,21 @@ export class BattleScene extends Phaser.Scene {
         const c = fieldToWorld({ x: x + 0.5, y: y + 0.5 });
         drawFloorDecor(g, theme, x, y, c.x, c.y);
       }
-    for (const z of field.zones) {
-      if (z.terrain === "floor") continue;
+    // Patches with depth (see terrainArt): rocks lit from the top left, bush canopies, deepening water, wet mud.
+    field.zones.forEach((z, i) => {
+      if (z.terrain === "floor") return;
       const pts = z.poly.map((p) => new Phaser.Math.Vector2(fieldToWorld(p).x, fieldToWorld(p).y));
-      g.fillStyle(ZONE_COLORS[z.terrain], 1).fillPoints(pts, true);
-      g.lineStyle(2, 0x000000, z.terrain === "rock" ? 0.6 : 0.25).strokePoints(pts, true, true);
-    }
-    // Texture inside the patches: rock faces, ripples, grass blades.
+      if (z.terrain === "rock") drawRock(g, pts, theme);
+      else if (z.terrain === "bush") drawBush(g, pts, i + 11);
+      else if (z.terrain === "water") drawWater(g, pts, i + 13);
+      else drawMud(g, pts, i + 17);
+    });
+    // Ripples on the water.
     for (let y = 0; y < field.height; y++)
       for (let x = 0; x < field.width; x++) {
-        const id = terrainAt(field, { x: x + 0.5, y: y + 0.5 }).id;
+        if (terrainAt(field, { x: x + 0.5, y: y + 0.5 }).id !== "water" || (x + y) % 2) continue;
         const c = fieldToWorld({ x: x + 0.5, y: y + 0.5 });
-        if (id === "rock") drawWallDecor(g, x, y, c.x, c.y);
-        else if (id === "water") drawWaterDecor(g, x, y, c.x, c.y);
-        else if (id === "bush") {
-          g.fillStyle(0x3f8a45, 1);
-          for (const [dx, dy] of [[-12, 8], [0, -4], [8, 10]] as const) g.fillTriangle(c.x + dx, c.y + dy, c.x + dx + 4, c.y + dy - 10, c.x + dx + 8, c.y + dy);
-        }
+        drawWaterDecor(g, x, y, c.x, c.y);
       }
     const { width, height } = this.scale;
     this.boardImage ??= this.add.renderTexture(0, 0, width, height).setOrigin(0).setDepth(-1);
