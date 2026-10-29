@@ -95,6 +95,10 @@ export interface MoveDef {
   readonly bondCost?: number;
   /** The user's stat its damage scales with instead of Attack / Sp. Atk (Body Press: Defense). */
   readonly scaleStat?: StatName;
+  /** Takes this share of the target's current HP instead of the damage formula, whatever the stats (Super Fang: 0.5). */
+  readonly currentHpDamage?: number;
+  /** Power grows as the user loses HP: up to +this share at 0 HP, by the share of HP lost (Endeavor, Flail, Reversal). */
+  readonly lowHpPower?: number;
   readonly effects?: readonly MoveEffect[];
   /**
    * delayed: marks the ground now and strikes it at the start of the user's next turn, hitting whoever stands

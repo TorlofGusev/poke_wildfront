@@ -14,6 +14,28 @@ describe("move mechanics behind canon names", () => {
     expect(Object.entries(lib).filter(([, m]) => !m.power && !m.effects?.length).map(([id]) => id)).toEqual([]);
   });
 
+  it("Super Fang takes half the target's current HP, whatever its stats", () => {
+    const fang = (foe: string, foeHp?: number) => {
+      const { state } = createBattle(CONTENT, ["....."], [u("p", "raticate", "player", 0, ["tackle", "super-fang"]), u("e", foe, "enemy", 1, ["tackle"])], { bond: { player: { start: 6, max: 6 } } });
+      const s = foeHp ? { ...state, units: state.units.map((x) => (x.id === "e" ? { ...x, hp: foeHp } : x)) } : state;
+      return { before: s.units.find((x) => x.id === "e")!.hp, after: hp(applyAction(s, CONTENT, { type: "useMove", unitId: "p", moveId: "super-fang", target: { x: 1, y: 0 } }), "e") };
+    };
+    const tank = fang("onix", 80);
+    expect(tank.after).toBe(40);
+    expect(fang("gastly").after).toBe(Math.round(fang("gastly").before / 2));
+  });
+
+  it("Endeavor, Flail and Reversal hit harder the more HP the user has lost", () => {
+    for (const move of ["endeavor", "flail", "reversal"]) {
+      const dealt = (lost: number) => {
+        const { state } = createBattle(CONTENT, ["....."], [u("p", "raticate", "player", 0, ["tackle", move]), u("e", "snorlax", "enemy", 1, ["tackle"])], { seed: 1, bond: { player: { start: 6, max: 6 } } });
+        const s = { ...state, units: state.units.map((x) => (x.id === "p" ? { ...x, hp: Math.max(1, Math.round(x.maxHp * (1 - lost))) } : x)) };
+        return s.units.find((x) => x.id === "e")!.hp - hp(applyAction(s, CONTENT, { type: "useMove", unitId: "p", moveId: move, target: { x: 1, y: 0 } }), "e");
+      };
+      expect(dealt(0.8), move).toBeGreaterThan(dealt(0) * 1.8);
+    }
+  });
+
   it("U-turn and Flip Turn end the user's engagement after the hit", () => {
     for (const move of ["u-turn", "flip-turn"]) {
       const { state } = createBattle(CONTENT, ["....."], [u("p", "scyther", "player", 0, ["cut", move]), u("e", "rattata", "enemy", 1, ["tackle"])]);

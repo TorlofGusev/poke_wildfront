@@ -729,8 +729,11 @@ function resolveHits(
       const defense = mech.ignoresDefense ? 0 : t.stats.defense;
       const attack = move.scaleStat ? user.stats[move.scaleStat] : user.stats.attack;
       // Critical hit: Crit raises both the chance and the size (seeded, so replays match).
-      const crit = isFoe && mult > 0 && !t.mods.critImmune && roll(state) < critChance(content, user);
-      const raw = (move.power * (off + attack + user.attackBoost)) / (off + defense) * mult / content.rules.damageDivisor * (crit ? critMultiplier(content, user) : 1);
+      const crit = isFoe && mult > 0 && !move.currentHpDamage && !t.mods.critImmune && roll(state) < critChance(content, user);
+      const power = move.power * (1 + (move.lowHpPower ?? 0) * (1 - user.hp / user.maxHp));
+      const formula = (power * (off + attack + user.attackBoost)) / (off + defense) * mult / content.rules.damageDivisor * (crit ? critMultiplier(content, user) : 1);
+      // A fixed share of the target's HP ignores stats and bonuses, but not Protect.
+      const raw = move.currentHpDamage ? (mult > 0 ? t.hp * move.currentHpDamage : 0) : formula;
       if (crit) events.push({ type: "critical", unitId: user.id, targetId: t.id });
       // Any hit deals at least 1, unless something blocks all damage (Protect).
       const dealt = dealDamage(state, t, mult > 0 ? Math.max(1, Math.round(raw)) : 0, "move", events, eff);
