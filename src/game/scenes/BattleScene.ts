@@ -82,8 +82,6 @@ const AI_STEP_MS = 350;
 /** A spent turn passes on its own after this pause; under this much walk left counts as none. */
 const AUTO_END_MS = 600;
 const MIN_STEP = 0.5;
-/** Party cards offered at deployment (3 rows of 3). */
-const DEPLOY_CHOICES = 9;
 /** The title-screen replay is calmer than a real battle. */
 const DEMO_STEP_MS = 650;
 const S = FIELD_S;
@@ -208,9 +206,7 @@ export class BattleScene extends Phaser.Scene {
     this.prizeMoney = 0;
     this.phase = "deploy";
     this.placements = [];
-    // At most DEPLOY_CHOICES cards fit the panel: healthy Pokémon first, in party order.
-    const all = this.demo ? [] : session.partyCandidates();
-    this.party = [...all.filter((m) => m.hp > 0), ...all.filter((m) => m.hp <= 0)].slice(0, DEPLOY_CHOICES);
+    this.party = this.demo ? [] : session.partyCandidates();
     this.selectedCandidate = this.party.find((m) => m.hp > 0)?.id ?? null;
     this.selectedBall = null;
     this.summary = null;

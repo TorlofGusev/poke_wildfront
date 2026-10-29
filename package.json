@@ -1,6 +1,6 @@
 {
   "name": "poke-wildfront",
-  "version": "0.102.7",
+  "version": "0.102.8",
   "description": "Unofficial, free, open-source Pokémon tactical RPG fan game for the browser.",
   "directories": {
     "doc": "docs"

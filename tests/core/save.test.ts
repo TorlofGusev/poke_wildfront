@@ -29,13 +29,18 @@ describe("save/load", () => {
     expect(() => loadSaveFile(content, JSON.stringify(old))).toThrow(/another prototype version/);
   });
 
+  it("an old 10-strong party loads with the extra Pokémon moved to storage", () => {
+    const ten = Array.from({ length: 10 }, (_, i) => pm(`x${i}`, "fast", 0, 1));
+    const loaded = roundTrip({ ...game, roster: { ...game.roster, party: ten } });
+    expect(loaded.game.roster.party.map((m) => m.uid)).toEqual(ten.slice(0, 9).map((m) => m.uid));
+    expect(loaded.game.roster.storage[0]!.uid).toBe("x9");
+  });
+
   it("rejects corrupt or invalid saves with readable errors", () => {
     expect(() => loadSaveFile(content, "{")).toThrow(/not valid JSON/);
     expect(() => loadSaveFile(content, "{}")).toThrow(/no version/);
     expect(() => loadSaveFile(content, JSON.stringify({ version: 99 }))).toThrow(/another prototype version/);
     const bad = (patch: Partial<GameState["roster"]>) => roundTrip({ ...game, roster: { ...game.roster, ...patch } });
-    const tooMany = Array.from({ length: 11 }, (_, i) => pm(`x${i}`, "fast", 0, 1));
-    expect(() => bad({ party: tooMany })).toThrow(/max 10/);
     expect(() => bad({ party: [pm("pk1", "fast", 3, 1)] })).toThrow(/not fallen/);
     expect(() => bad({ fallen: [pm("pk3", "mid", 1, 0)] })).toThrow(/fallen without/);
     expect(() => bad({ storage: [pm("pk1", "slow", 0, 1)] })).toThrow(/duplicate/);

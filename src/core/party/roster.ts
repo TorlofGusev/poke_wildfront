@@ -13,7 +13,7 @@ import {
 import type { BattleState } from "../battle/state";
 import type { WorldState } from "../expedition/world";
 
-export const MAX_PARTY_SIZE = 10;
+export const MAX_PARTY_SIZE = 9;
 export const KNOCKOUTS_TO_DEATH = 3;
 
 export interface PartyMember extends Progress {

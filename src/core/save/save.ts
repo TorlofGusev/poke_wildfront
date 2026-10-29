@@ -28,7 +28,13 @@ export function loadSaveFile(content: BattleContent, json: string): SaveFile {
   }
   if (typeof data?.version !== "number") throw new SaveError("save data has no version");
   if (data.version !== SAVE_VERSION) throw new SaveError(`save is from another prototype version (${data.version})`);
-  const save = data as unknown as SaveFile;
+  let save = data as unknown as SaveFile;
+  // The party shrank from 10 to 9 (it has to fit the deployment cards): extras wait in storage.
+  const roster = save.game?.roster;
+  if (roster && Array.isArray(roster.party) && Array.isArray(roster.storage) && roster.party.length > MAX_PARTY_SIZE) {
+    const moved = { ...roster, party: roster.party.slice(0, MAX_PARTY_SIZE), storage: [...roster.party.slice(MAX_PARTY_SIZE), ...roster.storage] };
+    save = { ...save, game: { ...save.game, roster: moved } };
+  }
   validateGame(content, save.game);
   return save;
 }

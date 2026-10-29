@@ -35,7 +35,7 @@ function battleWhereAFaints(extra: { id: string }[] = []): BattleState {
 }
 
 describe("party limits", () => {
-  it("adds to the party until it is full (10), then to storage", () => {
+  it("adds to the party until it is full (9), then to storage", () => {
     let g = game(Array.from({ length: MAX_PARTY_SIZE - 1 }, (_, i) => member(`m${i + 1}`)));
     let r = addPokemon(g, member("last"));
     expect(r.to).toBe("party");
