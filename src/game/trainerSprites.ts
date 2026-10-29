@@ -1,4 +1,5 @@
 import Phaser from "phaser";
+import type { LookId } from "./trainerLook";
 
 /**
  * Trainers on the map as small pixel people drawn at boot: one body, dressed per trainer class
@@ -93,7 +94,7 @@ interface Look {
   readonly gear?: "pack" | "net";
 }
 
-const LOOKS: Record<string, Look> = {
+const LOOKS: Record<LookId, Look> = {
   youngster: { body: "cap", H: 0x3a6fd8, h: 0x6b4226, S: 0xf2f2f2, P: 0x3a6fd8, B: 0x3a6fd8 },
   bug: { body: "wide", H: 0xe8c66a, h: 0x6b4226, S: 0x7ed321, P: 0xd9b36c, B: 0x8a6a3a, gear: "net" },
   hiker: { body: "wide", H: 0x8a5a2b, h: 0x3a2a1a, S: 0xc8732f, P: 0x6b4c2a, B: 0x6b4c2a, gear: "pack" },
@@ -118,17 +119,6 @@ const LOOKS: Record<string, Look> = {
   trainer: { body: "cap", H: 0xd0021b, h: 0x3a2a1a, S: 0x3a6fd8, P: 0x3a3a5a, B: 0x3a3a5a },
 };
 
-/** Which look a trainer gets: from the first word of the name ("Bug Catcher Rick" → bug), else the NPC kind. */
-export function trainerLook(name: string, kind: string): string {
-  const word = name.split(/\s+/)[0]!.toLowerCase().replace(/[^a-z]/g, "");
-  const alias: Record<string, string> = { team: "rocket", karate: "blackbelt", cue: "biker", juggler: "gentleman", tamer: "hiker", gambler: "gentleman", engineer: "hiker", burglar: "biker", pokmaniac: "psychic", bird: "camper", jr: "youngster", lt: "leader", gym: "leader" };
-  const id = alias[word] ?? word;
-  if (LOOKS[id]) return id;
-  if (kind === "leader" || kind === "elite" || kind === "champion") return kind === "leader" ? "leader" : "elite";
-  if (kind === "rocket" || kind === "rival") return kind;
-  return "trainer";
-}
-
 const SKIN = 0xf4d8b8;
 const OUTLINE = 0x10141c;
 
@@ -136,7 +126,7 @@ const OUTLINE = 0x10141c;
 export function trainerTexture(scene: Phaser.Scene, look: string): string {
   const key = `trainer-${look}`;
   if (scene.textures.exists(key)) return key;
-  const l = LOOKS[look] ?? LOOKS.trainer!;
+  const l = LOOKS[look as LookId] ?? LOOKS.trainer;
   const g = scene.make.graphics({}, false);
   const colors: Record<string, number> = { o: OUTLINE, s: SKIN, h: l.h, H: l.H ?? l.h, S: l.S, P: l.P, k: l.k ?? 0x2a2a2a, B: l.B ?? l.P };
   const rows = BODY[l.body]!;

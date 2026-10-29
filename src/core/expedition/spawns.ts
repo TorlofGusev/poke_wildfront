@@ -28,3 +28,11 @@ export function spawnsAt(content: WorldContent, def: WorldDef, p: Point): SpawnI
     .map((e) => ({ speciesId: e.speciesId, chance: e.weight / total, levels, ...(e.maxPerGroup !== undefined && { maxPerGroup: e.maxPerGroup }) }))
     .sort((a, b) => b.chance - a.chance);
 }
+
+/** Where the wild list looks from `p`: there, or off spawn ground (paths, towns) the nearest spawn spot of the map. */
+export function spawnSpotNear(content: WorldContent, def: WorldDef, p: Point): Point {
+  if (spawnsAt(content, def, p).length) return p;
+  const spots = def.spawnZones.flatMap((z) => z.points);
+  const d = (q: Point) => Math.hypot(q.x - p.x, q.y - p.y);
+  return spots.reduce<Point>((best, q) => (d(q) < d(best) ? q : best), spots[0] ?? p);
+}

@@ -9,6 +9,8 @@ import {
   areaName,
   biomeAt,
   spawnsAt,
+  spawnSpotNear,
+  deploySlotsFor,
   changeMap,
   exitAt,
   effectiveGroup,
@@ -38,11 +40,9 @@ import { tag } from "../ui/markup";
 import { t } from "../i18n";
 import { RichText } from "../ui/RichText";
 import { boardTheme, drawFloorDecor, drawWaterDecor, tileRand } from "../ui/boardDecor";
-import { trainerLook, trainerTexture } from "../trainerSprites";
+import { trainerLook } from "../trainerLook";
+import { trainerTexture } from "../trainerSprites";
 import { COLORS, FONT, PHONE, TYPE_COLORS, px } from "../ui/theme";
-
-/** Battle size before the first badge; each badge opens one more slot up to the map's own size. */
-const BASE_SLOTS = 3;
 
 const T = 28;
 const MAP_X = 16;
@@ -223,7 +223,7 @@ export class OverworldScene extends Phaser.Scene {
       this.act(from);
     });
     this.input.keyboard?.on("keydown-I", () => {
-      if (!this.moving && (this.spawnPanel || spawnsAt(WORLD_CONTENT, currentWorld(), this.world.pos).length)) this.toggleSpawnPanel();
+      if (!this.moving && (this.spawnPanel || spawnsAt(WORLD_CONTENT, currentWorld(), this.spawnSpot()).length)) this.toggleSpawnPanel();
     });
     this.render();
     this.announceArea(this.world.pos);
@@ -259,13 +259,9 @@ export class OverworldScene extends Phaser.Scene {
     return this.stripBox.y + size + 12;
   }
 
-  /**
-   * Party members able to fight; wild groups never outnumber them (see effectiveGroup). The map sets the
-   * size, but each extra slot past 3 waits for a badge: skipping a gym does not open bigger battles early.
-   */
+  /** Party members able to fight; wild groups never outnumber them (see effectiveGroup and deploySlotsFor). */
   private slots(): number {
-    const map = currentWorld().deploySlots ?? MAX_ACTIVE_UNITS;
-    return Math.min(map, BASE_SLOTS + (session.game.badges ?? []).length);
+    return deploySlotsFor(currentWorld().deploySlots ?? MAX_ACTIVE_UNITS, (session.game.badges ?? []).length);
   }
 
   /** On the learning (tutorial-AI) maps wild Pokémon are never above the party's best level. */
@@ -630,12 +626,9 @@ export class OverworldScene extends Phaser.Scene {
     this.toast(biomeAt(WORLD_CONTENT, currentWorld(), p).id === "town" ? `${name}\n${CONTENT.terms.healCenter} · Poké Mart` : name);
   }
 
-  /** Where the wild list looks: here, or off spawn ground (paths, towns) the nearest spot wild Pokémon turn up on this map. */
+  /** Where the wild list looks (see spawnSpotNear). */
   private spawnSpot(): Point {
-    const here = session.game.world.pos;
-    if (spawnsAt(WORLD_CONTENT, currentWorld(), here).length) return here;
-    const spots = currentWorld().spawnZones.flatMap((z) => z.points);
-    return spots.reduce<Point>((best, q) => (Math.hypot(q.x - here.x, q.y - here.y) < Math.hypot(best.x - here.x, best.y - here.y) ? q : best), spots[0] ?? here);
+    return spawnSpotNear(WORLD_CONTENT, currentWorld(), session.game.world.pos);
   }
 
   /** Lists what can spawn in the current area with its share and levels; unmet species stay "???". */

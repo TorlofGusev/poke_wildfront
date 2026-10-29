@@ -290,6 +290,12 @@ export function calmEncounter(world: WorldState, id: string): WorldState {
  * (healthy party members, at most the map's deploy slots), so a lone starter is not swarmed.
  * Keeps the strongest members.
  */
+/** Battle size before the first badge; each badge opens one more slot, up to the map's own size. */
+export const BASE_DEPLOY_SLOTS = 3;
+
+/** Pokémon a side on this map: skipping a gym does not open bigger battles early. */
+export const deploySlotsFor = (mapSlots: number, badges: number): number => Math.min(mapSlots, BASE_DEPLOY_SLOTS + badges);
+
 export function effectiveGroup(
   group: EncounterGroup, healthyPartyMembers: number, deploySlots = MAX_ACTIVE_UNITS,
   /** Learning maps: no wild Pokémon above this level (the party's highest). */

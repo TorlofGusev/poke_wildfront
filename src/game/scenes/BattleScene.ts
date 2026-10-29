@@ -47,7 +47,7 @@ import {
 import { samePoint, type Point } from "../../core/grid";
 import {
   breaksEngagement, CELL, distance, freeAim, freeHasTarget, freeRange, freeReachFor, freeUnitAt, MELEE_REACH,
-  previewFreeMove, previewFreeWalk, previewPushes, type PushPreview, terrainAt, timedStrikeOutcome, UNIT_RADIUS, type FreeArea, type FreeReach, type FreeTerrainId,
+  previewFreeMove, previewFreeWalk, previewPushes, type PushPreview, terrainAt, timedStrikeOutcome, turnSpent, UNIT_RADIUS, type FreeArea, type FreeReach, type FreeTerrainId,
 } from "../../core/free";
 import { summarizeHits, type MoveDef } from "../../core/battle";
 import { typeMultiplier } from "../../core/rules/typeChart";
@@ -81,7 +81,6 @@ interface UnitView {
 const AI_STEP_MS = 350;
 /** A spent turn passes on its own after this pause; under this much walk left counts as none. */
 const AUTO_END_MS = 600;
-const MIN_STEP = 0.5;
 /** The title-screen replay is calmer than a real battle. */
 const DEMO_STEP_MS = 650;
 const S = FIELD_S;
@@ -1384,16 +1383,11 @@ export class BattleScene extends Phaser.Scene {
     }
   }
 
-  /** The player's active Pokémon has acted and has nothing left: no walk, no usable move, no ball to throw. */
+  /** The player's active Pokémon has acted and has nothing left (see turnSpent), with no tip in the way. */
   private turnSpent(): boolean {
     const state = this.state;
-    if (!state || this.phase !== "battle" || this.busy || state.outcome !== "ongoing" || !this.isPlayerTurn() || tipOpen(this)) return false;
-    const turn = state.turn!;
-    if (turn.fresh || turn.movePointsLeft >= MIN_STEP) return false;
-    const unit = activeUnit(state)!;
-    // Too little movement left to walk, so a move only counts while something is already in its reach.
-    if (unit.moves.some((m) => !moveUnavailableReason(state, CONTENT, unit.id, m) && freeHasTarget(state, CONTENT, unit.id, m))) return false;
-    return turn.actionUsed || !state.captureAllowed || !Object.keys(state.balls).some((b) => (state.balls[b] ?? 0) > 0 && captureTargets(state, CONTENT, unit.id, b).length > 0);
+    if (!state || this.phase !== "battle" || this.busy || !this.isPlayerTurn() || tipOpen(this)) return false;
+    return turnSpent(state, CONTENT);
   }
 
   /** Runs enemy turns until it is the player's turn again or the battle ends. */
