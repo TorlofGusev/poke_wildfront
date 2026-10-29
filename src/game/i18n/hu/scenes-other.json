@@ -121,5 +121,7 @@
  "+{n} points to spend": "+{n} elkölthető pont",
  "learned {move}": "megtanulta: {move}",
  "✦ Evolve": "✦ Fejlődés",
- "{name} is about to evolve!": "A(z) {name} fejlődni készül!"
+ "{name} is about to evolve!": "A(z) {name} fejlődni készül!",
+ "(tap one to swap)": "(koppints egyre a cseréhez)",
+ "(tap one to equip)": "(koppints egyre a felszereléshez)"
 }

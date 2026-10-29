@@ -85,6 +85,8 @@ export class PokemonScene extends Phaser.Scene {
   private evHelp = false;
   /** Level-up points: the +1 / +2 switch (+2 costs EV unless the offer is a lucky one). */
   private plusTwo = false;
+  /** First shown row of the bag's held items on the Equipment tab (wheel or ▲▼ scrolls). */
+  private bagRow = 0;
 
   init(data: { uid: string; tab?: Tab }): void {
     this.message = "";
@@ -95,6 +97,12 @@ export class PokemonScene extends Phaser.Scene {
 
   create(): void {
     this.root = this.add.container(0, 0);
+    this.bagRow = 0;
+    this.input.on("wheel", (_p: unknown, _o: unknown, _dx: number, dy: number) => {
+      if (this.tab !== "equipment") return;
+      this.bagRow = Math.max(0, this.bagRow + Math.sign(dy));
+      this.render();
+    });
     this.render();
   }
 
@@ -550,63 +558,88 @@ ${into.types.map((ty) => tag(ty, ty)).join("/")}`);
     // An item's icon at the left end of its button (the label leaves room for it).
     const iconButton = (b: Button, id: string) => b.add(this.add.image(16, 13, itemIcon(this, id)).setDisplaySize(16, 16));
     const potions = Object.entries(session.game.inventory.items).filter(([id, n]) => n > 0 && PROGRESSION.items[id]?.kind === "potion");
-    const max = memberMaxHp(CONTENT, PROGRESSION, m);
-    y += add(new RichText(this, DETAIL_X, y, DETAIL_W, 13)).setMarkup(`${tag("title", t("Healing"))}  HP ${m.hp}/${max}`) + 4;
-    if (!potions.length) y += add(new RichText(this, DETAIL_X, y, DETAIL_W, 12)).setMarkup(tag("dim", t("No potions. Resting at camp restores all HP."))) + 8;
-    potions.forEach(([id, n], i) => {
-      const item = PROGRESSION.items[id]!;
-      iconButton(add(new Button(this, DETAIL_X + i * 316, y, 310, 26, `    ${t("Use {item} (+{hp} HP) ×{n}", { item: item.name, hp: String(item.heal), n })}`, () =>
-        this.act(() => session.update(usePotion(CONTENT, PROGRESSION, session.game, m.uid, id)), t("{name} recovered HP.", { name: s.name }))).setEnabled(m.hp > 0 && m.hp < max)), id);
-    });
-    if (potions.length) y += 36;
-    // Rare Candy: one level at once.
-    const candies = session.game.inventory.items[CANDY] ?? 0;
-    if (candies > 0) {
-      iconButton(add(new Button(this, DETAIL_X, y, 300, 26, `    ${t("Use Rare Candy (+1 Lv) ×{n}", { n: candies })}`, () =>
-        this.act(() => {
-          session.update(useRareCandy(CONTENT, PROGRESSION, session.game, m.uid).game);
-          // Reaching the evolution level plays its scene at once.
-          if (readyToEvolve(CONTENT, findMember(session.game, m.uid)!)) this.time.delayedCall(0, () => this.evolve(m.uid));
-        }, t("{name} grew to Lv {lv}!", { name: s.name, lv: m.level + 1 }))).setEnabled(m.level < PROGRESSION.rules.maxLevel)), CANDY);
-      y += 36;
-    }
-    // Knockout marks: only remedies (or Pokémon Center treatment) remove them.
     const remedies = Object.entries(session.game.inventory.items).filter(([id, n]) => n > 0 && PROGRESSION.items[id]?.kind === "remedy");
-    if (m.knockouts > 0) {
-      y += add(new RichText(this, DETAIL_X, y, DETAIL_W, 12)).setMarkup(`${tag("ko", t("Knockout marks {n}/3", { n: m.knockouts }))} ${tag("dim", remedies.length ? "" : t("· a Revival Herb or Pokémon Center treatment removes them"))}`) + 4;
-      remedies.forEach(([id, n], i) => {
+    const candies = session.game.inventory.items[CANDY] ?? 0;
+    const max = memberMaxHp(CONTENT, PROGRESSION, m);
+    // One status line (HP, knockout marks), then every usable item as one row of buttons, wrapping only if needed.
+    const ko = m.knockouts > 0
+      ? `   ${tag("ko", t("Knockout marks {n}/3", { n: m.knockouts }))}${remedies.length ? "" : ` ${tag("dim", t("· a Revival Herb or Pokémon Center treatment removes them"))}`}`
+      : "";
+    y += add(new RichText(this, DETAIL_X, y, DETAIL_W, 13)).setMarkup(`${tag("title", t("Healing"))}  HP ${m.hp}/${max}${ko}`) + 4;
+    const uses: { id: string; label: string; enabled: boolean; run: () => void; ok: string }[] = [
+      ...potions.map(([id, n]) => {
         const item = PROGRESSION.items[id]!;
-        iconButton(add(new Button(this, DETAIL_X + i * 316, y, 310, 26, `    ${t("Use {item} (−{marks} mark) ×{n}", { item: item.name, marks: String(item.clearsKnockouts), n })}`, () =>
-          this.act(() => session.update(useRemedy(PROGRESSION, session.game, m.uid, id)), t("A knockout mark faded from {name}.", { name: s.name })))), id);
-      });
-      if (remedies.length) y += 36;
+        return { id, label: t("Use {item} (+{hp} HP) ×{n}", { item: item.name, hp: String(item.heal), n }), enabled: m.hp > 0 && m.hp < max,
+          run: () => session.update(usePotion(CONTENT, PROGRESSION, session.game, m.uid, id)), ok: t("{name} recovered HP.", { name: s.name }) };
+      }),
+      // Rare Candy: one level at once; reaching the evolution level plays its scene at once.
+      ...(candies > 0 ? [{ id: CANDY, label: t("Use Rare Candy (+1 Lv) ×{n}", { n: candies }), enabled: m.level < PROGRESSION.rules.maxLevel, run: () => {
+        session.update(useRareCandy(CONTENT, PROGRESSION, session.game, m.uid).game);
+        if (readyToEvolve(CONTENT, findMember(session.game, m.uid)!)) this.time.delayedCall(0, () => this.evolve(m.uid));
+      }, ok: t("{name} grew to Lv {lv}!", { name: s.name, lv: m.level + 1 }) }] : []),
+      // Knockout marks: only remedies (or Pokémon Center treatment) remove them.
+      ...(m.knockouts > 0 ? remedies.map(([id, n]) => {
+        const item = PROGRESSION.items[id]!;
+        return { id, label: t("Use {item} (−{marks} mark) ×{n}", { item: item.name, marks: String(item.clearsKnockouts), n }), enabled: true,
+          run: () => session.update(useRemedy(PROGRESSION, session.game, m.uid, id)), ok: t("A knockout mark faded from {name}.", { name: s.name }) };
+      }) : []),
+    ];
+    if (!uses.length) y += add(new RichText(this, DETAIL_X, y, DETAIL_W, 12)).setMarkup(tag("dim", t("No potions. Resting at camp restores all HP."))) + 8;
+    let x = DETAIL_X;
+    for (const u of uses) {
+      // As wide as its label (the Button's own 14px font), plus room for the icon.
+      const probe = this.add.text(0, 0, `    ${u.label}`, { fontFamily: FONT, fontSize: "14px" });
+      const w = Math.ceil(probe.width) + 20;
+      probe.destroy();
+      if (x > DETAIL_X && x + w > DETAIL_X + DETAIL_W) {
+        x = DETAIL_X;
+        y += 32;
+      }
+      iconButton(add(new Button(this, x, y, w, 26, `    ${u.label}`, () => this.act(u.run, u.ok)).setEnabled(u.enabled)), u.id);
+      x += w + 6;
     }
+    if (uses.length) y += 36;
 
     const held = m.heldItem ? PROGRESSION.items[m.heldItem] : null;
     // The held item's icon leads the line.
     const heldIcon = held ? 24 : 0;
     if (held) add(this.add.image(DETAIL_X + 9, y + 8, itemIcon(this, held.id)).setDisplaySize(18, 18));
-    y += add(new RichText(this, DETAIL_X + heldIcon, y, DETAIL_W - heldIcon, 13)).setMarkup(
+    // Take off sits at the end of the same line, so it costs no row of its own.
+    if (held) add(new Button(this, DETAIL_X + DETAIL_W - 120, y - 4, 120, 24, t("Take off"), () => this.act(() => session.update(equipItem(PROGRESSION, session.game, m.uid, null)), t("{item} returned to the bag.", { item: held.name }))));
+    y += add(new RichText(this, DETAIL_X + heldIcon, y, DETAIL_W - heldIcon - (held ? 130 : 0), 13)).setMarkup(
       `${tag("title", t("Holding"))}: ${held ? `${tag("num", held.name)} · ${describeItem(CONTENT, held).join(" · ")}` : tag("dim", t("nothing (one held item per Pokémon)"))}`) + 6;
-    if (held) {
-      add(new Button(this, DETAIL_X, y, 160, 24, t("Take off"), () => this.act(() => session.update(equipItem(PROGRESSION, session.game, m.uid, null)), t("{item} returned to the bag.", { item: held.name }))));
-      y += 32;
-    }
+    y += 6;
     const bagItems = Object.entries(session.game.inventory.items).filter(([id, n]) => n > 0 && PROGRESSION.items[id]?.kind === "held");
-    y += add(new RichText(this, DETAIL_X, y, DETAIL_W, 13)).setMarkup(tag("title", t("In the bag"))) + 4;
+    y += add(new RichText(this, DETAIL_X, y, DETAIL_W, 13)).setMarkup(tag("title", t("In the bag")) + " " + tag("dim", held ? t("(tap one to swap)") : t("(tap one to equip)"))) + 6;
     if (!bagItems.length) {
       add(new RichText(this, DETAIL_X, y, DETAIL_W, 12)).setMarkup(tag("dim", t("No held items. The Poké Mart in towns sells them.")));
       return;
     }
-    for (const [id, n] of bagItems) {
-      const item = PROGRESSION.items[id]!;
-      add(this.add.rectangle(DETAIL_X, y, DETAIL_W, 40, 0x1c2130).setOrigin(0).setStrokeStyle(1, 0x3a4560));
-      add(this.add.image(DETAIL_X + 18, y + 20, itemIcon(this, id)).setDisplaySize(20, 20));
-      add(new RichText(this, DETAIL_X + 36, y + 4, DETAIL_W - 148, 12)).setMarkup(`${tag("num", item.name)} ×${n}\n${describeItem(CONTENT, item).join(" · ")}`);
-      add(new Button(this, DETAIL_X + DETAIL_W - 100, y + 8, 92, 24, held ? t("Swap") : t("Equip"), () =>
-        this.act(() => session.update(equipItem(PROGRESSION, session.game, m.uid, id)), t("{name} now holds {item}.", { name: s.name, item: item.name }))));
-      y += 46;
+    // A compact grid: tap a tile to equip (or swap to) that item. Only the rows that fit are drawn
+    // (masks don't clip here), the rest scroll in with the wheel or the arrows.
+    const COLS = 3;
+    const gap = 4;
+    const tileW = (DETAIL_W - gap * (COLS - 1)) / COLS;
+    const tileH = 44;
+    const rows = Math.ceil(bagItems.length / COLS);
+    const fit = Math.max(1, Math.floor((500 - y + gap) / (tileH + gap)));
+    this.bagRow = Math.min(this.bagRow, Math.max(0, rows - fit));
+    if (rows > fit) {
+      add(new Button(this, DETAIL_X + DETAIL_W - 76, y - 24, 36, 20, "▲", () => ((this.bagRow -= 1), this.render())).setEnabled(this.bagRow > 0));
+      add(new Button(this, DETAIL_X + DETAIL_W - 36, y - 24, 36, 20, "▼", () => ((this.bagRow += 1), this.render())).setEnabled(this.bagRow < rows - fit));
     }
+    bagItems.slice(this.bagRow * COLS, (this.bagRow + fit) * COLS).forEach(([id, n], i) => {
+      const item = PROGRESSION.items[id]!;
+      const x = DETAIL_X + (i % COLS) * (tileW + gap);
+      const ty = y + Math.floor(i / COLS) * (tileH + gap);
+      const tile = add(new Button(this, x, ty, tileW, tileH, "", () =>
+        this.act(() => session.update(equipItem(PROGRESSION, session.game, m.uid, id)), t("{name} now holds {item}.", { name: s.name, item: item.name }))));
+      tile.add(this.add.image(16, tileH / 2, itemIcon(this, id)).setDisplaySize(20, 20));
+      const label = new RichText(this, 32, 4, tileW - 38, 11);
+      label.setMarkup(`${tag("num", item.name)} ×${n}
+${describeItem(CONTENT, item).join(" · ")}`);
+      tile.add(label);
+    });
   }
 }
 
