@@ -319,17 +319,6 @@ export class BattleScene extends Phaser.Scene {
     const g = this.boardGfx.clear();
     const field = this.state?.field ?? this.scenario.field;
     const theme = boardTheme(this.biome ?? this.npcMapId ?? this.scenario.id);
-    if (shaderGround(this)) {
-      const origin = fieldToWorld({ x: 0, y: 0 });
-      const board = { x: origin.x, y: origin.y, ...this.boardPx() };
-      this.ground ??= new TerrainShader(this, board, theme, fieldToWorld);
-      this.ground.update(field);
-      if (!this.arena) {
-        this.arena = new ArenaFx(this, board, theme, S);
-        this.arena.onLights = (l, p) => this.ground?.setLights(l, p);
-      }
-      return;
-    }
     // Floor in one-unit squares of slightly varied colour, with small props on open ground.
     // No grid: one base colour, then soft overlapping blotches of the varied tones.
     const o = fieldToWorld({ x: 0, y: 0 });
@@ -367,6 +356,18 @@ export class BattleScene extends Phaser.Scene {
         const c = fieldToWorld({ x: x + 0.5, y: y + 0.5 });
         drawWaterDecor(g, x, y, c.x, c.y);
       }
+    if (shaderGround(this)) {
+      // The drawn board goes under the GPU pass that sets water moving and paints flames, sludge and light.
+      const origin = fieldToWorld({ x: 0, y: 0 });
+      const board = { x: origin.x, y: origin.y, ...this.boardPx() };
+      this.ground ??= new TerrainShader(this, board, theme, fieldToWorld);
+      this.ground.update(field, g);
+      if (!this.arena) {
+        this.arena = new ArenaFx(this, board, theme, S);
+        this.arena.onLights = (l, p) => this.ground?.setLights(l, p);
+      }
+      return;
+    }
     const { width, height } = this.scale;
     this.boardImage ??= this.add.renderTexture(0, 0, width, height).setOrigin(0).setDepth(-1);
     this.boardImage.clear().draw(g).render();

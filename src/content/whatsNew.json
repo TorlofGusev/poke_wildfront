@@ -2,6 +2,7 @@
  {"version": "0.103",
   "date": "2026-10-29",
   "items": [
+  "The battle ground is back to its hand-drawn look (shaded rocks, leafy bushes, grass with flowers); the effects stay on top of it: rippling water, real flames, bubbling poison and light from fire and attacks.",
   "Faster battles, kinder to phones: the still part of the battle ground is worked out once instead of every frame, the moving part (water, flames, light) runs at half resolution and 30 fps, and hovering a foe no longer recalculates its reach on every mouse move.",
   "Camp: the top buttons are as wide as their labels, so Feedback is no longer bigger than the rest.",
   "The walkable area has a smooth, rounded edge instead of steps; rocks are drawn exactly where they block (no more merged boulders over open ground); loose pebbles lie about, most of them in caves.",

@@ -58,8 +58,10 @@ float worley(vec2 p) {
   }
   return d;
 }
-vec4 maskA(vec2 px) { return texture2D(uMaskA, px / uSize); }
-float mud(vec2 px) { return texture2D(uMaskB, px / uSize).r; }
+// Canvas textures come in upside down relative to the board's pixels.
+vec2 maskUv(vec2 px) { return vec2(px.x / uSize.x, 1.0 - px.y / uSize.y); }
+vec4 maskA(vec2 px) { return texture2D(uMaskA, maskUv(px)); }
+float mud(vec2 px) { return texture2D(uMaskB, maskUv(px)).r; }
 // Edges wobble with noise, so no patch has straight sides.
 float cover(float m, vec2 px, float k) { return smoothstep(0.46, 0.52, m + (fbm(px * k) - 0.5) * 0.12); }
 
@@ -79,7 +81,8 @@ vec3 animated(vec2 px, vec4 m, vec3 col) {
     float wc = cover(wd, px, 0.06);
     if (wc > 0.0) {
       float depth = smoothstep(0.45, 0.95, wd);
-      vec3 water = mix(vec3(0.27, 0.55, 0.78), vec3(0.1, 0.25, 0.45), depth);
+      // The drawn water, set moving: ripples darken and lighten it, light plays on the shallows.
+      vec3 water = col;
       vec2 q = px * 0.04 + vec2(uTime * 0.25, uTime * 0.1);
       float ripple = fbm(q + fbm(q * 1.3 - uTime * 0.2));
       water *= 0.85 + 0.3 * ripple;
@@ -140,106 +143,17 @@ vec3 animated(vec2 px, vec4 m, vec3 col) {
 }
 
 void main() {
-  vec2 px = vec2(outTexCoord.x, 1.0 - outTexCoord.y) * uSize;
-  px = floor(px / 2.0) * 2.0 + 1.0; // 2-px pixels
-  vec4 m = maskA(px);
-  vec3 light = normalize(vec3(-0.6, -0.8, 0.9));
-  if (uPass > 0.5) {
-    vec3 c = animated(px, m, texture2D(uBase, vec2(outTexCoord.x, 1.0 - outTexCoord.y)).rgb);
-    gl_FragColor = vec4(floor(c * 28.0 + 0.5) / 28.0, 1.0);
-    return;
-  }
-
-  // --- Ground: two tones in large soft patches, fine grain, flowers and pebbles.
-  float big = fbm(px * 0.012);
-  vec3 col = mix(uGround1, uGround2, smoothstep(0.35, 0.7, big));
-  col *= 0.9 + 0.2 * noise(px * 0.35);
-  // Small props on a 10-px grid: tufts of grass (a dark blade, a light tip), tiny flowers, pebbles.
-  vec2 cell = floor(px / 10.0);
-  vec2 inCell = mod(px, 10.0);
-  float h = hash(cell);
-  float spot = step(abs(inCell.x - 5.0), 1.0) * step(abs(inCell.y - 5.0), 1.0);
-  if (uFlora > 0.5 && h > 0.55 && h < 0.75) {
-    float blade = step(abs(inCell.x - 3.0 - floor(h * 40.0 - 22.0)), 0.5 + step(0.6, h)) * step(3.0, inCell.y) * step(inCell.y, 8.0);
-    col = mix(col, col * (inCell.y < 5.0 ? 1.35 : 0.7), blade * 0.8);
-  } else if (uFlora > 0.5 && h > 0.985) col = mix(col, hash(cell + 3.0) > 0.5 ? vec3(0.97, 0.9, 0.45) : vec3(0.95, 0.6, 0.85), spot);
-  else if (h < 0.04) col = mix(col, col * 1.35 + 0.05, spot);
-
-  // Loose stones: small lit pebbles with a shadow, more of them in caves (decoration only).
-  for (int k = 0; k < 2; k++) {
-    float sz = k == 0 ? 16.0 : 9.0;
-    vec2 pc = floor(px / sz);
-    float ph = hash(pc + float(k) * 31.0);
-    if (ph < 1.0 - uDebris * (k == 0 ? 0.22 : 0.3)) continue;
-    vec2 ctr = (pc + 0.3 + 0.4 * vec2(hash(pc + 1.3), hash(pc + 2.7))) * sz;
-    float rad = sz * (0.16 + 0.16 * hash(pc + 4.1));
-    vec2 d = (px - ctr) / vec2(rad * 1.3, rad);
-    float sh = length((px - ctr - vec2(2.0, 3.0)) / vec2(rad * 1.3, rad));
-    if (sh < 1.0 && length(d) >= 1.0) col *= 0.7;
-    if (length(d) < 1.0) {
-      vec3 n = normalize(vec3(d, sqrt(max(0.0, 1.0 - dot(d, d)))));
-      float lit = clamp(dot(n, light), 0.0, 1.0);
-      col = uRock * (0.4 + 0.75 * lit) * (0.85 + 0.3 * hash(pc + 9.0));
-    }
-  }
-
-  // Drop shadows of rocks and bushes (light from the top left: shadows fall right and down).
-  float shadow = max(cover(maskA(px - vec2(5.0, 8.0)).r, px, 0.05), cover(maskA(px - vec2(4.0, 6.0)).g, px, 0.07) * 0.8);
-  col *= 1.0 - 0.38 * shadow;
-
-  // --- Mud: wet and dark, glossy specks.
-  float md = mud(px);
-  float mc = cover(md, px, 0.08);
-  if (mc > 0.0) {
-    vec3 mudc = mix(vec3(0.42, 0.32, 0.2), vec3(0.28, 0.2, 0.12), smoothstep(0.5, 0.9, md));
-    mudc *= 0.95 + 0.1 * noise(px * 0.12);
-    mudc += 0.06 * smoothstep(0.6, 0.75, noise(px * 0.05)); // a soft wet sheen, still
-    col = mix(col, mudc, mc);
-  }
-
-  // --- Bushes: a canopy of leaf clumps, each a lit dome.
-  float w = worley(px / 13.0);
-  float bc = bushCover(m.g, px, w);
-  if (bc > 0.0) {
-    float dome = 1.0 - w;
-    vec2 cellDir = vec2(worley(px / 13.0 + vec2(0.15, 0.0)) - w, worley(px / 13.0 + vec2(0.0, 0.15)) - w);
-    vec3 n = normalize(vec3(cellDir * 6.0, 1.0));
-    float lit = clamp(dot(n, light), 0.0, 1.0);
-    vec3 leaf = mix(vec3(0.08, 0.22, 0.1), vec3(0.34, 0.64, 0.3), lit * dome);
-    leaf *= 0.9 + 0.2 * step(0.5, noise(px * 0.4)); // leaf texture
-    if (hash(floor(px / 2.0)) > 0.97 && lit > 0.6) leaf += vec3(0.25, 0.3, 0.15);
-    col = mix(col, leaf, bc);
-  }
-
-  // --- Rocks: relief from the mask's slope plus noise, lit, with dark creases.
-  float rc = cover(m.r, px, 0.05);
-  if (rc > 0.0) {
-    float e = 2.0;
-    float hx = maskA(px + vec2(e, 0.0)).r - maskA(px - vec2(e, 0.0)).r;
-    float hy = maskA(px + vec2(0.0, e)).r - maskA(px - vec2(0.0, e)).r;
-    float detail = fbm(px * 0.035);
-    vec2 dd = vec2(fbm(px * 0.035 + vec2(0.6, 0.0)) - detail, fbm(px * 0.035 + vec2(0.0, 0.6)) - detail);
-    vec3 n = normalize(vec3(-(hx * 9.0 + dd.x * 3.0), -(hy * 9.0 + dd.y * 3.0), 1.0));
-    float lit = clamp(dot(n, light), 0.0, 1.0);
-    vec3 rock = uRock * (0.45 + 0.9 * lit);
-    float crease = smoothstep(0.025, 0.0, abs(noise(px * 0.04) - 0.5));
-    rock *= 1.0 - 0.4 * crease;
-    rock *= 0.97 + 0.06 * hash(floor(px / 4.0));
-    // A dark rim where the stone meets the ground.
-    rock *= mix(0.55, 1.0, smoothstep(0.5, 0.62, m.r + (fbm(px * 0.05) - 0.5) * 0.12));
-    col = mix(col, rock, rc);
-  }
-
-  col = floor(col * 28.0 + 0.5) / 28.0; // a limited palette
-  gl_FragColor = vec4(col, 1.0);
+  vec2 uv = vec2(outTexCoord.x, 1.0 - outTexCoord.y);
+  vec2 px = floor(uv * uSize / 2.0) * 2.0 + 1.0; // the animation in 2-px pixels, like the sprites
+  gl_FragColor = vec4(animated(px, maskA(px), texture2D(uBase, outTexCoord).rgb), 1.0);
 }
 `;
 
 const THEMES: Record<BoardTheme, { g1: number; g2: number; rock: number; ambient: number; flora: number; debris: number }> = {
   field: { g1: 0x3b5a36, g2: 0x4f6b3a, rock: 0x8a8e98, ambient: 1, flora: 1, debris: 0.05 },
-  cave: { g1: 0x4a423c, g2: 0x5a5048, rock: 0x8c7f70, ambient: 0.82, flora: 0, debris: 0.25 },
-  shore: { g1: 0x8a7f58, g2: 0xa39568, rock: 0x9c9280, ambient: 1.05, flora: 0, debris: 0.2 },
-  indoor: { g1: 0x4a4d57, g2: 0x55586a, rock: 0x7d8290, ambient: 0.95, flora: 0, debris: 0.03 },
+  cave: { g1: 0x4a423c, g2: 0x5a5048, rock: 0x8c7f70, ambient: 1, flora: 0, debris: 0.25 },
+  shore: { g1: 0x8a7f58, g2: 0xa39568, rock: 0x9c9280, ambient: 1, flora: 0, debris: 0.2 },
+  indoor: { g1: 0x4a4d57, g2: 0x55586a, rock: 0x7d8290, ambient: 1, flora: 0, debris: 0.03 },
 };
 
 const rgb = (c: number) => [((c >> 16) & 255) / 255, ((c >> 8) & 255) / 255, (c & 255) / 255];
@@ -264,8 +178,6 @@ export interface GroundPool {
 export const shaderGround = (scene: Phaser.Scene): boolean => scene.game.renderer.type === Phaser.WEBGL;
 
 export class TerrainShader {
-  /** The still ground (grass, stones, mud, bushes, rocks), worked out once per terrain change. */
-  private readonly still: Phaser.GameObjects.Shader;
   /** Water, burning/poisoned ground and light over the baked ground. */
   private readonly moving: Phaser.GameObjects.Shader;
   private readonly baked: Phaser.GameObjects.RenderTexture;
@@ -291,8 +203,7 @@ export class TerrainShader {
     const mw = Math.ceil(board.w / CELL), mh = Math.ceil(board.h / CELL);
     scene.textures.addCanvas(this.keyA, Object.assign(document.createElement("canvas"), { width: mw, height: mh }));
     scene.textures.addCanvas(this.keyB, Object.assign(document.createElement("canvas"), { width: mw, height: mh }));
-    // Every shader pixel is already a 2×2 block on screen, so both passes run at half size: a quarter of the work, same picture.
-    const hw = Math.ceil(board.w / 2), hh = Math.ceil(board.h / 2);
+    const hw = board.w, hh = board.h;
     this.baked = scene.make.renderTexture({ x: 0, y: 0, width: hw, height: hh }, false).setOrigin(0);
     this.view = scene.add.renderTexture(board.x, board.y, hw, hh).setOrigin(0).setScale(board.w / hw, board.h / hh).setDepth(-1);
     const start = scene.time.now;
@@ -323,7 +234,6 @@ export class TerrainShader {
     };
     const make = (pass: number, textures: (string | Phaser.Textures.Texture)[]) =>
       new Phaser.GameObjects.Shader(scene, { name: `ground-${pass}-${id}`, fragmentSource: FRAG, setupUniforms: uniforms(pass) }, 0, 0, hw, hh, textures as string[]).setOrigin(0);
-    this.still = make(0, [this.keyA, this.keyB, "__DEFAULT"]);
     this.moving = make(1, [this.keyA, this.keyB, this.baked.texture]);
     scene.events.on("update", this.tick, this);
     scene.events.once("shutdown", () => scene.events.off("update", this.tick, this));
@@ -340,7 +250,7 @@ export class TerrainShader {
   }
 
   /** Paints the terrain masks from the field (later zones cover earlier ones, as in the rules), softened. */
-  update(field: FreeField): void {
+  update(field: FreeField, base: Phaser.GameObjects.Graphics): void {
     const masks = ["rock", "bush", "water", "mud"].map(() => {
       const c = document.createElement("canvas");
       c.width = Math.ceil(this.board.w / CELL);
@@ -370,7 +280,8 @@ export class TerrainShader {
     const blurred = masks.map(({ g, c }, i) => blur(g.getImageData(0, 0, c.width, c.height), [1, 2, 3, 3][i]!));
     this.write(this.keyA, [blurred[0]!, blurred[1]!, blurred[2]!]);
     this.write(this.keyB, [blurred[3]!, blurred[3]!, blurred[3]!]);
-    this.baked.clear().draw(this.still).render();
+    // The drawn board is the base the moving pass works on.
+    this.baked.clear().draw(base, -this.board.x, -this.board.y).render();
     this.frame = 0;
     this.tick();
   }
@@ -391,7 +302,6 @@ export class TerrainShader {
 
   destroy(): void {
     this.scene.events.off("update", this.tick, this);
-    this.still.destroy();
     this.moving.destroy();
     this.baked.destroy();
     this.view.destroy();
