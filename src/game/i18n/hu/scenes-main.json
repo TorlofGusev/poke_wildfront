@@ -247,5 +247,16 @@
  "Pokémon level up, choose a focus at Lv 3 and masteries later (Camp → a Pokémon). Weaken wild Pokémon and throw a ball to catch them.": "A Pokémonok szintet lépnek, Lv 3-on fókuszt, később masterykat választanak (Tábor → egy Pokémon). A vad Pokémonokat gyengítsd le, és dobj labdát az elkapásukhoz.",
  "It's super effective!": "Nagyon hatásos!",
  "Not very effective…": "Nem túl hatásos…",
- "Gotcha!": "Megvan!"
+ "Gotcha!": "Megvan!",
+ "You": "Te",
+ "{name} wants to battle!": "{name} kihív egy csatára!",
+ "A wild {name} appeared!": "Egy vad {name} jelent meg!",
+ "Wild {names} appeared!": "Vad Pokémonok jelentek meg: {names}!",
+ "Foe {name}'s turn": "Ellenfél {name} köre",
+ "{name}'s turn": "{name} köre",
+ "Fallen for good": "Végleg elesett",
+ "About to evolve!": "Fejlődni készül!",
+ "Learned {move}": "Megtanulta: {move}",
+ "Knocked out": "Kiütve",
+ "Level up!": "Szintlépés!"
 }

@@ -2,6 +2,7 @@
  {"version": "0.104",
   "date": "2026-10-29",
   "items": [
+  "Battles now open and close like the handhelds: the screen flashes and wipes into battle, wild Pokémon slide in under a \"A wild … appeared!\" box, trainers get a versus screen and send their Pokémon out of balls, a sweeping banner marks each new round, a chip and a red board edge show the foe's turn, and the results card fills each Pokémon's EXP bar (with level-ups), lists the spoils and presents a won badge.",
   "Battle feel: hits blink the Pokémon and knock it back after a beat of hit-stop, \"It's super effective!\" pops up with a shake, damage numbers stack instead of overlapping, fainted Pokémon sink into the ground, Poké Balls fly, draw the Pokémon in, wobble and click (or burst open), and statuses show as BRN/PAR/PSN/SLP/FRZ pills with Zzz, sparks, embers or circling stars.",
   "Battle fixes: Pokémon stand on their shadows (flyers hover and bob), a gold arrow marks whose turn it is, HP bars drain with a trailing segment (red under 20%), the walk area is a light outline that clears when it should, range rings stay on the board, trainer and Gym battles use their own arena look, flames no longer burn on rocks, clearer log wording.",
   "Battlefields reworked to look like a Pokémon route: rocks, cover and water never pile on each other any more; cover is tall grass (moss in caves, dune grass on the shore); brighter grass and warmer sand; Pokémon stand on a flat shadow with a thin team ring and a framed HP bar; the Full log button fits its label."

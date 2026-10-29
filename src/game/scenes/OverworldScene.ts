@@ -44,6 +44,7 @@ import { boardTheme, drawFloorDecor, drawWaterDecor, tileRand } from "../ui/boar
 import { ballIcon } from "../ui/ballIcon";
 import { trainerLook } from "../trainerLook";
 import { trainerTexture } from "../trainerSprites";
+import { battleWipe } from "../ui/battleBookends";
 import { COLORS, FONT, PHONE, TYPE_COLORS, px } from "../ui/theme";
 
 const T = 28;
@@ -529,7 +530,7 @@ export class OverworldScene extends Phaser.Scene {
     const arena = battleArena(base, biomeId, (Date.now() >>> 0) ^ npc.pos.x * 31 ^ npc.pos.y, npc.kind === "wild" ? "boss" : "trainer", this.slots(), enemyCount);
     const scenario = { ...trainerScenario(session.game, npc, arena, (mon) => trainerSetup(CONTENT, PROGRESSION, mon), this.slots()), name: `${npc.name} · ${formationLabel(arena.formation)}` };
     sfx(this, "encounter");
-    this.scene.start("Battle", { scenario, npcId: npc.id, mapId: def.id, biome: biomeId });
+    battleWipe(this, npc.kind !== "wild", () => this.scene.start("Battle", { scenario, npcId: npc.id, mapId: def.id, biome: biomeId }));
   }
 
   /** Pickup markers by what they hold: ★ rare one-time find, ◆ held item, Poké Ball, ✚ healing, berry. */
@@ -853,7 +854,7 @@ export class OverworldScene extends Phaser.Scene {
       const group = encounter;
       const scenario = wildScenario(WORLD_CONTENT, effectiveGroup(group, this.healthy(), this.slots(), this.levelCap()), (s, lv) => wildSetup(CONTENT, PROGRESSION, s, lv, group.id), this.slots(), Date.now() >>> 0, ambush);
       sfx(this, "encounter");
-      this.scene.start("Battle", { scenario, encounterId: group.id, biome: group.biome });
+      battleWipe(this, false, () => this.scene.start("Battle", { scenario, encounterId: group.id, biome: group.biome }));
     }
   }
 

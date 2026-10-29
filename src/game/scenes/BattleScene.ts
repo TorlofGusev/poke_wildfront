@@ -11,13 +11,16 @@ import { KNOCKOUTS_TO_DEATH, resolveBattle, type BattleSummary } from "../../cor
 import { currentWorld, session } from "../session";
 import { PROGRESSION, WORLD_CONTENT, WORLDS } from "../../content";
 import { calmEncounter, fatigueLevel, fatigueModifiers, removeEncounter, returnToLastCamp, rollLoot } from "../../core/expedition";
-import { readyToEvolve, teamBond } from "../../core/progression";
+import { readyToEvolve, teamBond, xpToNext } from "../../core/progression";
 import { nextRandom } from "../../core/rng";
 import { AI_LEVELS, planTurn } from "../../core/ai";
 import { playCry, sfx, silence } from "../audio";
 import { FEEDBACK_URL, openFeedback } from "../feedback";
 import { flushTips, queueTip, showHelp, tipOpen } from "../tips";
-import { completeNpc, failNpc } from "../../core/story";
+import { completeNpc, failNpc, type NpcDef } from "../../core/story";
+import { drawBadge, messageBox, roundSweep, versusBands } from "../ui/battleBookends";
+import { trainerLook } from "../trainerLook";
+import { trainerTexture } from "../trainerSprites";
 import { grantGifts } from "../storyFlow";
 import {
   activeUnit,
@@ -148,6 +151,9 @@ export class BattleScene extends Phaser.Scene {
   private prizeMoney = 0;
   /** EV the battle earned (wild win plus trainer or badge reward). */
   private evGained = 0;
+  /** "Foe X's turn" at the board's top right, and the red glow round the board while a foe acts. */
+  private turnChip: Phaser.GameObjects.Container | null = null;
+  private foeEdge: Phaser.GameObjects.Graphics | null = null;
   private phase: Phase = "deploy";
   private placements: Placement[] = [];
   private selectedCandidate: string | null = null;
@@ -254,11 +260,16 @@ export class BattleScene extends Phaser.Scene {
     this.armedFrame = null;
     this.orderStrip = null;
     this.previewLabels = null;
+    this.turnChip = null;
+    this.foeEdge = null;
   }
 
   create(): void {
     if (this.demo) return void this.playDemo(this.demo).catch((e: unknown) => console.error("title replay stopped:", e));
     this.panelKey = "";
+    // A hurried intro (see playIntro) must not carry over into the next battle.
+    this.tweens.timeScale = 1;
+    this.time.timeScale = 1;
     playMusic(this, "battle");
     this.header = this.add.text(BOARD_X, 16, "", { fontFamily: FONT, fontSize: "20px", color: "#f5d76e" });
     this.add.text(BOARD_X, 44, this.scenario.name, { fontFamily: FONT, fontSize: px(13), color: COLORS.dim });
@@ -296,6 +307,8 @@ export class BattleScene extends Phaser.Scene {
     });
 
     for (const e of this.scenario.enemies) this.createUnitView(e.id, e.speciesId, "enemy", e.pos);
+    this.foeEdge = this.add.graphics().lineStyle(4, 0xff4a4a, 1).strokeRect(BOARD_X - 2, BOARD_Y - 2, board.w + 4, board.h + 4).setDepth(19).setVisible(false);
+    this.tweens.add({ targets: this.foeEdge, alpha: { from: 0.9, to: 0.3 }, duration: 700, yoyo: true, repeat: -1 });
 
     this.input.on("pointermove", (p: Phaser.Input.Pointer) => {
       // Touch has no hover (a drag would only flicker previews); a mouse redraws at most once a frame.
@@ -332,6 +345,7 @@ export class BattleScene extends Phaser.Scene {
     this.input.keyboard?.on("keydown-SPACE", () => !tipOpen(this) && this.playerEndTurn());
 
     this.refreshAll();
+    void this.playIntro();
   }
 
   // ------------------------------------------------------------ drawing
@@ -1227,29 +1241,7 @@ export class BattleScene extends Phaser.Scene {
     const state = this.state!;
     if (this.phase === "over") {
       this.header.setText(state.outcome === "victory" ? t("Victory!") : state.outcome === "defeat" ? t("Defeat") : t("Retreated"));
-      const sum = this.summary;
-      if (sum) {
-        const name = (uid: string) => CONTENT.species[this.party.find((m) => m.id === uid)!.speciesId]!.name;
-        if (state.outcome === "defeat") text(t("Your team falls back to camp and rests there."), COLORS.dim, 12);
-        for (const c of sum.captured) text(c.to === "party" ? t("Caught {name}! Sent to your party.", { name: CONTENT.species[c.member.speciesId]!.name }) : t("Caught {name}! Sent to storage (party full).", { name: CONTENT.species[c.member.speciesId]!.name }), COLORS.good);
-        for (const uid of sum.knockedOut.filter((u) => !sum.fallen.includes(u)))
-          text(t("{name} was knocked out (KO {n}/{max}).", { name: name(uid), n: this.knockoutsOf(uid), max: KNOCKOUTS_TO_DEATH }), COLORS.bad);
-        for (const uid of sum.fallen) text(t("{name} has fallen for good.", { name: name(uid) }), COLORS.bad);
-        const money = sum.money + this.prizeMoney;
-        if (sum.xp || money) text(`${t("+{xp} XP for each Pokémon that fought (half for the rest of the party) · +₽{money}", { xp: sum.xp, money })}${this.evGained ? ` · +${this.evGained} EV` : ""}${sum.candies ? t(" · +{n} Rare Candy", { n: sum.candies }) : ""}`, "#f5d76e");
-        for (const [uid, evs] of Object.entries(sum.progress)) {
-          for (const e of evs) {
-            if (e.type === "levelUp") text(t("{name} reached Lv {lv}!", { name: name(uid), lv: e.level }), COLORS.good, 12);
-            else if (e.type === "evolved") text(t("{name} evolved into {into}!", { name: name(uid), into: CONTENT.species[e.into]!.name }), "#f5d76e");
-            else text(e.activated ? t("{name} learned {move}.", { name: name(uid), move: CONTENT.moves[e.move]!.name }) : t("{name} learned {move} (set it active in Party).", { name: name(uid), move: CONTENT.moves[e.move]!.name }), COLORS.good, 12);
-          }
-        }
-        // The evolution itself is its own scene, right after this.
-        for (const m of session.game.roster.party.filter((x) => readyToEvolve(CONTENT, x) && sum.progress[x.uid])) text(t("{name} is about to evolve!", { name: CONTENT.species[m.speciesId]!.name }), "#f5d76e");
-        if (!sum.captured.length && !sum.knockedOut.length && !sum.xp) text(t("No losses."), COLORS.dim);
-      }
-      if (this.rewardText) text(this.rewardText, COLORS.good);
-      button(t("➜ Continue"), true, false, () => this.scene.start("Overworld", {}));
+      // Everything else is on the results card over the field.
       // The battle's log goes along, so the report can be replayed.
       if (FEEDBACK_URL) button(t("💬 Feedback on this battle"), true, false, () =>
         openFeedback(this.game, `battle ${this.scenario.id} (${this.biome ?? "-"})`, this.log.map((e) => stripMarkup(e.text)).join("\n")));
@@ -1636,8 +1628,6 @@ export class BattleScene extends Phaser.Scene {
     });
     this.state = state;
     this.phase = "battle";
-    const leader = this.scenario.enemies[0];
-    if (leader) playCry(this, leader.speciesId);
     void this.playEvents(events).then(() => this.continueFlow());
   }
 
@@ -1698,6 +1688,9 @@ export class BattleScene extends Phaser.Scene {
       this.arena?.syncHazards([], fieldToWorld);
       this.ground?.setLights([], []);
       this.arena && (this.arena.onLights = null);
+      this.showTurnChip(null);
+      // Where each Pokémon's level and EXP stood, for the results card's filling bars.
+      const before = new Map(session.game.roster.party.map((m) => [m.uid, { level: m.level, xp: m.xp }]));
       // Knockouts, deaths, captures and used balls become permanent here, and are autosaved.
       const result = resolveBattle(CONTENT, PROGRESSION, session.game, this.state, { countsKnockouts: this.scenario.countsKnockouts ?? true });
       let game = result.game;
@@ -1730,14 +1723,17 @@ export class BattleScene extends Phaser.Scene {
       }
       // Trainers, leaders and story battles: their reward and flag on a win; the Elite Four resets on a loss.
       const npcs = this.npcMapId ? WORLDS[this.npcMapId]?.npcs ?? [] : [];
-      const npc = npcs.find((n) => n.id === this.npcId);
+      const npc = this.npc();
+      const badge = this.state.outcome === "victory" ? npc?.reward?.badge ?? null : null;
       if (npc && this.state.outcome === "victory") {
         const granted = grantGifts(completeNpc(game, npc, undefined, PROGRESSION.rules.ev), npc.reward);
         game = granted.game;
         // The prize joins the battle's money in the summary, instead of a second, different amount.
         this.prizeMoney = npc.reward?.money ?? 0;
         const prizeNote = this.prizeMoney ? `+₽${this.prizeMoney}.` : null;
-        this.rewardText = [t("{name} is defeated!", { name: npc.name }), ...granted.notes.filter((n) => n !== prizeNote)].join(" ");
+        // The badge has its own ceremony on the results card.
+        const badgeNote = badge ? t("Earned the {badge} Badge!", { badge: `${badge[0]!.toUpperCase()}${badge.slice(1)}` }) : null;
+        this.rewardText = [t("{name} is defeated!", { name: npc.name }), ...granted.notes.filter((n) => n !== prizeNote && n !== badgeNote)].join(" ");
       } else if (npc) game = failNpc(game, npc, npcs);
       if (this.state.outcome === "retreated" && this.encounterId) game = { ...game, world: calmEncounter(game.world, this.encounterId) };
       if (this.state.outcome === "defeat") game = { ...game, world: returnToLastCamp(WORLD_CONTENT, currentWorld(), game.world) };
@@ -1750,7 +1746,7 @@ export class BattleScene extends Phaser.Scene {
         stopMusic();
         sfx(this, "defeat");
       }
-      if (Object.values(result.summary.progress).some((evs) => evs.some((ev) => ev.type === "levelUp"))) this.time.delayedCall(700, () => sfx(this, "levelUp"));
+      this.showResults(before, badge);
     }
     this.refreshAll();
   }
@@ -1809,6 +1805,9 @@ export class BattleScene extends Phaser.Scene {
       switch (e.type) {
         case "roundStarted":
           if (e.round > 1) await this.roundBanner(e.round);
+          break;
+        case "turnStarted":
+          this.showTurnChip(e.unitId);
           break;
         case "moved":
           await this.settle();
@@ -2052,20 +2051,242 @@ export class BattleScene extends Phaser.Scene {
     );
   }
 
-  /** A new round slides in over the field, so a Pokémon acting again is no surprise. */
+  /** A new round sweeps across the field, so a Pokémon acting again is no surprise. */
   private roundBanner(round: number): Promise<void> {
-    const cx = (BOARD_X + PANEL_X) / 2;
-    const cy = BOARD_Y + 150;
-    const bg = this.add.rectangle(cx, cy, 220, 44, 0x10141c, 0.9).setStrokeStyle(2, 0xf5d76e);
-    const title = this.add.text(cx, cy, t("Round {n}", { n: round }), { fontFamily: FONT, fontSize: "24px", color: "#f5d76e" }).setOrigin(0.5);
-    const box = this.add.container(0, 0, [bg, title]).setDepth(30).setAlpha(0);
-    box.x = -60;
-    const step = (props: Record<string, number>, duration: number, ease = "Linear") =>
-      new Promise<void>((resolve) => this.tweens.add({ targets: box, ...props, duration, ease, onComplete: () => resolve() }));
-    return step({ x: 0, alpha: 1 }, 220, "Cubic.easeOut")
-      .then(() => step({ x: 20 }, 650))
-      .then(() => step({ x: 80, alpha: 0 }, 200, "Cubic.easeIn"))
-      .then(() => void box.destroy());
+    const board = this.boardPx();
+    return roundSweep(this, { x: BOARD_X, y: BOARD_Y, w: board.w, h: board.h }, t("Round {n}", { n: round }));
+  }
+
+  /** The trainer or story Pokémon this battle is against, if any. */
+  private npc(): NpcDef | undefined {
+    const npcs = this.npcMapId ? WORLDS[this.npcMapId]?.npcs ?? [] : [];
+    return npcs.find((n) => n.id === this.npcId);
+  }
+
+  /**
+   * The opening: the field fades in from the map's wipe; a trainer's versus bands; the foes come out (sliding in,
+   * or popping from their trainer's balls) and the message box announces them. A tap hurries it along.
+   */
+  private async playIntro(): Promise<void> {
+    const board = this.boardPx();
+    const npc = this.npc();
+    const trainer = !!npc && npc.kind !== "wild";
+    const blocker = this.add.zone(0, 0, this.scale.width, this.scale.height).setOrigin(0).setInteractive().setDepth(54);
+    blocker.once("pointerdown", () => {
+      this.tweens.timeScale = 3;
+      this.time.timeScale = 3;
+    });
+    const foes = this.scenario.enemies.map((e) => this.units.get(e.id)).filter((v): v is UnitView => !!v);
+    const homes = foes.map((v) => ({ x: v.container.x, y: v.container.y }));
+    foes.forEach((v) => v.container.setAlpha(0));
+    this.cameras.main.fadeIn(320);
+    await this.wait(260);
+    if (npc && trainer) {
+      const healthy = this.party.map((m) => m.hp > 0).slice(0, 6);
+      await versusBands(this, { x: 0, y: 0, w: this.scale.width, h: this.scale.height },
+        { name: t("You"), figure: trainerTexture(this, "trainer"), balls: healthy, color: 0x2a5ab0 },
+        { name: npc.name, figure: trainerTexture(this, trainerLook(npc.name, npc.kind)), balls: this.scenario.enemies.map(() => true), color: 0xb03030 },
+        npc.kind === "leader" || npc.kind === "elite" || npc.kind === "champion");
+    }
+    // Out they come, one after the other.
+    foes.forEach((v, i) => {
+      const home = homes[i]!;
+      if (trainer) {
+        this.time.delayedCall(i * 140, () => {
+          const flash = this.add.circle(home.x, home.y - 8, 5, 0xffffff, 0.95).setDepth(39).setBlendMode(Phaser.BlendModes.ADD);
+          this.tweens.add({ targets: flash, scale: 5, alpha: 0, duration: 280, onComplete: () => flash.destroy() });
+          v.container.setScale(0.1).setAlpha(1);
+          this.tweens.add({ targets: v.container, scale: UNIT_SCALE, duration: 260, ease: "Back.easeOut" });
+        });
+      } else {
+        v.container.setX(home.x + 90);
+        this.tweens.add({ targets: v.container, x: home.x, alpha: 1, delay: i * 120, duration: 380, ease: "Cubic.easeOut" });
+      }
+    });
+    const lead = this.scenario.enemies[0];
+    if (lead) this.time.delayedCall(trainer ? 120 : 300, () => playCry(this, lead.speciesId));
+    const names = [...new Set(this.scenario.enemies.map((e) => CONTENT.species[e.speciesId]!.name))];
+    const line = npc && trainer ? t("{name} wants to battle!", { name: npc.name })
+      : names.length === 1 && this.scenario.enemies.length === 1 ? t("A wild {name} appeared!", { name: names[0]! })
+      : t("Wild {names} appeared!", { names: names.join(", ") });
+    const msg = messageBox(this, BOARD_X + 16, BOARD_Y + board.h - 56, board.w - 32, line);
+    await msg.typed;
+    await this.wait(1000);
+    await new Promise<void>((r) => this.tweens.add({ targets: msg.box, alpha: 0, duration: 200, onComplete: () => r() }));
+    msg.box.destroy();
+    foes.forEach((v, i) => v.container.setPosition(homes[i]!.x, homes[i]!.y).setScale(UNIT_SCALE).setAlpha(1));
+    this.tweens.timeScale = 1;
+    this.time.timeScale = 1;
+    blocker.destroy();
+  }
+
+  /** Whose turn it is, at the board's top right; on a foe's turn the board's edge glows red too. */
+  private showTurnChip(unitId: string | null): void {
+    this.turnChip?.destroy();
+    this.turnChip = null;
+    const u = unitId ? this.state?.units.find((x) => x.id === unitId) : undefined;
+    const foe = u?.side === "enemy";
+    this.foeEdge?.setVisible(!!foe && this.phase === "battle");
+    if (!u || this.phase !== "battle") return;
+    const name = CONTENT.species[u.speciesId]!.name;
+    const label = this.add.text(-10, 0, foe ? t("Foe {name}'s turn", { name }) : t("{name}'s turn", { name }), { fontFamily: FONT, fontSize: px(13), color: "#ffffff", fontStyle: "bold" })
+      .setOrigin(1, 0.5).setStroke("#10141c", 3);
+    const w = label.width + 40;
+    const bg = this.add.rectangle(0, 0, w, 24, foe ? 0x7a1e22 : 0x1d4680, 0.95).setOrigin(1, 0.5).setStrokeStyle(2, foe ? 0xff8a8a : 0x7fd4ff);
+    const parts: Phaser.GameObjects.GameObject[] = [bg, label];
+    if (this.textures.exists(portraitKey(u.speciesId))) parts.push(this.add.image(-w + 15, 0, portraitKey(u.speciesId)).setDisplaySize(22, 22));
+    const chip = this.add.container(BOARD_X + this.boardPx().w + 16, 52, parts).setDepth(20).setAlpha(0);
+    this.tweens.add({ targets: chip, x: chip.x - 16, alpha: 1, duration: 180, ease: "Cubic.easeOut" });
+    this.turnChip = chip;
+  }
+
+  /**
+   * The battle's end as a card over the field: the outcome, a leader's badge, each Pokémon's EXP bar filling
+   * (levelling up on the way), knockouts, catches and spoils, and the way on.
+   */
+  private showResults(before: ReadonlyMap<string, { level: number; xp: number }>, badge: string | null): void {
+    const state = this.state!, sum = this.summary!;
+    const board = this.boardPx();
+    const W = Math.min(board.w - 24, 580);
+    const win = state.outcome === "victory";
+    const parts: Phaser.GameObjects.GameObject[] = [];
+    const later: (() => void)[] = [];
+    const add = <T extends Phaser.GameObjects.GameObject>(o: T): T => (parts.push(o), o);
+    const text = (x: number, y: number, s: string, color: string, size: number, wrap?: number) =>
+      add(this.add.text(x, y, s, { fontFamily: FONT, fontSize: px(size), color, wordWrap: wrap ? { width: wrap } : undefined }));
+    const title = add(this.add.text(W / 2, 28, (win ? t("Victory!") : state.outcome === "defeat" ? t("Defeat") : t("Retreated")).toUpperCase(),
+      { fontFamily: FONT, fontSize: "30px", color: win ? "#f5d76e" : state.outcome === "defeat" ? "#ff8a80" : "#c8ccd8", fontStyle: "bold" })
+      .setOrigin(0.5).setStroke("#000000", 6).setLetterSpacing(3));
+    let y = 58;
+    if (badge) {
+      // The badge ceremony: the emblem spins in, a ring of light opens behind it, sparks fly.
+      const cy = y + 34;
+      const glow = add(this.add.circle(W / 2, cy, 30, 0xfff3a0, 0.5).setBlendMode(Phaser.BlendModes.ADD).setScale(0));
+      const g = add(this.add.graphics({ x: W / 2, y: cy }));
+      drawBadge(g, badge, 26);
+      g.setScale(0).setAngle(-200);
+      later.push(() => {
+        this.tweens.add({ targets: g, scale: 1, angle: 0, delay: 300, duration: 650, ease: "Back.easeOut" });
+        this.tweens.add({ targets: glow, scale: { from: 0.6, to: 2.4 }, alpha: { from: 0.7, to: 0 }, delay: 700, duration: 700 });
+        this.time.delayedCall(900, () => {
+          sfx(this, "levelUp");
+          for (let i = 0; i < 10; i++) {
+            const a = (i / 10) * Math.PI * 2;
+            const st = this.add.star(W / 2, cy, 5, 2, 5, 0xfff3a0);
+            box.add(st);
+            this.tweens.add({ targets: st, x: W / 2 + Math.cos(a) * 54, y: cy + Math.sin(a) * 34, alpha: 0, duration: 700, onComplete: () => st.destroy() });
+          }
+        });
+      });
+      y += 72;
+      const label = `${badge[0]!.toUpperCase()}${badge.slice(1)}`;
+      text(W / 2, y, t("Earned the {badge} Badge!", { badge: label }), "#f5d76e", 13).setOrigin(0.5, 0);
+      y += 24;
+    }
+    // One row per Pokémon that was in the party: portrait, name and knockouts, level, EXP bar, news.
+    const party = session.game.roster.party;
+    const rowH = 34;
+    const barX = 236, barW = Math.max(110, W - barX - 170);
+    let levelSound = !!badge;
+    [...before.entries()].forEach(([uid, was], i) => {
+      const now = party.find((m) => m.uid === uid);
+      const fallen = sum.fallen.includes(uid);
+      const speciesId = now?.speciesId ?? this.party.find((m) => m.id === uid)?.speciesId;
+      if (!speciesId) return;
+      const ry = y + i * rowH;
+      add(this.add.rectangle(10, ry, W - 20, rowH - 4, i % 2 ? 0x1a2030 : 0x202838, 0.9).setOrigin(0));
+      if (this.textures.exists(portraitKey(speciesId)))
+        add(this.add.image(28, ry + (rowH - 4) / 2, portraitKey(speciesId)).setDisplaySize(26, 26).setAlpha(fallen ? 0.35 : 1));
+      text(48, ry + 3, CONTENT.species[speciesId]!.name, fallen ? COLORS.dim : COLORS.text, 12);
+      const ko = this.knockoutsOf(uid);
+      text(48, ry + 17, "●".repeat(ko) + "○".repeat(Math.max(0, KNOCKOUTS_TO_DEATH - ko)), ko >= 2 ? "#ff6b6b" : COLORS.dim, 9);
+      const lv = text(barX - 52, ry + 8, `Lv${was.level}`, "#f5d76e", 12);
+      add(this.add.rectangle(barX, ry + 15, barW, 7, 0x0c1018).setOrigin(0, 0.5).setStrokeStyle(1, 0x4a5670));
+      const bar = add(this.add.rectangle(barX + 1, ry + 15, 0, 5, 0x58b8f8).setOrigin(0, 0.5));
+      const max = PROGRESSION.rules.maxLevel;
+      const frac = (level: number, xp: number) => (level >= max ? 1 : Math.min(1, xp / xpToNext(PROGRESSION, level)));
+      bar.width = (barW - 2) * frac(was.level, was.xp);
+      // What happened to it, most important first.
+      const evs = sum.progress[uid] ?? [];
+      const learned = evs.flatMap((e) => (e.type === "learned" ? [CONTENT.moves[e.move]?.name ?? e.move] : []));
+      const evolving = !!now && evs.length > 0 && readyToEvolve(CONTENT, now);
+      const ko2 = sum.knockedOut.includes(uid);
+      const [news, newsColor] = fallen ? [t("Fallen for good"), "#ff8a80"]
+        : evolving ? [t("About to evolve!"), "#f5d76e"]
+        : learned.length ? [t("Learned {move}", { move: learned.join(", ") }), "#8be08b"]
+        : ko2 ? [t("Knocked out"), "#ff8a80"] : ["", COLORS.dim];
+      const newsText = text(barX + barW + 10, ry + 8, news, newsColor, 11);
+      newsText.setCrop(0, 0, W - 20 - (barX + barW + 10), 40);
+      if (!now || fallen) return;
+      // The bar fills up, round and round for each level gained, then to where it now stands.
+      later.push(() => {
+        let level = was.level;
+        const fill = (to: number, done: () => void) =>
+          this.tweens.add({ targets: bar, width: (barW - 2) * to, duration: 260 + 380 * Math.abs(to - bar.width / (barW - 2)), ease: "Sine.easeInOut", onComplete: done });
+        const step = () => {
+          if (level < now.level) {
+            fill(1, () => {
+              level++;
+              lv.setText(`Lv${level}`);
+              if (!levelSound) {
+                levelSound = true;
+                sfx(this, "levelUp");
+              }
+              // Beside the bar, over the news column for a moment.
+              const pop = this.add.text(barX + barW + 10, ry + 15, t("Level up!"), { fontFamily: FONT, fontSize: "13px", color: "#fff3a0", fontStyle: "bold" })
+                .setOrigin(0, 0.5).setStroke("#10141c", 4);
+              newsText.setAlpha(0);
+              box.add(pop);
+              this.tweens.add({ targets: pop, y: ry + 6, alpha: { from: 1, to: 0 }, delay: 450, duration: 400, onComplete: () => {
+                pop.destroy();
+                newsText.setAlpha(1);
+              } });
+              this.tweens.add({ targets: lv, scale: { from: 1.4, to: 1 }, duration: 260, ease: "Back.easeOut" });
+              bar.setFillStyle(0xffffff);
+              this.time.delayedCall(90, () => {
+                bar.setFillStyle(0x58b8f8);
+                bar.width = 0;
+                step();
+              });
+            });
+          } else fill(frac(now.level, now.xp), () => {});
+        };
+        this.time.delayedCall((badge ? 1400 : 500) + i * 160, step);
+      });
+    });
+    y += before.size * rowH + 6;
+    // The spoils, catches and what is left to say.
+    const money = sum.money + this.prizeMoney;
+    const lines: [string, string][] = [];
+    if (sum.xp || money) lines.push([`${t("+{xp} XP for each Pokémon that fought (half for the rest of the party) · +₽{money}", { xp: sum.xp, money })}${this.evGained ? ` · +${this.evGained} EV` : ""}${sum.candies ? t(" · +{n} Rare Candy", { n: sum.candies }) : ""}`, "#f5d76e"]);
+    for (const c of sum.captured) lines.push([c.to === "party" ? t("Caught {name}! Sent to your party.", { name: CONTENT.species[c.member.speciesId]!.name }) : t("Caught {name}! Sent to storage (party full).", { name: CONTENT.species[c.member.speciesId]!.name }), "#8be08b"]);
+    if (this.rewardText) lines.push([this.rewardText, "#8be08b"]);
+    if (state.outcome === "defeat") lines.push([t("Your team falls back to camp and rests there."), COLORS.dim]);
+    for (const [s, color] of lines) {
+      const tx = text(16, y, s, color, 12, W - 32);
+      y += tx.height + 4;
+    }
+    y += 6;
+    const go = new Button(this, W / 2 - 90, y, 180, 30, t("➜ Continue"), () => this.scene.start("Overworld", {})).centerLabel();
+    parts.push(go);
+    y += 42;
+    // The card: dark, rimmed in the outcome's colour, a lighter band under the title.
+    const rim = win ? 0xf5d76e : state.outcome === "defeat" ? 0xb04040 : 0x7a8498;
+    const bg = this.add.graphics();
+    bg.fillStyle(0x000000, 0.35).fillRoundedRect(4, 6, W, y, 10);
+    bg.fillStyle(0x10141c, 0.96).fillRoundedRect(0, 0, W, y, 10);
+    bg.fillStyle(rim, 0.16).fillRoundedRect(0, 0, W, 56, { tl: 10, tr: 10, bl: 0, br: 0 });
+    bg.lineStyle(3, rim, 1).strokeRoundedRect(0, 0, W, y, 10);
+    bg.lineStyle(1, rim, 0.5).strokeRoundedRect(5, 5, W - 10, y - 10, 7);
+    const left = BOARD_X + (board.w - W) / 2;
+    const top = Math.max(8, Math.min(BOARD_Y + (board.h - y) / 2, this.scale.height - y - 8));
+    const dim = this.add.rectangle(BOARD_X, BOARD_Y, board.w, board.h, 0x000000, 0).setOrigin(0).setDepth(49);
+    this.tweens.add({ targets: dim, fillAlpha: 0.5, duration: 250 });
+    const box = this.add.container(left, top + 24, [bg, ...parts]).setDepth(50).setAlpha(0);
+    this.tweens.add({ targets: box, y: top, alpha: 1, duration: 300, ease: "Cubic.easeOut" });
+    title.setScale(1.6);
+    this.tweens.add({ targets: title, scale: 1, delay: 120, duration: 300, ease: "Back.easeOut" });
+    later.forEach((f) => f());
   }
 
   /** A word or number popping up over a Pokémon; several at once stack upwards instead of overlapping. */
