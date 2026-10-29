@@ -231,5 +231,6 @@
  "{unit} readies {move}: it strikes the marked ground next turn": "{unit} előkészíti: {move} — a következő körében lecsap a kijelölt területre",
  "{unit} watches with {move}: the first foe moving there is struck": "{unit} őrködik: {move} — az első ellenfelet, aki ott mozog, megüti",
  "{unit} strikes {target} on the move!": "{unit} lecsap a mozgó {target} Pokémonra!",
- "{unit}'s {move} hits nothing": "{unit} {move} lépése nem talál senkit"
+ "{unit}'s {move} hits nothing": "{unit} {move} lépése nem talál senkit",
+ "The user gets {status} too, for {n} turns (through its own next turn)": "A használó is {status} lesz {n} körre (a saját következő körén át)"
 }
