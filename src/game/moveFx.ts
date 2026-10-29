@@ -11,6 +11,11 @@ import { TYPE_COLORS } from "./ui/theme";
 const DOT = "fx-dot";
 const LEAF = "fx-leaf";
 const STAR = "fx-star";
+/** A flame tongue, 8×12 pixels: drawn hard-edged so it matches the sprites. */
+const FLAME = "fx-flame";
+
+/** Fire's colour over a particle's life: a white-hot core, yellow, orange, red, then grey smoke. */
+const FIRE_RAMP = [0xffffff, 0xffd040, 0xf08030, 0xc03018, 0x5a5050];
 
 type Pt = { readonly x: number; readonly y: number };
 
@@ -63,8 +68,12 @@ function familyOf(move: MoveDef): Family {
 const ensureTextures = (scene: Phaser.Scene) => {
   if (scene.textures.exists(DOT)) return;
   const g = scene.make.graphics({}, false);
-  g.fillStyle(0xffffff, 1).fillCircle(4, 4, 4);
+  // A hard-edged pixel diamond (no soft round blobs: the effects share the sprites' pixel look).
+  g.fillStyle(0xffffff, 1).fillRect(3, 1, 2, 6).fillRect(1, 3, 6, 2).fillRect(2, 2, 4, 4);
   g.generateTexture(DOT, 8, 8);
+  g.clear().fillStyle(0xffffff, 1);
+  for (const [y, x0, w] of [[0, 3, 1], [1, 3, 2], [2, 2, 3], [3, 2, 4], [4, 1, 5], [5, 1, 6], [6, 1, 6], [7, 0, 7], [8, 0, 8], [9, 1, 6], [10, 1, 6], [11, 2, 4]] as const) g.fillRect(x0, y, w, 1);
+  g.generateTexture(FLAME, 8, 12);
   g.clear().fillStyle(0xffffff, 1).fillEllipse(8, 4, 16, 7);
   g.lineStyle(1, 0x000000, 0.35).lineBetween(1, 4, 15, 4);
   g.generateTexture(LEAF, 16, 8);
@@ -75,6 +84,7 @@ const ensureTextures = (scene: Phaser.Scene) => {
   }), true);
   g.generateTexture(STAR, 12, 12);
   g.destroy();
+  for (const key of [DOT, FLAME, STAR]) scene.textures.get(key).setFilter(Phaser.Textures.FilterMode.NEAREST);
 };
 
 const tween = (scene: Phaser.Scene, cfg: Phaser.Types.Tweens.TweenBuilderConfig) =>
@@ -111,7 +121,7 @@ export async function playMoveFx(scene: Phaser.Scene, move: MoveDef, from: Pt, t
     case "leaves": await leaves(scene, from, main, color); return typeImpact();
     case "volley": await volley(scene, from, targets, color); return typeImpact();
     case "beam": await beam(scene, from, main, color); return typeImpact();
-    case "stream": await stream(scene, from, main, color); return typeImpact();
+    case "stream": await (move.type === "fire" ? flames(scene, from, main) : stream(scene, from, main, color)); return typeImpact();
     case "bubbles": return bubbles(scene, from, targets, color);
     case "lob": await lob(scene, from, main, color); return typeImpact();
     case "wind": await wind(scene, from, main, color); return Promise.all(targets.map((t) => impact(scene, "slash", t, color))).then(() => undefined);
@@ -230,6 +240,23 @@ async function stream(scene: Phaser.Scene, a: Pt, b: Pt, color: number): Promise
   await wait(scene, 300);
   jet.stop();
   scene.time.delayedCall(400, () => jet.destroy());
+  await wait(scene, 120);
+}
+
+/** Fire as fire: a jet of flame tongues that burn from white-hot to red and trail grey smoke. */
+async function flames(scene: Phaser.Scene, a: Pt, b: Pt): Promise<void> {
+  const s = lift(a), e = lift(b);
+  const angle = Phaser.Math.RadToDeg(Math.atan2(e.y - s.y, e.x - s.x));
+  const speed = dist(s, e) / 0.34;
+  const jet = scene.add.particles(s.x, s.y, FLAME, {
+    angle: { min: angle - 7, max: angle + 7 }, speed: { min: speed * 0.85, max: speed * 1.05 }, lifespan: 360,
+    scale: { start: 0.5, end: 1.5 }, alpha: { start: 1, end: 0.15 }, color: FIRE_RAMP, frequency: 14, quantity: 2,
+    // Normal blending: added onto bright grass the ramp would wash out to white.
+    rotate: { onEmit: () => angle + 90 + Phaser.Math.Between(-12, 12) }, blendMode: Phaser.BlendModes.NORMAL,
+  }).setDepth(30);
+  await wait(scene, 320);
+  jet.stop();
+  scene.time.delayedCall(420, () => jet.destroy());
   await wait(scene, 120);
 }
 
@@ -481,7 +508,9 @@ function impact(scene: Phaser.Scene, style: Style, at: Pt, color: number): Promi
   const fx = (cfg: Phaser.Types.GameObjects.Particles.ParticleEmitterConfig, count: number, life = 600) => emit(scene, p, color, cfg, count, life);
   switch (style) {
     case "rise":
-      fx({ speedY: { min: -90, max: -40 }, speedX: { min: -30, max: 30 }, scale: { start: 1.6, end: 0 }, lifespan: 550, tint: [color, 0xffd23f, 0xff5a1f] }, 22);
+      // Tongues of flame licking upwards from where it hit, then smoke.
+      emit(scene, p, color, { speedY: { min: -110, max: -50 }, speedX: { min: -28, max: 28 }, scale: { start: 1.3, end: 0.4 }, lifespan: 620, color: FIRE_RAMP, blendMode: Phaser.BlendModes.NORMAL }, 20, 620, FLAME);
+      emit(scene, { x: p.x, y: p.y - 14 }, 0x6a6060, { speedY: { min: -40, max: -20 }, speedX: { min: -12, max: 12 }, scale: { start: 1, end: 2.2 }, alpha: { start: 0.45, end: 0 }, lifespan: 800, delay: 200, blendMode: Phaser.BlendModes.NORMAL }, 6, 1000);
       break;
     case "fall":
       fx({ speed: { min: 60, max: 130 }, angle: { min: 200, max: 340 }, gravityY: 320, scale: { start: 1.1, end: 0.3 }, lifespan: 600, tint: [color, 0xbfe6ff] }, 18);

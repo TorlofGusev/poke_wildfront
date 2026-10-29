@@ -2,12 +2,13 @@ import Phaser from "phaser";
 import { CONTENT, PROGRESSION } from "../../content";
 import { findMember, withMember } from "../../core/party";
 import { evolutionDue, evolveNow, holdEvolution, readyToEvolve } from "../../core/progression";
-import { sfx } from "../audio";
+import { playCry, sfx } from "../audio";
 import { playMusic } from "../music";
 import { session } from "../session";
 import { animKey, hasSprite, portraitKey } from "../sprites";
 import { Button } from "../ui/Button";
-import { FONT } from "../ui/theme";
+import { messageFrame } from "../ui/battleBookends";
+import { pixText, setPixText } from "../ui/pixelFont";
 import { t } from "../i18n";
 
 export interface EvolutionData {
@@ -49,14 +50,20 @@ export class EvolutionScene extends Phaser.Scene {
     const { width, height } = this.scale;
     const cx = width / 2;
     const cy = height / 2 - 30;
-    this.add.rectangle(0, 0, width, height, 0x0b0e16).setOrigin(0);
-    const glow = this.add.circle(cx, cy, 90, 0x3a4a78, 0.35);
+    // Deep blue fading to black round the Pokémon, and slow light rays turning behind it.
+    this.add.rectangle(0, 0, width, height, 0x05070c).setOrigin(0);
+    const bg = this.add.graphics();
+    for (let r = 420, k = 0; r > 0; r -= 20, k++) bg.fillStyle(0x16305e, 0.05 + k * 0.004).fillCircle(cx, cy, r);
+    const rays = this.add.graphics({ x: cx, y: cy });
+    for (let i = 0; i < 16; i++) rays.fillStyle(0xbfd8ff, 0.08).slice(0, 0, 600, (i / 16) * Math.PI * 2, (i / 16) * Math.PI * 2 + 0.12, false).fillPath();
+    this.tweens.add({ targets: rays, angle: 360, duration: 60_000, repeat: -1 });
+    const glow = this.add.circle(cx, cy, 90, 0x3a5a98, 0.35);
     this.tweens.add({ targets: glow, scale: 1.15, alpha: 0.55, duration: 900, yoyo: true, repeat: -1 });
     const from = CONTENT.species[m.speciesId]!;
     const to = CONTENT.species[into]!;
-    const say = this.add.text(cx, height - 150, t("What? {name} is evolving!", { name: from.name }), {
-      fontFamily: FONT, fontSize: "20px", color: "#f5d76e", align: "center", wordWrap: { width: width - 80 },
-    }).setOrigin(0.5);
+    // The message box, as in battle.
+    messageFrame(this.add.graphics(), 40, height - 206, width - 80, 98);
+    const say = pixText(this, 60, height - 192, t("What? {name} is evolving!", { name: from.name })).setMaxWidth(width - 120);
 
     const oldView = this.formView(m.speciesId, cx, cy);
     const newView = this.formView(into, cx, cy).setVisible(false);
@@ -66,7 +73,7 @@ export class EvolutionScene extends Phaser.Scene {
     let stopped = false;
     let finished = false;
     const timers: Phaser.Time.TimerEvent[] = [];
-    const stop = new Button(this, cx - 90, height - 110, 180, 30, t("Stop it!"), () => {
+    const stop = new Button(this, cx - 90, height - 96, 180, 30, t("Stop it!"), () => {
       if (finished || stopped) return;
       stopped = true;
       timers.forEach((x) => x.remove());
@@ -75,30 +82,39 @@ export class EvolutionScene extends Phaser.Scene {
       session.update(withMember(session.game, m.uid, holdEvolution));
       [oldWhite, newWhite, newView].forEach((v) => v.setVisible(false));
       oldView.setVisible(true);
-      say.setText(t("Huh? {name} stopped evolving.\nYou can start it any time from its Pokémon screen.", { name: from.name }));
-      new Button(this, cx - 90, height - 70, 180, 30, t("➜ Continue"), done);
+      setPixText(say, t("Huh? {name} stopped evolving.\nYou can start it any time from its Pokémon screen.", { name: from.name }));
+      new Button(this, cx - 90, height - 92, 180, 30, t("➜ Continue"), done);
     });
 
-    // One second as it is, then the flicker: old and new silhouettes alternating, faster and faster.
-    let at = 1000;
+    // One second as it is, then the flicker: old and new silhouettes alternating, faster and faster, each
+    // swelling into the other's size, while sparks stream in from all around.
+    let at = 1200;
     timers.push(this.time.delayedCall(at, () => {
       oldView.setVisible(false);
       oldWhite.setVisible(true);
+      timers.push(this.time.addEvent({ delay: 90, loop: true, callback: () => this.inward(cx, cy) }));
     }));
-    at += 500;
+    at += 600;
     let showNew = false;
-    for (let gap = 420; gap > 40; gap *= 0.84) {
+    const sizeOld = oldWhite.scaleX, sizeNew = newWhite.scaleX;
+    for (let gap = 560; gap > 40; gap *= 0.87) {
       at += gap;
       const flip: boolean = !showNew;
       showNew = flip;
+      const ms = gap;
       timers.push(this.time.delayedCall(at, () => {
         oldWhite.setVisible(!flip);
         newWhite.setVisible(flip);
+        const shown = flip ? newWhite : oldWhite;
+        const fromScale = flip ? sizeOld : sizeNew, toScale = flip ? sizeNew : sizeOld;
+        shown.setScale(fromScale);
+        this.tweens.add({ targets: shown, scale: toScale, duration: Math.max(30, ms * 0.8), ease: "Sine.easeOut" });
       }));
     }
     at += 300;
     timers.push(this.time.delayedCall(at, () => {
       finished = true;
+      timers.forEach((x) => x.remove(false));
       stop.destroy();
       oldWhite.setVisible(false);
       newWhite.setVisible(true);
@@ -115,10 +131,15 @@ export class EvolutionScene extends Phaser.Scene {
       const r = evolveNow(CONTENT, PROGRESSION, before);
       session.update(withMember(session.game, m.uid, () => r.member));
       sfx(this, "levelUp");
+      // The new form shows itself: two hops and its cry.
+      this.time.delayedCall(700, () => {
+        playCry(this, into);
+        this.tweens.add({ targets: newView, y: cy - 18, duration: 140, yoyo: true, repeat: 1, ease: "Quad.easeOut" });
+      });
       const learned = r.events.flatMap((e) => (e.type === "learned" ? [CONTENT.moves[e.move]!.name] : []));
       const extra = [t("+{n} points to spend", { n: PROGRESSION.rules.evolutionPoints }), ...learned.map((n) => t("learned {move}", { move: n }))].join(" · ");
-      say.setText(`${t("Congratulations! {name} evolved into {into}!", { name: from.name, into: to.name })}\n${extra}`);
-      new Button(this, cx - 90, height - 70, 180, 30, t("➜ Continue"), done);
+      setPixText(say, `${t("Congratulations! {name} evolved into {into}!", { name: from.name, into: to.name })}\n${extra}`);
+      new Button(this, cx - 90, height - 92, 180, 30, t("➜ Continue"), done);
     }));
   }
 
@@ -146,6 +167,13 @@ export class EvolutionScene extends Phaser.Scene {
     }
     const img = this.add.image(x, y, key);
     return hasSprite(speciesId) ? img.setScale(3) : img.setDisplaySize(120, 120);
+  }
+
+  /** A spark drifting in from the dark towards the Pokémon. */
+  private inward(x: number, y: number): void {
+    const a = Math.random() * Math.PI * 2, r = 170 + Math.random() * 90;
+    const s = this.add.star(x + Math.cos(a) * r, y + Math.sin(a) * r * 0.8, 4, 1.5, 4, Math.random() < 0.5 ? 0xfff3a0 : 0xbfe0ff).setAlpha(0);
+    this.tweens.add({ targets: s, x, y, alpha: { from: 0.9, to: 0.2 }, angle: 180, duration: 900, ease: "Quad.easeIn", onComplete: () => s.destroy() });
   }
 
   private sparkle(x: number, y: number): void {
