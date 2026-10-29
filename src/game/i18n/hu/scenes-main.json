@@ -36,6 +36,7 @@
  "Action · used (1 per turn)": "Akció · elhasználva (1/kör)",
  "Action · ready (1 per turn)": "Akció · kész (1/kör)",
  "wait {n}": "vár {n}",
+ "used": "elhasználva",
  "no target {r}": "nincs cél {r}",
  "basic": "alap",
  "special": "spec.",

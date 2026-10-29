@@ -92,6 +92,8 @@ const ZONE_COLORS: Record<Exclude<FreeTerrainId, "floor">, number> = { mud: COLO
 const SPOT_PICK = 0.45;
 const LOG_LINE_H = 15;
 /** How far a line or cone reaches from the user (null for other shapes). */
+/** The rule between move groups of different kinds in the move lists. */
+const KIND_DIVIDER = 0x6b7899;
 const fanLength = (move: MoveDef): number | null => (move.shape.kind === "line" || move.shape.kind === "cone" ? move.shape.length + 0.3 : null);
 /** Top-half colours of the balls (the bottom is white), for the aiming cursor. */
 const BALL_TOPS: Readonly<Record<string, string>> = { "poke-ball": "#e3350d", "great-ball": "#2f6fd6", "ultra-ball": "#2a2a2a" };
@@ -863,6 +865,12 @@ export class BattleScene extends Phaser.Scene {
       this.panel.add(t);
       y += t.height + 4;
     };
+    // A thin rule between groups of moves of different kinds (basic, skills, Bond).
+    const divider = () => {
+      y += 2;
+      this.panel.add(this.add.rectangle(0, y, PANEL_W, 1, KIND_DIVIDER, 0.9).setOrigin(0));
+      y += 7;
+    };
     const button = (label: string, enabled: boolean, highlighted: boolean, onClick: () => void, color?: number) => {
       const b = new Button(this, 0, y, PANEL_W, 26, label, onClick);
       // A move's button takes its type's colour.
@@ -958,26 +966,26 @@ export class BattleScene extends Phaser.Scene {
     if (unit && unit.side === "player" && !this.busy) {
       const species = CONTENT.species[unit.speciesId]!;
       text(t("{name} · move {n}", { name: species.name, n: state.turn!.movePointsLeft.toFixed(1) }), COLORS.good);
-      // A short guide to what can be done now, for new players.
-      if (!this.selectedMove && !this.selectedBall) text(t("Blue: move · pick a move to attack"), COLORS.dim, 11);
       if (switchTargets(state).length) text(t("Tap another of your Pokémon to act with it instead."), COLORS.dim, 11);
       // One basic attack a turn; specials as long as they are off cooldown; Bond moves while the Bond lasts.
       // Struggle only shows while it is the unit's way to fight (engaged, ranged basic attack).
       const basics = unit.moves.filter((m) => CONTENT.moves[m]!.kind === "basic" && (m !== "struggle" || !moveUnavailableReason(state, CONTENT, unit.id, m)));
-      const others = unit.moves.filter((m) => CONTENT.moves[m]!.kind !== "basic");
-      const ordered = [...basics, ...others];
+      const skills = unit.moves.filter((m) => CONTENT.moves[m]!.kind !== "basic" && CONTENT.moves[m]!.kind !== "bond");
+      const bonds = unit.moves.filter((m) => CONTENT.moves[m]!.kind === "bond");
+      const ordered = [...basics, ...skills, ...bonds];
       for (const moveId of ordered) {
-        if (moveId === basics[0]) text(state.turn!.basicUsed ? t("Basic attack · used (1 per turn)") : t("Basic attack · ready (1 per turn)"), state.turn!.basicUsed ? COLORS.dim : "#9fd3ff", 12);
-        if (moveId === others[0]) text(t("Skills · any number, each on its own cooldown"), "#9fd3ff", 12);
+        // Thin rules part the kinds (basic attacks, skills, Bond moves); the first-turn tip and ? help explain them.
+        if (moveId === skills[0] && basics.length) divider();
+        if (moveId === bonds[0] && (basics.length || skills.length)) divider();
         const move = CONTENT.moves[moveId]!;
         const reason = moveUnavailableReason(state, CONTENT, unit.id, moveId);
         const hasTarget = !reason && freeHasTarget(state, CONTENT, unit.id, moveId);
         const cd = unit.cooldowns[moveId] ?? 0;
         const range = moveRange(unit, move);
         const used = move.kind === "basic" && state.turn!.basicUsed;
-        const status = cd > 0 ? t("wait {n}", { n: cd })
+        const status = used ? t("used") : cd > 0 ? t("wait {n}", { n: cd })
           : !used && !reason && !hasTarget ? t("no target {r}", { r: range.min === range.max ? range.max : `${range.min}-${range.max}` })
-          // Basic and special need no label: the "Basic attack" / "Action" headers above say it.
+          // Basic and special need no label: the groups (parted by thin rules) say it.
           : move.kind === "basic" || move.kind === "special" ? ""
           : move.kind === "bond" ? `${CONTENT.terms.bond} ${bondCostFor(move, unit)}`
           : unit.usedUltimates.includes(moveId) ? t("ult used") : t("ult 1×");

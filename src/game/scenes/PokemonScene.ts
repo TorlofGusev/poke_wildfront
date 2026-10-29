@@ -336,14 +336,22 @@ export class PokemonScene extends Phaser.Scene {
       return `${d.type} · ${kind} · ${t("range {r}", { r })}${d.power ? ` · ${t("Power {n}", { n: d.power })}` : ""}`;
     };
     const shown = this.selectedMove && (m.knownMoves.includes(this.selectedMove) || this.selectedMove === basic) ? this.selectedMove : activeBasic;
-    const rows = [basic, ...m.knownMoves.filter((mv) => mv !== basic)];
+    // Grouped by kind (basic attacks, skills, Bond moves), a thin rule between the groups.
+    const order = { basic: 0, skill: 1, bond: 2 } as const;
+    const rows = [basic, ...m.knownMoves.filter((mv) => mv !== basic)].sort((a, b) => order[slotOf(CONTENT, a)] - order[slotOf(CONTENT, b)]);
+    let rowY = y;
     rows.forEach((mv, i) => {
+      if (i > 0 && slotOf(CONTENT, mv) !== slotOf(CONTENT, rows[i - 1]!)) {
+        add(this.add.rectangle(DETAIL_X, rowY + 1, listW, 1, 0x6b7899, 0.9).setOrigin(0));
+        rowY += 6;
+      }
       const def = CONTENT.moves[mv]!;
       const mark = mv === activeBasic ? "◆" : fighting.includes(mv) ? "■" : slotOf(CONTENT, mv) === "basic" ? "◇" : "□";
-      add(new Button(this, DETAIL_X, y + i * 28, listW, 24, `${mark} ${def.name.padEnd(13)} ${kindLabel(mv)}`, () => {
+      add(new Button(this, DETAIL_X, rowY, listW, 24, `${mark} ${def.name.padEnd(13)} ${kindLabel(mv)}`, () => {
         this.selectedMove = mv;
         this.render();
       }).setHighlighted(mv === shown));
+      rowY += 28;
     });
     const infoX = DETAIL_X + listW + 16;
     const infoW = DETAIL_X + DETAIL_W - infoX;
