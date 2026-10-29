@@ -148,6 +148,11 @@ describe("archetype trees", () => {
     expect(Object.values(baseMoves).every((m) => CONTENT.moves[m.id]!.kind === m.kind), "base moves keep their kind").toBe(true);
   });
 
+  it("every species starts with a skill besides its basic attack (a tree's Bond move is never a starting move)", () => {
+    const without = Object.values(CONTENT.species).filter((s) => !s.moves.some((m) => CONTENT.moves[m]?.kind === "special" || CONTENT.moves[m]?.kind === "ultimate"));
+    expect(without.map((s) => s.id)).toEqual(["ditto"]);
+  });
+
   it("covers every line at most once; a focus (Bond) move is never also a row skill", () => {
     const seen = new Map<string, string>();
     const rowMoves = new Set(ARCHETYPES.flatMap((a) => [...Object.values(a.rows).flat(), ...a.lines.flatMap((l) => Object.values(l.rows ?? {}))].map(moveOf).filter(Boolean)));

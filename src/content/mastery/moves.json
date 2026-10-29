@@ -1208,7 +1208,7 @@
   "name": "Charge Beam",
   "type": "electric",
   "kind": "special",
-  "power": 50,
+  "power": 45,
   "range": {
    "min": 2,
    "max": 4

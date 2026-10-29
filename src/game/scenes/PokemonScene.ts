@@ -116,8 +116,10 @@ export class PokemonScene extends Phaser.Scene {
     const text = (x: number, y: number, s: string, color: string = COLORS.text, size = 13) =>
       add(this.add.text(x, y, s, { fontFamily: FONT, fontSize: px(size), color }));
 
-    add(new Button(this, LIST_X, 12, 120, 26, t("← Camp"), () => this.scene.start("Party", { rested: false, choosingMeal: false })));
-    // ◀ ▶ cycle through the same list (party, or storage when viewing a stored Pokémon).
+    // EV is spent here on stats; money pays for a mastery reset.
+    add(new RichText(this, LIST_X, 18, 220, 14)).setMarkup(`EV ${tag("num", session.game.ev ?? 0)}   ${tag("num", `₽${money}`)}`);
+    // Navigation sits top right, as on the Camp screen: ◀ n/N ▶ cycle through the same list
+    // (party, or storage when viewing a stored Pokémon), then back to Camp.
     const list = roster.party.some((m) => m.uid === this.selected) ? roster.party : roster.storage;
     const idx = list.findIndex((m) => m.uid === this.selected);
     const go = (d: number) => {
@@ -128,11 +130,11 @@ export class PokemonScene extends Phaser.Scene {
       this.message = "";
       this.render();
     };
-    add(new Button(this, LIST_X + 132, 12, 40, 26, " ◀", () => go(-1)).setEnabled(list.length > 1));
-    text(LIST_X + 180, 17, list === roster.storage ? t("{i}/{n} in storage", { i: idx + 1, n: list.length }) : `${idx + 1}/${list.length}`, COLORS.dim, 13);
-    add(new Button(this, LIST_X + 270, 12, 40, 26, " ▶", () => go(1)).setEnabled(list.length > 1));
-    // EV is spent here on stats; money pays for a mastery reset.
-    add(new RichText(this, LIST_X + 330, 18, 220, 14)).setMarkup(`EV ${tag("num", session.game.ev ?? 0)}   ${tag("num", `₽${money}`)}`);
+    const right = DETAIL_X + DETAIL_W;
+    add(new Button(this, right - 120, 12, 120, 26, t("← Camp"), () => this.scene.start("Party", { rested: false, choosingMeal: false })));
+    add(new Button(this, right - 172, 12, 40, 26, " ▶", () => go(1)).setEnabled(list.length > 1));
+    const count = text(right - 180, 17, list === roster.storage ? t("{i}/{n} in storage", { i: idx + 1, n: list.length }) : `${idx + 1}/${list.length}`, COLORS.dim, 13).setOrigin(1, 0);
+    add(new Button(this, count.x - count.width - 48, 12, 40, 26, " ◀", () => go(-1)).setEnabled(list.length > 1));
 
     const member = this.selected ? findMember(session.game, this.selected) : undefined;
     if (member) this.renderDetail(member, add);
@@ -174,8 +176,8 @@ export class PokemonScene extends Phaser.Scene {
       `${t("Focus:")} ${m.focus ? tag("special", focusLabel(m.focus)) : tag("dim", m.level < PROGRESSION.rules.focusLevel ? t("chosen at Lv {lv}", { lv: PROGRESSION.rules.focusLevel }) : t("not chosen"))}  ${t("Held:")} ${held ? tag("num", held.name) : tag("dim", t("nothing"))}`,
     ];
     let y = 48;
-    if (this.textures.exists(portraitKey(m.speciesId))) add(this.add.image(DETAIL_X + DETAIL_W - 32, 12 + 32, portraitKey(m.speciesId)).setDisplaySize(64, 64));
-    y += add(new RichText(this, DETAIL_X, y, DETAIL_W - 76, 13)).setMarkup(header.join("\n")) + 8;
+    if (this.textures.exists(portraitKey(m.speciesId))) add(this.add.image(DETAIL_X + 32, y + 32, portraitKey(m.speciesId)).setDisplaySize(64, 64));
+    y += Math.max(64, add(new RichText(this, DETAIL_X + 76, y, DETAIL_W - 76, 13)).setMarkup(header.join("\n"))) + 8;
 
     // Tabs. A ★ marks where a decision is waiting.
     const pending = pendingChoice(CONTENT, PROGRESSION, m);
