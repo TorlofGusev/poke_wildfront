@@ -132,6 +132,8 @@ export class BattleScene extends Phaser.Scene {
   private npcMapId: string | null = null;
   private biome: string | null = null;
   private rewardText = "";
+  /** A trainer's prize money, shown in the summary's one money total. */
+  private prizeMoney = 0;
   /** EV the battle earned (wild win plus trainer or badge reward). */
   private evGained = 0;
   private phase: Phase = "deploy";
@@ -196,6 +198,7 @@ export class BattleScene extends Phaser.Scene {
     this.encounterId = data.encounterId ?? null;
     this.biome = data.biome ?? data.demo?.style ?? null;
     this.rewardText = "";
+    this.prizeMoney = 0;
     this.phase = "deploy";
     this.placements = [];
     this.party = this.demo ? [] : session.partyCandidates();
@@ -926,7 +929,8 @@ export class BattleScene extends Phaser.Scene {
         for (const uid of sum.knockedOut.filter((u) => !sum.fallen.includes(u)))
           text(t("{name} was knocked out (KO {n}/{max}).", { name: name(uid), n: this.knockoutsOf(uid), max: KNOCKOUTS_TO_DEATH }), COLORS.bad);
         for (const uid of sum.fallen) text(t("{name} has fallen for good.", { name: name(uid) }), COLORS.bad);
-        if (sum.xp || sum.money) text(`${t("+{xp} XP for each Pokémon that fought (half for the rest of the party) · +₽{money}", { xp: sum.xp, money: sum.money })}${this.evGained ? ` · +${this.evGained} EV` : ""}${sum.candies ? t(" · +{n} Rare Candy", { n: sum.candies }) : ""}`, "#f5d76e");
+        const money = sum.money + this.prizeMoney;
+        if (sum.xp || money) text(`${t("+{xp} XP for each Pokémon that fought (half for the rest of the party) · +₽{money}", { xp: sum.xp, money })}${this.evGained ? ` · +${this.evGained} EV` : ""}${sum.candies ? t(" · +{n} Rare Candy", { n: sum.candies }) : ""}`, "#f5d76e");
         for (const [uid, evs] of Object.entries(sum.progress)) {
           for (const e of evs) {
             if (e.type === "levelUp") text(t("{name} reached Lv {lv}!", { name: name(uid), lv: e.level }), COLORS.good, 12);
@@ -1419,7 +1423,10 @@ export class BattleScene extends Phaser.Scene {
       if (npc && this.state.outcome === "victory") {
         const granted = grantGifts(completeNpc(game, npc, undefined, PROGRESSION.rules.ev), npc.reward);
         game = granted.game;
-        this.rewardText = [t("{name} is defeated!", { name: npc.name }), ...granted.notes].join(" ");
+        // The prize joins the battle's money in the summary, instead of a second, different amount.
+        this.prizeMoney = npc.reward?.money ?? 0;
+        const prizeNote = this.prizeMoney ? `+₽${this.prizeMoney}.` : null;
+        this.rewardText = [t("{name} is defeated!", { name: npc.name }), ...granted.notes.filter((n) => n !== prizeNote)].join(" ");
       } else if (npc) game = failNpc(game, npc, npcs);
       if (this.state.outcome === "retreated" && this.encounterId) game = { ...game, world: calmEncounter(game.world, this.encounterId) };
       if (this.state.outcome === "defeat") game = { ...game, world: returnToLastCamp(WORLD_CONTENT, currentWorld(), game.world) };
