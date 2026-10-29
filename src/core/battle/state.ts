@@ -63,6 +63,8 @@ export interface TurnState {
   basicUsed: boolean;
   /** The unit has moved this turn (Speed's momentum bonus). */
   moved?: boolean;
+  /** Whom the unit was engaged with as its turn began: stepping out and back in gives no momentum against it. */
+  startPartner?: string;
   /** Nothing done yet: the player may still hand the turn to another of their units. */
   fresh?: boolean;
 }

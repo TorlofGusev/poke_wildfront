@@ -97,10 +97,13 @@ function gainBond(state: BattleState, side: Side, amount: number, reason: "knock
 
 /**
  * Speed beyond the movement cap turns into momentum: after moving this turn, every
- * `speedPerStep` Speed past it adds `stepBonus` damage (at most `max`).
+ * `speedPerStep` Speed past it adds `stepBonus` damage (at most `max`), except against the foe the unit
+ * began its turn engaged with.
  */
-export function momentumBonus(content: BattleContent, unit: BattleUnit, state: BattleState): number {
+export function momentumBonus(content: BattleContent, unit: BattleUnit, state: BattleState, target?: BattleUnit): number {
   if (state.turn?.unitId !== unit.id || !state.turn.moved) return 0;
+  // No run-up against the foe it began the turn engaged with (stepping out and back in).
+  if (target && target.id === state.turn.startPartner) return 0;
   const r = content.rules;
   const excess = unit.stats.speed - speedAtMoveCap(content);
   return Math.min(r.momentum.max, Math.max(0, Math.floor(excess / r.momentum.speedPerStep)) * r.momentum.stepBonus);
@@ -722,7 +725,7 @@ function resolveHits(
         !contact && t !== user ? m.farDamage : m.closeDamage,
         // Melee moves hit harder (they must walk into reach); speed past the movement cap adds momentum after moving.
         move.range.max <= 1 ? content.rules.melee.closeBonus : 1,
-        1 + momentumBonus(content, user, state),
+        1 + momentumBonus(content, user, state, t),
         user.hp * 2 < user.maxHp ? m.lowHpDamage * (m.lowHpTypeDamage[move.type] ?? 1) : 1,
         combo?.engaged ? m.vsEngagedDamage : 1,
         isFoe && hasAllySetupStatus(state, user, t) ? m.vsSetupDamage : 1,
@@ -1007,7 +1010,7 @@ function startTurn(state: BattleState, content: BattleContent, events: BattleEve
   const begins = unit.startedRound !== state.round;
   unit.startedRound = state.round;
   if (begins) for (const id of Object.keys(unit.cooldowns)) unit.cooldowns[id] = Math.max(0, unit.cooldowns[id]! - 1);
-  state.turn = { unitId, movePointsLeft: movementPoints(content, unit, state), actionUsed: false, basicUsed: false, fresh: true };
+  state.turn = { unitId, movePointsLeft: movementPoints(content, unit, state), actionUsed: false, basicUsed: false, fresh: true, ...(unit.engagedWith && { startPartner: unit.engagedWith }) };
   events.push({ type: "turnStarted", unitId, movePoints: state.turn.movePointsLeft });
   if (!begins) return;
 

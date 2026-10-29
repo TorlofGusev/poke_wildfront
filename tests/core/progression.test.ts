@@ -103,6 +103,19 @@ describe("levels and stats", () => {
     expect(CONTENT.rules.melee.engagedRangedPenalty).toBeLessThan(1);
   });
 
+  it("no momentum against the foe the unit began its turn engaged with", () => {
+    const hit = (engagedAtStart: boolean) => {
+      let { state } = createBattle(CONTENT, ["......"], [
+        { id: "p", speciesId: "charmander", side: "player", pos: { x: 1, y: 0 }, stats: { ...CONTENT.species.charmander!.stats, speed: 24 }, moves: ["scratch"] },
+        { id: "e", speciesId: "rattata", side: "enemy", pos: { x: 2, y: 0 }, stats: { ...CONTENT.species.rattata!.stats, speed: 0 } },
+      ]);
+      state = { ...state, turn: { ...state.turn!, moved: true, ...(engagedAtStart && { startPartner: "e" }) } };
+      const r = applyAction(state, CONTENT, { type: "useMove", unitId: "p", moveId: "scratch", target: state.units.find((u) => u.id === "e")!.pos });
+      return (r.events.find((e) => e.type === "damaged") as { amount: number }).amount;
+    };
+    expect(hit(true)).toBeLessThan(hit(false));
+  });
+
   it("wild Pokémon appear evolved once their level reaches the evolution level", () => {
     expect(wildForm(CONTENT, "caterpie", 3)).toBe("caterpie");
     expect(wildForm(CONTENT, "caterpie", 6)).toBe("metapod");
