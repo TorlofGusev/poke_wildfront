@@ -28,6 +28,7 @@ uniform vec3 uGround2;
 uniform vec3 uRock;
 uniform float uAmbient;
 uniform float uFlora;
+uniform float uDebris; // how much loose stone lies about (caves most)
 uniform vec4 uLights[${MAX_LIGHTS}];
 uniform vec4 uLightColors[${MAX_LIGHTS}];
 uniform vec4 uPools[${MAX_POOLS}]; // burning (w 1) or poisoned (w 2) ground: x, y, radius
@@ -57,7 +58,7 @@ float worley(vec2 p) {
 vec4 maskA(vec2 px) { return texture2D(uMaskA, px / uSize); }
 float mud(vec2 px) { return texture2D(uMaskB, px / uSize).r; }
 // Edges wobble with noise, so no patch has straight sides.
-float cover(float m, vec2 px, float k) { return smoothstep(0.42, 0.5, m + (fbm(px * k) - 0.5) * 0.22); }
+float cover(float m, vec2 px, float k) { return smoothstep(0.46, 0.52, m + (fbm(px * k) - 0.5) * 0.12); }
 
 void main() {
   vec2 px = vec2(outTexCoord.x, 1.0 - outTexCoord.y) * uSize;
@@ -79,6 +80,24 @@ void main() {
     col = mix(col, col * (inCell.y < 5.0 ? 1.35 : 0.7), blade * 0.8);
   } else if (uFlora > 0.5 && h > 0.985) col = mix(col, hash(cell + 3.0) > 0.5 ? vec3(0.97, 0.9, 0.45) : vec3(0.95, 0.6, 0.85), spot);
   else if (h < 0.04) col = mix(col, col * 1.35 + 0.05, spot);
+
+  // Loose stones: small lit pebbles with a shadow, more of them in caves (decoration only).
+  for (int k = 0; k < 2; k++) {
+    float sz = k == 0 ? 16.0 : 9.0;
+    vec2 pc = floor(px / sz);
+    float ph = hash(pc + float(k) * 31.0);
+    if (ph < 1.0 - uDebris * (k == 0 ? 0.22 : 0.3)) continue;
+    vec2 ctr = (pc + 0.3 + 0.4 * vec2(hash(pc + 1.3), hash(pc + 2.7))) * sz;
+    float rad = sz * (0.16 + 0.16 * hash(pc + 4.1));
+    vec2 d = (px - ctr) / vec2(rad * 1.3, rad);
+    float sh = length((px - ctr - vec2(2.0, 3.0)) / vec2(rad * 1.3, rad));
+    if (sh < 1.0 && length(d) >= 1.0) col *= 0.7;
+    if (length(d) < 1.0) {
+      vec3 n = normalize(vec3(d, sqrt(max(0.0, 1.0 - dot(d, d)))));
+      float lit = clamp(dot(n, light), 0.0, 1.0);
+      col = uRock * (0.4 + 0.75 * lit) * (0.85 + 0.3 * hash(pc + 9.0));
+    }
+  }
 
   // Drop shadows of rocks and bushes (light from the top left: shadows fall right and down).
   float shadow = max(cover(maskA(px - vec2(5.0, 8.0)).r, px, 0.05), cover(maskA(px - vec2(4.0, 6.0)).g, px, 0.07) * 0.8);
@@ -161,7 +180,7 @@ void main() {
   // --- Rocks: relief from the mask's slope plus noise, lit, with dark creases.
   float rc = cover(m.r, px, 0.05);
   if (rc > 0.0) {
-    float e = 3.0;
+    float e = 2.0;
     float hx = maskA(px + vec2(e, 0.0)).r - maskA(px - vec2(e, 0.0)).r;
     float hy = maskA(px + vec2(0.0, e)).r - maskA(px - vec2(0.0, e)).r;
     float detail = fbm(px * 0.035);
@@ -173,7 +192,7 @@ void main() {
     rock *= 1.0 - 0.4 * crease;
     rock *= 0.97 + 0.06 * hash(floor(px / 4.0));
     // A dark rim where the stone meets the ground.
-    rock *= mix(0.55, 1.0, smoothstep(0.5, 0.62, m.r + (fbm(px * 0.05) - 0.5) * 0.22));
+    rock *= mix(0.55, 1.0, smoothstep(0.5, 0.62, m.r + (fbm(px * 0.05) - 0.5) * 0.12));
     col = mix(col, rock, rc);
   }
 
@@ -191,11 +210,11 @@ void main() {
 }
 `;
 
-const THEMES: Record<BoardTheme, { g1: number; g2: number; rock: number; ambient: number; flora: number }> = {
-  field: { g1: 0x3b5a36, g2: 0x4f6b3a, rock: 0x8a8e98, ambient: 1, flora: 1 },
-  cave: { g1: 0x4a423c, g2: 0x5a5048, rock: 0x8c7f70, ambient: 0.82, flora: 0 },
-  shore: { g1: 0x8a7f58, g2: 0xa39568, rock: 0x9c9280, ambient: 1.05, flora: 0 },
-  indoor: { g1: 0x4a4d57, g2: 0x55586a, rock: 0x7d8290, ambient: 0.95, flora: 0 },
+const THEMES: Record<BoardTheme, { g1: number; g2: number; rock: number; ambient: number; flora: number; debris: number }> = {
+  field: { g1: 0x3b5a36, g2: 0x4f6b3a, rock: 0x8a8e98, ambient: 1, flora: 1, debris: 0.05 },
+  cave: { g1: 0x4a423c, g2: 0x5a5048, rock: 0x8c7f70, ambient: 0.82, flora: 0, debris: 0.25 },
+  shore: { g1: 0x8a7f58, g2: 0xa39568, rock: 0x9c9280, ambient: 1.05, flora: 0, debris: 0.2 },
+  indoor: { g1: 0x4a4d57, g2: 0x55586a, rock: 0x7d8290, ambient: 0.95, flora: 0, debris: 0.03 },
 };
 
 const rgb = (c: number) => [((c >> 16) & 255) / 255, ((c >> 8) & 255) / 255, (c & 255) / 255];
@@ -254,6 +273,7 @@ export class TerrainShader {
         set("uRock", rgb(t.rock));
         set("uAmbient", t.ambient);
         set("uFlora", t.flora);
+        set("uDebris", t.debris);
         const L = new Float32Array(MAX_LIGHTS * 4), C = new Float32Array(MAX_LIGHTS * 4);
         this.lights.slice(0, MAX_LIGHTS).forEach((l, i) => {
           L.set([l.x - board.x, l.y - board.y, l.radius, l.intensity], i * 4);
@@ -300,7 +320,7 @@ export class TerrainShader {
         g.fill();
       }
     }
-    const blurred = masks.map(({ g, c }) => blur(g.getImageData(0, 0, c.width, c.height), 4));
+    const blurred = masks.map(({ g, c }) => blur(g.getImageData(0, 0, c.width, c.height), 1));
     this.write(this.keyA, [blurred[0]!, blurred[1]!, blurred[2]!]);
     this.write(this.keyB, [blurred[3]!, blurred[3]!, blurred[3]!]);
   }

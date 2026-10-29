@@ -157,6 +157,8 @@ export class BattleScene extends Phaser.Scene {
   /** The walkable area, baked into a texture (redrawn only when the state changes). */
   private reachGfx: Phaser.GameObjects.Graphics | null = null;
   private reachImage: Phaser.GameObjects.RenderTexture | null = null;
+  /** A hovered foe's reach, drawn the same smooth way. */
+  private threatImage: Phaser.GameObjects.RenderTexture | null = null;
   private reachFor: { state: BattleState; reach: FreeReach } | null = null;
   private reach: FreeReach | null = null;
   /** Hover moved since the overlay was last drawn (refreshed at most once a frame). */
@@ -216,6 +218,7 @@ export class BattleScene extends Phaser.Scene {
     this.ground = null;
     this.reachGfx = null;
     this.reachImage = null;
+    this.threatImage = null;
     this.reachFor = null;
     this.reach = null;
     this.hoverDirty = false;
@@ -464,7 +467,10 @@ export class BattleScene extends Phaser.Scene {
     const foe = state ? freeUnitAt(state, this.hovered) : undefined;
     if (!state || !foe || foe.side !== "enemy" || foe.hp <= 0) return;
     const mp = movementPoints(CONTENT, foe, state);
-    this.fillCells(freeReachFor(state, foe.id, mp).cells, 0xffb347, 0.4);
+    this.reachGfx ??= this.make.graphics({}, false);
+    this.threatImage ??= this.add.renderTexture(0, 0, this.scale.width, this.scale.height).setOrigin(0).setDepth(0).setAlpha(0.4);
+    this.smoothCells(freeReachFor(state, foe.id, mp).cells, 0xffb347, this.reachGfx.clear());
+    this.threatImage.clear().draw(this.reachGfx).render();
     const strike = Math.max(0, ...foe.moves.map((m) => CONTENT.moves[m]).filter((m) => m && m.power > 0).map((m) => freeRange(foe, m!, CONTENT).max));
     const c = fieldToWorld(foe.pos);
     this.overlay.lineStyle(2, COLORS.target, 0.9).strokeCircle(c.x, c.y, (mp + strike) * S);
@@ -506,6 +512,24 @@ export class BattleScene extends Phaser.Scene {
     }
   }
 
+  /**
+   * An area of lattice cells with a smooth edge: solid strips inside, and round dots on the border cells
+   * so the outline curves instead of stepping. Drawn opaque into a texture whose alpha shows it, so the
+   * overlapping dots never show darker.
+   */
+  private smoothCells(cells: readonly Point[], color: number, g: Phaser.GameObjects.Graphics): void {
+    this.fillCells(cells, color, 1, g);
+    const key = (x: number, y: number) => `${Math.round(x / CELL)},${Math.round(y / CELL)}`;
+    const have = new Set(cells.map((c) => key(c.x, c.y)));
+    g.fillStyle(color, 1);
+    for (const c of cells) {
+      const inner = have.has(key(c.x + CELL, c.y)) && have.has(key(c.x - CELL, c.y)) && have.has(key(c.x, c.y + CELL)) && have.has(key(c.x, c.y - CELL));
+      if (inner) continue;
+      const p = fieldToWorld(c);
+      g.fillCircle(p.x, p.y, CELL * S * 1.3);
+    }
+  }
+
   /** The active Pokémon's walkable area, kept in a texture until the state changes. */
   private drawReach(): void {
     this.reachGfx ??= this.make.graphics({}, false);
@@ -521,8 +545,8 @@ export class BattleScene extends Phaser.Scene {
     if (this.reach === this.reachFor.reach) return;
     this.reach = this.reachFor.reach;
     const g = this.reachGfx.clear();
-    this.fillCells(this.reach.cells, COLORS.reach, 0.3, g);
-    this.reachImage.clear().draw(g).render();
+    this.smoothCells(this.reach.cells, COLORS.reach, g);
+    this.reachImage.setAlpha(0.3).clear().draw(g).render();
   }
 
   private drawArea(area: FreeArea, color: number, alpha: number): void {
@@ -700,6 +724,7 @@ export class BattleScene extends Phaser.Scene {
 
   private refreshOverlay(): void {
     this.overlay.clear();
+    this.threatImage?.clear();
     if (this.demo) return this.drawFieldEffects();
     this.previewLabels?.destroy();
     this.previewLabels = null;
