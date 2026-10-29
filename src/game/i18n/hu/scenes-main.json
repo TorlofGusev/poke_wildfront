@@ -58,6 +58,7 @@
  ", area {n}": ", terület {n}",
  ", line {n}": ", vonal {n}",
  ", range {min}-{max}": ", táv {min}-{max}",
+ ", around itself {n}": ", maga körül {n}",
  ", power {n}": ", erő {n}",
  "{move} is super effective (×{eff})": "{move} szuperhatásos (×{eff})",
  "{move} is not very effective (×{eff})": "{move} nem túl hatásos (×{eff})",

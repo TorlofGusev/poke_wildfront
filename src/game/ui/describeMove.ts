@@ -3,6 +3,15 @@ import { t } from "../i18n";
 import { tag } from "./markup";
 
 /** Rules text (with colour markup) generated from move data, so it never drifts from the rules. */
+/** Radius of a move that bursts around the user itself (Earthquake: range 0, area 2), else 0. */
+export const selfCentred = (move: MoveDef): number => (move.range.max === 0 && move.shape.kind === "burst" ? move.shape.radius : 0);
+
+/** A reach as text: "2" or "1-3". */
+export const reachText = (r: { readonly min: number; readonly max: number }): string => (r.min === r.max ? `${r.max}` : `${r.min}-${r.max}`);
+
+/** Short reach for tight columns: ◎2 for a burst around the user, else the reach. */
+export const reachShort = (move: MoveDef, r: { readonly min: number; readonly max: number } = move.range): string => (selfCentred(move) ? `◎${selfCentred(move)}` : reachText(r));
+
 export function describeMove(content: BattleContent, move: MoveDef): string {
   const bond = content.terms.bond;
   const kind =
@@ -10,7 +19,6 @@ export function describeMove(content: BattleContent, move: MoveDef): string {
     : move.kind === "special" ? t("{x} · {n}-turn cooldown", { x: tag("special", t("Special")), n: tag("num", move.cooldown ?? 0) })
     : move.kind === "bond" ? t("{x} · costs {n} team {bond}", { x: tag("ultimate", bond), n: tag("num", move.bondCost ?? 0), bond })
     : t("{x} · once per battle", { x: tag("ultimate", t("Ultimate")) });
-  const range = move.range.min === move.range.max ? `${move.range.max}` : `${move.range.min}–${move.range.max}`;
   const shape =
     move.shape.kind === "single" ? t("single target")
     : move.shape.kind === "burst" ? t("area: a circle of radius {n} around the aim", { n: tag("num", move.shape.radius) })
@@ -20,7 +28,7 @@ export function describeMove(content: BattleContent, move: MoveDef): string {
   const lines = [
     `${tag("title", move.name)} — ${tag(move.type, move.type.toUpperCase())}`,
     kind,
-    t("Range {n} · {shape}{los}", { n: tag("num", range), shape, los }),
+    selfCentred(move) ? t("Around itself, radius {n}{los}", { n: tag("num", selfCentred(move)), los }) : t("Range {n} · {shape}{los}", { n: tag("num", reachText(move.range)), shape, los }),
     move.currentHpDamage ? t("Deals {n} of the target's current HP, whatever the stats and type", { n: tag("dmg", `${Math.round(move.currentHpDamage * 100)}%`) })
     : move.power > 0 ? t("Power {n} {hint}", { n: tag("dmg", move.power), hint: tag("dim", t("(hover a target to see the exact damage)")) }) : tag("dim", t("No damage")),
   ];

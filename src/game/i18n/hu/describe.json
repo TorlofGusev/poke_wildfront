@@ -149,6 +149,7 @@
  "{v} less damage": "{v}-kal kevesebb sebzést",
  "{v} more damage": "{v}-kal több sebzést",
  "{v} movement": "{v} mozgás",
+ "Around itself, radius {n}{los}": "Maga körül, {n} sugarú körben{los}",
  "The user heals {x} of its max HP": "A használó a max HP-ja {x}-át gyógyítja",
  "Costs the user {x} of its max HP (never below 1)": "A használó max HP-jának {x}-ába kerül (1 alá nem visz)",
  "No effect on {types} Pokémon": "{types} Pokémonokra nem hat",

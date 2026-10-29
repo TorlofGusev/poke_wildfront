@@ -53,7 +53,7 @@ import { summarizeHits, type MoveDef } from "../../core/battle";
 import { typeMultiplier } from "../../core/rules/typeChart";
 import { Button } from "../ui/Button";
 import { formatEvent, type LogEntry, type LogTone } from "../ui/combatLog";
-import { describeMove } from "../ui/describeMove";
+import { describeMove, reachShort, selfCentred } from "../ui/describeMove";
 import { statLine } from "../ui/describeEffects";
 import { stripMarkup, tag } from "../ui/markup";
 import { RichText } from "../ui/RichText";
@@ -991,7 +991,7 @@ export class BattleScene extends Phaser.Scene {
         const used = move.kind === "basic" && state.turn!.basicUsed;
         const status = used ? t("used") : cd > 0 ? `⏳${cd}`
           // ✕ and the reach: nobody to aim at within it.
-          : !used && !reason && !hasTarget ? `✕ ${range.min === range.max ? range.max : `${range.min}-${range.max}`}`
+          : !used && !reason && !hasTarget ? `✕ ${reachShort(move, range)}`
           // Basic and special need no label: the groups (parted by thin rules) say it.
           : move.kind === "basic" || move.kind === "special" ? ""
           : move.kind === "bond" ? ""
@@ -1122,7 +1122,7 @@ export class BattleScene extends Phaser.Scene {
       ...unit.moves.filter((m) => m !== "struggle").map((m) => {
         const mv = CONTENT.moves[m]!;
         const shape = mv.shape.kind === "single" ? "" : mv.shape.kind === "burst" ? t(", area {n}", { n: mv.shape.radius }) : t(", line {n}", { n: mv.shape.length });
-        return `· ${tag(mv.kind, mv.name)} ${tag(mv.type, mv.type)}${t(", range {min}-{max}", { min: moveRange(unit, mv, CONTENT).min, max: moveRange(unit, mv, CONTENT).max })}${shape}${mv.power ? t(", power {n}", { n: tag("dmg", mv.power) }) : ""}`;
+        return `· ${tag(mv.kind, mv.name)} ${tag(mv.type, mv.type)}${selfCentred(mv) ? t(", around itself {n}", { n: selfCentred(mv) }) : `${t(", range {min}-{max}", { min: moveRange(unit, mv, CONTENT).min, max: moveRange(unit, mv, CONTENT).max })}${shape}`}${mv.power ? t(", power {n}", { n: tag("dmg", mv.power) }) : ""}`;
       }),
     ];
     const active = this.state ? activeUnit(this.state) : null;

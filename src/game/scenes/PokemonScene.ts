@@ -43,7 +43,7 @@ import { session } from "../session";
 import { portraitKey } from "../sprites";
 import { Button } from "../ui/Button";
 import { describeItem, focusLabel, describeTalent, STAT_LABEL, STAT_SHORT, statLine } from "../ui/describeEffects";
-import { describeMove } from "../ui/describeMove";
+import { describeMove, reachShort } from "../ui/describeMove";
 import { tag } from "../ui/markup";
 import { t } from "../i18n";
 import { RichText } from "../ui/RichText";
@@ -332,7 +332,7 @@ export class PokemonScene extends Phaser.Scene {
     // As on the battle buttons: type, reach ↔, power ⚔, a Bond move's cost in Bond pips (the groups give the kind).
     const kindLabel = (id: string) => {
       const d = CONTENT.moves[id]!;
-      const r = d.range.min === d.range.max ? `${d.range.max}` : `${d.range.min}-${d.range.max}`;
+      const r = reachShort(d);
       return `${d.type.padEnd(9)}↔${r.padEnd(4)}${d.power ? `⚔${String(d.power).padStart(3)}` : "    "}${d.kind === "bond" ? `  ${"●".repeat(d.bondCost ?? 0)}` : ""}`;
     };
     const shown = this.selectedMove && (m.knownMoves.includes(this.selectedMove) || this.selectedMove === basic) ? this.selectedMove : activeBasic;
