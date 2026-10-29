@@ -1,0 +1,71 @@
+{
+ "poison": {
+  "name": "Mérgezés"
+ },
+ "slow": {
+  "name": "Lassítás"
+ },
+ "burn": {
+  "name": "Égés"
+ },
+ "paralysis": {
+  "name": "Bénulás"
+ },
+ "freeze": {
+  "name": "Fagyás"
+ },
+ "sleep": {
+  "name": "Alvás"
+ },
+ "curse": {
+  "name": "Átok"
+ },
+ "protected": {
+  "name": "Védett"
+ },
+ "fortified": {
+  "name": "Megerősítve"
+ },
+ "focused": {
+  "name": "Összpontosít"
+ },
+ "hasted": {
+  "name": "Gyorsítva"
+ },
+ "exposed": {
+  "name": "Kitárulkozva"
+ },
+ "marked": {
+  "name": "Megjelölve"
+ },
+ "blinded": {
+  "name": "Elvakítva"
+ },
+ "softened": {
+  "name": "Meggyengült védelem"
+ },
+ "weakened": {
+  "name": "Legyengítve"
+ },
+ "disabled": {
+  "name": "Letiltva"
+ },
+ "confused": {
+  "name": "Zavart"
+ },
+ "pumped": {
+  "name": "Felpörögve"
+ },
+ "taunted": {
+  "name": "Provokálva"
+ },
+ "flinched": {
+  "name": "Megrettent"
+ },
+ "seeded": {
+  "name": "Magokkal beszórva"
+ },
+ "helped": {
+  "name": "Segítve"
+ }
+}

@@ -171,14 +171,19 @@ function drawPlanters(g: Phaser.GameObjects.Graphics, pts: V[], seed: number): v
   g.fillStyle(0x3a3d46, 1).fillPoints(pts, true);
   g.lineStyle(1.5, 0x16161c, 0.8).strokePoints(pts, true, true);
   const spots = scatter(shrink(pts, 0.85), 14, seed).sort((a, b) => a.y - b.y);
-  for (const p of spots) {
+  // No two alike: crowns of their own size and green, now and then a flowering one.
+  const crowns = [[0x1f5a24, 0x2f7a30, 0x5aaa48], [0x245a30, 0x347a40, 0x68b858], [0x2a5420, 0x40702a, 0x86b850]] as const;
+  spots.forEach((p, i) => {
+    const k = tileRand(i, seed, 60), r = 5 + k * 4;
+    const [dark, mid, light] = crowns[Math.floor(tileRand(i, seed, 61) * 3)]!;
     g.fillStyle(0x000000, 0.3).fillEllipse(p.x + 1, p.y + 6, 12, 4);
     g.fillStyle(0xa0522d, 1).fillRect(p.x - 5, p.y, 10, 7);
     g.fillStyle(0xc0703c, 1).fillRect(p.x - 6, p.y - 1, 12, 3);
-    g.fillStyle(0x1f5a24, 1).fillCircle(p.x, p.y - 5, 7);
-    g.fillStyle(0x2f7a30, 1).fillCircle(p.x - 2, p.y - 7, 5);
-    g.fillStyle(0x5aaa48, 1).fillCircle(p.x - 3, p.y - 9, 2);
-  }
+    g.fillStyle(dark, 1).fillCircle(p.x, p.y - r + 2, r);
+    g.fillStyle(mid, 1).fillCircle(p.x - 2, p.y - r, r * 0.7);
+    g.fillStyle(light, 1).fillCircle(p.x - 3, p.y - r - 2, 2);
+    if (tileRand(i, seed, 62) < 0.25) g.fillStyle(tileRand(i, seed, 63) < 0.5 ? 0xf06a8a : 0xf5e070, 1).fillCircle(p.x + 2, p.y - r - 1, 2);
+  });
 }
 
 /** Chaikin's corner cutting: a hard polygon becomes a smooth, natural outline. */

@@ -93,9 +93,10 @@ export function versusBands(scene: Phaser.Scene, area: { x: number; y: number; w
   const cy = area.y + area.h / 2;
   const bandH = 92, skew = 26;
   const parts: Phaser.GameObjects.GameObject[] = [];
+  const streaks: Phaser.GameObjects.Rectangle[] = [];
   const dim = scene.add.rectangle(area.x, area.y, area.w, area.h, 0x000000, 0).setOrigin(0).setDepth(55);
   parts.push(dim);
-  scene.tweens.add({ targets: dim, fillAlpha: 0.55, duration: 200 });
+  scene.tweens.add({ targets: dim, fillAlpha: 0.88, duration: 200 });
   const band = (side: VersusSide, left: boolean, row: number) => {
     const bw = area.w * 0.62;
     const top = cy - bandH + row * bandH - (left ? 6 : -6);
@@ -128,12 +129,24 @@ export function versusBands(scene: Phaser.Scene, area: { x: number; y: number; w
       b.fillStyle(0xf8f8f8, 1).fillCircle(0, 0, 1.4);
       return b;
     });
-    const c = scene.add.container(left ? area.x - bw : area.x + area.w, top, [g, fig, name, ...balls]).setDepth(56);
+    // Speed lines streaking through the band.
+    const lines = Array.from({ length: 6 }, (_, i) => {
+      const len = 40 + ((i * 37) % 60);
+      const ln = scene.add.rectangle(0, 10 + ((i * 29) % (bandH - 20)), len, 2, 0xffffff, 0.25).setOrigin(0, 0.5);
+      scene.tweens.add({ targets: ln, x: { from: left ? -len : bw, to: left ? bw : -len }, duration: 500 + i * 70, repeat: -1, delay: i * 90 });
+      streaks.push(ln);
+      return ln;
+    });
+    balls.forEach((b, i) => {
+      b.setScale(0);
+      scene.tweens.add({ targets: b, scale: 1, delay: 380 + i * 90, duration: 160, ease: "Back.easeOut" });
+    });
+    const c = scene.add.container(left ? area.x - bw : area.x + area.w, top, [g, ...lines, fig, name, ...balls]).setDepth(56);
     parts.push(c);
     return { c, home: left ? area.x : area.x + area.w - bw, away: left ? area.x - bw : area.x + area.w };
   };
   const a = band(you, true, 0), b = band(foe, false, 1);
-  const vs = pixText(scene, area.x + area.w / 2, cy, "VS", 0xf5d76e, 4).setOrigin(0.5).setDepth(57).setScale(3).setAlpha(0);
+  const vs = pixText(scene, area.x + area.w / 2, cy, "VS", 0xf5d76e, 6).setOrigin(0.5).setDepth(57).setScale(3).setAlpha(0);
   parts.push(vs);
   const tw = (cfg: Phaser.Types.Tweens.TweenBuilderConfig) => new Promise<void>((r) => scene.tweens.add({ ...cfg, onComplete: () => r() }));
   return (async () => {
@@ -145,6 +158,7 @@ export function versusBands(scene: Phaser.Scene, area: { x: number; y: number; w
     const flash = scene.add.rectangle(area.x, area.y, area.w, area.h, 0xffffff, 0.7).setOrigin(0).setDepth(58);
     scene.tweens.add({ targets: flash, alpha: 0, duration: 260, onComplete: () => flash.destroy() });
     await tw({ targets: vs, scale: 1, alpha: 1, duration: 220, ease: "Back.easeOut" });
+    scene.cameras.main.shake(180, 0.01);
     // The bands keep creeping inwards while the VS hangs there.
     scene.tweens.add({ targets: a.c, x: a.home + 10, duration: 1100 });
     scene.tweens.add({ targets: b.c, x: b.home - 10, duration: 1100 });
@@ -154,6 +168,7 @@ export function versusBands(scene: Phaser.Scene, area: { x: number; y: number; w
       tw({ targets: b.c, x: b.away, duration: 240, ease: "Cubic.easeIn" }),
       tw({ targets: [vs, dim], alpha: 0, duration: 240 }),
     ]);
+    scene.tweens.killTweensOf(streaks);
     parts.forEach((o) => o.destroy());
   })();
 }

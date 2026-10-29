@@ -267,5 +267,10 @@
  "Pincer!": "Harapófogó!",
  "Head-on": "Frontális",
  "Ambush!": "Rajtaütés!",
- "Boss": "Főellenfél"
+ "Boss": "Főellenfél",
+ "Wild {name}": "vad {name}",
+ "{unit} moves.": "{unit} mozog.",
+ "knockout bonus": "kiütési bónusz",
+ "+{n} EXP": "+{n} EXP",
+ "Critical hit!": "Kritikus találat!"
 }

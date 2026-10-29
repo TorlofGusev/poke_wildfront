@@ -206,7 +206,9 @@ export class TerrainShader {
     scene.textures.addCanvas(this.keyA, Object.assign(document.createElement("canvas"), { width: mw, height: mh }));
     scene.textures.addCanvas(this.keyB, Object.assign(document.createElement("canvas"), { width: mw, height: mh }));
     const hw = board.w, hh = board.h;
-    this.baked = scene.make.renderTexture({ x: 0, y: 0, width: hw, height: hh }, false).setOrigin(0);
+    // The drawn ground is baked at half resolution and sampled without smoothing: two screen pixels per art
+    // pixel, the sprites' own density, so ground and Pokémon read as one pixel-art picture.
+    this.baked = scene.make.renderTexture({ x: 0, y: 0, width: Math.ceil(hw / 2), height: Math.ceil(hh / 2) }, false).setOrigin(0);
     this.view = scene.add.renderTexture(board.x, board.y, hw, hh).setOrigin(0).setScale(board.w / hw, board.h / hh).setDepth(-1);
     const start = scene.time.now;
     const uniforms = (pass: number) => (set: (name: string, value: unknown) => void) => {
@@ -283,7 +285,9 @@ export class TerrainShader {
     this.write(this.keyA, [blurred[0]!, blurred[1]!, blurred[2]!]);
     this.write(this.keyB, [blurred[3]!, blurred[3]!, blurred[3]!]);
     // The drawn board is the base the moving pass works on.
-    this.baked.clear().draw(base, -this.board.x, -this.board.y).render();
+    base.setScale(0.5);
+    this.baked.clear().draw(base, -this.board.x / 2, -this.board.y / 2).render();
+    base.setScale(1);
     this.frame = 0;
     this.tick();
   }

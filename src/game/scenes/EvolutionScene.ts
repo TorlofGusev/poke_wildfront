@@ -145,7 +145,8 @@ export class EvolutionScene extends Phaser.Scene {
 
   /** The form in colour: its idle animation facing down, else the portrait. */
   private formView(speciesId: string, x: number, y: number): Phaser.GameObjects.Sprite | Phaser.GameObjects.Image {
-    if (hasSprite(speciesId)) return this.add.sprite(x, y, `${speciesId}-idle`).setScale(3).play(animKey(speciesId, "idle", 0));
+    // A whole-number scale keeps the sprite's pixels square; 5× makes it the centrepiece it should be.
+    if (hasSprite(speciesId)) return this.add.sprite(x, y, `${speciesId}-idle`).setScale(5).play(animKey(speciesId, "idle", 0));
     return this.add.image(x, y, portraitKey(speciesId)).setDisplaySize(120, 120);
   }
 
@@ -166,7 +167,7 @@ export class EvolutionScene extends Phaser.Scene {
       this.textures.addCanvas(key, c);
     }
     const img = this.add.image(x, y, key);
-    return hasSprite(speciesId) ? img.setScale(3) : img.setDisplaySize(120, 120);
+    return hasSprite(speciesId) ? img.setScale(5) : img.setDisplaySize(120, 120);
   }
 
   /** A spark drifting in from the dark towards the Pokémon. */

@@ -184,7 +184,7 @@ export function drawFlowerClusters(g: Phaser.GameObjects.Graphics, b: BoardRect,
 }
 
 /** Indoor floor: bevelled panels on both axes, and in Rocket rooms now and then a red R on the floor. */
-export function drawIndoorFloor(g: Phaser.GameObjects.Graphics, b: BoardRect, cell: number, rocket: boolean): void {
+export function drawIndoorFloor(g: Phaser.GameObjects.Graphics, b: BoardRect, cell: number, rocket: boolean, open: (x: number, y: number) => boolean = () => true): void {
   for (let y = b.y, j = 0; y < b.y + b.h; y += cell, j++)
     for (let x = b.x, i = 0; x < b.x + b.w; x += cell, i++) {
       const w = Math.min(cell, b.x + b.w - x), h = Math.min(cell, b.y + b.h - y);
@@ -193,7 +193,7 @@ export function drawIndoorFloor(g: Phaser.GameObjects.Graphics, b: BoardRect, ce
       g.fillStyle(0x000000, 0.25).fillRect(x, y + h - 1, w, 1).fillRect(x + w - 1, y, 1, h);
       // Rivets in the corners.
       g.fillStyle(0x6a6e7a, 1).fillRect(x + 4, y + 4, 2, 2).fillRect(x + w - 6, y + 4, 2, 2).fillRect(x + 4, y + h - 6, 2, 2).fillRect(x + w - 6, y + h - 6, 2, 2);
-      if (rocket && tileRand(i, j, 90) < 0.03) rocketR(g, x + w / 2, y + h / 2);
+      if (rocket && tileRand(i, j, 90) < 0.03 && open(x + w / 2, y + h / 2) && open(x + 4, y + 4) && open(x + w - 4, y + h - 4)) rocketR(g, x + w / 2, y + h / 2);
     }
 }
 

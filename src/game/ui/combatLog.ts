@@ -39,7 +39,7 @@ export function formatEvent(e: BattleEvent, ctx: LogContext): LogEntry | null {
       return null;
     case "moved":
       // Walks are measured in movement spent.
-      return { text: t("{unit} walks ({cost} movement)", { unit: name(e.unitId), cost: e.cost.toFixed(1) }), tone: side(e.unitId) };
+      return { text: t("{unit} moves.", { unit: name(e.unitId) }), tone: side(e.unitId) };
     case "engagementStrike":
       return { text: t("{unit} strikes {target} as it breaks away", { unit: name(e.unitId), target: name(e.targetId) }), tone: side(e.unitId) };
     case "combo":

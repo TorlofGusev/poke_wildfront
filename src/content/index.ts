@@ -188,7 +188,7 @@ export const CONTENT: BattleContent = {
   abilities: localized("abilities.json", abilities) as BattleContent["abilities"],
   types: TYPES,
   moves,
-  statuses,
+  statuses: localized("statuses.json", statuses) as typeof statuses,
   typeChart,
   rules,
   balls,
