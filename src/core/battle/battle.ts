@@ -538,8 +538,8 @@ function adjacentAllies(state: BattleState, user: BattleUnit, target: BattleUnit
 }
 
 /** Product of a multiplier over the unit's active statuses (Burn, Curse…). */
-function statusFactor(content: BattleContent, unit: BattleUnit, field: "damageDealt" | "damageTaken"): number {
-  return unit.statuses.reduce((f, st) => f * (content.statuses[st.id]?.[field] ?? 1), 1);
+function statusFactor(content: BattleContent, unit: BattleUnit, field: "damageDealt" | "damageTaken", ignoreBuffs = false): number {
+  return unit.statuses.reduce((f, st) => f * (ignoreBuffs && content.statuses[st.id]?.buff ? 1 : content.statuses[st.id]?.[field] ?? 1), 1);
 }
 
 function heal(unit: BattleUnit, amount: number, events: BattleEvent[]): void {
@@ -670,6 +670,7 @@ function resolveHits(
   let comboScored = false;
   let koScored = false;
   let furyCounted = false;
+  let dealtToFoes = 0;
   const bondOn = (when: "combo" | "knockout") =>
     (move.effects ?? []).reduce((s, e) => s + (e.kind === "bond" && e.when === when ? e.amount : 0), 0);
   for (const t of affected) {
@@ -687,7 +688,7 @@ function resolveHits(
         (mech.flankBonus && helpers > 0 ? mech.flankBonus + m.flankBonus : 1) *
         (1 + (mech.swarmBonus ? (mech.swarmBonus + m.swarmBonus) * helpers : 0));
       // Guts shrugs off the damage penalties of its own statuses (Burn).
-      const statusMult = (m.statusedDamage > 1 ? 1 : statusFactor(content, user, "damageDealt")) * statusFactor(content, t, "damageTaken");
+      const statusMult = (m.statusedDamage > 1 ? 1 : statusFactor(content, user, "damageDealt")) * statusFactor(content, t, "damageTaken", move.ignoresBuffs);
       const sheer = m.sheerForce && isFoe && hasStatusEffect(content, user, move);
       const setup = isFoe ? comboSetup(state, content, user, t) : null;
       const combo = setup ? content.rules.combos[setup]! : null;
@@ -729,15 +730,23 @@ function resolveHits(
       const defense = mech.ignoresDefense ? 0 : t.stats.defense;
       const attack = move.scaleStat ? user.stats[move.scaleStat] : user.stats.attack;
       // Critical hit: Crit raises both the chance and the size (seeded, so replays match).
-      const crit = isFoe && mult > 0 && !move.currentHpDamage && !t.mods.critImmune && roll(state) < critChance(content, user);
       const power = move.power * (1 + (move.lowHpPower ?? 0) * (1 - user.hp / user.maxHp))
+        * (move.statusedPower && ailments(content, user).length > 0 ? 1 + move.statusedPower : 1)
         * (1 + (move.vsLowHpPower ?? 0) * (1 - t.hp / t.maxHp) + (move.vsFullHpPower ?? 0) * (t.hp / t.maxHp));
-      const formula = (power * (off + attack + user.attackBoost)) / (off + defense) * mult / content.rules.damageDivisor * (crit ? critMultiplier(content, user) : 1);
-      // A fixed share of the target's HP ignores stats and bonuses, but not Protect.
-      const raw = move.currentHpDamage ? (mult > 0 ? t.hp * move.currentHpDamage : 0) : formula;
-      if (crit) events.push({ type: "critical", unitId: user.id, targetId: t.id });
-      // Any hit deals at least 1, unless something blocks all damage (Protect).
-      const dealt = dealDamage(state, t, mult > 0 ? Math.max(1, Math.round(raw)) : 0, "move", events, eff);
+      const hits = move.hits ?? 1;
+      const formula = (power * (off + attack + user.attackBoost)) / (off + defense) * mult / content.rules.damageDivisor / hits;
+      // A multi-hit move splits its power over its hits, each rolling its own critical hit.
+      let dealt = 0;
+      for (let h = 0; h < hits && t.hp > 0; h++) {
+        const crit = isFoe && mult > 0 && !move.currentHpDamage && !t.mods.critImmune && roll(state) < critChance(content, user);
+        // A fixed share of the target's HP ignores stats and bonuses, but not Protect.
+        const raw = move.currentHpDamage ? (mult > 0 ? t.hp * move.currentHpDamage : 0) : formula * (crit ? critMultiplier(content, user) : 1);
+        if (crit) events.push({ type: "critical", unitId: user.id, targetId: t.id });
+        // Any hit deals at least 1, unless something blocks all damage (Protect).
+        const amount = mult > 0 ? Math.max(1, Math.round(raw)) : 0;
+        dealt += dealDamage(state, t, move.nonLethal ? Math.min(amount, t.hp - 1) : amount, "move", events, eff);
+      }
+      if (isFoe) dealtToFoes += dealt;
       if (dealt > 0 && t.hp > 0) onDamaged(content, user, t, contact, events);
       if (dealt > 0 && isFoe) spirit(state, content, user, content.rules.willpower.perHit, events);
       if (dealt > 0 && isFoe && !furyCounted) {
@@ -833,6 +842,9 @@ function resolveHits(
     if (mech.extraPull) displace(state, content, user, t, "pull", mech.extraPull + user.mods.pullBonus, events);
     if (mech.terrainOnHit) changeTerrain(state, t.pos, mech.terrainOnHit, events);
   }
+  // The price of a big move: recoil from the damage dealt, and a status on the user.
+  if (move.recoil && dealtToFoes > 0 && user.hp > 0) dealDamage(state, user, Math.max(1, Math.round(dealtToFoes * move.recoil)), "recoil", events);
+  if (move.selfStatus && user.hp > 0) applyStatus(content, user, user, move.selfStatus.status, move.selfStatus.duration, events, state);
 }
 
 function doThrowBall(
@@ -920,7 +932,7 @@ function dealDamage(
   state: BattleState,
   unit: BattleUnit,
   amount: number,
-  source: "move" | "status" | "impact" | "thorns",
+  source: "move" | "status" | "impact" | "thorns" | "recoil",
   events: BattleEvent[],
   effectiveness?: number,
 ): number {

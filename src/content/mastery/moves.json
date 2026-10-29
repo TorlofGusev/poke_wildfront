@@ -783,6 +783,7 @@
   "id": "bonemerang",
   "name": "Bonemerang",
   "type": "ground",
+  "hits": 2,
   "kind": "special",
   "cooldown": 2,
   "power": 75,
@@ -830,6 +831,7 @@
   "id": "brave-bird",
   "name": "Brave Bird",
   "type": "flying",
+  "recoil": 0.33,
   "kind": "special",
   "category": "physical",
   "cooldown": 5,
@@ -1279,6 +1281,7 @@
   "id": "chip-away",
   "name": "Chip Away",
   "type": "normal",
+  "ignoresBuffs": true,
   "kind": "special",
   "power": 65,
   "range": {
@@ -1345,6 +1348,7 @@
   "id": "close-combat",
   "name": "Close Combat",
   "type": "fighting",
+  "selfStatus": {"status": "weakened", "duration": 2},
   "kind": "special",
   "cooldown": 4,
   "power": 95,
@@ -1686,6 +1690,7 @@
   "id": "darkest-lariat",
   "name": "Darkest Lariat",
   "type": "dark",
+  "ignoresBuffs": true,
   "kind": "special",
   "power": 75,
   "range": {
@@ -1911,6 +1916,7 @@
   "id": "double-edge",
   "name": "Double-Edge",
   "type": "normal",
+  "recoil": 0.33,
   "kind": "special",
   "power": 95,
   "range": {
@@ -1931,6 +1937,7 @@
   "id": "double-hit",
   "name": "Double Hit",
   "type": "normal",
+  "hits": 2,
   "kind": "special",
   "category": "physical",
   "cooldown": 4,
@@ -1975,6 +1982,7 @@
   "id": "draco-meteor",
   "name": "Draco Meteor",
   "type": "dragon",
+  "selfStatus": {"status": "weakened", "duration": 2},
   "kind": "special",
   "cooldown": 4,
   "power": 80,
@@ -2283,6 +2291,7 @@
   "id": "dual-chop",
   "name": "Dual Chop",
   "type": "dragon",
+  "hits": 2,
   "kind": "special",
   "power": 75,
   "range": {
@@ -2303,6 +2312,7 @@
   "id": "dual-wingbeat",
   "name": "Dual Wingbeat",
   "type": "flying",
+  "hits": 2,
   "kind": "special",
   "power": 75,
   "range": {
@@ -2706,6 +2716,7 @@
   "id": "false-swipe",
   "name": "False Swipe",
   "type": "normal",
+  "nonLethal": true,
   "kind": "special",
   "power": 45,
   "range": {
@@ -2750,6 +2761,7 @@
   "id": "feint",
   "name": "Feint",
   "type": "normal",
+  "ignoresBuffs": true,
   "kind": "special",
   "power": 40,
   "range": {
@@ -2770,6 +2782,7 @@
   "id": "feint-attack",
   "name": "Feint Attack",
   "type": "dark",
+  "ignoresBuffs": true,
   "kind": "special",
   "power": 60,
   "range": {
@@ -3039,6 +3052,7 @@
   "id": "flare-blitz",
   "name": "Flare Blitz",
   "type": "fire",
+  "recoil": 0.33,
   "kind": "special",
   "category": "physical",
   "power": 95,
@@ -3547,7 +3561,8 @@
   "type": "normal",
   "kind": "special",
   "category": "physical",
-  "power": 110,
+  "power": 55,
+  "vsLowHpPower": 1.5,
   "range": {
    "min": 1,
    "max": 1
@@ -3616,6 +3631,7 @@
   "id": "hammer-arm",
   "name": "Hammer Arm",
   "type": "fighting",
+  "selfStatus": {"status": "weakened", "duration": 2},
   "kind": "special",
   "category": "physical",
   "cooldown": 5,
@@ -3691,6 +3707,7 @@
   "id": "head-smash",
   "name": "Head Smash",
   "type": "rock",
+  "recoil": 0.5,
   "kind": "special",
   "requiresLineOfSight": false,
   "affects": "enemies",
@@ -3902,6 +3919,7 @@
   "id": "high-jump-kick",
   "name": "High Jump Kick",
   "type": "fighting",
+  "recoil": 0.25,
   "kind": "special",
   "category": "physical",
   "cooldown": 5,
@@ -4547,6 +4565,7 @@
   "id": "lash-out",
   "name": "Lash Out",
   "type": "dark",
+  "statusedPower": 1,
   "kind": "special",
   "power": 70,
   "range": {
@@ -4634,6 +4653,7 @@
   "id": "leaf-storm",
   "name": "Leaf Storm",
   "type": "grass",
+  "selfStatus": {"status": "weakened", "duration": 2},
   "kind": "special",
   "category": "special",
   "cooldown": 4,
@@ -4931,9 +4951,10 @@
   "power": 45,
   "range": {
    "min": 1,
-   "max": 1
+   "max": 2
   },
   "requiresLineOfSight": false,
+  "effects": [{"kind": "engage"}],
   "shape": {
    "kind": "single"
   },
@@ -5801,6 +5822,7 @@
   "id": "outrage",
   "name": "Outrage",
   "type": "dragon",
+  "selfStatus": {"status": "confused", "duration": 2},
   "kind": "special",
   "category": "physical",
   "power": 95,
@@ -5821,6 +5843,7 @@
   "id": "overheat",
   "name": "Overheat",
   "type": "fire",
+  "selfStatus": {"status": "weakened", "duration": 2},
   "kind": "special",
   "category": "special",
   "cooldown": 5,
@@ -5929,6 +5952,7 @@
   "id": "petal-dance",
   "name": "Petal Dance",
   "type": "grass",
+  "selfStatus": {"status": "confused", "duration": 2},
   "kind": "special",
   "cooldown": 3,
   "power": 95,
@@ -8518,6 +8542,7 @@
   "id": "submission",
   "name": "Submission",
   "type": "fighting",
+  "recoil": 0.25,
   "kind": "special",
   "category": "physical",
   "cooldown": 4,
@@ -8623,6 +8648,7 @@
   "id": "superpower",
   "name": "Superpower",
   "type": "fighting",
+  "selfStatus": {"status": "weakened", "duration": 2},
   "kind": "special",
   "category": "physical",
   "cooldown": 5,
@@ -8922,9 +8948,10 @@
   "id": "take-down",
   "name": "Take Down",
   "type": "normal",
+  "recoil": 0.25,
   "kind": "special",
   "cooldown": 3,
-  "power": 80,
+  "power": 90,
   "range": {
    "min": 1,
    "max": 1
@@ -9045,6 +9072,7 @@
   "id": "thrash",
   "name": "Thrash",
   "type": "normal",
+  "selfStatus": {"status": "confused", "duration": 2},
   "kind": "special",
   "cooldown": 3,
   "power": 95,
@@ -9527,6 +9555,7 @@
   "id": "volt-tackle",
   "name": "Volt Tackle",
   "type": "electric",
+  "recoil": 0.33,
   "kind": "special",
   "category": "physical",
   "power": 95,
@@ -9648,8 +9677,9 @@
   "id": "wave-crash",
   "name": "Wave Crash",
   "type": "water",
+  "recoil": 0.33,
   "kind": "special",
-  "power": 95,
+  "power": 100,
   "range": {
    "min": 1,
    "max": 1
@@ -9747,10 +9777,11 @@
   "id": "wild-charge",
   "name": "Wild Charge",
   "type": "electric",
+  "recoil": 0.25,
   "kind": "special",
   "requiresLineOfSight": true,
   "affects": "enemies",
-  "power": 80,
+  "power": 90,
   "range": {
    "min": 1,
    "max": 1
@@ -9845,6 +9876,7 @@
   "id": "wood-hammer",
   "name": "Wood Hammer",
   "type": "grass",
+  "recoil": 0.33,
   "kind": "special",
   "category": "physical",
   "power": 95,

@@ -414,6 +414,7 @@
   "id": "twineedle",
   "name": "Twineedle",
   "type": "bug",
+  "hits": 2,
   "kind": "special",
   "power": 40,
   "range": {
@@ -638,6 +639,7 @@
   "id": "double-kick",
   "name": "Double Kick",
   "type": "fighting",
+  "hits": 2,
   "kind": "basic",
   "power": 50,
   "range": {

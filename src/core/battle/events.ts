@@ -16,7 +16,7 @@ export type BattleEvent =
   /** A named combo (rules.combos): the hit exploited an ally's engagement or status. */
   | { type: "combo"; unitId: string; targetId: string; combo: string }
   | { type: "disengaged"; unitId: string; targetId: string }
-  | { type: "damaged"; unitId: string; amount: number; hp: number; source: "move" | "status" | "impact" | "thorns"; effectiveness?: number }
+  | { type: "damaged"; unitId: string; amount: number; hp: number; source: "move" | "status" | "impact" | "thorns" | "recoil"; effectiveness?: number }
   | { type: "healed"; unitId: string; amount: number; hp: number }
   /** Pushed or pulled; `engage` marks an engaged pair stepping together (not a knockback). */
   | { type: "displaced"; unitId: string; from: Point; to: Point; blocked: boolean; engage?: true }

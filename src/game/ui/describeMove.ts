@@ -24,6 +24,12 @@ export function describeMove(content: BattleContent, move: MoveDef): string {
     move.currentHpDamage ? t("Deals {n} of the target's current HP, whatever the stats and type", { n: tag("dmg", `${Math.round(move.currentHpDamage * 100)}%`) })
     : move.power > 0 ? t("Power {n} {hint}", { n: tag("dmg", move.power), hint: tag("dim", t("(hover a target to see the exact damage)")) }) : tag("dim", t("No damage")),
   ];
+  if (move.hits) lines.push(t("Hits {n} times, its power split between them; each hit can be critical", { n: tag("num", move.hits) }));
+  if (move.recoil) lines.push(t("Recoil: the user takes {n} of the damage it deals", { n: tag("bad", `${Math.round(move.recoil * 100)}%`) }));
+  if (move.selfStatus) lines.push(t("Price: the user becomes {status} for {n} turns", { status: tag("status", content.statuses[move.selfStatus.status]?.name ?? move.selfStatus.status), n: tag("num", move.selfStatus.duration) }));
+  if (move.nonLethal) lines.push(t("Never knocks out: leaves the target at 1 HP at least (handy for catching)"));
+  if (move.statusedPower) lines.push(t("Hits harder while the user has an ailment: {n} power", { n: tag("dmg", Math.round(move.power * (1 + move.statusedPower))) }));
+  if (move.ignoresBuffs) lines.push(t("Ignores the target's protective buffs"));
   if (move.vsLowHpPower) lines.push(t("Hits harder the more HP the target has lost: up to {n} power against a target at 0 HP", { n: tag("dmg", Math.round(move.power * (1 + move.vsLowHpPower))) }));
   if (move.vsFullHpPower) lines.push(t("Hits harder the more HP the target has left: {n} power against a target at full HP", { n: tag("dmg", Math.round(move.power * (1 + move.vsFullHpPower))) }));
   if (move.lowHpPower) lines.push(t("Hits harder the more HP the user has lost: up to {n} power at 0 HP", { n: tag("dmg", Math.round(move.power * (1 + move.lowHpPower))) }));

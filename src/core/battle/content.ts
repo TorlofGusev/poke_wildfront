@@ -103,6 +103,18 @@ export interface MoveDef {
   readonly vsLowHpPower?: number;
   /** Power grows with the target's HP: +this share against a target at full HP (Wring Out). */
   readonly vsFullHpPower?: number;
+  /** Hits this many times, its power split between them; each hit rolls its own critical hit (Double Hit). */
+  readonly hits?: number;
+  /** The user takes this share of the damage it dealt (Double-Edge, Head Smash). */
+  readonly recoil?: number;
+  /** A status the user puts on itself, the price of the move (Superpower: weakened; Outrage: confused). */
+  readonly selfStatus?: { readonly status: string; readonly duration: number };
+  /** Ignores the target's protective buffs (Fortified…) (Chip Away, Darkest Lariat). */
+  readonly ignoresBuffs?: boolean;
+  /** Never knocks out: leaves the target at 1 HP at least (False Swipe, for catching). */
+  readonly nonLethal?: boolean;
+  /** Power grows by this share while the user has an ailment (Lash Out). */
+  readonly statusedPower?: number;
   readonly effects?: readonly MoveEffect[];
   /**
    * delayed: marks the ground now and strikes it at the start of the user's next turn, hitting whoever stands
@@ -170,6 +182,8 @@ export interface BattleRules {
     readonly burst1: number; readonly burst2: number; readonly line: number; readonly cone: number;
     /** A delayed strike can be dodged, so it hits harder. */
     readonly delayed: number;
+    /** Moves with a price for the user (recoil, a status on itself) hit this much harder. */
+    readonly drawback: number;
   };
   /** Base Speed a role adds (melee) or takes (ranged); the stat total stays the same. */
   /** Base Speed of each role (a species' types lean it ±1). */

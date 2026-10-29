@@ -51,7 +51,7 @@ export function formatEvent(e: BattleEvent, ctx: LogContext): LogEntry | null {
       return { text: t("{unit} uses {move}{targets}", { unit: name(e.unitId), move: tag("title", ctx.moveName(e.moveId)), targets }), tone: side(e.unitId) };
     }
     case "damaged": {
-      const why = e.source === "status" ? t(" from status") : e.source === "impact" ? t(" from impact") : e.source === "thorns" ? t(" from spikes") : "";
+      const why = e.source === "status" ? t(" from status") : e.source === "impact" ? t(" from impact") : e.source === "thorns" ? t(" from spikes") : e.source === "recoil" ? t(" from recoil") : "";
       const eff = e.effectiveness === undefined || e.effectiveness === 1 ? ""
         : e.effectiveness > 1 ? ` ${tag("good", t("(super effective ×{n})", { n: e.effectiveness }))}` : ` ${tag("dim", t("(not very effective ×{n})", { n: e.effectiveness }))}`;
       return { text: t("{unit} takes {dmg}{why}{eff} — {hp} HP left", { unit: name(e.unitId), dmg: tag("dmg", t("{n} damage", { n: e.amount })), why, eff, hp: e.hp }), tone: "damage" };

@@ -46,6 +46,36 @@ describe("move mechanics behind canon names", () => {
     expect(dealt("wring-out", 1)).toBeGreaterThan(dealt("wring-out", 0.6) * 1.2);
   });
 
+  it("a move's price: recoil hurts the user, Superpower weakens it, Outrage confuses it", () => {
+    const use = (move: string) => {
+      const { state } = createBattle(CONTENT, ["....."], [u("p", "machamp", "player", 0, ["karate-chop", move]), u("e", "snorlax", "enemy", 1, ["tackle"])], { bond: { player: { start: 6, max: 6 } } });
+      return applyAction(state, CONTENT, { type: "useMove", unitId: "p", moveId: move, target: { x: 1, y: 0 } });
+    };
+    const r = use("double-edge");
+    const dealt = (r.events.find((e) => e.type === "damaged" && e.unitId === "e") as { amount: number }).amount;
+    expect(r.events).toContainEqual(expect.objectContaining({ type: "damaged", unitId: "p", source: "recoil", amount: Math.max(1, Math.round(dealt * 0.33)) }));
+    expect(use("superpower").state.units.find((x) => x.id === "p")!.statuses).toContainEqual(expect.objectContaining({ id: "weakened" }));
+    expect(use("outrage").state.units.find((x) => x.id === "p")!.statuses).toContainEqual(expect.objectContaining({ id: "confused" }));
+  });
+
+  it("Double Hit lands twice; Chip Away ignores a fortified target's buff", () => {
+    const { state } = createBattle(CONTENT, ["....."], [u("p", "machamp", "player", 0, ["karate-chop", "double-hit", "chip-away", "slam"]), u("e", "snorlax", "enemy", 1, ["tackle"])], { seed: 3, bond: { player: { start: 6, max: 6 } } });
+    const hitsOn = (r: ReturnType<typeof applyAction>) => r.events.filter((e) => e.type === "damaged" && e.unitId === "e").length;
+    expect(hitsOn(applyAction(state, CONTENT, { type: "useMove", unitId: "p", moveId: "double-hit", target: { x: 1, y: 0 } }))).toBe(2);
+    const fortified = { ...state, units: state.units.map((x) => (x.id === "e" ? { ...x, statuses: [{ id: "fortified", turnsLeft: 2 }] } : x)) };
+    const lost = (s: typeof state, move: string) => s.units.find((x) => x.id === "e")!.hp - hp(applyAction(s, CONTENT, { type: "useMove", unitId: "p", moveId: move, target: { x: 1, y: 0 } }), "e");
+    expect(lost(fortified, "chip-away")).toBeGreaterThanOrEqual(lost(state, "chip-away") - 1);
+  });
+
+  it("False Swipe never knocks out; Lash Out hits harder while the user has an ailment", () => {
+    const { state } = createBattle(CONTENT, ["....."], [u("p", "machamp", "player", 0, ["karate-chop", "false-swipe", "lash-out"]), u("e", "rattata", "enemy", 1, ["tackle"])], { seed: 2, bond: { player: { start: 6, max: 6 } } });
+    const low = { ...state, units: state.units.map((x) => (x.id === "e" ? { ...x, hp: 3 } : x)) };
+    expect(hp(applyAction(low, CONTENT, { type: "useMove", unitId: "p", moveId: "false-swipe", target: { x: 1, y: 0 } }), "e")).toBe(1);
+    const lost = (s: typeof state) => s.units.find((x) => x.id === "e")!.hp - hp(applyAction(s, CONTENT, { type: "useMove", unitId: "p", moveId: "lash-out", target: { x: 1, y: 0 } }), "e");
+    const burnt = { ...state, units: state.units.map((x) => (x.id === "p" ? { ...x, statuses: [{ id: "poison", turnsLeft: 2 }] } : x)) };
+    expect(lost(burnt)).toBeGreaterThan(lost(state) * 1.5);
+  });
+
   it("U-turn and Flip Turn end the user's engagement after the hit", () => {
     for (const move of ["u-turn", "flip-turn"]) {
       const { state } = createBattle(CONTENT, ["....."], [u("p", "scyther", "player", 0, ["cut", move]), u("e", "rattata", "enemy", 1, ["tackle"])]);
