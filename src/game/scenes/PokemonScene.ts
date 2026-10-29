@@ -134,7 +134,14 @@ export class PokemonScene extends Phaser.Scene {
     add(new Button(this, right - 120, 12, 120, 26, t("← Camp"), () => this.scene.start("Party", { rested: false, choosingMeal: false })));
     add(new Button(this, right - 172, 12, 40, 26, " ▶", () => go(1)).setEnabled(list.length > 1));
     const count = text(right - 180, 17, list === roster.storage ? t("{i}/{n} in storage", { i: idx + 1, n: list.length }) : `${idx + 1}/${list.length}`, COLORS.dim, 13).setOrigin(1, 0);
-    add(new Button(this, count.x - count.width - 48, 12, 40, 26, " ◀", () => go(-1)).setEnabled(list.length > 1));
+    const prev = add(new Button(this, count.x - count.width - 48, 12, 40, 26, " ◀", () => go(-1)).setEnabled(list.length > 1));
+    // Party ↔ storage sits by the pager: it is about which list this Pokémon is in, on every tab.
+    const shown = this.selected ? findMember(session.game, this.selected) : undefined;
+    if (shown) {
+      const inParty = roster.party.some((x) => x.uid === shown.uid);
+      add(new Button(this, prev.x - 136, 12, 128, 26, inParty ? t("📦 To storage") : t("↩ To party"), () =>
+        this.act(() => session.update({ ...session.game, roster: moveBetweenPartyAndStorage(session.game.roster, shown.uid) }))));
+    }
 
     const member = this.selected ? findMember(session.game, this.selected) : undefined;
     if (member) this.renderDetail(member, add);
@@ -379,18 +386,6 @@ export class PokemonScene extends Phaser.Scene {
     }
     y = Math.max(y, rowY) + 6;
 
-    const bx = { x: DETAIL_X };
-    const chip = (label: string, onClick: () => void) => {
-      const w = Math.min(DETAIL_W, label.length * 8 + 20);
-      if (bx.x + w > DETAIL_X + DETAIL_W) {
-        bx.x = DETAIL_X;
-        y += 28;
-      }
-      add(new Button(this, bx.x, y, w, 24, label, onClick));
-      bx.x += w + 6;
-    };
-    const inParty = session.game.roster.party.some((x) => x.uid === m.uid);
-    chip(inParty ? t("Send to storage") : t("Move to party"), () => this.act(() => session.update({ ...session.game, roster: moveBetweenPartyAndStorage(session.game.roster, m.uid) })));
   }
 
   /**

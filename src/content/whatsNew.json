@@ -1,5 +1,6 @@
 [
  {"version": "0.99", "date": "2026-10-29", "items": [
+  "Pokémon screen: To storage / To party sits in the header by the pager, on every tab.",
   "Balls fly up to 4 away (was 3).", "Moves that burst around the user (Earthquake…) say so: ◎2 in the move lists, \"around itself\" in the details, instead of range 0.",
   "Trainers on the map are people now, dressed by class (Youngster cap, Bug Catcher net, Hiker backpack, Rocket black…), their lead Pokémon small at their side.",
   "Bigger battles wait for badges: 3 Pokémon a side until your first badge, one more slot per badge up to the map's size.",
