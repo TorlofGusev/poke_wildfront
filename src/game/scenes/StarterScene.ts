@@ -34,7 +34,9 @@ export class StarterScene extends Phaser.Scene {
       const ability = s.ability ? CONTENT.abilities[s.ability] : undefined;
       new RichText(this, x + 10, y + 98, cardW - 20, 11).setMarkup([
         `${tag("title", s.name)}  ${s.types.map((ty) => tag(ty, ty)).join("/")}`,
-        `HP ${s.stats.hp}  ${statLine(s.stats)}`,
+        // Two even rows: the card is too narrow for all six stats on one.
+        `HP ${s.stats.hp}  ${statLine(s.stats).split("  ").slice(0, 2).join("  ")}`,
+        statLine(s.stats).split("  ").slice(2).join("  "),
         "",
         ...s.types.map((ty) => tag("dim", CONTENT.types[ty]?.summary ?? "")),
         "",

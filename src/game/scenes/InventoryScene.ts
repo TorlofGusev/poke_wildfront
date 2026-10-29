@@ -28,7 +28,11 @@ export class InventoryScene extends Phaser.Scene {
     new RichText(this, 90, 19, 400, 14).setMarkup(`${tag("num", `₽${money}`)}`);
     new Button(this, 794, 12, 150, 26, t("← Back"), () => this.scene.start(this.returnTo, this.returnTo === "Party" ? { rested: false, choosingMeal: false } : {}));
 
-    const heldBy = (id: string) => roster.party.concat(roster.storage).filter((m) => m.heldItem === id).map((m) => CONTENT.species[m.speciesId]!.name);
+    // Who holds an item, a repeated species counted once ("Charizard ×2").
+    const heldBy = (id: string) => {
+      const names = roster.party.concat(roster.storage).filter((m) => m.heldItem === id).map((m) => CONTENT.species[m.speciesId]!.name);
+      return [...new Set(names)].map((n) => (names.filter((x) => x === n).length > 1 ? `${n} ×${names.filter((x) => x === n).length}` : n));
+    };
     const groups: [string, string[]][] = [
       [t("Poké Balls"), Object.keys(CONTENT.balls)],
       [CONTENT.terms.food, Object.values(PROGRESSION.items).filter((i) => i.kind === "food").map((i) => i.id)],
@@ -46,7 +50,8 @@ export class InventoryScene extends Phaser.Scene {
           if (count <= 0 && holders.length === 0) return null;
           const name = ball?.name ?? PROGRESSION.items[id]!.name;
           const effect = ball ? t("catch chance ×{x}", { x: ball.multiplier }) : describeItem(CONTENT, PROGRESSION.items[id]!).join(" · ");
-          return `${tag("num", `${count}×`)} ${tag("title", name)} ${tag("dim", "—")} ${effect}${holders.length ? tag("dim", t(" (held by {names})", { names: holders.join(", ") })) : ""}`;
+          // Every one of them held: no "0×" in front, the holders say where they are.
+          return `${count > 0 ? `${tag("num", `${count}×`)} ` : ""}${tag("title", name)} ${tag("dim", "—")} ${effect}${holders.length ? tag("dim", t(" (held by {names})", { names: holders.join(", ") })) : ""}`;
         })
         .filter((r): r is string => r !== null);
       const block = [tag("special", title), ...(rows.length ? rows : [tag("dim", t("none"))])];

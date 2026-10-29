@@ -42,7 +42,7 @@ import { type Role, baseMovement, speedAtMoveCap, STAT_NAMES, type StatName } fr
 import { session } from "../session";
 import { portraitKey } from "../sprites";
 import { Button } from "../ui/Button";
-import { describeItem, focusLabel, describeTalent, STAT_LABEL, STAT_SHORT, statLine } from "../ui/describeEffects";
+import { describeItem, focusLabel, describeTalent, STAT_LABEL, STAT_SHORT } from "../ui/describeEffects";
 import { describeMove, reachShort } from "../ui/describeMove";
 import { tag } from "../ui/markup";
 import { t } from "../i18n";
@@ -178,7 +178,8 @@ export class PokemonScene extends Phaser.Scene {
     const evo = s.evolution ? t(" · evolves at Lv {lv}", { lv: s.evolution.level }) : "";
     const header = [
       `${tag("title", s.name)}  ${s.types.map((t) => tag(t, t)).join("/")}${roleTag(s.role)}  Lv ${tag("num", m.level)}  XP ${m.xp}/${xpToNext(PROGRESSION, m.level)}${tag("dim", evo)}`,
-      `HP ${tag(m.hp > 0 ? "heal" : "ko", `${m.hp}/${maxHp}`)}  ${statLine(stats)}  KO ${tag(m.knockouts ? "ko" : "dim", `${m.knockouts}/${KNOCKOUTS_TO_DEATH}`)}`,
+      // The stats themselves live on the Stats tab, with what each one does.
+      `HP ${tag(m.hp > 0 ? "heal" : "ko", `${m.hp}/${maxHp}`)}  KO ${tag(m.knockouts ? "ko" : "dim", `${m.knockouts}/${KNOCKOUTS_TO_DEATH}`)}`,
       ...(s.ability && CONTENT.abilities[s.ability] ? [`${t("Ability:")} ${tag("special", CONTENT.abilities[s.ability]!.name)} ${tag("dim", CONTENT.abilities[s.ability]!.description)}`] : []),
       `${t("Focus:")} ${m.focus ? tag("special", focusLabel(m.focus)) : tag("dim", m.level < PROGRESSION.rules.focusLevel ? t("chosen at Lv {lv}", { lv: PROGRESSION.rules.focusLevel }) : t("not chosen"))}  ${t("Held:")} ${held ? tag("num", held.name) : tag("dim", t("nothing"))}`,
     ];
@@ -242,13 +243,15 @@ export class PokemonScene extends Phaser.Scene {
       this.root.bringToTop(tip);
       tip.setVisible(true);
     };
+    // With nothing hovered the panel explains the focus stat (or HP), so the space is never empty.
+    const rest = () => show(m.focus ?? "hp");
     const offers = points ? statOffer(CONTENT, PROGRESSION, m) : [];
     const max = Math.max(10, ...STAT_NAMES.map((st) => stats[st]));
     for (const st of STAT_NAMES) {
       const offer = offers.find((o) => o.stat === st);
       const hit = add(this.add.rectangle(DETAIL_X, y - 2, 300, 22, 0xffffff, offer ? 0.05 : 0.001).setOrigin(0).setInteractive({ useHandCursor: true }));
       hit.on("pointerover", () => (hit.setFillStyle(0xffffff, 0.08), show(st)));
-      hit.on("pointerout", () => (hit.setFillStyle(0xffffff, offer ? 0.05 : 0.001), tip.setVisible(false)));
+      hit.on("pointerout", () => (hit.setFillStyle(0xffffff, offer ? 0.05 : 0.001), rest()));
       hit.on("pointerdown", () => show(st));
       add(new RichText(this, DETAIL_X + 6, y, 120, 13)).setMarkup(`${STAT_LABEL[st]}${m.focus === st ? ` ${tag("good", "★")}` : ""}`);
       add(new RichText(this, DETAIL_X + 130, y, 40, 13)).setMarkup(tag("num", `${stats[st]}`));
@@ -263,10 +266,11 @@ export class PokemonScene extends Phaser.Scene {
         const label = `+${gain}${lucky ? " ★" : ""}${cost ? ` · ${cost} EV` : ""}`;
         add(new Button(this, DETAIL_X + 310, y - 3, 130, 22, label, () =>
           this.act(() => session.update(allocatePoint(CONTENT, PROGRESSION, session.game, m.uid, st, upgrade))))
-          .setEnabled(ev >= cost).setHighlighted(!!offer).onHover((over) => (over ? show(st, gain) : tip.setVisible(false))));
+          .setEnabled(ev >= cost).setHighlighted(!!offer).onHover((over) => (over ? show(st, gain) : rest())));
       }
       y += 24;
     }
+    rest();
     add(new RichText(this, DETAIL_X, y + 2, rowW, 11)).setMarkup(tag("dim", points
       ? t("Highlighted stats are offered this level and cost no EV. Hover a stat for details.")
       : t("Hover or tap a stat for details.")));
@@ -291,13 +295,14 @@ export class PokemonScene extends Phaser.Scene {
       crit: t("Critical hits: {c} chance, ×{x} damage now.", {
         c: tag("num", pct(r.crit.base + r.crit.perPoint * stats.crit)), x: tag("num", (r.crit.damage + r.crit.damagePerPoint * stats.crit).toFixed(2)) }),
     };
+    // Tags do not nest: each part carries its own colour.
     const parts = [
-      t("Species {n}", { n: s.stats[st] }),
+      tag("dim", t("Species {n}", { n: s.stats[st] })),
       ...(growth ? [tag("good", t("Focus +{n}", { n: growth }))] : []),
-      ...(m.statPoints[st] ? [t("Points +{n}", { n: m.statPoints[st] })] : []),
-      ...(talents ? [t("Masteries +{n}", { n: talents })] : []),
+      ...(m.statPoints[st] ? [tag("dim", t("Points +{n}", { n: m.statPoints[st] }))] : []),
+      ...(talents ? [tag("dim", t("Masteries +{n}", { n: talents }))] : []),
     ];
-    return [`${tag("title", STAT_LABEL[st])}  ${tag("num", stats[st])}`, what[st], tag("dim", parts.join(" · "))].join("\n");
+    return [`${tag("title", STAT_LABEL[st])}  ${tag("num", stats[st])}`, what[st], parts.join(tag("dim", " · "))].join("\n");
   }
 
   /** What EV is: shown by itself the first time points wait, then behind the "?" button. Returns the y below. */
@@ -334,7 +339,7 @@ export class PokemonScene extends Phaser.Scene {
     const activeBasic = fighting[0]!;
     const count = (slot: "skill" | "bond") => fighting.filter((mv) => slotOf(CONTENT, mv) === slot).length;
     y += add(new RichText(this, DETAIL_X, y, DETAIL_W, 13)).setMarkup(
-      `${tag("title", t("Moves"))} ${tag("dim", t("(1 basic attack, skills {s}/{smax}, {bond} {b}/{bmax}; tap to inspect, toggle on the right)", { s: count("skill"), smax: LOADOUT.skill, bond: CONTENT.terms.bond, b: count("bond"), bmax: LOADOUT.bond }))}`) + 4;
+      `${tag("title", t("Moves"))}  ◆ ${tag("basic", t("basic"))} 1/1  ■ ${tag("special", t("special"))} ${count("skill")}/${LOADOUT.skill}  ▲ ${tag("ultimate", CONTENT.terms.bond)} ${count("bond")}/${LOADOUT.bond}  ${tag("dim", t("(filled: in use; tap to inspect)"))}`) + 4;
     const listW = 440;
     // As on the battle buttons: type, reach ↔, power ⚔, a Bond move's cost in Bond pips (the groups give the kind).
     const kindLabel = (id: string) => {
@@ -353,7 +358,10 @@ export class PokemonScene extends Phaser.Scene {
         rowY += 6;
       }
       const def = CONTENT.moves[mv]!;
-      const mark = mv === activeBasic ? "◆" : fighting.includes(mv) ? "■" : slotOf(CONTENT, mv) === "basic" ? "◇" : "□";
+      // Filled: in use; hollow: known but resting. ◆ basic, ■ special, ▲ Bond.
+      const slotOfMv = slotOf(CONTENT, mv);
+      const inUse = mv === activeBasic || fighting.includes(mv);
+      const mark = slotOfMv === "basic" ? (inUse ? "◆" : "◇") : slotOfMv === "bond" ? (inUse ? "▲" : "△") : inUse ? "■" : "□";
       add(new Button(this, DETAIL_X, rowY, listW, 24, `${mark} ${def.name.padEnd(13)} ${kindLabel(mv)}`, () => {
         this.selectedMove = mv;
         this.render();

@@ -24,6 +24,9 @@ const STORE_COLS = 2;
 const STORE_ROWS = 9;
 
 /** Camp: party overview (what needs attention) and the choice to rest. Details open per Pokémon. */
+/** An effect line continuing a sentence starts lower case ("takes 10% less damage"); the Bond term keeps its capital. */
+const midSentence = (s: string): string => (s.startsWith(CONTENT.terms.bond) ? s : s.charAt(0).toLowerCase() + s.slice(1));
+
 export class PartyScene extends Phaser.Scene {
   private rested = false;
   private choosingMeal = false;
@@ -64,7 +67,7 @@ export class PartyScene extends Phaser.Scene {
       new RichText(this, x + 10, y + 6, 330, 12).setMarkup([
         tag("title", meal.name),
         t("Needs: {needs}", { needs }),
-        effects.length ? t("Full rest; until the next rest: {effects}", { effects: effects.join(", ") }) : t("Full rest"),
+        effects.length ? t("Full rest; until the next rest: {effects}", { effects: effects.map(midSentence).join(", ") }) : t("Full rest"),
       ].join("\n"));
       new Button(this, x + 350, y + 30, 100, 28, t("Cook"), () => doRest(meal)).setEnabled(ok).setHighlighted(ok);
     });
@@ -107,7 +110,7 @@ export class PartyScene extends Phaser.Scene {
       return;
     }
 
-    this.add.text(16, 64, t("Party {n}/{max} · tap a Pokémon for stats, masteries, moves and equipment", { n: roster.party.length, max: MAX_PARTY_SIZE }), {
+    this.add.text(16, 64, t("Party {n}/{max} · tap a Pokémon for its details", { n: roster.party.length, max: MAX_PARTY_SIZE }), {
       fontFamily: FONT, fontSize: px(12), color: COLORS.dim,
     });
     roster.party.forEach((m, i) => this.card(16 + (i % CARD_COLS) * (CARD_W + 10), 84 + Math.floor(i / CARD_COLS) * (CARD_H + 8), m));

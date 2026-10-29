@@ -183,7 +183,7 @@ const species: Record<string, SpeciesDef> = Object.fromEntries(
 );
 
 export const CONTENT: BattleContent = {
-  terms,
+  terms: localized("terms.json", terms) as typeof terms,
   species,
   abilities: localized("abilities.json", abilities) as BattleContent["abilities"],
   types: TYPES,
@@ -208,7 +208,7 @@ const REGION_BIOMES = import.meta.glob("./biomes/*.json", { eager: true, import:
 
 export const WORLD_CONTENT: WorldContent = {
   biomes: Object.assign({}, biomes as Record<string, BiomeDef>, ...Object.values(REGION_BIOMES)),
-  fatigue: fatigue as FatigueRules,
+  fatigue: localized("fatigue.json", fatigue) as FatigueRules,
 };
 
 

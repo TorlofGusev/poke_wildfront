@@ -233,14 +233,19 @@ export class OverworldScene extends Phaser.Scene {
   /** The party as a row of portraits with HP bars; tap one to open the camp screen. Returns the y below it. */
   private partyStrip(y: number): number {
     const size = 36, gap = 4;
+    // Up to 6 fit the HUD column in one row; a bigger party splits into two even rows.
+    const count = session.game.roster.party.length;
+    const perRow = count <= 6 ? count : Math.ceil(count / 2);
+    const rowH = size + 10;
+    const height = Math.ceil(count / Math.max(1, perRow)) * rowH - 10;
     this.stripBox.setY(y);
     const key = session.game.roster.party.map((m) => `${m.uid}:${m.hp}:${m.level}:${m.knockouts}:${pendingChoice(CONTENT, PROGRESSION, m) || m.unspentPoints > 0}`).join("|") + `|${this.moving}`;
-    if (key === this.stripKey) return y + size + 12;
+    if (key === this.stripKey) return y + height + 12;
     this.stripKey = key;
     this.stripBox.removeAll(true);
-    y = 0;
     session.game.roster.party.forEach((m, i) => {
-      const x = i * (size + gap);
+      const x = (i % perRow) * (size + gap);
+      const y = Math.floor(i / perRow) * rowH;
       const frac = Math.max(0, m.hp / memberMaxHp(CONTENT, PROGRESSION, m));
       const pending = pendingChoice(CONTENT, PROGRESSION, m) || m.unspentPoints > 0;
       const bg = this.add.rectangle(x, y, size, size, 0x1c2230).setOrigin(0).setStrokeStyle(pending ? 2 : 1, pending ? 0xf5d76e : m.knockouts >= 2 ? 0xff6b6b : 0x3a4560)
@@ -256,7 +261,7 @@ export class OverworldScene extends Phaser.Scene {
       parts.push(this.add.rectangle(x, y + size + 2, size * frac, 4, frac > 0.5 ? 0x6bd36b : frac > 0.2 ? 0xf5d76e : 0xff6b6b).setOrigin(0));
       this.stripBox.add(parts);
     });
-    return this.stripBox.y + size + 12;
+    return this.stripBox.y + height + 12;
   }
 
   /** Party members able to fight; wild groups never outnumber them (see effectiveGroup and deploySlotsFor). */

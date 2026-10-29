@@ -1,33 +1,45 @@
 [
  {"items": [
+  "Felület-csiszolás: a térképen a 7–9 fős csapat két sorban látszik; a Lépések fül jelöli az alap ◆, spec. ■ és Bond ▲ move-okat (teli: használatban); az Értékek fül mindig mutat egy stat-magyarázatot, a fejléc nem ismétli a statokat; a táska nem ír 0×-t a viselt tárgyakra; magyarul egységesebb szavak (Tároló, Élelem, Friss, Lv).",
   "Tábor: a csapat 3×3-as rácsban, a storage jobbra, két oszlopban (legfeljebb 17 látszik).",
-  "Deploy: kompaktabb csapatkártyák (a név a kép mellett, a szint és a KO-k a kártyán).", "A csapatban 9 Pokémon lehet (eddig 10), így mind elfér a deploy kártyákon; egy régi mentés 10. Pokémonja a storage-ba kerül.", "Az ellenfél infójában látszik a szintje; a nyers statok lekerültek róla.",
+  "Deploy: kompaktabb csapatkártyák (a név a kép mellett, a szint és a KO-k a kártyán).",
+  "A csapatban 9 Pokémon lehet (eddig 10), így mind elfér a deploy kártyákon; egy régi mentés 10. Pokémonja a storage-ba kerül.",
+  "Az ellenfél infójában látszik a szintje; a nyers statok lekerültek róla.",
   "Az új kör beúszik a csatatérre (\"2. kör\"), így látszik, miért jön újra ugyanaz a Pokémon.",
-  "Pokémon képernyő: a Storage-ba / Csapatba gomb a fejlécbe került a lapozó mellé, minden fülön látszik.",
-  "A labdát már 4 távolságra is el lehet dobni (eddig 3).", "A maga körül ható move-ok (Earthquake…) ezt is írják: a listákban ◎2, a részleteknél \"maga körül\", a 0-s range helyett.",
+  "Pokémon képernyő: a Tárolóba / Csapatba gomb a fejlécbe került a lapozó mellé, minden fülön látszik.",
+  "A labdát már 4 távolságra is el lehet dobni (eddig 3).",
+  "A maga körül ható move-ok (Earthquake…) ezt is írják: a listákban ◎2, a részleteknél \"maga körül\", a 0-s range helyett.",
   "A térképen a trainerek mostantól emberek, osztályuk szerint öltözve (Youngster sapka, Bug Catcher háló, Hiker hátizsák, Rocket fekete…), mellettük kicsiben a vezető Pokémonjuk.",
   "A nagyobb csaták badge-hez kötöttek: az első badge-ig oldalanként 3 Pokémon, minden badge-dzsel eggyel több, a térkép saját méretéig.",
-  "A Burn már nem csökkenti az okozott sebzést, csak körönként sebez; a Fairy move-ok Weaken helyett Softened-et adnak (−15% sebzés).", "A másolat-move-ok megkapták a kanoni csavarjukat: a Charm, a Feather Dance és az Eerie Impulse tovább gyengít; a Sand Attack, a Kinesis és a Flash vakít; a Baby-Doll Eyes gyorsabb; a Strength Sap gyógyítja a használót; a Memento HP árán gyengít és sebezhetővé tesz; a Thunder Wave nem hat Ground típusra (a Glare igen).",
+  "A Burn már nem csökkenti az okozott sebzést, csak körönként sebez; a Fairy move-ok Weaken helyett Softened-et adnak (−15% sebzés).",
+  "A másolat-move-ok megkapták a kanoni csavarjukat: a Charm, a Feather Dance és az Eerie Impulse tovább gyengít; a Sand Attack, a Kinesis és a Flash vakít; a Baby-Doll Eyes gyorsabb; a Strength Sap gyógyítja a használót; a Memento HP árán gyengít és sebezhetővé tesz; a Thunder Wave nem hat Ground típusra (a Glare igen)."
+ ]},
+ {"items": [
   "A Smokescreen mostantól elvakít: a célpont távolsági move-jainak hatótávja 2 körig 1-gyel kisebb (a Confide továbbra is gyengít).",
-  "A kör ismét magától továbblép, ha csak egy kis mozgás maradt, és egyik move hatótávjában sincs célpont.", "A Wild Pokémon here utakon is működik: a térkép legközelebbi füves vagy barlangi részét mutatja.",
+  "A kör ismét magától továbblép, ha csak egy kis mozgás maradt, és egyik move hatótávjában sincs célpont.",
+  "A Wild Pokémon here utakon is működik: a térkép legközelebbi füves vagy barlangi részét mutatja.",
   "A táskában látszanak a kulcstárgyak is (pl. Old Amber), azzal együtt, mire valók.",
   "A körsorrend portréin látszik a Pokémonok szintje.",
-  "A nagy move-oknak ára van: a Double-Edge és a Head Smash a használót is sebzi, a Superpower legyengíti, az Outrage összezavarja; cserébe kicsit erősebbek.",
-  "Új move-hatások: a Double Hit kétszer talál, a Chip Away és a Feint Attack átüt a védő buffokon, a False Swipe sosem üt ki (befogáshoz hasznos), a Lash Out erősebb, ha a használón negatív státusz van, a Mach Punch rárontva támad.",
-  "A Guillotine mostantól a sérült ellenfelet végzi ki, nem egyszerűen a legerősebb ütés.",
-  "Minden Lv3 focus valódi döntés: egyik opció sem csak egy másik erősebb másolata.",
-  "A zene kicsit halkabb lett.",
   "A move-listák (csata és Pokémon képernyő) kategória szerint csoportosítva, vékony vonallal a basic attackok, skillek és Bond move-ok között; a csatapanelről lekerültek az ismétlődő fejlécek; a Bond move gombján a költsége Bond-pöttyökkel (●●) látszik; szavak helyett ikonok: ⚔ erő, ⏳ cooldown, ✕ nincs célpont, ↔ hatótáv, 👣 mozgás, a labdagombokon pedig maguk a labdák.",
   "Átdolgozott mastery fák: minden sor egyféle move-ot kínál. Lv3 és Lv24 Bond, Lv6 és Lv12 egy skill és egy utility (Disable, Helping Hand, Knock Off…), Lv18 egy második basic attack, amit a lefedettség miatt lecserélhetsz.",
-  "A move kategóriája mostantól a sajátja: a nagy ütések (85+ kanoni erő) Bond move-ok, a gyenge, hatás nélküli ütések basic attackok, minden más skill.",
+  "A move kategóriája mostantól a sajátja: a nagy ütések (85+ kanoni erő) Bond move-ok, a gyenge, hatás nélküli ütések basic attackok, minden más skill."
+ ]},
+ {"items": [
   "A lendület (mozgás utáni Speed-bonusz) nem jár arra az ellenfélre, akivel a kört engage-ben kezdted: ki- és visszalépéssel nem nyersz semmit.",
   "Új utility move-ok: Follow Me, Helping Hand, Ally Switch és Knock Off (hamarosan a mastery fákban).",
   "A mastery fák csak a vonal szerepéhez illő passzívokat kínálnak: ahol a ranged vonal Far Sightot vagy Long Reachet kap, ott a melee Pin Downt vagy Tough Claws-t.",
   "Tréner-csata után a pénz egyszer, egy összegként jelenik meg (a jutalom eddig külön sorban szerepelt).",
   "Csatapályák: a sziklafalakon mindig van legalább 3 Pokémon szélességű átjáró (némelyiken csak egy Pokémonnyi rés volt).",
   "A vad Pokémonok nem lépnek ki az engage-ből csak azért, hogy visszalépjenek; a melee csak akkor lép ki, ha megéri.",
+  "Telefonon telepíthető a játék: a Hozzáadás a kezdőképernyőhöz után teljes képernyőn, alkalmazásként indul (mindig a legfrissebb verzió)."
+ ]},
+ {"items": [
+  "A nagy move-oknak ára van: a Double-Edge és a Head Smash a használót is sebzi, a Superpower legyengíti, az Outrage összezavarja; cserébe kicsit erősebbek.",
+  "Új move-hatások: a Double Hit kétszer talál, a Chip Away és a Feint Attack átüt a védő buffokon, a False Swipe sosem üt ki (befogáshoz hasznos), a Lash Out erősebb, ha a használón negatív státusz van, a Mach Punch rárontva támad.",
+  "A Guillotine mostantól a sérült ellenfelet végzi ki, nem egyszerűen a legerősebb ütés.",
+  "Minden Lv3 focus valódi döntés: egyik opció sem csak egy másik erősebb másolata.",
+  "A zene kicsit halkabb lett.",
   "Labda-ikon a böngészőfülön, és kép, amikor a linket megosztják.",
-  "Telefonon telepíthető a játék: a Hozzáadás a kezdőképernyőhöz után teljes képernyőn, alkalmazásként indul (mindig a legfrissebb verzió).",
   "Ikon a böngészőfülön, telefonon pedig telepíthető a játék: a Hozzáadás a kezdőképernyőhöz után teljes képernyőn, alkalmazásként indul."
  ]},
  {"items": [

@@ -106,6 +106,6 @@ export class ShopScene extends Phaser.Scene {
       add(new Button(this, 900, LIST_BOTTOM - 28, 44, 28, "▼", () => this.scrollBy(124)).setEnabled(this.scroll < maxScroll));
     }
     if (this.message) add(new RichText(this, 16, 512, 900, 13)).setMarkup(this.message);
-    add(this.add.text(16, 490, t("Items sell for half their price. Held items are given to Pokémon in the Party screen; potions are used there too."), { fontFamily: FONT, fontSize: px(11), color: COLORS.dim }));
+    add(this.add.text(16, 490, t("Items sell for half their price. Held items and potions are used on the Pokémon screen's Equipment tab."), { fontFamily: FONT, fontSize: px(11), color: COLORS.dim }));
   }
 }
