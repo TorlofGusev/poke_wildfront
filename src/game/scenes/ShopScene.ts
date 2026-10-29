@@ -4,6 +4,7 @@ import { sfx } from "../audio";
 import { CONTENT, PROGRESSION } from "../../content";
 import { buy, sell, sellPrice } from "../../core/party";
 import { session } from "../session";
+import { ballIcon } from "../ui/ballIcon";
 import { Button } from "../ui/Button";
 import { tag } from "../ui/markup";
 import { RichText } from "../ui/RichText";
@@ -83,7 +84,10 @@ export class ShopScene extends Phaser.Scene {
       const x = 16 + col * 468;
       const y = LIST_TOP + row * 62;
       list.add(this.add.rectangle(x, y, 460, 56, 0x1c2130).setOrigin(0).setStrokeStyle(1, 0x3a4560));
-      const info = new RichText(this, x + 10, y + 6, 330, 13);
+      // A ball shows its icon before the name.
+      const icon = CONTENT.balls[w.id] ? 22 : 0;
+      if (icon) list.add(this.add.image(x + 18, y + 14, ballIcon(this, w.id)).setDisplaySize(16, 16));
+      const info = new RichText(this, x + 10 + icon, y + 6, 330 - icon, 13);
       list.add(info);
       info.setMarkup(`${tag("title", w.name)}  ${tag("num", `₽${w.price}`)}  ${tag("dim", t("own {n}", { n: w.owned }))}\n${tag("dim", w.description)}`);
       const trade = (verb: string, f: () => typeof session.game) => {

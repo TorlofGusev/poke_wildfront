@@ -3,6 +3,7 @@ import { playMusic } from "../music";
 import { CONTENT, PROGRESSION } from "../../content";
 import { session } from "../session";
 import { Button } from "../ui/Button";
+import { ballIcon } from "../ui/ballIcon";
 import { describeItem } from "../ui/describeEffects";
 import { tag } from "../ui/markup";
 import { RichText } from "../ui/RichText";
@@ -51,12 +52,18 @@ export class InventoryScene extends Phaser.Scene {
           const name = ball?.name ?? PROGRESSION.items[id]!.name;
           const effect = ball ? t("catch chance ×{x}", { x: ball.multiplier }) : describeItem(CONTENT, PROGRESSION.items[id]!).join(" · ");
           // Every one of them held: no "0×" in front, the holders say where they are.
-          return `${count > 0 ? `${tag("num", `${count}×`)} ` : ""}${tag("title", name)} ${tag("dim", "—")} ${effect}${holders.length ? tag("dim", t(" (held by {names})", { names: holders.join(", ") })) : ""}`;
+          return { id, text: `${count > 0 ? `${tag("num", `${count}×`)} ` : ""}${tag("title", name)} ${tag("dim", "—")} ${effect}${holders.length ? tag("dim", t(" (held by {names})", { names: holders.join(", ") })) : ""}` };
         })
-        .filter((r): r is string => r !== null);
-      const block = [tag("special", title), ...(rows.length ? rows : [tag("dim", t("none"))])];
-      const h = new RichText(this, col.x, y, 450, 12).setMarkup(block.join("\n"));
-      y += h + 14;
+        .filter((r): r is { id: string; text: string } => r !== null);
+      y += new RichText(this, col.x, y, 450, 12).setMarkup(tag("special", title));
+      if (!rows.length) y += new RichText(this, col.x, y, 450, 12).setMarkup(tag("dim", t("none")));
+      // One text per row, so a ball can carry its icon in front.
+      for (const row of rows) {
+        const icon = CONTENT.balls[row.id] ? 20 : 0;
+        if (icon) this.add.image(col.x + 8, y + 8, ballIcon(this, row.id)).setDisplaySize(14, 14);
+        y += new RichText(this, col.x + icon, y, 450 - icon, 12).setMarkup(row.text);
+      }
+      y += 14;
       // Two columns: move to the right when the left fills up.
       if (y > 420 && col.x === 16) {
         col.x = 490;

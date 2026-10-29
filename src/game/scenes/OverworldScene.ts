@@ -544,10 +544,7 @@ export class OverworldScene extends Phaser.Scene {
       const pts = [new Phaser.Math.Vector2(x, y - 7), new Phaser.Math.Vector2(x + 6, y), new Phaser.Math.Vector2(x, y + 7), new Phaser.Math.Vector2(x - 6, y)];
       g.fillStyle(0x4ad6e0).fillPoints(pts, true).lineStyle(2, 0x10141c).strokePoints(pts, true);
     } else if (kind === "ball") {
-      g.fillStyle(0xffffff).fillCircle(x, y, 6);
-      g.fillStyle(0xd0021b).slice(x, y, 6, Math.PI, 0, false).fillPath();
-      g.lineStyle(1.5, 0x10141c).strokeCircle(x, y, 6).lineBetween(x - 6, y, x + 6, y);
-      g.fillStyle(0xffffff).fillCircle(x, y, 1.8);
+      this.markers.add(this.add.image(x, y, ballIcon(this, "poke-ball")).setDisplaySize(14, 14));
     } else if (kind === "heal") {
       g.fillStyle(0x7ed321).fillCircle(x, y, 6.5).lineStyle(1.5, 0x10141c).strokeCircle(x, y, 6.5);
       g.fillStyle(0xffffff).fillRect(x - 1.5, y - 4, 3, 8).fillRect(x - 4, y - 1.5, 8, 3);
