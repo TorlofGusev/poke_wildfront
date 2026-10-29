@@ -48,6 +48,11 @@ const T = 28;
 const MAP_X = 16;
 const MAP_Y = 60;
 const HUD_X = 704;
+/** The party grid in the HUD column: 3 portraits a row, the money and items beside it. */
+const STRIP_COLS = 3;
+const STRIP_SIZE = 36;
+const STRIP_GAP = 4;
+const STRIP_W = STRIP_COLS * (STRIP_SIZE + STRIP_GAP) - STRIP_GAP;
 const STEP_MS = 70;
 
 const BIOME_COLORS: Record<string, number> = {
@@ -172,7 +177,8 @@ export class OverworldScene extends Phaser.Scene {
     // The HUD column is rebuilt piece by piece, and only what changed: rebuilding text and buttons
     // creates GPU textures, which is what made taps feel slow on phones.
     this.stripBox = this.add.container(0, 0);
-    this.statsText = new RichText(this, 0, 0, 240, 12);
+    // Beside the 3-wide party grid.
+    this.statsText = new RichText(this, STRIP_W + 6, 0, 240 - STRIP_W - 6, 12);
     this.msgText = new RichText(this, 0, 0, 240, 12);
     this.btnBox = this.add.container(0, 0);
     this.stripKey = this.btnKey = "";
@@ -232,10 +238,10 @@ export class OverworldScene extends Phaser.Scene {
 
   /** The party as a row of portraits with HP bars; tap one to open the camp screen. Returns the y below it. */
   private partyStrip(y: number): number {
-    const size = 36, gap = 4;
-    // Up to 6 fit the HUD column in one row; a bigger party splits into two even rows.
+    const size = STRIP_SIZE, gap = STRIP_GAP;
+    // A 3-wide grid (up to 3×3); the money, items and balls sit beside it.
     const count = session.game.roster.party.length;
-    const perRow = count <= 6 ? count : Math.ceil(count / 2);
+    const perRow = STRIP_COLS;
     const rowH = size + 10;
     const height = Math.ceil(count / Math.max(1, perRow)) * rowH - 10;
     this.stripBox.setY(y);
@@ -562,16 +568,20 @@ export class OverworldScene extends Phaser.Scene {
       `${tag("title", t("Badges"))} ${tag("num", `${(session.game.badges ?? []).length}/${BADGES.length}`)}${(session.game.keyItems ?? []).length ? `  ${tag("title", t("Key items"))} ${tag("num", (session.game.keyItems ?? []).length)}` : ""}`,
       ...(currentGoal(session.game, STORY_STEPS) ? [tag("dim", t("Goal: {goal}", { goal: currentGoal(session.game, STORY_STEPS)! }))] : []),
     ];
+    // One item a line: the column beside the party grid is narrow.
     const lower = [
-      `${tag("num", `₽${session.game.money}`)}  ${tag("title", "EV")} ${tag("num", session.game.ev ?? 0)}  ${tag("title", t("Rare Candy"))} ${tag("num", inventory.items.candy ?? 0)}  ${tag("title", CONTENT.terms.food)} ${tag("num", Object.entries(inventory.items).filter(([id]) => PROGRESSION.items[id]?.kind === "food").reduce((n, [, c]) => n + c, 0))}`,
+      `${tag("num", `₽${session.game.money}`)}  ${tag("title", "EV")} ${tag("num", session.game.ev ?? 0)}`,
+      `${tag("title", t("Rare Candy"))} ${tag("num", inventory.items.candy ?? 0)}`,
+      `${tag("title", CONTENT.terms.food)} ${tag("num", Object.entries(inventory.items).filter(([id]) => PROGRESSION.items[id]?.kind === "food").reduce((n, [, c]) => n + c, 0))}`,
       `${tag("title", t("Meal"))} ${world.meal ? tag(world.meal.id === "hungry" ? "bad" : "good", world.meal.name) : tag("dim", t("none"))}`,
-      `${tag("title", t("Bag"))} ${Object.entries(inventory.balls).map(([id, n]) => `${CONTENT.balls[id]?.name.replace(" Ball", "") ?? id} ${n}`).join(" · ")}`,
+      ...Object.entries(inventory.balls).map(([id, n]) => `${tag("title", CONTENT.balls[id]?.name ?? id)} ${tag("num", n)}`),
     ];
     const h = this.hud.setMarkup(lines.join("\n"));
     let y = 16 + h + 6;
-    y = this.partyStrip(y);
-    this.statsText.setY(y);
-    y += this.statsText.setMarkup(lower.join("\n")) + 8;
+    const stripTop = y;
+    const below = this.partyStrip(y);
+    this.statsText.setY(stripTop - 2);
+    y = Math.max(below, stripTop + this.statsText.setMarkup(lower.join("\n")) + 8);
     // The latest message (path preview, heal, errors) sits right under the stats, so it never falls off small screens.
     this.msgText.setY(y);
     const mh = this.msgText.setMarkup(this.message);

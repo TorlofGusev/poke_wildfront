@@ -1,5 +1,6 @@
 [
  {"items": [
+  "Térkép: a csapat 3×3-as rácsban, mellette egy oszlopban a pénz, a tárgyak és a labdák.",
   "Felület-csiszolás: a térképen a 7–9 fős csapat két sorban látszik; a Lépések fül jelöli az alap ◆, spec. ■ és Bond ▲ move-okat (teli: használatban); az Értékek fül mindig mutat egy stat-magyarázatot, a fejléc nem ismétli a statokat; a táska nem ír 0×-t a viselt tárgyakra; magyarul egységesebb szavak (Tároló, Élelem, Friss, Lv).",
   "Tábor: a csapat 3×3-as rácsban, a storage jobbra, két oszlopban (legfeljebb 17 látszik).",
   "Deploy: kompaktabb csapatkártyák (a név a kép mellett, a szint és a KO-k a kártyán).",
