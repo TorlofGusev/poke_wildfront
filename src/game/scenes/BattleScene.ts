@@ -65,7 +65,7 @@ import { stripMarkup, tag } from "../ui/markup";
 import { RichText } from "../ui/RichText";
 import { pixText, setPixText } from "../ui/pixelFont";
 import { t } from "../i18n";
-import { boardTheme, drawFloorDecor, drawWaterDecor, floorColor, tileRand } from "../ui/boardDecor";
+import { boardTheme, drawFlowerClusters, drawFloorDecor, drawGrassStipple, drawGymCourt, drawIndoorFloor, drawPath, floorColor, tileRand, type BoardTheme } from "../ui/boardDecor";
 import { footOrigin, animKey, FACE_LEFT, FACE_RIGHT, facingFor, hasSprite, portraitKey, type Facing, type SpriteAnim } from "../sprites";
 import { BOARD_X, BOARD_Y, COLORS, FIELD_S, fieldToWorld, FONT, PANEL_X, PANEL_W, TYPE_COLORS, UNIT_SCALE, worldToField, px, fs, PHONE } from "../ui/theme";
 
@@ -245,6 +245,8 @@ export class BattleScene extends Phaser.Scene {
   /** Deployment: the spots' pads (a base and a pulsing ring) and the foes' name plates. */
   private deployPads: { pos: Point; base: Phaser.GameObjects.Graphics; glow: Phaser.GameObjects.Arc }[] = [];
   private foePlates: Phaser.GameObjects.Container | null = null;
+  /** Glowing crystals on a cave floor (lights for the dark cave). */
+  private caveCrystals: { x: number; y: number; color: number }[] = [];
   private previewLabels: Phaser.GameObjects.Container | null = null;
   private lastPreview: readonly HitPreview[] = [];
   /** A recorded battle replayed behind the title screen: no UI, no sound, nothing saved. */
@@ -408,12 +410,21 @@ export class BattleScene extends Phaser.Scene {
     this.boardGfx ??= this.make.graphics({}, false);
     const g = this.boardGfx.clear();
     const field = this.state?.field ?? this.scenario.field;
-    const theme = boardTheme(this.biome ?? this.npcMapId ?? this.scenario.id);
-    // Floor in one-unit squares of slightly varied colour, with small props on open ground.
-    // No grid: one base colour, then soft overlapping blotches of the varied tones.
+    // A Gym Leader fights on a court; everyone else on their biome's ground.
+    const theme: BoardTheme = this.npc()?.kind === "leader" ? "gym" : boardTheme(this.biome ?? this.npcMapId ?? this.scenario.id);
     const o = fieldToWorld({ x: 0, y: 0 });
+    const rect = { x: o.x, y: o.y, w: field.width * S, h: field.height * S };
+    const open = (wx: number, wy: number) => terrainAt(field, worldToField(wx, wy)).id === "floor";
     g.fillStyle(floorColor(theme, 0, 0), 1).fillRect(o.x, o.y, field.width * S, field.height * S);
-    for (let y = 0; y < field.height; y++)
+    if (theme === "indoor") drawIndoorFloor(g, rect, S, /rocket|hideout/.test(this.biome ?? this.npcMapId ?? ""));
+    else if (theme === "gym") {
+      const lead = this.scenario.enemies[0];
+      const foes = this.startLookAt("player"), ours = this.startLookAt("enemy");
+      const vertical = !!foes && !!ours && Math.abs(foes.y - ours.y) > Math.abs(foes.x - ours.x);
+      drawGymCourt(g, rect, S, TYPE_COLORS[lead ? CONTENT.species[lead.speciesId]!.types[0]! : "normal"] ?? 0x8a8a8a, vertical);
+    }
+    // Natural ground: no grid; one base colour, then soft overlapping blotches of the varied tones.
+    if (theme !== "indoor" && theme !== "gym") for (let y = 0; y < field.height; y++)
       for (let x = 0; x < field.width; x++) {
         const c = fieldToWorld({ x: x + 0.5, y: y + 0.5 });
         for (let k = 0; k < 4; k++) {
@@ -424,28 +435,33 @@ export class BattleScene extends Phaser.Scene {
           if (r > 2) g.fillStyle(floorColor(theme, x + k, y - k), 0.18).fillCircle(bx, by, r);
         }
       }
+    // Routes: the short-grass stipple, a worn path between the two sides' starts, flowers in clusters.
+    if (theme === "field") drawGrassStipple(g, rect, open);
+    if (theme === "field" && this.scenario.deploymentZone.length) {
+      // One path from the party's start to each group of foes (at most three).
+      const ours = this.startLookAt("enemy");
+      const groups: Point[] = [];
+      for (const e of this.scenario.enemies) if (!groups.some((p) => distance(p, e.pos) < 3)) groups.push(e.pos);
+      if (ours) groups.slice(0, 3).forEach((p, i) => drawPath(g, fieldToWorld(ours), fieldToWorld(p), field.width * 7 + field.height + i * 31, theme));
+    }
+    if (theme === "field") drawFlowerClusters(g, rect, open, field.width * 13 + field.zones.length);
+    this.caveCrystals = [];
     for (let y = 0; y < field.height; y++)
       for (let x = 0; x < field.width; x++) {
         if (terrainAt(field, { x: x + 0.5, y: y + 0.5 }).id !== "floor") continue;
         const c = fieldToWorld({ x: x + 0.5, y: y + 0.5 });
-        drawFloorDecor(g, theme, x, y, c.x, c.y);
+        const glow = drawFloorDecor(g, theme, x, y, c.x, c.y, true);
+        if (glow) this.caveCrystals.push(glow);
       }
     // Patches with depth (see terrainArt): rocks lit from the top left, bush canopies, deepening water, wet mud.
     field.zones.forEach((z, i) => {
       if (z.terrain === "floor") return;
       const pts = z.poly.map((p) => new Phaser.Math.Vector2(fieldToWorld(p).x, fieldToWorld(p).y));
-      if (z.terrain === "rock") drawRock(g, pts, theme);
+      if (z.terrain === "rock") drawRock(g, pts, theme, i);
       else if (z.terrain === "bush") drawBush(g, pts, i + 11, theme);
       else if (z.terrain === "water") drawWater(g, pts, i + 13);
       else drawMud(g, pts, i + 17);
     });
-    // Ripples on the water.
-    for (let y = 0; y < field.height; y++)
-      for (let x = 0; x < field.width; x++) {
-        if (terrainAt(field, { x: x + 0.5, y: y + 0.5 }).id !== "water" || (x + y) % 2) continue;
-        const c = fieldToWorld({ x: x + 0.5, y: y + 0.5 });
-        drawWaterDecor(g, x, y, c.x, c.y);
-      }
     if (shaderGround(this)) {
       // The drawn board goes under the GPU pass that sets water moving and paints flames, sludge and light.
       const origin = fieldToWorld({ x: 0, y: 0 });
@@ -456,6 +472,11 @@ export class BattleScene extends Phaser.Scene {
         this.arena = new ArenaFx(this, board, theme, S);
         this.arena.onLights = (l, p) => this.ground?.setLights(l, p);
       }
+      // A dark cave: each Pokémon carries a pool of warm light, crystals glow faintly blue or violet.
+      this.arena.steadyLights = theme === "cave" ? () => [
+        ...[...this.units.values()].filter((v) => v.container.visible && v.container.alpha > 0.1).map((v) => ({ x: v.container.x, y: v.container.y, radius: S * 2.4, intensity: 0.6, color: 0xffd8a8 })),
+        ...this.caveCrystals.slice(0, 6).map((c) => ({ x: c.x, y: c.y, radius: S * 0.9, intensity: 0.35, color: c.color })),
+      ] : null;
       return;
     }
     const { width, height } = this.scale;
@@ -2346,7 +2367,10 @@ export class BattleScene extends Phaser.Scene {
       const g = this.add.graphics();
       g.fillStyle(0x10141c, 0.85).fillRoundedRect(-w / 2, -8, w, 16, 5);
       g.lineStyle(1.5, COLORS.enemy, 1).strokeRoundedRect(-w / 2, -8, w, 16, 5);
-      items.push(this.add.container(v.container.x, top - 10, [g, label]));
+      // Kept on the board, like the floating numbers.
+      const board = this.boardPx();
+      const plateX = Phaser.Math.Clamp(v.container.x, BOARD_X + w / 2 + 2, BOARD_X + board.w - w / 2 - 2);
+      items.push(this.add.container(plateX, Math.max(BOARD_Y + 10, top - 10), [g, label]));
     }
     this.foePlates = this.add.container(0, 0, items).setDepth(15).setAlpha(0);
     this.tweens.add({ targets: this.foePlates, alpha: 1, duration: 250 });

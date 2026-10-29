@@ -11,7 +11,7 @@ import type { BoardTheme } from "./ui/boardDecor";
  * Snapped to 2-px pixels and a limited palette, so it sits with the pixel-art sprites.
  */
 
-const MAX_LIGHTS = 8;
+const MAX_LIGHTS = 16;
 const MAX_POOLS = 4;
 /** Mask resolution: one texel per this many screen pixels. */
 const CELL = 2;
@@ -151,9 +151,11 @@ void main() {
 
 const THEMES: Record<BoardTheme, { g1: number; g2: number; rock: number; ambient: number; flora: number; debris: number }> = {
   field: { g1: 0x3b5a36, g2: 0x4f6b3a, rock: 0x8a8e98, ambient: 1, flora: 1, debris: 0.05 },
-  cave: { g1: 0x4a423c, g2: 0x5a5048, rock: 0x8c7f70, ambient: 1, flora: 0, debris: 0.25 },
+  // Caves are dark: the Pokémon carry pools of warm light, crystals glow faintly (see BattleScene.caveLights).
+  cave: { g1: 0x4a423c, g2: 0x5a5048, rock: 0x8c7f70, ambient: 0.55, flora: 0, debris: 0.25 },
   shore: { g1: 0x8a7f58, g2: 0xa39568, rock: 0x9c9280, ambient: 1, flora: 0, debris: 0.2 },
   indoor: { g1: 0x4a4d57, g2: 0x55586a, rock: 0x7d8290, ambient: 1, flora: 0, debris: 0.03 },
+  gym: { g1: 0x6a6a70, g2: 0x7a7a80, rock: 0x9a948a, ambient: 1, flora: 0, debris: 0.02 },
 };
 
 const rgb = (c: number) => [((c >> 16) & 255) / 255, ((c >> 8) & 255) / 255, (c & 255) / 255];

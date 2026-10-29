@@ -44,27 +44,78 @@ const ROCK: Record<BoardTheme, { side: number; top: number; light: number }> = {
   cave: { side: 0x2e2824, top: 0x5e544a, light: 0x8a7e70 },
   shore: { side: 0x4a4436, top: 0x7a705a, light: 0xa89c80 },
   indoor: { side: 0x30333c, top: 0x555a66, light: 0x7d8290 },
+  gym: { side: 0x3a3634, top: 0x6a645e, light: 0x9a948a },
 };
 
-export function drawRock(g: Phaser.GameObjects.Graphics, pts: V[], theme: BoardTheme): void {
+/** Boulders (machines indoors): a shadow, a side, a lit top with a second highlight band, varied creases, a 1 px outline. */
+export function drawRock(g: Phaser.GameObjects.Graphics, pts: V[], theme: BoardTheme, seed = 0): void {
+  if (theme === "indoor") return drawMachine(g, pts, seed);
   const c = ROCK[theme];
   g.fillStyle(0x000000, 0.35).fillPoints(shift(pts, 4, 7), true);
   g.fillStyle(c.side, 1).fillPoints(pts, true);
   const top = shrink(pts, 0.8, -1, -5);
   g.fillStyle(c.top, 1).fillPoints(top, true);
+  // A second, lighter band towards the top left: two tones, as hand-shaded pixel rocks have.
+  g.fillStyle(c.light, 0.28).fillPoints(shrink(top, 0.62, -3, -3), true);
   // Light from the top left: edges facing up or left catch it.
   for (let i = 0; i < top.length; i++) {
     const a = top[i]!, b = top[(i + 1) % top.length]!;
     const nx = b.y - a.y, ny = -(b.x - a.x);
     if (ny + nx * 0.5 < 0) g.lineStyle(2, c.light, 0.9).lineBetween(a.x, a.y, b.x, b.y);
   }
-  // Facets: a few creases from the middle of the top face.
+  // Creases: 2–4, from points on the top's rim inwards at their own angles (no two rocks alike).
   const mid = centroid(top);
-  g.lineStyle(1, 0x000000, 0.3);
-  top.forEach((p, i) => {
-    if (i % 3 === 0) g.lineBetween(mid.x, mid.y, mid.x + (p.x - mid.x) * 0.7, mid.y + (p.y - mid.y) * 0.7);
-  });
-  g.lineStyle(2, 0x0e0f12, 0.75).strokePoints(pts, true, true);
+  const n = 2 + Math.floor(tileRand(seed, 1, 50) * 3);
+  for (let k = 0; k < n; k++) {
+    const i = Math.floor(tileRand(seed, k, 51) * top.length);
+    const a = top[i]!, b = top[(i + 1) % top.length]!;
+    const t = 0.25 + tileRand(seed, k, 52) * 0.5;
+    const sx = a.x + (b.x - a.x) * t, sy = a.y + (b.y - a.y) * t;
+    const reach = 0.35 + tileRand(seed, k, 53) * 0.35;
+    const bend = (tileRand(seed, k, 54) - 0.5) * 10;
+    const mx = sx + (mid.x - sx) * reach * 0.5 + bend, my = sy + (mid.y - sy) * reach * 0.5 - bend * 0.5;
+    const ex = sx + (mid.x - sx) * reach, ey = sy + (mid.y - sy) * reach;
+    g.lineStyle(1.2, 0x000000, 0.32).lineBetween(sx, sy, mx, my).lineBetween(mx, my, ex, ey);
+    g.lineStyle(1, c.light, 0.35).lineBetween(sx + 1, sy, mx + 1, my);
+  }
+  // Moss on route rocks, cracks in caves, salt on the shore.
+  const xs = top.map((p) => p.x), ys = top.map((p) => p.y);
+  const x0 = Math.min(...xs), y0 = Math.min(...ys), w = Math.max(...xs) - x0;
+  if ((theme === "field" || theme === "gym") && tileRand(seed, 2, 55) < 0.6) {
+    for (let k = 0; k < 5; k++) {
+      const px = x0 + w * (0.15 + k * 0.08), py = y0 + 3 + tileRand(seed, k, 56) * 4;
+      if (inside(top, px, py)) g.fillStyle(k % 2 ? 0x5a8a3a : 0x6ea248, 1).fillEllipse(px, py, 5, 3);
+    }
+  } else if (theme === "cave" && tileRand(seed, 2, 55) < 0.7) {
+    let px = mid.x - 6, py = mid.y - 4;
+    g.lineStyle(1, 0x14100e, 0.7);
+    for (let k = 0; k < 4; k++) {
+      const nx2 = px + 3 + tileRand(seed, k, 57) * 3, ny2 = py + (k % 2 ? -2 : 3);
+      g.lineBetween(px, py, nx2, ny2);
+      px = nx2;
+      py = ny2;
+    }
+  }
+  g.lineStyle(1.5, 0x16161c, 0.9).strokePoints(pts, true, true);
+}
+
+/** Indoors a "rock" is a machine or a crate stack: a metal block with a lit top, a hazard stripe, bolts and a lamp. */
+function drawMachine(g: Phaser.GameObjects.Graphics, pts: V[], seed: number): void {
+  const xs = pts.map((p) => p.x), ys = pts.map((p) => p.y);
+  const x0 = Math.min(...xs) + 2, x1 = Math.max(...xs) - 2, y0 = Math.min(...ys) + 2, y1 = Math.max(...ys) - 2;
+  const w = x1 - x0, h = y1 - y0;
+  g.fillStyle(0x000000, 0.35).fillRect(x0 + 4, y0 + 7, w, h);
+  g.fillStyle(0x2c3038, 1).fillRect(x0, y0, w, h);
+  g.fillStyle(0x5a6270, 1).fillRect(x0, y0, w, h - 8);
+  g.fillStyle(0x7a8290, 1).fillRect(x0, y0, w, 3);
+  // The hazard stripe along its front.
+  for (let x = x0; x < x1 - 4; x += 8) g.fillStyle(0xe8c030, 1).fillTriangle(x, y1 - 2, x + 4, y1 - 8, x + 8, y1 - 8).fillTriangle(x, y1 - 2, x + 8, y1 - 8, x + 4, y1 - 2);
+  // Panels, bolts and a lamp (green or red).
+  g.lineStyle(1, 0x2c3038, 1);
+  for (let x = x0 + 14; x < x1 - 6; x += 16) g.lineBetween(x, y0 + 4, x, y1 - 10);
+  g.fillStyle(0x9aa2b0, 1).fillRect(x0 + 2, y0 + 5, 2, 2).fillRect(x1 - 4, y0 + 5, 2, 2);
+  g.fillStyle(tileRand(seed, 0, 58) < 0.5 ? 0x60e070 : 0xf05050, 1).fillCircle(x0 + w / 2, y0 + 8, 2.5);
+  g.lineStyle(1.5, 0x16161c, 0.9).strokeRect(x0, y0, w, h);
 }
 
 /**
@@ -77,9 +128,12 @@ const GRASS: Record<BoardTheme, { edge: number; base: number; dark: number; mid:
   cave: { edge: 0x1e2a24, base: 0x2e4034, dark: 0x1f2e26, mid: 0x46604a, tip: 0x7a9a78 },
   shore: { edge: 0x5a5a26, base: 0x7d7a36, dark: 0x5c5a28, mid: 0x9a9a44, tip: 0xd2d07a },
   indoor: { edge: 0x1c4a1e, base: 0x2c6a2a, dark: 0x1a4a1c, mid: 0x3f8a36, tip: 0x78c050 },
+  gym: { edge: 0x1c4a1e, base: 0x2c6a2a, dark: 0x1a4a1c, mid: 0x3f8a36, tip: 0x78c050 },
 };
 
 export function drawBush(g: Phaser.GameObjects.Graphics, pts: V[], seed: number, theme: BoardTheme = "field"): void {
+  // Indoors and in Gyms cover is a bank of potted plants.
+  if (theme === "indoor" || theme === "gym") return drawPlanters(g, pts, seed);
   const c = GRASS[theme];
   const rim = rimOf(pts, 7);
   g.fillStyle(0x000000, 0.18);
@@ -111,6 +165,36 @@ export function drawBush(g: Phaser.GameObjects.Graphics, pts: V[], seed: number,
   }
 }
 
+/** Indoors cover is a bank of potted plants: terracotta pots with round leafy crowns, back rows first. */
+function drawPlanters(g: Phaser.GameObjects.Graphics, pts: V[], seed: number): void {
+  g.fillStyle(0x000000, 0.2).fillPoints(shift(pts, 2, 4), true);
+  g.fillStyle(0x3a3d46, 1).fillPoints(pts, true);
+  g.lineStyle(1.5, 0x16161c, 0.8).strokePoints(pts, true, true);
+  const spots = scatter(shrink(pts, 0.85), 14, seed).sort((a, b) => a.y - b.y);
+  for (const p of spots) {
+    g.fillStyle(0x000000, 0.3).fillEllipse(p.x + 1, p.y + 6, 12, 4);
+    g.fillStyle(0xa0522d, 1).fillRect(p.x - 5, p.y, 10, 7);
+    g.fillStyle(0xc0703c, 1).fillRect(p.x - 6, p.y - 1, 12, 3);
+    g.fillStyle(0x1f5a24, 1).fillCircle(p.x, p.y - 5, 7);
+    g.fillStyle(0x2f7a30, 1).fillCircle(p.x - 2, p.y - 7, 5);
+    g.fillStyle(0x5aaa48, 1).fillCircle(p.x - 3, p.y - 9, 2);
+  }
+}
+
+/** Chaikin's corner cutting: a hard polygon becomes a smooth, natural outline. */
+function smooth(pts: V[], rounds = 3): V[] {
+  let out = pts;
+  for (let r = 0; r < rounds; r++) {
+    const next: V[] = [];
+    out.forEach((a, i) => {
+      const b = out[(i + 1) % out.length]!;
+      next.push(vec(a.x * 0.75 + b.x * 0.25, a.y * 0.75 + b.y * 0.25), vec(a.x * 0.25 + b.x * 0.75, a.y * 0.25 + b.y * 0.75));
+    });
+    out = next;
+  }
+  return out;
+}
+
 /** Points every `step` px along the patch's edge. */
 function rimOf(pts: V[], step: number): V[] {
   const rim: V[] = [];
@@ -130,13 +214,20 @@ function rounded(g: Phaser.GameObjects.Graphics, pts: V[], color: number, alpha:
 }
 
 export function drawWater(g: Phaser.GameObjects.Graphics, pts: V[], seed: number): void {
-  rounded(g, pts, 0xbfe3ff, 0.35, 7);
-  rounded(g, pts, 0x3a72a8, 1, 6);
-  // Deeper towards the middle, in soft overlapping pools.
-  for (const p of scatter(shrink(pts, 0.72), 9, seed)) g.fillStyle(0x2d5a8c, 1).fillCircle(p.x, p.y, 8);
-  for (const p of scatter(shrink(pts, 0.45), 9, seed + 1)) g.fillStyle(0x234a78, 1).fillCircle(p.x, p.y, 8);
-  // Foam where it meets the ground.
-  for (const [i, p] of rimOf(shrink(pts, 0.94), 7).entries()) if (tileRand(i, seed, 2) < 0.6) g.fillStyle(0xffffff, 0.5).fillCircle(p.x, p.y, 1.8);
+  const shore = smooth(pts);
+  // A dark line where the bank drops, a pale wet rim, then water deepening in two smooth bands.
+  g.fillStyle(0x1a2a3a, 0.55).fillPoints(smooth(shrink(pts, 1.03)), true);
+  g.fillStyle(0x8ec8ee, 1).fillPoints(shore, true);
+  g.fillStyle(0x3a78b0, 1).fillPoints(smooth(shrink(pts, 0.93)), true);
+  g.fillStyle(0x2d6098, 1).fillPoints(smooth(shrink(pts, 0.7, 1, 1)), true);
+  g.fillStyle(0x234c80, 1).fillPoints(smooth(shrink(pts, 0.45, 1, 2)), true);
+  // Foam: one unbroken pale line inset from the shore.
+  g.lineStyle(2, 0xdff4ff, 0.85).strokePoints(smooth(shrink(pts, 0.95)), true, true);
+  // Sparse highlight streaks on the surface.
+  scatter(shrink(pts, 0.75), 16, seed).forEach((p, i) => {
+    if (tileRand(i, seed, 3) < 0.45) g.lineStyle(1.5, 0xcfeaff, 0.55).lineBetween(p.x - 5, p.y, p.x + 4, p.y);
+  });
+  g.lineStyle(1, 0x16222e, 0.8).strokePoints(smooth(shrink(pts, 1.03)), true, true);
 }
 
 export function drawMud(g: Phaser.GameObjects.Graphics, pts: V[], seed: number): void {

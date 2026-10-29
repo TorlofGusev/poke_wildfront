@@ -32,6 +32,7 @@ const MOTES: Readonly<Record<BoardTheme, { color: number; dy: number; alpha: num
   cave: { color: 0xc8b8a8, dy: 7, alpha: 0.35 },
   shore: { color: 0xe8f6ff, dy: -4, alpha: 0.5 },
   indoor: { color: 0xd8dce8, dy: 2, alpha: 0.3 },
+  gym: { color: 0xfff3d0, dy: -3, alpha: 0.3 },
 };
 
 function ensureTextures(scene: Phaser.Scene): void {
@@ -59,6 +60,8 @@ export class ArenaFx {
   private flashes: { light: GroundLight; start: number; ms: number }[] = [];
   /** Where the ground lights come from each frame (the GPU ground, when there is one). */
   onLights: ((lights: GroundLight[], pools: GroundPool[]) => void) | null = null;
+  /** Lights that are always on (a cave's Pokémon and crystals), asked for every frame. */
+  steadyLights: (() => GroundLight[]) | null = null;
 
   constructor(
     private readonly scene: Phaser.Scene,
@@ -93,6 +96,7 @@ export class ArenaFx {
       out.push({ x: c.x, y: c.y, radius: v.hazard.radius * this.unit * 2.2, intensity: 0.45 * flicker, color: 0xff8a30 });
     }
     for (const f of this.flashes) out.push({ ...f.light, intensity: f.light.intensity * (1 - (now - f.start) / f.ms) });
+    if (this.steadyLights) out.push(...this.steadyLights());
     this.onLights(out.sort((a, b) => b.intensity - a.intensity), pools);
   }
 
