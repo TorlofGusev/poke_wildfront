@@ -4,7 +4,7 @@
   "name": "Acid Armor",
   "type": "poison",
   "kind": "special",
-  "cooldown": 5,
+  "cooldown": 3,
   "power": 0,
   "range": {
    "min": 0,
@@ -55,7 +55,7 @@
   "name": "Acupressure",
   "type": "normal",
   "kind": "special",
-  "cooldown": 5,
+  "cooldown": 3,
   "power": 0,
   "range": {
    "min": 0,
@@ -569,7 +569,7 @@
   "name": "Belly Drum",
   "type": "normal",
   "kind": "special",
-  "cooldown": 5,
+  "cooldown": 4,
   "power": 0,
   "range": {
    "min": 0,
@@ -1570,7 +1570,7 @@
   "type": "poison",
   "kind": "special",
   "category": "physical",
-  "cooldown": 5,
+  "cooldown": 3,
   "power": 65,
   "range": {
    "min": 1,
@@ -1675,7 +1675,7 @@
   "type": "dark",
   "kind": "special",
   "category": "special",
-  "cooldown": 5,
+  "cooldown": 2,
   "power": 60,
   "range": {
    "min": 2,
@@ -2058,7 +2058,7 @@
   "name": "Dragon Dance",
   "type": "dragon",
   "kind": "special",
-  "cooldown": 5,
+  "cooldown": 4,
   "power": 0,
   "range": {
    "min": 0,
@@ -2672,7 +2672,7 @@
   "type": "normal",
   "kind": "special",
   "category": "physical",
-  "cooldown": 5,
+  "cooldown": 3,
   "power": 45,
   "range": {
    "min": 1,
@@ -2810,7 +2810,7 @@
   "type": "bug",
   "kind": "special",
   "category": "physical",
-  "cooldown": 5,
+  "cooldown": 3,
   "power": 55,
   "range": {
    "min": 1,
@@ -5360,7 +5360,7 @@
   "name": "Minimize",
   "type": "normal",
   "kind": "special",
-  "cooldown": 5,
+  "cooldown": 3,
   "power": 0,
   "range": {
    "min": 0,
@@ -5411,7 +5411,7 @@
   "name": "Mist",
   "type": "ice",
   "kind": "special",
-  "cooldown": 5,
+  "cooldown": 3,
   "power": 0,
   "range": {
    "min": 0,
@@ -6274,7 +6274,7 @@
   "type": "rock",
   "kind": "special",
   "category": "special",
-  "cooldown": 5,
+  "cooldown": 2,
   "power": 60,
   "range": {
    "min": 2,
@@ -6760,7 +6760,7 @@
   "type": "normal",
   "kind": "special",
   "category": "special",
-  "cooldown": 5,
+  "cooldown": 2,
   "power": 60,
   "range": {
    "min": 0,
@@ -6934,7 +6934,7 @@
   "type": "rock",
   "kind": "special",
   "category": "physical",
-  "cooldown": 5,
+  "cooldown": 3,
   "power": 60,
   "range": {
    "min": 2,
@@ -7601,7 +7601,7 @@
   "type": "bug",
   "kind": "special",
   "category": "special",
-  "cooldown": 5,
+  "cooldown": 2,
   "power": 40,
   "range": {
    "min": 2,
@@ -8381,7 +8381,7 @@
   "type": "ground",
   "kind": "special",
   "category": "physical",
-  "cooldown": 5,
+  "cooldown": 2,
   "power": 55,
   "range": {
    "min": 0,
@@ -8586,7 +8586,7 @@
   "name": "Substitute",
   "type": "normal",
   "kind": "special",
-  "cooldown": 5,
+  "cooldown": 4,
   "power": 0,
   "range": {
    "min": 0,
@@ -8764,7 +8764,7 @@
   "name": "Swallow",
   "type": "normal",
   "kind": "special",
-  "cooldown": 5,
+  "cooldown": 3,
   "power": 0,
   "range": {
    "min": 0,
@@ -9993,7 +9993,7 @@
   "name": "Yawn",
   "type": "normal",
   "kind": "special",
-  "cooldown": 5,
+  "cooldown": 3,
   "power": 0,
   "range": {
    "min": 1,

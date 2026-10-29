@@ -54,7 +54,7 @@ Example: `src/content/mastery/trees/charmander.json`.
 - **Pokémon feel:** use canon moves/abilities the line actually has or plausibly would; a canon name must
   do roughly what the canon move/ability does (Swift Swim ≠ disengage). No invented jargon; plain English
   when no canon name fits. Each line should feel like that Pokémon (Snorlax: Rest, Body Slam, Thick Fat).
-- Skills: `kind: "special"`, `cooldown` 2–5, power ≤ 100 (late big moves ~85–100, cd 4–5), reach ≤ 2, and not a
+- Skills: `kind: "special"`, `cooldown` 2–4, power ≤ 100 (late big moves ~85–100, cd 4), reach ≤ 2, and not a
   move the line already learns by level (species.json `moves`/`learnset`). Focus Bond skills: `kind: "bond"`,
   `bondCost` 1–3, reach ≤ 3 at cost 2+, power ≤ 110.
 - Hex grid: say "hex", never "tile". Movement is capped at 3 → no "+move" passives.
