@@ -12,6 +12,7 @@ import type { BoardTheme } from "./ui/boardDecor";
  */
 
 const MAX_LIGHTS = 8;
+const MAX_POOLS = 4;
 /** Mask resolution: one texel per this many screen pixels. */
 const CELL = 2;
 
@@ -29,6 +30,7 @@ uniform float uAmbient;
 uniform float uFlora;
 uniform vec4 uLights[${MAX_LIGHTS}];
 uniform vec4 uLightColors[${MAX_LIGHTS}];
+uniform vec4 uPools[${MAX_POOLS}]; // burning (w 1) or poisoned (w 2) ground: x, y, radius
 
 float hash(vec2 p) { p = fract(p * vec2(123.34, 456.21)); p += dot(p, p + 45.32); return fract(p.x * p.y); }
 float noise(vec2 p) {
@@ -87,8 +89,8 @@ void main() {
   float mc = cover(md, px, 0.08);
   if (mc > 0.0) {
     vec3 mudc = mix(vec3(0.42, 0.32, 0.2), vec3(0.28, 0.2, 0.12), smoothstep(0.5, 0.9, md));
-    mudc *= 0.9 + 0.2 * noise(px * 0.2);
-    if (noise(px * 0.15 + uTime * 0.05) > 0.78) mudc += 0.12;
+    mudc *= 0.95 + 0.1 * noise(px * 0.12);
+    mudc += 0.06 * smoothstep(0.6, 0.75, noise(px * 0.05)); // a soft wet sheen, still
     col = mix(col, mudc, mc);
   }
 
@@ -107,6 +109,38 @@ void main() {
     water = mix(water, vec3(0.85, 0.95, 1.0), foam * 0.8);
     if (hash(floor(px / 4.0) + floor(uTime * 2.0)) > 0.996) water += 0.4;
     col = mix(col, water, wc);
+  }
+
+  // --- Burning and poisoned ground, drawn per pixel (no particles): flames licking upwards, bubbling sludge.
+  vec3 emit = vec3(0.0);
+  for (int i = 0; i < ${MAX_POOLS}; i++) {
+    vec4 P = uPools[i];
+    if (P.w < 0.5) continue;
+    float e = length(px - P.xy) / P.z + (fbm(px * 0.05 + float(i) * 9.1) - 0.5) * 0.35;
+    if (e > 1.05) continue;
+    if (P.w < 1.5) {
+      col = mix(col, col * 0.35 + vec3(0.06, 0.02, 0.0), smoothstep(1.05, 0.7, e));
+      vec2 q = px * 0.035 + vec2(0.0, uTime * 1.6);
+      float f = fbm(q + vec2(fbm(q * 1.7 + uTime * 0.7) * 1.5, 0.0)) * smoothstep(1.0, 0.25, e);
+      float heat = clamp(f * 1.35, 0.0, 1.0);
+      vec3 flame = mix(vec3(0.55, 0.07, 0.02), vec3(1.0, 0.45, 0.06), smoothstep(0.25, 0.55, heat));
+      flame = mix(flame, vec3(1.0, 0.92, 0.55), smoothstep(0.62, 0.9, heat));
+      float a = smoothstep(0.22, 0.42, heat);
+      col = mix(col, flame, a);
+      emit += flame * a * 0.6;
+    } else {
+      float a = smoothstep(1.0, 0.82, e) * 0.9;
+      vec3 sludge = mix(vec3(0.3, 0.1, 0.4), vec3(0.5, 0.2, 0.62), noise(px * 0.06 + uTime * 0.15));
+      float w2 = worley(px / 8.0 + vec2(float(i) * 3.3, -uTime * 0.25));
+      float size = 0.2 + 0.1 * sin(uTime * 2.5 + noise(px * 0.03) * 12.0);
+      float bubble = smoothstep(size + 0.04, size, w2);
+      // Each bubble a lit dome with a darker rim, swelling and shrinking.
+      float rim = smoothstep(size + 0.04, size, w2) - smoothstep(size - 0.02, size - 0.08, w2);
+      sludge = mix(sludge, vec3(0.62, 0.32, 0.75), bubble * 0.7);
+      sludge = mix(sludge, vec3(0.22, 0.06, 0.3), rim * 0.6);
+      col = mix(col, sludge, a);
+      emit += vec3(0.12, 0.02, 0.18) * a;
+    }
   }
 
   // --- Bushes: a canopy of leaf clumps, each a lit dome.
@@ -151,7 +185,7 @@ void main() {
     float d = length(px - L.xy) / L.z;
     lsum += uLightColors[i].rgb * L.w * clamp(1.0 - d * d, 0.0, 1.0);
   }
-  col *= lsum;
+  col = col * lsum + emit;
   col = floor(col * 28.0 + 0.5) / 28.0; // a limited palette
   gl_FragColor = vec4(col, 1.0);
 }
@@ -174,6 +208,14 @@ export interface GroundLight {
   color: number;
 }
 
+/** Burning or poisoned ground the shader paints. */
+export interface GroundPool {
+  x: number;
+  y: number;
+  radius: number;
+  kind: "fire" | "poison";
+}
+
 /** Whether the GPU ground can be used (WebGL renderer). */
 export const shaderGround = (scene: Phaser.Scene): boolean => scene.game.renderer.type === Phaser.WEBGL;
 
@@ -182,6 +224,7 @@ export class TerrainShader {
   private readonly keyA: string;
   private readonly keyB: string;
   private lights: GroundLight[] = [];
+  private pools: GroundPool[] = [];
 
   constructor(
     private readonly scene: Phaser.Scene,
@@ -218,12 +261,16 @@ export class TerrainShader {
         });
         set("uLights[0]", L);
         set("uLightColors[0]", C);
+        const P = new Float32Array(MAX_POOLS * 4);
+        this.pools.slice(0, MAX_POOLS).forEach((p, i) => P.set([p.x - board.x, p.y - board.y, p.radius, p.kind === "fire" ? 1 : 2], i * 4));
+        set("uPools[0]", P);
       },
     }, board.x, board.y, board.w, board.h, [this.keyA, this.keyB]).setOrigin(0).setDepth(-1);
   }
 
-  setLights(lights: GroundLight[]): void {
+  setLights(lights: GroundLight[], pools: GroundPool[] = []): void {
     this.lights = lights;
+    this.pools = pools;
   }
 
   /** Paints the terrain masks from the field (later zones cover earlier ones, as in the rules), softened. */

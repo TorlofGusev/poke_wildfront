@@ -320,7 +320,7 @@ export class BattleScene extends Phaser.Scene {
       this.ground.update(field);
       if (!this.arena) {
         this.arena = new ArenaFx(this, board, theme, S);
-        this.arena.onLights = (l) => this.ground?.setLights(l);
+        this.arena.onLights = (l, p) => this.ground?.setLights(l, p);
       }
       return;
     }

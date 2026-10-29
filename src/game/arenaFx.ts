@@ -2,7 +2,7 @@ import Phaser from "phaser";
 import type { Hazard, MoveDef } from "../core/battle";
 import type { BoardTheme } from "./ui/boardDecor";
 import { TYPE_COLORS } from "./ui/theme";
-import type { GroundLight } from "./terrainShader";
+import type { GroundLight, GroundPool } from "./terrainShader";
 
 /**
  * The battlefield reacting to the battle, drawn in code: drifting motes and shimmering water while it
@@ -58,7 +58,7 @@ export class ArenaFx {
   /** Short bursts of light from attacks, fading out. */
   private flashes: { light: GroundLight; start: number; ms: number }[] = [];
   /** Where the ground lights come from each frame (the GPU ground, when there is one). */
-  onLights: ((lights: GroundLight[]) => void) | null = null;
+  onLights: ((lights: GroundLight[], pools: GroundPool[]) => void) | null = null;
 
   constructor(
     private readonly scene: Phaser.Scene,
@@ -84,14 +84,16 @@ export class ArenaFx {
     const now = this.scene.time.now;
     this.flashes = this.flashes.filter((f) => now - f.start < f.ms);
     const out: GroundLight[] = [];
+    const pools: GroundPool[] = [];
     for (const v of this.hazardViews.values()) {
+      if (v.hazard.kind !== "mud") pools.push({ x: v.center.x, y: v.center.y, radius: v.hazard.radius * this.unit, kind: v.hazard.kind });
       if (v.hazard.kind !== "fire") continue;
       const c = v.center;
       const flicker = 0.75 + 0.15 * Math.sin(now / 70 + c.x) + 0.1 * Math.sin(now / 37 + c.y);
-      out.push({ x: c.x, y: c.y, radius: v.hazard.radius * this.unit * 2.4, intensity: 0.9 * flicker, color: 0xff8a30 });
+      out.push({ x: c.x, y: c.y, radius: v.hazard.radius * this.unit * 2.2, intensity: 0.45 * flicker, color: 0xff8a30 });
     }
     for (const f of this.flashes) out.push({ ...f.light, intensity: f.light.intensity * (1 - (now - f.start) / f.ms) });
-    this.onLights(out.sort((a, b) => b.intensity - a.intensity));
+    this.onLights(out.sort((a, b) => b.intensity - a.intensity), pools);
   }
 
   /** A burst of light on the ground (an attack landing, a bolt). */
@@ -185,6 +187,15 @@ export class ArenaFx {
     };
     const zone = { type: "random" as const, source, quantity: 1 };
     const s = this.scene;
+    // The GPU ground paints the flames and the sludge itself; only smoke and mist rise above it.
+    if (this.onLights) {
+      if (h.kind === "mud") return [];
+      return [s.add.particles(c.x, c.y - (h.kind === "fire" ? 10 : 0), SOFT, {
+        emitZone: zone, lifespan: h.kind === "fire" ? 1800 : 2400, frequency: h.kind === "fire" ? 220 : 320,
+        speedY: h.kind === "fire" ? { min: -24, max: -12 } : { min: -6, max: 2 }, speedX: { min: -6, max: 6 },
+        scale: { start: 0.5, end: 1.4 }, alpha: { start: h.kind === "fire" ? 0.3 : 0.2, end: 0 }, tint: h.kind === "fire" ? 0x2a2a2a : 0x9a50d8,
+      }).setDepth(1.7)];
+    }
     if (h.kind === "fire") {
       const glow = this.groundDisc(c, r, 0xff5a10, 0.22);
       s.tweens.add({ targets: glow, alpha: { from: 0.14, to: 0.32 }, scale: { from: 0.96, to: 1.04 }, duration: 380, yoyo: true, repeat: -1, ease: "Sine.easeInOut" });
