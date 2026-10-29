@@ -1,5 +1,5 @@
 import { MAX_ACTIVE_UNITS, type BattleScenario, type UnitModifiers, type UnitSetup } from "../battle";
-import { battleArena, formationLabel } from "../free/arena";
+import { battleArena, formationLabel, type Formation } from "../free/arena";
 import { Grid } from "../grid/Grid";
 import { reachableTiles } from "../grid/movement";
 import type { TerrainDef } from "../grid/terrain";
@@ -395,7 +395,7 @@ export function wildScenario(
   seed?: number,
   /** The group caught the party: its ambush formations (surrounded, pincer). */
   ambush = false,
-): BattleScenario & { name: string; captureAllowed: boolean } {
+): BattleScenario & { name: string; captureAllowed: boolean; formation: Formation } {
   const biome = content.biomes[group.biome]!;
   if (!biome.arena) throw new Error(`biome ${biome.id} has no arena`);
   const arena = battleArena(biome.arena, biome.id, seed ?? 1, ambush ? "wildAmbush" : "wild", maxDeploy, group.species.length);
@@ -404,7 +404,7 @@ export function wildScenario(
   const enemies: UnitSetup[] = group.species.map((speciesId, i) => ({
     ...setup(speciesId, group.levels[i] ?? 1), id: `${group.id}-${i}`, side: "enemy", pos: arena.enemySpawns[i]!,
   }));
-  return { id: group.id, name, field: arena.field, deploymentZone: arena.deploymentZone, enemies, captureAllowed: true, maxDeploy };
+  return { id: group.id, name, field: arena.field, deploymentZone: arena.deploymentZone, enemies, captureAllowed: true, maxDeploy, formation: arena.formation };
 }
 
 /** Rolls a won battle's loot table in order: at most one item turns up (the first that hits). */

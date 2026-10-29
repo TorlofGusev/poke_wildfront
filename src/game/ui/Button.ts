@@ -70,6 +70,20 @@ export class Button extends Phaser.GameObjects.Container {
     return this;
   }
 
+  /** A bright, solid fill with a bold white label: the call to action. */
+  setSolid(color: number): this {
+    const lift = (k: number) => Phaser.Display.Color.GetColor(
+      Math.min(255, ((color >> 16) & 255) * k), Math.min(255, ((color >> 8) & 255) * k), Math.min(255, (color & 255) * k));
+    this.fill = color;
+    this.hoverFill = lift(1.2);
+    this.label.setFontStyle("bold").setStroke("#10141c", 3);
+    if (this.enabled) {
+      this.bg.setFillStyle(this.fill).setStrokeStyle(2, 0xffffff);
+      this.label.setColor("#ffffff");
+    }
+    return this;
+  }
+
   setHighlighted(on: boolean): this {
     this.bg.setStrokeStyle(on ? 2 : 1, on ? 0xf5d76e : 0x5a6785);
     return this;

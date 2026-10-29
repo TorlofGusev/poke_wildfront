@@ -528,7 +528,7 @@ export class OverworldScene extends Phaser.Scene {
     // Wild bosses stand in the middle; trainers face the party across the field.
     const enemyCount = teamOf(session.game, npc).length;
     const arena = battleArena(base, biomeId, (Date.now() >>> 0) ^ npc.pos.x * 31 ^ npc.pos.y, npc.kind === "wild" ? "boss" : "trainer", this.slots(), enemyCount);
-    const scenario = { ...trainerScenario(session.game, npc, arena, (mon) => trainerSetup(CONTENT, PROGRESSION, mon), this.slots()), name: `${npc.name} · ${formationLabel(arena.formation)}` };
+    const scenario = { ...trainerScenario(session.game, npc, arena, (mon) => trainerSetup(CONTENT, PROGRESSION, mon), this.slots()), name: `${npc.name} · ${t(formationLabel(arena.formation))}` };
     sfx(this, "encounter");
     battleWipe(this, npc.kind !== "wild", () => this.scene.start("Battle", { scenario, npcId: npc.id, mapId: def.id, biome: biomeId }));
   }
@@ -852,7 +852,9 @@ export class OverworldScene extends Phaser.Scene {
 
     if (encounter) {
       const group = encounter;
-      const scenario = wildScenario(WORLD_CONTENT, effectiveGroup(group, this.healthy(), this.slots(), this.levelCap()), (s, lv) => wildSetup(CONTENT, PROGRESSION, s, lv, group.id), this.slots(), Date.now() >>> 0, ambush);
+      const wild = wildScenario(WORLD_CONTENT, effectiveGroup(group, this.healthy(), this.slots(), this.levelCap()), (s, lv) => wildSetup(CONTENT, PROGRESSION, s, lv, group.id), this.slots(), Date.now() >>> 0, ambush);
+      // The subtitle names the area as the map does ("Route 3"), not the encounter table.
+      const scenario = { ...wild, name: `${t("Wild Pokémon · {area}", { area: areaName(WORLD_CONTENT, currentWorld(), group.pos) })} · ${t(formationLabel(wild.formation))}` };
       sfx(this, "encounter");
       battleWipe(this, false, () => this.scene.start("Battle", { scenario, encounterId: group.id, biome: group.biome }));
     }

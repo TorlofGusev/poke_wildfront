@@ -18,7 +18,7 @@ import { playCry, sfx, silence } from "../audio";
 import { FEEDBACK_URL, openFeedback } from "../feedback";
 import { flushTips, queueTip, showHelp, tipOpen } from "../tips";
 import { completeNpc, failNpc, type NpcDef } from "../../core/story";
-import { drawBadge, messageBox, roundSweep, versusBands } from "../ui/battleBookends";
+import { drawBadge, messageBox, messageFrame, roundSweep, versusBands } from "../ui/battleBookends";
 import { trainerLook } from "../trainerLook";
 import { trainerTexture } from "../trainerSprites";
 import { grantGifts } from "../storyFlow";
@@ -66,7 +66,7 @@ import { RichText } from "../ui/RichText";
 import { t } from "../i18n";
 import { boardTheme, drawFloorDecor, drawWaterDecor, floorColor, tileRand } from "../ui/boardDecor";
 import { footOrigin, animKey, FACE_LEFT, FACE_RIGHT, facingFor, hasSprite, portraitKey, type Facing, type SpriteAnim } from "../sprites";
-import { BOARD_X, BOARD_Y, COLORS, FIELD_S, fieldToWorld, FONT, PANEL_X, PANEL_W, TYPE_COLORS, UNIT_SCALE, worldToField, px, PHONE } from "../ui/theme";
+import { BOARD_X, BOARD_Y, COLORS, FIELD_S, fieldToWorld, FONT, PANEL_X, PANEL_W, TYPE_COLORS, UNIT_SCALE, worldToField, px, fs, PHONE } from "../ui/theme";
 
 type Phase = "deploy" | "battle" | "over";
 
@@ -129,6 +129,31 @@ const STATUS_PILLS: Readonly<Record<string, { label: string; color: number; dark
   curse: { label: "CRS", color: 0x705898 },
 };
 
+/** Where End turn and Retreat sit in the side panel (panel coordinates). */
+const PANEL_FOOT = 540 - 16 - 12 - 28;
+
+/** How a move card shows: ready, nobody in reach (greyed, still its colour), or spent (dark); `note` sits at its right. */
+interface MoveCardLook {
+  readonly state: "ready" | "noTarget" | "spent";
+  readonly note: string;
+}
+
+/** One chip of a hit preview over a Pokémon. */
+interface PreviewChip {
+  readonly kind: "dmg" | "heal" | "ko" | "chance" | "catch" | "intercept" | "mark";
+  readonly text: string;
+}
+
+const CHIP_LOOKS: Readonly<Record<PreviewChip["kind"], { fill: number; rim: number; text: string; size: number }>> = {
+  dmg: { fill: 0x10141c, rim: 0xffd27a, text: "#ffd27a", size: 13 },
+  heal: { fill: 0x143018, rim: 0x7ed321, text: "#b8f080", size: 13 },
+  ko: { fill: 0xc02828, rim: 0xffffff, text: "#ffffff", size: 13 },
+  chance: { fill: 0x343a48, rim: 0x8a92a6, text: "#e0e4ee", size: 10 },
+  catch: { fill: 0x1e4a2a, rim: 0x7ed321, text: "#d8ffb0", size: 13 },
+  intercept: { fill: 0x4a2a10, rim: 0xf5a623, text: "#ffd08a", size: 12 },
+  mark: { fill: 0x10141c, rim: 0xc070ff, text: "#e0b0ff", size: 10 },
+};
+
 const HAZARD_COLORS = { fire: 0xff6a1f, poison: 0xa04ad8, mud: 0x7a5a32 } as const;
 
 const LOG_COLORS: Record<LogTone, string> = {
@@ -151,8 +176,7 @@ export class BattleScene extends Phaser.Scene {
   private prizeMoney = 0;
   /** EV the battle earned (wild win plus trainer or badge reward). */
   private evGained = 0;
-  /** "Foe X's turn" at the board's top right, and the red glow round the board while a foe acts. */
-  private turnChip: Phaser.GameObjects.Container | null = null;
+  /** The red glow round the board while a foe acts. */
   private foeEdge: Phaser.GameObjects.Graphics | null = null;
   private phase: Phase = "deploy";
   private placements: Placement[] = [];
@@ -170,6 +194,9 @@ export class BattleScene extends Phaser.Scene {
   private armedFrame: Phaser.GameObjects.Arc | null = null;
   private log: LogEntry[] = [];
   private logStrip!: RichText;
+  /** The message box's first, dimmed line (the event before the newest), and how many characters a line holds. */
+  private logPrev: RichText | null = null;
+  private logChars = 64;
   private logOverlay: Phaser.GameObjects.Container | null = null;
   /** How far the open log is scrolled back from the newest line, in pixels. */
   private logScroll = 0;
@@ -209,6 +236,14 @@ export class BattleScene extends Phaser.Scene {
   private infoY = 330;
   private header!: Phaser.GameObjects.Text;
   private orderStrip: Phaser.GameObjects.Container | null = null;
+  /** Who led the turn order when it was last drawn (a change slides the row along). */
+  private orderHead: string | null = null;
+  /** The card next to the Pokémon under the pointer, and what it shows (rebuilt only when that changes). */
+  private tooltip: Phaser.GameObjects.Container | null = null;
+  private tooltipKey = "";
+  /** Deployment: the spots' pads (a base and a pulsing ring) and the foes' name plates. */
+  private deployPads: { pos: Point; base: Phaser.GameObjects.Graphics; glow: Phaser.GameObjects.Arc }[] = [];
+  private foePlates: Phaser.GameObjects.Container | null = null;
   private previewLabels: Phaser.GameObjects.Container | null = null;
   private lastPreview: readonly HitPreview[] = [];
   /** A recorded battle replayed behind the title screen: no UI, no sound, nothing saved. */
@@ -260,8 +295,13 @@ export class BattleScene extends Phaser.Scene {
     this.armedFrame = null;
     this.orderStrip = null;
     this.previewLabels = null;
-    this.turnChip = null;
     this.foeEdge = null;
+    this.orderHead = null;
+    this.logPrev = null;
+    this.tooltip = null;
+    this.tooltipKey = "";
+    this.deployPads = [];
+    this.foePlates = null;
   }
 
   create(): void {
@@ -279,12 +319,18 @@ export class BattleScene extends Phaser.Scene {
     this.infoText = new RichText(this, PANEL_X, 330, PANEL_W, 12);
 
     const board = this.boardPx();
-    this.logStrip = new RichText(this, BOARD_X, BOARD_Y + board.h + 4, 450, 11, COLORS.dim, 15);
     // As wide as its label in either language.
     const logLabel = PHONE ? t("Full log") : t("Full log [L]");
     const probe = this.add.text(0, 0, logLabel, { fontFamily: FONT, fontSize: "14px" });
     const logW = Math.ceil(probe.width) + 20;
     probe.destroy();
+    // The message box under the field: what happened just before (dimmed) and what just happened, sliding in.
+    const msgTop = BOARD_Y + board.h + 4, msgH = Math.min(54, this.scale.height - msgTop - 2);
+    const msgW = board.w - logW - 48;
+    messageFrame(this.add.graphics(), BOARD_X, msgTop, msgW, msgH);
+    this.logPrev = new RichText(this, BOARD_X + 12, msgTop + 8, msgW - 24, 11, "#aab4cc", 16);
+    this.logStrip = new RichText(this, BOARD_X + 12, msgTop + 27, msgW - 24, 12, "#ffffff", 16);
+    this.logChars = Math.floor((msgW - 24) / (fs(12) * 0.62));
     const logButton = new Button(this, BOARD_X + board.w - logW, BOARD_Y + board.h + 6, logW, 22, logLabel, () => this.toggleLogOverlay());
     logButton.setDepth(5);
     new Button(this, BOARD_X + board.w - logW - 40, BOARD_Y + board.h + 6, 34, 22, "?", () => showHelp(this)).centerLabel().setDepth(5);
@@ -307,6 +353,7 @@ export class BattleScene extends Phaser.Scene {
     });
 
     for (const e of this.scenario.enemies) this.createUnitView(e.id, e.speciesId, "enemy", e.pos);
+    this.buildDeployPads();
     this.foeEdge = this.add.graphics().lineStyle(4, 0xff4a4a, 1).strokeRect(BOARD_X - 2, BOARD_Y - 2, board.w + 4, board.h + 4).setDepth(19).setVisible(false);
     this.tweens.add({ targets: this.foeEdge, alpha: { from: 0.9, to: 0.3 }, duration: 700, yoyo: true, repeat: -1 });
 
@@ -921,7 +968,7 @@ export class BattleScene extends Phaser.Scene {
     for (const push of previewPushes(state, CONTENT, unit.id, moveId, hover)) this.drawPush(unit.pos, push);
     if (aim.interceptor) {
       this.ringAt(aim.interceptor.pos, 0xf5a623);
-      this.previewLabel(aim.interceptor.id, `${catchChance}%`, "#f5a623");
+      this.previewLabel(aim.interceptor.id, [{ kind: "intercept", text: `${catchChance}%` }]);
       this.aimNote = tag("bad", t("⚠ {chance}% chance to hit {name} instead", { chance: catchChance, name: CONTENT.species[aim.interceptor.speciesId]!.name }));
     }
   }
@@ -992,11 +1039,11 @@ export class BattleScene extends Phaser.Scene {
     if (this.phase === "battle") this.drawFieldEffects();
     const hover = this.armed ?? this.hovered;
     if (this.phase === "deploy") {
-      for (const p of this.scenario.deploymentZone) {
-        const taken = this.placements.some((pl) => samePoint(pl.pos, p));
-        const c = fieldToWorld(p);
-        this.overlay.fillStyle(COLORS.zone, taken ? 0.15 : 0.35).fillCircle(c.x, c.y, UNIT_RADIUS * S + 2);
-        this.overlay.lineStyle(2, COLORS.zone, 0.9).strokeCircle(c.x, c.y, UNIT_RADIUS * S + 2);
+      // The pads (see buildDeployDecor): a taken one dims and stops pulsing.
+      for (const pad of this.deployPads) {
+        const taken = this.placements.some((pl) => samePoint(pl.pos, pad.pos));
+        pad.base.setAlpha(taken ? 0.35 : 1);
+        pad.glow.setVisible(!taken);
       }
     } else if (this.phase === "battle" && this.state && this.isPlayerTurn() && !this.busy) {
       const unit = activeUnit(this.state)!;
@@ -1005,7 +1052,7 @@ export class BattleScene extends Phaser.Scene {
         for (const p of captureTargets(this.state, CONTENT, unit.id, this.selectedBall)) {
           this.ringAt(p, COLORS.active, 6, 3);
           const foe = this.state.units.find((u) => u.hp > 0 && distance(u.pos, p) < 0.01);
-          if (foe) this.previewLabel(foe.id, `${Math.round(captureChance(CONTENT, foe, this.selectedBall) * 100)}%`, "#7ed321");
+          if (foe) this.previewLabel(foe.id, [{ kind: "catch", text: `${Math.round(captureChance(CONTENT, foe, this.selectedBall) * 100)}%` }]);
         }
       } else if (this.selectedMove) {
         this.drawAim(unit, this.selectedMove, hover);
@@ -1106,46 +1153,120 @@ export class BattleScene extends Phaser.Scene {
   private showPreview(hits: readonly HitPreview[], extra: (h: HitPreview) => string = () => ""): void {
     this.previewLabels ??= this.add.container(0, 0).setDepth(16);
     for (const h of hits) {
-      const parts = [h.damage ? `-${h.damage}` : "", h.healed ? `+${h.healed}` : "", h.knockedOut ? "KO" : "", extra(h)].filter(Boolean);
+      const chips: PreviewChip[] = [];
+      if (h.damage) chips.push({ kind: "dmg", text: `-${h.damage}` });
+      if (h.healed) chips.push({ kind: "heal", text: `+${h.healed}` });
+      if (h.knockedOut) chips.push({ kind: "ko", text: "KO" });
+      const more = extra(h);
+      if (more) chips.push({ kind: "chance", text: more });
       // A status-only hit gets a small mark; its name is in the move's description.
-      if (!parts.length && !h.statuses.length) continue;
-      this.previewLabel(h.unitId, parts.length ? parts.join(" ") : "●", h.knockedOut ? "#ff5050" : h.healed && !h.damage ? "#7ed321" : "#ffd27a");
+      if (!chips.length && h.statuses.length) chips.push({ kind: "mark", text: "●" });
+      if (chips.length) this.previewLabel(h.unitId, chips);
     }
     this.comboLabels?.setVisible(false);
     this.lastPreview = hits;
   }
 
-  /** A label over a Pokémon; labels of Pokémon standing close stack instead of overlapping. */
-  private previewLabel(unitId: string, text: string, color: string): void {
+  /**
+   * Chips over a Pokémon with a little tail pointing at it: damage, a red KO, healing, a grey hit chance, a catch
+   * chance. Chips of Pokémon standing close stack instead of overlapping.
+   */
+  private previewLabel(unitId: string, chips: readonly PreviewChip[]): void {
     const view = this.units.get(unitId);
     if (!view) return;
     this.previewLabels ??= this.add.container(0, 0).setDepth(16);
-    const label = this.add.text(view.container.x, view.container.y - 30, text, {
-      fontFamily: FONT, fontSize: "14px", fontStyle: "bold", color, backgroundColor: "#10141ccc", padding: { x: 3, y: 1 },
-    }).setOrigin(0.5);
-    const others = this.previewLabels.list as Phaser.GameObjects.Text[];
-    while (others.some((o) => Phaser.Geom.Intersects.RectangleToRectangle(o.getBounds(), label.getBounds()))) label.y -= label.height;
-    this.previewLabels.add(label);
+    const g = this.add.graphics();
+    const parts: Phaser.GameObjects.GameObject[] = [g];
+    const laid: { x: number; w: number; h: number; look: (typeof CHIP_LOOKS)[PreviewChip["kind"]] }[] = [];
+    let x = 0;
+    for (const c of chips) {
+      const look = CHIP_LOOKS[c.kind];
+      const label = this.add.text(0, 0, c.text, { fontFamily: FONT, fontSize: `${look.size}px`, color: look.text, fontStyle: "bold" }).setOrigin(0.5);
+      const w = Math.max(label.width + 10, look.size + 6), h = look.size + 6;
+      laid.push({ x, w, h, look });
+      label.setPosition(x + w / 2, 0);
+      parts.push(label);
+      x += w + 3;
+    }
+    const total = x - 3;
+    // Centre the row over the Pokémon, then draw the chips and the tail under the first (largest) one.
+    parts.forEach((o) => o !== g && ((o as Phaser.GameObjects.Text).x -= total / 2));
+    for (const c of laid) {
+      g.fillStyle(0x000000, 0.35).fillRoundedRect(c.x - total / 2 + 1, -c.h / 2 + 2, c.w, c.h, 5);
+      g.fillStyle(c.look.fill, 0.95).fillRoundedRect(c.x - total / 2, -c.h / 2, c.w, c.h, 5);
+      g.lineStyle(1.5, c.look.rim, 1).strokeRoundedRect(c.x - total / 2, -c.h / 2, c.w, c.h, 5);
+    }
+    const first = laid[0]!;
+    g.fillStyle(first.look.rim, 1).fillTriangle(-4, first.h / 2, 4, first.h / 2, 0, first.h / 2 + 5);
+    const chip = this.add.container(view.container.x, view.container.y - 34, parts);
+    const box = () => new Phaser.Geom.Rectangle(chip.x - total / 2, chip.y - 10, total, 20);
+    const others = this.previewLabels.list.filter((o): o is Phaser.GameObjects.Container => o instanceof Phaser.GameObjects.Container);
+    while (others.some((o) => Phaser.Geom.Intersects.RectangleToRectangle(new Phaser.Geom.Rectangle(o.x - (o.width || 0) / 2, o.y - 10, o.width || 0, 20), box()))) chip.y -= 22;
+    chip.setSize(total, 20);
+    this.previewLabels.add(chip);
   }
 
-  /** Who acts this round, in order, next to the round counter: portraits ringed in team colours. */
+  /** A framed card next to the Pokémon under the pointer: its name plate, types, statuses, HP and engagement. */
+  private unitTooltip(unit: BattleUnit | null): void {
+    this.tooltip?.destroy();
+    this.tooltip = null;
+    if (!unit || unit.hp <= 0 || this.selectedMove || this.selectedBall) return;
+    const view = this.units.get(unit.id);
+    if (!view) return;
+    const w = 214;
+    const card = this.activeCard(unit, 0, 0, w, false);
+    const partner = this.state ? partnerOf(this.state, unit) : null;
+    let h = 54;
+    if (partner) {
+      const line = this.add.text(8, 60, t("{engaged} with {name}", { engaged: t("Engaged"), name: CONTENT.species[partner.speciesId]!.name }), { fontFamily: FONT, fontSize: px(10), color: "#ff9a8a" });
+      const bg = this.add.graphics().fillStyle(0x10141c, 0.92).fillRoundedRect(0, 56, w, line.height + 8, 6);
+      card.add([bg, line]);
+      h += line.height + 10;
+    }
+    const board = this.boardPx();
+    const right = view.container.x + 26 + w <= BOARD_X + board.w;
+    const x = right ? view.container.x + 26 : view.container.x - 26 - w;
+    const y = Phaser.Math.Clamp(view.container.y - h / 2 - 10, BOARD_Y + 4, BOARD_Y + board.h - h - 4);
+    this.tooltip = card.setPosition(x, y).setDepth(25).setAlpha(0);
+    this.tweens.add({ targets: card, alpha: 1, duration: 100 });
+  }
+
+  /**
+   * Who acts this round, in order, at the top right: the one acting now large in a gold frame with a NOW tag,
+   * the rest on plates of their side's colour. When the turn passes the row slides along.
+   */
   private renderTurnOrder(state: BattleState): void {
     this.orderStrip?.destroy();
     const items: Phaser.GameObjects.GameObject[] = [];
-    const x0 = BOARD_X + this.header.width + 16;
+    const big = 40, small = 30, gap = 4, cy = 30;
+    const width = big + (state.queue.length - 1) * (small + gap) + (state.queue.length > 1 ? 6 : 0);
+    let x = BOARD_X + this.boardPx().w - width;
     state.queue.forEach((id, i) => {
       const u = unitById(state, id);
-      const x = x0 + i * 30;
-      const active = i === 0;
-      const color = u.side === "player" ? COLORS.player : COLORS.enemy;
-      items.push(this.add.rectangle(x, 10, 26, 26, 0x10141c).setOrigin(0).setStrokeStyle(active ? 3 : 2, active ? COLORS.active : color));
-      if (this.textures.exists(portraitKey(u.speciesId))) items.push(this.add.image(x + 13, 23, portraitKey(u.speciesId)).setDisplaySize(26, 26));
-      else items.push(this.add.text(x + 13, 23, "?", { fontFamily: FONT, fontSize: "14px", color: COLORS.text }).setOrigin(0.5));
-      items.push(this.add.rectangle(x, 10, 26, 26).setOrigin(0).setStrokeStyle(active ? 3 : 2, active ? COLORS.active : color));
-      items.push(this.add.text(x + 25, 37, String(u.level), { fontFamily: FONT, fontSize: "10px", color: COLORS.text, stroke: "#10141c", strokeThickness: 3 }).setOrigin(1, 1));
-      if (i < state.queue.length - 1) items.push(this.add.text(x + 27, 23, "›", { fontFamily: FONT, fontSize: "12px", color: COLORS.dim }).setOrigin(0, 0.5));
+      const now = i === 0;
+      const size = now ? big : small;
+      const foe = u.side === "enemy";
+      const g = this.add.graphics();
+      if (now) g.fillStyle(0xf5d76e, 0.25).fillRoundedRect(x - 3, cy - size / 2 - 3, size + 6, size + 6, 8);
+      g.fillStyle(foe ? 0x5a1a20 : 0x1a3a6a, 1).fillRoundedRect(x, cy - size / 2, size, size, 6);
+      g.lineStyle(now ? 3 : 2, now ? 0xf5d76e : foe ? COLORS.enemy : COLORS.player, 1).strokeRoundedRect(x, cy - size / 2, size, size, 6);
+      items.push(g);
+      if (this.textures.exists(portraitKey(u.speciesId))) items.push(this.add.image(x + size / 2, cy, portraitKey(u.speciesId)).setDisplaySize(size - 4, size - 4));
+      items.push(this.add.text(x + size - 2, cy + size / 2 - 1, String(u.level), { fontFamily: FONT, fontSize: "9px", color: "#ffffff", stroke: "#10141c", strokeThickness: 3 }).setOrigin(1, 1));
+      if (now) {
+        const tag = this.add.text(x + size / 2, cy + size / 2 + 6, t("NOW"), { fontFamily: FONT, fontSize: "9px", color: "#10141c", fontStyle: "bold" }).setOrigin(0.5);
+        items.push(this.add.rectangle(x + size / 2, cy + size / 2 + 6, tag.width + 8, 11, 0xf5d76e).setStrokeStyle(1, 0x10141c), tag);
+      }
+      x += size + gap + (now ? 6 : 0);
     });
     this.orderStrip = this.add.container(0, 0, items);
+    // The turn passed: the row slides in from the right.
+    const head = state.queue[0] ?? null;
+    if (head !== this.orderHead && this.orderHead !== null) {
+      this.orderStrip.setX(small + gap).setAlpha(0.3);
+      this.tweens.add({ targets: this.orderStrip, x: 0, alpha: 1, duration: 200, ease: "Cubic.easeOut" });
+    }
+    this.orderHead = head;
   }
 
   private panelKey = "";
@@ -1229,7 +1350,13 @@ export class BattleScene extends Phaser.Scene {
       y += Math.ceil(this.party.length / 3) * (cardH + 4);
       const errors = deploymentErrors(this.scenario, this.party, this.placements);
       y += 4;
-      button(t("▶ Lock deployment & start ({n}/{max})", { n: this.placements.length, max: this.scenario.maxDeploy ?? MAX_ACTIVE_UNITS }), errors.length === 0, false, () => this.startBattle());
+      // Once the line-up is valid the start becomes a big red Battle! button.
+      const go = new Button(this, 0, y, PANEL_W, 36, errors.length === 0 ? t("▶ Battle! ({n}/{max})", { n: this.placements.length, max: this.scenario.maxDeploy ?? MAX_ACTIVE_UNITS })
+        : t("▶ Lock deployment & start ({n}/{max})", { n: this.placements.length, max: this.scenario.maxDeploy ?? MAX_ACTIVE_UNITS }), () => this.startBattle())
+        .centerLabel().setEnabled(errors.length === 0);
+      if (errors.length === 0) go.setSolid(0xd83a3a);
+      this.panel.add(go);
+      y += 42;
       button(t("← Avoid this battle"), true, false, () => {
         // The group lets the party walk away instead of catching it again at the next step.
         if (this.encounterId) session.update({ ...session.game, world: calmEncounter(session.game.world, this.encounterId) });
@@ -1255,49 +1382,50 @@ export class BattleScene extends Phaser.Scene {
     this.renderTurnOrder(state);
     const bond = state.bond.player;
     text(`${CONTENT.terms.bond} ${"●".repeat(bond)}${"○".repeat(Math.max(0, state.bondMax.player - bond))} ${bond}/${state.bondMax.player}`, "#f5d76e", 13);
+    if (unit) {
+      this.panel.add(this.activeCard(unit, 0, y));
+      y += 60;
+    }
     if (unit && unit.side === "player" && !this.busy) {
-      const species = CONTENT.species[unit.speciesId]!;
-      text(`${species.name} · 👣${state.turn!.movePointsLeft.toFixed(1)}`, COLORS.good);
-      // The hint line is always there (empty when it does not apply), so the buttons never jump.
+      // The hint line is always there (empty when it does not apply), so the cards never jump.
       text(switchTargets(state).length ? t("Tap another of your Pokémon to act with it instead.") : " ", COLORS.dim, 11);
       // One basic attack a turn; specials as long as they are off cooldown; Bond moves while the Bond lasts.
       // Struggle only shows while it is the unit's way to fight (engaged, ranged basic attack).
       const basics = unit.moves.filter((m) => CONTENT.moves[m]!.kind === "basic" && (m !== "struggle" || !moveUnavailableReason(state, CONTENT, unit.id, m)));
       const skills = unit.moves.filter((m) => CONTENT.moves[m]!.kind !== "basic" && CONTENT.moves[m]!.kind !== "bond");
       const bonds = unit.moves.filter((m) => CONTENT.moves[m]!.kind === "bond");
-      const ordered = [...basics, ...skills, ...bonds];
-      for (const moveId of ordered) {
-        // Thin rules part the kinds (basic attacks, skills, Bond moves); the first-turn tip and ? help explain them.
-        if (moveId === skills[0] && basics.length) divider();
-        if (moveId === bonds[0] && (basics.length || skills.length)) divider();
-        const move = CONTENT.moves[moveId]!;
-        const reason = moveUnavailableReason(state, CONTENT, unit.id, moveId);
-        const hasTarget = !reason && freeHasTarget(state, CONTENT, unit.id, moveId);
-        const cd = unit.cooldowns[moveId] ?? 0;
-        const range = moveRange(unit, move, CONTENT);
-        const used = move.kind === "basic" && state.turn!.basicUsed;
-        const status = used ? t("used") : cd > 0 ? `⏳${cd}`
-          // ✕ and the reach: nobody to aim at within it.
-          : !used && !reason && !hasTarget ? `✕ ${reachShort(move, range)}`
-          // Basic and special need no label: the groups (parted by thin rules) say it.
-          : move.kind === "basic" || move.kind === "special" ? ""
-          : move.kind === "bond" ? ""
-          : unit.usedUltimates.includes(moveId) ? t("ult used") : t("ult 1×");
-        const ownBasic = basics.find((b) => b !== "struggle") ?? unit.moves.find((m) => m !== "struggle" && CONTENT.moves[m]!.kind === "basic");
-        const power = moveId === "struggle" && ownBasic ? Math.round(CONTENT.moves[ownBasic]!.power * CONTENT.rules.engagement.fallbackPower) : move.power;
-        // Fixed columns: name, power, state; a Bond move's cost last as Bond pips (the bar's ●, always shown;
-        // the pip is wider than the font's other glyphs, so it goes where it shifts nothing).
-        const pips = move.kind === "bond" ? "●".repeat(bondCostFor(move, unit)) : "";
-        button(`${move.name.padEnd(13)} ${power ? `⚔${String(power).padStart(3)}` : "    "}  ${status.padEnd(7)}${pips}`, hasTarget, this.selectedMove === moveId, () => {
-          this.selectedBall = null;
-          this.selectedMove = this.selectedMove === moveId ? null : moveId;
-          this.refreshAll();
-        }, TYPE_COLORS[move.type]).onHover((over) => {
-          this.hoveredMove = over ? moveId : this.hoveredMove === moveId ? null : this.hoveredMove;
-          this.refreshInfo();
-          this.refreshOverlay();
+      const ownBasic = basics.find((b) => b !== "struggle") ?? unit.moves.find((m) => m !== "struggle" && CONTENT.moves[m]!.kind === "basic");
+      // Type-coloured move cards, two to a row; each kind (basic attacks, skills, Bond moves) starts a new row.
+      const cardW = (PANEL_W - 8) / 2, cardH = 42;
+      [basics, skills, bonds].filter((g) => g.length).forEach((group, gi) => {
+        if (gi > 0) divider();
+        group.forEach((moveId, i) => {
+          const move = CONTENT.moves[moveId]!;
+          const reason = moveUnavailableReason(state, CONTENT, unit.id, moveId);
+          const hasTarget = !reason && freeHasTarget(state, CONTENT, unit.id, moveId);
+          const cd = unit.cooldowns[moveId] ?? 0;
+          const used = move.kind === "basic" && state.turn!.basicUsed;
+          const range = moveRange(unit, move, CONTENT);
+          const power = moveId === "struggle" && ownBasic ? Math.round(CONTENT.moves[ownBasic]!.power * CONTENT.rules.engagement.fallbackPower) : move.power;
+          const look: MoveCardLook = used ? { state: "spent", note: t("used") }
+            : cd > 0 ? { state: "spent", note: `⏳${cd}` }
+            : move.kind === "ultimate" && unit.usedUltimates.includes(moveId) ? { state: "spent", note: t("ult used") }
+            : !hasTarget ? { state: "noTarget", note: `✕ ${reachShort(move, range)}` }
+            : { state: "ready", note: move.kind === "bond" ? "●".repeat(bondCostFor(move, unit)) : move.kind === "ultimate" ? t("ult 1×") : reachShort(move, range) };
+          const card = this.moveCard(move, power, look, cardW, cardH, this.selectedMove === moveId, () => {
+            this.selectedBall = null;
+            this.selectedMove = this.selectedMove === moveId ? null : moveId;
+            this.refreshAll();
+          }, (over) => {
+            this.hoveredMove = over ? moveId : this.hoveredMove === moveId ? null : this.hoveredMove;
+            this.refreshInfo();
+            this.refreshOverlay();
+          });
+          card.setPosition((i % 2) * (cardW + 8), y + Math.floor(i / 2) * (cardH + 6));
+          this.panel.add(card);
         });
-      }
+        y += Math.ceil(group.length / 2) * (cardH + 6);
+      });
       if (state.captureAllowed) {
         const ballIds = Object.keys(CONTENT.balls);
         const w = Math.floor((PANEL_W - 8 * (ballIds.length - 1)) / ballIds.length);
@@ -1316,9 +1444,10 @@ export class BattleScene extends Phaser.Scene {
         });
         y += 30;
       }
+      // End turn and Retreat stay at the panel's foot, whatever is above them.
       const half = (PANEL_W - 8) / 2;
-      this.panel.add(new Button(this, 0, y, half, 26, PHONE ? t("End turn") : t("End turn [Space]"), () => this.playerEndTurn()));
-      this.panel.add(new Button(this, half + 8, y, half, 26, this.confirmRetreat ? t("Tap again to flee") : t("Retreat…"), () => {
+      this.panel.add(new Button(this, 0, PANEL_FOOT, half, 28, PHONE ? t("End turn") : t("End turn [Space]"), () => this.playerEndTurn()).centerLabel().setFill(0x3a7a4a));
+      this.panel.add(new Button(this, half + 8, PANEL_FOOT, half, 28, this.confirmRetreat ? t("Tap again to flee") : t("Retreat…"), () => {
         if (!this.confirmRetreat) {
           this.confirmRetreat = true;
           this.refreshAll();
@@ -1326,23 +1455,142 @@ export class BattleScene extends Phaser.Scene {
         }
         this.confirmRetreat = false;
         this.playerRetreat();
-      }).setHighlighted(this.confirmRetreat));
-      y += 30;
-    } else if (unit && unit.side !== "player") {
-      // Only while a foe acts; the player's own move or step animating is not the enemy's turn.
-      text(t("Enemy turn…"), COLORS.bad);
+      }).centerLabel().setFill(0x8a3a3a).setHighlighted(this.confirmRetreat));
     }
     this.infoY = 16 + y + 10;
     this.infoText.setY(this.infoY);
   }
 
+  /**
+   * The acting Pokémon as a card: portrait, name and level, types and statuses, HP bar and numbers, steps left.
+   * Rimmed blue for the player's, red for a foe's.
+   */
+  private activeCard(unit: BattleUnit, x: number, y: number, w = PANEL_W, steps = true): Phaser.GameObjects.Container {
+    const s = CONTENT.species[unit.speciesId]!;
+    const foe = unit.side === "enemy";
+    const h = 54;
+    const g = this.add.graphics();
+    g.fillStyle(0x000000, 0.3).fillRoundedRect(2, 3, w, h, 8);
+    g.fillStyle(foe ? 0x2a1a22 : 0x1a2338, 1).fillRoundedRect(0, 0, w, h, 8);
+    g.lineStyle(2, foe ? COLORS.enemy : COLORS.player, 1).strokeRoundedRect(0, 0, w, h, 8);
+    g.fillStyle(0x0c1018, 1).fillRoundedRect(6, 6, 42, 42, 6);
+    const parts: Phaser.GameObjects.GameObject[] = [g];
+    if (this.textures.exists(portraitKey(unit.speciesId))) parts.push(this.add.image(27, 27, portraitKey(unit.speciesId)).setDisplaySize(40, 40));
+    // The tooltip leaves out "Foe": its red rim says it.
+    const name = this.add.text(56, 5, foe && steps ? t("Foe {name}", { name: s.name }) : s.name, { fontFamily: FONT, fontSize: px(13), color: "#ffffff", fontStyle: "bold" });
+    parts.push(name, this.add.text(56 + name.width + 6, 6, `Lv${unit.level}`, { fontFamily: FONT, fontSize: px(11), color: "#f5d76e" }));
+    if (steps && !foe && this.state?.turn) parts.push(this.add.text(w - 8, 6, `👣${this.state.turn.movePointsLeft.toFixed(1)}`, { fontFamily: FONT, fontSize: px(11), color: COLORS.good }).setOrigin(1, 0));
+    // Type chips, then status pills.
+    let cx = 56;
+    for (const ty of s.types) {
+      const label = this.add.text(0, 0, ty.toUpperCase(), { fontFamily: FONT, fontSize: "8px", color: "#ffffff", fontStyle: "bold" }).setOrigin(0.5);
+      const cw = label.width + 8;
+      parts.push(this.add.rectangle(cx, 26, cw, 11, TYPE_COLORS[ty] ?? 0x888888).setOrigin(0, 0.5).setStrokeStyle(1, 0x10141c), label.setPosition(cx + cw / 2, 26));
+      cx += cw + 4;
+    }
+    for (const st of unit.statuses) {
+      const look = STATUS_PILLS[st.id];
+      if (!look) continue;
+      parts.push(this.add.rectangle(cx, 26, 22, 11, look.color).setOrigin(0, 0.5).setStrokeStyle(1, 0x10141c),
+        this.add.text(cx + 11, 26, look.label, { fontFamily: FONT, fontSize: "8px", color: look.dark ? "#10141c" : "#ffffff", fontStyle: "bold" }).setOrigin(0.5));
+      cx += 26;
+    }
+    // HP: the handhelds' framed bar, green / yellow / red.
+    const frac = Math.max(0, unit.hp / unit.maxHp);
+    const barW = w - 56 - 70;
+    parts.push(this.add.text(56, 41, "HP", { fontFamily: FONT, fontSize: "9px", color: "#f5d76e", fontStyle: "bold" }).setOrigin(0, 0.5));
+    parts.push(this.add.rectangle(74, 41, barW, 7, 0x0c1018).setOrigin(0, 0.5).setStrokeStyle(1, 0x5a6785));
+    parts.push(this.add.rectangle(75, 41, (barW - 2) * frac, 5, frac > 0.5 ? 0x58d058 : frac > 0.2 ? 0xf0c838 : 0xf05050).setOrigin(0, 0.5));
+    parts.push(this.add.text(w - 8, 41, `${unit.hp}/${unit.maxHp}`, { fontFamily: FONT, fontSize: px(11), color: COLORS.text }).setOrigin(1, 0.5));
+    return this.add.container(x, y, parts);
+  }
+
+  /**
+   * A move as a card in the Gen 5 manner: its type's colour with a sheen, the name, a type chip, power and reach.
+   * A card with nobody in reach keeps its colour but greys; one on cooldown or used goes dark.
+   */
+  private moveCard(move: MoveDef, power: number, look: MoveCardLook, w: number, h: number, selected: boolean,
+    onClick: () => void, onHover: (over: boolean) => void): Phaser.GameObjects.Container {
+    const base = TYPE_COLORS[move.type] ?? 0x888888;
+    const mix = (c: number, to: number, k: number) => {
+      const ch = (sh: number) => Math.round(((c >> sh) & 255) * (1 - k) + ((to >> sh) & 255) * k);
+      return (ch(16) << 16) | (ch(8) << 8) | ch(0);
+    };
+    const fill = look.state === "ready" ? base : look.state === "noTarget" ? mix(base, 0x5a6070, 0.55) : mix(base, 0x141820, 0.75);
+    const g = this.add.graphics();
+    g.fillStyle(0x000000, 0.35).fillRoundedRect(1, 3, w, h, 7);
+    g.fillStyle(mix(fill, 0x000000, 0.25), 1).fillRoundedRect(0, 0, w, h, 7);
+    g.fillStyle(fill, 1).fillRoundedRect(2, 2, w - 4, h - 4, 6);
+    // The sheen: a lighter upper half.
+    g.fillStyle(0xffffff, look.state === "spent" ? 0.05 : 0.16).fillRoundedRect(3, 3, w - 6, h / 2 - 3, { tl: 5, tr: 5, bl: 0, br: 0 });
+    if (selected) g.lineStyle(3, 0xf5d76e, 1).strokeRoundedRect(0, 0, w, h, 7);
+    const dimText = look.state === "spent";
+    const name = this.add.text(8, 5, move.name, { fontFamily: FONT, fontSize: px(12), color: dimText ? "#9aa0ae" : "#ffffff", fontStyle: "bold" })
+      .setStroke("#10141c", 3);
+    name.setCrop(0, 0, w - 12, 30);
+    // Bottom row: the type in a white chip, power, and reach or state at the right.
+    const chipLabel = this.add.text(0, 0, move.type.toUpperCase(), { fontFamily: FONT, fontSize: "8px", color: `#${mix(base, 0x000000, 0.2).toString(16).padStart(6, "0")}`, fontStyle: "bold" }).setOrigin(0.5);
+    const chipW = chipLabel.width + 8;
+    const chip = this.add.rectangle(8, h - 11, chipW, 11, 0xf8f8f8, dimText ? 0.5 : 1).setOrigin(0, 0.5);
+    chipLabel.setPosition(8 + chipW / 2, h - 11).setAlpha(dimText ? 0.6 : 1);
+    const parts: Phaser.GameObjects.GameObject[] = [g, name, chip, chipLabel];
+    if (power) {
+      // Power as on the handhelds' summary: a small POW, then the number.
+      const pow = this.add.text(8 + chipW + 6, h - 11, t("POW"), { fontFamily: FONT, fontSize: "8px", color: dimText ? "#8a90a0" : "#f0f0f0", fontStyle: "bold" }).setOrigin(0, 0.5);
+      parts.push(pow, this.add.text(pow.x + pow.width + 3, h - 11, String(power), { fontFamily: FONT, fontSize: px(11), color: dimText ? "#9aa0ae" : "#ffffff", fontStyle: "bold" })
+        .setOrigin(0, 0.5).setStroke("#10141c", 2));
+    }
+    const noteColor = look.state === "noTarget" ? "#ffd0d0" : look.state === "spent" ? "#c8ccd8" : move.kind === "bond" ? "#fff3a0" : "#ffffff";
+    parts.push(this.add.text(w - 7, h - 11, look.note, { fontFamily: FONT, fontSize: px(10), color: noteColor, fontStyle: "bold" }).setOrigin(1, 0.5).setStroke("#10141c", 2));
+    const hover = this.add.rectangle(0, 0, w, h, 0xffffff, 0).setOrigin(0);
+    parts.push(hover);
+    const card = this.add.container(0, 0, parts).setSize(w, h);
+    hover.setInteractive({ useHandCursor: true });
+    hover.on("pointerover", () => {
+      hover.setFillStyle(0xffffff, 0.12);
+      onHover(true);
+    });
+    hover.on("pointerout", () => {
+      hover.setFillStyle(0xffffff, 0);
+      onHover(false);
+    });
+    hover.on("pointerdown", () => {
+      // Like the other buttons: only ready cards act; the rest explain themselves on hover.
+      if (look.state !== "ready") return;
+      sfx(this, "select");
+      onClick();
+    });
+    return card;
+  }
+
   /** Shows info right under the panel; when it would run off the screen, the compact version is used. */
   private setInfo(full: string, compact?: string): void {
-    const room = 536 - this.infoY;
+    // Above End turn and Retreat while they show.
+    const room = (this.phase === "battle" ? 16 + PANEL_FOOT - 6 : 536) - this.infoY;
     if (this.infoText.setMarkup(full) > room && compact !== undefined) this.infoText.setMarkup(compact);
   }
 
+  /** The tooltip follows the hovered (or tapped) Pokémon; aiming or a hovered move card hides it. */
+  private syncTooltip(): void {
+    const hover = this.armed ?? this.hovered;
+    let unit: BattleUnit | undefined;
+    if (hover && this.inField(hover) && !this.hoveredMove && !this.busy && this.phase !== "over") {
+      if (this.state) unit = freeUnitAt(this.state, hover);
+      else {
+        const e = this.scenario.enemies.find((x) => distance(x.pos, hover) <= UNIT_RADIUS);
+        const pl = this.placements.find((x) => distance(x.pos, hover) <= UNIT_RADIUS);
+        const id = e?.id ?? pl?.unitId;
+        if (id) unit = { ...this.previewUnit(id), pos: e?.pos ?? pl!.pos };
+      }
+    }
+    const key = unit && !this.selectedMove && !this.selectedBall ? JSON.stringify([unit.id, unit.hp, unit.pos, unit.statuses, unit.engagedWith]) : "";
+    if (key === this.tooltipKey) return;
+    this.tooltipKey = key;
+    this.unitTooltip(key ? unit! : null);
+  }
+
   private refreshInfo(): void {
+    this.syncTooltip();
     if (this.hoveredMove) {
       let text = describeMove(CONTENT, CONTENT.moves[this.hoveredMove]!);
       const unit = this.state ? activeUnit(this.state) : null;
@@ -1628,6 +1876,10 @@ export class BattleScene extends Phaser.Scene {
     });
     this.state = state;
     this.phase = "battle";
+    for (const pad of this.deployPads) pad.base.destroy(), pad.glow.destroy();
+    this.deployPads = [];
+    this.foePlates?.destroy();
+    this.foePlates = null;
     void this.playEvents(events).then(() => this.continueFlow());
   }
 
@@ -1688,7 +1940,7 @@ export class BattleScene extends Phaser.Scene {
       this.arena?.syncHazards([], fieldToWorld);
       this.ground?.setLights([], []);
       this.arena && (this.arena.onLights = null);
-      this.showTurnChip(null);
+      this.showFoeTurn(null);
       // Where each Pokémon's level and EXP stood, for the results card's filling bars.
       const before = new Map(session.game.roster.party.map((m) => [m.uid, { level: m.level, xp: m.xp }]));
       // Knockouts, deaths, captures and used balls become permanent here, and are autosaved.
@@ -1807,7 +2059,7 @@ export class BattleScene extends Phaser.Scene {
           if (e.round > 1) await this.roundBanner(e.round);
           break;
         case "turnStarted":
-          this.showTurnChip(e.unitId);
+          this.showFoeTurn(e.unitId);
           break;
         case "moved":
           await this.settle();
@@ -1933,7 +2185,14 @@ export class BattleScene extends Phaser.Scene {
   private pushLog(entry: LogEntry): void {
     this.log.push(entry);
     if (this.log.length > 500) this.log.shift();
-    this.logStrip.setMarkup(this.log.slice(-4).map((l) => this.fitLine(l.text, 64)).join("\n"));
+    const [prev, last] = this.log.length > 1 ? this.log.slice(-2) : [undefined, this.log[0]];
+    this.logPrev?.setMarkup(prev ? this.fitLine(prev.text, this.logChars) : "");
+    this.logStrip.setMarkup(last ? this.fitLine(last.text, this.logChars) : "");
+    if (this.logPrev && !this.demo) {
+      this.tweens.killTweensOf(this.logStrip);
+      this.logStrip.setAlpha(0).setX(BOARD_X + 4);
+      this.tweens.add({ targets: this.logStrip, x: BOARD_X + 12, alpha: 1, duration: 140, ease: "Cubic.easeOut" });
+    }
     if (this.logOverlay) this.renderLogOverlay();
   }
 
@@ -2057,6 +2316,42 @@ export class BattleScene extends Phaser.Scene {
     return roundSweep(this, { x: BOARD_X, y: BOARD_Y, w: board.w, h: board.h }, t("Round {n}", { n: round }));
   }
 
+  /** The deployment spots as pads: a ring with a faint Poké Ball emblem, and a ring of light pulsing out once a second. */
+  private buildDeployPads(): void {
+    const r = UNIT_RADIUS * S + 2;
+    this.deployPads = this.scenario.deploymentZone.map((pos) => {
+      const c = fieldToWorld(pos);
+      const base = this.add.graphics({ x: c.x, y: c.y });
+      base.fillStyle(COLORS.zone, 0.22).fillCircle(0, 0, r);
+      base.fillStyle(0xffffff, 0.1).slice(0, 0, r * 0.62, Math.PI, 0, false).fillPath();
+      base.lineStyle(2, COLORS.zone, 0.95).strokeCircle(0, 0, r);
+      base.lineStyle(1.5, 0xffffff, 0.45).strokeCircle(0, 0, r * 0.62);
+      base.lineBetween(-r * 0.62, 0, -r * 0.2, 0).lineBetween(r * 0.2, 0, r * 0.62, 0).strokeCircle(0, 0, r * 0.2);
+      const glow = this.add.circle(c.x, c.y, r, COLORS.zone, 0).setStrokeStyle(2, COLORS.zone, 0.9);
+      this.tweens.add({ targets: glow, scale: { from: 1, to: 1.45 }, alpha: { from: 0.9, to: 0 }, duration: 1000, repeat: -1, ease: "Sine.easeOut" });
+      return { pos, base, glow };
+    });
+  }
+
+  /** Deployment: each foe's name and level on a small plate over its head. */
+  private showFoePlates(): void {
+    this.foePlates?.destroy();
+    const items: Phaser.GameObjects.GameObject[] = [];
+    for (const e of this.scenario.enemies) {
+      const v = this.units.get(e.id);
+      if (!v) continue;
+      const top = v.sprite ? v.container.y + (v.sprite.y - v.sprite.displayHeight * v.sprite.originY) * UNIT_SCALE : v.container.y - 20;
+      const label = this.add.text(0, 0, `${CONTENT.species[e.speciesId]!.name} Lv${e.level ?? 1}`, { fontFamily: FONT, fontSize: px(10), color: "#ffffff", fontStyle: "bold" }).setOrigin(0.5);
+      const w = label.width + 10;
+      const g = this.add.graphics();
+      g.fillStyle(0x10141c, 0.85).fillRoundedRect(-w / 2, -8, w, 16, 5);
+      g.lineStyle(1.5, COLORS.enemy, 1).strokeRoundedRect(-w / 2, -8, w, 16, 5);
+      items.push(this.add.container(v.container.x, top - 10, [g, label]));
+    }
+    this.foePlates = this.add.container(0, 0, items).setDepth(15).setAlpha(0);
+    this.tweens.add({ targets: this.foePlates, alpha: 1, duration: 250 });
+  }
+
   /** The trainer or story Pokémon this battle is against, if any. */
   private npc(): NpcDef | undefined {
     const npcs = this.npcMapId ? WORLDS[this.npcMapId]?.npcs ?? [] : [];
@@ -2110,6 +2405,8 @@ export class BattleScene extends Phaser.Scene {
       : names.length === 1 && this.scenario.enemies.length === 1 ? t("A wild {name} appeared!", { name: names[0]! })
       : t("Wild {names} appeared!", { names: names.join(", ") });
     const msg = messageBox(this, BOARD_X + 16, BOARD_Y + board.h - 56, board.w - 32, line);
+    // It stays in the message box under the field (and the log) while the party is placed.
+    this.pushLog({ text: line, tone: "info" });
     await msg.typed;
     await this.wait(1000);
     await new Promise<void>((r) => this.tweens.add({ targets: msg.box, alpha: 0, duration: 200, onComplete: () => r() }));
@@ -2118,26 +2415,13 @@ export class BattleScene extends Phaser.Scene {
     this.tweens.timeScale = 1;
     this.time.timeScale = 1;
     blocker.destroy();
+    if (this.phase === "deploy") this.showFoePlates();
   }
 
-  /** Whose turn it is, at the board's top right; on a foe's turn the board's edge glows red too. */
-  private showTurnChip(unitId: string | null): void {
-    this.turnChip?.destroy();
-    this.turnChip = null;
+  /** On a foe's turn the board's edge glows red (who it is shows in the turn order and the message box). */
+  private showFoeTurn(unitId: string | null): void {
     const u = unitId ? this.state?.units.find((x) => x.id === unitId) : undefined;
-    const foe = u?.side === "enemy";
-    this.foeEdge?.setVisible(!!foe && this.phase === "battle");
-    if (!u || this.phase !== "battle") return;
-    const name = CONTENT.species[u.speciesId]!.name;
-    const label = this.add.text(-10, 0, foe ? t("Foe {name}'s turn", { name }) : t("{name}'s turn", { name }), { fontFamily: FONT, fontSize: px(13), color: "#ffffff", fontStyle: "bold" })
-      .setOrigin(1, 0.5).setStroke("#10141c", 3);
-    const w = label.width + 40;
-    const bg = this.add.rectangle(0, 0, w, 24, foe ? 0x7a1e22 : 0x1d4680, 0.95).setOrigin(1, 0.5).setStrokeStyle(2, foe ? 0xff8a8a : 0x7fd4ff);
-    const parts: Phaser.GameObjects.GameObject[] = [bg, label];
-    if (this.textures.exists(portraitKey(u.speciesId))) parts.push(this.add.image(-w + 15, 0, portraitKey(u.speciesId)).setDisplaySize(22, 22));
-    const chip = this.add.container(BOARD_X + this.boardPx().w + 16, 52, parts).setDepth(20).setAlpha(0);
-    this.tweens.add({ targets: chip, x: chip.x - 16, alpha: 1, duration: 180, ease: "Cubic.easeOut" });
-    this.turnChip = chip;
+    this.foeEdge?.setVisible(u?.side === "enemy" && this.phase === "battle");
   }
 
   /**

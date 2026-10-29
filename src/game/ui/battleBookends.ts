@@ -46,14 +46,20 @@ export function battleWipe(scene: Phaser.Scene, trainer: boolean, done: () => vo
   });
 }
 
-/** The handhelds' white message box with its dark double border; the text types itself out. */
+/** The message box's frame (DS style): a dark outer edge, a white rim, a navy field with a faint inner line. */
+export function messageFrame(g: Phaser.GameObjects.Graphics, x: number, y: number, w: number, h: number): Phaser.GameObjects.Graphics {
+  g.fillStyle(0x10141c, 1).fillRoundedRect(x, y, w, h, 7);
+  g.fillStyle(0xf0f0f0, 1).fillRoundedRect(x + 2, y + 2, w - 4, h - 4, 6);
+  g.fillStyle(0x24345e, 1).fillRoundedRect(x + 4, y + 4, w - 8, h - 8, 5);
+  g.lineStyle(1, 0x4a6098, 1).strokeRoundedRect(x + 7, y + 7, w - 14, h - 14, 3);
+  return g;
+}
+
+/** A message box over the field; the text types itself out. */
 export function messageBox(scene: Phaser.Scene, x: number, y: number, w: number, text: string): { box: Phaser.GameObjects.Container; typed: Promise<void> } {
   const h = 44;
-  const g = scene.add.graphics();
-  g.fillStyle(0x283050, 1).fillRoundedRect(0, 0, w, h, 6);
-  g.fillStyle(0xf8f8f8, 1).fillRoundedRect(3, 3, w - 6, h - 6, 4);
-  g.lineStyle(1, 0x6878a8, 1).strokeRoundedRect(6, 6, w - 12, h - 12, 3);
-  const label = scene.add.text(16, h / 2, "", { fontFamily: FONT, fontSize: "15px", color: "#283050", fontStyle: "bold" }).setOrigin(0, 0.5);
+  const g = messageFrame(scene.add.graphics(), 0, 0, w, h);
+  const label = scene.add.text(16, h / 2, "", { fontFamily: FONT, fontSize: "15px", color: "#ffffff", fontStyle: "bold" }).setOrigin(0, 0.5).setStroke("#10141c", 3);
   const box = scene.add.container(x, y, [g, label]).setDepth(60);
   box.setAlpha(0);
   scene.tweens.add({ targets: box, alpha: 1, duration: 120 });

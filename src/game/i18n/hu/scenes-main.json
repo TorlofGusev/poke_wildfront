@@ -258,5 +258,14 @@
  "About to evolve!": "Fejlődni készül!",
  "Learned {move}": "Megtanulta: {move}",
  "Knocked out": "Kiütve",
- "Level up!": "Szintlépés!"
+ "Level up!": "Szintlépés!",
+ "NOW": "MOST",
+ "POW": "ERŐ",
+ "▶ Battle! ({n}/{max})": "▶ Csata! ({n}/{max})",
+ "Face-off": "Szemtől szemben",
+ "Flanking": "Bekerítés",
+ "Pincer!": "Harapófogó!",
+ "Head-on": "Frontális",
+ "Ambush!": "Rajtaütés!",
+ "Boss": "Főellenfél"
 }
