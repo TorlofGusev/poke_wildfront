@@ -4,6 +4,7 @@ import { CONTENT, PROGRESSION } from "../../content";
 import { session } from "../session";
 import { Button } from "../ui/Button";
 import { ballIcon } from "../ui/ballIcon";
+import { itemIcon } from "../ui/itemIcon";
 import { describeItem } from "../ui/describeEffects";
 import { tag } from "../ui/markup";
 import { RichText } from "../ui/RichText";
@@ -57,12 +58,7 @@ export class InventoryScene extends Phaser.Scene {
         .filter((r): r is { id: string; text: string } => r !== null);
       y += new RichText(this, col.x, y, 450, 12).setMarkup(tag("special", title));
       if (!rows.length) y += new RichText(this, col.x, y, 450, 12).setMarkup(tag("dim", t("none")));
-      // One text per row, so a ball can carry its icon in front.
-      for (const row of rows) {
-        const icon = CONTENT.balls[row.id] ? 20 : 0;
-        if (icon) this.add.image(col.x + 8, y + 8, ballIcon(this, row.id)).setDisplaySize(14, 14);
-        y += new RichText(this, col.x + icon, y, 450 - icon, 12).setMarkup(row.text);
-      }
+      for (const row of rows) y += this.iconRow(col.x, y, row.id, row.text);
       y += 14;
       // Two columns: move to the right when the left fills up.
       if (y > 420 && col.x === 16) {
@@ -71,7 +67,14 @@ export class InventoryScene extends Phaser.Scene {
       }
     }
     const keyItems = (session.game.keyItems ?? []).map((k) => PROGRESSION.keyItems?.[k]).filter((k) => k !== undefined);
-    const keyRows = keyItems.map((k) => `${tag("title", k.name)} ${tag("dim", "—")} ${k.description}`);
-    new RichText(this, col.x, y, 450, 12).setMarkup([tag("special", t("Key items")), ...(keyRows.length ? keyRows : [tag("dim", t("none"))])].join("\n"));
+    y += new RichText(this, col.x, y, 450, 12).setMarkup(tag("special", t("Key items")));
+    if (!keyItems.length) new RichText(this, col.x, y, 450, 12).setMarkup(tag("dim", t("none")));
+    for (const k of keyItems) y += this.iconRow(col.x, y, k.id, `${tag("title", k.name)} ${tag("dim", "—")} ${k.description}`);
+  }
+
+  /** One line of the bag with the thing's icon in front (a ball's, else the item's). Returns its height. */
+  private iconRow(x: number, y: number, id: string, text: string): number {
+    this.add.image(x + 8, y + 8, CONTENT.balls[id] ? ballIcon(this, id) : itemIcon(this, id)).setDisplaySize(16, 16);
+    return Math.max(18, new RichText(this, x + 22, y, 428, 12).setMarkup(text));
   }
 }

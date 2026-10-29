@@ -42,6 +42,7 @@ import { type Role, baseMovement, speedAtMoveCap, STAT_NAMES, type StatName } fr
 import { session } from "../session";
 import { portraitKey } from "../sprites";
 import { Button } from "../ui/Button";
+import { itemIcon } from "../ui/itemIcon";
 import { describeItem, focusLabel, describeTalent, STAT_LABEL, STAT_SHORT } from "../ui/describeEffects";
 import { describeMove, reachShort } from "../ui/describeMove";
 import { tag } from "../ui/markup";
@@ -536,21 +537,23 @@ ${into.types.map((ty) => tag(ty, ty)).join("/")}`);
   /** Healing items, then the held item: what it holds now and every held item in the bag with its exact effect. */
   private renderEquipment(m: PartyMember, y: number, add: <T extends Phaser.GameObjects.GameObject>(o: T) => T): void {
     const s = CONTENT.species[m.speciesId]!;
+    // An item's icon at the left end of its button (the label leaves room for it).
+    const iconButton = (b: Button, id: string) => b.add(this.add.image(16, 13, itemIcon(this, id)).setDisplaySize(16, 16));
     const potions = Object.entries(session.game.inventory.items).filter(([id, n]) => n > 0 && PROGRESSION.items[id]?.kind === "potion");
     const max = memberMaxHp(CONTENT, PROGRESSION, m);
     y += add(new RichText(this, DETAIL_X, y, DETAIL_W, 13)).setMarkup(`${tag("title", t("Healing"))}  HP ${m.hp}/${max}`) + 4;
     if (!potions.length) y += add(new RichText(this, DETAIL_X, y, DETAIL_W, 12)).setMarkup(tag("dim", t("No potions. Resting at camp restores all HP."))) + 8;
     potions.forEach(([id, n], i) => {
       const item = PROGRESSION.items[id]!;
-      add(new Button(this, DETAIL_X + i * 236, y, 230, 26, t("Use {item} (+{hp} HP) ×{n}", { item: item.name, hp: String(item.heal), n }), () =>
-        this.act(() => session.update(usePotion(CONTENT, PROGRESSION, session.game, m.uid, id)), t("{name} recovered HP.", { name: s.name }))).setEnabled(m.hp > 0 && m.hp < max));
+      iconButton(add(new Button(this, DETAIL_X + i * 316, y, 310, 26, `    ${t("Use {item} (+{hp} HP) ×{n}", { item: item.name, hp: String(item.heal), n })}`, () =>
+        this.act(() => session.update(usePotion(CONTENT, PROGRESSION, session.game, m.uid, id)), t("{name} recovered HP.", { name: s.name }))).setEnabled(m.hp > 0 && m.hp < max)), id);
     });
     if (potions.length) y += 36;
     // Rare Candy: one level at once.
     const candies = session.game.inventory.items[CANDY] ?? 0;
     if (candies > 0) {
-      add(new Button(this, DETAIL_X, y, 300, 26, t("Use Rare Candy (+1 Lv) ×{n}", { n: candies }), () =>
-        this.act(() => session.update(useRareCandy(CONTENT, PROGRESSION, session.game, m.uid).game), t("{name} grew to Lv {lv}!", { name: s.name, lv: m.level + 1 }))).setEnabled(m.level < PROGRESSION.rules.maxLevel));
+      iconButton(add(new Button(this, DETAIL_X, y, 300, 26, `    ${t("Use Rare Candy (+1 Lv) ×{n}", { n: candies })}`, () =>
+        this.act(() => session.update(useRareCandy(CONTENT, PROGRESSION, session.game, m.uid).game), t("{name} grew to Lv {lv}!", { name: s.name, lv: m.level + 1 }))).setEnabled(m.level < PROGRESSION.rules.maxLevel)), CANDY);
       y += 36;
     }
     // Knockout marks: only remedies (or Pokémon Center treatment) remove them.
@@ -559,14 +562,17 @@ ${into.types.map((ty) => tag(ty, ty)).join("/")}`);
       y += add(new RichText(this, DETAIL_X, y, DETAIL_W, 12)).setMarkup(`${tag("ko", t("Knockout marks {n}/3", { n: m.knockouts }))} ${tag("dim", remedies.length ? "" : t("· a Revival Herb or Pokémon Center treatment removes them"))}`) + 4;
       remedies.forEach(([id, n], i) => {
         const item = PROGRESSION.items[id]!;
-        add(new Button(this, DETAIL_X + i * 236, y, 230, 26, t("Use {item} (−{marks} mark) ×{n}", { item: item.name, marks: String(item.clearsKnockouts), n }), () =>
-          this.act(() => session.update(useRemedy(PROGRESSION, session.game, m.uid, id)), t("A knockout mark faded from {name}.", { name: s.name }))));
+        iconButton(add(new Button(this, DETAIL_X + i * 316, y, 310, 26, `    ${t("Use {item} (−{marks} mark) ×{n}", { item: item.name, marks: String(item.clearsKnockouts), n })}`, () =>
+          this.act(() => session.update(useRemedy(PROGRESSION, session.game, m.uid, id)), t("A knockout mark faded from {name}.", { name: s.name })))), id);
       });
       if (remedies.length) y += 36;
     }
 
     const held = m.heldItem ? PROGRESSION.items[m.heldItem] : null;
-    y += add(new RichText(this, DETAIL_X, y, DETAIL_W, 13)).setMarkup(
+    // The held item's icon leads the line.
+    const heldIcon = held ? 24 : 0;
+    if (held) add(this.add.image(DETAIL_X + 9, y + 8, itemIcon(this, held.id)).setDisplaySize(18, 18));
+    y += add(new RichText(this, DETAIL_X + heldIcon, y, DETAIL_W - heldIcon, 13)).setMarkup(
       `${tag("title", t("Holding"))}: ${held ? `${tag("num", held.name)} · ${describeItem(CONTENT, held).join(" · ")}` : tag("dim", t("nothing (one held item per Pokémon)"))}`) + 6;
     if (held) {
       add(new Button(this, DETAIL_X, y, 160, 24, t("Take off"), () => this.act(() => session.update(equipItem(PROGRESSION, session.game, m.uid, null)), t("{item} returned to the bag.", { item: held.name }))));
@@ -581,7 +587,8 @@ ${into.types.map((ty) => tag(ty, ty)).join("/")}`);
     for (const [id, n] of bagItems) {
       const item = PROGRESSION.items[id]!;
       add(this.add.rectangle(DETAIL_X, y, DETAIL_W, 40, 0x1c2130).setOrigin(0).setStrokeStyle(1, 0x3a4560));
-      add(new RichText(this, DETAIL_X + 8, y + 4, DETAIL_W - 120, 12)).setMarkup(`${tag("num", item.name)} ×${n}\n${describeItem(CONTENT, item).join(" · ")}`);
+      add(this.add.image(DETAIL_X + 18, y + 20, itemIcon(this, id)).setDisplaySize(20, 20));
+      add(new RichText(this, DETAIL_X + 36, y + 4, DETAIL_W - 148, 12)).setMarkup(`${tag("num", item.name)} ×${n}\n${describeItem(CONTENT, item).join(" · ")}`);
       add(new Button(this, DETAIL_X + DETAIL_W - 100, y + 8, 92, 24, held ? t("Swap") : t("Equip"), () =>
         this.act(() => session.update(equipItem(PROGRESSION, session.game, m.uid, id)), t("{name} now holds {item}.", { name: s.name, item: item.name }))));
       y += 46;

@@ -5,6 +5,7 @@ import { CONTENT, PROGRESSION } from "../../content";
 import { buy, sell, sellPrice } from "../../core/party";
 import { session } from "../session";
 import { ballIcon } from "../ui/ballIcon";
+import { itemIcon } from "../ui/itemIcon";
 import { Button } from "../ui/Button";
 import { tag } from "../ui/markup";
 import { RichText } from "../ui/RichText";
@@ -76,18 +77,20 @@ export class ShopScene extends Phaser.Scene {
     const maxScroll = Math.max(0, rows * 62 - (LIST_BOTTOM - LIST_TOP));
     this.scroll = Math.min(this.scroll, maxScroll);
     const list = add(this.add.container(0, -this.scroll));
-    const mask = this.make.graphics({}).fillRect(0, LIST_TOP, 960, LIST_BOTTOM - LIST_TOP).createGeometryMask();
-    list.setMask(mask);
+    // Only the rows inside the list area are drawn (a mask does not clip here), and the cards leave
+    // room for the scroll arrows on the right.
+    const cardW = maxScroll > 0 ? 436 : 460;
     wares.forEach((w, i) => {
       const col = i % 2;
       const row = Math.floor(i / 2);
-      const x = 16 + col * 468;
+      const x = 16 + col * (cardW + 8);
       const y = LIST_TOP + row * 62;
-      list.add(this.add.rectangle(x, y, 460, 56, 0x1c2130).setOrigin(0).setStrokeStyle(1, 0x3a4560));
-      // A ball shows its icon before the name.
-      const icon = CONTENT.balls[w.id] ? 22 : 0;
-      if (icon) list.add(this.add.image(x + 18, y + 14, ballIcon(this, w.id)).setDisplaySize(16, 16));
-      const info = new RichText(this, x + 10 + icon, y + 6, 330 - icon, 13);
+      if (y - this.scroll < LIST_TOP || y - this.scroll + 56 > LIST_BOTTOM) return;
+      list.add(this.add.rectangle(x, y, cardW, 56, 0x1c2130).setOrigin(0).setStrokeStyle(1, 0x3a4560));
+      // The ball or item icon before the name.
+      const icon = 22;
+      list.add(this.add.image(x + 18, y + 14, CONTENT.balls[w.id] ? ballIcon(this, w.id) : itemIcon(this, w.id)).setDisplaySize(16, 16));
+      const info = new RichText(this, x + 10 + icon, y + 6, cardW - 130 - icon, 13);
       list.add(info);
       info.setMarkup(`${tag("title", w.name)}  ${tag("num", `₽${w.price}`)}  ${tag("dim", t("own {n}", { n: w.owned }))}\n${tag("dim", w.description)}`);
       const trade = (verb: string, f: () => typeof session.game) => {
@@ -100,9 +103,9 @@ export class ShopScene extends Phaser.Scene {
         }
         this.render();
       };
-      list.add(new Button(this, x + 350, y + 4, 100, 24, t("Buy"), () => trade("Bought", () => buy(CONTENT, PROGRESSION, session.game, w.id)))
+      list.add(new Button(this, x + cardW - 110, y + 4, 100, 24, t("Buy"), () => trade("Bought", () => buy(CONTENT, PROGRESSION, session.game, w.id)))
         .setEnabled(session.game.money >= w.price));
-      list.add(new Button(this, x + 350, y + 30, 100, 22, t("Sell ₽{price}", { price: sellPrice(CONTENT, PROGRESSION, w.id) }), () =>
+      list.add(new Button(this, x + cardW - 110, y + 30, 100, 22, t("Sell ₽{price}", { price: sellPrice(CONTENT, PROGRESSION, w.id) }), () =>
         trade("Sold", () => sell(CONTENT, PROGRESSION, session.game, w.id))).setEnabled(w.owned > 0));
     });
     if (maxScroll > 0) {
