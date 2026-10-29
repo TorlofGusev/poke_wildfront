@@ -1,3 +1,4 @@
+import { evolvingUids } from "./EvolutionScene";
 import Phaser from "phaser";
 import { playMusic } from "../music";
 import { sfx } from "../audio";
@@ -153,6 +154,9 @@ export class OverworldScene extends Phaser.Scene {
   }
 
   create(): void {
+    // Back from a battle (or anywhere) with a due evolution: its scene plays first.
+    const evolving = evolvingUids();
+    if (evolving.length) return void this.scene.start("Evolution", { uids: evolving, next: "Overworld" });
     playMusic(this, "overworld");
     this.add.text(MAP_X, 16, currentWorld().name, { fontFamily: FONT, fontSize: "20px", color: "#f5d76e" });
     this.add.text(MAP_X, 40, PHONE ? t("Tap twice or drag to walk · red ring: wild group · ★ ◆ ✚ pickups") : t("Click to walk. Red ring: wild group. Pickups: ★ rare · ◆ held item · ✚ heal · M: sound on/off"), {

@@ -120,7 +120,7 @@ export function useRareCandy(content: BattleContent, prog: ProgressionContent, g
   const member = findMember(game, uid);
   if (!member) throw new Error(`${uid} is not in party or storage`);
   if (member.level >= prog.rules.maxLevel) throw new Error("already at the highest level");
-  const r = gainXp(content, prog, member, Math.max(0, xpToNext(prog, member.level) - member.xp));
+  const r = gainXp(content, prog, member, Math.max(0, xpToNext(prog, member.level) - member.xp), { evolve: false });
   const next = updateMember(game, uid, () => r.member);
   return { game: { ...next, inventory: { ...next.inventory, items: { ...next.inventory.items, [CANDY]: count(next.inventory.items, CANDY) - 1 } } }, events: r.events };
 }

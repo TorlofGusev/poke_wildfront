@@ -29,6 +29,8 @@ import {
   pendingChoice,
   respecCost,
   chooseEvolution,
+  evolutionDue,
+  readyToEvolve,
   evolutionChoices,
   memberGrid,
   rowPick,
@@ -106,6 +108,10 @@ export class PokemonScene extends Phaser.Scene {
     this.render();
   }
 
+  private evolve(uid: string): void {
+    this.scene.start("Evolution", { uids: [uid], next: "Pokemon", nextData: { uid, tab: this.tab } });
+  }
+
   private updateMember(member: PartyMember, f: (m: PartyMember) => PartyMember): void {
     session.update(withMember(session.game, member.uid, f));
   }
@@ -140,8 +146,12 @@ export class PokemonScene extends Phaser.Scene {
     const shown = this.selected ? findMember(session.game, this.selected) : undefined;
     if (shown) {
       const inParty = roster.party.some((x) => x.uid === shown.uid);
-      add(new Button(this, prev.x - 136, 12, 128, 26, inParty ? t("📦 To storage") : t("↩ To party"), () =>
+      const store = add(new Button(this, prev.x - 136, 12, 128, 26, inParty ? t("📦 To storage") : t("↩ To party"), () =>
         this.act(() => session.update({ ...session.game, roster: moveBetweenPartyAndStorage(session.game.roster, shown.uid) }))));
+      // A held-back (or just reached) evolution starts here, with its scene.
+      if (evolutionDue(CONTENT, shown)) {
+        add(new Button(this, store.x - 128, 12, 120, 26, t("✦ Evolve"), () => this.evolve(shown.uid)).setHighlighted(true));
+      }
     }
 
     const member = this.selected ? findMember(session.game, this.selected) : undefined;
@@ -553,7 +563,11 @@ ${into.types.map((ty) => tag(ty, ty)).join("/")}`);
     const candies = session.game.inventory.items[CANDY] ?? 0;
     if (candies > 0) {
       iconButton(add(new Button(this, DETAIL_X, y, 300, 26, `    ${t("Use Rare Candy (+1 Lv) ×{n}", { n: candies })}`, () =>
-        this.act(() => session.update(useRareCandy(CONTENT, PROGRESSION, session.game, m.uid).game), t("{name} grew to Lv {lv}!", { name: s.name, lv: m.level + 1 }))).setEnabled(m.level < PROGRESSION.rules.maxLevel)), CANDY);
+        this.act(() => {
+          session.update(useRareCandy(CONTENT, PROGRESSION, session.game, m.uid).game);
+          // Reaching the evolution level plays its scene at once.
+          if (readyToEvolve(CONTENT, findMember(session.game, m.uid)!)) this.time.delayedCall(0, () => this.evolve(m.uid));
+        }, t("{name} grew to Lv {lv}!", { name: s.name, lv: m.level + 1 }))).setEnabled(m.level < PROGRESSION.rules.maxLevel)), CANDY);
       y += 36;
     }
     // Knockout marks: only remedies (or Pokémon Center treatment) remove them.

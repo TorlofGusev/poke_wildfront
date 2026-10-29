@@ -22,6 +22,8 @@ export interface Progress {
   readonly statPoints: BaseStats;
   /** Points earned but not yet spent. */
   readonly unspentPoints: number;
+  /** The player stopped its evolution: it waits until they start it from the Pokémon screen. */
+  readonly evolutionHeld?: boolean;
 }
 
 export const NO_POINTS: BaseStats = { hp: 0, attack: 0, defense: 0, speed: 0, willpower: 0, crit: 0 };
@@ -225,6 +227,29 @@ export function evolutionChoices(content: BattleContent, m: Progress): string[] 
 /** Evolves into the chosen form of a branching evolution. */
 export function chooseEvolution<T extends Progress>(content: BattleContent, prog: ProgressionContent, m: T, into: string): { member: T; events: ProgressEvent[] } {
   if (!evolutionChoices(content, m).includes(into)) throw new Error(`${m.speciesId} cannot evolve into ${into} now`);
+  return evolveTo(content, prog, m, into);
+}
+
+/** The form a (non-branching) evolution would make now that its level is reached, held or not; else null. */
+export function evolutionDue(content: BattleContent, m: Progress): string | null {
+  const evo = content.species[m.speciesId]!.evolution;
+  return evo && !evo.choices && m.level >= evo.level && content.species[evo.into] ? evo.into : null;
+}
+
+/** Due to evolve and not held back by the player: the evolution scene plays for it. */
+export const readyToEvolve = (content: BattleContent, m: Progress): boolean => !m.evolutionHeld && evolutionDue(content, m) !== null;
+
+/** Runs a due evolution (the end of the evolution scene, or the Pokémon screen's Evolve button). */
+export function evolveNow<T extends Progress>(content: BattleContent, prog: ProgressionContent, m: T): { member: T; events: ProgressEvent[] } {
+  const into = evolutionDue(content, m);
+  if (!into) throw new Error(`${m.speciesId} cannot evolve now`);
+  return evolveTo(content, prog, { ...m, evolutionHeld: false }, into);
+}
+
+/** The player stopped the evolution: no more tries on level-ups until they start it themselves. */
+export const holdEvolution = <T extends Progress>(m: T): T => ({ ...m, evolutionHeld: true });
+
+function evolveTo<T extends Progress>(content: BattleContent, prog: ProgressionContent, m: T, into: string): { member: T; events: ProgressEvent[] } {
   const events: ProgressEvent[] = [];
   const before = memberStats(content, prog, m).maxHp;
   let cur = learnLevelMoves(content, prog, evolveInto(content, prog, m, into, events), events);
@@ -293,8 +318,11 @@ export type ProgressEvent =
 /**
  * Adds XP, applying level-ups, new moves and evolution. Knockouts, role and talents are kept.
  * HP rises by any max HP gained (evolution), so a level-up never leaves a Pokémon relatively weaker.
+ * `evolve: false` leaves a due evolution for the evolution scene (see readyToEvolve); a held one never runs here.
  */
-export function gainXp<T extends Progress>(content: BattleContent, prog: ProgressionContent, m: T, xp: number): { member: T; events: ProgressEvent[] } {
+export function gainXp<T extends Progress>(
+  content: BattleContent, prog: ProgressionContent, m: T, xp: number, { evolve = true }: { evolve?: boolean } = {},
+): { member: T; events: ProgressEvent[] } {
   const events: ProgressEvent[] = [];
   let cur: T = { ...m, xp: m.xp + xp };
   while (cur.level < prog.rules.maxLevel && cur.xp >= xpToNext(prog, cur.level)) {
@@ -303,7 +331,7 @@ export function gainXp<T extends Progress>(content: BattleContent, prog: Progres
     events.push({ type: "levelUp", level: cur.level });
     const evo = content.species[cur.speciesId]!.evolution;
     // A branching evolution (Eevee) waits for the player's pick, see chooseEvolution.
-    if (evo && !evo.choices && cur.level >= evo.level && content.species[evo.into]) cur = evolveInto(content, prog, cur, evo.into, events);
+    if (evolve && !cur.evolutionHeld && evo && !evo.choices && cur.level >= evo.level && content.species[evo.into]) cur = evolveInto(content, prog, cur, evo.into, events);
     cur = learnLevelMoves(content, prog, cur, events);
     const after = memberStats(content, prog, cur).maxHp;
     if (cur.hp > 0) cur = { ...cur, hp: Math.min(after, cur.hp + Math.max(0, after - before)) };

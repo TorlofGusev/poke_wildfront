@@ -8,7 +8,7 @@ import { KNOCKOUTS_TO_DEATH, resolveBattle, type BattleSummary } from "../../cor
 import { currentWorld, session } from "../session";
 import { PROGRESSION, WORLD_CONTENT, WORLDS } from "../../content";
 import { calmEncounter, fatigueLevel, fatigueModifiers, removeEncounter, returnToLastCamp, rollLoot } from "../../core/expedition";
-import { teamBond } from "../../core/progression";
+import { readyToEvolve, teamBond } from "../../core/progression";
 import { nextRandom } from "../../core/rng";
 import { AI_LEVELS, planTurn } from "../../core/ai";
 import { playCry, sfx, silence } from "../audio";
@@ -940,6 +940,8 @@ export class BattleScene extends Phaser.Scene {
             else text(e.activated ? t("{name} learned {move}.", { name: name(uid), move: CONTENT.moves[e.move]!.name }) : t("{name} learned {move} (set it active in Party).", { name: name(uid), move: CONTENT.moves[e.move]!.name }), COLORS.good, 12);
           }
         }
+        // The evolution itself is its own scene, right after this.
+        for (const m of session.game.roster.party.filter((x) => readyToEvolve(CONTENT, x) && sum.progress[x.uid])) text(t("{name} is about to evolve!", { name: CONTENT.species[m.speciesId]!.name }), "#f5d76e");
         if (!sum.captured.length && !sum.knockedOut.length && !sum.xp) text(t("No losses."), COLORS.dim);
       }
       if (this.rewardText) text(this.rewardText, COLORS.good);

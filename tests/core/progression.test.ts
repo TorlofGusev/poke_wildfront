@@ -4,6 +4,10 @@ import { maxHpAt, moveRange, moveUnavailableReason } from "../../src/core/battle
 import { applyAction, createBattle, hexPos } from "./hexFixture";
 import { allocatePoint, useRareCandy, buy, equipItem, sell, newMember, resolveBattle, usePotion, type GameState } from "../../src/core/party";
 import {
+  evolutionDue,
+  evolveNow,
+  holdEvolution,
+  readyToEvolve,
   refreshMember,
   focusGrowth,
   statOffer,
@@ -155,6 +159,21 @@ describe("levels and stats", () => {
     expect(up.hp).toBeGreaterThanOrEqual(10);
     const fainted = gainXp(CONTENT, PROGRESSION, { ...hurt, hp: 0 }, xpToNext(PROGRESSION, 15)).member;
     expect(fainted.hp).toBe(0);
+  });
+
+  it("leaves a due evolution for its scene, and a held one waits until started", () => {
+    const m = starter("charmander", 9);
+    const up = gainXp(CONTENT, PROGRESSION, m, xpToNext(PROGRESSION, 9), { evolve: false }).member;
+    expect(up.speciesId).toBe("charmander");
+    expect(readyToEvolve(CONTENT, up)).toBe(true);
+    // Stopped: no more evolving on level-ups, but it can still be started.
+    const held = holdEvolution(up);
+    expect(readyToEvolve(CONTENT, held)).toBe(false);
+    expect(gainXp(CONTENT, PROGRESSION, held, xpToNext(PROGRESSION, 10)).member.speciesId).toBe("charmander");
+    expect(evolutionDue(CONTENT, held)).toBe("charmeleon");
+    const r = evolveNow(CONTENT, PROGRESSION, held);
+    expect(r.member).toMatchObject({ speciesId: "charmeleon", evolutionHeld: false, unspentPoints: held.unspentPoints + PROGRESSION.rules.evolutionPoints });
+    expect(() => evolveNow(CONTENT, PROGRESSION, starter("charmander", 5))).toThrow();
   });
 });
 

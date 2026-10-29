@@ -186,7 +186,7 @@ export function resolveBattle(
           const full = scaledXp(xp, m.level, foeLevels);
           const gained = deployed.has(m.uid) ? full : Math.floor(full * prog.rules.benchXpShare);
           if (gained <= 0) return m;
-          const r = gainXp(content, prog, m, gained);
+          const r = gainXp(content, prog, m, gained, { evolve: false });
           progress[m.uid] = r.events;
           return r.member;
         }),
