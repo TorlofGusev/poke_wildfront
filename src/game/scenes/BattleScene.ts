@@ -98,19 +98,23 @@ const fanLength = (move: MoveDef): number | null => (move.shape.kind === "line" 
 /** Top-half colours of the balls (the bottom is white), for the aiming cursor. */
 const BALL_TOPS: Readonly<Record<string, string>> = { "poke-ball": "#e3350d", "great-ball": "#2f6fd6", "ultra-ball": "#2a2a2a" };
 const ballCursors = new Map<string, string>();
-/** A small drawn ball as a CSS cursor, centred on the click point. */
+/** A small drawn ball (24×24): the aiming cursor and the icon on the ball buttons. */
+function ballCanvas(ballId: string): HTMLCanvasElement {
+  const c = document.createElement("canvas");
+  c.width = c.height = 24;
+  const g = c.getContext("2d")!;
+  g.beginPath(); g.arc(12, 12, 10, Math.PI, 0); g.fillStyle = BALL_TOPS[ballId] ?? "#e3350d"; g.fill();
+  g.beginPath(); g.arc(12, 12, 10, 0, Math.PI); g.fillStyle = "#f4f4f4"; g.fill();
+  g.lineWidth = 2; g.strokeStyle = "#111";
+  g.beginPath(); g.arc(12, 12, 10, 0, Math.PI * 2); g.moveTo(2, 12); g.lineTo(22, 12); g.stroke();
+  g.beginPath(); g.arc(12, 12, 3.5, 0, Math.PI * 2); g.fillStyle = "#f4f4f4"; g.fill(); g.stroke();
+  return c;
+}
+/** The ball as a CSS cursor, centred on the click point. */
 function ballCursor(ballId: string): string {
   let css = ballCursors.get(ballId);
   if (!css) {
-    const c = document.createElement("canvas");
-    c.width = c.height = 24;
-    const g = c.getContext("2d")!;
-    g.beginPath(); g.arc(12, 12, 10, Math.PI, 0); g.fillStyle = BALL_TOPS[ballId] ?? "#e3350d"; g.fill();
-    g.beginPath(); g.arc(12, 12, 10, 0, Math.PI); g.fillStyle = "#f4f4f4"; g.fill();
-    g.lineWidth = 2; g.strokeStyle = "#111";
-    g.beginPath(); g.arc(12, 12, 10, 0, Math.PI * 2); g.moveTo(2, 12); g.lineTo(22, 12); g.stroke();
-    g.beginPath(); g.arc(12, 12, 3.5, 0, Math.PI * 2); g.fillStyle = "#f4f4f4"; g.fill(); g.stroke();
-    css = `url(${c.toDataURL()}) 12 12, crosshair`;
+    css = `url(${ballCanvas(ballId).toDataURL()}) 12 12, crosshair`;
     ballCursors.set(ballId, css);
   }
   return css;
@@ -965,7 +969,7 @@ export class BattleScene extends Phaser.Scene {
     text(`${CONTENT.terms.bond} ${"●".repeat(bond)}${"○".repeat(Math.max(0, state.bondMax.player - bond))} ${bond}/${state.bondMax.player}`, "#f5d76e", 13);
     if (unit && unit.side === "player" && !this.busy) {
       const species = CONTENT.species[unit.speciesId]!;
-      text(t("{name} · move {n}", { name: species.name, n: state.turn!.movePointsLeft.toFixed(1) }), COLORS.good);
+      text(`${species.name} · 👣${state.turn!.movePointsLeft.toFixed(1)}`, COLORS.good);
       if (switchTargets(state).length) text(t("Tap another of your Pokémon to act with it instead."), COLORS.dim, 11);
       // One basic attack a turn; specials as long as they are off cooldown; Bond moves while the Bond lasts.
       // Struggle only shows while it is the unit's way to fight (engaged, ranged basic attack).
@@ -983,7 +987,7 @@ export class BattleScene extends Phaser.Scene {
         const cd = unit.cooldowns[moveId] ?? 0;
         const range = moveRange(unit, move);
         const used = move.kind === "basic" && state.turn!.basicUsed;
-        const status = used ? t("used") : cd > 0 ? t("wait {n}", { n: cd })
+        const status = used ? t("used") : cd > 0 ? `⏳${cd}`
           // ✕ and the reach: nobody to aim at within it.
           : !used && !reason && !hasTarget ? `✕ ${range.min === range.max ? range.max : `${range.min}-${range.max}`}`
           // Basic and special need no label: the groups (parted by thin rules) say it.
@@ -995,7 +999,7 @@ export class BattleScene extends Phaser.Scene {
         // Fixed columns: name, power, state; a Bond move's cost last as Bond pips (the bar's ●, always shown;
         // the pip is wider than the font's other glyphs, so it goes where it shifts nothing).
         const pips = move.kind === "bond" ? "●".repeat(bondCostFor(move, unit)) : "";
-        button(`${move.name.padEnd(13)} ${power ? t("Power {n}", { n: String(power).padStart(2) }) : "        "}  ${status.padEnd(7)}${pips}`, hasTarget, this.selectedMove === moveId, () => {
+        button(`${move.name.padEnd(13)} ${power ? `⚔${String(power).padStart(3)}` : "    "}  ${status.padEnd(7)}${pips}`, hasTarget, this.selectedMove === moveId, () => {
           this.selectedBall = null;
           this.selectedMove = this.selectedMove === moveId ? null : moveId;
           this.refreshAll();
@@ -1011,11 +1015,15 @@ export class BattleScene extends Phaser.Scene {
         ballIds.forEach((ballId, i) => {
           const count = state.balls[ballId] ?? 0;
           const usable = captureTargets(state, CONTENT, unit.id, ballId).length > 0;
-          const b = new Button(this, i * (w + 8), y, w, 26, `${CONTENT.balls[ballId]!.name.replace(" Ball", "")} ×${count}`, () => {
+          // The ball itself (the aiming cursor's drawing) and how many are left.
+          const key = `ball-icon-${ballId}`;
+          if (!this.textures.exists(key)) this.textures.addCanvas(key, ballCanvas(ballId));
+          const b = new Button(this, i * (w + 8), y, w, 26, `    ×${count}`, () => {
             this.selectedMove = null;
             this.selectedBall = this.selectedBall === ballId ? null : ballId;
             this.refreshAll();
           }).setEnabled(usable).setHighlighted(this.selectedBall === ballId);
+          b.add(this.add.image(18, 13, key).setDisplaySize(18, 18).setAlpha(usable ? 1 : 0.45));
           this.panel.add(b);
         });
         y += 30;

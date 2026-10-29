@@ -329,11 +329,11 @@ export class PokemonScene extends Phaser.Scene {
     y += add(new RichText(this, DETAIL_X, y, DETAIL_W, 13)).setMarkup(
       `${tag("title", t("Moves"))} ${tag("dim", t("(1 basic attack, skills {s}/{smax}, {bond} {b}/{bmax}; tap to inspect, toggle on the right)", { s: count("skill"), smax: LOADOUT.skill, bond: CONTENT.terms.bond, b: count("bond"), bmax: LOADOUT.bond }))}`) + 4;
     const listW = 440;
+    // As on the battle buttons: type, reach ↔, power ⚔, a Bond move's cost in Bond pips (the groups give the kind).
     const kindLabel = (id: string) => {
       const d = CONTENT.moves[id]!;
-      const kind = d.kind === "bond" ? CONTENT.terms.bond : d.kind;
       const r = d.range.min === d.range.max ? `${d.range.max}` : `${d.range.min}-${d.range.max}`;
-      return `${d.type} · ${kind} · ${t("range {r}", { r })}${d.power ? ` · ${t("Power {n}", { n: d.power })}` : ""}`;
+      return `${d.type.padEnd(9)}↔${r.padEnd(4)}${d.power ? `⚔${String(d.power).padStart(3)}` : "    "}${d.kind === "bond" ? `  ${"●".repeat(d.bondCost ?? 0)}` : ""}`;
     };
     const shown = this.selectedMove && (m.knownMoves.includes(this.selectedMove) || this.selectedMove === basic) ? this.selectedMove : activeBasic;
     // Grouped by kind (basic attacks, skills, Bond moves), a thin rule between the groups.
@@ -377,7 +377,7 @@ export class PokemonScene extends Phaser.Scene {
         this.act(() => this.updateMember(m, (x) => setActiveMoves(CONTENT, PROGRESSION, x, next)));
       }).setHighlighted(!active && !full));
     }
-    y += rows.length * 28 + 6;
+    y = Math.max(y, rowY) + 6;
 
     const bx = { x: DETAIL_X };
     const chip = (label: string, onClick: () => void) => {
