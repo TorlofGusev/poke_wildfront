@@ -2,6 +2,7 @@
  {"version": "0.102",
   "date": "2026-10-29",
   "items": [
+  "Battle: \"Enemy turn…\" no longer shows while your own Pokémon is attacking or moving.",
   "Items have icons too, in the bag, the shop and on the Pokémon screen's Equipment tab (potions, berries, Rare Candy, every held item and key item).", "Shop: the scroll arrows no longer cover the Buy buttons, and the list no longer runs under the hint at the bottom.",
   "Ball icons look like the real ones (the Ultra Ball has its yellow bands, the Great Ball its red patches) and are the same everywhere: map, bag, shop, battle.",
   "Brock is gentler: his Onix is Lv 9 (was 11), the gym trainer and Viridian Forest are closer in level, so the first gym is no wall.",

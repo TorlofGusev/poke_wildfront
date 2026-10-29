@@ -1029,7 +1029,8 @@ export class BattleScene extends Phaser.Scene {
         this.playerRetreat();
       }).setHighlighted(this.confirmRetreat));
       y += 30;
-    } else {
+    } else if (unit && unit.side !== "player") {
+      // Only while a foe acts; the player's own move or step animating is not the enemy's turn.
       text(t("Enemy turn…"), COLORS.bad);
     }
     this.infoY = 16 + y + 10;
