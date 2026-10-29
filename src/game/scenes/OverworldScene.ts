@@ -28,6 +28,9 @@ import {
 import { samePoint, type Point } from "../../core/grid";
 import { centerHeal, centerTreatment, centerTreatmentCost, KNOCKOUTS_TO_DEATH, knownSpecies, memberMaxHp, restAll } from "../../core/party";
 import { MAX_ACTIVE_UNITS } from "../../core/battle";
+
+/** Battle size before the first badge; each badge opens one more slot up to the map's own size. */
+const BASE_SLOTS = 3;
 import { battleArena, formationLabel } from "../../core/free/arena";
 import { currentWorld, session } from "../session";
 import { animKey, facingFor, hasSprite, portraitKey } from "../sprites";
@@ -255,9 +258,13 @@ export class OverworldScene extends Phaser.Scene {
     return this.stripBox.y + size + 12;
   }
 
-  /** Party members able to fight; wild groups never outnumber them (see effectiveGroup). */
+  /**
+   * Party members able to fight; wild groups never outnumber them (see effectiveGroup). The map sets the
+   * size, but each extra slot past 3 waits for a badge: skipping a gym does not open bigger battles early.
+   */
   private slots(): number {
-    return currentWorld().deploySlots ?? MAX_ACTIVE_UNITS;
+    const map = currentWorld().deploySlots ?? MAX_ACTIVE_UNITS;
+    return Math.min(map, BASE_SLOTS + (session.game.badges ?? []).length);
   }
 
   /** On the learning (tutorial-AI) maps wild Pokémon are never above the party's best level. */
