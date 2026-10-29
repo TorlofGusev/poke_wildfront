@@ -984,16 +984,18 @@ export class BattleScene extends Phaser.Scene {
         const range = moveRange(unit, move);
         const used = move.kind === "basic" && state.turn!.basicUsed;
         const status = used ? t("used") : cd > 0 ? t("wait {n}", { n: cd })
-          : !used && !reason && !hasTarget ? t("no target {r}", { r: range.min === range.max ? range.max : `${range.min}-${range.max}` })
+          // ✕ and the reach: nobody to aim at within it.
+          : !used && !reason && !hasTarget ? `✕ ${range.min === range.max ? range.max : `${range.min}-${range.max}`}`
           // Basic and special need no label: the groups (parted by thin rules) say it.
           : move.kind === "basic" || move.kind === "special" ? ""
           : move.kind === "bond" ? ""
           : unit.usedUltimates.includes(moveId) ? t("ult used") : t("ult 1×");
         const ownBasic = basics.find((b) => b !== "struggle") ?? unit.moves.find((m) => m !== "struggle" && CONTENT.moves[m]!.kind === "basic");
         const power = moveId === "struggle" && ownBasic ? Math.round(CONTENT.moves[ownBasic]!.power * CONTENT.rules.engagement.fallbackPower) : move.power;
-        // A Bond move's cost as Bond pips (the bar's ●), always shown.
-        const pips = move.kind === "bond" ? ` ${"●".repeat(bondCostFor(move, unit))}` : "";
-        button(`${(move.name + pips).padEnd(13)} ${power ? t("Power {n}", { n: String(power).padStart(2) }) : "        "}  ${status}`, hasTarget, this.selectedMove === moveId, () => {
+        // Fixed columns: name, power, state; a Bond move's cost last as Bond pips (the bar's ●, always shown;
+        // the pip is wider than the font's other glyphs, so it goes where it shifts nothing).
+        const pips = move.kind === "bond" ? "●".repeat(bondCostFor(move, unit)) : "";
+        button(`${move.name.padEnd(13)} ${power ? t("Power {n}", { n: String(power).padStart(2) }) : "        "}  ${status.padEnd(7)}${pips}`, hasTarget, this.selectedMove === moveId, () => {
           this.selectedBall = null;
           this.selectedMove = this.selectedMove === moveId ? null : moveId;
           this.refreshAll();
