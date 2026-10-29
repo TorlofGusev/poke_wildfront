@@ -12,23 +12,34 @@
    "focus": [
     {
      "stat": "attack",
-     "skill": "skill:pounce"
+     "skill": "skill:take-down"
     },
     {
      "stat": "attack",
-     "skill": "skill:poison-jab"
+     "skill": "skill:giga-impact"
     },
     {
      "stat": "attack",
      "second": "defense",
-     "skill": "skill:toxic-spikes"
+     "skill": "skill:double-edge"
     }
    ],
    "rows": {
-    "6": "skill:venoshock",
-    "12": "skill:aerial-ace",
-    "18": "skill:throat-chop",
-    "24": "skill:sludge-bomb"
+    "6": [
+     "skill:sweet-scent"
+    ],
+    "12": [
+     "skill:cross-poison",
+     "skill:knock-off"
+    ],
+    "18": [
+     "skill:bug-bite",
+     "skill:headbutt"
+    ],
+    "24": [
+     "skill:skull-bash",
+     "skill:outrage"
+    ]
    }
   },
   {
@@ -39,23 +50,34 @@
    "focus": [
     {
      "stat": "attack",
-     "skill": "skill:signal-beam"
+     "skill": "skill:sludge-wave"
     },
     {
      "stat": "attack",
      "second": "defense",
-     "skill": "skill:supersonic"
+     "skill": "skill:dream-eater"
     },
     {
      "stat": "attack",
-     "skill": "skill:morning-sun"
+     "skill": "skill:energy-ball"
     }
    ],
    "rows": {
-    "6": "skill:acid-spray",
-    "12": "skill:psybeam",
-    "18": "skill:energy-ball",
-    "24": "skill:sludge-bomb"
+    "6": [
+     "skill:supersonic"
+    ],
+    "12": [
+     "skill:venoshock",
+     "skill:reflect"
+    ],
+    "18": [
+     "skill:string-shot",
+     "skill:air-cutter"
+    ],
+    "24": [
+     "skill:sludge-bomb",
+     "skill:bug-buzz"
+    ]
    }
   },
   {
@@ -72,18 +94,29 @@
     {
      "stat": "attack",
      "second": "defense",
-     "skill": "skill:quiver-dance"
+     "skill": "skill:bug-buzz"
     },
     {
      "stat": "attack",
-     "skill": "skill:morning-sun"
+     "skill": "skill:dream-eater"
     }
    ],
    "rows": {
-    "6": "skill:aerial-ace",
-    "12": "skill:psybeam",
-    "18": "skill:shadow-ball",
-    "24": "skill:psychic"
+    "6": [
+     "skill:captivate"
+    ],
+    "12": [
+     "skill:silver-wind",
+     "skill:safeguard"
+    ],
+    "18": [
+     "skill:air-cutter",
+     "skill:ominous-wind"
+    ],
+    "24": [
+     "skill:psychic",
+     "skill:pollen-puff"
+    ]
    }
   }
  ],
@@ -93,33 +126,23 @@
    "bug-power"
   ],
   "6": [
-   "skill:bug-bite",
    "skill:struggle-bug"
   ],
   "9": [
    "swarm-tactics",
    "teamwork"
   ],
-  "12": [
-   "skill:silver-wind",
-   "skill:struggle-bug"
-  ],
+  "12": [],
   "15": [
    "shed-skin",
    "speed-training"
   ],
-  "18": [
-   "skill:bug-buzz",
-   "skill:u-turn"
-  ],
+  "18": [],
   "21": [
    "battle-bond",
    "flanker"
   ],
-  "24": [
-   "skill:solar-beam",
-   "skill:tailwind"
-  ],
+  "24": [],
   "27": [
    "leader",
    "run-away"

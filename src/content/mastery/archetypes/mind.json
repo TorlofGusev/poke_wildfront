@@ -12,23 +12,32 @@
    "focus": [
     {
      "stat": "attack",
-     "skill": "skill:psyshock"
+     "skill": "skill:future-sight"
     },
     {
      "stat": "attack",
-     "skill": "skill:kinesis"
+     "skill": "skill:focus-blast"
     },
     {
      "stat": "attack",
      "second": "hp",
-     "skill": "skill:drain-punch"
+     "skill": "skill:energy-ball"
     }
    ],
    "rows": {
-    "6": "skill:shock-wave",
-    "12": "skill:fire-punch",
-    "18": "skill:dazzling-gleam",
-    "24": "skill:dynamic-punch"
+    "6": [
+     "skill:captivate"
+    ],
+    "12": [
+     "skill:safeguard"
+    ],
+    "18": [
+     "skill:swift",
+     "skill:night-shade"
+    ],
+    "24": [
+     "skill:psychic"
+    ]
    }
   },
   {
@@ -42,19 +51,28 @@
     },
     {
      "stat": "attack",
-     "skill": "skill:barrier"
+     "skill": "skill:blizzard"
     },
     {
      "stat": "attack",
      "second": "hp",
-     "skill": "skill:life-dew"
+     "skill": "skill:hurricane"
     }
    ],
    "rows": {
-    "6": "skill:chilling-water",
-    "12": "skill:hex",
-    "18": "skill:dark-pulse",
-    "24": "skill:solar-beam"
+    "6": [
+     "skill:disable"
+    ],
+    "12": [
+     "skill:life-dew"
+    ],
+    "18": [
+     "skill:ancient-power",
+     "skill:swift"
+    ],
+    "24": [
+     "skill:solar-beam"
+    ]
    }
   },
   {
@@ -64,23 +82,32 @@
    "focus": [
     {
      "stat": "attack",
-     "skill": "skill:aura-sphere"
+     "skill": "skill:future-sight"
     },
     {
      "stat": "attack",
-     "skill": "skill:coaching"
+     "skill": "skill:frenzy-plant"
     },
     {
      "stat": "attack",
      "second": "hp",
-     "skill": "skill:soft-boiled"
+     "skill": "skill:hydro-cannon"
     }
    ],
    "rows": {
-    "6": "skill:chilling-water",
-    "12": "skill:burning-jealousy",
-    "18": "skill:alluring-voice",
-    "24": "skill:close-combat"
+    "6": [
+     "skill:sweet-scent"
+    ],
+    "12": [
+     "skill:life-dew"
+    ],
+    "18": [
+     "skill:air-cutter",
+     "skill:ancient-power"
+    ],
+    "24": [
+     "skill:psychic"
+    ]
    }
   }
  ],
@@ -90,25 +117,20 @@
    "long-reach"
   ],
   "6": [
-   "skill:psybeam",
-   "skill:reflect"
+   "skill:psybeam"
   ],
   "9": [
    "first-strike",
    "overhead-shot"
   ],
   "12": [
-   "skill:psycho-cut",
-   "skill:calm-mind"
+   "skill:shadow-ball"
   ],
   "15": [
    "natural-recovery",
    "prankster"
   ],
-  "18": [
-   "skill:psychic",
-   "skill:shadow-ball"
-  ],
+  "18": [],
   "21": [
    "battle-high",
    "bond-focus"

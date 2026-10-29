@@ -48,7 +48,8 @@ export interface ArchetypeFile {
   readonly type: string;
   readonly rows: Readonly<Record<string, readonly string[]>>;
   /** Each line's focus, and its own extra option per skill row (a move of its other types or a signature move). */
-  readonly lines: readonly { readonly line: readonly string[]; readonly focus: MasteryTree["focus"]; readonly rows?: Readonly<Record<string, string>> }[];
+  /** Each line's own options per row, after the shared ones (its utility moves, its basic attacks…). */
+  readonly lines: readonly { readonly line: readonly string[]; readonly focus: MasteryTree["focus"]; readonly rows?: Readonly<Record<string, string | readonly string[]>> }[];
   readonly forms?: MasteryTree["forms"];
   readonly passives?: Readonly<Record<string, TalentDef>>;
   /** The tree's own moves (Ditto's). */
@@ -111,36 +112,37 @@ function treeForRole(tree: MasteryTree, role: Role | undefined, start: readonly 
   };
 }
 
+const ownOptions = (l: ArchetypeFile["lines"][number], lv: string): readonly string[] => {
+  const own = l.rows?.[lv];
+  return own === undefined ? [] : typeof own === "string" ? [own] : own;
+};
 const ARCHETYPE_TREES: [string, MasteryTree][] = ARCHETYPES.flatMap((a) => a.lines.flatMap((l) => {
-  const rows = Object.fromEntries(Object.entries(a.rows).map(([lv, opts]) => [lv, l.rows?.[lv] ? [...opts, l.rows[lv]] : opts]));
+  const rows = Object.fromEntries(Object.entries(a.rows).map(([lv, opts]) => [lv, [...opts, ...ownOptions(l, lv)]]));
   const tree: MasteryTree = { line: l.line, focus: l.focus, rows, ...(a.forms && { forms: a.forms }) };
   return l.line.map((id) => [id, treeForRole(tree, roleOfSpecies(id), (speciesData as Record<string, { moves: string[] }>)[id]?.moves)] as [string, MasteryTree]);
 }));
 
-/** The move each skill teaches; focus skills and strong row skills make it a Bond move. */
+/**
+ * The move each skill teaches. A move's kind (basic, special or Bond) is its own, in the move data: a row
+ * offers moves of one kind, and the focus offers Bond moves.
+ */
 const taught = new Map<string, string>();
-const bonds = new Set<string>();
 for (const a of ARCHETYPES) {
-  for (const id of [a.rows, ...Object.values(a.forms ?? {}).map((f) => f.rows), ...a.lines.map((l) => l.rows ?? {})].flatMap((r) => Object.values(r).flat())) {
+  for (const id of [a.rows, ...Object.values(a.forms ?? {}).map((f) => f.rows)].flatMap((r) => Object.values(r).flat())) {
     const mv = moveOfSkill(id);
-    if (mv) { taught.set(id, mv); if (strong(mv)) bonds.add(mv); }
+    if (mv) taught.set(id, mv);
   }
-  for (const l of a.lines) for (const f of l.focus) { const mv = moveOfSkill(f.skill); if (mv) { taught.set(f.skill, mv); bonds.add(mv); } }
+  for (const l of a.lines) {
+    for (const lv of Object.keys(l.rows ?? {})) for (const id of ownOptions(l, lv)) { const mv = moveOfSkill(id); if (mv) taught.set(id, mv); }
+    for (const f of l.focus) { const mv = moveOfSkill(f.skill); if (mv) taught.set(f.skill, mv); }
+  }
 }
 // The counterparts the lines actually got (role swaps) teach their moves the same way.
 for (const [, tree] of ARCHETYPE_TREES) {
-  for (const id of [...Object.values(tree.rows).flat(), ...Object.values(tree.forms ?? {}).flatMap((f) => Object.values(f.rows).flat())]) {
+  for (const id of [...Object.values(tree.rows).flat(), ...Object.values(tree.forms ?? {}).flatMap((f) => Object.values(f.rows).flat()), ...tree.focus.map((f) => f.skill)]) {
     const mv = moveOfSkill(id);
-    if (mv && !taught.has(id)) { taught.set(id, mv); if (strong(mv)) bonds.add(mv); }
+    if (mv && !taught.has(id)) taught.set(id, mv);
   }
-  for (const f of tree.focus) { const mv = moveOfSkill(f.skill); if (mv && !taught.has(f.skill)) { taught.set(f.skill, mv); bonds.add(mv); } }
-}
-for (const id of bonds) {
-  const def = moves[id];
-  if (!def || def.kind === "bond") continue;
-  const bond = { ...def, kind: "bond" as const, bondCost: strong(id) ? 3 : 2 };
-  delete (bond as { cooldown?: number }).cooldown;
-  (moves as Record<string, MoveDef>)[id] = def.canonPower ? { ...bond, power: powerFromCanon(rules.movePower, bond, def.canonPower) } : bond;
 }
 for (const [skill, id] of taught) {
   const move = moves[id];

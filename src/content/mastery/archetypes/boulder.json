@@ -13,7 +13,7 @@
     {
      "stat": "defense",
      "second": "attack",
-     "skill": "skill:explosion"
+     "skill": "skill:high-horsepower"
     },
     {
      "stat": "defense",
@@ -21,14 +21,24 @@
     },
     {
      "stat": "defense",
-     "skill": "skill:harden"
+     "skill": "skill:self-destruct"
     }
    ],
    "rows": {
-    "6": "skill:bulldoze",
-    "12": "skill:ancient-power",
-    "18": "skill:brick-break",
-    "24": "skill:fire-blast"
+    "6": [
+     "skill:captivate",
+     "skill:rollout"
+    ],
+    "12": [
+     "skill:block"
+    ],
+    "18": [
+     "skill:fury-cutter",
+     "skill:headbutt"
+    ],
+    "24": [
+     "skill:explosion"
+    ]
    }
   },
   {
@@ -43,18 +53,27 @@
     },
     {
      "stat": "defense",
-     "skill": "skill:slam"
+     "skill": "skill:rock-climb"
     },
     {
      "stat": "defense",
-     "skill": "skill:dragon-tail"
+     "skill": "skill:explosion"
     }
    ],
    "rows": {
-    "6": "skill:bulldoze",
-    "12": "skill:ancient-power",
-    "18": "skill:dig",
-    "24": "skill:iron-tail"
+    "6": [
+     "skill:screech"
+    ],
+    "12": [
+     "skill:wide-guard"
+    ],
+    "18": [
+     "skill:payback",
+     "skill:headbutt"
+    ],
+    "24": [
+     "skill:iron-tail"
+    ]
    }
   }
  ],
@@ -64,32 +83,26 @@
    "thick-hide"
   ],
   "6": [
-   "skill:rock-throw",
-   "skill:defense-curl"
+   "skill:stomping-tantrum"
   ],
   "9": [
    "rock-power",
    "defense-training"
   ],
   "12": [
-   "skill:body-press",
-   "skill:stomping-tantrum"
+   "skill:body-press"
   ],
   "15": [
    "sand-force",
    "rough-skin"
   ],
-  "18": [
-   "skill:rock-slide",
-   "skill:heavy-slam"
-  ],
+  "18": [],
   "21": [
    "bulldozer",
    "forceful",
    "pursuit"
   ],
   "24": [
-   "skill:stone-edge",
    "skill:earthquake"
   ],
   "27": [

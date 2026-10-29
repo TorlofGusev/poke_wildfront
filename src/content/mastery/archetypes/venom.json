@@ -11,23 +11,35 @@
    "focus": [
     {
      "stat": "attack",
-     "skill": "skill:gunk-shot"
+     "skill": "skill:sludge-wave"
     },
     {
      "stat": "attack",
      "second": "defense",
-     "skill": "skill:coil"
+     "skill": "skill:aqua-tail"
     },
     {
      "stat": "attack",
-     "skill": "skill:swallow"
+     "skill": "skill:iron-tail"
     }
    ],
    "rows": {
-    "6": "skill:trailblaze",
-    "12": "skill:fire-fang",
-    "18": "skill:dark-pulse",
-    "24": "skill:earthquake"
+    "6": [
+     "skill:poison-fang",
+     "skill:glare"
+    ],
+    "12": [
+     "skill:poison-jab",
+     "skill:knock-off"
+    ],
+    "18": [
+     "skill:poison-sting",
+     "skill:leech-life"
+    ],
+    "24": [
+     "skill:earthquake",
+     "skill:psychic-fangs"
+    ]
    }
   },
   {
@@ -42,19 +54,31 @@
     },
     {
      "stat": "attack",
-     "skill": "skill:acid-armor"
+     "skill": "skill:dynamic-punch"
     },
     {
      "stat": "attack",
      "second": "hp",
-     "skill": "skill:drain-punch"
+     "skill": "skill:body-slam"
     }
    ],
    "rows": {
-    "6": "skill:power-up-punch",
-    "12": "skill:hex",
-    "18": "skill:dig",
-    "24": "skill:zap-cannon"
+    "6": [
+     "skill:poison-jab",
+     "skill:mean-look"
+    ],
+    "12": [
+     "skill:dig",
+     "skill:block"
+    ],
+    "18": [
+     "skill:shadow-punch",
+     "skill:payback"
+    ],
+    "24": [
+     "skill:explosion",
+     "skill:self-destruct"
+    ]
    }
   },
   {
@@ -70,18 +94,30 @@
     },
     {
      "stat": "defense",
-     "skill": "skill:smokescreen"
+     "skill": "skill:sludge-bomb"
     },
     {
      "stat": "defense",
-     "skill": "skill:pain-split"
+     "skill": "skill:heat-wave"
     }
    ],
    "rows": {
-    "6": "skill:shock-wave",
-    "12": "skill:psybeam",
-    "18": "skill:dark-pulse",
-    "24": "skill:fire-blast"
+    "6": [
+     "skill:acid-spray",
+     "skill:smokescreen"
+    ],
+    "12": [
+     "skill:sludge",
+     "skill:substitute"
+    ],
+    "18": [
+     "skill:venoshock",
+     "skill:dark-pulse"
+    ],
+    "24": [
+     "skill:fire-blast",
+     "skill:gunk-shot"
+    ]
    }
   },
   {
@@ -92,23 +128,35 @@
    "focus": [
     {
      "stat": "attack",
-     "skill": "skill:cross-poison"
+     "skill": "skill:brave-bird"
     },
     {
      "stat": "attack",
-     "skill": "skill:mean-look"
+     "skill": "skill:uproar"
     },
     {
      "stat": "attack",
      "second": "hp",
-     "skill": "skill:roost"
+     "skill": "skill:giga-impact"
     }
    ],
    "rows": {
-    "6": "skill:aerial-ace",
-    "12": "skill:steel-wing",
-    "18": "skill:leech-life",
-    "24": "skill:heat-wave"
+    "6": [
+     "skill:poison-fang",
+     "skill:mean-look"
+    ],
+    "12": [
+     "skill:aerial-ace",
+     "skill:quick-guard"
+    ],
+    "18": [
+     "skill:wing-attack",
+     "skill:leech-life"
+    ],
+    "24": [
+     "skill:fly",
+     "skill:double-edge"
+    ]
    }
   }
  ],
@@ -117,34 +165,22 @@
    "poison-touch",
    "thick-hide"
   ],
-  "6": [
-   "skill:venoshock",
-   "skill:payback"
-  ],
+  "6": [],
   "9": [
    "merciless",
    "opportunist"
   ],
-  "12": [
-   "skill:toxic",
-   "skill:substitute"
-  ],
+  "12": [],
   "15": [
    "lingering-effects",
    "shed-skin"
   ],
-  "18": [
-   "skill:sludge-bomb",
-   "skill:take-down"
-  ],
+  "18": [],
   "21": [
    "lingering-aroma",
    "natural-recovery"
   ],
-  "24": [
-   "skill:hyper-beam",
-   "skill:curse"
-  ],
+  "24": [],
   "27": [
    "poison-power",
    "hustle"

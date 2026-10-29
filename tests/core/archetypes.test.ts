@@ -13,6 +13,11 @@ const FOCUS_STATS = new Set(["attack", "defense", "hp"]);
 const learn = learnsets as Record<string, string[]>;
 const canon = canonMoves as Record<string, { name: string; type: string } | null>;
 const moveOf = (id: string) => (id.startsWith("skill:") ? id.slice(6) : null);
+/** A line's own options at a row (one id or a list). */
+const ownAt = (l: (typeof ARCHETYPES)[number]["lines"][number], lv: string): string[] => { const o = l.rows?.[lv]; return o === undefined ? [] : typeof o === "string" ? [o] : [...o]; };
+const ownAll = (l: (typeof ARCHETYPES)[number]["lines"][number]) => Object.keys(l.rows ?? {}).flatMap((lv) => ownAt(l, lv));
+/** What each skill row offers (Lv 18: basic attacks, or skills where the line has too few). */
+const ROW_KIND: Record<string, readonly string[]> = { "6": ["special"], "12": ["special"], "18": ["basic", "special"], "24": ["bond"] };
 /** Every evolution line: first species → members in evolution order (branches side by side). */
 const evolvesInto = (id: string) => { const e = CONTENT.species[id]!.evolution; return e ? (e.choices ?? [e.into]) : []; };
 const evolved = new Set(Object.keys(CONTENT.species).flatMap(evolvesInto));
@@ -30,7 +35,8 @@ describe("archetype trees", () => {
       if (JSON.stringify(Object.keys(a.rows).sort((x, y) => +x - +y)) !== JSON.stringify(LEVELS)) at("rows must be exactly Lv 4,6,9,12,15,18,21,24,27,30");
       const canLearn = (move: string) => a.mimic || a.lines.every((l) => l.line.some((sp) => learn[sp]?.includes(move)));
       for (const [lv, opts] of Object.entries(a.rows)) {
-        if (opts.length < 2 || opts.length > 3) at(`Lv ${lv}: 2 or 3 options`);
+        // Skill rows may leave options to the lines (each line's own ones); passive rows offer 2 or 3.
+        if (opts.length > 3 || (!SKILL_ROWS.has(lv) && opts.length < 2)) at(`Lv ${lv}: ${SKILL_ROWS.has(lv) ? "at most 3" : "2 or 3"} options`);
         if (new Set(opts).size !== opts.length) at(`Lv ${lv}: an option twice`);
         for (const id of opts) {
           const mv = moveOf(id);
@@ -44,14 +50,17 @@ describe("archetype trees", () => {
       }
       for (const l of a.lines) {
         if (JSON.stringify(LINES[l.line[0]!]) !== JSON.stringify(l.line)) at(`line ${l.line.join("→")} is not an evolution line`);
-        if (l.focus.length !== 3) at(`${l.line[0]}: three focus options`);
-        for (const [lv, id] of Object.entries(l.rows ?? {})) {
+        if (l.focus.length < 2 || l.focus.length > 3) at(`${l.line[0]}: two or three focus options`);
+        for (const lv of SKILL_ROWS) {
+          const n = (a.rows[lv]?.length ?? 0) + ownAt(l, lv).length;
+          if (!a.mimic && (n < 2 || n > 3)) at(`${l.line[0]}: Lv ${lv} offers ${n} options (2 or 3)`);
+        }
+        for (const [lv, id] of Object.keys(l.rows ?? {}).flatMap((lv) => ownAt(l, lv).map((id) => [lv, id] as const))) {
           const mv = moveOf(id);
           if (!SKILL_ROWS.has(lv) || !mv) at(`${l.line[0]}: own option ${id} at Lv ${lv} (own options are skills at 6/12/18/24)`);
           else if (!CONTENT.moves[mv]) at(`${l.line[0]}: unknown move ${mv}`);
           else if (!l.line.some((sp) => learn[sp]?.includes(mv))) at(`${l.line[0]}: cannot learn its own option ${mv}`);
           if (a.rows[lv]?.includes(id)) at(`${l.line[0]}: own option ${id} is already a shared option`);
-          if ((a.rows[lv]?.length ?? 0) + 1 > 3) at(`${l.line[0]}: Lv ${lv} would offer more than 3 options`);
         }
         if (new Set(l.focus.map((f) => f.skill)).size !== l.focus.length) at(`${l.line[0]}: a focus skill twice`);
         for (const f of l.focus) {
@@ -87,17 +96,18 @@ describe("archetype trees", () => {
     expect(problems).toEqual([]);
   });
 
-  it("each line's skill rows are varied: two types per row, every type of the line, at most two Normal attacks", () => {
+  it("each skill row offers one kind of move, the focus Bond moves; every type of the line appears", () => {
     const problems: string[] = [];
     for (const a of ARCHETYPES) for (const l of a.lines) {
-      if (a.mimic || a.forms) continue;
-      const rows = [...SKILL_ROWS].map((lv) => [...a.rows[lv]!, ...(l.rows?.[lv] ? [l.rows[lv]!] : [])].map(moveOf).filter((m): m is string => !!m));
-      const typeOf = (m: string) => canon[m]?.type ?? CONTENT.moves[m]!.type;
-      rows.forEach((r, i) => { if (new Set(r.map(typeOf)).size < 2) problems.push(`${l.line[0]} Lv ${[...SKILL_ROWS][i]}: one type only`); });
-      const offered = new Set(rows.flat().map(typeOf));
+      if (a.mimic) continue;
+      const tree = PROGRESSION.trees[l.line[0]!]!;
+      for (const lv of SKILL_ROWS) {
+        const kinds = new Set((tree.rows[lv] ?? []).map((id) => CONTENT.moves[PROGRESSION.talents[id]?.grantsMove ?? ""]?.kind));
+        if (kinds.size !== 1 || !ROW_KIND[lv]!.includes([...kinds][0]!)) problems.push(`${l.line[0]} Lv ${lv}: ${[...kinds].join("+")}`);
+      }
+      for (const f of tree.focus) if (CONTENT.moves[PROGRESSION.talents[f.skill]!.grantsMove!]!.kind !== "bond") problems.push(`${l.line[0]}: focus ${f.skill} is not a Bond move`);
+      const offered = new Set([...[...SKILL_ROWS].flatMap((lv) => tree.rows[lv] ?? []), ...tree.focus.map((f) => f.skill)].map((id) => CONTENT.moves[PROGRESSION.talents[id]!.grantsMove!]!.type));
       for (const ty of new Set(l.line.flatMap((sp) => CONTENT.species[sp]!.types))) if (!offered.has(ty)) problems.push(`${l.line[0]}: no ${ty} skill`);
-      const normal = rows.flat().filter((m) => typeOf(m) === "normal" && CONTENT.moves[m]!.power > 0).length;
-      if (normal > 2 && !l.line.some((sp) => CONTENT.species[sp]!.types.includes("normal"))) problems.push(`${l.line[0]}: ${normal} Normal skills`);
     }
     expect(problems).toEqual([]);
   });
@@ -131,21 +141,19 @@ describe("archetype trees", () => {
     expect(problems).toEqual([]);
   });
 
-  it("focus skills and the strongest row skills teach Bond moves; starting moves keep their kind", () => {
-    const taught = (id: string) => CONTENT.moves[PROGRESSION.talents[id]!.grantsMove!]!;
+  it("a move's kind is its own: Bond = canon power 85+, basic = weak plain hits, the rest special; starting skills stay special", () => {
     const problems: string[] = [];
-    for (const a of ARCHETYPES) {
-      for (const l of a.lines) for (const f of l.focus) if (taught(f.skill).kind !== "bond") problems.push(`${a.id}: focus ${f.skill}`);
-      for (const id of [...Object.values(a.rows).flat(), ...a.lines.flatMap((l) => Object.values(l.rows ?? {}))]) {
-        const mv = moveOf(id);
-        if (!mv) continue;
-        if (!PROGRESSION.talents[id]) { problems.push(`${a.id}: no talent ${id}`); continue; }
-        const strong = (CONTENT.moves[mv]?.canonPower ?? 0) >= PROGRESSION.rules.bondCanonPower;
-        if (strong !== (taught(id).kind === "bond")) problems.push(`${a.id}: ${id} Bond should be ${strong}`);
-      }
+    const starting = new Set(Object.values(CONTENT.species).flatMap((s) => s.moves));
+    const ditto = new Set(ARCHETYPES.filter((a) => a.mimic).flatMap((a) => Object.keys(a.moves ?? {})));
+    for (const m of Object.values(CONTENT.moves)) {
+      if (starting.has(m.id) || ditto.has(m.id)) continue;
+      const canonPower = m.canonPower ?? m.power;
+      if (m.kind === "bond" && (m.power === 0 || canonPower < 85)) problems.push(`${m.id}: Bond under 85`);
+      if (m.kind !== "bond" && m.power > 0 && canonPower >= 85 && m.kind !== "basic") problems.push(`${m.id}: 85+ but ${m.kind}`);
+      if (m.kind === "bond" && m.cooldown) problems.push(`${m.id}: a Bond move with a cooldown`);
     }
+    for (const s of Object.values(CONTENT.species)) for (const mv of s.moves) if (CONTENT.moves[mv]!.kind === "bond") problems.push(`${s.id} starts with Bond move ${mv}`);
     expect(problems).toEqual([]);
-    expect(Object.values(baseMoves).every((m) => CONTENT.moves[m.id]!.kind === m.kind), "base moves keep their kind").toBe(true);
   });
 
   it("every species starts with a skill besides its basic attack (a tree's Bond move is never a starting move)", () => {
@@ -153,15 +161,17 @@ describe("archetype trees", () => {
     expect(without.map((s) => s.id)).toEqual(["ditto"]);
   });
 
-  it("covers every line at most once; a focus (Bond) move is never also a row skill", () => {
+  it("covers every line at most once; a line's tree never offers a move twice", () => {
     const seen = new Map<string, string>();
-    const rowMoves = new Set(ARCHETYPES.flatMap((a) => [...Object.values(a.rows).flat(), ...a.lines.flatMap((l) => Object.values(l.rows ?? {}))].map(moveOf).filter(Boolean)));
     const problems: string[] = [];
     for (const a of ARCHETYPES) for (const l of a.lines) {
       const first = l.line[0]!;
+      if (a.mimic) continue;
       if (seen.has(first)) problems.push(`${first} in ${seen.get(first)} and ${a.id}`);
       seen.set(first, a.id);
-      for (const f of l.focus) if (rowMoves.has(moveOf(f.skill))) problems.push(`${first}: ${f.skill} is a focus Bond move and a row skill`);
+      const tree = PROGRESSION.trees[first]!;
+      const offered = [...Object.values(tree.rows).flat(), ...tree.focus.map((f) => f.skill)].map(moveOf).filter(Boolean);
+      if (new Set(offered).size !== offered.length) problems.push(`${first}: a move offered twice`);
     }
     expect(problems).toEqual([]);
   });

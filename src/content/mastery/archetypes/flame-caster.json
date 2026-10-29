@@ -16,18 +16,27 @@
     {
      "stat": "attack",
      "second": "defense",
-     "skill": "skill:confuse-ray"
+     "skill": "skill:dream-eater"
     },
     {
      "stat": "attack",
-     "skill": "skill:pain-split"
+     "skill": "skill:heat-wave"
     }
    ],
    "rows": {
-    "6": "skill:payback",
-    "12": "skill:hex",
-    "18": "skill:extrasensory",
-    "24": "skill:solar-beam"
+    "6": [
+     "skill:fake-tears"
+    ],
+    "12": [
+     "skill:roar"
+    ],
+    "18": [
+     "skill:ominous-wind",
+     "skill:swift"
+    ],
+    "24": [
+     "skill:solar-beam"
+    ]
    }
   },
   {
@@ -37,7 +46,7 @@
    "focus": [
     {
      "stat": "attack",
-     "skill": "skill:lava-plume"
+     "skill": "skill:overheat"
     },
     {
      "stat": "attack",
@@ -46,14 +55,23 @@
     {
      "stat": "attack",
      "second": "defense",
-     "skill": "skill:smokescreen"
+     "skill": "skill:psychic"
     }
    ],
    "rows": {
-    "6": "skill:clear-smog",
-    "12": "skill:low-sweep",
-    "18": "skill:psychic",
-    "24": "skill:iron-tail"
+    "6": [
+     "skill:smokescreen"
+    ],
+    "12": [
+     "skill:roar"
+    ],
+    "18": [
+     "skill:flame-burst",
+     "skill:lava-plume"
+    ],
+    "24": [
+     "skill:flamethrower"
+    ]
    }
   },
   {
@@ -72,14 +90,23 @@
     {
      "stat": "attack",
      "second": "hp",
-     "skill": "skill:morning-sun"
+     "skill": "skill:fire-blast"
     }
    ],
    "rows": {
-    "6": "skill:aerial-ace",
-    "12": "skill:steel-wing",
-    "18": "skill:extrasensory",
-    "24": "skill:solar-beam"
+    "6": [
+     "skill:confide"
+    ],
+    "12": [
+     "skill:whirlwind"
+    ],
+    "18": [
+     "skill:air-cutter",
+     "skill:ancient-power"
+    ],
+    "24": [
+     "skill:solar-beam"
+    ]
    }
   }
  ],
@@ -89,31 +116,25 @@
    "fire-power"
   ],
   "6": [
-   "skill:flame-charge",
-   "skill:will-o-wisp"
+   "skill:burning-jealousy"
   ],
   "9": [
    "flame-body",
    "long-reach"
   ],
   "12": [
-   "skill:flamethrower",
-   "skill:facade"
+   "skill:scorching-sands"
   ],
   "15": [
    "lingering-effects",
    "far-sight"
   ],
-  "18": [
-   "skill:heat-wave",
-   "skill:scorching-sands"
-  ],
+  "18": [],
   "21": [
    "battle-high",
    "overhead-shot"
   ],
   "24": [
-   "skill:burning-jealousy",
    "skill:hyper-beam"
   ],
   "27": [

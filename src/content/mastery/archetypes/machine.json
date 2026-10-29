@@ -11,23 +11,32 @@
    "focus": [
     {
      "stat": "attack",
-     "skill": "skill:flash-cannon"
+     "skill": "skill:thunderbolt"
     },
     {
      "stat": "attack",
-     "skill": "skill:steel-beam"
+     "skill": "skill:explosion"
     },
     {
      "stat": "attack",
      "second": "defense",
-     "skill": "skill:magnet-rise"
+     "skill": "skill:hyper-beam"
     }
    ],
    "rows": {
-    "6": "skill:magnet-bomb",
-    "12": "skill:mirror-shot",
-    "18": "skill:discharge",
-    "24": "skill:double-edge"
+    "6": [
+     "skill:metal-sound"
+    ],
+    "12": [
+     "skill:helping-hand"
+    ],
+    "18": [
+     "skill:magnet-bomb",
+     "skill:swift"
+    ],
+    "24": [
+     "skill:steel-beam"
+    ]
    }
   },
   {
@@ -38,23 +47,32 @@
    "focus": [
     {
      "stat": "attack",
-     "skill": "skill:explosion"
+     "skill": "skill:thunderbolt"
     },
     {
      "stat": "attack",
      "second": "hp",
-     "skill": "skill:eerie-impulse"
+     "skill": "skill:self-destruct"
     },
     {
      "stat": "attack",
-     "skill": "skill:foul-play"
+     "skill": "skill:hyper-beam"
     }
    ],
    "rows": {
-    "6": "skill:shock-wave",
-    "12": "skill:volt-switch",
-    "18": "skill:discharge",
-    "24": "skill:double-edge"
+    "6": [
+     "skill:taunt"
+    ],
+    "12": [
+     "skill:light-screen"
+    ],
+    "18": [
+     "skill:discharge",
+     "skill:volt-switch"
+    ],
+    "24": [
+     "skill:explosion"
+    ]
    }
   }
  ],
@@ -64,7 +82,6 @@
    "magnet-pull"
   ],
   "6": [
-   "skill:spark",
    "skill:sonic-boom"
   ],
   "9": [
@@ -72,17 +89,13 @@
    "pin-down"
   ],
   "12": [
-   "skill:electro-ball",
-   "skill:metal-sound"
+   "skill:electro-ball"
   ],
   "15": [
    "thick-hide",
    "aftermath"
   ],
-  "18": [
-   "skill:thunderbolt",
-   "skill:gyro-ball"
-  ],
+  "18": [],
   "21": [
    "mean-look",
    "bond-focus"

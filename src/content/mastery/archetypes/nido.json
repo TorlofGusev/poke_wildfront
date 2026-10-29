@@ -13,22 +13,33 @@
     {
      "stat": "hp",
      "second": "attack",
-     "skill": "skill:crunch"
+     "skill": "skill:earthquake"
     },
     {
      "stat": "hp",
-     "skill": "skill:poison-fang"
+     "skill": "skill:horn-drill"
     },
     {
      "stat": "hp",
-     "skill": "skill:charm"
+     "skill": "skill:outrage"
     }
    ],
    "rows": {
-    "6": "skill:bulldoze",
-    "12": "skill:shadow-claw",
-    "18": "skill:body-press",
-    "24": "skill:blizzard"
+    "6": [
+     "skill:growl"
+    ],
+    "12": [
+     "skill:bulldoze",
+     "skill:detect"
+    ],
+    "18": [
+     "skill:poison-sting",
+     "skill:avalanche"
+    ],
+    "24": [
+     "skill:sludge-wave",
+     "skill:high-horsepower"
+    ]
    }
   },
   {
@@ -49,14 +60,25 @@
     {
      "stat": "attack",
      "second": "defense",
-     "skill": "skill:amnesia"
+     "skill": "skill:earthquake"
     }
    ],
    "rows": {
-    "6": "skill:bulldoze",
-    "12": "skill:shadow-claw",
-    "18": "skill:body-press",
-    "24": "skill:blizzard"
+    "6": [
+     "skill:leer"
+    ],
+    "12": [
+     "skill:bulldoze",
+     "skill:protect"
+    ],
+    "18": [
+     "skill:poison-sting",
+     "skill:avalanche"
+    ],
+    "24": [
+     "skill:sludge-wave",
+     "skill:high-horsepower"
+    ]
    }
   }
  ],
@@ -66,33 +88,23 @@
    "rough-skin"
   ],
   "6": [
-   "skill:double-kick",
    "skill:poison-tail"
   ],
   "9": [
    "tough-claws",
    "flanker"
   ],
-  "12": [
-   "skill:sludge-bomb",
-   "skill:venoshock"
-  ],
+  "12": [],
   "15": [
    "guts",
    "thick-hide"
   ],
-  "18": [
-   "skill:earthquake",
-   "skill:iron-tail"
-  ],
+  "18": [],
   "21": [
    "moxie",
    "natural-recovery"
   ],
-  "24": [
-   "skill:earth-power",
-   "skill:fire-blast"
-  ],
+  "24": [],
   "27": [
    "ground-power",
    "poison-power"

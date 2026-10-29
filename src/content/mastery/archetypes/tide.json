@@ -11,23 +11,32 @@
    "focus": [
     {
      "stat": "attack",
-     "skill": "skill:power-gem"
+     "skill": "skill:surf"
     },
     {
      "stat": "attack",
      "second": "defense",
-     "skill": "skill:cosmic-power"
+     "skill": "skill:meteor-beam"
     },
     {
      "stat": "attack",
-     "skill": "skill:recover"
+     "skill": "skill:ice-beam"
     }
    ],
    "rows": {
-    "6": "skill:psybeam",
-    "12": "skill:ancient-power",
-    "18": "skill:dazzling-gleam",
-    "24": "skill:zap-cannon"
+    "6": [
+     "skill:flash"
+    ],
+    "12": [
+     "skill:ally-switch"
+    ],
+    "18": [
+     "skill:ancient-power",
+     "skill:swift"
+    ],
+    "24": [
+     "skill:zap-cannon"
+    ]
    }
   },
   {
@@ -38,22 +47,31 @@
     {
      "stat": "hp",
      "second": "attack",
-     "skill": "skill:freeze-dry"
+     "skill": "skill:sparkling-aria"
     },
     {
      "stat": "hp",
-     "skill": "skill:haze"
+     "skill": "skill:dragon-pulse"
     },
     {
      "stat": "hp",
-     "skill": "skill:life-dew"
+     "skill": "skill:hyper-voice"
     }
    ],
    "rows": {
-    "6": "skill:ancient-power",
-    "12": "skill:avalanche",
-    "18": "skill:alluring-voice",
-    "24": "skill:solar-beam"
+    "6": [
+     "skill:sing"
+    ],
+    "12": [
+     "skill:mist"
+    ],
+    "18": [
+     "skill:ancient-power",
+     "skill:dragon-rage"
+    ],
+    "24": [
+     "skill:solar-beam"
+    ]
    }
   },
   {
@@ -64,23 +82,32 @@
    "focus": [
     {
      "stat": "attack",
-     "skill": "skill:icicle-spear"
+     "skill": "skill:ice-beam"
     },
     {
      "stat": "attack",
      "second": "hp",
-     "skill": "skill:encore"
+     "skill": "skill:spit-up"
     },
     {
      "stat": "attack",
-     "skill": "skill:perish-song"
+     "skill": "skill:surf"
     }
    ],
    "rows": {
-    "6": "skill:peck",
-    "12": "skill:avalanche",
-    "18": "skill:alluring-voice",
-    "24": "skill:iron-tail"
+    "6": [
+     "skill:charm"
+    ],
+    "12": [
+     "skill:haze"
+    ],
+    "18": [
+     "skill:aurora-beam",
+     "skill:whirlpool"
+    ],
+    "24": [
+     "skill:muddy-water"
+    ]
    }
   },
   {
@@ -92,22 +119,31 @@
     {
      "stat": "hp",
      "second": "attack",
-     "skill": "skill:wring-out"
+     "skill": "skill:gunk-shot"
     },
     {
      "stat": "hp",
-     "skill": "skill:cross-poison"
+     "skill": "skill:muddy-water"
     },
     {
      "stat": "hp",
-     "skill": "skill:toxic-spikes"
+     "skill": "skill:hyper-beam"
     }
    ],
    "rows": {
-    "6": "skill:acid-spray",
-    "12": "skill:hex",
-    "18": "skill:dazzling-gleam",
-    "24": "skill:sludge-bomb"
+    "6": [
+     "skill:tickle"
+    ],
+    "12": [
+     "skill:protect"
+    ],
+    "18": [
+     "skill:water-gun",
+     "skill:swift"
+    ],
+    "24": [
+     "skill:sludge-bomb"
+    ]
    }
   }
  ],
@@ -117,25 +153,20 @@
    "long-reach"
   ],
   "6": [
-   "skill:chilling-water",
-   "skill:aurora-beam"
+   "skill:chilling-water"
   ],
   "9": [
    "far-sight",
    "water-veil"
   ],
   "12": [
-   "skill:brine",
-   "skill:whirlpool"
+   "skill:brine"
   ],
   "15": [
    "torrent",
    "lingering-effects"
   ],
-  "18": [
-   "skill:surf",
-   "skill:liquidation"
-  ],
+  "18": [],
   "21": [
    "teamwork",
    "willpower-training"

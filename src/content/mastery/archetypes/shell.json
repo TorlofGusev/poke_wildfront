@@ -17,18 +17,30 @@
     },
     {
      "stat": "defense",
-     "skill": "skill:life-dew"
+     "skill": "skill:fissure"
     },
     {
      "stat": "defense",
-     "skill": "skill:aqua-ring"
+     "skill": "skill:surf"
     }
    ],
    "rows": {
-    "6": "skill:confusion",
-    "12": "skill:bite",
-    "18": "skill:dig",
-    "24": "skill:blizzard"
+    "6": [
+     "skill:chilling-water",
+     "skill:yawn"
+    ],
+    "12": [
+     "skill:brine",
+     "skill:mist"
+    ],
+    "18": [
+     "skill:water-pulse",
+     "skill:bubble-beam"
+    ],
+    "24": [
+     "skill:blizzard",
+     "skill:water-spout"
+    ]
    }
   },
   {
@@ -40,22 +52,34 @@
     {
      "stat": "defense",
      "second": "attack",
-     "skill": "skill:icicle-crash"
+     "skill": "skill:ice-beam"
     },
     {
      "stat": "defense",
-     "skill": "skill:shell-smash"
+     "skill": "skill:self-destruct"
     },
     {
      "stat": "defense",
-     "skill": "skill:withdraw"
+     "skill": "skill:blizzard"
     }
    ],
    "rows": {
-    "6": "skill:icy-wind",
-    "12": "skill:aurora-beam",
-    "18": "skill:smart-strike",
-    "24": "skill:double-edge"
+    "6": [
+     "skill:chilling-water",
+     "skill:scary-face"
+    ],
+    "12": [
+     "skill:aurora-beam",
+     "skill:life-dew"
+    ],
+    "18": [
+     "skill:spike-cannon",
+     "skill:swift"
+    ],
+    "24": [
+     "skill:hydro-pump",
+     "skill:surf"
+    ]
    }
   },
   {
@@ -66,23 +90,35 @@
    "focus": [
     {
      "stat": "attack",
-     "skill": "skill:guillotine"
-    },
-    {
-     "stat": "attack",
      "skill": "skill:crabhammer"
     },
     {
      "stat": "attack",
+     "skill": "skill:body-slam"
+    },
+    {
+     "stat": "attack",
      "second": "defense",
-     "skill": "skill:wide-guard"
+     "skill": "skill:giga-impact"
     }
    ],
    "rows": {
-    "6": "skill:metal-claw",
-    "12": "skill:ancient-power",
-    "18": "skill:dig",
-    "24": "skill:blizzard"
+    "6": [
+     "skill:razor-shell",
+     "skill:tickle"
+    ],
+    "12": [
+     "skill:dig",
+     "skill:haze"
+    ],
+    "18": [
+     "skill:metal-claw",
+     "skill:fury-cutter"
+    ],
+    "24": [
+     "skill:liquidation",
+     "skill:double-edge"
+    ]
    }
   },
   {
@@ -97,19 +133,31 @@
     },
     {
      "stat": "defense",
-     "skill": "skill:psyshock"
+     "skill": "skill:fissure"
     },
     {
      "stat": "defense",
      "second": "hp",
-     "skill": "skill:slack-off"
+     "skill": "skill:flamethrower"
     }
    ],
    "rows": {
-    "6": "skill:psybeam",
-    "12": "skill:avalanche",
-    "18": "skill:dig",
-    "24": "skill:zap-cannon"
+    "6": [
+     "skill:chilling-water",
+     "skill:flash"
+    ],
+    "12": [
+     "skill:brine",
+     "skill:heal-pulse"
+    ],
+    "18": [
+     "skill:water-gun",
+     "skill:swift"
+    ],
+    "24": [
+     "skill:zap-cannon",
+     "skill:muddy-water"
+    ]
    }
   }
  ],
@@ -118,35 +166,23 @@
    "thick-hide",
    "water-power"
   ],
-  "6": [
-   "skill:water-pulse",
-   "skill:headbutt"
-  ],
+  "6": [],
   "9": [
    "sturdy",
    "defense-training"
   ],
-  "12": [
-   "skill:bubble-beam",
-   "skill:iron-defense"
-  ],
+  "12": [],
   "15": [
    "torrent",
    "vitality-training"
   ],
-  "18": [
-   "skill:liquidation",
-   "skill:surf"
-  ],
+  "18": [],
   "21": [
    "rough-skin",
    "second-wind",
    "pursuit"
   ],
-  "24": [
-   "skill:hydro-pump",
-   "skill:ice-beam"
-  ],
+  "24": [],
   "27": [
    "multiscale",
    "natural-recovery"

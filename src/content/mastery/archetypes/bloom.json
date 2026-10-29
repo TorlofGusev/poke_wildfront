@@ -17,18 +17,27 @@
     },
     {
      "stat": "hp",
-     "skill": "skill:amnesia"
+     "skill": "skill:petal-dance"
     },
     {
      "stat": "hp",
-     "skill": "skill:synthesis"
+     "skill": "skill:sludge-wave"
     }
    ],
    "rows": {
-    "6": "skill:sludge",
-    "12": "skill:bulldoze",
-    "18": "skill:sludge-bomb",
-    "24": "skill:earthquake"
+    "6": [
+     "skill:sweet-scent"
+    ],
+    "12": [
+     "skill:light-screen"
+    ],
+    "18": [
+     "skill:magical-leaf",
+     "skill:string-shot"
+    ],
+    "24": [
+     "skill:earthquake"
+    ]
    }
   },
   {
@@ -44,19 +53,28 @@
     },
     {
      "stat": "attack",
-     "skill": "skill:teeter-dance"
+     "skill": "skill:moonblast"
     },
     {
      "stat": "attack",
      "second": "hp",
-     "skill": "skill:strength-sap"
+     "skill": "skill:petal-blizzard"
     }
    ],
    "rows": {
-    "6": "skill:venoshock",
-    "12": "skill:dazzling-gleam",
-    "18": "skill:sludge-bomb",
-    "24": "skill:double-edge"
+    "6": [
+     "skill:teeter-dance"
+    ],
+    "12": [
+     "skill:reflect"
+    ],
+    "18": [
+     "skill:magical-leaf",
+     "skill:acid"
+    ],
+    "24": [
+     "skill:energy-ball"
+    ]
    }
   },
   {
@@ -67,22 +85,28 @@
     {
      "stat": "defense",
      "second": "attack",
-     "skill": "skill:power-whip"
+     "skill": "skill:energy-ball"
     },
     {
      "stat": "defense",
-     "skill": "skill:stun-spore"
+     "skill": "skill:sludge-bomb"
     },
     {
      "stat": "defense",
-     "skill": "skill:ingrain"
+     "skill": "skill:hyper-beam"
     }
    ],
    "rows": {
-    "6": "skill:ancient-power",
-    "12": "skill:wake-up-slap",
-    "18": "skill:sludge-bomb",
-    "24": "skill:hyper-beam"
+    "6": [
+     "skill:tickle"
+    ],
+    "12": [
+     "skill:substitute"
+    ],
+    "18": [
+     "skill:ancient-power",
+     "skill:confusion"
+    ]
    }
   }
  ],
@@ -92,25 +116,20 @@
    "grass-power"
   ],
   "6": [
-   "skill:bullet-seed",
-   "skill:poison-powder"
+   "skill:bullet-seed"
   ],
   "9": [
    "natural-recovery",
    "poison-touch"
   ],
   "12": [
-   "skill:giga-drain",
-   "skill:leech-seed"
+   "skill:giga-drain"
   ],
   "15": [
    "big-root",
    "lingering-effects"
   ],
-  "18": [
-   "skill:energy-ball",
-   "skill:seed-bomb"
-  ],
+  "18": [],
   "21": [
    "second-wind",
    "vitality-training"

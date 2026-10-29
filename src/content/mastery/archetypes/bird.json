@@ -16,19 +16,29 @@
     },
     {
      "stat": "attack",
-     "skill": "skill:hurricane"
+     "skill": "skill:sky-attack"
     },
     {
      "stat": "attack",
      "second": "hp",
-     "skill": "skill:defog"
+     "skill": "skill:fly"
     }
    ],
    "rows": {
-    "6": "skill:swift",
-    "12": "skill:steel-wing",
-    "18": "skill:u-turn",
-    "24": "skill:heat-wave"
+    "6": [
+     "skill:captivate"
+    ],
+    "12": [
+     "skill:facade",
+     "skill:detect"
+    ],
+    "18": [
+     "skill:headbutt",
+     "skill:wing-attack"
+    ],
+    "24": [
+     "skill:giga-impact"
+    ]
    }
   },
   {
@@ -39,23 +49,33 @@
    "focus": [
     {
      "stat": "attack",
-     "skill": "skill:drill-run"
+     "skill": "skill:uproar"
     },
     {
      "stat": "attack",
-     "skill": "skill:feint-attack"
+     "skill": "skill:giga-impact"
     },
     {
      "stat": "attack",
      "second": "hp",
-     "skill": "skill:scary-face"
+     "skill": "skill:sky-attack"
     }
    ],
    "rows": {
-    "6": "skill:quick-attack",
-    "12": "skill:steel-wing",
-    "18": "skill:throat-chop",
-    "24": "skill:heat-wave"
+    "6": [
+     "skill:confide"
+    ],
+    "12": [
+     "skill:facade",
+     "skill:endure"
+    ],
+    "18": [
+     "skill:headbutt",
+     "skill:wing-attack"
+    ],
+    "24": [
+     "skill:take-down"
+    ]
    }
   },
   {
@@ -66,23 +86,33 @@
    "focus": [
     {
      "stat": "attack",
-     "skill": "skill:double-hit"
+     "skill": "skill:skull-bash"
     },
     {
      "stat": "attack",
-     "skill": "skill:drill-peck"
+     "skill": "skill:brave-bird"
     },
     {
      "stat": "attack",
      "second": "hp",
-     "skill": "skill:haze"
+     "skill": "skill:thrash"
     }
    ],
    "rows": {
-    "6": "skill:swift",
-    "12": "skill:steel-wing",
-    "18": "skill:lunge",
-    "24": "skill:jump-kick"
+    "6": [
+     "skill:growl"
+    ],
+    "12": [
+     "skill:double-hit",
+     "skill:helping-hand"
+    ],
+    "18": [
+     "skill:headbutt",
+     "skill:payback"
+    ],
+    "24": [
+     "skill:jump-kick"
+    ]
    }
   },
   {
@@ -96,19 +126,29 @@
     },
     {
      "stat": "attack",
-     "skill": "skill:night-slash"
+     "skill": "skill:last-resort"
     },
     {
      "stat": "attack",
      "second": "hp",
-     "skill": "skill:detect"
+     "skill": "skill:solar-blade"
     }
    ],
    "rows": {
-    "6": "skill:quick-attack",
-    "12": "skill:steel-wing",
-    "18": "skill:throat-chop",
-    "24": "skill:close-combat"
+    "6": [
+     "skill:leer"
+    ],
+    "12": [
+     "skill:facade",
+     "skill:knock-off"
+    ],
+    "18": [
+     "skill:headbutt",
+     "skill:fury-cutter"
+    ],
+    "24": [
+     "skill:close-combat"
+    ]
    }
   }
  ],
@@ -118,32 +158,24 @@
    "run-away"
   ],
   "6": [
-   "skill:aerial-ace",
-   "skill:feather-dance"
+   "skill:aerial-ace"
   ],
   "9": [
    "flanker",
    "first-strike"
   ],
-  "12": [
-   "skill:air-cutter",
-   "skill:substitute"
-  ],
+  "12": [],
   "15": [
    "overhead-shot",
    "quick-feet"
   ],
-  "18": [
-   "skill:fly",
-   "skill:tailwind"
-  ],
+  "18": [],
   "21": [
    "speed-boost",
    "second-wind"
   ],
   "24": [
-   "skill:double-edge",
-   "skill:double-team"
+   "skill:double-edge"
   ],
   "27": [
    "hustle",

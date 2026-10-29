@@ -11,23 +11,33 @@
    "focus": [
     {
      "stat": "attack",
-     "skill": "skill:super-fang"
+     "skill": "skill:uproar"
     },
     {
      "stat": "attack",
-     "skill": "skill:crunch"
+     "skill": "skill:wild-charge"
     },
     {
      "stat": "attack",
      "second": "hp",
-     "skill": "skill:endeavor"
+     "skill": "skill:body-slam"
     }
    ],
    "rows": {
-    "6": "skill:bite",
-    "12": "skill:u-turn",
-    "18": "skill:dig",
-    "24": "skill:ice-beam"
+    "6": [
+     "skill:taunt"
+    ],
+    "12": [
+     "skill:super-fang",
+     "skill:endure"
+    ],
+    "18": [
+     "skill:headbutt",
+     "skill:bite"
+    ],
+    "24": [
+     "skill:last-resort"
+    ]
    }
   },
   {
@@ -46,14 +56,24 @@
     {
      "stat": "attack",
      "second": "hp",
-     "skill": "skill:zen-headbutt"
+     "skill": "skill:megahorn"
     }
    ],
    "rows": {
-    "6": "skill:bulldoze",
-    "12": "skill:revenge",
-    "18": "skill:rock-slide",
-    "24": "skill:close-combat"
+    "6": [
+     "skill:confide"
+    ],
+    "12": [
+     "skill:retaliate",
+     "skill:helping-hand"
+    ],
+    "18": [
+     "skill:headbutt",
+     "skill:payback"
+    ],
+    "24": [
+     "skill:close-combat"
+    ]
    }
   },
   {
@@ -64,22 +84,32 @@
     {
      "stat": "hp",
      "second": "attack",
-     "skill": "skill:dizzy-punch"
+     "skill": "skill:mega-kick"
     },
     {
      "stat": "hp",
-     "skill": "skill:counter"
+     "skill": "skill:dynamic-punch"
     },
     {
      "stat": "hp",
-     "skill": "skill:drain-punch"
+     "skill": "skill:hammer-arm"
     }
    ],
    "rows": {
-    "6": "skill:power-up-punch",
-    "12": "skill:shadow-claw",
-    "18": "skill:brick-break",
-    "24": "skill:earthquake"
+    "6": [
+     "skill:disable"
+    ],
+    "12": [
+     "skill:stomp",
+     "skill:safeguard"
+    ],
+    "18": [
+     "skill:headbutt",
+     "skill:avalanche"
+    ],
+    "24": [
+     "skill:earthquake"
+    ]
    }
   },
   {
@@ -90,23 +120,33 @@
    "focus": [
     {
      "stat": "attack",
-     "skill": "skill:false-swipe"
+     "skill": "skill:last-resort"
     },
     {
      "stat": "attack",
-     "skill": "skill:night-slash"
+     "skill": "skill:foul-play"
     },
     {
      "stat": "attack",
      "second": "hp",
-     "skill": "skill:charm"
+     "skill": "skill:double-edge"
     }
    ],
    "rows": {
-    "6": "skill:payback",
-    "12": "skill:shadow-claw",
-    "18": "skill:dark-pulse",
-    "24": "skill:play-rough"
+    "6": [
+     "skill:fake-tears"
+    ],
+    "12": [
+     "skill:retaliate",
+     "skill:knock-off"
+    ],
+    "18": [
+     "skill:headbutt",
+     "skill:bite"
+    ],
+    "24": [
+     "skill:play-rough"
+    ]
    }
   }
  ],
@@ -116,32 +156,24 @@
    "thick-hide"
   ],
   "6": [
-   "skill:headbutt",
-   "skill:body-slam"
+   "skill:facade"
   ],
   "9": [
    "pursuit-instinct",
    "first-strike"
   ],
-  "12": [
-   "skill:take-down",
-   "skill:facade"
-  ],
+  "12": [],
   "15": [
    "guts",
    "desperation"
   ],
-  "18": [
-   "skill:double-edge",
-   "skill:iron-tail"
-  ],
+  "18": [],
   "21": [
    "moxie",
    "follow-through"
   ],
   "24": [
-   "skill:giga-impact",
-   "skill:retaliate"
+   "skill:giga-impact"
   ],
   "27": [
    "hustle",

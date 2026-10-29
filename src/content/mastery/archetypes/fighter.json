@@ -16,19 +16,28 @@
     },
     {
      "stat": "attack",
-     "skill": "skill:submission"
+     "skill": "skill:superpower"
     },
     {
      "stat": "attack",
      "second": "hp",
-     "skill": "skill:vital-throw"
+     "skill": "skill:mega-kick"
     }
    ],
    "rows": {
-    "6": "skill:payback",
-    "12": "skill:bulldoze",
-    "18": "skill:fire-punch",
-    "24": "skill:stone-edge"
+    "6": [
+     "skill:scary-face"
+    ],
+    "12": [
+     "skill:knock-off"
+    ],
+    "18": [
+     "skill:storm-throw",
+     "skill:headbutt"
+    ],
+    "24": [
+     "skill:cross-chop"
+    ]
    }
   },
   {
@@ -39,23 +48,32 @@
    "focus": [
     {
      "stat": "attack",
-     "skill": "skill:lash-out"
+     "skill": "skill:dynamic-punch"
     },
     {
      "stat": "attack",
-     "skill": "skill:dual-chop"
+     "skill": "skill:outrage"
     },
     {
      "stat": "attack",
      "second": "hp",
-     "skill": "skill:taunt"
+     "skill": "skill:thrash"
     }
    ],
    "rows": {
-    "6": "skill:payback",
-    "12": "skill:shadow-claw",
-    "18": "skill:dig",
-    "24": "skill:overheat"
+    "6": [
+     "skill:screech"
+    ],
+    "12": [
+     "skill:protect"
+    ],
+    "18": [
+     "skill:headbutt",
+     "skill:payback"
+    ],
+    "24": [
+     "skill:cross-chop"
+    ]
    }
   },
   {
@@ -65,7 +83,7 @@
    "focus": [
     {
      "stat": "attack",
-     "skill": "skill:mach-punch"
+     "skill": "skill:rock-climb"
     },
     {
      "stat": "attack",
@@ -74,14 +92,23 @@
     {
      "stat": "attack",
      "second": "hp",
-     "skill": "skill:drain-punch"
+     "skill": "skill:body-slam"
     }
    ],
    "rows": {
-    "6": "skill:trailblaze",
-    "12": "skill:bulldoze",
-    "18": "skill:throat-chop",
-    "24": "skill:stone-edge"
+    "6": [
+     "skill:mind-reader"
+    ],
+    "12": [
+     "skill:rapid-spin"
+    ],
+    "18": [
+     "skill:trailblaze",
+     "skill:bullet-punch"
+    ],
+    "24": [
+     "skill:high-jump-kick"
+    ]
    }
   },
   {
@@ -100,14 +127,23 @@
     {
      "stat": "attack",
      "second": "hp",
-     "skill": "skill:rolling-kick"
+     "skill": "skill:axe-kick"
     }
    ],
    "rows": {
-    "6": "skill:bulldoze",
-    "12": "skill:rock-slide",
-    "18": "skill:lunge",
-    "24": "skill:earthquake"
+    "6": [
+     "skill:mind-reader"
+    ],
+    "12": [
+     "skill:substitute"
+    ],
+    "18": [
+     "skill:headbutt",
+     "skill:bullet-punch"
+    ],
+    "24": [
+     "skill:earthquake"
+    ]
    }
   }
  ],
@@ -117,7 +153,6 @@
    "tough-claws"
   ],
   "6": [
-   "skill:rock-smash",
    "skill:low-kick"
   ],
   "9": [
@@ -125,17 +160,13 @@
    "first-strike"
   ],
   "12": [
-   "skill:brick-break",
-   "skill:bulk-up"
+   "skill:brick-break"
   ],
   "15": [
    "follow-through",
    "cornered"
   ],
-  "18": [
-   "skill:dynamic-punch",
-   "skill:seismic-toss"
-  ],
+  "18": [],
   "21": [
    "moxie",
    "relentless"

@@ -12,23 +12,32 @@
    "focus": [
     {
      "stat": "attack",
-     "skill": "skill:leaf-blade"
+     "skill": "skill:energy-ball"
     },
     {
      "stat": "attack",
-     "skill": "skill:stockpile"
+     "skill": "skill:spit-up"
     },
     {
      "stat": "attack",
      "second": "hp",
-     "skill": "skill:strength-sap"
+     "skill": "skill:sludge-wave"
     }
    ],
    "rows": {
-    "6": "skill:clear-smog",
-    "12": "skill:leech-life",
-    "18": "skill:sludge-bomb",
-    "24": "skill:double-edge"
+    "6": [
+     "skill:encore"
+    ],
+    "12": [
+     "skill:endure"
+    ],
+    "18": [
+     "skill:magical-leaf",
+     "skill:swift"
+    ],
+    "24": [
+     "skill:sludge-bomb"
+    ]
    }
   },
   {
@@ -39,7 +48,7 @@
    "focus": [
     {
      "stat": "attack",
-     "skill": "skill:wood-hammer"
+     "skill": "skill:egg-bomb"
     },
     {
      "stat": "attack",
@@ -48,14 +57,23 @@
     {
      "stat": "attack",
      "second": "hp",
-     "skill": "skill:synthesis"
+     "skill": "skill:sludge-bomb"
     }
    ],
    "rows": {
-    "6": "skill:psybeam",
-    "12": "skill:ancient-power",
-    "18": "skill:sludge-bomb",
-    "24": "skill:earthquake"
+    "6": [
+     "skill:confide"
+    ],
+    "12": [
+     "skill:helping-hand"
+    ],
+    "18": [
+     "skill:magical-leaf",
+     "skill:ancient-power"
+    ],
+    "24": [
+     "skill:earthquake"
+    ]
    }
   }
  ],
@@ -65,25 +83,20 @@
    "grass-power"
   ],
   "6": [
-   "skill:bullet-seed",
-   "skill:sleep-powder"
+   "skill:bullet-seed"
   ],
   "9": [
    "ingrain-grip",
    "first-strike"
   ],
   "12": [
-   "skill:seed-bomb",
-   "skill:magical-leaf"
+   "skill:seed-bomb"
   ],
   "15": [
    "big-root",
    "opportunist"
   ],
-  "18": [
-   "skill:giga-drain",
-   "skill:energy-ball"
-  ],
+  "18": [],
   "21": [
    "exploit-opening",
    "attack-training"

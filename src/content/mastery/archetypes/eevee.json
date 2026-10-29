@@ -18,13 +18,30 @@
     {
      "stat": "attack",
      "second": "defense",
-     "skill": "skill:baby-doll-eyes"
+     "skill": "skill:synchronoise"
     },
     {
      "stat": "attack",
-     "skill": "skill:wish"
+     "skill": "skill:aqua-tail"
     }
-   ]
+   ],
+   "rows": {
+    "6": [
+     "skill:burning-jealousy",
+     "skill:metal-sound"
+    ],
+    "12": [
+     "skill:discharge",
+     "skill:heal-bell"
+    ],
+    "18": [
+     "skill:headbutt",
+     "skill:bite"
+    ],
+    "24": [
+     "skill:liquidation"
+    ]
+   }
   }
  ],
  "rows": {
@@ -32,32 +49,22 @@
    "run-away",
    "first-strike"
   ],
-  "6": [
-   "skill:bite",
-   "skill:tail-whip"
-  ],
+  "6": [],
   "9": [
    "teamwork",
    "flanker"
   ],
-  "12": [
-   "skill:swift",
-   "skill:fake-tears"
-  ],
+  "12": [],
   "15": [
    "speed-training",
    "shed-skin"
   ],
-  "18": [
-   "skill:double-edge",
-   "skill:calm-mind"
-  ],
+  "18": [],
   "21": [
    "second-wind",
    "battle-bond"
   ],
   "24": [
-   "skill:hyper-voice",
    "skill:skull-bash"
   ],
   "27": [
@@ -77,8 +84,8 @@
      "natural-recovery"
     ],
     "18": [
-     "skill:aqua-tail",
-     "skill:muddy-water"
+     "skill:swift",
+     "skill:pay-day"
     ],
     "21": [
      "water-power",
@@ -86,7 +93,7 @@
     ],
     "24": [
      "skill:hydro-pump",
-     "skill:aqua-ring"
+     "skill:surf"
     ],
     "27": [
      "vitality-training",
@@ -105,16 +112,16 @@
      "speed-training"
     ],
     "18": [
-     "skill:discharge",
-     "skill:thunder-fang"
+     "skill:swift",
+     "skill:pay-day"
     ],
     "21": [
      "electric-power",
      "shock-exploit"
     ],
     "24": [
-     "skill:thunderbolt",
-     "skill:volt-switch"
+     "skill:thunder",
+     "skill:thunderbolt"
     ],
     "27": [
      "speed-boost",
@@ -133,16 +140,16 @@
      "guts"
     ],
     "18": [
-     "skill:flare-blitz",
-     "skill:lava-plume"
+     "skill:headbutt",
+     "skill:bite"
     ],
     "21": [
      "fire-power",
      "moxie"
     ],
     "24": [
-     "skill:overheat",
-     "skill:fire-blast"
+     "skill:flare-blitz",
+     "skill:superpower"
     ],
     "27": [
      "attack-training",

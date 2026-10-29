@@ -12,23 +12,32 @@
    "focus": [
     {
      "stat": "attack",
-     "skill": "skill:extreme-speed"
+     "skill": "skill:outrage"
     },
     {
      "stat": "attack",
-     "skill": "skill:dragon-tail"
+     "skill": "skill:aqua-tail"
     },
     {
      "stat": "attack",
      "second": "hp",
-     "skill": "skill:heal-bell"
+     "skill": "skill:focus-punch"
     }
    ],
    "rows": {
-    "6": "skill:aerial-ace",
-    "12": "skill:breaking-swipe",
-    "18": "skill:waterfall",
-    "24": "skill:zap-cannon"
+    "6": [
+     "skill:encore"
+    ],
+    "12": [
+     "skill:haze"
+    ],
+    "18": [
+     "skill:wing-attack",
+     "skill:fury-cutter"
+    ],
+    "24": [
+     "skill:dragon-rush"
+    ]
    }
   }
  ],
@@ -38,31 +47,25 @@
    "thick-hide"
   ],
   "6": [
-   "skill:dragon-breath",
-   "skill:thunder-wave"
+   "skill:fire-punch"
   ],
   "9": [
    "shed-skin",
    "attack-training"
   ],
   "12": [
-   "skill:fire-punch",
    "skill:iron-head"
   ],
   "15": [
    "vitality-training",
    "moxie"
   ],
-  "18": [
-   "skill:dragon-rush",
-   "skill:scale-shot"
-  ],
+  "18": [],
   "21": [
    "multiscale",
    "battle-high"
   ],
   "24": [
-   "skill:draco-meteor",
    "skill:iron-tail"
   ],
   "27": [

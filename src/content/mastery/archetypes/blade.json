@@ -10,23 +10,33 @@
    "focus": [
     {
      "stat": "attack",
-     "skill": "skill:x-scissor"
+     "skill": "skill:skull-bash"
     },
     {
      "stat": "attack",
      "second": "defense",
-     "skill": "skill:detect"
+     "skill": "skill:take-down"
     },
     {
      "stat": "attack",
-     "skill": "skill:morning-sun"
+     "skill": "skill:giga-impact"
     }
    ],
    "rows": {
-    "6": "skill:trailblaze",
-    "12": "skill:skitter-smack",
-    "18": "skill:air-slash",
-    "24": "skill:close-combat"
+    "6": [
+     "skill:scary-face"
+    ],
+    "12": [
+     "skill:helping-hand"
+    ],
+    "18": [
+     "skill:bug-bite",
+     "skill:trailblaze"
+    ],
+    "24": [
+     "skill:close-combat",
+     "skill:double-edge"
+    ]
    }
   },
   {
@@ -36,7 +46,7 @@
    "focus": [
     {
      "stat": "attack",
-     "skill": "skill:guillotine"
+     "skill": "skill:outrage"
     },
     {
      "stat": "attack",
@@ -45,14 +55,24 @@
     {
      "stat": "attack",
      "second": "defense",
-     "skill": "skill:harden"
+     "skill": "skill:earthquake"
     }
    ],
    "rows": {
-    "6": "skill:smack-down",
-    "12": "skill:lunge",
-    "18": "skill:dig",
-    "24": "skill:close-combat"
+    "6": [
+     "skill:swagger"
+    ],
+    "12": [
+     "skill:knock-off"
+    ],
+    "18": [
+     "skill:bug-bite",
+     "skill:storm-throw"
+    ],
+    "24": [
+     "skill:close-combat",
+     "skill:focus-punch"
+    ]
    }
   },
   {
@@ -63,23 +83,33 @@
    "focus": [
     {
      "stat": "attack",
-     "skill": "skill:cross-poison"
+     "skill": "skill:skull-bash"
     },
     {
      "stat": "attack",
      "second": "defense",
-     "skill": "skill:spore"
+     "skill": "skill:take-down"
     },
     {
      "stat": "attack",
-     "skill": "skill:synthesis"
+     "skill": "skill:giga-impact"
     }
    ],
    "rows": {
-    "6": "skill:metal-claw",
-    "12": "skill:giga-drain",
-    "18": "skill:leech-life",
-    "24": "skill:sludge-bomb"
+    "6": [
+     "skill:flash"
+    ],
+    "12": [
+     "skill:aromatherapy"
+    ],
+    "18": [
+     "skill:leech-life",
+     "skill:metal-claw"
+    ],
+    "24": [
+     "skill:body-slam",
+     "skill:double-edge"
+    ]
    }
   }
  ],
@@ -89,7 +119,6 @@
    "tough-claws"
   ],
   "6": [
-   "skill:fury-cutter",
    "skill:aerial-ace"
   ],
   "9": [
@@ -97,25 +126,18 @@
    "pursuit-instinct"
   ],
   "12": [
-   "skill:struggle-bug",
-   "skill:brick-break"
+   "skill:struggle-bug"
   ],
   "15": [
    "crit-training",
    "guts"
   ],
-  "18": [
-   "skill:slash",
-   "skill:double-edge"
-  ],
+  "18": [],
   "21": [
    "moxie",
    "flanker"
   ],
-  "24": [
-   "skill:swords-dance",
-   "skill:substitute"
-  ],
+  "24": [],
   "27": [
    "relentless",
    "exploit-opening"

@@ -11,23 +11,32 @@
    "focus": [
     {
      "stat": "attack",
-     "skill": "skill:nightmare"
+     "skill": "skill:synchronoise"
     },
     {
      "stat": "attack",
-     "skill": "skill:disable"
+     "skill": "skill:focus-blast"
     },
     {
      "stat": "attack",
      "second": "hp",
-     "skill": "skill:drain-punch"
+     "skill": "skill:future-sight"
     }
    ],
    "rows": {
-    "6": "skill:draining-kiss",
-    "12": "skill:low-sweep",
-    "18": "skill:fire-punch",
-    "24": "skill:zap-cannon"
+    "6": [
+     "skill:taunt"
+    ],
+    "12": [
+     "skill:light-screen"
+    ],
+    "18": [
+     "skill:swift",
+     "skill:night-shade"
+    ],
+    "24": [
+     "skill:zap-cannon"
+    ]
    }
   },
   {
@@ -37,23 +46,32 @@
    "focus": [
     {
      "stat": "attack",
-     "skill": "skill:mystical-fire"
+     "skill": "skill:psychic"
     },
     {
      "stat": "attack",
-     "skill": "skill:barrier"
+     "skill": "skill:uproar"
     },
     {
      "stat": "attack",
      "second": "hp",
-     "skill": "skill:misty-terrain"
+     "skill": "skill:focus-blast"
     }
    ],
    "rows": {
-    "6": "skill:payback",
-    "12": "skill:wake-up-slap",
-    "18": "skill:energy-ball",
-    "24": "skill:zap-cannon"
+    "6": [
+     "skill:teeter-dance"
+    ],
+    "12": [
+     "skill:quick-guard"
+    ],
+    "18": [
+     "skill:shadow-ball",
+     "skill:psyshock"
+    ],
+    "24": [
+     "skill:zap-cannon"
+    ]
    }
   }
  ],
@@ -63,32 +81,26 @@
    "own-tempo"
   ],
   "6": [
-   "skill:psybeam",
-   "skill:psych-up"
+   "skill:psybeam"
   ],
   "9": [
    "bad-dreams",
    "opportunist"
   ],
   "12": [
-   "skill:hypnosis",
-   "skill:swagger"
+   "skill:dazzling-gleam"
   ],
   "15": [
    "lingering-effects",
    "prankster"
   ],
-  "18": [
-   "skill:psychic",
-   "skill:dazzling-gleam"
-  ],
+  "18": [],
   "21": [
    "exploit-opening",
    "teamwork"
   ],
   "24": [
-   "skill:dream-eater",
-   "skill:shadow-ball"
+   "skill:dream-eater"
   ],
   "27": [
    "psychic-power",

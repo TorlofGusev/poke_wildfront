@@ -12,23 +12,32 @@
    "focus": [
     {
      "stat": "attack",
-     "skill": "skill:phantom-force"
+     "skill": "skill:gunk-shot"
     },
     {
      "stat": "attack",
-     "skill": "skill:perish-song"
+     "skill": "skill:thunder"
     },
     {
      "stat": "attack",
      "second": "hp",
-     "skill": "skill:pain-split"
+     "skill": "skill:thunderbolt"
     }
    ],
    "rows": {
-    "6": "skill:clear-smog",
-    "12": "skill:shadow-claw",
-    "18": "skill:dazzling-gleam",
-    "24": "skill:zap-cannon"
+    "6": [
+     "skill:mean-look"
+    ],
+    "12": [
+     "skill:ally-switch"
+    ],
+    "18": [
+     "skill:ominous-wind",
+     "skill:night-shade"
+    ],
+    "24": [
+     "skill:zap-cannon"
+    ]
    }
   }
  ],
@@ -38,31 +47,25 @@
    "first-strike"
   ],
   "6": [
-   "skill:hex",
-   "skill:ominous-wind"
+   "skill:hex"
   ],
   "9": [
    "bad-dreams",
    "opportunist"
   ],
   "12": [
-   "skill:hypnosis",
-   "skill:will-o-wisp"
+   "skill:shadow-ball"
   ],
   "15": [
    "lingering-effects",
    "prankster"
   ],
-  "18": [
-   "skill:sludge-bomb",
-   "skill:dark-pulse"
-  ],
+  "18": [],
   "21": [
    "exploit-opening",
    "multiscale"
   ],
   "24": [
-   "skill:shadow-ball",
    "skill:dream-eater"
   ],
   "27": [

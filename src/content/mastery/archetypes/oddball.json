@@ -10,23 +10,32 @@
    "focus": [
     {
      "stat": "attack",
-     "skill": "skill:psyshock"
+     "skill": "skill:thunder"
     },
     {
      "stat": "attack",
-     "skill": "skill:gravity"
+     "skill": "skill:zap-cannon"
     },
     {
      "stat": "attack",
      "second": "hp",
-     "skill": "skill:pain-split"
+     "skill": "skill:dream-eater"
     }
    ],
    "rows": {
-    "6": "skill:aerial-ace",
-    "12": "skill:facade",
-    "18": "skill:ice-beam",
-    "24": "skill:solar-beam"
+    "6": [
+     "skill:lock-on"
+    ],
+    "12": [
+     "skill:substitute"
+    ],
+    "18": [
+     "skill:icy-wind",
+     "skill:shadow-ball"
+    ],
+    "24": [
+     "skill:solar-beam"
+    ]
    }
   }
  ],
@@ -36,25 +45,20 @@
    "thick-hide"
   ],
   "6": [
-   "skill:psywave",
-   "skill:thunder-shock"
+   "skill:psywave"
   ],
   "9": [
    "long-reach",
    "lingering-effects"
   ],
   "12": [
-   "skill:psybeam",
-   "skill:icy-wind"
+   "skill:psybeam"
   ],
   "15": [
    "prankster",
    "natural-recovery"
   ],
-  "18": [
-   "skill:thunderbolt",
-   "skill:shadow-ball"
-  ],
+  "18": [],
   "21": [
    "battle-high",
    "bond-focus"

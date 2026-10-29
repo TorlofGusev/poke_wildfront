@@ -12,22 +12,34 @@
     {
      "stat": "defense",
      "second": "attack",
-     "skill": "skill:mud-shot"
+     "skill": "skill:muddy-water"
     },
     {
      "stat": "defense",
-     "skill": "skill:shell-smash"
+     "skill": "skill:earth-power"
     },
     {
      "stat": "defense",
-     "skill": "skill:tickle"
+     "skill": "skill:ice-beam"
     }
    ],
    "rows": {
-    "6": "skill:water-pulse",
-    "12": "skill:aurora-beam",
-    "18": "skill:earth-power",
-    "24": "skill:hydro-pump"
+    "6": [
+     "skill:smack-down",
+     "skill:sand-attack"
+    ],
+    "12": [
+     "skill:brine",
+     "skill:haze"
+    ],
+    "18": [
+     "skill:ancient-power",
+     "skill:spike-cannon"
+    ],
+    "24": [
+     "skill:hydro-pump",
+     "skill:stone-edge"
+    ]
    }
   },
   {
@@ -39,22 +51,35 @@
     {
      "stat": "defense",
      "second": "attack",
-     "skill": "skill:razor-shell"
+     "skill": "skill:liquidation"
     },
     {
      "stat": "defense",
-     "skill": "skill:aqua-jet"
+     "skill": "skill:double-edge"
     },
     {
      "stat": "defense",
-     "skill": "skill:flip-turn"
+     "skill": "skill:mega-kick"
     }
    ],
    "rows": {
-    "6": "skill:water-gun",
-    "12": "skill:aurora-beam",
-    "18": "skill:dig",
-    "24": "skill:hydro-pump"
+    "6": [
+     "skill:aqua-jet",
+     "skill:metal-sound",
+     "skill:rollout"
+    ],
+    "12": [
+     "skill:flip-turn",
+     "skill:reflect"
+    ],
+    "18": [
+     "skill:leech-life",
+     "skill:headbutt"
+    ],
+    "24": [
+     "skill:aqua-tail",
+     "skill:superpower"
+    ]
    }
   },
   {
@@ -68,19 +93,31 @@
     },
     {
      "stat": "attack",
-     "skill": "skill:dragon-claw"
+     "skill": "skill:psychic-fangs"
     },
     {
      "stat": "attack",
      "second": "defense",
-     "skill": "skill:roost"
+     "skill": "skill:iron-tail"
     }
    ],
    "rows": {
-    "6": "skill:aerial-ace",
-    "12": "skill:fire-fang",
-    "18": "skill:iron-head",
-    "24": "skill:earthquake"
+    "6": [
+     "skill:aerial-ace",
+     "skill:supersonic"
+    ],
+    "12": [
+     "skill:dual-wingbeat",
+     "skill:wide-guard"
+    ],
+    "18": [
+     "skill:headbutt",
+     "skill:bite"
+    ],
+    "24": [
+     "skill:earthquake",
+     "skill:fly"
+    ]
    }
   }
  ],
@@ -89,34 +126,22 @@
    "thick-hide",
    "sturdy"
   ],
-  "6": [
-   "skill:ancient-power",
-   "skill:smack-down"
-  ],
+  "6": [],
   "9": [
    "rock-power",
    "far-sight"
   ],
-  "12": [
-   "skill:rock-blast",
-   "skill:rock-tomb"
-  ],
+  "12": [],
   "15": [
    "sand-force",
    "first-strike"
   ],
-  "18": [
-   "skill:stone-edge",
-   "skill:rock-slide"
-  ],
+  "18": [],
   "21": [
    "relentless",
    "hunter"
   ],
-  "24": [
-   "skill:meteor-beam",
-   "skill:double-edge"
-  ],
+  "24": [],
   "27": [
    "battle-high",
    "speed-boost"

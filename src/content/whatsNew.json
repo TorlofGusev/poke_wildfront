@@ -5,6 +5,8 @@
   "Guillotine now finishes off hurt foes instead of simply out-hitting everything.",
   "Every Lv 3 focus is a real choice: no option is just a stronger copy of another.",
   "The music is a little quieter.",
+  "Mastery trees rebuilt: every row offers one kind of move. Lv 3 and Lv 24 Bond moves, Lv 6 and Lv 12 a skill plus a utility (Disable, Helping Hand, Knock Off…), Lv 18 a second basic attack to swap in for coverage.",
+  "A move's kind is now its own: big hits (canon power 85+) are Bond moves, weak plain hits are basic attacks, everything else is a skill.",
   "Momentum (the Speed bonus after moving) no longer counts against the foe you began the turn engaged with: stepping out and back in gains nothing.",
   "New utility moves: Follow Me, Helping Hand, Ally Switch and Knock Off (coming to the mastery trees).",
   "Mastery trees only offer passives that help the line's role: a melee line gets Pin Down or Tough Claws where a ranged one gets Far Sight or Long Reach.",

@@ -11,22 +11,31 @@
     {
      "stat": "hp",
      "second": "attack",
-     "skill": "skill:crunch"
+     "skill": "skill:last-resort"
     },
     {
      "stat": "hp",
-     "skill": "skill:stockpile"
+     "skill": "skill:darkest-lariat"
     },
     {
      "stat": "hp",
-     "skill": "skill:swallow"
+     "skill": "skill:hammer-arm"
     }
    ],
    "rows": {
-    "6": "skill:chilling-water",
-    "12": "skill:bite",
-    "18": "skill:body-press",
-    "24": "skill:solar-beam"
+    "6": [
+     "skill:yawn"
+    ],
+    "12": [
+     "skill:block"
+    ],
+    "18": [
+     "skill:tackle",
+     "skill:bite"
+    ],
+    "24": [
+     "skill:self-destruct"
+    ]
    }
   },
   {
@@ -41,18 +50,27 @@
     },
     {
      "stat": "hp",
-     "skill": "skill:wring-out"
+     "skill": "skill:rock-climb"
     },
     {
      "stat": "hp",
-     "skill": "skill:slam"
+     "skill": "skill:hammer-arm"
     }
    ],
    "rows": {
-    "6": "skill:icy-wind",
-    "12": "skill:bubble-beam",
-    "18": "skill:body-press",
-    "24": "skill:solar-beam"
+    "6": [
+     "skill:supersonic"
+    ],
+    "12": [
+     "skill:endure"
+    ],
+    "18": [
+     "skill:headbutt",
+     "skill:cut"
+    ],
+    "24": [
+     "skill:thrash"
+    ]
    }
   },
   {
@@ -63,22 +81,31 @@
     {
      "stat": "hp",
      "second": "attack",
-     "skill": "skill:endeavor"
+     "skill": "skill:uproar"
     },
     {
      "stat": "hp",
-     "skill": "skill:light-screen"
+     "skill": "skill:wild-charge"
     },
     {
      "stat": "hp",
-     "skill": "skill:soft-boiled"
+     "skill": "skill:focus-punch"
     }
    ],
    "rows": {
-    "6": "skill:chilling-water",
-    "12": "skill:mud-bomb",
-    "18": "skill:dazzling-gleam",
-    "24": "skill:solar-beam"
+    "6": [
+     "skill:flash"
+    ],
+    "12": [
+     "skill:heal-pulse"
+    ],
+    "18": [
+     "skill:headbutt",
+     "skill:trailblaze"
+    ],
+    "24": [
+     "skill:take-down"
+    ]
    }
   }
  ],
@@ -88,26 +115,21 @@
    "vitality-training"
   ],
   "6": [
-   "skill:body-slam",
-   "skill:defense-curl"
+   "skill:bulldoze"
   ],
   "9": [
    "natural-recovery",
    "mean-look"
   ],
   "12": [
-   "skill:ice-punch",
-   "skill:protect"
+   "skill:ice-punch"
   ],
   "15": [
    "sturdy",
    "cornered",
    "pursuit"
   ],
-  "18": [
-   "skill:double-edge",
-   "skill:bulldoze"
-  ],
+  "18": [],
   "21": [
    "multiscale",
    "second-wind"

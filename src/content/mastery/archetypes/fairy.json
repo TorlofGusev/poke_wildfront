@@ -16,18 +16,28 @@
     },
     {
      "stat": "hp",
-     "skill": "skill:cosmic-power"
+     "skill": "skill:future-sight"
     },
     {
      "stat": "hp",
-     "skill": "skill:wish"
+     "skill": "skill:solar-beam"
     }
    ],
    "rows": {
-    "6": "skill:chilling-water",
-    "12": "skill:wake-up-slap",
-    "18": "skill:dig",
-    "24": "skill:meteor-beam"
+    "6": [
+     "skill:encore"
+    ],
+    "12": [
+     "skill:alluring-voice",
+     "skill:ally-switch"
+    ],
+    "18": [
+     "skill:magical-leaf",
+     "skill:swift"
+    ],
+    "24": [
+     "skill:meteor-beam"
+    ]
    }
   },
   {
@@ -43,18 +53,28 @@
     },
     {
      "stat": "hp",
-     "skill": "skill:sing"
+     "skill": "skill:zap-cannon"
     },
     {
      "stat": "hp",
-     "skill": "skill:swallow"
+     "skill": "skill:blizzard"
     }
    ],
    "rows": {
-    "6": "skill:chilling-water",
-    "12": "skill:facade",
-    "18": "skill:body-press",
-    "24": "skill:solar-beam"
+    "6": [
+     "skill:disable"
+    ],
+    "12": [
+     "skill:alluring-voice",
+     "skill:ally-switch"
+    ],
+    "18": [
+     "skill:swift",
+     "skill:magical-leaf"
+    ],
+    "24": [
+     "skill:solar-beam"
+    ]
    }
   }
  ],
@@ -64,31 +84,23 @@
    "prankster"
   ],
   "6": [
-   "skill:double-slap",
-   "skill:sweet-kiss"
+   "skill:draining-kiss"
   ],
   "9": [
    "lingering-effects",
    "natural-recovery"
   ],
-  "12": [
-   "skill:draining-kiss",
-   "skill:reflect"
-  ],
+  "12": [],
   "15": [
    "willpower-training",
    "own-tempo"
   ],
-  "18": [
-   "skill:dazzling-gleam",
-   "skill:safeguard"
-  ],
+  "18": [],
   "21": [
    "teamwork",
    "bond-focus"
   ],
   "24": [
-   "skill:play-rough",
    "skill:hyper-voice"
   ],
   "27": [

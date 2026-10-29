@@ -127,10 +127,9 @@
   "id": "air-cutter",
   "name": "Air Cutter",
   "type": "flying",
-  "kind": "special",
+  "kind": "basic",
   "category": "special",
-  "cooldown": 2,
-  "power": 50,
+  "power": 45,
   "range": {
    "min": 2,
    "max": 4
@@ -211,9 +210,8 @@
   "id": "ancient-power",
   "name": "Ancient Power",
   "type": "rock",
-  "kind": "special",
-  "cooldown": 3,
-  "power": 50,
+  "kind": "basic",
+  "power": 45,
   "range": {
    "min": 2,
    "max": 4
@@ -280,9 +278,9 @@
   "id": "aqua-tail",
   "name": "Aqua Tail",
   "type": "water",
-  "kind": "special",
+  "kind": "bond",
   "category": "physical",
-  "power": 80,
+  "power": 85,
   "range": {
    "min": 1,
    "max": 1
@@ -293,8 +291,8 @@
   },
   "affects": "enemies",
   "canonPower": 90,
-  "cooldown": 3,
-  "reach": "melee"
+  "reach": "melee",
+  "bondCost": 2
  },
  "aromatherapy": {
   "id": "aromatherapy",
@@ -375,7 +373,7 @@
   "name": "Aura Sphere",
   "type": "fighting",
   "kind": "special",
-  "power": 65,
+  "power": 60,
   "range": {
    "min": 2,
    "max": 4
@@ -463,10 +461,9 @@
   "id": "avalanche",
   "name": "Avalanche",
   "type": "ice",
-  "kind": "special",
+  "kind": "basic",
   "category": "physical",
-  "cooldown": 4,
-  "power": 60,
+  "power": 50,
   "range": {
    "min": 1,
    "max": 1
@@ -483,8 +480,8 @@
   "id": "axe-kick",
   "name": "Axe Kick",
   "type": "fighting",
-  "kind": "special",
-  "power": 95,
+  "kind": "bond",
+  "power": 100,
   "range": {
    "min": 1,
    "max": 1
@@ -494,10 +491,10 @@
    "kind": "single"
   },
   "affects": "enemies",
-  "cooldown": 4,
   "category": "physical",
   "canonPower": 120,
-  "reach": "melee"
+  "reach": "melee",
+  "bondCost": 3
  },
  "baby-doll-eyes": {
   "id": "baby-doll-eyes",
@@ -527,10 +524,9 @@
   "id": "barrage",
   "name": "Barrage",
   "type": "normal",
-  "kind": "special",
+  "kind": "basic",
   "category": "physical",
-  "cooldown": 2,
-  "power": 45,
+  "power": 35,
   "range": {
    "min": 2,
    "max": 4
@@ -631,9 +627,9 @@
   "id": "blast-burn",
   "name": "Blast Burn",
   "type": "fire",
-  "kind": "special",
+  "kind": "bond",
   "category": "special",
-  "power": 85,
+  "power": 80,
   "range": {
    "min": 2,
    "max": 4
@@ -645,15 +641,15 @@
   },
   "affects": "enemies",
   "canonPower": 150,
-  "cooldown": 4,
-  "reach": "ranged"
+  "reach": "ranged",
+  "bondCost": 3
  },
  "blaze-kick": {
   "id": "blaze-kick",
   "name": "Blaze Kick",
   "type": "fire",
-  "kind": "special",
-  "power": 75,
+  "kind": "bond",
+  "power": 85,
   "range": {
    "min": 1,
    "max": 1
@@ -663,17 +659,17 @@
    "kind": "single"
   },
   "affects": "enemies",
-  "cooldown": 3,
   "category": "physical",
   "canonPower": 85,
-  "reach": "melee"
+  "reach": "melee",
+  "bondCost": 2
  },
  "blizzard": {
   "id": "blizzard",
   "name": "Blizzard",
   "type": "ice",
-  "kind": "special",
-  "power": 70,
+  "kind": "bond",
+  "power": 65,
   "range": {
    "min": 2,
    "max": 5
@@ -686,8 +682,8 @@
   "affects": "enemies",
   "canonPower": 110,
   "category": "special",
-  "cooldown": 4,
-  "reach": "ranged"
+  "reach": "ranged",
+  "bondCost": 3
  },
  "block": {
   "id": "block",
@@ -736,9 +732,8 @@
   "id": "body-slam",
   "name": "Body Slam",
   "type": "normal",
-  "kind": "special",
-  "cooldown": 3,
-  "power": 75,
+  "kind": "bond",
+  "power": 85,
   "range": {
    "min": 1,
    "max": 1
@@ -757,7 +752,8 @@
   ],
   "canonPower": 85,
   "category": "physical",
-  "reach": "melee"
+  "reach": "melee",
+  "bondCost": 2
  },
  "bone-rush": {
   "id": "bone-rush",
@@ -784,9 +780,8 @@
   "name": "Bonemerang",
   "type": "ground",
   "hits": 2,
-  "kind": "special",
-  "cooldown": 2,
-  "power": 75,
+  "kind": "bond",
+  "power": 80,
   "range": {
    "min": 2,
    "max": 4
@@ -798,15 +793,16 @@
   "affects": "enemies",
   "canonPower": 100,
   "category": "physical",
-  "reach": "ranged"
+  "reach": "ranged",
+  "bondCost": 3
  },
  "bounce": {
   "id": "bounce",
   "name": "Bounce",
   "type": "flying",
-  "kind": "special",
+  "kind": "bond",
   "category": "physical",
-  "power": 70,
+  "power": 75,
   "range": {
    "min": 1,
    "max": 2
@@ -824,18 +820,17 @@
    }
   ],
   "canonPower": 85,
-  "cooldown": 3,
-  "reach": "melee"
+  "reach": "melee",
+  "bondCost": 2
  },
  "brave-bird": {
   "id": "brave-bird",
   "name": "Brave Bird",
   "type": "flying",
   "recoil": 0.33,
-  "kind": "special",
+  "kind": "bond",
   "category": "physical",
-  "cooldown": 5,
-  "power": 95,
+  "power": 100,
   "range": {
    "min": 1,
    "max": 1
@@ -846,7 +841,8 @@
   },
   "affects": "enemies",
   "canonPower": 120,
-  "reach": "melee"
+  "reach": "melee",
+  "bondCost": 3
  },
  "breaking-swipe": {
   "id": "breaking-swipe",
@@ -974,9 +970,9 @@
   "id": "bug-buzz",
   "name": "Bug Buzz",
   "type": "bug",
-  "kind": "special",
+  "kind": "bond",
   "category": "special",
-  "power": 65,
+  "power": 75,
   "range": {
    "min": 2,
    "max": 4
@@ -987,8 +983,8 @@
   },
   "affects": "enemies",
   "canonPower": 90,
-  "cooldown": 3,
-  "reach": "ranged"
+  "reach": "ranged",
+  "bondCost": 2
  },
  "bulk-up": {
   "id": "bulk-up",
@@ -1050,10 +1046,9 @@
   "id": "bullet-punch",
   "name": "Bullet Punch",
   "type": "steel",
-  "kind": "special",
+  "kind": "basic",
   "category": "physical",
-  "cooldown": 2,
-  "power": 45,
+  "power": 40,
   "range": {
    "min": 1,
    "max": 1
@@ -1090,7 +1085,7 @@
   "id": "burn-up",
   "name": "Burn Up",
   "type": "fire",
-  "kind": "special",
+  "kind": "bond",
   "power": 90,
   "range": {
    "min": 2,
@@ -1101,10 +1096,10 @@
    "kind": "single"
   },
   "affects": "enemies",
-  "cooldown": 4,
   "category": "special",
   "canonPower": 130,
-  "reach": "ranged"
+  "reach": "ranged",
+  "bondCost": 3
  },
  "burning-jealousy": {
   "id": "burning-jealousy",
@@ -1357,9 +1352,8 @@
    "status": "weakened",
    "duration": 2
   },
-  "kind": "special",
-  "cooldown": 4,
-  "power": 95,
+  "kind": "bond",
+  "power": 100,
   "range": {
    "min": 1,
    "max": 1
@@ -1371,7 +1365,8 @@
   "affects": "enemies",
   "canonPower": 120,
   "category": "physical",
-  "reach": "melee"
+  "reach": "melee",
+  "bondCost": 3
  },
  "coaching": {
   "id": "coaching",
@@ -1533,9 +1528,8 @@
   "id": "crabhammer",
   "name": "Crabhammer",
   "type": "water",
-  "kind": "special",
-  "cooldown": 2,
-  "power": 85,
+  "kind": "bond",
+  "power": 90,
   "range": {
    "min": 1,
    "max": 1
@@ -1547,14 +1541,15 @@
   "affects": "enemies",
   "canonPower": 100,
   "category": "physical",
-  "reach": "melee"
+  "reach": "melee",
+  "bondCost": 3
  },
  "cross-chop": {
   "id": "cross-chop",
   "name": "Cross Chop",
   "type": "fighting",
-  "kind": "special",
-  "power": 85,
+  "kind": "bond",
+  "power": 90,
   "range": {
    "min": 1,
    "max": 1
@@ -1564,10 +1559,10 @@
    "kind": "single"
   },
   "affects": "enemies",
-  "cooldown": 3,
   "canonPower": 100,
   "category": "physical",
-  "reach": "melee"
+  "reach": "melee",
+  "bondCost": 3
  },
  "cross-poison": {
   "id": "cross-poison",
@@ -1699,8 +1694,8 @@
   "name": "Darkest Lariat",
   "type": "dark",
   "ignoresBuffs": true,
-  "kind": "special",
-  "power": 75,
+  "kind": "bond",
+  "power": 85,
   "range": {
    "min": 1,
    "max": 1
@@ -1710,10 +1705,10 @@
    "kind": "single"
   },
   "affects": "enemies",
-  "cooldown": 3,
   "category": "physical",
   "canonPower": 85,
-  "reach": "melee"
+  "reach": "melee",
+  "bondCost": 2
  },
  "dazzling-gleam": {
   "id": "dazzling-gleam",
@@ -1925,8 +1920,8 @@
   "name": "Double-Edge",
   "type": "normal",
   "recoil": 0.33,
-  "kind": "special",
-  "power": 95,
+  "kind": "bond",
+  "power": 100,
   "range": {
    "min": 1,
    "max": 1
@@ -1938,8 +1933,8 @@
   "affects": "enemies",
   "canonPower": 120,
   "category": "physical",
-  "cooldown": 4,
-  "reach": "melee"
+  "reach": "melee",
+  "bondCost": 3
  },
  "double-hit": {
   "id": "double-hit",
@@ -1994,9 +1989,8 @@
    "status": "weakened",
    "duration": 2
   },
-  "kind": "special",
-  "cooldown": 4,
-  "power": 80,
+  "kind": "bond",
+  "power": 85,
   "range": {
    "min": 2,
    "max": 5
@@ -2009,7 +2003,8 @@
   "affects": "enemies",
   "canonPower": 130,
   "category": "special",
-  "reach": "ranged"
+  "reach": "ranged",
+  "bondCost": 3
  },
  "dragon-breath": {
   "id": "dragon-breath",
@@ -2091,7 +2086,7 @@
   "id": "dragon-pulse",
   "name": "Dragon Pulse",
   "type": "dragon",
-  "kind": "special",
+  "kind": "bond",
   "category": "special",
   "power": 70,
   "range": {
@@ -2104,15 +2099,14 @@
   },
   "affects": "enemies",
   "canonPower": 85,
-  "cooldown": 3,
-  "reach": "ranged"
+  "reach": "ranged",
+  "bondCost": 2
  },
  "dragon-rage": {
   "id": "dragon-rage",
   "name": "Dragon Rage",
   "type": "dragon",
-  "kind": "special",
-  "cooldown": 3,
+  "kind": "basic",
   "power": 60,
   "range": {
    "min": 2,
@@ -2130,11 +2124,10 @@
   "id": "dragon-rush",
   "name": "Dragon Rush",
   "type": "dragon",
-  "kind": "special",
+  "kind": "bond",
   "requiresLineOfSight": false,
   "affects": "enemies",
-  "cooldown": 5,
-  "power": 85,
+  "power": 90,
   "range": {
    "min": 1,
    "max": 1
@@ -2150,7 +2143,8 @@
   ],
   "canonPower": 100,
   "category": "physical",
-  "reach": "melee"
+  "reach": "melee",
+  "bondCost": 3
  },
  "dragon-tail": {
   "id": "dragon-tail",
@@ -2234,8 +2228,8 @@
   "id": "dream-eater",
   "name": "Dream Eater",
   "type": "psychic",
-  "kind": "special",
-  "power": 75,
+  "kind": "bond",
+  "power": 80,
   "range": {
    "min": 2,
    "max": 4
@@ -2247,7 +2241,6 @@
   "affects": "enemies",
   "canonPower": 100,
   "category": "special",
-  "cooldown": 3,
   "onlyVs": "sleep",
   "effects": [
    {
@@ -2255,7 +2248,8 @@
     "amount": 0.5
    }
   ],
-  "reach": "ranged"
+  "reach": "ranged",
+  "bondCost": 3
  },
  "drill-peck": {
   "id": "drill-peck",
@@ -2344,9 +2338,9 @@
   "id": "dynamic-punch",
   "name": "Dynamic Punch",
   "type": "fighting",
-  "kind": "special",
+  "kind": "bond",
   "category": "physical",
-  "power": 85,
+  "power": 90,
   "range": {
    "min": 1,
    "max": 1
@@ -2364,17 +2358,16 @@
    }
   ],
   "canonPower": 100,
-  "cooldown": 3,
-  "reach": "melee"
+  "reach": "melee",
+  "bondCost": 3
  },
  "earth-power": {
   "id": "earth-power",
   "name": "Earth Power",
   "type": "ground",
-  "kind": "special",
+  "kind": "bond",
   "category": "special",
-  "cooldown": 4,
-  "power": 65,
+  "power": 75,
   "range": {
    "min": 2,
    "max": 4
@@ -2385,14 +2378,15 @@
   },
   "affects": "enemies",
   "canonPower": 90,
-  "reach": "ranged"
+  "reach": "ranged",
+  "bondCost": 2
  },
  "earthquake": {
   "id": "earthquake",
   "name": "Earthquake",
   "type": "ground",
-  "kind": "special",
-  "power": 60,
+  "kind": "bond",
+  "power": 65,
   "range": {
    "min": 0,
    "max": 0
@@ -2405,7 +2399,7 @@
   "affects": "enemies",
   "canonPower": 100,
   "category": "physical",
-  "cooldown": 3
+  "bondCost": 3
  },
  "eerie-impulse": {
   "id": "eerie-impulse",
@@ -2435,9 +2429,8 @@
   "id": "egg-bomb",
   "name": "Egg Bomb",
   "type": "normal",
-  "kind": "special",
-  "cooldown": 3,
-  "power": 75,
+  "kind": "bond",
+  "power": 80,
   "range": {
    "min": 2,
    "max": 4
@@ -2449,7 +2442,8 @@
   "affects": "enemies",
   "canonPower": 100,
   "category": "physical",
-  "reach": "ranged"
+  "reach": "ranged",
+  "bondCost": 3
  },
  "electro-ball": {
   "id": "electro-ball",
@@ -2476,7 +2470,7 @@
   "name": "Electroweb",
   "type": "electric",
   "kind": "special",
-  "power": 45,
+  "power": 40,
   "range": {
    "min": 2,
    "max": 4
@@ -2571,10 +2565,9 @@
   "id": "energy-ball",
   "name": "Energy Ball",
   "type": "grass",
-  "kind": "special",
+  "kind": "bond",
   "category": "special",
-  "cooldown": 4,
-  "power": 65,
+  "power": 75,
   "range": {
    "min": 2,
    "max": 4
@@ -2585,13 +2578,14 @@
   },
   "affects": "enemies",
   "canonPower": 90,
-  "reach": "ranged"
+  "reach": "ranged",
+  "bondCost": 2
  },
  "explosion": {
   "id": "explosion",
   "name": "Explosion",
   "type": "normal",
-  "kind": "special",
+  "kind": "bond",
   "category": "physical",
   "power": 100,
   "range": {
@@ -2605,7 +2599,7 @@
   },
   "affects": "enemies",
   "canonPower": 250,
-  "cooldown": 4
+  "bondCost": 3
  },
  "extrasensory": {
   "id": "extrasensory",
@@ -2841,8 +2835,8 @@
   "id": "fire-blast",
   "name": "Fire Blast",
   "type": "fire",
-  "kind": "special",
-  "power": 70,
+  "kind": "bond",
+  "power": 65,
   "range": {
    "min": 2,
    "max": 5
@@ -2855,8 +2849,8 @@
   "affects": "enemies",
   "canonPower": 110,
   "category": "special",
-  "cooldown": 4,
-  "reach": "ranged"
+  "reach": "ranged",
+  "bondCost": 3
  },
  "fire-fang": {
   "id": "fire-fang",
@@ -2902,8 +2896,8 @@
   "id": "first-impression",
   "name": "First Impression",
   "type": "bug",
-  "kind": "special",
-  "power": 80,
+  "kind": "bond",
+  "power": 85,
   "range": {
    "min": 1,
    "max": 1
@@ -2913,18 +2907,17 @@
    "kind": "single"
   },
   "affects": "enemies",
-  "cooldown": 3,
   "category": "physical",
   "canonPower": 90,
-  "reach": "melee"
+  "reach": "melee",
+  "bondCost": 2
  },
  "fissure": {
   "id": "fissure",
   "name": "Fissure",
   "type": "ground",
-  "kind": "special",
+  "kind": "bond",
   "category": "physical",
-  "cooldown": 5,
   "power": 95,
   "range": {
    "min": 1,
@@ -2936,7 +2929,8 @@
    "length": 2
   },
   "affects": "enemies",
-  "reach": "ranged"
+  "reach": "ranged",
+  "bondCost": 2
  },
  "flail": {
   "id": "flail",
@@ -3041,9 +3035,8 @@
   "id": "flamethrower",
   "name": "Flamethrower",
   "type": "fire",
-  "kind": "special",
-  "cooldown": 3,
-  "power": 55,
+  "kind": "bond",
+  "power": 60,
   "range": {
    "min": 1,
    "max": 2
@@ -3057,16 +3050,17 @@
   "affects": "enemies",
   "canonPower": 90,
   "category": "special",
-  "reach": "ranged"
+  "reach": "ranged",
+  "bondCost": 2
  },
  "flare-blitz": {
   "id": "flare-blitz",
   "name": "Flare Blitz",
   "type": "fire",
   "recoil": 0.33,
-  "kind": "special",
+  "kind": "bond",
   "category": "physical",
-  "power": 95,
+  "power": 100,
   "range": {
    "min": 1,
    "max": 1
@@ -3084,8 +3078,8 @@
    }
   ],
   "canonPower": 120,
-  "cooldown": 4,
-  "reach": "melee"
+  "reach": "melee",
+  "bondCost": 3
  },
  "flash": {
   "id": "flash",
@@ -3119,7 +3113,7 @@
   "kind": "special",
   "category": "special",
   "cooldown": 3,
-  "power": 65,
+  "power": 60,
   "range": {
    "min": 2,
    "max": 4
@@ -3185,9 +3179,8 @@
   "id": "fly",
   "name": "Fly",
   "type": "flying",
-  "kind": "special",
-  "cooldown": 3,
-  "power": 70,
+  "kind": "bond",
+  "power": 80,
   "range": {
    "min": 1,
    "max": 2
@@ -3199,14 +3192,15 @@
   "affects": "enemies",
   "canonPower": 90,
   "category": "physical",
-  "reach": "melee"
+  "reach": "melee",
+  "bondCost": 2
  },
  "focus-blast": {
   "id": "focus-blast",
   "name": "Focus Blast",
   "type": "fighting",
-  "kind": "special",
-  "power": 85,
+  "kind": "bond",
+  "power": 90,
   "range": {
    "min": 2,
    "max": 5
@@ -3216,10 +3210,10 @@
    "kind": "single"
   },
   "affects": "enemies",
-  "cooldown": 4,
   "category": "special",
   "canonPower": 120,
-  "reach": "ranged"
+  "reach": "ranged",
+  "bondCost": 3
  },
  "focus-energy": {
   "id": "focus-energy",
@@ -3249,9 +3243,8 @@
   "id": "focus-punch",
   "name": "Focus Punch",
   "type": "fighting",
-  "kind": "special",
+  "kind": "bond",
   "category": "physical",
-  "cooldown": 5,
   "power": 100,
   "range": {
    "min": 1,
@@ -3263,14 +3256,15 @@
   },
   "affects": "enemies",
   "canonPower": 150,
-  "reach": "melee"
+  "reach": "melee",
+  "bondCost": 3
  },
  "foul-play": {
   "id": "foul-play",
   "name": "Foul Play",
   "type": "dark",
-  "kind": "special",
-  "power": 80,
+  "kind": "bond",
+  "power": 90,
   "range": {
    "min": 1,
    "max": 1
@@ -3280,10 +3274,10 @@
    "kind": "single"
   },
   "affects": "enemies",
-  "cooldown": 3,
   "category": "physical",
   "canonPower": 95,
-  "reach": "melee"
+  "reach": "melee",
+  "bondCost": 2
  },
  "freeze-dry": {
   "id": "freeze-dry",
@@ -3291,7 +3285,7 @@
   "type": "ice",
   "kind": "special",
   "category": "special",
-  "power": 60,
+  "power": 55,
   "range": {
    "min": 2,
    "max": 4
@@ -3316,9 +3310,9 @@
   "id": "frenzy-plant",
   "name": "Frenzy Plant",
   "type": "grass",
-  "kind": "special",
+  "kind": "bond",
   "category": "special",
-  "power": 95,
+  "power": 100,
   "range": {
    "min": 2,
    "max": 4
@@ -3329,8 +3323,8 @@
   },
   "affects": "enemies",
   "canonPower": 150,
-  "cooldown": 4,
-  "reach": "ranged"
+  "reach": "ranged",
+  "bondCost": 3
  },
  "frost-breath": {
   "id": "frost-breath",
@@ -3363,10 +3357,9 @@
   "id": "fury-cutter",
   "name": "Fury Cutter",
   "type": "bug",
-  "kind": "special",
+  "kind": "basic",
   "category": "physical",
-  "cooldown": 3,
-  "power": 45,
+  "power": 40,
   "range": {
    "min": 1,
    "max": 1
@@ -3383,9 +3376,9 @@
   "id": "future-sight",
   "name": "Future Sight",
   "type": "psychic",
-  "kind": "special",
+  "kind": "bond",
   "category": "special",
-  "power": 85,
+  "power": 100,
   "range": {
    "min": 2,
    "max": 5
@@ -3396,9 +3389,9 @@
   },
   "affects": "enemies",
   "canonPower": 120,
-  "cooldown": 4,
   "timing": "delayed",
-  "reach": "ranged"
+  "reach": "ranged",
+  "bondCost": 3
  },
  "giga-drain": {
   "id": "giga-drain",
@@ -3424,9 +3417,8 @@
   "id": "giga-impact",
   "name": "Giga Impact",
   "type": "normal",
-  "kind": "special",
+  "kind": "bond",
   "category": "physical",
-  "cooldown": 5,
   "power": 100,
   "range": {
    "min": 1,
@@ -3438,7 +3430,8 @@
   },
   "affects": "enemies",
   "canonPower": 150,
-  "reach": "melee"
+  "reach": "melee",
+  "bondCost": 3
  },
  "glare": {
   "id": "glare",
@@ -3590,8 +3583,8 @@
   "id": "gunk-shot",
   "name": "Gunk Shot",
   "type": "poison",
-  "kind": "special",
-  "power": 85,
+  "kind": "bond",
+  "power": 90,
   "range": {
    "min": 2,
    "max": 5
@@ -3601,7 +3594,6 @@
    "kind": "single"
   },
   "affects": "enemies",
-  "cooldown": 5,
   "effects": [
    {
     "kind": "status",
@@ -3611,7 +3603,8 @@
   ],
   "canonPower": 120,
   "category": "physical",
-  "reach": "ranged"
+  "reach": "ranged",
+  "bondCost": 3
  },
  "gyro-ball": {
   "id": "gyro-ball",
@@ -3646,10 +3639,9 @@
    "status": "weakened",
    "duration": 2
   },
-  "kind": "special",
+  "kind": "bond",
   "category": "physical",
-  "cooldown": 5,
-  "power": 85,
+  "power": 100,
   "range": {
    "min": 1,
    "max": 1
@@ -3666,7 +3658,8 @@
    }
   ],
   "canonPower": 100,
-  "reach": "melee"
+  "reach": "melee",
+  "bondCost": 3
  },
  "harden": {
   "id": "harden",
@@ -3722,10 +3715,9 @@
   "name": "Head Smash",
   "type": "rock",
   "recoil": 0.5,
-  "kind": "special",
+  "kind": "bond",
   "requiresLineOfSight": false,
   "affects": "enemies",
-  "cooldown": 5,
   "power": 100,
   "range": {
    "min": 1,
@@ -3736,7 +3728,8 @@
   },
   "canonPower": 150,
   "category": "physical",
-  "reach": "melee"
+  "reach": "melee",
+  "bondCost": 3
  },
  "heal-bell": {
   "id": "heal-bell",
@@ -3788,8 +3781,8 @@
   "id": "heart-stamp",
   "name": "Heart Stamp",
   "type": "psychic",
-  "kind": "special",
-  "power": 60,
+  "kind": "basic",
+  "power": 50,
   "range": {
    "min": 1,
    "max": 1
@@ -3799,7 +3792,6 @@
    "kind": "single"
   },
   "affects": "enemies",
-  "cooldown": 2,
   "category": "physical",
   "canonPower": 60,
   "reach": "melee"
@@ -3808,9 +3800,8 @@
   "id": "heat-crash",
   "name": "Heat Crash",
   "type": "fire",
-  "kind": "special",
+  "kind": "bond",
   "category": "physical",
-  "cooldown": 5,
   "power": 100,
   "range": {
    "min": 1,
@@ -3827,16 +3818,17 @@
     "distance": 1
    }
   ],
-  "reach": "melee"
+  "reach": "melee",
+  "bondCost": 2
  },
  "heat-wave": {
   "id": "heat-wave",
   "name": "Heat Wave",
   "type": "fire",
-  "kind": "special",
+  "kind": "bond",
   "requiresLineOfSight": true,
   "affects": "enemies",
-  "power": 60,
+  "power": 65,
   "range": {
    "min": 1,
    "max": 2
@@ -3846,7 +3838,6 @@
    "length": 2,
    "angle": 90
   },
-  "cooldown": 5,
   "effects": [
    {
     "kind": "status",
@@ -3856,7 +3847,8 @@
   ],
   "canonPower": 95,
   "category": "special",
-  "reach": "ranged"
+  "reach": "ranged",
+  "bondCost": 2
  },
  "heavy-slam": {
   "id": "heavy-slam",
@@ -3907,10 +3899,9 @@
   "id": "high-horsepower",
   "name": "High Horsepower",
   "type": "ground",
-  "kind": "special",
+  "kind": "bond",
   "category": "physical",
-  "cooldown": 5,
-  "power": 80,
+  "power": 90,
   "range": {
    "min": 1,
    "max": 1
@@ -3927,16 +3918,16 @@
    }
   ],
   "canonPower": 95,
-  "reach": "melee"
+  "reach": "melee",
+  "bondCost": 2
  },
  "high-jump-kick": {
   "id": "high-jump-kick",
   "name": "High Jump Kick",
   "type": "fighting",
   "recoil": 0.25,
-  "kind": "special",
+  "kind": "bond",
   "category": "physical",
-  "cooldown": 5,
   "power": 100,
   "range": {
    "min": 1,
@@ -3948,7 +3939,8 @@
   },
   "affects": "enemies",
   "canonPower": 130,
-  "reach": "melee"
+  "reach": "melee",
+  "bondCost": 3
  },
  "hone-claws": {
   "id": "hone-claws",
@@ -3978,7 +3970,7 @@
   "id": "horn-drill",
   "name": "Horn Drill",
   "type": "normal",
-  "kind": "special",
+  "kind": "bond",
   "power": 100,
   "range": {
    "min": 1,
@@ -3990,8 +3982,8 @@
   },
   "affects": "enemies",
   "category": "physical",
-  "cooldown": 2,
-  "reach": "melee"
+  "reach": "melee",
+  "bondCost": 2
  },
  "howl": {
   "id": "howl",
@@ -4022,10 +4014,9 @@
   "id": "hurricane",
   "name": "Hurricane",
   "type": "flying",
-  "kind": "special",
+  "kind": "bond",
   "category": "special",
-  "cooldown": 4,
-  "power": 80,
+  "power": 85,
   "range": {
    "min": 2,
    "max": 5
@@ -4036,14 +4027,15 @@
   },
   "affects": "enemies",
   "canonPower": 110,
-  "reach": "ranged"
+  "reach": "ranged",
+  "bondCost": 3
  },
  "hydro-cannon": {
   "id": "hydro-cannon",
   "name": "Hydro Cannon",
   "type": "water",
-  "kind": "special",
-  "power": 95,
+  "kind": "bond",
+  "power": 100,
   "range": {
    "min": 2,
    "max": 4
@@ -4053,7 +4045,6 @@
    "kind": "single"
   },
   "affects": "enemies",
-  "cooldown": 4,
   "effects": [
    {
     "kind": "push",
@@ -4062,14 +4053,15 @@
   ],
   "canonPower": 150,
   "category": "special",
-  "reach": "ranged"
+  "reach": "ranged",
+  "bondCost": 3
  },
  "hydro-pump": {
   "id": "hydro-pump",
   "name": "Hydro Pump",
   "type": "water",
-  "kind": "special",
-  "power": 90,
+  "kind": "bond",
+  "power": 85,
   "range": {
    "min": 2,
    "max": 5
@@ -4087,15 +4079,15 @@
   ],
   "canonPower": 110,
   "category": "special",
-  "cooldown": 4,
-  "reach": "ranged"
+  "reach": "ranged",
+  "bondCost": 3
  },
  "hyper-beam": {
   "id": "hyper-beam",
   "name": "Hyper Beam",
   "type": "normal",
-  "kind": "special",
-  "power": 85,
+  "kind": "bond",
+  "power": 90,
   "range": {
    "min": 1,
    "max": 2
@@ -4108,8 +4100,8 @@
   "affects": "enemies",
   "canonPower": 150,
   "category": "special",
-  "cooldown": 4,
-  "reach": "ranged"
+  "reach": "ranged",
+  "bondCost": 3
  },
  "hyper-fang": {
   "id": "hyper-fang",
@@ -4142,9 +4134,9 @@
   "id": "hyper-voice",
   "name": "Hyper Voice",
   "type": "normal",
-  "kind": "special",
+  "kind": "bond",
   "category": "special",
-  "power": 55,
+  "power": 60,
   "range": {
    "min": 2,
    "max": 4
@@ -4156,8 +4148,8 @@
   },
   "affects": "enemies",
   "canonPower": 90,
-  "cooldown": 3,
-  "reach": "ranged"
+  "reach": "ranged",
+  "bondCost": 2
  },
  "hypnosis": {
   "id": "hypnosis",
@@ -4187,8 +4179,8 @@
   "id": "ice-ball",
   "name": "Ice Ball",
   "type": "ice",
-  "kind": "special",
-  "power": 35,
+  "kind": "basic",
+  "power": 30,
   "range": {
    "min": 2,
    "max": 4
@@ -4198,7 +4190,6 @@
    "kind": "single"
   },
   "affects": "enemies",
-  "cooldown": 2,
   "category": "physical",
   "canonPower": 30,
   "reach": "ranged"
@@ -4207,9 +4198,8 @@
   "id": "ice-beam",
   "name": "Ice Beam",
   "type": "ice",
-  "kind": "special",
-  "cooldown": 3,
-  "power": 65,
+  "kind": "bond",
+  "power": 75,
   "range": {
    "min": 1,
    "max": 1
@@ -4222,7 +4212,8 @@
   "affects": "enemies",
   "canonPower": 90,
   "category": "special",
-  "reach": "ranged"
+  "reach": "ranged",
+  "bondCost": 2
  },
  "ice-fang": {
   "id": "ice-fang",
@@ -4318,10 +4309,9 @@
   "id": "icicle-crash",
   "name": "Icicle Crash",
   "type": "ice",
-  "kind": "special",
+  "kind": "bond",
   "category": "physical",
-  "cooldown": 5,
-  "power": 70,
+  "power": 75,
   "range": {
    "min": 1,
    "max": 2
@@ -4332,7 +4322,8 @@
   },
   "affects": "enemies",
   "canonPower": 85,
-  "reach": "melee"
+  "reach": "melee",
+  "bondCost": 2
  },
  "icicle-spear": {
   "id": "icicle-spear",
@@ -4340,7 +4331,7 @@
   "type": "ice",
   "kind": "special",
   "category": "physical",
-  "power": 65,
+  "power": 60,
   "range": {
    "min": 2,
    "max": 4
@@ -4387,9 +4378,9 @@
   "id": "inferno",
   "name": "Inferno",
   "type": "fire",
-  "kind": "special",
+  "kind": "bond",
   "category": "special",
-  "power": 75,
+  "power": 80,
   "range": {
    "min": 2,
    "max": 4
@@ -4407,8 +4398,8 @@
    }
   ],
   "canonPower": 100,
-  "cooldown": 3,
-  "reach": "ranged"
+  "reach": "ranged",
+  "bondCost": 3
  },
  "infestation": {
   "id": "infestation",
@@ -4508,10 +4499,9 @@
   "id": "iron-tail",
   "name": "Iron Tail",
   "type": "steel",
-  "kind": "special",
+  "kind": "bond",
   "category": "physical",
-  "cooldown": 4,
-  "power": 85,
+  "power": 90,
   "range": {
    "min": 1,
    "max": 1
@@ -4529,15 +4519,15 @@
    }
   ],
   "canonPower": 100,
-  "reach": "melee"
+  "reach": "melee",
+  "bondCost": 3
  },
  "jump-kick": {
   "id": "jump-kick",
   "name": "Jump Kick",
   "type": "fighting",
-  "kind": "special",
-  "cooldown": 2,
-  "power": 75,
+  "kind": "bond",
+  "power": 85,
   "range": {
    "min": 1,
    "max": 2
@@ -4549,7 +4539,8 @@
   "affects": "enemies",
   "canonPower": 100,
   "category": "physical",
-  "reach": "melee"
+  "reach": "melee",
+  "bondCost": 3
  },
  "kinesis": {
   "id": "kinesis",
@@ -4600,7 +4591,7 @@
   "id": "last-resort",
   "name": "Last Resort",
   "type": "normal",
-  "kind": "special",
+  "kind": "bond",
   "category": "physical",
   "power": 100,
   "range": {
@@ -4613,8 +4604,8 @@
   },
   "affects": "enemies",
   "canonPower": 140,
-  "cooldown": 4,
-  "reach": "melee"
+  "reach": "melee",
+  "bondCost": 3
  },
  "lava-plume": {
   "id": "lava-plume",
@@ -4647,10 +4638,9 @@
   "id": "leaf-blade",
   "name": "Leaf Blade",
   "type": "grass",
-  "kind": "special",
+  "kind": "bond",
   "category": "physical",
-  "cooldown": 4,
-  "power": 80,
+  "power": 85,
   "range": {
    "min": 1,
    "max": 1
@@ -4661,7 +4651,8 @@
   },
   "affects": "enemies",
   "canonPower": 90,
-  "reach": "melee"
+  "reach": "melee",
+  "bondCost": 2
  },
  "leaf-storm": {
   "id": "leaf-storm",
@@ -4671,10 +4662,9 @@
    "status": "weakened",
    "duration": 2
   },
-  "kind": "special",
+  "kind": "bond",
   "category": "special",
-  "cooldown": 4,
-  "power": 90,
+  "power": 100,
   "range": {
    "min": 2,
    "max": 4
@@ -4685,7 +4675,8 @@
   },
   "affects": "enemies",
   "canonPower": 130,
-  "reach": "ranged"
+  "reach": "ranged",
+  "bondCost": 3
  },
  "leaf-tornado": {
   "id": "leaf-tornado",
@@ -4816,9 +4807,9 @@
   "id": "liquidation",
   "name": "Liquidation",
   "type": "water",
-  "kind": "special",
+  "kind": "bond",
   "category": "physical",
-  "power": 75,
+  "power": 85,
   "range": {
    "min": 1,
    "max": 1
@@ -4829,8 +4820,8 @@
   },
   "affects": "enemies",
   "canonPower": 85,
-  "cooldown": 3,
-  "reach": "melee"
+  "reach": "melee",
+  "bondCost": 2
  },
  "lock-on": {
   "id": "lock-on",
@@ -4965,7 +4956,7 @@
   "type": "fighting",
   "kind": "special",
   "category": "physical",
-  "power": 45,
+  "power": 40,
   "range": {
    "min": 1,
    "max": 2
@@ -4988,10 +4979,9 @@
   "id": "magical-leaf",
   "name": "Magical Leaf",
   "type": "grass",
-  "kind": "special",
+  "kind": "basic",
   "category": "special",
-  "cooldown": 2,
-  "power": 50,
+  "power": 45,
   "range": {
    "min": 2,
    "max": 4
@@ -5008,8 +4998,8 @@
   "id": "magnet-bomb",
   "name": "Magnet Bomb",
   "type": "steel",
-  "kind": "special",
-  "power": 50,
+  "kind": "basic",
+  "power": 45,
   "range": {
    "min": 2,
    "max": 4
@@ -5019,7 +5009,6 @@
    "kind": "single"
   },
   "affects": "enemies",
-  "cooldown": 2,
   "category": "physical",
   "canonPower": 60,
   "reach": "ranged"
@@ -5164,9 +5153,8 @@
   "id": "mega-kick",
   "name": "Mega Kick",
   "type": "normal",
-  "kind": "special",
-  "cooldown": 3,
-  "power": 95,
+  "kind": "bond",
+  "power": 100,
   "range": {
    "min": 1,
    "max": 1
@@ -5178,7 +5166,8 @@
   "affects": "enemies",
   "canonPower": 120,
   "category": "physical",
-  "reach": "melee"
+  "reach": "melee",
+  "bondCost": 3
  },
  "mega-punch": {
   "id": "mega-punch",
@@ -5204,8 +5193,8 @@
   "id": "megahorn",
   "name": "Megahorn",
   "type": "bug",
-  "kind": "special",
-  "power": 95,
+  "kind": "bond",
+  "power": 100,
   "range": {
    "min": 1,
    "max": 1
@@ -5215,7 +5204,6 @@
    "kind": "single"
   },
   "affects": "enemies",
-  "cooldown": 5,
   "effects": [
    {
     "kind": "push",
@@ -5224,7 +5212,8 @@
   ],
   "canonPower": 120,
   "category": "physical",
-  "reach": "melee"
+  "reach": "melee",
+  "bondCost": 3
  },
  "memento": {
   "id": "memento",
@@ -5254,10 +5243,9 @@
   "id": "metal-claw",
   "name": "Metal Claw",
   "type": "steel",
-  "kind": "special",
+  "kind": "basic",
   "category": "physical",
-  "cooldown": 2,
-  "power": 55,
+  "power": 45,
   "range": {
    "min": 1,
    "max": 1
@@ -5298,8 +5286,8 @@
   "id": "meteor-beam",
   "name": "Meteor Beam",
   "type": "rock",
-  "kind": "special",
-  "power": 85,
+  "kind": "bond",
+  "power": 90,
   "range": {
    "min": 2,
    "max": 5
@@ -5309,17 +5297,17 @@
    "kind": "single"
   },
   "affects": "enemies",
-  "cooldown": 4,
   "category": "special",
   "canonPower": 120,
-  "reach": "ranged"
+  "reach": "ranged",
+  "bondCost": 3
  },
  "meteor-mash": {
   "id": "meteor-mash",
   "name": "Meteor Mash",
   "type": "steel",
-  "kind": "special",
-  "power": 80,
+  "kind": "bond",
+  "power": 85,
   "range": {
    "min": 1,
    "max": 1
@@ -5329,10 +5317,10 @@
    "kind": "single"
   },
   "affects": "enemies",
-  "cooldown": 3,
   "category": "physical",
   "canonPower": 90,
-  "reach": "melee"
+  "reach": "melee",
+  "bondCost": 2
  },
  "mind-reader": {
   "id": "mind-reader",
@@ -5461,7 +5449,7 @@
   "id": "moonblast",
   "name": "Moonblast",
   "type": "fairy",
-  "kind": "special",
+  "kind": "bond",
   "category": "special",
   "power": 75,
   "range": {
@@ -5474,8 +5462,8 @@
   },
   "affects": "enemies",
   "canonPower": 95,
-  "cooldown": 3,
-  "reach": "ranged"
+  "reach": "ranged",
+  "bondCost": 2
  },
  "moonlight": {
   "id": "moonlight",
@@ -5614,10 +5602,9 @@
   "id": "muddy-water",
   "name": "Muddy Water",
   "type": "water",
-  "kind": "special",
+  "kind": "bond",
   "category": "special",
-  "cooldown": 4,
-  "power": 55,
+  "power": 60,
   "range": {
    "min": 2,
    "max": 4
@@ -5641,7 +5628,8 @@
     "radius": 0.8
    }
   ],
-  "reach": "ranged"
+  "reach": "ranged",
+  "bondCost": 2
  },
  "mystical-fire": {
   "id": "mystical-fire",
@@ -5698,7 +5686,7 @@
   "id": "night-shade",
   "name": "Night Shade",
   "type": "ghost",
-  "kind": "special",
+  "kind": "basic",
   "power": 30,
   "range": {
    "min": 2,
@@ -5710,7 +5698,6 @@
   },
   "affects": "enemies",
   "category": "special",
-  "cooldown": 2,
   "reach": "ranged"
  },
  "night-slash": {
@@ -5823,8 +5810,8 @@
   "id": "ominous-wind",
   "name": "Ominous Wind",
   "type": "ghost",
-  "kind": "special",
-  "power": 50,
+  "kind": "basic",
+  "power": 45,
   "range": {
    "min": 2,
    "max": 4
@@ -5834,7 +5821,6 @@
    "kind": "single"
   },
   "affects": "enemies",
-  "cooldown": 2,
   "category": "special",
   "canonPower": 60,
   "reach": "ranged"
@@ -5847,9 +5833,9 @@
    "status": "confused",
    "duration": 2
   },
-  "kind": "special",
+  "kind": "bond",
   "category": "physical",
-  "power": 95,
+  "power": 100,
   "range": {
    "min": 1,
    "max": 1
@@ -5860,8 +5846,8 @@
   },
   "affects": "enemies",
   "canonPower": 120,
-  "cooldown": 4,
-  "reach": "melee"
+  "reach": "melee",
+  "bondCost": 3
  },
  "overheat": {
   "id": "overheat",
@@ -5871,10 +5857,9 @@
    "status": "weakened",
    "duration": 2
   },
-  "kind": "special",
+  "kind": "bond",
   "category": "special",
-  "cooldown": 5,
-  "power": 90,
+  "power": 100,
   "range": {
    "min": 2,
    "max": 4
@@ -5885,7 +5870,8 @@
   },
   "affects": "enemies",
   "canonPower": 130,
-  "reach": "ranged"
+  "reach": "ranged",
+  "bondCost": 3
  },
  "pain-split": {
   "id": "pain-split",
@@ -5914,8 +5900,8 @@
   "id": "payback",
   "name": "Payback",
   "type": "dark",
-  "kind": "special",
-  "power": 55,
+  "kind": "basic",
+  "power": 45,
   "range": {
    "min": 1,
    "max": 1
@@ -5925,7 +5911,6 @@
    "kind": "single"
   },
   "affects": "enemies",
-  "cooldown": 2,
   "category": "physical",
   "canonPower": 50,
   "reach": "melee"
@@ -5959,10 +5944,10 @@
   "id": "petal-blizzard",
   "name": "Petal Blizzard",
   "type": "grass",
-  "kind": "special",
+  "kind": "bond",
   "requiresLineOfSight": false,
   "affects": "enemies",
-  "power": 55,
+  "power": 60,
   "range": {
    "min": 0,
    "max": 0
@@ -5971,9 +5956,9 @@
    "kind": "burst",
    "radius": 2
   },
-  "cooldown": 5,
   "canonPower": 90,
-  "category": "physical"
+  "category": "physical",
+  "bondCost": 2
  },
  "petal-dance": {
   "id": "petal-dance",
@@ -5983,9 +5968,8 @@
    "status": "confused",
    "duration": 2
   },
-  "kind": "special",
-  "cooldown": 3,
-  "power": 95,
+  "kind": "bond",
+  "power": 100,
   "range": {
    "min": 2,
    "max": 4
@@ -5997,14 +5981,15 @@
   "affects": "enemies",
   "canonPower": 120,
   "category": "special",
-  "reach": "ranged"
+  "reach": "ranged",
+  "bondCost": 3
  },
  "phantom-force": {
   "id": "phantom-force",
   "name": "Phantom Force",
   "type": "ghost",
-  "kind": "special",
-  "power": 70,
+  "kind": "bond",
+  "power": 80,
   "range": {
    "min": 1,
    "max": 2
@@ -6014,7 +5999,6 @@
    "kind": "single"
   },
   "affects": "enemies",
-  "cooldown": 4,
   "effects": [
    {
     "kind": "disengage"
@@ -6022,7 +6006,8 @@
   ],
   "canonPower": 90,
   "category": "physical",
-  "reach": "melee"
+  "reach": "melee",
+  "bondCost": 2
  },
  "pin-missile": {
   "id": "pin-missile",
@@ -6072,9 +6057,9 @@
   "id": "play-rough",
   "name": "Play Rough",
   "type": "fairy",
-  "kind": "special",
+  "kind": "bond",
   "category": "physical",
-  "power": 80,
+  "power": 85,
   "range": {
    "min": 1,
    "max": 1
@@ -6085,8 +6070,8 @@
   },
   "affects": "enemies",
   "canonPower": 90,
-  "cooldown": 3,
-  "reach": "melee"
+  "reach": "melee",
+  "bondCost": 2
  },
  "poison-fang": {
   "id": "poison-fang",
@@ -6198,10 +6183,9 @@
   "id": "pollen-puff",
   "name": "Pollen Puff",
   "type": "bug",
-  "kind": "special",
+  "kind": "bond",
   "category": "special",
-  "cooldown": 4,
-  "power": 65,
+  "power": 75,
   "range": {
    "min": 2,
    "max": 4
@@ -6218,7 +6202,8 @@
     "share": 0.3
    }
   ],
-  "reach": "ranged"
+  "reach": "ranged",
+  "bondCost": 2
  },
  "pounce": {
   "id": "pounce",
@@ -6281,7 +6266,7 @@
   "kind": "special",
   "category": "special",
   "cooldown": 5,
-  "power": 65,
+  "power": 60,
   "range": {
    "min": 2,
    "max": 4
@@ -6298,8 +6283,8 @@
   "id": "power-trip",
   "name": "Power Trip",
   "type": "dark",
-  "kind": "special",
-  "power": 30,
+  "kind": "basic",
+  "power": 25,
   "range": {
    "min": 1,
    "max": 1
@@ -6309,7 +6294,6 @@
    "kind": "single"
   },
   "affects": "enemies",
-  "cooldown": 2,
   "category": "physical",
   "canonPower": 20,
   "reach": "melee"
@@ -6338,10 +6322,9 @@
   "id": "power-whip",
   "name": "Power Whip",
   "type": "grass",
-  "kind": "special",
+  "kind": "bond",
   "category": "physical",
-  "cooldown": 5,
-  "power": 85,
+  "power": 95,
   "range": {
    "min": 1,
    "max": 2
@@ -6352,7 +6335,8 @@
   },
   "affects": "enemies",
   "canonPower": 120,
-  "reach": "melee"
+  "reach": "melee",
+  "bondCost": 3
  },
  "protect": {
   "id": "protect",
@@ -6434,9 +6418,8 @@
   "id": "psychic",
   "name": "Psychic",
   "type": "psychic",
-  "kind": "special",
-  "cooldown": 3,
-  "power": 65,
+  "kind": "bond",
+  "power": 75,
   "range": {
    "min": 2,
    "max": 4
@@ -6448,14 +6431,15 @@
   "affects": "enemies",
   "canonPower": 90,
   "category": "special",
-  "reach": "ranged"
+  "reach": "ranged",
+  "bondCost": 2
  },
  "psychic-fangs": {
   "id": "psychic-fangs",
   "name": "Psychic Fangs",
   "type": "psychic",
-  "kind": "special",
-  "power": 75,
+  "kind": "bond",
+  "power": 85,
   "range": {
    "min": 1,
    "max": 1
@@ -6465,17 +6449,17 @@
    "kind": "single"
   },
   "affects": "enemies",
-  "cooldown": 3,
   "category": "physical",
   "canonPower": 85,
-  "reach": "melee"
+  "reach": "melee",
+  "bondCost": 2
  },
  "psychic-noise": {
   "id": "psychic-noise",
   "name": "Psychic Noise",
   "type": "psychic",
   "kind": "special",
-  "power": 65,
+  "power": 60,
   "range": {
    "min": 2,
    "max": 4
@@ -6517,7 +6501,7 @@
   "kind": "special",
   "category": "special",
   "cooldown": 3,
-  "power": 65,
+  "power": 60,
   "range": {
    "min": 2,
    "max": 4
@@ -6534,9 +6518,9 @@
   "id": "psystrike",
   "name": "Psystrike",
   "type": "psychic",
-  "kind": "special",
+  "kind": "bond",
   "category": "special",
-  "power": 75,
+  "power": 80,
   "range": {
    "min": 2,
    "max": 5
@@ -6547,8 +6531,8 @@
   },
   "affects": "enemies",
   "canonPower": 100,
-  "cooldown": 3,
-  "reach": "ranged"
+  "reach": "ranged",
+  "bondCost": 3
  },
  "psywave": {
   "id": "psywave",
@@ -6647,8 +6631,8 @@
   "id": "rage-fist",
   "name": "Rage Fist",
   "type": "ghost",
-  "kind": "special",
-  "power": 55,
+  "kind": "basic",
+  "power": 45,
   "range": {
    "min": 1,
    "max": 1
@@ -6658,7 +6642,6 @@
    "kind": "single"
   },
   "affects": "enemies",
-  "cooldown": 2,
   "category": "physical",
   "canonPower": 50,
   "reach": "melee"
@@ -6667,9 +6650,9 @@
   "id": "raging-bull",
   "name": "Raging Bull",
   "type": "normal",
-  "kind": "special",
+  "kind": "bond",
   "category": "physical",
-  "power": 80,
+  "power": 85,
   "range": {
    "min": 1,
    "max": 1
@@ -6687,17 +6670,16 @@
    }
   ],
   "canonPower": 90,
-  "cooldown": 3,
-  "reach": "melee"
+  "reach": "melee",
+  "bondCost": 2
  },
  "raging-fury": {
   "id": "raging-fury",
   "name": "Raging Fury",
   "type": "fire",
-  "kind": "special",
+  "kind": "bond",
   "category": "physical",
-  "cooldown": 5,
-  "power": 95,
+  "power": 100,
   "range": {
    "min": 1,
    "max": 1
@@ -6715,7 +6697,8 @@
    }
   ],
   "canonPower": 120,
-  "reach": "melee"
+  "reach": "melee",
+  "bondCost": 3
  },
  "rapid-spin": {
   "id": "rapid-spin",
@@ -6967,8 +6950,8 @@
   "id": "rock-climb",
   "name": "Rock Climb",
   "type": "normal",
-  "kind": "special",
-  "power": 80,
+  "kind": "bond",
+  "power": 85,
   "range": {
    "min": 1,
    "max": 1
@@ -6978,10 +6961,10 @@
    "kind": "single"
   },
   "affects": "enemies",
-  "cooldown": 3,
   "category": "physical",
   "canonPower": 90,
-  "reach": "melee"
+  "reach": "melee",
+  "bondCost": 2
  },
  "rock-polish": {
   "id": "rock-polish",
@@ -7192,7 +7175,7 @@
   "kind": "special",
   "category": "physical",
   "cooldown": 3,
-  "power": 40,
+  "power": 35,
   "range": {
    "min": 2,
    "max": 4
@@ -7383,7 +7366,7 @@
   "id": "self-destruct",
   "name": "Self-Destruct",
   "type": "normal",
-  "kind": "special",
+  "kind": "bond",
   "power": 100,
   "range": {
    "min": 0,
@@ -7397,7 +7380,7 @@
   "affects": "enemies",
   "canonPower": 200,
   "category": "physical",
-  "cooldown": 4
+  "bondCost": 3
  },
  "shadow-ball": {
   "id": "shadow-ball",
@@ -7443,8 +7426,8 @@
   "id": "shadow-punch",
   "name": "Shadow Punch",
   "type": "ghost",
-  "kind": "special",
-  "power": 60,
+  "kind": "basic",
+  "power": 50,
   "range": {
    "min": 1,
    "max": 1
@@ -7454,7 +7437,6 @@
    "kind": "single"
   },
   "affects": "enemies",
-  "cooldown": 2,
   "category": "physical",
   "canonPower": 60,
   "reach": "melee"
@@ -7463,8 +7445,8 @@
   "id": "shadow-sneak",
   "name": "Shadow Sneak",
   "type": "ghost",
-  "kind": "special",
-  "power": 40,
+  "kind": "basic",
+  "power": 35,
   "range": {
    "min": 1,
    "max": 2
@@ -7474,7 +7456,6 @@
    "kind": "single"
   },
   "affects": "enemies",
-  "cooldown": 2,
   "canonPower": 40,
   "category": "physical",
   "reach": "melee"
@@ -7585,7 +7566,7 @@
   "kind": "special",
   "category": "special",
   "cooldown": 3,
-  "power": 65,
+  "power": 60,
   "range": {
    "min": 2,
    "max": 4
@@ -7681,8 +7662,7 @@
   "id": "skull-bash",
   "name": "Skull Bash",
   "type": "normal",
-  "kind": "special",
-  "cooldown": 4,
+  "kind": "bond",
   "power": 100,
   "range": {
    "min": 1,
@@ -7696,16 +7676,16 @@
   "canonPower": 130,
   "category": "physical",
   "timing": "delayed",
-  "reach": "melee"
+  "reach": "melee",
+  "bondCost": 3
  },
  "sky-attack": {
   "id": "sky-attack",
   "name": "Sky Attack",
   "type": "flying",
-  "kind": "special",
+  "kind": "bond",
   "category": "physical",
-  "cooldown": 5,
-  "power": 95,
+  "power": 100,
   "range": {
    "min": 1,
    "max": 2
@@ -7717,7 +7697,8 @@
   "affects": "enemies",
   "canonPower": 140,
   "timing": "delayed",
-  "reach": "melee"
+  "reach": "melee",
+  "bondCost": 3
  },
  "sky-drop": {
   "id": "sky-drop",
@@ -7749,9 +7730,9 @@
   "id": "sky-uppercut",
   "name": "Sky Uppercut",
   "type": "fighting",
-  "kind": "special",
+  "kind": "bond",
   "category": "physical",
-  "power": 75,
+  "power": 85,
   "range": {
    "min": 1,
    "max": 1
@@ -7768,8 +7749,8 @@
    }
   ],
   "canonPower": 85,
-  "cooldown": 3,
-  "reach": "melee"
+  "reach": "melee",
+  "bondCost": 2
  },
  "slack-off": {
   "id": "slack-off",
@@ -7889,9 +7870,9 @@
   "id": "sludge-bomb",
   "name": "Sludge Bomb",
   "type": "poison",
-  "kind": "special",
+  "kind": "bond",
   "category": "special",
-  "power": 65,
+  "power": 75,
   "range": {
    "min": 2,
    "max": 4
@@ -7909,17 +7890,16 @@
    }
   ],
   "canonPower": 90,
-  "cooldown": 3,
-  "reach": "ranged"
+  "reach": "ranged",
+  "bondCost": 2
  },
  "sludge-wave": {
   "id": "sludge-wave",
   "name": "Sludge Wave",
   "type": "poison",
-  "kind": "special",
+  "kind": "bond",
   "category": "special",
-  "cooldown": 4,
-  "power": 65,
+  "power": 70,
   "range": {
    "min": 0,
    "max": 0
@@ -7937,7 +7917,8 @@
     "duration": 1
    }
   ],
-  "canonPower": 95
+  "canonPower": 95,
+  "bondCost": 2
  },
  "smack-down": {
   "id": "smack-down",
@@ -8083,8 +8064,8 @@
   "id": "solar-beam",
   "name": "Solar Beam",
   "type": "grass",
-  "kind": "special",
-  "power": 70,
+  "kind": "bond",
+  "power": 100,
   "range": {
    "min": 1,
    "max": 2
@@ -8097,16 +8078,16 @@
   "affects": "enemies",
   "canonPower": 120,
   "category": "special",
-  "cooldown": 4,
   "timing": "delayed",
-  "reach": "ranged"
+  "reach": "ranged",
+  "bondCost": 3
  },
  "solar-blade": {
   "id": "solar-blade",
   "name": "Solar Blade",
   "type": "grass",
-  "kind": "special",
-  "power": 95,
+  "kind": "bond",
+  "power": 100,
   "range": {
    "min": 1,
    "max": 1
@@ -8116,10 +8097,10 @@
    "kind": "single"
   },
   "affects": "enemies",
-  "cooldown": 4,
   "category": "physical",
   "canonPower": 125,
-  "reach": "melee"
+  "reach": "melee",
+  "bondCost": 3
  },
  "sonic-boom": {
   "id": "sonic-boom",
@@ -8171,8 +8152,8 @@
   "id": "sparkling-aria",
   "name": "Sparkling Aria",
   "type": "water",
-  "kind": "special",
-  "power": 65,
+  "kind": "bond",
+  "power": 70,
   "range": {
    "min": 0,
    "max": 0
@@ -8183,17 +8164,16 @@
    "radius": 1
   },
   "affects": "enemies",
-  "cooldown": 3,
   "category": "special",
-  "canonPower": 90
+  "canonPower": 90,
+  "bondCost": 2
  },
  "spike-cannon": {
   "id": "spike-cannon",
   "name": "Spike Cannon",
   "type": "normal",
-  "kind": "special",
-  "cooldown": 2,
-  "power": 50,
+  "kind": "basic",
+  "power": 45,
   "range": {
    "min": 2,
    "max": 4
@@ -8211,9 +8191,8 @@
   "id": "spit-up",
   "name": "Spit Up",
   "type": "normal",
-  "kind": "special",
+  "kind": "bond",
   "category": "special",
-  "cooldown": 5,
   "power": 90,
   "range": {
    "min": 2,
@@ -8224,7 +8203,8 @@
    "kind": "single"
   },
   "affects": "enemies",
-  "reach": "ranged"
+  "reach": "ranged",
+  "bondCost": 2
  },
  "spore": {
   "id": "spore",
@@ -8299,9 +8279,8 @@
   "id": "steel-beam",
   "name": "Steel Beam",
   "type": "steel",
-  "kind": "special",
+  "kind": "bond",
   "category": "special",
-  "cooldown": 5,
   "power": 95,
   "range": {
    "min": 2,
@@ -8313,7 +8292,8 @@
   },
   "affects": "enemies",
   "canonPower": 140,
-  "reach": "ranged"
+  "reach": "ranged",
+  "bondCost": 3
  },
  "steel-wing": {
   "id": "steel-wing",
@@ -8410,10 +8390,9 @@
   "id": "stone-edge",
   "name": "Stone Edge",
   "type": "rock",
-  "kind": "special",
+  "kind": "bond",
   "category": "physical",
-  "cooldown": 4,
-  "power": 75,
+  "power": 80,
   "range": {
    "min": 2,
    "max": 4
@@ -8424,7 +8403,8 @@
   },
   "affects": "enemies",
   "canonPower": 100,
-  "reach": "ranged"
+  "reach": "ranged",
+  "bondCost": 3
  },
  "stored-power": {
   "id": "stored-power",
@@ -8450,8 +8430,8 @@
   "id": "storm-throw",
   "name": "Storm Throw",
   "type": "fighting",
-  "kind": "special",
-  "power": 60,
+  "kind": "basic",
+  "power": 50,
   "range": {
    "min": 1,
    "max": 1
@@ -8461,7 +8441,6 @@
    "kind": "single"
   },
   "affects": "enemies",
-  "cooldown": 2,
   "category": "physical",
   "canonPower": 60,
   "reach": "melee"
@@ -8576,7 +8555,7 @@
   "kind": "special",
   "category": "physical",
   "cooldown": 4,
-  "power": 75,
+  "power": 85,
   "range": {
    "min": 1,
    "max": 1
@@ -8658,8 +8637,8 @@
   "id": "supercell-slam",
   "name": "Supercell Slam",
   "type": "electric",
-  "kind": "special",
-  "power": 85,
+  "kind": "bond",
+  "power": 90,
   "range": {
    "min": 1,
    "max": 1
@@ -8669,10 +8648,10 @@
    "kind": "single"
   },
   "affects": "enemies",
-  "cooldown": 3,
   "category": "physical",
   "canonPower": 100,
-  "reach": "melee"
+  "reach": "melee",
+  "bondCost": 3
  },
  "superpower": {
   "id": "superpower",
@@ -8682,10 +8661,9 @@
    "status": "weakened",
    "duration": 2
   },
-  "kind": "special",
+  "kind": "bond",
   "category": "physical",
-  "cooldown": 5,
-  "power": 95,
+  "power": 100,
   "range": {
    "min": 1,
    "max": 1
@@ -8696,7 +8674,8 @@
   },
   "affects": "enemies",
   "canonPower": 120,
-  "reach": "melee"
+  "reach": "melee",
+  "bondCost": 3
  },
  "supersonic": {
   "id": "supersonic",
@@ -8726,9 +8705,8 @@
   "id": "surf",
   "name": "Surf",
   "type": "water",
-  "kind": "special",
-  "cooldown": 3,
-  "power": 65,
+  "kind": "bond",
+  "power": 75,
   "range": {
    "min": 1,
    "max": 1
@@ -8741,7 +8719,8 @@
   "affects": "enemies",
   "canonPower": 90,
   "category": "special",
-  "reach": "ranged"
+  "reach": "ranged",
+  "bondCost": 2
  },
  "swagger": {
   "id": "swagger",
@@ -8867,8 +8846,8 @@
   "id": "synchronoise",
   "name": "Synchronoise",
   "type": "psychic",
-  "kind": "special",
-  "power": 75,
+  "kind": "bond",
+  "power": 85,
   "range": {
    "min": 0,
    "max": 0
@@ -8879,9 +8858,9 @@
    "radius": 1
   },
   "affects": "enemies",
-  "cooldown": 4,
   "category": "special",
-  "canonPower": 120
+  "canonPower": 120,
+  "bondCost": 3
  },
  "synthesis": {
   "id": "synthesis",
@@ -8982,9 +8961,8 @@
   "name": "Take Down",
   "type": "normal",
   "recoil": 0.25,
-  "kind": "special",
-  "cooldown": 3,
-  "power": 90,
+  "kind": "bond",
+  "power": 100,
   "range": {
    "min": 1,
    "max": 1
@@ -9002,7 +8980,8 @@
   ],
   "canonPower": 90,
   "category": "physical",
-  "reach": "melee"
+  "reach": "melee",
+  "bondCost": 2
  },
  "taunt": {
   "id": "taunt",
@@ -9109,9 +9088,8 @@
    "status": "confused",
    "duration": 2
   },
-  "kind": "special",
-  "cooldown": 3,
-  "power": 95,
+  "kind": "bond",
+  "power": 100,
   "range": {
    "min": 1,
    "max": 1
@@ -9123,7 +9101,8 @@
   "affects": "enemies",
   "canonPower": 120,
   "category": "physical",
-  "reach": "melee"
+  "reach": "melee",
+  "bondCost": 3
  },
  "throat-chop": {
   "id": "throat-chop",
@@ -9149,8 +9128,8 @@
   "id": "thunder",
   "name": "Thunder",
   "type": "electric",
-  "kind": "special",
-  "power": 70,
+  "kind": "bond",
+  "power": 65,
   "range": {
    "min": 2,
    "max": 5
@@ -9163,8 +9142,8 @@
   "affects": "enemies",
   "canonPower": 110,
   "category": "special",
-  "cooldown": 4,
-  "reach": "ranged"
+  "reach": "ranged",
+  "bondCost": 3
  },
  "thunder-fang": {
   "id": "thunder-fang",
@@ -9217,8 +9196,8 @@
   "id": "thunderbolt",
   "name": "Thunderbolt",
   "type": "electric",
-  "kind": "special",
-  "power": 65,
+  "kind": "bond",
+  "power": 75,
   "range": {
    "min": 2,
    "max": 4
@@ -9228,10 +9207,10 @@
    "kind": "single"
   },
   "affects": "enemies",
-  "cooldown": 2,
   "canonPower": 90,
   "category": "special",
-  "reach": "ranged"
+  "reach": "ranged",
+  "bondCost": 2
  },
  "tickle": {
   "id": "tickle",
@@ -9315,8 +9294,8 @@
   "id": "trailblaze",
   "name": "Trailblaze",
   "type": "grass",
-  "kind": "special",
-  "power": 55,
+  "kind": "basic",
+  "power": 45,
   "range": {
    "min": 1,
    "max": 1
@@ -9326,7 +9305,6 @@
    "kind": "single"
   },
   "affects": "enemies",
-  "cooldown": 2,
   "category": "physical",
   "canonPower": 50,
   "reach": "melee"
@@ -9362,8 +9340,8 @@
   "id": "triple-axel",
   "name": "Triple Axel",
   "type": "ice",
-  "kind": "special",
-  "power": 60,
+  "kind": "basic",
+  "power": 50,
   "range": {
    "min": 1,
    "max": 1
@@ -9373,7 +9351,6 @@
    "kind": "single"
   },
   "affects": "enemies",
-  "cooldown": 2,
   "category": "physical",
   "canonPower": 60,
   "reach": "melee"
@@ -9447,10 +9424,9 @@
   "id": "uproar",
   "name": "Uproar",
   "type": "normal",
-  "kind": "special",
+  "kind": "bond",
   "category": "special",
-  "cooldown": 3,
-  "power": 65,
+  "power": 70,
   "range": {
    "min": 0,
    "max": 0
@@ -9461,7 +9437,8 @@
    "radius": 1
   },
   "affects": "enemies",
-  "canonPower": 90
+  "canonPower": 90,
+  "bondCost": 2
  },
  "vacuum-wave": {
   "id": "vacuum-wave",
@@ -9592,9 +9569,9 @@
   "name": "Volt Tackle",
   "type": "electric",
   "recoil": 0.33,
-  "kind": "special",
+  "kind": "bond",
   "category": "physical",
-  "power": 95,
+  "power": 100,
   "range": {
    "min": 1,
    "max": 1
@@ -9612,8 +9589,8 @@
    }
   ],
   "canonPower": 120,
-  "cooldown": 4,
-  "reach": "melee"
+  "reach": "melee",
+  "bondCost": 3
  },
  "wake-up-slap": {
   "id": "wake-up-slap",
@@ -9666,10 +9643,9 @@
   "id": "water-spout",
   "name": "Water Spout",
   "type": "water",
-  "kind": "special",
+  "kind": "bond",
   "category": "special",
-  "cooldown": 4,
-  "power": 75,
+  "power": 80,
   "range": {
    "min": 2,
    "max": 4
@@ -9681,7 +9657,8 @@
   },
   "affects": "enemies",
   "canonPower": 150,
-  "reach": "ranged"
+  "reach": "ranged",
+  "bondCost": 3
  },
  "waterfall": {
   "id": "waterfall",
@@ -9714,7 +9691,7 @@
   "name": "Wave Crash",
   "type": "water",
   "recoil": 0.33,
-  "kind": "special",
+  "kind": "bond",
   "power": 100,
   "range": {
    "min": 1,
@@ -9725,10 +9702,10 @@
    "kind": "single"
   },
   "affects": "enemies",
-  "cooldown": 4,
   "category": "physical",
   "canonPower": 120,
-  "reach": "melee"
+  "reach": "melee",
+  "bondCost": 3
  },
  "whirlpool": {
   "id": "whirlpool",
@@ -9814,10 +9791,10 @@
   "name": "Wild Charge",
   "type": "electric",
   "recoil": 0.25,
-  "kind": "special",
+  "kind": "bond",
   "requiresLineOfSight": true,
   "affects": "enemies",
-  "power": 90,
+  "power": 100,
   "range": {
    "min": 1,
    "max": 1
@@ -9825,7 +9802,6 @@
   "shape": {
    "kind": "single"
   },
-  "cooldown": 4,
   "effects": [
    {
     "kind": "status",
@@ -9835,7 +9811,8 @@
   ],
   "canonPower": 90,
   "category": "physical",
-  "reach": "melee"
+  "reach": "melee",
+  "bondCost": 2
  },
  "will-o-wisp": {
   "id": "will-o-wisp",
@@ -9913,9 +9890,9 @@
   "name": "Wood Hammer",
   "type": "grass",
   "recoil": 0.33,
-  "kind": "special",
+  "kind": "bond",
   "category": "physical",
-  "power": 95,
+  "power": 100,
   "range": {
    "min": 1,
    "max": 1
@@ -9926,8 +9903,8 @@
   },
   "affects": "enemies",
   "canonPower": 120,
-  "cooldown": 4,
-  "reach": "melee"
+  "reach": "melee",
+  "bondCost": 3
  },
  "work-up": {
   "id": "work-up",
@@ -10026,9 +10003,9 @@
   "id": "zap-cannon",
   "name": "Zap Cannon",
   "type": "electric",
-  "kind": "special",
+  "kind": "bond",
   "category": "special",
-  "power": 85,
+  "power": 90,
   "range": {
    "min": 2,
    "max": 5
@@ -10046,8 +10023,8 @@
    }
   ],
   "canonPower": 120,
-  "cooldown": 4,
-  "reach": "ranged"
+  "reach": "ranged",
+  "bondCost": 3
  },
  "zen-headbutt": {
   "id": "zen-headbutt",

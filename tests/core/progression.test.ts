@@ -165,10 +165,11 @@ describe("focus and talents", () => {
     m = { ...m, level: 3 };
     expect(pendingChoice(CONTENT, PROGRESSION, m)).toBe("focus");
     expect(() => chooseFocus(CONTENT, PROGRESSION, m, "skill:frenzy-plant")).toThrow();
-    m = chooseFocus(CONTENT, PROGRESSION, m, "skill:blast-burn") as typeof m;
-    expect(m.focus).toBe("attack");
-    expect(m.talents).toEqual(["skill:blast-burn"]);
-    expect(m.knownMoves).toContain("blast-burn");
+    const first = focusOptions(PROGRESSION, "charmander")[0]!;
+    m = chooseFocus(CONTENT, PROGRESSION, m, first.skill) as typeof m;
+    expect(m.focus).toBe(first.stat);
+    expect(m.talents).toEqual([first.skill]);
+    expect(CONTENT.moves[m.knownMoves.at(-1)!]!.kind).toBe("bond");
     expect(pendingChoice(CONTENT, PROGRESSION, m)).toBeNull();
     m = { ...m, level: 4 };
     const [a, b] = talentOptions(CONTENT, PROGRESSION, m);
@@ -204,15 +205,15 @@ describe("move loadout", () => {
   });
 
   it("a loadout holds one basic attack, two skills and one Bond move", () => {
-    const m = { ...starter("geodude", 20), knownMoves: ["tackle", "smack-down", "rock-throw", "rock-slide", "earthquake", "magnitude"] };
+    const m = { ...starter("geodude", 20), knownMoves: ["tackle", "smack-down", "rock-throw", "rock-slide", "earthquake", "stone-edge"] };
     expect(setActiveMoves(CONTENT, PROGRESSION, m, ["rock-slide", "earthquake"]).activeMoves).toEqual(["rock-slide", "earthquake"]);
     expect(() => setActiveMoves(CONTENT, PROGRESSION, m, ["smack-down", "rock-throw", "rock-slide"])).toThrow(/at most 2 skill/);
-    expect(() => setActiveMoves(CONTENT, PROGRESSION, m, ["earthquake", "magnitude"])).toThrow(/at most 1 bond/);
+    expect(() => setActiveMoves(CONTENT, PROGRESSION, m, ["earthquake", "stone-edge"])).toThrow(/at most 1 bond/);
     expect(() => setActiveMoves(CONTENT, PROGRESSION, m, ["thunder"])).toThrow(/does not know/);
     expect(() => setActiveMoves(CONTENT, PROGRESSION, m, ["tackle"])).toThrow(/basic attack/);
     expect(toUnitSetup(CONTENT, PROGRESSION, m).moves![0]).toBe("tackle");
     // Extras from an old save are left out of battle.
-    expect(toUnitSetup(CONTENT, PROGRESSION, { ...m, activeMoves: ["smack-down", "rock-throw", "rock-slide", "earthquake", "magnitude"] }).moves)
+    expect(toUnitSetup(CONTENT, PROGRESSION, { ...m, activeMoves: ["smack-down", "rock-throw", "rock-slide", "earthquake", "stone-edge"] }).moves)
       .toEqual(["tackle", "smack-down", "rock-throw", "earthquake"]);
   });
 });

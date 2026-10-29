@@ -11,23 +11,32 @@
    "focus": [
     {
      "stat": "attack",
-     "skill": "skill:outrage"
+     "skill": "skill:rock-climb"
     },
     {
      "stat": "attack",
-     "skill": "skill:bonemerang"
+     "skill": "skill:thrash"
     },
     {
      "stat": "attack",
      "second": "defense",
-     "skill": "skill:detect"
+     "skill": "skill:dynamic-punch"
     }
    ],
    "rows": {
-    "6": "skill:smack-down",
-    "12": "skill:bubble-beam",
-    "18": "skill:iron-head",
-    "24": "skill:blizzard"
+    "6": [
+     "skill:sing"
+    ],
+    "12": [
+     "skill:detect"
+    ],
+    "18": [
+     "skill:headbutt",
+     "skill:double-kick"
+    ],
+    "24": [
+     "skill:mega-kick"
+    ]
    }
   },
   {
@@ -38,23 +47,32 @@
    "focus": [
     {
      "stat": "attack",
-     "skill": "skill:magnitude"
+     "skill": "skill:high-horsepower"
     },
     {
      "stat": "attack",
-     "skill": "skill:sucker-punch"
+     "skill": "skill:sludge-wave"
     },
     {
      "stat": "attack",
      "second": "defense",
-     "skill": "skill:sand-tomb"
+     "skill": "skill:uproar"
     }
    ],
    "rows": {
-    "6": "skill:smack-down",
-    "12": "skill:shadow-claw",
-    "18": "skill:throat-chop",
-    "24": "skill:sludge-bomb"
+    "6": [
+     "skill:charm"
+    ],
+    "12": [
+     "skill:ally-switch"
+    ],
+    "18": [
+     "skill:headbutt",
+     "skill:cut"
+    ],
+    "24": [
+     "skill:foul-play"
+    ]
    }
   },
   {
@@ -66,7 +84,7 @@
     {
      "stat": "defense",
      "second": "attack",
-     "skill": "skill:megahorn"
+     "skill": "skill:high-horsepower"
     },
     {
      "stat": "defense",
@@ -74,14 +92,24 @@
     },
     {
      "stat": "defense",
-     "skill": "skill:block"
+     "skill": "skill:supercell-slam"
     }
    ],
    "rows": {
-    "6": "skill:smack-down",
-    "12": "skill:fire-fang",
-    "18": "skill:body-press",
-    "24": "skill:zap-cannon"
+    "6": [
+     "skill:leer",
+     "skill:rollout"
+    ],
+    "12": [
+     "skill:block"
+    ],
+    "18": [
+     "skill:avalanche",
+     "skill:payback"
+    ],
+    "24": [
+     "skill:superpower"
+    ]
    }
   },
   {
@@ -93,7 +121,7 @@
     {
      "stat": "defense",
      "second": "attack",
-     "skill": "skill:crush-claw"
+     "skill": "skill:high-horsepower"
     },
     {
      "stat": "defense",
@@ -101,14 +129,23 @@
     },
     {
      "stat": "defense",
-     "skill": "skill:chip-away"
+     "skill": "skill:focus-punch"
     }
    ],
    "rows": {
-    "6": "skill:metal-claw",
-    "12": "skill:shadow-claw",
-    "18": "skill:leech-life",
-    "24": "skill:dynamic-punch"
+    "6": [
+     "skill:swagger"
+    ],
+    "12": [
+     "skill:rapid-spin"
+    ],
+    "18": [
+     "skill:leech-life",
+     "skill:metal-claw"
+    ],
+    "24": [
+     "skill:dynamic-punch"
+    ]
    }
   }
  ],
@@ -118,7 +155,6 @@
    "thick-hide"
   ],
   "6": [
-   "skill:mud-slap",
    "skill:bulldoze"
   ],
   "9": [
@@ -126,24 +162,19 @@
    "far-sight"
   ],
   "12": [
-   "skill:dig",
-   "skill:scorching-sands"
+   "skill:dig"
   ],
   "15": [
    "bulldozer",
    "first-strike"
   ],
-  "18": [
-   "skill:earth-power",
-   "skill:stone-edge"
-  ],
+  "18": [],
   "21": [
    "hunter",
    "pin-down"
   ],
   "24": [
-   "skill:earthquake",
-   "skill:fissure"
+   "skill:earthquake"
   ],
   "27": [
    "relentless",

@@ -11,23 +11,34 @@
    "focus": [
     {
      "stat": "attack",
-     "skill": "skill:volt-tackle"
+     "skill": "skill:zap-cannon"
     },
     {
      "stat": "attack",
-     "skill": "skill:nuzzle"
+     "skill": "skill:surf"
     },
     {
      "stat": "attack",
      "second": "hp",
-     "skill": "skill:wish"
+     "skill": "skill:focus-blast"
     }
    ],
    "rows": {
-    "6": "skill:draining-kiss",
-    "12": "skill:upper-hand",
-    "18": "skill:dig",
-    "24": "skill:iron-tail"
+    "6": [
+     "skill:charm"
+    ],
+    "12": [
+     "skill:shock-wave",
+     "skill:wish"
+    ],
+    "18": [
+     "skill:swift",
+     "skill:pay-day"
+    ],
+    "24": [
+     "skill:thunder",
+     "skill:thunderbolt"
+    ]
    }
   },
   {
@@ -37,23 +48,34 @@
    "focus": [
     {
      "stat": "attack",
-     "skill": "skill:electroweb"
+     "skill": "skill:wild-charge"
     },
     {
      "stat": "attack",
      "second": "hp",
-     "skill": "skill:light-screen"
+     "skill": "skill:cross-chop"
     },
     {
      "stat": "attack",
-     "skill": "skill:screech"
+     "skill": "skill:focus-punch"
     }
    ],
    "rows": {
-    "6": "skill:trailblaze",
-    "12": "skill:low-sweep",
-    "18": "skill:fire-punch",
-    "24": "skill:iron-tail"
+    "6": [
+     "skill:screech"
+    ],
+    "12": [
+     "skill:thunder-punch",
+     "skill:follow-me"
+    ],
+    "18": [
+     "skill:trailblaze",
+     "skill:headbutt"
+    ],
+    "24": [
+     "skill:iron-tail",
+     "skill:supercell-slam"
+    ]
    }
   },
   {
@@ -63,23 +85,34 @@
    "focus": [
     {
      "stat": "attack",
-     "skill": "skill:hurricane"
+     "skill": "skill:thunder"
     },
     {
      "stat": "attack",
-     "skill": "skill:detect"
+     "skill": "skill:hyper-beam"
     },
     {
      "stat": "attack",
      "second": "hp",
-     "skill": "skill:roost"
+     "skill": "skill:thunderbolt"
     }
    ],
    "rows": {
-    "6": "skill:aerial-ace",
-    "12": "skill:steel-wing",
-    "18": "skill:extrasensory",
-    "24": "skill:heat-wave"
+    "6": [
+     "skill:swagger"
+    ],
+    "12": [
+     "skill:shock-wave",
+     "skill:whirlwind"
+    ],
+    "18": [
+     "skill:air-cutter",
+     "skill:ancient-power"
+    ],
+    "24": [
+     "skill:heat-wave",
+     "skill:hurricane"
+    ]
    }
   }
  ],
@@ -89,33 +122,23 @@
    "far-sight"
   ],
   "6": [
-   "skill:charge",
-   "skill:shock-wave"
+   "skill:discharge"
   ],
   "9": [
    "shock-exploit",
    "long-reach"
   ],
-  "12": [
-   "skill:volt-switch",
-   "skill:thunder-wave"
-  ],
+  "12": [],
   "15": [
    "speed-boost",
    "prankster"
   ],
-  "18": [
-   "skill:thunderbolt",
-   "skill:discharge"
-  ],
+  "18": [],
   "21": [
    "follow-through",
    "battle-high"
   ],
-  "24": [
-   "skill:thunder",
-   "skill:wild-charge"
-  ],
+  "24": [],
   "27": [
    "electric-power",
    "hustle"

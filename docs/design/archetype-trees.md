@@ -16,8 +16,8 @@ Owner decisions (2026-10-27), replacing the one-tree-per-line design of `mastery
 ## Trees
 
 29 archetype trees (`mastery/archetypes/<id>.json`): lines grouped by primary type and role. A tree has the
-shared rows; every line in it brings its own **Lv 3 focus** (three Bond skills from its own canon moves, each
-with Attack, Defense or Vitality).
+shared rows; every line in it brings its own **Lv 3 focus** (three Bond moves it can learn, at least one of its
+own type where canon allows; Articuno has two), each with Attack, Defense or Vitality.
 
 **Moves come only from the tree.** A Pokémon starts with a basic attack and one typed move (species.json; an
 evolution adds none, levelling up teaches none); every other move is a tree skill. A move has one definition and
@@ -35,15 +35,21 @@ tools/build-move-library.mjs); terrain moves are out for now. Canon effects map 
 Volt Switch end the engagement, Dream Eater and Nightmare only aim at sleepers, Pollen Puff damages a foe or heals
 an ally, Taunt disables, Perish Song curses around the user. Pursuit is a tank passive (+50% free strikes).
 
-**Own options.** Each line adds one option of its own to every skill row (`lines[].rows`): a move of its other
-types or a coverage type the row lacks, at a power fitting the row (`tools/line-options.mjs` suggests and can fill
-them). Tested: every skill row offers two types, every type of the line appears, at most two Normal attacks
-(Normal lines excepted).
+**One kind per row (v0.101).** A move's kind is its own (move data), not where it is taught: **Bond** = canon
+power 85+ (Bond cost 3 from 100, else 2), **basic** = already basic, or canon power ≤ 60 with no extra effect, one
+target and not a starting skill, **special** = the rest, every utility included. Each skill row offers one kind:
 
-**Bond moves.** Every focus skill and every row skill of canon power ≥ 100 (`progression.bondCanonPower`) teaches
-a Bond move (Bond cost 3 from canon 100 up, else 2), so a tree's big hits can't be spammed. Iconic moves now sit in
-focuses: Spore (Paras), Bonemerang (Cubone), Crabhammer (Krabby), Withdraw (Shellder), Recover (Staryu), Sing
-(Jigglypuff), Petal Dance (Oddish).
+| Row | Offers |
+|---|---|
+| Lv 3 focus | Bond moves |
+| Lv 6 | one special (shared) + a control utility of the line's own (Disable, Encore, Leer, Yawn…) |
+| Lv 12 | one special (shared) + a support utility of the line's own (Helping Hand, Ally Switch, Protect, Knock Off…) |
+| Lv 18 | two basic attacks (one of the line's type where it has one, one for coverage, Normal allowed), so the basic can be swapped mid-run; lines with too few canon basics (Magmar, Jynx, Voltorb, Porygon, Squirtle, Seel, Mr. Mime, Koffing) get specials |
+| Lv 24 | Bond moves |
+
+The loadout stays 1 basic + 2 specials + 1 Bond. Every option is canon-learnable by its line and fits its role (a
+shared option fits every line of the tree; a line's own options sit in `lines[].rows`, one id or a list). A type
+of the line that no row offers gets a special of it at Lv 6 or 12. Utilities never sit in a Bond row. Tested.
 
 | Type | Tree | Lines (first species) |
 |---|---|---|
