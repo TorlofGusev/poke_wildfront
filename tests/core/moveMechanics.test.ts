@@ -46,12 +46,6 @@ describe("move mechanics behind canon names", () => {
     expect(dealt("wring-out", 1)).toBeGreaterThan(dealt("wring-out", 0.6) * 1.2);
   });
 
-  it("a tree teaches a starting move as a separate Bond version; who starts with it keeps the skill", () => {
-    expect(CONTENT.moves["mega-drain"]!.kind).toBe("special");
-    expect(CONTENT.moves["mega-drain+bond"]!.kind).toBe("bond");
-    expect(CONTENT.moves["mega-drain+bond"]!.name).toBe(CONTENT.moves["mega-drain"]!.name);
-  });
-
   it("U-turn and Flip Turn end the user's engagement after the hit", () => {
     for (const move of ["u-turn", "flip-turn"]) {
       const { state } = createBattle(CONTENT, ["....."], [u("p", "scyther", "player", 0, ["cut", move]), u("e", "rattata", "enemy", 1, ["tackle"])]);

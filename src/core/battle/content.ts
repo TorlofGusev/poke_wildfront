@@ -38,10 +38,6 @@ export type Role = "melee" | "ranged";
  * A unit uses one of them per turn.
  */
 export type MoveKind = "basic" | "special" | "ultimate" | "bond";
-/** Suffix of a tree's Bond version of a move that some species start with as a skill. */
-export const BOND_VARIANT = "+bond";
-/** The canon move behind an id (a Bond version shares its move's look and sound). */
-export const baseMoveId = (id: string): string => (id.endsWith(BOND_VARIANT) ? id.slice(0, -BOND_VARIANT.length) : id);
 
 export type TargetShape =
   | { readonly kind: "single" }
