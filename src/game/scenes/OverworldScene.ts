@@ -672,13 +672,24 @@ export class OverworldScene extends Phaser.Scene {
     const { world } = session.game;
     const spawns = spawnsAt(WORLD_CONTENT, currentWorld(), this.spawnSpot());
     const known = knownSpecies(session.game);
-    const rows = spawns.map((s) => {
-      const sp = CONTENT.species[s.speciesId]!;
-      const name = known.has(s.speciesId)
-        ? `${sp.types.map((t) => tag(t, "●")).join("")} ${tag("title", sp.name.padEnd(11))}`
-        : `  ${tag("dim", "???".padEnd(11))}`;
+    const rows = spawns.flatMap((s) => {
+      // One row per form met here: a Zubat high enough is already a Golbat, with its own level range.
+      const forms: { id: string; min: number; max: number }[] = [];
+      for (let lv = s.levels.min; lv <= s.levels.max; lv++) {
+        const id = wildForm(CONTENT, s.speciesId, lv);
+        const last = forms[forms.length - 1];
+        if (last?.id === id) last.max = lv;
+        else forms.push({ id, min: lv, max: lv });
+      }
       const limit = s.maxPerGroup !== undefined ? tag("dim", t(" · max {n}/group", { n: s.maxPerGroup })) : "";
-      return `${name} ${tag("num", `${Math.round(s.chance * 100)}%`.padStart(4))}  ${tag("dim", `Lv ${s.levels.min}-${s.levels.max}`)}${limit}`;
+      return forms.map((f, i) => {
+        const sp = CONTENT.species[f.id]!;
+        const name = known.has(f.id)
+          ? `${sp.types.map((t) => tag(t, "●")).join("")} ${tag("title", sp.name.padEnd(11))}`
+          : `  ${tag("dim", "???".padEnd(11))}`;
+        const share = i === 0 ? `${Math.round(s.chance * 100)}%` : "";
+        return `${name} ${tag("num", share.padStart(4))}  ${tag("dim", f.min === f.max ? `Lv ${f.min}` : `Lv ${f.min}-${f.max}`)}${i === 0 ? limit : ""}`;
+      });
     });
     const lines = [
       tag("title", t("Wild Pokémon · {area}", { area: areaName(WORLD_CONTENT, currentWorld(), this.spawnSpot()) })),

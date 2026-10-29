@@ -117,10 +117,10 @@ describe("levels and stats", () => {
   });
 
   it("wild Pokémon appear evolved once their level reaches the evolution level", () => {
-    expect(wildForm(CONTENT, "caterpie", 3)).toBe("caterpie");
-    expect(wildForm(CONTENT, "caterpie", 6)).toBe("metapod");
-    expect(wildForm(CONTENT, "caterpie", 9)).toBe("butterfree");
-    expect(wildSetup(CONTENT, PROGRESSION, "weedle", 6).speciesId).toBe("kakuna");
+    expect(wildForm(CONTENT, "caterpie", 7)).toBe("caterpie");
+    expect(wildForm(CONTENT, "caterpie", 8)).toBe("metapod");
+    expect(wildForm(CONTENT, "caterpie", 13)).toBe("butterfree");
+    expect(wildSetup(CONTENT, PROGRESSION, "weedle", 8).speciesId).toBe("kakuna");
   });
 
   it("levels up, possibly several times, and keeps leftover XP", () => {
