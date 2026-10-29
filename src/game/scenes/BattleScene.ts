@@ -159,6 +159,8 @@ export class BattleScene extends Phaser.Scene {
   private reachImage: Phaser.GameObjects.RenderTexture | null = null;
   /** A hovered foe's reach, drawn the same smooth way. */
   private threatImage: Phaser.GameObjects.RenderTexture | null = null;
+  /** The last hovered foe's reach, kept while the battle state is the same (path finding is the costly part). */
+  private threatFor: { state: BattleState; unitId: string } | null = null;
   private reachFor: { state: BattleState; reach: FreeReach } | null = null;
   private reach: FreeReach | null = null;
   /** Hover moved since the overlay was last drawn (refreshed at most once a frame). */
@@ -219,6 +221,7 @@ export class BattleScene extends Phaser.Scene {
     this.reachGfx = null;
     this.reachImage = null;
     this.threatImage = null;
+    this.threatFor = null;
     this.reachFor = null;
     this.reach = null;
     this.hoverDirty = false;
@@ -469,8 +472,13 @@ export class BattleScene extends Phaser.Scene {
     const mp = movementPoints(CONTENT, foe, state);
     this.reachGfx ??= this.make.graphics({}, false);
     this.threatImage ??= this.add.renderTexture(0, 0, this.scale.width, this.scale.height).setOrigin(0).setDepth(0).setAlpha(0.4);
-    this.smoothCells(freeReachFor(state, foe.id, mp).cells, 0xffb347, this.reachGfx.clear());
-    this.threatImage.clear().draw(this.reachGfx).render();
+    // Same foe, same state: the texture already shows it.
+    if (this.threatFor?.state !== state || this.threatFor.unitId !== foe.id) {
+      this.threatFor = { state, unitId: foe.id };
+      this.smoothCells(freeReachFor(state, foe.id, mp).cells, 0xffb347, this.reachGfx.clear());
+      this.threatImage.clear().draw(this.reachGfx).render();
+    }
+    this.threatImage.setVisible(true);
     const strike = Math.max(0, ...foe.moves.map((m) => CONTENT.moves[m]).filter((m) => m && m.power > 0).map((m) => freeRange(foe, m!, CONTENT).max));
     const c = fieldToWorld(foe.pos);
     this.overlay.lineStyle(2, COLORS.target, 0.9).strokeCircle(c.x, c.y, (mp + strike) * S);
@@ -724,7 +732,7 @@ export class BattleScene extends Phaser.Scene {
 
   private refreshOverlay(): void {
     this.overlay.clear();
-    this.threatImage?.clear();
+    this.threatImage?.setVisible(false);
     if (this.demo) return this.drawFieldEffects();
     this.previewLabels?.destroy();
     this.previewLabels = null;

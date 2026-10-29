@@ -28,6 +28,9 @@ uniform vec3 uGround2;
 uniform vec3 uRock;
 uniform float uAmbient;
 uniform float uFlora;
+uniform float uPass; // 0: the still ground, baked once; 1: the moving part over it
+uniform sampler2D uBase;
+uniform float uPoolCount;
 uniform float uDebris; // how much loose stone lies about (caves most)
 uniform vec4 uLights[${MAX_LIGHTS}];
 uniform vec4 uLightColors[${MAX_LIGHTS}];
@@ -60,11 +63,92 @@ float mud(vec2 px) { return texture2D(uMaskB, px / uSize).r; }
 // Edges wobble with noise, so no patch has straight sides.
 float cover(float m, vec2 px, float k) { return smoothstep(0.46, 0.52, m + (fbm(px * k) - 0.5) * 0.12); }
 
+
+float bushCover(float g, vec2 px, float w) { return cover(g, px, 0.07) * smoothstep(1.0, 0.75, w + (1.0 - smoothstep(0.4, 0.7, g)) * 0.6); }
+
+// The moving part, every other frame: water, burning and poisoned ground and the lights, over the baked ground.
+vec3 animated(vec2 px, vec4 m, vec3 col) {
+  vec3 emit = vec3(0.0);
+  // Water and hazards lie under rocks and bushes: only where neither covers the ground (worked out only where needed).
+  float open = 1.0;
+  bool near = m.b > 0.3 || uPoolCount > 0.5;
+  if (near) open = (1.0 - cover(m.r, px, 0.05)) * (1.0 - bushCover(m.g, px, worley(px / 13.0)));
+  if (m.b > 0.3) {
+    // --- Water: shallow to deep, moving ripples, caustics, foam at the shore, glints.
+    float wd = m.b;
+    float wc = cover(wd, px, 0.06);
+    if (wc > 0.0) {
+      float depth = smoothstep(0.45, 0.95, wd);
+      vec3 water = mix(vec3(0.27, 0.55, 0.78), vec3(0.1, 0.25, 0.45), depth);
+      vec2 q = px * 0.04 + vec2(uTime * 0.25, uTime * 0.1);
+      float ripple = fbm(q + fbm(q * 1.3 - uTime * 0.2));
+      water *= 0.85 + 0.3 * ripple;
+      float caustic = pow(1.0 - abs(noise(px * 0.06 + uTime * 0.4) - noise(px * 0.06 - uTime * 0.3 + 5.0)), 8.0);
+      water += vec3(0.25, 0.35, 0.4) * caustic * (1.0 - depth);
+      float foam = smoothstep(0.62, 0.45, wd + (noise(px * 0.15 + uTime) - 0.5) * 0.12);
+      water = mix(water, vec3(0.85, 0.95, 1.0), foam * 0.8);
+      if (hash(floor(px / 4.0) + floor(uTime * 2.0)) > 0.996) water += 0.4;
+      col = mix(col, water, wc * open);
+    }
+
+
+  }
+  if (uPoolCount > 0.5) {
+    // --- Burning and poisoned ground, drawn per pixel (no particles): flames licking upwards, bubbling sludge.
+    for (int i = 0; i < ${MAX_POOLS}; i++) {
+      vec4 P = uPools[i];
+      if (P.w < 0.5) continue;
+      float e = length(px - P.xy) / P.z + (fbm(px * 0.05 + float(i) * 9.1) - 0.5) * 0.35;
+      if (e > 1.05) continue;
+      if (P.w < 1.5) {
+        col = mix(col, col * 0.35 + vec3(0.06, 0.02, 0.0), smoothstep(1.05, 0.7, e));
+        vec2 q = px * 0.035 + vec2(0.0, uTime * 1.6);
+        float f = fbm(q + vec2(fbm(q * 1.7 + uTime * 0.7) * 1.5, 0.0)) * smoothstep(1.0, 0.25, e);
+        float heat = clamp(f * 1.35, 0.0, 1.0);
+        vec3 flame = mix(vec3(0.55, 0.07, 0.02), vec3(1.0, 0.45, 0.06), smoothstep(0.25, 0.55, heat));
+        flame = mix(flame, vec3(1.0, 0.92, 0.55), smoothstep(0.62, 0.9, heat));
+        float a = smoothstep(0.22, 0.42, heat);
+        a *= open;
+        col = mix(col, flame, a);
+        emit += flame * a * 0.6;
+      } else {
+        float a = smoothstep(1.0, 0.82, e) * 0.9 * open;
+        vec3 sludge = mix(vec3(0.3, 0.1, 0.4), vec3(0.5, 0.2, 0.62), noise(px * 0.06 + uTime * 0.15));
+        float w2 = worley(px / 8.0 + vec2(float(i) * 3.3, -uTime * 0.25));
+        float size = 0.2 + 0.1 * sin(uTime * 2.5 + noise(px * 0.03) * 12.0);
+        float bubble = smoothstep(size + 0.04, size, w2);
+        // Each bubble a lit dome with a darker rim, swelling and shrinking.
+        float rim = smoothstep(size + 0.04, size, w2) - smoothstep(size - 0.02, size - 0.08, w2);
+        sludge = mix(sludge, vec3(0.62, 0.32, 0.75), bubble * 0.7);
+        sludge = mix(sludge, vec3(0.22, 0.06, 0.3), rim * 0.6);
+        col = mix(col, sludge, a);
+        emit += vec3(0.12, 0.02, 0.18) * a;
+      }
+    }
+
+
+  }
+  // --- Light: the scene's ambient, plus burning ground and attack flashes.
+  vec3 lsum = vec3(uAmbient);
+  for (int i = 0; i < ${MAX_LIGHTS}; i++) {
+    vec4 L = uLights[i];
+    if (L.w <= 0.0) continue;
+    float d = length(px - L.xy) / L.z;
+    lsum += uLightColors[i].rgb * L.w * clamp(1.0 - d * d, 0.0, 1.0);
+  }
+  return col * lsum + emit;
+}
+
 void main() {
   vec2 px = vec2(outTexCoord.x, 1.0 - outTexCoord.y) * uSize;
   px = floor(px / 2.0) * 2.0 + 1.0; // 2-px pixels
   vec4 m = maskA(px);
   vec3 light = normalize(vec3(-0.6, -0.8, 0.9));
+  if (uPass > 0.5) {
+    vec3 c = animated(px, m, texture2D(uBase, vec2(outTexCoord.x, 1.0 - outTexCoord.y)).rgb);
+    gl_FragColor = vec4(floor(c * 28.0 + 0.5) / 28.0, 1.0);
+    return;
+  }
 
   // --- Ground: two tones in large soft patches, fine grain, flowers and pebbles.
   float big = fbm(px * 0.012);
@@ -113,59 +197,9 @@ void main() {
     col = mix(col, mudc, mc);
   }
 
-  // --- Water: shallow to deep, moving ripples, caustics, foam at the shore, glints.
-  float wd = m.b;
-  float wc = cover(wd, px, 0.06);
-  if (wc > 0.0) {
-    float depth = smoothstep(0.45, 0.95, wd);
-    vec3 water = mix(vec3(0.27, 0.55, 0.78), vec3(0.1, 0.25, 0.45), depth);
-    vec2 q = px * 0.04 + vec2(uTime * 0.25, uTime * 0.1);
-    float ripple = fbm(q + fbm(q * 1.3 - uTime * 0.2));
-    water *= 0.85 + 0.3 * ripple;
-    float caustic = pow(1.0 - abs(noise(px * 0.06 + uTime * 0.4) - noise(px * 0.06 - uTime * 0.3 + 5.0)), 8.0);
-    water += vec3(0.25, 0.35, 0.4) * caustic * (1.0 - depth);
-    float foam = smoothstep(0.62, 0.45, wd + (noise(px * 0.15 + uTime) - 0.5) * 0.12);
-    water = mix(water, vec3(0.85, 0.95, 1.0), foam * 0.8);
-    if (hash(floor(px / 4.0) + floor(uTime * 2.0)) > 0.996) water += 0.4;
-    col = mix(col, water, wc);
-  }
-
-  // --- Burning and poisoned ground, drawn per pixel (no particles): flames licking upwards, bubbling sludge.
-  vec3 emit = vec3(0.0);
-  for (int i = 0; i < ${MAX_POOLS}; i++) {
-    vec4 P = uPools[i];
-    if (P.w < 0.5) continue;
-    float e = length(px - P.xy) / P.z + (fbm(px * 0.05 + float(i) * 9.1) - 0.5) * 0.35;
-    if (e > 1.05) continue;
-    if (P.w < 1.5) {
-      col = mix(col, col * 0.35 + vec3(0.06, 0.02, 0.0), smoothstep(1.05, 0.7, e));
-      vec2 q = px * 0.035 + vec2(0.0, uTime * 1.6);
-      float f = fbm(q + vec2(fbm(q * 1.7 + uTime * 0.7) * 1.5, 0.0)) * smoothstep(1.0, 0.25, e);
-      float heat = clamp(f * 1.35, 0.0, 1.0);
-      vec3 flame = mix(vec3(0.55, 0.07, 0.02), vec3(1.0, 0.45, 0.06), smoothstep(0.25, 0.55, heat));
-      flame = mix(flame, vec3(1.0, 0.92, 0.55), smoothstep(0.62, 0.9, heat));
-      float a = smoothstep(0.22, 0.42, heat);
-      col = mix(col, flame, a);
-      emit += flame * a * 0.6;
-    } else {
-      float a = smoothstep(1.0, 0.82, e) * 0.9;
-      vec3 sludge = mix(vec3(0.3, 0.1, 0.4), vec3(0.5, 0.2, 0.62), noise(px * 0.06 + uTime * 0.15));
-      float w2 = worley(px / 8.0 + vec2(float(i) * 3.3, -uTime * 0.25));
-      float size = 0.2 + 0.1 * sin(uTime * 2.5 + noise(px * 0.03) * 12.0);
-      float bubble = smoothstep(size + 0.04, size, w2);
-      // Each bubble a lit dome with a darker rim, swelling and shrinking.
-      float rim = smoothstep(size + 0.04, size, w2) - smoothstep(size - 0.02, size - 0.08, w2);
-      sludge = mix(sludge, vec3(0.62, 0.32, 0.75), bubble * 0.7);
-      sludge = mix(sludge, vec3(0.22, 0.06, 0.3), rim * 0.6);
-      col = mix(col, sludge, a);
-      emit += vec3(0.12, 0.02, 0.18) * a;
-    }
-  }
-
   // --- Bushes: a canopy of leaf clumps, each a lit dome.
-  float bc = cover(m.g, px, 0.07);
   float w = worley(px / 13.0);
-  bc *= smoothstep(1.0, 0.75, w + (1.0 - smoothstep(0.4, 0.7, m.g)) * 0.6);
+  float bc = bushCover(m.g, px, w);
   if (bc > 0.0) {
     float dome = 1.0 - w;
     vec2 cellDir = vec2(worley(px / 13.0 + vec2(0.15, 0.0)) - w, worley(px / 13.0 + vec2(0.0, 0.15)) - w);
@@ -196,15 +230,6 @@ void main() {
     col = mix(col, rock, rc);
   }
 
-  // --- Light: the scene's ambient, plus burning ground and attack flashes.
-  vec3 lsum = vec3(uAmbient);
-  for (int i = 0; i < ${MAX_LIGHTS}; i++) {
-    vec4 L = uLights[i];
-    if (L.w <= 0.0) continue;
-    float d = length(px - L.xy) / L.z;
-    lsum += uLightColors[i].rgb * L.w * clamp(1.0 - d * d, 0.0, 1.0);
-  }
-  col = col * lsum + emit;
   col = floor(col * 28.0 + 0.5) / 28.0; // a limited palette
   gl_FragColor = vec4(col, 1.0);
 }
@@ -239,11 +264,18 @@ export interface GroundPool {
 export const shaderGround = (scene: Phaser.Scene): boolean => scene.game.renderer.type === Phaser.WEBGL;
 
 export class TerrainShader {
-  private readonly shader: Phaser.GameObjects.Shader;
+  /** The still ground (grass, stones, mud, bushes, rocks), worked out once per terrain change. */
+  private readonly still: Phaser.GameObjects.Shader;
+  /** Water, burning/poisoned ground and light over the baked ground. */
+  private readonly moving: Phaser.GameObjects.Shader;
+  private readonly baked: Phaser.GameObjects.RenderTexture;
+  /** What is on screen: the moving pass, redrawn every other frame (30 fps is plenty for ripples and flames). */
+  private readonly view: Phaser.GameObjects.RenderTexture;
   private readonly keyA: string;
   private readonly keyB: string;
   private lights: GroundLight[] = [];
   private pools: GroundPool[] = [];
+  private frame = 0;
 
   constructor(
     private readonly scene: Phaser.Scene,
@@ -256,36 +288,50 @@ export class TerrainShader {
     this.keyA = `ground-mask-a-${id}`;
     this.keyB = `ground-mask-b-${id}`;
     const t = THEMES[theme];
-    const w = Math.ceil(board.w / CELL), h = Math.ceil(board.h / CELL);
-    scene.textures.addCanvas(this.keyA, Object.assign(document.createElement("canvas"), { width: w, height: h }));
-    scene.textures.addCanvas(this.keyB, Object.assign(document.createElement("canvas"), { width: w, height: h }));
+    const mw = Math.ceil(board.w / CELL), mh = Math.ceil(board.h / CELL);
+    scene.textures.addCanvas(this.keyA, Object.assign(document.createElement("canvas"), { width: mw, height: mh }));
+    scene.textures.addCanvas(this.keyB, Object.assign(document.createElement("canvas"), { width: mw, height: mh }));
+    // Every shader pixel is already a 2×2 block on screen, so both passes run at half size: a quarter of the work, same picture.
+    const hw = Math.ceil(board.w / 2), hh = Math.ceil(board.h / 2);
+    this.baked = scene.make.renderTexture({ x: 0, y: 0, width: hw, height: hh }, false).setOrigin(0);
+    this.view = scene.add.renderTexture(board.x, board.y, hw, hh).setOrigin(0).setScale(board.w / hw, board.h / hh).setDepth(-1);
     const start = scene.time.now;
-    this.shader = scene.add.shader({
-      name: `ground-${id}`,
-      fragmentSource: FRAG,
-      setupUniforms: (set: (name: string, value: unknown) => void) => {
-        set("uMaskA", 0);
-        set("uMaskB", 1);
-        set("uSize", [board.w, board.h]);
-        set("uTime", (scene.time.now - start) / 1000);
-        set("uGround1", rgb(t.g1));
-        set("uGround2", rgb(t.g2));
-        set("uRock", rgb(t.rock));
-        set("uAmbient", t.ambient);
-        set("uFlora", t.flora);
-        set("uDebris", t.debris);
-        const L = new Float32Array(MAX_LIGHTS * 4), C = new Float32Array(MAX_LIGHTS * 4);
-        this.lights.slice(0, MAX_LIGHTS).forEach((l, i) => {
-          L.set([l.x - board.x, l.y - board.y, l.radius, l.intensity], i * 4);
-          C.set([...rgb(l.color), 1], i * 4);
-        });
-        set("uLights[0]", L);
-        set("uLightColors[0]", C);
-        const P = new Float32Array(MAX_POOLS * 4);
-        this.pools.slice(0, MAX_POOLS).forEach((p, i) => P.set([p.x - board.x, p.y - board.y, p.radius, p.kind === "fire" ? 1 : 2], i * 4));
-        set("uPools[0]", P);
-      },
-    }, board.x, board.y, board.w, board.h, [this.keyA, this.keyB]).setOrigin(0).setDepth(-1);
+    const uniforms = (pass: number) => (set: (name: string, value: unknown) => void) => {
+      set("uMaskA", 0);
+      set("uMaskB", 1);
+      set("uBase", 2);
+      set("uPass", pass);
+      set("uSize", [board.w, board.h]);
+      set("uTime", (scene.time.now - start) / 1000);
+      set("uGround1", rgb(t.g1));
+      set("uGround2", rgb(t.g2));
+      set("uRock", rgb(t.rock));
+      set("uAmbient", t.ambient);
+      set("uFlora", t.flora);
+      set("uDebris", t.debris);
+      const L = new Float32Array(MAX_LIGHTS * 4), C = new Float32Array(MAX_LIGHTS * 4);
+      this.lights.slice(0, MAX_LIGHTS).forEach((l, i) => {
+        L.set([l.x - board.x, l.y - board.y, l.radius, l.intensity], i * 4);
+        C.set([...rgb(l.color), 1], i * 4);
+      });
+      set("uLights[0]", L);
+      set("uLightColors[0]", C);
+      const P = new Float32Array(MAX_POOLS * 4);
+      this.pools.slice(0, MAX_POOLS).forEach((p, i) => P.set([p.x - board.x, p.y - board.y, p.radius, p.kind === "fire" ? 1 : 2], i * 4));
+      set("uPools[0]", P);
+      set("uPoolCount", Math.min(MAX_POOLS, this.pools.length));
+    };
+    const make = (pass: number, textures: (string | Phaser.Textures.Texture)[]) =>
+      new Phaser.GameObjects.Shader(scene, { name: `ground-${pass}-${id}`, fragmentSource: FRAG, setupUniforms: uniforms(pass) }, 0, 0, hw, hh, textures as string[]).setOrigin(0);
+    this.still = make(0, [this.keyA, this.keyB, "__DEFAULT"]);
+    this.moving = make(1, [this.keyA, this.keyB, this.baked.texture]);
+    scene.events.on("update", this.tick, this);
+    scene.events.once("shutdown", () => scene.events.off("update", this.tick, this));
+  }
+
+  private tick(): void {
+    if (this.frame++ % 2) return;
+    this.view.clear().draw(this.moving).render();
   }
 
   setLights(lights: GroundLight[], pools: GroundPool[] = []): void {
@@ -320,9 +366,13 @@ export class TerrainShader {
         g.fill();
       }
     }
-    const blurred = masks.map(({ g, c }) => blur(g.getImageData(0, 0, c.width, c.height), 1));
+    // Rocks stay sharp (they must match where they block); water and mud get rounder shores.
+    const blurred = masks.map(({ g, c }, i) => blur(g.getImageData(0, 0, c.width, c.height), [1, 2, 3, 3][i]!));
     this.write(this.keyA, [blurred[0]!, blurred[1]!, blurred[2]!]);
     this.write(this.keyB, [blurred[3]!, blurred[3]!, blurred[3]!]);
+    this.baked.clear().draw(this.still).render();
+    this.frame = 0;
+    this.tick();
   }
 
   private write(key: string, channels: Float32Array[]): void {
@@ -340,7 +390,11 @@ export class TerrainShader {
   }
 
   destroy(): void {
-    this.shader.destroy();
+    this.scene.events.off("update", this.tick, this);
+    this.still.destroy();
+    this.moving.destroy();
+    this.baked.destroy();
+    this.view.destroy();
     this.scene.textures.remove(this.keyA);
     this.scene.textures.remove(this.keyB);
   }
