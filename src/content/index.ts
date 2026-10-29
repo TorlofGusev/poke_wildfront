@@ -26,6 +26,7 @@ import speciesData from "./species.json";
 import types from "./types.json";
 import statuses from "./statuses.json";
 import { localized } from "./lang";
+import whatsNew from "./whatsNew.json";
 
 export const TYPES: Readonly<Record<string, TypeDef>> = localized("types.json", types) as Record<string, TypeDef>;
 
@@ -220,3 +221,6 @@ export const WORLD: WorldDef = WORLDS["pallet-town"] ?? (route2 as unknown as Wo
 
 /** Main story goals in order (the HUD shows the first one not reached). */
 export const STORY_STEPS: readonly StoryStep[] = localized("story.json", story).steps;
+
+/** The player-facing changelog, newest first (What's new on the title screen). */
+export const WHATS_NEW: readonly { readonly version: string; readonly date: string; readonly items: readonly string[] }[] = localized("whatsNew.json", whatsNew);

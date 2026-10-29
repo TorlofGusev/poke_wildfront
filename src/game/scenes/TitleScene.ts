@@ -47,6 +47,7 @@ export class TitleScene extends Phaser.Scene {
     }).setHighlighted(!hasSave);
     if (hasSave) new Button(this, x, row(), w, 26, t("📖 Pokédex"), () => this.scene.start("Pokedex", { from: "Title" }));
     if (FEEDBACK_URL) new Button(this, x, row(), w, 26, t("💬 Feedback"), () => openFeedback(this.game, "title"));
+    new Button(this, x, row(), w, 26, t("✨ What's new"), () => this.scene.start("WhatsNew"));
     new Button(this, x, row(), w, 26, t("ⓘ Credits"), () => this.scene.start("Credits"));
     y += 10;
     if (addFullscreenButton(this, x, y, w)) y += 34;

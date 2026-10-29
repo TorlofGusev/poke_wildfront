@@ -1,0 +1,30 @@
+[
+ {"items": [
+  "A nagy move-oknak ára van: a Double-Edge és a Head Smash a használót is sebzi, a Superpower legyengíti, az Outrage összezavarja; cserébe kicsit erősebbek.",
+  "Új move-hatások: a Double Hit kétszer talál, a Chip Away és a Feint Attack átüt a védő buffokon, a False Swipe sosem üt ki (befogáshoz hasznos), a Lash Out erősebb, ha a használón negatív státusz van, a Mach Punch rárontva támad.",
+  "A Guillotine mostantól a sérült ellenfelet végzi ki, nem egyszerűen a legerősebb ütés.",
+  "Minden Lv3 focus valódi döntés: egyik opció sem csak egy másik erősebb másolata."
+ ]},
+ {"items": [
+  "Javítva: az Oddish és még 38 Pokémon special nélkül kezdett (a kezdő moveja Bond-dá vált).",
+  "A Super Fang a célpont jelenlegi HP-jának felét sebzi; az Endeavor, a Flail és a Reversal annál erősebb, minél több HP-t vesztett a használó; a Brine a sérült, a Wring Out az egészséges célpontot üti jobban.",
+  "A Seel és a Dewgong Icy Winddal, a Horsea és a Seadra Twisterrel, az Omanyte és az Omastar Rock Throw-val kezd.",
+  "Pokémon képernyő: a portré balra, a navigáció jobbra fent, mint a Campben."
+ ]},
+ {"items": [
+  "Zene: Juhani Junkala chiptune loopjai a címképernyőn, a térképen és a csatákban."
+ ]},
+ {"items": [
+  "Térkép-jelmagyarázat tipp az első térkép-látogatáskor, és ? súgó a térképen.",
+  "Ha már nincs mit tenni a körben, magától továbbmegy; a Kör vége a kiválasztott labdát is elengedi."
+ ]},
+ {"items": [
+  "Egyszeri tippek, amikor valami először előfordul (engagement, befogás, kiütés, focus, camp…), és ? súgó, ami felsorolja őket.",
+  "Az elkerült vagy elmenekült vad csoport néhány lépésig békén hagy."
+ ]},
+ {"items": [
+  "A címképernyő a menü mögött felvett csatákat játszik vissza.",
+  "Visszajelző űrlap a címképernyőn, a campben és a csaták után.",
+  "Pokédex: minden látott faj statokkal, szereppel, képességgel, fejlődéssel, kezdő move-okkal és a teljes mastery fával."
+ ]}
+]

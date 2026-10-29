@@ -1,0 +1,30 @@
+[
+ {"version": "0.99", "date": "2026-10-29", "items": [
+  "Big moves have a price: Double-Edge and Head Smash hurt the user too, Superpower weakens it, Outrage confuses it; they hit a little harder for it.",
+  "New move effects: Double Hit lands twice, Chip Away and Feint Attack ignore protective buffs, False Swipe never knocks out (handy for catching), Lash Out hits harder while the user has an ailment, Mach Punch dashes in.",
+  "Guillotine now finishes off hurt foes instead of simply out-hitting everything.",
+  "Every Lv 3 focus is a real choice: no option is just a stronger copy of another."
+ ]},
+ {"version": "0.98", "date": "2026-10-29", "items": [
+  "Fixed: Oddish and 38 other Pokémon started without a skill (their starting move had turned into a Bond move).",
+  "Super Fang takes half the target's current HP; Endeavor, Flail and Reversal hit harder the more HP the user has lost; Brine hits hurt targets harder, Wring Out healthy ones.",
+  "Seel and Dewgong start with Icy Wind, Horsea and Seadra with Twister, Omanyte and Omastar with Rock Throw.",
+  "Pokémon screen: portrait on the left, navigation top right, like the Camp."
+ ]},
+ {"version": "0.96", "date": "2026-10-28", "items": [
+  "Music: chiptune loops by Juhani Junkala on the title, the map and in battle."
+ ]},
+ {"version": "0.95", "date": "2026-10-28", "items": [
+  "Map legend tip on the first map visit and a ? help on the map.",
+  "A turn with nothing left to do passes on its own; End turn also drops a selected ball."
+ ]},
+ {"version": "0.94", "date": "2026-10-28", "items": [
+  "One-time tips the first time something comes up (engagement, catching, knockouts, focus, camp…), and a ? help listing them.",
+  "A wild group you avoided or fled from leaves you alone for a few steps."
+ ]},
+ {"version": "0.92", "date": "2026-10-28", "items": [
+  "The title screen replays recorded battles behind the menu.",
+  "Feedback form on the title, in camp and after battles.",
+  "Pokédex: every species you met, with stats, role, ability, evolutions, starting moves and its whole mastery tree."
+ ]}
+]
