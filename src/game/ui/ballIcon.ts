@@ -9,6 +9,19 @@ export function ballCanvas(ballId: string): HTMLCanvasElement {
   c.width = c.height = 24;
   const g = c.getContext("2d")!;
   g.beginPath(); g.arc(12, 12, 10, Math.PI, 0); g.fillStyle = BALL_TOPS[ballId] ?? "#e3350d"; g.fill();
+  // The Ultra Ball's yellow "H" bands on the black top; the Great Ball's red patches on the blue.
+  g.save();
+  g.beginPath(); g.arc(12, 12, 10, Math.PI, 0); g.clip();
+  if (ballId === "ultra-ball") {
+    g.fillStyle = "#f5c518";
+    g.fillRect(4, 2, 4, 10);
+    g.fillRect(16, 2, 4, 10);
+  } else if (ballId === "great-ball") {
+    g.fillStyle = "#e3350d";
+    g.fillRect(2, 6, 6, 3);
+    g.fillRect(16, 6, 6, 3);
+  }
+  g.restore();
   g.beginPath(); g.arc(12, 12, 10, 0, Math.PI); g.fillStyle = "#f4f4f4"; g.fill();
   g.lineWidth = 2; g.strokeStyle = "#111";
   g.beginPath(); g.arc(12, 12, 10, 0, Math.PI * 2); g.moveTo(2, 12); g.lineTo(22, 12); g.stroke();
