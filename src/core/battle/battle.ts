@@ -810,8 +810,13 @@ function resolveHits(
         heal(user, Math.max(1, Math.round(dealt * (drain + m.drainBonus))), events);
       }
     }
+    const shrugs = isFoe && (move.failsVs ?? []).some((ty) => content.species[t.speciesId]!.types.includes(ty));
     for (const effect of move.effects ?? []) {
       if (t.hp <= 0) break;
+      if (shrugs) {
+        if (effect.kind === "status") events.push({ type: "statusResisted", unitId: t.id, status: effect.status });
+        continue;
+      }
       if (move.affects === "any" && (effect.kind === "heal" || effect.kind === "healShare") === isFoe) continue;
       switch (effect.kind) {
         case "drain":
@@ -851,6 +856,18 @@ function resolveHits(
         case "swap":
           if (t !== user && t.side === user.side) swapPlaces(state, user, t, events);
           break;
+        case "selfHp":
+          // Once per use, whoever the move hit.
+          if (t !== affected[0] || user.hp <= 0) break;
+          if (effect.share > 0) heal(user, Math.max(1, Math.round(user.maxHp * effect.share)), events);
+          else {
+            const cost = Math.min(user.hp - 1, Math.round(user.maxHp * -effect.share));
+            if (cost > 0) {
+              user.hp -= cost;
+              events.push({ type: "damaged", unitId: user.id, amount: cost, hp: user.hp, source: "recoil" });
+            }
+          }
+          break;
         case "disengage":
           // Applied once to the user, whoever the move hit.
           if (t === affected[0]) disengage(state, user, events);
@@ -864,7 +881,7 @@ function resolveHits(
       closeIn(state, user, t, events);
     }
     // Type mechanics apply to the enemies a move hits.
-    if (!isFoe || t.hp <= 0) continue;
+    if (!isFoe || t.hp <= 0 || shrugs) continue;
     if (user.mods.sheerForce && move.power > 0) continue;
     if (mech.appliesStatus) applyStatus(content, user, t, mech.appliesStatus.status, mech.appliesStatus.duration, events, state);
     const extra = user.ability?.moveStatus;

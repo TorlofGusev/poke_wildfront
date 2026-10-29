@@ -27,6 +27,7 @@ export function describeMove(content: BattleContent, move: MoveDef): string {
   if (move.hits) lines.push(t("Hits {n} times, its power split between them; each hit can be critical", { n: tag("num", move.hits) }));
   if (move.recoil) lines.push(t("Recoil: the user takes {n} of the damage it deals", { n: tag("bad", `${Math.round(move.recoil * 100)}%`) }));
   if (move.selfStatus) lines.push(t("Price: the user becomes {status} for {n} turns", { status: tag("status", content.statuses[move.selfStatus.status]?.name ?? move.selfStatus.status), n: tag("num", move.selfStatus.duration) }));
+  if (move.failsVs?.length) lines.push(t("No effect on {types} Pokémon", { types: move.failsVs.map((ty) => tag(ty, ty)).join(", ") }));
   if (move.nonLethal) lines.push(t("Never knocks out: leaves the target at 1 HP at least (handy for catching)"));
   if (move.statusedPower) lines.push(t("Hits harder while the user has an ailment: {n} power", { n: tag("dmg", Math.round(move.power * (1 + move.statusedPower))) }));
   if (move.ignoresBuffs) lines.push(t("Ignores the target's protective buffs"));
@@ -55,6 +56,9 @@ export function describeMove(content: BattleContent, move: MoveDef): string {
         lines.push(e.when === "combo" ? t("{x} if it lands a combo (hits a foe an ally set up)", { x }) : t("{x} if it knocks a foe out", { x }));
         break;
       }
+      case "selfHp": lines.push(e.share > 0
+        ? t("The user heals {x} of its max HP", { x: tag("heal", `${Math.round(e.share * 100)}%`) })
+        : t("Costs the user {x} of its max HP (never below 1)", { x: tag("bad", `${Math.round(-e.share * 100)}%`) })); break;
       case "cleanse": lines.push(t("Removes the statuses foes put on the target")); break;
       case "dispel": lines.push(t("Strips the target's buffs")); break;
       case "swap": lines.push(t("The user and the ally trade places; both leave their engagements {x}", { x: tag("good", t("without a free attack")) })); break;

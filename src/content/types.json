@@ -23,7 +23,7 @@
    "crit": 4,
    "speed": 0
   },
-  "summary": "Burst striker. Fire moves Burn: damage each turn and −20% damage dealt.",
+  "summary": "Burst striker. Fire moves Burn: damage each turn.",
   "move": {
    "appliesStatus": {
     "status": "burn",
@@ -275,10 +275,10 @@
    "crit": 4,
    "speed": 0
   },
-  "summary": "Charmer. Fairy moves Weaken: the target deals 30% less damage on its next turn.",
+  "summary": "Charmer. Fairy moves Soften: the target deals 15% less damage on its next turn.",
   "move": {
    "appliesStatus": {
-    "status": "weakened",
+    "status": "softened",
     "duration": 1
    }
   },

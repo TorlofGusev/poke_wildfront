@@ -68,6 +68,8 @@ export type MoveEffect =
   | { readonly kind: "swap" }
   /** Heals the target by this share of its own max HP (Pollen Puff on an ally). */
   | { readonly kind: "healShare"; readonly share: number }
+  /** The user gains (or, negative, pays) this share of its own max HP, once per use (Strength Sap; Memento), never below 1 HP. */
+  | { readonly kind: "selfHp"; readonly share: number }
   /** Heals the user by this share of the damage it deals (Dream Eater). */
   | { readonly kind: "drain"; readonly amount: number }
   /** Leaves a hazard of this radius where the move lands, for rules.zones.turns of the user's turns. */
@@ -115,6 +117,8 @@ export interface MoveDef {
   readonly selfStatus?: { readonly status: string; readonly duration: number };
   /** Ignores the target's protective buffs (Fortified…) (Chip Away, Darkest Lariat). */
   readonly ignoresBuffs?: boolean;
+  /** Its effects do nothing to foes of these types (Thunder Wave on Ground). */
+  readonly failsVs?: readonly string[];
   /** Never knocks out: leaves the target at 1 HP at least (False Swipe, for catching). */
   readonly nonLethal?: boolean;
   /** Power grows by this share while the user has an ailment (Lash Out). */

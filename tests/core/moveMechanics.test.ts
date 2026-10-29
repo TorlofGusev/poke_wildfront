@@ -172,4 +172,30 @@ describe("move mechanics behind canon names", () => {
     expect(moveRange(foe, { ...ranged, range: { min: 2, max: 2 } }, CONTENT)).toEqual({ min: 2, max: 2 });
     expect(CONTENT.moves.confide!.effects).toEqual([expect.objectContaining({ status: "weakened" })]);
   });
+
+  it("canon hooks: Strength Sap heals the user, Memento costs it HP, Thunder Wave does nothing to Ground", () => {
+    const at = (moveId: string, foe: string, hpShare = 0.5) => {
+      const { state } = createBattle(CONTENT, ["....."], [u("p", "oddish", "player", 0, [moveId]), u("e", foe, "enemy", 1, ["tackle"], { stats: { ...CONTENT.species[foe]!.stats, speed: 1, willpower: 0 } })]);
+      const s = { ...state, units: state.units.map((x) => (x.id === "p" ? { ...x, hp: Math.round(x.maxHp * hpShare) } : x)) };
+      const before = s.units.find((x) => x.id === "p")!.hp;
+      const r = applyAction(s, CONTENT, { type: "useMove", unitId: "p", moveId, target: { x: 1, y: 0 } });
+      return { gain: hp(r, "p") - before, foe: r.state.units.find((x) => x.id === "e")!.statuses.map((st) => st.id) };
+    };
+    const sap = at("strength-sap", "rattata");
+    expect(sap.gain).toBeGreaterThan(0);
+    expect(sap.foe).toContain("weakened");
+    const memento = at("memento", "rattata");
+    expect(memento.gain).toBeLessThan(0);
+    expect(memento.foe).toEqual(expect.arrayContaining(["weakened", "exposed"]));
+    expect(at("memento", "rattata", 0.01).gain).toBe(0); // never below 1 HP
+    expect(at("thunder-wave", "geodude").foe).toEqual([]);
+    expect(at("thunder-wave", "rattata").foe).toContain("paralysis");
+    expect(at("glare", "geodude").foe).toContain("paralysis");
+  });
+
+  it("Burn only hurts over time; Fairy moves soften (−15%) instead of weakening", () => {
+    expect(CONTENT.statuses.burn!.damageDealt).toBeUndefined();
+    expect(CONTENT.types.fairy!.move!.appliesStatus).toEqual({ status: "softened", duration: 1 });
+    expect(CONTENT.statuses.softened!.damageDealt).toBe(0.85);
+  });
 });

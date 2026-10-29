@@ -3,7 +3,7 @@
   "summary": "Alkalmazkodó mindenes. A Normál támadásokra semmi sem ellenálló."
  },
  "fire": {
-  "summary": "Robbanékony támadó. A Tűz támadások megégetnek: körönként sebeznek, és −20% az okozott sebzés."
+  "summary": "Robbanékony támadó. A Tűz támadások megégetnek: körönként sebeznek."
  },
  "water": {
   "summary": "Kiszorítás és kitartás. A Víz támadások 1-gyel tovább lökik a célpontot."
@@ -51,6 +51,6 @@
   "summary": "Védőbástya. Az Acél Pokémonok minden találatból 15%-kal kevesebb sebzést kapnak."
  },
  "fairy": {
-  "summary": "Bűvölő. A Tündér támadások gyengítenek: a célpont a következő körében 30%-kal kevesebbet sebez."
+  "summary": "Bűvölő. A Tündér támadások enyhén gyengítenek (Softened): a célpont a következő körében 15%-kal kevesebbet sebez."
  }
 }

@@ -241,6 +241,9 @@
     "status": "paralysis",
     "duration": 1
    }
+  ],
+  "failsVs": [
+   "ground"
   ]
  },
  "rock-throw": {
@@ -912,7 +915,7 @@
   "effects": [
    {
     "kind": "status",
-    "status": "weakened",
+    "status": "blinded",
     "duration": 2
    }
   ]

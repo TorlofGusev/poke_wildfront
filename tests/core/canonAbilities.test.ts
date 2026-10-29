@@ -34,14 +34,14 @@ describe("canon abilities behind the names", () => {
     expect(r.state.units.find((x) => x.id === "p")!.statuses.some((s) => s.id === "paralysis")).toBe(true);
   });
 
-  it("Guts ignores Burn's damage penalty; Quick Feet keeps moving through Paralysis", () => {
+  it("Guts ignores a status's damage penalty; Quick Feet keeps moving through Paralysis", () => {
     const strike = (mods: UnitSetup["mods"], status?: string) => {
       const { state } = createBattle(CONTENT, ["....."], [u("p", "charmander", "player", 0, ["scratch"], { mods }), u("e", "snorlax", "enemy", 1, ["tackle"])]);
       const s = status ? { ...state, units: state.units.map((x) => (x.id === "p" ? { ...x, statuses: [{ id: status, turnsLeft: 3 }] } : x)) } : state;
       return dmg(applyAction(s, CONTENT, { type: "useMove", unitId: "p", moveId: "scratch", target: { x: 1, y: 0 } }));
     };
-    expect(strike({ statusedDamage: 1.3 }, "burn")).toBeGreaterThan(strike({}));
-    expect(strike({}, "burn")).toBeLessThan(strike({}));
+    expect(strike({ statusedDamage: 1.3 }, "weakened")).toBeGreaterThan(strike({}));
+    expect(strike({}, "weakened")).toBeLessThan(strike({}));
     const { state } = createBattle(CONTENT, ["....."], [u("p", "rattata", "player", 0, ["tackle"], { mods: { statusedMove: 2 } }), u("e", "rattata", "enemy", 4, ["tackle"])]);
     const paralysed = { ...state.units[0]!, statuses: [{ id: "paralysis", turnsLeft: 2 }] };
     expect(movementPoints(CONTENT, paralysed, state)).toBeGreaterThan(0);

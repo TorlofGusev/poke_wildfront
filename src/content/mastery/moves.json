@@ -511,7 +511,7 @@
    "kind": "single"
   },
   "affects": "enemies",
-  "cooldown": 3,
+  "cooldown": 2,
   "effects": [
    {
     "kind": "status",
@@ -1236,12 +1236,12 @@
    "kind": "single"
   },
   "affects": "enemies",
-  "cooldown": 3,
+  "cooldown": 4,
   "effects": [
    {
     "kind": "status",
     "status": "weakened",
-    "duration": 2
+    "duration": 3
    }
   ]
  },
@@ -2416,12 +2416,12 @@
    "kind": "single"
   },
   "affects": "enemies",
-  "cooldown": 3,
+  "cooldown": 4,
   "effects": [
    {
     "kind": "status",
     "status": "weakened",
-    "duration": 2
+    "duration": 3
    }
   ]
  },
@@ -2753,12 +2753,12 @@
    "kind": "single"
   },
   "affects": "enemies",
-  "cooldown": 3,
+  "cooldown": 4,
   "effects": [
    {
     "kind": "status",
     "status": "weakened",
-    "duration": 2
+    "duration": 3
    }
   ]
  },
@@ -3101,7 +3101,7 @@
   "effects": [
    {
     "kind": "status",
-    "status": "weakened",
+    "status": "blinded",
     "duration": 2
    }
   ]
@@ -4561,7 +4561,7 @@
   "effects": [
    {
     "kind": "status",
-    "status": "weakened",
+    "status": "blinded",
     "duration": 2
    }
   ]
@@ -5235,7 +5235,16 @@
    {
     "kind": "status",
     "status": "weakened",
+    "duration": 3
+   },
+   {
+    "kind": "status",
+    "status": "exposed",
     "duration": 2
+   },
+   {
+    "kind": "selfHp",
+    "share": -0.3
    }
   ]
  },
@@ -8486,12 +8495,16 @@
    "kind": "single"
   },
   "affects": "enemies",
-  "cooldown": 3,
+  "cooldown": 4,
   "effects": [
    {
     "kind": "status",
     "status": "weakened",
     "duration": 2
+   },
+   {
+    "kind": "selfHp",
+    "share": 0.2
    }
   ]
  },

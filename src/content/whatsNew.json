@@ -1,5 +1,6 @@
 [
  {"version": "0.99", "date": "2026-10-29", "items": [
+  "Burn no longer lowers damage dealt, only hurts each turn; Fairy moves now Soften (−15% damage) instead of Weaken.", "Moves that were copies now follow their canon twists: Charm, Feather Dance and Eerie Impulse weaken longer; Sand Attack, Kinesis and Flash blind; Baby-Doll Eyes is quicker; Strength Sap heals the user; Memento weakens and exposes at a cost of HP; Thunder Wave has no effect on Ground types (Glare does).",
   "Smokescreen now blinds: the target's ranged moves reach 1 less for 2 turns (Confide still weakens).",
   "The turn passes on its own again when only a sliver of movement is left and no move has anything in reach.", "Wild Pokémon here works on paths too: it lists the nearest grass or cave of the map.",
   "The bag lists your key items (Old Amber and the like) with what they are for.",

@@ -13,8 +13,7 @@
  "burn": {
   "id": "burn",
   "name": "Burn",
-  "damagePerTurn": 0.06,
-  "damageDealt": 0.8
+  "damagePerTurn": 0.06
  },
  "paralysis": {
   "id": "paralysis",
@@ -75,6 +74,11 @@
   "id": "blinded",
   "name": "Blinded",
   "rangePenalty": 1
+ },
+ "softened": {
+  "id": "softened",
+  "name": "Softened",
+  "damageDealt": 0.85
  },
  "weakened": {
   "id": "weakened",
