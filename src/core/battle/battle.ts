@@ -203,6 +203,24 @@ function cleanse(state: BattleState, unit: BattleUnit, events: BattleEvent[]): v
   unit.statuses = unit.statuses.filter((st) => !foeMade(st));
 }
 
+/** Strips a unit's buffs (protective and offensive statuses alike). */
+function dispel(content: BattleContent, unit: BattleUnit, events: BattleEvent[]): void {
+  const buffs = unit.statuses.filter((st) => content.statuses[st.id]?.buff);
+  for (const st of buffs) events.push({ type: "statusExpired", unitId: unit.id, status: st.id });
+  unit.statuses = unit.statuses.filter((st) => !buffs.includes(st));
+}
+
+/** Two allies trade places; both leave their engagements without a free attack. */
+function swapPlaces(state: BattleState, a: BattleUnit, b: BattleUnit, events: BattleEvent[]): void {
+  disengage(state, a, events);
+  disengage(state, b, events);
+  const from = { ...a.pos }, to = { ...b.pos };
+  a.pos = to;
+  b.pos = from;
+  events.push({ type: "displaced", unitId: a.id, from, to, blocked: false });
+  events.push({ type: "displaced", unitId: b.id, from: to, to: from, blocked: false });
+}
+
 // ---------------------------------------------------------------- setup
 
 export const hpFromStat = (content: BattleContent, hp: number): number =>
@@ -800,6 +818,7 @@ function resolveHits(
           break;
         case "status":
           if (user.mods.sheerForce && isFoe && move.power > 0) break; // Sheer Force trades the status for damage.
+          if (!isFoe && content.statuses[effect.status]?.forcesTarget) break; // A taunt only holds foes (Follow Me's area).
           applyStatus(content, user, t, effect.status, effect.duration, events, state);
           break;
         case "push":
@@ -819,6 +838,12 @@ function resolveHits(
           break; // Resolved with the hit above, or once where the move lands (strike).
         case "cleanse":
           cleanse(state, t, events);
+          break;
+        case "dispel":
+          dispel(content, t, events);
+          break;
+        case "swap":
+          if (t !== user && t.side === user.side) swapPlaces(state, user, t, events);
           break;
         case "disengage":
           // Applied once to the user, whoever the move hit.

@@ -56,6 +56,8 @@ export function describeMove(content: BattleContent, move: MoveDef): string {
         break;
       }
       case "cleanse": lines.push(t("Removes the statuses foes put on the target")); break;
+      case "dispel": lines.push(t("Strips the target's buffs")); break;
+      case "swap": lines.push(t("The user and the ally trade places; both leave their engagements {x}", { x: tag("good", t("without a free attack")) })); break;
       case "zone": {
         const turns = tag("num", content.rules.zones.turns);
         lines.push(e.hazard === "fire" ? t("Sets the ground on fire (radius {r}) for {n} turns: anyone walking in or starting a turn there loses {d} max HP", { r: tag("num", e.radius), n: turns, d: tag("dmg", `${Math.round(content.rules.zones.fireDamage * 100)}%`) })

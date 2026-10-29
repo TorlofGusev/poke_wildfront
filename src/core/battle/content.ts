@@ -62,6 +62,10 @@ export type MoveEffect =
   | { readonly kind: "disengage" }
   /** Removes every status a foe put on the target (Heal Bell, Aromatherapy). */
   | { readonly kind: "cleanse" }
+  /** Strips the target's buffs (Knock Off, Clear Smog). */
+  | { readonly kind: "dispel" }
+  /** The user and the ally it targets trade places, both leaving their engagements without a free attack (Ally Switch). */
+  | { readonly kind: "swap" }
   /** Heals the target by this share of its own max HP (Pollen Puff on an ally). */
   | { readonly kind: "healShare"; readonly share: number }
   /** Heals the user by this share of the damage it deals (Dream Eater). */

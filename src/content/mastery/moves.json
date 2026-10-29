@@ -1342,13 +1342,21 @@
   },
   "affects": "enemies",
   "canonPower": 50,
-  "reach": "ranged"
+  "reach": "ranged",
+  "effects": [
+   {
+    "kind": "dispel"
+   }
+  ]
  },
  "close-combat": {
   "id": "close-combat",
   "name": "Close Combat",
   "type": "fighting",
-  "selfStatus": {"status": "weakened", "duration": 2},
+  "selfStatus": {
+   "status": "weakened",
+   "duration": 2
+  },
   "kind": "special",
   "cooldown": 4,
   "power": 95,
@@ -1982,7 +1990,10 @@
   "id": "draco-meteor",
   "name": "Draco Meteor",
   "type": "dragon",
-  "selfStatus": {"status": "weakened", "duration": 2},
+  "selfStatus": {
+   "status": "weakened",
+   "duration": 2
+  },
   "kind": "special",
   "cooldown": 4,
   "power": 80,
@@ -3631,7 +3642,10 @@
   "id": "hammer-arm",
   "name": "Hammer Arm",
   "type": "fighting",
-  "selfStatus": {"status": "weakened", "duration": 2},
+  "selfStatus": {
+   "status": "weakened",
+   "duration": 2
+  },
   "kind": "special",
   "category": "physical",
   "cooldown": 5,
@@ -4653,7 +4667,10 @@
   "id": "leaf-storm",
   "name": "Leaf Storm",
   "type": "grass",
-  "selfStatus": {"status": "weakened", "duration": 2},
+  "selfStatus": {
+   "status": "weakened",
+   "duration": 2
+  },
   "kind": "special",
   "category": "special",
   "cooldown": 4,
@@ -4954,7 +4971,11 @@
    "max": 2
   },
   "requiresLineOfSight": false,
-  "effects": [{"kind": "engage"}],
+  "effects": [
+   {
+    "kind": "engage"
+   }
+  ],
   "shape": {
    "kind": "single"
   },
@@ -5822,7 +5843,10 @@
   "id": "outrage",
   "name": "Outrage",
   "type": "dragon",
-  "selfStatus": {"status": "confused", "duration": 2},
+  "selfStatus": {
+   "status": "confused",
+   "duration": 2
+  },
   "kind": "special",
   "category": "physical",
   "power": 95,
@@ -5843,7 +5867,10 @@
   "id": "overheat",
   "name": "Overheat",
   "type": "fire",
-  "selfStatus": {"status": "weakened", "duration": 2},
+  "selfStatus": {
+   "status": "weakened",
+   "duration": 2
+  },
   "kind": "special",
   "category": "special",
   "cooldown": 5,
@@ -5952,7 +5979,10 @@
   "id": "petal-dance",
   "name": "Petal Dance",
   "type": "grass",
-  "selfStatus": {"status": "confused", "duration": 2},
+  "selfStatus": {
+   "status": "confused",
+   "duration": 2
+  },
   "kind": "special",
   "cooldown": 3,
   "power": 95,
@@ -8648,7 +8678,10 @@
   "id": "superpower",
   "name": "Superpower",
   "type": "fighting",
-  "selfStatus": {"status": "weakened", "duration": 2},
+  "selfStatus": {
+   "status": "weakened",
+   "duration": 2
+  },
   "kind": "special",
   "category": "physical",
   "cooldown": 5,
@@ -9072,7 +9105,10 @@
   "id": "thrash",
   "name": "Thrash",
   "type": "normal",
-  "selfStatus": {"status": "confused", "duration": 2},
+  "selfStatus": {
+   "status": "confused",
+   "duration": 2
+  },
   "kind": "special",
   "cooldown": 3,
   "power": 95,
@@ -10031,6 +10067,106 @@
   "affects": "enemies",
   "canonPower": 80,
   "cooldown": 3,
+  "reach": "melee"
+ },
+ "follow-me": {
+  "id": "follow-me",
+  "name": "Follow Me",
+  "type": "normal",
+  "kind": "special",
+  "cooldown": 4,
+  "power": 0,
+  "range": {
+   "min": 0,
+   "max": 0
+  },
+  "requiresLineOfSight": false,
+  "shape": {
+   "kind": "burst",
+   "radius": 2
+  },
+  "affects": "enemies",
+  "effects": [
+   {
+    "kind": "status",
+    "status": "taunted",
+    "duration": 1
+   }
+  ]
+ },
+ "helping-hand": {
+  "id": "helping-hand",
+  "name": "Helping Hand",
+  "type": "normal",
+  "kind": "special",
+  "cooldown": 3,
+  "power": 0,
+  "range": {
+   "min": 1,
+   "max": 3
+  },
+  "requiresLineOfSight": false,
+  "shape": {
+   "kind": "single"
+  },
+  "affects": "allies",
+  "effects": [
+   {
+    "kind": "status",
+    "status": "helped",
+    "duration": 1
+   }
+  ],
+  "selfStatus": {
+   "status": "helped",
+   "duration": 2
+  }
+ },
+ "ally-switch": {
+  "id": "ally-switch",
+  "name": "Ally Switch",
+  "type": "psychic",
+  "kind": "special",
+  "cooldown": 4,
+  "power": 0,
+  "range": {
+   "min": 1,
+   "max": 4
+  },
+  "requiresLineOfSight": false,
+  "shape": {
+   "kind": "single"
+  },
+  "affects": "allies",
+  "effects": [
+   {
+    "kind": "swap"
+   }
+  ]
+ },
+ "knock-off": {
+  "id": "knock-off",
+  "name": "Knock Off",
+  "type": "dark",
+  "kind": "special",
+  "category": "physical",
+  "cooldown": 3,
+  "power": 55,
+  "range": {
+   "min": 1,
+   "max": 1
+  },
+  "requiresLineOfSight": false,
+  "shape": {
+   "kind": "single"
+  },
+  "affects": "enemies",
+  "effects": [
+   {
+    "kind": "dispel"
+   }
+  ],
+  "canonPower": 65,
   "reach": "melee"
  }
 }

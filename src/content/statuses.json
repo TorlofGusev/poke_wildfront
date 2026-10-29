@@ -108,5 +108,11 @@
   "name": "Seeded",
   "damagePerTurn": 0.08,
   "drainsToSource": true
+ },
+ "helped": {
+  "id": "helped",
+  "name": "Helped",
+  "damageDealt": 1.25,
+  "buff": true
  }
 }

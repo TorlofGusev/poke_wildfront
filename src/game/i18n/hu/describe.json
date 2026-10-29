@@ -6,6 +6,8 @@
  " from impact": " ütközéstől",
  " from spikes": " tüskéktől",
  " from recoil": " visszarúgásból",
+ "Strips the target's buffs": "Leszedi a célpont buffjait",
+ "The user and the ally trade places; both leave their engagements {x}": "A használó és a szövetséges helyet cserél; mindketten kilépnek az engage-ből {x}",
  "Never knocks out: leaves the target at 1 HP at least (handy for catching)": "Sosem üt ki: legalább 1 HP-t hagy a célpontnak (befogáshoz hasznos)",
  "Hits harder while the user has an ailment: {n} power": "Erősebb, amíg a használón negatív státusz van: {n} erő",
  "Hits {n} times, its power split between them; each hit can be critical": "{n}-szor talál, az erő megoszlik a találatok között; mindegyik lehet kritikus",

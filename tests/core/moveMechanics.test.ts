@@ -76,6 +76,30 @@ describe("move mechanics behind canon names", () => {
     expect(lost(burnt)).toBeGreaterThan(lost(state) * 1.5);
   });
 
+  it("Follow Me taunts the foes around the user; Helping Hand boosts the ally and the user", () => {
+    const { state } = createBattle(CONTENT, ["......"], [u("p", "clefairy", "player", 1, ["pound", "follow-me", "helping-hand"]), u("a", "rattata", "player", 0, ["tackle"]), u("e", "rattata", "enemy", 2, ["tackle"]), u("f", "rattata", "enemy", 3, ["tackle"])]);
+    const pos = (id: string) => state.units.find((x) => x.id === id)!.pos;
+    const taunt = applyAction(state, CONTENT, { type: "useMove", unitId: "p", moveId: "follow-me", target: pos("p") });
+    const taunted = (id: string) => taunt.state.units.find((x) => x.id === id)!.statuses.some((st) => st.id === "taunted");
+    expect(taunt.events.filter((e) => e.type === "statusApplied" || e.type === "statusResisted").map((e) => (e as { unitId: string }).unitId).sort()).toEqual(["e", "f"]);
+    expect(taunted("a")).toBe(false);
+    const help = applyAction(state, CONTENT, { type: "useMove", unitId: "p", moveId: "helping-hand", target: pos("a") });
+    for (const id of ["a", "p"]) expect(help.state.units.find((x) => x.id === id)!.statuses, id).toContainEqual(expect.objectContaining({ id: "helped" }));
+  });
+
+  it("Ally Switch trades places and frees both from their engagements; Knock Off strips buffs", () => {
+    const { state } = createBattle(CONTENT, ["......"], [u("p", "abra", "player", 0, ["confusion", "ally-switch"]), u("a", "machop", "player", 3, ["karate-chop", "knock-off"]), u("e", "rattata", "enemy", 4, ["tackle"])]);
+    const engaged = { ...state, units: state.units.map((x) => ({ ...x, engagedWith: x.id === "a" ? "e" : x.id === "e" ? "a" : null })) };
+    const r = applyAction(engaged, CONTENT, { type: "useMove", unitId: "p", moveId: "ally-switch", target: engaged.units.find((x) => x.id === "a")!.pos });
+    const at = (id: string) => r.state.units.find((x) => x.id === id)!;
+    expect([at("p").pos.x, at("a").pos.x]).toEqual([engaged.units.find((x) => x.id === "a")!.pos.x, engaged.units.find((x) => x.id === "p")!.pos.x]);
+    expect(at("a").engagedWith).toBeFalsy();
+    expect(at("e").engagedWith).toBeFalsy();
+    const buffed = { ...state, turn: { ...state.turn!, unitId: "a" }, units: state.units.map((x) => (x.id === "e" ? { ...x, statuses: [{ id: "fortified", turnsLeft: 3 }, { id: "poison", turnsLeft: 2 }] } : x)) };
+    const k = applyAction(buffed, CONTENT, { type: "useMove", unitId: "a", moveId: "knock-off", target: buffed.units.find((x) => x.id === "e")!.pos });
+    expect(k.state.units.find((x) => x.id === "e")!.statuses.map((x) => x.id)).toEqual(["poison"]);
+  });
+
   it("U-turn and Flip Turn end the user's engagement after the hit", () => {
     for (const move of ["u-turn", "flip-turn"]) {
       const { state } = createBattle(CONTENT, ["....."], [u("p", "scyther", "player", 0, ["cut", move]), u("e", "rattata", "enemy", 1, ["tackle"])]);
