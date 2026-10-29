@@ -67,6 +67,8 @@ const SKILL = "skill:";
  */
 const ROLE_SWAPS = roleSwapData as { readonly toMelee: Readonly<Record<string, readonly string[]>>; readonly toRanged: Readonly<Record<string, readonly string[]>> };
 const roleOfSpecies = (id: string): Role | undefined => (speciesData as Record<string, { role?: Role }>)[id]?.role;
+/** Every move some species starts with: a swap never brings one in, as a tree move would turn it Bond everywhere. */
+const STARTING = new Set(Object.values(speciesData as Record<string, { moves: string[] }>).flatMap((s) => s.moves));
 const moveOfSkill = (id: string) => (id.startsWith(SKILL) ? id.slice(SKILL.length) : null);
 const strong = (id: string) => (moves[id]?.canonPower ?? 0) >= progression.bondCanonPower;
 /** The tree as one species sees it: every skill of the other reach swapped for a counterpart of its role. */
@@ -84,7 +86,7 @@ function treeForRole(tree: MasteryTree, role: Role | undefined, start: readonly 
       if (alt) { used.add(alt.id); return SKILL + alt.id; }
     }
     if (!mv || !reach || reach === role) { if (mv) used.add(mv); return id; }
-    const swap = (role === "melee" ? ROLE_SWAPS.toMelee : ROLE_SWAPS.toRanged)[mv]?.find((c) => !used.has(c)) ?? mv;
+    const swap = (role === "melee" ? ROLE_SWAPS.toMelee : ROLE_SWAPS.toRanged)[mv]?.find((c) => !used.has(c) && !STARTING.has(c)) ?? mv;
     used.add(swap);
     return SKILL + swap;
   };
