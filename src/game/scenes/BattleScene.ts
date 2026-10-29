@@ -53,6 +53,7 @@ import { summarizeHits, type MoveDef } from "../../core/battle";
 import { typeMultiplier } from "../../core/rules/typeChart";
 import { Button } from "../ui/Button";
 import { formatEvent, type LogEntry, type LogTone } from "../ui/combatLog";
+import { ballCanvas, ballIcon } from "../ui/ballIcon";
 import { describeMove, reachShort, selfCentred } from "../ui/describeMove";
 import { stripMarkup, tag } from "../ui/markup";
 import { RichText } from "../ui/RichText";
@@ -93,21 +94,7 @@ const LOG_LINE_H = 15;
 /** The rule between move groups of different kinds in the move lists. */
 const KIND_DIVIDER = 0x6b7899;
 const fanLength = (move: MoveDef): number | null => (move.shape.kind === "line" || move.shape.kind === "cone" ? move.shape.length + 0.3 : null);
-/** Top-half colours of the balls (the bottom is white), for the aiming cursor. */
-const BALL_TOPS: Readonly<Record<string, string>> = { "poke-ball": "#e3350d", "great-ball": "#2f6fd6", "ultra-ball": "#2a2a2a" };
 const ballCursors = new Map<string, string>();
-/** A small drawn ball (24×24): the aiming cursor and the icon on the ball buttons. */
-function ballCanvas(ballId: string): HTMLCanvasElement {
-  const c = document.createElement("canvas");
-  c.width = c.height = 24;
-  const g = c.getContext("2d")!;
-  g.beginPath(); g.arc(12, 12, 10, Math.PI, 0); g.fillStyle = BALL_TOPS[ballId] ?? "#e3350d"; g.fill();
-  g.beginPath(); g.arc(12, 12, 10, 0, Math.PI); g.fillStyle = "#f4f4f4"; g.fill();
-  g.lineWidth = 2; g.strokeStyle = "#111";
-  g.beginPath(); g.arc(12, 12, 10, 0, Math.PI * 2); g.moveTo(2, 12); g.lineTo(22, 12); g.stroke();
-  g.beginPath(); g.arc(12, 12, 3.5, 0, Math.PI * 2); g.fillStyle = "#f4f4f4"; g.fill(); g.stroke();
-  return c;
-}
 /** The ball as a CSS cursor, centred on the click point. */
 function ballCursor(ballId: string): string {
   let css = ballCursors.get(ballId);
@@ -1019,8 +1006,7 @@ export class BattleScene extends Phaser.Scene {
           const count = state.balls[ballId] ?? 0;
           const usable = captureTargets(state, CONTENT, unit.id, ballId).length > 0;
           // The ball itself (the aiming cursor's drawing) and how many are left.
-          const key = `ball-icon-${ballId}`;
-          if (!this.textures.exists(key)) this.textures.addCanvas(key, ballCanvas(ballId));
+          const key = ballIcon(this, ballId);
           const b = new Button(this, i * (w + 8), y, w, 26, `    ×${count}`, () => {
             this.selectedMove = null;
             this.selectedBall = this.selectedBall === ballId ? null : ballId;

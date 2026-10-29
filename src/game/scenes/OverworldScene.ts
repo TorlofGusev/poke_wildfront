@@ -40,6 +40,7 @@ import { tag } from "../ui/markup";
 import { t } from "../i18n";
 import { RichText } from "../ui/RichText";
 import { boardTheme, drawFloorDecor, drawWaterDecor, tileRand } from "../ui/boardDecor";
+import { ballIcon } from "../ui/ballIcon";
 import { trainerLook } from "../trainerLook";
 import { trainerTexture } from "../trainerSprites";
 import { COLORS, FONT, PHONE, TYPE_COLORS, px } from "../ui/theme";
@@ -127,6 +128,9 @@ export class OverworldScene extends Phaser.Scene {
   private hudPending = false;
   private stripBox!: Phaser.GameObjects.Container;
   private statsText!: RichText;
+  /** The ball icons with their counts beside the party grid, rebuilt only when a count changes. */
+  private ballBox!: Phaser.GameObjects.Container;
+  private ballKey = "";
   private msgText!: RichText;
   private btnBox!: Phaser.GameObjects.Container;
   private stripKey = "";
@@ -181,8 +185,10 @@ export class OverworldScene extends Phaser.Scene {
     this.statsText = new RichText(this, STRIP_W + 6, 0, 240 - STRIP_W - 6, 12);
     this.msgText = new RichText(this, 0, 0, 240, 12);
     this.btnBox = this.add.container(0, 0);
+    this.ballBox = this.add.container(STRIP_W + 6, 0);
+    this.ballKey = "";
     this.stripKey = this.btnKey = "";
-    this.buttons.add([this.stripBox, this.statsText, this.msgText, this.btnBox]);
+    this.buttons.add([this.stripBox, this.statsText, this.ballBox, this.msgText, this.btnBox]);
 
     this.input.on("pointermove", (p: Phaser.Input.Pointer) => {
       // Only redo the path preview when the pointer reaches another tile.
@@ -574,14 +580,26 @@ export class OverworldScene extends Phaser.Scene {
       `${tag("title", t("Rare Candy"))} ${tag("num", inventory.items.candy ?? 0)}`,
       `${tag("title", CONTENT.terms.food)} ${tag("num", Object.entries(inventory.items).filter(([id]) => PROGRESSION.items[id]?.kind === "food").reduce((n, [, c]) => n + c, 0))}`,
       `${tag("title", t("Meal"))} ${world.meal ? tag(world.meal.id === "hungry" ? "bad" : "good", world.meal.name) : tag("dim", t("none"))}`,
-      ...Object.entries(inventory.balls).map(([id, n]) => `${tag("title", CONTENT.balls[id]?.name ?? id)} ${tag("num", n)}`),
     ];
     const h = this.hud.setMarkup(lines.join("\n"));
     let y = 16 + h + 6;
     const stripTop = y;
     const below = this.partyStrip(y);
     this.statsText.setY(stripTop - 2);
-    y = Math.max(below, stripTop + this.statsText.setMarkup(lower.join("\n")) + 8);
+    const statsH = this.statsText.setMarkup(lower.join("\n"));
+    // The balls as their icons with the count, under the stats.
+    this.ballBox.setY(stripTop + statsH + 2);
+    const balls = Object.keys(CONTENT.balls).map((id) => `${id}:${inventory.balls[id] ?? 0}`).join("|");
+    if (balls !== this.ballKey) {
+      this.ballKey = balls;
+      this.ballBox.removeAll(true);
+      Object.keys(CONTENT.balls).forEach((id, i) => {
+        const n = inventory.balls[id] ?? 0;
+        this.ballBox.add(this.add.image(i * 38 + 8, 8, ballIcon(this, id)).setDisplaySize(16, 16).setAlpha(n > 0 ? 1 : 0.4));
+        this.ballBox.add(this.add.text(i * 38 + 18, 1, `${n}`, { fontFamily: FONT, fontSize: px(12), color: n > 0 ? "#f5d76e" : COLORS.dim }));
+      });
+    }
+    y = Math.max(below, stripTop + statsH + 24);
     // The latest message (path preview, heal, errors) sits right under the stats, so it never falls off small screens.
     this.msgText.setY(y);
     const mh = this.msgText.setMarkup(this.message);
