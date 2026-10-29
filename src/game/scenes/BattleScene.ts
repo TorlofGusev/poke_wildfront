@@ -1,5 +1,6 @@
 import Phaser from "phaser";
 import { drawBush, drawMud, drawRock, drawWater } from "../ui/terrainArt";
+import { shaderGround, TerrainShader } from "../terrainShader";
 import { ArenaFx } from "../arenaFx";
 import { playMoveFx } from "../moveFx";
 import { playMusic, stopMusic } from "../music";
@@ -166,6 +167,8 @@ export class BattleScene extends Phaser.Scene {
   private boardImage: Phaser.GameObjects.RenderTexture | null = null;
   /** The field's life: motes, glinting water, burning and bubbling hazards, marks hits leave. */
   private arena: ArenaFx | null = null;
+  /** The GPU-painted ground (WebGL); without it the board is drawn with shapes. */
+  private ground: TerrainShader | null = null;
   private units = new Map<string, UnitView>();
   private panel!: Phaser.GameObjects.Container;
   private infoText!: RichText;
@@ -210,6 +213,7 @@ export class BattleScene extends Phaser.Scene {
     this.boardGfx = null;
     this.boardImage = null;
     this.arena = null;
+    this.ground = null;
     this.reachGfx = null;
     this.reachImage = null;
     this.reachFor = null;
@@ -309,6 +313,17 @@ export class BattleScene extends Phaser.Scene {
     const g = this.boardGfx.clear();
     const field = this.state?.field ?? this.scenario.field;
     const theme = boardTheme(this.biome ?? this.npcMapId ?? this.scenario.id);
+    if (shaderGround(this)) {
+      const origin = fieldToWorld({ x: 0, y: 0 });
+      const board = { x: origin.x, y: origin.y, ...this.boardPx() };
+      this.ground ??= new TerrainShader(this, board, theme, fieldToWorld);
+      this.ground.update(field);
+      if (!this.arena) {
+        this.arena = new ArenaFx(this, board, theme, S);
+        this.arena.onLights = (l) => this.ground?.setLights(l);
+      }
+      return;
+    }
     // Floor in one-unit squares of slightly varied colour, with small props on open ground.
     // No grid: one base colour, then soft overlapping blotches of the varied tones.
     const o = fieldToWorld({ x: 0, y: 0 });

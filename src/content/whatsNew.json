@@ -2,6 +2,7 @@
  {"version": "0.103",
   "date": "2026-10-29",
   "items": [
+  "The battle ground is now painted per pixel on the graphics card, from code: grass with tufts and flowers, boulders with real relief and shadows, leafy bush canopies, water with moving ripples, caustics and foam, wet mud. Burning ground and attacks light up the ground around them.",
   "Battlefield terrain redrawn: rocks with shadows, a lit top face and creases; bushes as round leafy canopies; water deepening towards the middle with a foamy shore; wet mud with glossy spots; the ground is no longer a checkerboard.",
   "Living battlefields: burning ground flickers and smokes, poison bubbles, mud pops; area attacks land with a shockwave, dust and a shake; hits leave scorches, cracks, wet splashes, frost and leaves on the ground for the rest of the battle; ground turning into water, mud, grass or rock bursts out; drifting motes, glinting water, shaded edges and shadows under every Pokémon."
   ]

@@ -2,6 +2,7 @@ import Phaser from "phaser";
 import type { Hazard, MoveDef } from "../core/battle";
 import type { BoardTheme } from "./ui/boardDecor";
 import { TYPE_COLORS } from "./ui/theme";
+import type { GroundLight } from "./terrainShader";
 
 /**
  * The battlefield reacting to the battle, drawn in code: drifting motes and shimmering water while it
@@ -52,8 +53,12 @@ function ensureTextures(scene: Phaser.Scene): void {
 export class ArenaFx {
   private readonly decals: Phaser.GameObjects.RenderTexture;
   private readonly brush: Phaser.GameObjects.Graphics;
-  private readonly hazardViews = new Map<number, { objs: Phaser.GameObjects.GameObject[]; hazard: Hazard }>();
+  private readonly hazardViews = new Map<number, { objs: Phaser.GameObjects.GameObject[]; hazard: Hazard; center: Pt }>();
   private waterFx: Phaser.GameObjects.GameObject[] = [];
+  /** Short bursts of light from attacks, fading out. */
+  private flashes: { light: GroundLight; start: number; ms: number }[] = [];
+  /** Where the ground lights come from each frame (the GPU ground, when there is one). */
+  onLights: ((lights: GroundLight[]) => void) | null = null;
 
   constructor(
     private readonly scene: Phaser.Scene,
@@ -69,6 +74,29 @@ export class ArenaFx {
     this.brush = scene.make.graphics({}, false);
     this.ambient();
     this.vignette();
+    scene.events.on("update", this.tickLights, this);
+    scene.events.once("shutdown", () => scene.events.off("update", this.tickLights, this));
+  }
+
+  /** Burning ground flickers; attack flashes fade; both light the ground around them. */
+  private tickLights(): void {
+    if (!this.onLights) return;
+    const now = this.scene.time.now;
+    this.flashes = this.flashes.filter((f) => now - f.start < f.ms);
+    const out: GroundLight[] = [];
+    for (const v of this.hazardViews.values()) {
+      if (v.hazard.kind !== "fire") continue;
+      const c = v.center;
+      const flicker = 0.75 + 0.15 * Math.sin(now / 70 + c.x) + 0.1 * Math.sin(now / 37 + c.y);
+      out.push({ x: c.x, y: c.y, radius: v.hazard.radius * this.unit * 2.4, intensity: 0.9 * flicker, color: 0xff8a30 });
+    }
+    for (const f of this.flashes) out.push({ ...f.light, intensity: f.light.intensity * (1 - (now - f.start) / f.ms) });
+    this.onLights(out.sort((a, b) => b.intensity - a.intensity));
+  }
+
+  /** A burst of light on the ground (an attack landing, a bolt). */
+  flash(at: Pt, color: number, radius: number, ms = 450, intensity = 1.3): void {
+    this.flashes.push({ light: { x: at.x, y: at.y, radius, intensity, color }, start: this.scene.time.now, ms });
   }
 
   /** Motes drifting over the field: pollen, cave dust, sea spray. */
@@ -130,7 +158,7 @@ export class ArenaFx {
     }
     for (const h of hazards) {
       if (this.hazardViews.has(h.id)) continue;
-      this.hazardViews.set(h.id, { hazard: h, objs: this.hazardView(h, toWorld(h.at)) });
+      this.hazardViews.set(h.id, { hazard: h, center: toWorld(h.at), objs: this.hazardView(h, toWorld(h.at)) });
     }
   }
 
@@ -244,6 +272,7 @@ export class ArenaFx {
     const color = TYPE_COLORS[move.type] ?? 0xffffff;
     const r = Math.max(0.6, radiusUnits) * this.unit;
     const area = move.shape.kind !== "single";
+    this.flash(at, color, r * (area ? 2.6 : 2), area ? 600 : 380, area ? 1.4 : 1);
     if (area) {
       const flash = s.add.circle(at.x, at.y, r, color, 0.45).setDepth(1.75).setBlendMode(Phaser.BlendModes.ADD);
       s.tweens.add({ targets: flash, alpha: 0, duration: 420, onComplete: () => flash.destroy() });
