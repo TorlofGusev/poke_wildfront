@@ -567,7 +567,7 @@ export class OverworldScene extends Phaser.Scene {
     if (mh) y += mh + 8;
     this.btnBox.setY(y);
     const pending = roster.party.some((m) => pendingChoice(CONTENT, PROGRESSION, m) || m.unspentPoints > 0);
-    const spawns = spawnsAt(WORLD_CONTENT, currentWorld(), world.pos);
+    const spawns = spawnsAt(WORLD_CONTENT, currentWorld(), this.spawnSpot());
     const hurt = roster.party.some((m) => m.hp < memberMaxHp(CONTENT, PROGRESSION, m));
     const cost = centerTreatmentCost(session.game, CAMP.treatmentPerMark);
     const key = [pending, this.moving, spawns.length > 0, this.spawnPanel !== null, here.id, hurt, cost, session.game.money >= cost].join("|");
@@ -620,6 +620,14 @@ export class OverworldScene extends Phaser.Scene {
     this.toast(biomeAt(WORLD_CONTENT, currentWorld(), p).id === "town" ? `${name}\n${CONTENT.terms.healCenter} · Poké Mart` : name);
   }
 
+  /** Where the wild list looks: here, or off spawn ground (paths, towns) the nearest spot wild Pokémon turn up on this map. */
+  private spawnSpot(): Point {
+    const here = session.game.world.pos;
+    if (spawnsAt(WORLD_CONTENT, currentWorld(), here).length) return here;
+    const spots = currentWorld().spawnZones.flatMap((z) => z.points);
+    return spots.reduce<Point>((best, q) => (Math.hypot(q.x - here.x, q.y - here.y) < Math.hypot(best.x - here.x, best.y - here.y) ? q : best), spots[0] ?? here);
+  }
+
   /** Lists what can spawn in the current area with its share and levels; unmet species stay "???". */
   private toggleSpawnPanel(): void {
     if (this.spawnPanel) {
@@ -629,7 +637,7 @@ export class OverworldScene extends Phaser.Scene {
       return;
     }
     const { world } = session.game;
-    const spawns = spawnsAt(WORLD_CONTENT, currentWorld(), world.pos);
+    const spawns = spawnsAt(WORLD_CONTENT, currentWorld(), this.spawnSpot());
     const known = knownSpecies(session.game);
     const rows = spawns.map((s) => {
       const sp = CONTENT.species[s.speciesId]!;
@@ -640,7 +648,7 @@ export class OverworldScene extends Phaser.Scene {
       return `${name} ${tag("num", `${Math.round(s.chance * 100)}%`.padStart(4))}  ${tag("dim", `Lv ${s.levels.min}-${s.levels.max}`)}${limit}`;
     });
     const lines = [
-      tag("title", t("Wild Pokémon · {area}", { area: areaName(WORLD_CONTENT, currentWorld(), world.pos) })),
+      tag("title", t("Wild Pokémon · {area}", { area: areaName(WORLD_CONTENT, currentWorld(), this.spawnSpot()) })),
       tag("dim", t("Share of wild Pokémon here. Species you have not met yet show as ???.")),
       "",
       ...rows,

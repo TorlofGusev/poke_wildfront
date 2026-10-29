@@ -1,5 +1,6 @@
 [
  {"version": "0.99", "date": "2026-10-29", "items": [
+  "The turn passes on its own again when only a sliver of movement is left and no move has anything in reach.", "Wild Pokémon here works on paths too: it lists the nearest grass or cave of the map.",
   "The bag lists your key items (Old Amber and the like) with what they are for.",
   "Each portrait in the turn order shows its Pokémon's level.",
   "Big moves have a price: Double-Edge and Head Smash hurt the user too, Superpower weakens it, Outrage confuses it; they hit a little harder for it.",

@@ -1389,7 +1389,8 @@ export class BattleScene extends Phaser.Scene {
     const turn = state.turn!;
     if (turn.fresh || turn.movePointsLeft >= MIN_STEP) return false;
     const unit = activeUnit(state)!;
-    if (unit.moves.some((m) => !moveUnavailableReason(state, CONTENT, unit.id, m))) return false;
+    // Too little movement left to walk, so a move only counts while something is already in its reach.
+    if (unit.moves.some((m) => !moveUnavailableReason(state, CONTENT, unit.id, m) && freeHasTarget(state, CONTENT, unit.id, m))) return false;
     return turn.actionUsed || !state.captureAllowed || !Object.keys(state.balls).some((b) => (state.balls[b] ?? 0) > 0 && captureTargets(state, CONTENT, unit.id, b).length > 0);
   }
 
