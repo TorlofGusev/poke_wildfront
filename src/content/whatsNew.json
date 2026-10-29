@@ -1,5 +1,6 @@
 [
  {"version": "0.99", "date": "2026-10-29", "items": [
+  "Each portrait in the turn order shows its Pokémon's level.",
   "Big moves have a price: Double-Edge and Head Smash hurt the user too, Superpower weakens it, Outrage confuses it; they hit a little harder for it.",
   "New move effects: Double Hit lands twice, Chip Away and Feint Attack ignore protective buffs, False Swipe never knocks out (handy for catching), Lash Out hits harder while the user has an ailment, Mach Punch dashes in.",
   "Guillotine now finishes off hurt foes instead of simply out-hitting everything.",

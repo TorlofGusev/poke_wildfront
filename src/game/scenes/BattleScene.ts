@@ -836,8 +836,10 @@ export class BattleScene extends Phaser.Scene {
       const active = i === 0;
       const color = u.side === "player" ? COLORS.player : COLORS.enemy;
       items.push(this.add.rectangle(x, 10, 26, 26, 0x10141c).setOrigin(0).setStrokeStyle(active ? 3 : 2, active ? COLORS.active : color));
-      if (this.textures.exists(portraitKey(u.speciesId))) items.push(this.add.image(x + 13, 23, portraitKey(u.speciesId)).setDisplaySize(22, 22));
+      if (this.textures.exists(portraitKey(u.speciesId))) items.push(this.add.image(x + 13, 23, portraitKey(u.speciesId)).setDisplaySize(26, 26));
       else items.push(this.add.text(x + 13, 23, "?", { fontFamily: FONT, fontSize: "14px", color: COLORS.text }).setOrigin(0.5));
+      items.push(this.add.rectangle(x, 10, 26, 26).setOrigin(0).setStrokeStyle(active ? 3 : 2, active ? COLORS.active : color));
+      items.push(this.add.text(x + 25, 37, String(u.level), { fontFamily: FONT, fontSize: "10px", color: COLORS.text, stroke: "#10141c", strokeThickness: 3 }).setOrigin(1, 1));
       if (i < state.queue.length - 1) items.push(this.add.text(x + 27, 23, "›", { fontFamily: FONT, fontSize: "12px", color: COLORS.dim }).setOrigin(0, 0.5));
     });
     this.orderStrip = this.add.container(0, 0, items);
