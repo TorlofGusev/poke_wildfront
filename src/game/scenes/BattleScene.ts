@@ -1734,14 +1734,13 @@ export class BattleScene extends Phaser.Scene {
     );
   }
 
-  /** A new round slides in over the field: everyone acts again, in a fresh Speed order. */
+  /** A new round slides in over the field, so a Pokémon acting again is no surprise. */
   private roundBanner(round: number): Promise<void> {
     const cx = (BOARD_X + PANEL_X) / 2;
     const cy = BOARD_Y + 150;
-    const bg = this.add.rectangle(cx, cy, 300, 58, 0x10141c, 0.9).setStrokeStyle(2, 0xf5d76e);
-    const title = this.add.text(cx, cy - 9, t("Round {n}", { n: round }), { fontFamily: FONT, fontSize: "24px", color: "#f5d76e" }).setOrigin(0.5);
-    const sub = this.add.text(cx, cy + 16, t("Everyone acts again · new order"), { fontFamily: FONT, fontSize: px(11), color: COLORS.dim }).setOrigin(0.5);
-    const box = this.add.container(0, 0, [bg, title, sub]).setDepth(30).setAlpha(0);
+    const bg = this.add.rectangle(cx, cy, 220, 44, 0x10141c, 0.9).setStrokeStyle(2, 0xf5d76e);
+    const title = this.add.text(cx, cy, t("Round {n}", { n: round }), { fontFamily: FONT, fontSize: "24px", color: "#f5d76e" }).setOrigin(0.5);
+    const box = this.add.container(0, 0, [bg, title]).setDepth(30).setAlpha(0);
     box.x = -60;
     const step = (props: Record<string, number>, duration: number, ease = "Linear") =>
       new Promise<void>((resolve) => this.tweens.add({ targets: box, ...props, duration, ease, onComplete: () => resolve() }));
