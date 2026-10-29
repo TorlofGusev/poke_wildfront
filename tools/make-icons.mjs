@@ -1,4 +1,4 @@
-// Renders the Apple touch icon (from the inline SVG favicon in index.html) and the link-preview image
+// Renders the app icons (installable app, Apple touch icon) (from the inline SVG favicon in index.html) and the link-preview image
 // (the title screen) into public/. Run after `npm run build:single`: node tools/make-icons.mjs
 import { chromium } from "playwright";
 import { readFileSync } from "node:fs";
@@ -15,10 +15,14 @@ const shot = async (size, path, pad, bg) => {
   await page.close();
 };
 await shot(180, "public/apple-touch-icon.png", 0.1, "#10141c");
+await shot(192, "public/icon-192.png", 0.04, "transparent");
+await shot(512, "public/icon-512.png", 0.04, "transparent");
+// Maskable: the launcher may crop to a circle, so the ball sits inside the 80% safe zone.
+await shot(512, "public/icon-maskable-512.png", 0.14, "#10141c");
 
 const page = await browser.newPage({ viewport: { width: 1200, height: 630 } });
 await page.goto(pathToFileURL(resolve("dist-single/index.html")).href);
 await page.waitForTimeout(4000);
 await page.screenshot({ path: "public/og-image.png" });
 await browser.close();
-console.log("apple-touch-icon and og-image written to public/");
+console.log("icons and og-image written to public/");
