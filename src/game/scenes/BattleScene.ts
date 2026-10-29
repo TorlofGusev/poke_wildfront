@@ -987,11 +987,13 @@ export class BattleScene extends Phaser.Scene {
           : !used && !reason && !hasTarget ? t("no target {r}", { r: range.min === range.max ? range.max : `${range.min}-${range.max}` })
           // Basic and special need no label: the groups (parted by thin rules) say it.
           : move.kind === "basic" || move.kind === "special" ? ""
-          : move.kind === "bond" ? `${CONTENT.terms.bond} ${bondCostFor(move, unit)}`
+          : move.kind === "bond" ? ""
           : unit.usedUltimates.includes(moveId) ? t("ult used") : t("ult 1×");
         const ownBasic = basics.find((b) => b !== "struggle") ?? unit.moves.find((m) => m !== "struggle" && CONTENT.moves[m]!.kind === "basic");
         const power = moveId === "struggle" && ownBasic ? Math.round(CONTENT.moves[ownBasic]!.power * CONTENT.rules.engagement.fallbackPower) : move.power;
-        button(`${move.name.padEnd(13)} ${power ? t("Power {n}", { n: String(power).padStart(2) }) : "        "}  ${status}`, hasTarget, this.selectedMove === moveId, () => {
+        // A Bond move's cost as Bond pips (the bar's ●), always shown.
+        const pips = move.kind === "bond" ? ` ${"●".repeat(bondCostFor(move, unit))}` : "";
+        button(`${(move.name + pips).padEnd(13)} ${power ? t("Power {n}", { n: String(power).padStart(2) }) : "        "}  ${status}`, hasTarget, this.selectedMove === moveId, () => {
           this.selectedBall = null;
           this.selectedMove = this.selectedMove === moveId ? null : moveId;
           this.refreshAll();

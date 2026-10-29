@@ -5,7 +5,7 @@
   "Guillotine now finishes off hurt foes instead of simply out-hitting everything.",
   "Every Lv 3 focus is a real choice: no option is just a stronger copy of another.",
   "The music is a little quieter.",
-  "Move lists (battle and Pokémon screen) are grouped by kind, a thin line between basic attacks, skills and Bond moves; the battle panel drops its repeated headers.",
+  "Move lists (battle and Pokémon screen) are grouped by kind, a thin line between basic attacks, skills and Bond moves; the battle panel drops its repeated headers; a Bond move shows its cost as Bond pips (●●) on its button.",
   "Mastery trees rebuilt: every row offers one kind of move. Lv 3 and Lv 24 Bond moves, Lv 6 and Lv 12 a skill plus a utility (Disable, Helping Hand, Knock Off…), Lv 18 a second basic attack to swap in for coverage.",
   "A move's kind is now its own: big hits (canon power 85+) are Bond moves, weak plain hits are basic attacks, everything else is a skill.",
   "Momentum (the Speed bonus after moving) no longer counts against the foe you began the turn engaged with: stepping out and back in gains nothing.",
