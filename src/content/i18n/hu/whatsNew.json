@@ -4,7 +4,9 @@
   "Új move-hatások: a Double Hit kétszer talál, a Chip Away és a Feint Attack átüt a védő buffokon, a False Swipe sosem üt ki (befogáshoz hasznos), a Lash Out erősebb, ha a használón negatív státusz van, a Mach Punch rárontva támad.",
   "A Guillotine mostantól a sérült ellenfelet végzi ki, nem egyszerűen a legerősebb ütés.",
   "Minden Lv3 focus valódi döntés: egyik opció sem csak egy másik erősebb másolata.",
-  "A zene kicsit halkabb lett."
+  "A zene kicsit halkabb lett.",
+  "Labda-ikon a böngészőfülön, és kép, amikor a linket megosztják.",
+  "Ikon a böngészőfülön, telefonon pedig telepíthető a játék: a Hozzáadás a kezdőképernyőhöz után teljes képernyőn, alkalmazásként indul."
  ]},
  {"items": [
   "Javítva: az Oddish és még 38 Pokémon special nélkül kezdett (a kezdő moveja Bond-dá vált).",
