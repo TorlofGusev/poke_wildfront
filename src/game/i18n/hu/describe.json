@@ -232,5 +232,9 @@
  "{unit} watches with {move}: the first foe moving there is struck": "{unit} őrködik: {move} — az első ellenfelet, aki ott mozog, megüti",
  "{unit} strikes {target} on the move!": "{unit} lecsap a mozgó {target} Pokémonra!",
  "{unit}'s {move} hits nothing": "{unit} {move} lépése nem talál senkit",
- "The user gets {status} too, for {n} turns (through its own next turn)": "A használó is {status} lesz {n} körre (a saját következő körén át)"
+ "The user gets {status} too, for {n} turns (through its own next turn)": "A használó is {status} lesz {n} körre (a saját következő körén át)",
+ "{who} gains {x} — {total} left{reason}": "{who} +{x} — maradt {total}{reason}",
+ "{who} spends {x} — {total} left{reason}": "{who} −{x} — maradt {total}{reason}",
+ "{unit} gets {status} ({n} turn)": "{unit}: {status} ({n} kör)",
+ "{unit} gets {status} ({n} turns)": "{unit}: {status} ({n} kör)"
 }

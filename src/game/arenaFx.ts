@@ -342,8 +342,9 @@ export class ArenaFx {
       return;
     }
     if (kind === "scorch") {
-      blob(0x1a1008, 0.28, r, 9);
-      blob(0x000000, 0.25, r * 0.6, 5);
+      // Burnt earth, not a hole: warm dark brown, soft.
+      blob(0x3a2616, 0.3, r, 9);
+      blob(0x24180e, 0.22, r * 0.6, 5);
     } else if (kind === "stain") {
       blob(0x3a1a50, 0.25, r, 8);
     } else if (kind === "leaves") {

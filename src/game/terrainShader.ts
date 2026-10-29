@@ -104,12 +104,12 @@ vec3 animated(vec2 px, vec4 m, vec3 col) {
       float e = length(px - P.xy) / P.z + (fbm(px * 0.05 + float(i) * 9.1) - 0.5) * 0.35;
       if (e > 1.05) continue;
       if (P.w < 1.5) {
-        col = mix(col, col * 0.35 + vec3(0.06, 0.02, 0.0), smoothstep(1.05, 0.7, e));
+        col = mix(col, col * 0.35 + vec3(0.06, 0.02, 0.0), smoothstep(1.05, 0.7, e) * open);
         vec2 q = px * 0.035 + vec2(0.0, uTime * 1.6);
         float f = fbm(q + vec2(fbm(q * 1.7 + uTime * 0.7) * 1.5, 0.0)) * smoothstep(1.0, 0.25, e);
         float heat = clamp(f * 1.35, 0.0, 1.0);
         vec3 flame = mix(vec3(0.55, 0.07, 0.02), vec3(1.0, 0.45, 0.06), smoothstep(0.25, 0.55, heat));
-        flame = mix(flame, vec3(1.0, 0.92, 0.55), smoothstep(0.62, 0.9, heat));
+        flame = mix(flame, vec3(1.0, 0.82, 0.38), smoothstep(0.62, 0.9, heat)); // the hottest core stays golden, never white
         float a = smoothstep(0.22, 0.42, heat);
         a *= open;
         col = mix(col, flame, a);

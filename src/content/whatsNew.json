@@ -2,6 +2,7 @@
  {"version": "0.104",
   "date": "2026-10-29",
   "items": [
+  "Battle fixes: Pokémon stand on their shadows (flyers hover and bob), a gold arrow marks whose turn it is, HP bars drain with a trailing segment (red under 20%), the walk area is a light outline that clears when it should, range rings stay on the board, trainer and Gym battles use their own arena look, flames no longer burn on rocks, clearer log wording.",
   "Battlefields reworked to look like a Pokémon route: rocks, cover and water never pile on each other any more; cover is tall grass (moss in caves, dune grass on the shore); brighter grass and warmer sand; Pokémon stand on a flat shadow with a thin team ring and a framed HP bar; the Full log button fits its label."
   ]
  },

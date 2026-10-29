@@ -15,6 +15,8 @@ export interface LogContext {
   isPlayer(unitId: string): boolean;
   moveName(moveId: string): string;
   statusName(statusId: string): string;
+  /** Whether a status is a buff (worded as a boost, not an affliction). */
+  statusBuff?(statusId: string): boolean;
   ballName(ballId: string): string;
   abilityName(abilityId: string): string;
   /** Display name of a named combo (rules.combos). */
@@ -75,6 +77,7 @@ export function formatEvent(e: BattleEvent, ctx: LogContext): LogEntry | null {
     }
     case "statusApplied": {
       const vars = { unit: name(e.unitId), status: tag("status", ctx.statusName(e.status)), n: e.duration };
+      if (ctx.statusBuff?.(e.status)) return { text: e.duration === 1 ? t("{unit} gets {status} ({n} turn)", vars) : t("{unit} gets {status} ({n} turns)", vars), tone: "status" };
       return { text: e.duration === 1 ? t("{unit} is afflicted with {status} ({n} turn)", vars) : t("{unit} is afflicted with {status} ({n} turns)", vars), tone: "status" };
     }
     case "statusExpired":
@@ -95,9 +98,9 @@ export function formatEvent(e: BattleEvent, ctx: LogContext): LogEntry | null {
       const reason = e.reason === "knockout" ? t(" (knockout)") : e.reason === "fainted" ? t(" (a fallen ally)") : e.reason === "combo" ? t(" (combo)") : "";
       const player = e.side === "player";
       const vars = { who: tag(player ? "player" : "enemy", player ? t("Your team") : t("Foes")), x: tag("num", `${Math.abs(e.amount)} ${ctx.bondName}`), total: e.total, reason };
-      const text = e.amount > 0
-        ? t("{who} gain {x} — {total} left{reason}", vars)
-        : t("{who} spend {x} — {total} left{reason}", vars);
+      const text = player
+        ? (e.amount > 0 ? t("{who} gains {x} — {total} left{reason}", vars) : t("{who} spends {x} — {total} left{reason}", vars))
+        : (e.amount > 0 ? t("{who} gain {x} — {total} left{reason}", vars) : t("{who} spend {x} — {total} left{reason}", vars));
       return { text, tone: "info" };
     }
     case "abilityTriggered":

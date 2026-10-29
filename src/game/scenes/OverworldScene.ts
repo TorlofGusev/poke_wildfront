@@ -529,7 +529,7 @@ export class OverworldScene extends Phaser.Scene {
     const arena = battleArena(base, biomeId, (Date.now() >>> 0) ^ npc.pos.x * 31 ^ npc.pos.y, npc.kind === "wild" ? "boss" : "trainer", this.slots(), enemyCount);
     const scenario = { ...trainerScenario(session.game, npc, arena, (mon) => trainerSetup(CONTENT, PROGRESSION, mon), this.slots()), name: `${npc.name} · ${formationLabel(arena.formation)}` };
     sfx(this, "encounter");
-    this.scene.start("Battle", { scenario, npcId: npc.id, mapId: def.id });
+    this.scene.start("Battle", { scenario, npcId: npc.id, mapId: def.id, biome: biomeId });
   }
 
   /** Pickup markers by what they hold: ★ rare one-time find, ◆ held item, Poké Ball, ✚ healing, berry. */

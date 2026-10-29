@@ -62,7 +62,7 @@ import { stripMarkup, tag } from "../ui/markup";
 import { RichText } from "../ui/RichText";
 import { t } from "../i18n";
 import { boardTheme, drawFloorDecor, drawWaterDecor, floorColor, tileRand } from "../ui/boardDecor";
-import { animKey, FACE_LEFT, FACE_RIGHT, facingFor, hasSprite, portraitKey, type Facing, type SpriteAnim } from "../sprites";
+import { footOrigin, animKey, FACE_LEFT, FACE_RIGHT, facingFor, hasSprite, portraitKey, type Facing, type SpriteAnim } from "../sprites";
 import { BOARD_X, BOARD_Y, COLORS, FIELD_S, fieldToWorld, FONT, PANEL_X, PANEL_W, TYPE_COLORS, UNIT_SCALE, worldToField, px, PHONE } from "../ui/theme";
 
 type Phase = "deploy" | "battle" | "over";
@@ -70,6 +70,10 @@ type Phase = "deploy" | "battle" | "over";
 interface UnitView {
   container: Phaser.GameObjects.Container;
   hpBar: Phaser.GameObjects.Rectangle;
+  /** Pale segment that trails the HP bar down after a hit, as in the handhelds. */
+  hpLag: Phaser.GameObjects.Rectangle;
+  /** Bobbing marker over the head of the Pokémon whose turn it is. */
+  chevron: Phaser.GameObjects.Graphics;
   /** Gold Spirit bar under the HP bar. */
   spiritBar: Phaser.GameObjects.Rectangle;
   /** Team-coloured base under the Pokémon's feet. */
@@ -408,15 +412,29 @@ export class BattleScene extends Phaser.Scene {
     // At the start the two sides face each other: enemies look at the deployment spots, the party at the enemies.
     const look = this.startLookAt(side);
     const facing = look ? facingFor(fieldToWorld(look).x - x, fieldToWorld(look).y - y) : side === "player" ? FACE_RIGHT : FACE_LEFT;
+    // Feet on the shadow: the origin is where this species' sprite really ends (frames have empty space below).
+    const flying = species.types.includes("flying");
     const sprite = hasSprite(speciesId)
-      ? this.add.sprite(0, 8, `${speciesId}-idle`).setOrigin(0.5, 0.82).setScale(1.25).play(animKey(speciesId, "idle", facing))
+      ? this.add.sprite(0, flying ? -1 : 6, `${speciesId}-idle`).setOrigin(0.5, footOrigin(this, speciesId)).setScale(1.25).play(animKey(speciesId, "idle", facing))
       : null;
+    // Flyers hover a little and bob over a smaller shadow.
+    if (sprite && flying) {
+      shadow.setScale(0.75);
+      this.tweens.add({ targets: sprite, y: -4, duration: 1200, yoyo: true, repeat: -1, ease: "Sine.easeInOut" });
+    }
     // A framed HP bar like the handhelds' (dark case, light rim), the Spirit line tucked under it.
-    const hpBg = this.add.rectangle(-19, 21, 38, 6, 0x202830).setOrigin(0, 0.5).setStrokeStyle(1, 0xe8ecf4, 0.85);
+    // Ally frames rimmed blue, foes red, so a glance tells the sides apart.
+    const hpBg = this.add.rectangle(-19, 21, 38, 6, 0x202830).setOrigin(0, 0.5).setStrokeStyle(1, side === "player" ? 0xa8d4ff : 0xffa8a8, 0.95);
+    const hpLag = this.add.rectangle(-18, 21, 36, 4, 0xf0a0a0).setOrigin(0, 0.5);
     const hpBar = this.add.rectangle(-18, 21, 36, 4, 0x7ed321).setOrigin(0, 0.5);
+    // The turn marker: a small gold arrow over the head, bobbing (hidden until it is this one's turn).
+    const top = sprite ? sprite.y - sprite.displayHeight * sprite.originY : -18;
+    const chevron = this.add.graphics({ x: 0, y: top - 7 }).setVisible(false);
+    chevron.fillStyle(0x10141c, 1).fillTriangle(-6, -5, 6, -5, 0, 3).fillStyle(0xf5d76e, 1).fillTriangle(-4, -4, 4, -4, 0, 1);
+    this.tweens.add({ targets: chevron, y: top - 11, duration: 450, yoyo: true, repeat: -1, ease: "Sine.easeInOut" });
     const spiritBar = this.add.rectangle(-18, 25.5, 0, 2, 0xf5d76e).setOrigin(0, 0.5);
-    const container = this.add.container(x, y, [shadow, ring, ...(sprite ? [sprite] : []), body, label, hpBg, hpBar, spiritBar]).setScale(UNIT_SCALE);
-    this.units.set(id, { container, hpBar, spiritBar, ring, body, label, sprite, speciesId, facing });
+    const container = this.add.container(x, y, [shadow, ring, ...(sprite ? [sprite] : []), body, label, hpBg, hpLag, hpBar, spiritBar, chevron]).setScale(UNIT_SCALE);
+    this.units.set(id, { container, hpBar, hpLag, chevron, spiritBar, ring, body, label, sprite, speciesId, facing });
     // Species without a sprite show as a type-coloured disc with their initials.
     body.setVisible(!sprite);
     label.setVisible(!sprite);
@@ -460,15 +478,37 @@ export class BattleScene extends Phaser.Scene {
       view.spiritBar.fillColor = pumped ? 0xffffff : 0xf5d76e;
       const active = this.state.turn?.unitId === u.id;
       view.ring.setStrokeStyle(active ? 3 : 2, active ? COLORS.active : u.side === "player" ? COLORS.player : COLORS.enemy);
+      view.chevron.setVisible(active && !this.busy && this.phase === "battle");
     }
   }
 
-  private setHpBar(unitId: string, hp: number, maxHp: number): void {
+  /**
+   * The HP bar. Animated (a hit or a heal): it drains or fills over a moment, and a pale segment trails it
+   * down. Green above half, yellow, red under a fifth, as in the handhelds.
+   */
+  private setHpBar(unitId: string, hp: number, maxHp: number, animate = false): void {
     const view = this.units.get(unitId);
     if (!view) return;
     const frac = Math.max(0, hp) / maxHp;
-    view.hpBar.width = 36 * frac;
-    view.hpBar.fillColor = frac > 0.5 ? 0x7ed321 : frac > 0.25 ? 0xf5a623 : 0xd0021b;
+    const width = 36 * frac;
+    const color = frac > 0.5 ? 0x7ed321 : frac > 0.2 ? 0xf8d030 : 0xe0301e;
+    if (!animate) {
+      // A running drain is left to finish.
+      if (this.tweens.isTweening(view.hpBar)) return;
+      view.hpBar.width = width;
+      view.hpLag.width = width;
+      view.hpBar.fillColor = color;
+      return;
+    }
+    const from = view.hpBar.width;
+    this.tweens.killTweensOf([view.hpBar, view.hpLag]);
+    if (width < from) view.hpLag.width = from;
+    const ms = Math.min(900, 300 + Math.abs(from - width) * 18);
+    this.tweens.add({ targets: view.hpBar, width, duration: ms, ease: "Sine.easeOut", onUpdate: () => {
+      const f = view.hpBar.width / 36;
+      view.hpBar.fillColor = f > 0.5 ? 0x7ed321 : f > 0.2 ? 0xf8d030 : 0xe0301e;
+    } });
+    this.tweens.add({ targets: view.hpLag, width, delay: 250, duration: ms, ease: "Sine.easeIn" });
   }
 
   /** Hover (or tap) a foe: where it can walk next turn (orange) and how far its attacks reach from there (red ring). */
@@ -479,17 +519,18 @@ export class BattleScene extends Phaser.Scene {
     if (!state || !foe || foe.side !== "enemy" || foe.hp <= 0) return;
     const mp = movementPoints(CONTENT, foe, state);
     this.reachGfx ??= this.make.graphics({}, false);
-    this.threatImage ??= this.add.renderTexture(0, 0, this.scale.width, this.scale.height).setOrigin(0).setDepth(0).setAlpha(0.28);
+    this.threatImage ??= this.add.renderTexture(0, 0, this.scale.width, this.scale.height).setOrigin(0).setDepth(0);
     // Same foe, same state: the texture already shows it.
     if (this.threatFor?.state !== state || this.threatFor.unitId !== foe.id) {
       this.threatFor = { state, unitId: foe.id };
-      this.smoothCells(freeReachFor(state, foe.id, mp).cells, 0xffb347, this.reachGfx.clear());
+      // A foe's reach: an outline only, so it never muddies the walk area under it.
+      this.smoothCells(freeReachFor(state, foe.id, mp).cells, 0xffb347, this.reachGfx.clear(), 0.05, 0xffc070);
       this.threatImage.clear().draw(this.reachGfx).render();
     }
     this.threatImage.setVisible(true);
     const strike = Math.max(0, ...foe.moves.map((m) => CONTENT.moves[m]).filter((m) => m && m.power > 0).map((m) => freeRange(foe, m!, CONTENT).max));
     const c = fieldToWorld(foe.pos);
-    this.overlay.lineStyle(2, COLORS.target, 0.9).strokeCircle(c.x, c.y, (mp + strike) * S);
+    this.strokeCircleOnBoard(c.x, c.y, (mp + strike) * S, COLORS.target, 0.9, 2);
   }
 
   /** The battle as it would start with the current placements, for previews during deployment. */
@@ -533,17 +574,25 @@ export class BattleScene extends Phaser.Scene {
    * so the outline curves instead of stepping. Drawn opaque into a texture whose alpha shows it, so the
    * overlapping dots never show darker.
    */
-  private smoothCells(cells: readonly Point[], color: number, g: Phaser.GameObjects.Graphics): void {
-    this.fillCells(cells, color, 1, g);
+  private smoothCells(cells: readonly Point[], color: number, g: Phaser.GameObjects.Graphics, fill = 0.14, edge = color): void {
+    if (fill > 0) this.fillCells(cells, color, fill, g);
     const key = (x: number, y: number) => `${Math.round(x / CELL)},${Math.round(y / CELL)}`;
     const have = new Set(cells.map((c) => key(c.x, c.y)));
-    g.fillStyle(color, 1);
-    for (const c of cells) {
-      const inner = have.has(key(c.x + CELL, c.y)) && have.has(key(c.x - CELL, c.y)) && have.has(key(c.x, c.y + CELL)) && have.has(key(c.x, c.y - CELL));
-      if (inner) continue;
-      const p = fieldToWorld(c);
-      g.fillCircle(p.x, p.y, CELL * S * 1.3);
+    const border = cells.filter((c) => !(have.has(key(c.x + CELL, c.y)) && have.has(key(c.x - CELL, c.y)) && have.has(key(c.x, c.y + CELL)) && have.has(key(c.x, c.y - CELL))));
+    // A soft rim just inside the edge, then a crisp dotted line on it: the area reads as an outline, not a muddy fill.
+    if (fill > 0) {
+      g.fillStyle(color, fill);
+      for (const c of border) {
+        const p = fieldToWorld(c);
+        g.fillCircle(p.x, p.y, CELL * S * 1.1);
+      }
     }
+    g.fillStyle(edge, 0.95);
+    border.forEach((c, i) => {
+      if (i % 2) return;
+      const p = fieldToWorld(c);
+      g.fillRect(Math.round(p.x) - 1, Math.round(p.y) - 1, 2, 2);
+    });
   }
 
   /** The active Pokémon's walkable area, kept in a texture until the state changes. */
@@ -552,17 +601,19 @@ export class BattleScene extends Phaser.Scene {
     this.reachImage ??= this.add.renderTexture(0, 0, this.scale.width, this.scale.height).setOrigin(0).setDepth(0);
     const show = this.phase === "battle" && this.state && this.isPlayerTurn() && !this.busy && !this.selectedMove && !this.selectedBall && !this.hoveredMove;
     if (!show) {
-      if (this.reach) this.reachImage.clear();
+      // Hidden, not just cleared: a cleared render texture keeps showing until it renders again.
+      this.reachImage.setVisible(false);
       this.reach = null;
       return;
     }
+    this.reachImage.setVisible(true);
     const state = this.state!;
     if (this.reachFor?.state !== state) this.reachFor = { state, reach: freeReachFor(state, state.turn!.unitId) };
     if (this.reach === this.reachFor.reach) return;
     this.reach = this.reachFor.reach;
     const g = this.reachGfx.clear();
-    this.smoothCells(this.reach.cells, COLORS.reach, g);
-    this.reachImage.setAlpha(0.3).clear().draw(g).render();
+    this.smoothCells(this.reach.cells, COLORS.reach, g, 0.16, 0xb8fff0);
+    this.reachImage.setAlpha(1).clear().draw(g).render();
   }
 
   private drawArea(area: FreeArea, color: number, alpha: number): void {
@@ -626,6 +677,20 @@ export class BattleScene extends Phaser.Scene {
         const a = outline[i]!, b = outline[(i + 1) % outline.length]!;
         g.lineBetween(a.x, a.y, b.x, b.y);
       }
+    }
+  }
+
+  /** A circle's outline, only the parts on the board: range rings never run over the panel or the log. */
+  private strokeCircleOnBoard(cx: number, cy: number, r: number, color: number, alpha: number, width: number): void {
+    const o = fieldToWorld({ x: 0, y: 0 });
+    const { w, h } = this.boardPx();
+    const on = (x: number, y: number) => x >= o.x && x <= o.x + w && y >= o.y && y <= o.y + h;
+    const n = Math.max(48, Math.round(r / 3));
+    this.overlay.lineStyle(width, color, alpha);
+    for (let i = 0; i < n; i++) {
+      const a0 = (i / n) * Math.PI * 2, a1 = ((i + 1) / n) * Math.PI * 2;
+      const x0 = cx + Math.cos(a0) * r, y0 = cy + Math.sin(a0) * r, x1 = cx + Math.cos(a1) * r, y1 = cy + Math.sin(a1) * r;
+      if (on(x0, y0) && on(x1, y1)) this.overlay.lineBetween(x0, y0, x1, y1);
     }
   }
 
@@ -773,7 +838,7 @@ export class BattleScene extends Phaser.Scene {
         const range = freeRange(unit, move, CONTENT);
         const ring = fanLength(move) ?? range.max;
         const c = fieldToWorld(unit.pos);
-        if (ring > 0) this.overlay.fillStyle(COLORS.target, 0.15).fillCircle(c.x, c.y, ring * S).lineStyle(2, COLORS.target, 0.8).strokeCircle(c.x, c.y, ring * S);
+        if (ring > 0) this.strokeCircleOnBoard(c.x, c.y, ring * S, COLORS.target, 0.8, 2);
       } else if (hover) {
         this.drawWalk(unit, hover);
       }
@@ -1038,7 +1103,8 @@ export class BattleScene extends Phaser.Scene {
     if (unit && unit.side === "player" && !this.busy) {
       const species = CONTENT.species[unit.speciesId]!;
       text(`${species.name} · 👣${state.turn!.movePointsLeft.toFixed(1)}`, COLORS.good);
-      if (switchTargets(state).length) text(t("Tap another of your Pokémon to act with it instead."), COLORS.dim, 11);
+      // The hint line is always there (empty when it does not apply), so the buttons never jump.
+      text(switchTargets(state).length ? t("Tap another of your Pokémon to act with it instead.") : " ", COLORS.dim, 11);
       // One basic attack a turn; specials as long as they are off cooldown; Bond moves while the Bond lasts.
       // Struggle only shows while it is the unit's way to fight (engaged, ranged basic attack).
       const basics = unit.moves.filter((m) => CONTENT.moves[m]!.kind === "basic" && (m !== "struggle" || !moveUnavailableReason(state, CONTENT, unit.id, m)));
@@ -1281,16 +1347,8 @@ export class BattleScene extends Phaser.Scene {
   /** A pulsing ring under the Pokémon whose turn it is, so new players see who acts. */
   private markActive(): void {
     const unit = this.phase === "battle" && this.state && !this.busy ? activeUnit(this.state) : null;
-    if (!unit || unit.side !== "player") {
-      this.activeRing?.setVisible(false);
-      return;
-    }
-    if (!this.activeRing) {
-      this.activeRing = this.add.circle(0, 0, UNIT_RADIUS * S + 5).setStrokeStyle(3, 0xf5d76e).setDepth(1);
-      this.tweens.add({ targets: this.activeRing, alpha: { from: 1, to: 0.35 }, duration: 600, yoyo: true, repeat: -1 });
-    }
-    const c = fieldToWorld(unit.pos);
-    this.activeRing.setPosition(c.x, c.y).setVisible(true);
+    // The gold ring and the bobbing arrow (see syncUnits) mark it; no second circle.
+    for (const [id, view] of this.units) view.chevron.setVisible(!!unit && unit.id === id);
   }
 
   private onTileClicked(t: Point): void {
@@ -1435,6 +1493,8 @@ export class BattleScene extends Phaser.Scene {
 
   private async perform(action: BattleAction): Promise<void> {
     this.busy = true;
+    // The cursor still rests on the target: its previews come back only when the mouse moves again.
+    this.hovered = null;
     this.refreshAll();
     const { state, events } = applyAction(this.state!, CONTENT, action);
     this.state = state;
@@ -1471,6 +1531,10 @@ export class BattleScene extends Phaser.Scene {
     this.busy = false;
     if (this.state && this.state.outcome !== "ongoing" && this.phase !== "over") {
       this.phase = "over";
+      // The battle is done: burning and bubbling ground die down, the flashes stop.
+      this.arena?.syncHazards([], fieldToWorld);
+      this.ground?.setLights([], []);
+      this.arena && (this.arena.onLights = null);
       // Knockouts, deaths, captures and used balls become permanent here, and are autosaved.
       const result = resolveBattle(CONTENT, PROGRESSION, session.game, this.state, { countsKnockouts: this.scenario.countsKnockouts ?? true });
       let game = result.game;
@@ -1569,6 +1633,7 @@ export class BattleScene extends Phaser.Scene {
       },
       moveName: (id: string) => CONTENT.moves[id]!.name,
       statusName: (id: string) => CONTENT.statuses[id]?.name ?? id,
+      statusBuff: (id: string) => !!CONTENT.statuses[id]?.buff || id === "pumped",
       ballName: (id: string) => CONTENT.balls[id]?.name ?? id,
       abilityName: (id: string) => CONTENT.abilities[id]?.name ?? id,
       comboName: (id: string) => CONTENT.rules.combos[id]?.name ?? id,
@@ -1622,14 +1687,14 @@ export class BattleScene extends Phaser.Scene {
           sfx(this, e.source === "status" ? "status" : e.effectiveness && e.effectiveness > 1 ? "superHit" : e.effectiveness && e.effectiveness < 1 ? "weakHit" : "hit");
           const eff = e.effectiveness && e.effectiveness !== 1 ? (e.effectiveness > 1 ? " !" : " ↓") : "";
           this.floatText(e.unitId, `-${e.amount}${eff}`, e.source === "status" ? "#c070ff" : "#ff6b6b");
-          this.setHpBar(e.unitId, e.hp, unitById(this.state!, e.unitId).maxHp);
+          this.setHpBar(e.unitId, e.hp, unitById(this.state!, e.unitId).maxHp, true);
           await this.wait(220);
           break;
         }
         case "healed":
           sfx(this, "heal");
           this.floatText(e.unitId, `+${e.amount}`, "#7ed321");
-          this.setHpBar(e.unitId, e.hp, unitById(this.state!, e.unitId).maxHp);
+          this.setHpBar(e.unitId, e.hp, unitById(this.state!, e.unitId).maxHp, true);
           break;
         case "displaced":
           if (e.engage) await this.tweenPath(e.unitId, [e.to]);
