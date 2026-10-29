@@ -28,9 +28,6 @@ import {
 import { samePoint, type Point } from "../../core/grid";
 import { centerHeal, centerTreatment, centerTreatmentCost, KNOCKOUTS_TO_DEATH, knownSpecies, memberMaxHp, restAll } from "../../core/party";
 import { MAX_ACTIVE_UNITS } from "../../core/battle";
-
-/** Battle size before the first badge; each badge opens one more slot up to the map's own size. */
-const BASE_SLOTS = 3;
 import { battleArena, formationLabel } from "../../core/free/arena";
 import { currentWorld, session } from "../session";
 import { animKey, facingFor, hasSprite, portraitKey } from "../sprites";
@@ -41,7 +38,11 @@ import { tag } from "../ui/markup";
 import { t } from "../i18n";
 import { RichText } from "../ui/RichText";
 import { boardTheme, drawFloorDecor, drawWaterDecor, tileRand } from "../ui/boardDecor";
+import { trainerLook, trainerTexture } from "../trainerSprites";
 import { COLORS, FONT, PHONE, TYPE_COLORS, px } from "../ui/theme";
+
+/** Battle size before the first badge; each badge opens one more slot up to the map's own size. */
+const BASE_SLOTS = 3;
 
 const T = 28;
 const MAP_X = 16;
@@ -369,17 +370,19 @@ export class OverworldScene extends Phaser.Scene {
       const { x, y } = this.center(n.pos);
       const color = { leader: 0xf5d76e, elite: 0xc070ff, champion: 0xc070ff, rival: 0x4a90e2, rocket: 0xd0021b, trainer: 0xe8ecf4, talk: 0x7ed321, gift: 0x7ed321, wild: 0xff8c42 }[n.kind];
       this.markers.add(this.add.ellipse(x, y + 8, 22, 8, color, 0.7).setStrokeStyle(1, 0x10141c));
-      const sprite = n.sprite ?? teamOf(session.game, n)[0]?.species;
-      if (sprite && hasSprite(sprite)) this.markers.add(this.add.sprite(x, y + 8, `${sprite}-idle`).setOrigin(0.5, 0.85).play(animKey(sprite, "idle", 0)));
-      else {
-        // A person: body and head, in the colour of what they are.
-        this.markers.add(this.add.rectangle(x, y + 3, 12, 11, color).setStrokeStyle(2, 0x10141c));
-        this.markers.add(this.add.circle(x, y - 6, 5, 0xf4d8b8).setStrokeStyle(2, 0x10141c));
-      }
+      const lead = teamOf(session.game, n)[0]?.species;
+      if (!n.sprite && n.kind !== "wild" && lead) {
+        // A trainer: the person, and their lead Pokémon small at their side.
+        if (hasSprite(lead)) this.markers.add(this.add.sprite(x + 9, y + 9, `${lead}-idle`).setOrigin(0.5, 0.85).setScale(0.55).play(animKey(lead, "idle", 0)));
+        this.markers.add(this.add.image(x - 3, y + 9, trainerTexture(this, trainerLook(n.name, n.kind))).setOrigin(0.5, 1).setScale(1.25));
+      } else if ((n.sprite ?? lead) && hasSprite((n.sprite ?? lead)!)) {
+        const sprite = (n.sprite ?? lead)!;
+        this.markers.add(this.add.sprite(x, y + 8, `${sprite}-idle`).setOrigin(0.5, 0.85).play(animKey(sprite, "idle", 0)));
+      } else this.markers.add(this.add.image(x, y + 9, trainerTexture(this, trainerLook(n.name, n.kind))).setOrigin(0.5, 1).setScale(1.25));
       // Bubble: "!" wants a battle, "…" has something to say, "★" has a gift; gone once done.
       const done = npcDone(session.game, n);
       const bubble = done ? null : isBattler(n) ? "!" : n.kind === "gift" || n.choices?.length || n.reward ? "★" : "…";
-      if (bubble) this.markers.add(this.add.text(x, y - 17, bubble, { fontFamily: FONT, fontSize: px(12), color: "#10141c", fontStyle: "bold", backgroundColor: bubble === "!" ? "#f5d76e" : "#ffffff", padding: { x: 3, y: 0 } }).setOrigin(0.5));
+      if (bubble) this.markers.add(this.add.text(x, y - 20, bubble, { fontFamily: FONT, fontSize: px(12), color: "#10141c", fontStyle: "bold", backgroundColor: bubble === "!" ? "#f5d76e" : "#ffffff", padding: { x: 3, y: 0 } }).setOrigin(0.5));
     }
     const c = this.center(world.pos);
     if (!this.moving) this.token.setPosition(c.x, c.y);
