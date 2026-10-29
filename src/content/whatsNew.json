@@ -2,6 +2,7 @@
  {"version": "0.102",
   "date": "2026-10-29",
   "items": [
+  "Brock is gentler: his Onix is Lv 9 (was 11), the gym trainer and Viridian Forest are closer in level, so the first gym is no wall.",
   "Map: the party sits in a 3×3 grid, the money and items in a column beside it, the balls as their icons with the count.",
   "UI polish: a party of 7–9 shows in two rows on the map; the Moves tab marks basic ◆, special ■ and Bond ▲ (filled: in use); the Stats tab explains a stat at all times and the header no longer repeats the stats; the bag no longer says 0× for worn items; the starter cards and meal texts read better.",
   "Camp: the party in a 3×3 grid, storage on the right in two columns (up to 17 shown).",

@@ -97,11 +97,11 @@
    "team": [
     {
      "species": "geodude",
-     "level": 7
+     "level": 6
     },
     {
      "species": "sandshrew",
-     "level": 8
+     "level": 7
     }
    ],
    "reward": {
@@ -128,12 +128,12 @@
    "team": [
     {
      "species": "geodude",
-     "level": 9,
+     "level": 7,
      "heldItem": "hard-stone"
     },
     {
      "species": "onix",
-     "level": 11,
+     "level": 9,
      "heldItem": "hard-stone"
     }
    ],
