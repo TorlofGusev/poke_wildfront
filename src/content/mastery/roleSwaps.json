@@ -1312,5 +1312,59 @@
    "hyper-voice",
    "spit-up"
   ]
+ },
+ "passivesToMelee": {
+  "far-sight": [
+   "pin-down",
+   "mean-look",
+   "pursuit-instinct",
+   "tough-claws"
+  ],
+  "long-reach": [
+   "tough-claws",
+   "flanker",
+   "cornered"
+  ],
+  "overhead-shot": [
+   "flanker",
+   "pursuit-instinct",
+   "cornered"
+  ]
+ },
+ "passivesToRanged": {
+  "tough-claws": [
+   "long-reach",
+   "far-sight"
+  ],
+  "poison-touch": [
+   "lingering-effects",
+   "opportunist",
+   "exploit-opening"
+  ],
+  "pursuit": [
+   "far-sight",
+   "long-reach",
+   "overhead-shot"
+  ],
+  "pursuit-instinct": [
+   "far-sight",
+   "long-reach",
+   "overhead-shot"
+  ],
+  "mean-look": [
+   "overhead-shot",
+   "far-sight",
+   "long-reach"
+  ],
+  "pin-down": [
+   "far-sight",
+   "long-reach",
+   "overhead-shot"
+  ],
+  "ingrain-grip": [
+   "natural-recovery",
+   "far-sight",
+   "long-reach"
+  ]
  }
 }

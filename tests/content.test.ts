@@ -36,6 +36,17 @@ describe("content integrity", () => {
     expect(off).toEqual([]);
   });
 
+  it("a line's tree only offers passives that help its role (no Far Sight for a melee line)", () => {
+    const only: Record<string, "melee" | "ranged"> = { "far-sight": "ranged", "long-reach": "ranged", "overhead-shot": "ranged", "tough-claws": "melee", "poison-touch": "melee", pursuit: "melee", "pursuit-instinct": "melee", "mean-look": "melee", "pin-down": "melee", "ingrain-grip": "melee" };
+    const off: string[] = [];
+    for (const [id, tree] of Object.entries(PROGRESSION.trees)) {
+      const role = CONTENT.species[id]?.role;
+      const rows = { ...tree.rows, ...(tree.forms?.[id]?.rows ?? {}) };
+      for (const opt of Object.values(rows).flat()) if (role && only[opt] && only[opt] !== role) off.push(`${id} (${role}): ${opt}`);
+    }
+    expect(off).toEqual([]);
+  });
+
   it("species reference existing types and moves; ids match keys", () => {
     for (const [id, s] of Object.entries(CONTENT.species)) {
       expect(s.id).toBe(id);

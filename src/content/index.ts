@@ -66,7 +66,9 @@ const SKILL = "skill:";
  * a move of the other reach is swapped, line by line, for the first of its counterparts (same type, close in
  * canon power; mastery/roleSwaps.json, editable) the tree does not have yet.
  */
-const ROLE_SWAPS = roleSwapData as { readonly toMelee: Readonly<Record<string, readonly string[]>>; readonly toRanged: Readonly<Record<string, readonly string[]>> };
+type SwapTable = Readonly<Record<string, readonly string[]>>;
+/** Passives work the same way: one that only helps the other reach (Far Sight for a melee line) becomes a counterpart. */
+const ROLE_SWAPS = roleSwapData as { readonly toMelee: SwapTable; readonly toRanged: SwapTable; readonly passivesToMelee: SwapTable; readonly passivesToRanged: SwapTable };
 const roleOfSpecies = (id: string): Role | undefined => (speciesData as Record<string, { role?: Role }>)[id]?.role;
 /** Every move some species starts with: a swap never brings one in, as a tree move would turn it Bond everywhere. */
 const STARTING = new Set(Object.values(speciesData as Record<string, { moves: string[] }>).flatMap((s) => s.moves));
@@ -77,8 +79,16 @@ function treeForRole(tree: MasteryTree, role: Role | undefined, start: readonly 
   if (!role) return tree;
   // A swap never brings in a move the species starts with, or one the tree already teaches.
   const used = new Set<string>(start);
+  // Passives the tree already offers anywhere: a swapped passive never doubles one.
+  const passives = new Set([...Object.values(tree.rows).flat(), ...Object.values(tree.forms ?? {}).flatMap((f) => Object.values(f.rows).flat())].filter((id) => !moveOfSkill(id)));
   const fit = (id: string): string => {
     const mv = moveOfSkill(id);
+    if (!mv) {
+      const swap = (role === "melee" ? ROLE_SWAPS.passivesToMelee : ROLE_SWAPS.passivesToRanged)[id]?.find((p) => !passives.has(p));
+      if (!swap) return id;
+      passives.add(swap);
+      return swap;
+    }
     const reach = mv ? moves[mv]?.reach : undefined;
     // A move the species already starts with: another of the same type and reach, closest in power.
     if (mv && start.includes(mv)) {
