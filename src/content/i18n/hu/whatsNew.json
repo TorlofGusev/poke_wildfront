@@ -1,5 +1,6 @@
 [
  {"items": [
+  "Deploy: kompaktabb csapatkártyák (a név a kép mellett, a szint és a KO-k a kártyán), legfeljebb 9 választható, előbb az egészségesek.", "Az ellenfél infójában látszik a szintje; a nyers statok lekerültek róla.",
   "Az új kör beúszik a csatatérre (\"2. kör\"), így látszik, miért jön újra ugyanaz a Pokémon.",
   "Pokémon képernyő: a Storage-ba / Csapatba gomb a fejlécbe került a lapozó mellé, minden fülön látszik.",
   "A labdát már 4 távolságra is el lehet dobni (eddig 3).", "A maga körül ható move-ok (Earthquake…) ezt is írják: a listákban ◎2, a részleteknél \"maga körül\", a 0-s range helyett.",

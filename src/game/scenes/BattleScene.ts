@@ -54,7 +54,6 @@ import { typeMultiplier } from "../../core/rules/typeChart";
 import { Button } from "../ui/Button";
 import { formatEvent, type LogEntry, type LogTone } from "../ui/combatLog";
 import { describeMove, reachShort, selfCentred } from "../ui/describeMove";
-import { statLine } from "../ui/describeEffects";
 import { stripMarkup, tag } from "../ui/markup";
 import { RichText } from "../ui/RichText";
 import { t } from "../i18n";
@@ -83,6 +82,8 @@ const AI_STEP_MS = 350;
 /** A spent turn passes on its own after this pause; under this much walk left counts as none. */
 const AUTO_END_MS = 600;
 const MIN_STEP = 0.5;
+/** Party cards offered at deployment (3 rows of 3). */
+const DEPLOY_CHOICES = 9;
 /** The title-screen replay is calmer than a real battle. */
 const DEMO_STEP_MS = 650;
 const S = FIELD_S;
@@ -207,7 +208,9 @@ export class BattleScene extends Phaser.Scene {
     this.prizeMoney = 0;
     this.phase = "deploy";
     this.placements = [];
-    this.party = this.demo ? [] : session.partyCandidates();
+    // At most DEPLOY_CHOICES cards fit the panel: healthy Pokémon first, in party order.
+    const all = this.demo ? [] : session.partyCandidates();
+    this.party = [...all.filter((m) => m.hp > 0), ...all.filter((m) => m.hp <= 0)].slice(0, DEPLOY_CHOICES);
     this.selectedCandidate = this.party.find((m) => m.hp > 0)?.id ?? null;
     this.selectedBall = null;
     this.summary = null;
@@ -895,10 +898,10 @@ export class BattleScene extends Phaser.Scene {
         text(level.damageMultiplier !== 1
           ? t("Fatigue: {level}. Your Pokémon get −{move} movement and deal {dmg}% less damage.", { level: level.name, move: level.movePenalty, dmg: Math.round((1 - level.damageMultiplier) * 100) })
           : t("Fatigue: {level}. Your Pokémon get −{move} movement.", { level: level.name, move: level.movePenalty }), COLORS.bad, 12);
-      // The party as portrait cards (3 per row): tap one, then a blue tile to place it.
-      const cardW = Math.floor((PANEL_W - 12) / 3), cardH = 66;
+      // The party as compact cards (3 per row): portrait left; name, HP bar, level and knockout pips beside it.
+      const cardW = Math.floor((PANEL_W - 12) / 3), cardH = 40;
       this.party.forEach((m, i) => {
-        const cx = (i % 3) * (cardW + 6), cy = y + Math.floor(i / 3) * (cardH + 6);
+        const cx = (i % 3) * (cardW + 6), cy = y + Math.floor(i / 3) * (cardH + 4);
         const placed = this.placements.some((p) => p.unitId === m.id);
         const selected = this.selectedCandidate === m.id;
         const ko = this.knockoutsOf(m.id);
@@ -906,21 +909,24 @@ export class BattleScene extends Phaser.Scene {
         const bg = this.add.rectangle(cx, cy, cardW, cardH, selected ? 0x3a4560 : 0x1c2230).setOrigin(0)
           .setStrokeStyle(selected ? 3 : 1, selected ? 0xf5d76e : placed ? 0x7fd4ff : 0x5a6785);
         const parts: Phaser.GameObjects.GameObject[] = [bg];
-        if (this.textures.exists(portraitKey(m.speciesId))) parts.push(this.add.image(cx + 22, cy + 42, portraitKey(m.speciesId)).setDisplaySize(38, 38).setAlpha(alive ? 1 : 0.35));
-        parts.push(this.add.text(cx + 4, cy + 3, CONTENT.species[m.speciesId]!.name, { fontFamily: FONT, fontSize: px(11), color: alive ? COLORS.text : COLORS.dim }));
+        if (this.textures.exists(portraitKey(m.speciesId))) parts.push(this.add.image(cx + 19, cy + 20, portraitKey(m.speciesId)).setDisplaySize(32, 32).setAlpha(alive ? 1 : 0.35));
+        const tx = cx + 40, tw = cardW - 44;
+        parts.push(this.add.text(tx, cy + 3, CONTENT.species[m.speciesId]!.name, { fontFamily: FONT, fontSize: px(10), color: alive ? COLORS.text : COLORS.dim }));
         // HP bar and knockout pips (red when one more knockout means losing it).
         const frac = alive ? m.hp / (m.setup?.maxHp ?? maxHpOf(CONTENT, m.speciesId)) : 0;
-        parts.push(this.add.rectangle(cx + 46, cy + 34, cardW - 50, 6, 0x2a3242).setOrigin(0, 0.5));
-        parts.push(this.add.rectangle(cx + 46, cy + 34, (cardW - 50) * frac, 6, frac > 0.5 ? 0x6bd36b : frac > 0.2 ? 0xf5d76e : 0xff6b6b).setOrigin(0, 0.5));
-        parts.push(this.add.text(cx + 46, cy + 42, "●".repeat(ko) + "○".repeat(KNOCKOUTS_TO_DEATH - ko), { fontFamily: FONT, fontSize: px(11), color: ko >= 2 ? "#ff6b6b" : COLORS.dim }));
-        if (placed) parts.push(this.add.text(cx + cardW - 4, cy + cardH - 4, "✓", { fontFamily: FONT, fontSize: px(14), color: "#7fd4ff" }).setOrigin(1));
+        parts.push(this.add.rectangle(tx, cy + 21, tw, 5, 0x2a3242).setOrigin(0, 0.5));
+        parts.push(this.add.rectangle(tx, cy + 21, tw * frac, 5, frac > 0.5 ? 0x6bd36b : frac > 0.2 ? 0xf5d76e : 0xff6b6b).setOrigin(0, 0.5));
+        parts.push(this.add.text(tx, cy + 25, `Lv${m.setup?.level ?? 1}`, { fontFamily: FONT, fontSize: px(10), color: "#f5d76e" }));
+        const pips = this.add.text(cx + cardW - 4, cy + 25, "●".repeat(ko) + "○".repeat(KNOCKOUTS_TO_DEATH - ko), { fontFamily: FONT, fontSize: px(10), color: ko >= 2 ? "#ff6b6b" : COLORS.dim }).setOrigin(1, 0);
+        parts.push(pips);
+        if (placed) parts.push(this.add.text(cx + 3, cy + 2, "✓", { fontFamily: FONT, fontSize: px(12), color: "#7fd4ff", stroke: "#10141c", strokeThickness: 3 }));
         if (alive) bg.setInteractive({ useHandCursor: true }).on("pointerup", () => {
           this.selectedCandidate = m.id;
           this.refreshAll();
         });
         this.panel.add(parts);
       });
-      y += Math.ceil(this.party.length / 3) * (cardH + 6);
+      y += Math.ceil(this.party.length / 3) * (cardH + 4);
       const errors = deploymentErrors(this.scenario, this.party, this.placements);
       y += 4;
       button(t("▶ Lock deployment & start ({n}/{max})", { n: this.placements.length, max: this.scenario.maxDeploy ?? MAX_ACTIVE_UNITS }), errors.length === 0, false, () => this.startBattle());
@@ -1096,7 +1102,7 @@ export class BattleScene extends Phaser.Scene {
       // Phone: only what a turn needs. Name, types and HP (plus statuses); for an own Pokémon the
       // selected move's rules, for a foe how well the selected move hits it.
       const head = [
-        `${tag(`${unit.side === "player" ? "ally" : "foe"}:${s.types[0]}`, s.name)}  ${s.types.map((ty) => tag(ty, ty)).join("/")}${s.role ? ` ${tag("special", s.role === "melee" ? t("Melee") : t("Ranged"))}` : ""}  HP ${tag(unit.hp / unit.maxHp > 0.5 ? "heal" : "dmg", `${unit.hp}/${unit.maxHp}`)}`,
+        `${tag(`${unit.side === "player" ? "ally" : "foe"}:${s.types[0]}`, s.name)} ${tag("num", `Lv ${unit.level}`)}  ${s.types.map((ty) => tag(ty, ty)).join("/")}${s.role ? ` ${tag("special", s.role === "melee" ? t("Melee") : t("Ranged"))}` : ""}  HP ${tag(unit.hp / unit.maxHp > 0.5 ? "heal" : "dmg", `${unit.hp}/${unit.maxHp}`)}`,
         unit.statuses.length ? `${t("Status:")} ${unit.statuses.map((x) => `${tag("status", CONTENT.statuses[x.id]?.name ?? x.id)} (${x.turnsLeft})`).join(", ")}` : "",
         this.engagementLine(unit),
       ];
@@ -1112,8 +1118,8 @@ export class BattleScene extends Phaser.Scene {
       return;
     }
     const lines = [
-      `${tag(`${unit.side === "player" ? "ally" : "foe"}:${s.types[0]}`, s.name)} ${tag("dim", unit.side === "enemy" ? t("(foe)") : t("(yours)"))}  ${s.types.map((t) => tag(t, t)).join("/")}${s.role ? `  ${tag("special", s.role === "melee" ? t("Melee") : t("Ranged"))}` : ""}`,
-      `HP ${tag(unit.hp / unit.maxHp > 0.5 ? "heal" : "dmg", `${unit.hp}/${unit.maxHp}`)}  ${statLine(unit.stats)}`,
+      `${tag(`${unit.side === "player" ? "ally" : "foe"}:${s.types[0]}`, s.name)} ${tag("num", `Lv ${unit.level}`)} ${tag("dim", unit.side === "enemy" ? t("(foe)") : t("(yours)"))}  ${s.types.map((t) => tag(t, t)).join("/")}${s.role ? `  ${tag("special", s.role === "melee" ? t("Melee") : t("Ranged"))}` : ""}`,
+      `HP ${tag(unit.hp / unit.maxHp > 0.5 ? "heal" : "dmg", `${unit.hp}/${unit.maxHp}`)}`,
       ...s.types.map((t) => `${tag(t, t)}: ${tag("dim", CONTENT.types[t]?.summary ?? "")}`),
       unit.ability ? `${tag("special", unit.ability.name)}: ${tag("dim", unit.ability.description)}${unit.attackBoost ? tag("num", ` (+${unit.attackBoost} Atk)`) : ""}` : "",
       unit.statuses.length ? `${t("Status:")} ${unit.statuses.map((x) => `${tag("status", CONTENT.statuses[x.id]?.name ?? x.id)} (${x.turnsLeft})`).join(", ")}` : "",
