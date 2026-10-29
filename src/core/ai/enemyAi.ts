@@ -1,6 +1,7 @@
 import {
   applyAction,
   hazardsAt,
+  isRangedUnit,
   livingUnits,
   movementPoints,
   unitById,
@@ -91,6 +92,8 @@ export interface AiWeights {
   readonly statusImpact: number;
   /** Value of slipping out of an engagement, per share of max HP already lost (from half HP on). */
   readonly escapeLowHp: number;
+  /** Cost of a melee unit stepping out of its engagement (it gives up the pin and may take a free attack). */
+  readonly breakEngagement: number;
   /**
    * Sloppiness, 0..1: picks among every plan scoring at least (1 - slack) × the best one instead of
    * the best. Seeded from the battle state, so a turn still replays identically.
@@ -123,6 +126,7 @@ export const DEFAULT_AI_WEIGHTS: AiWeights = {
   engagePerFlanker: 4,
   statusImpact: 1,
   escapeLowHp: 30,
+  breakEngagement: 8,
   slack: 0,
   exposure: 6,
   patienceRounds: 2,
@@ -144,6 +148,7 @@ export const NOVICE_AI_WEIGHTS: AiWeights = {
   engagePerFlanker: 0,
   statusImpact: 0,
   escapeLowHp: 0,
+  breakEngagement: 4,
   slack: 0.5,
   exposure: 0,
   patienceRounds: 0,
@@ -217,6 +222,9 @@ export function planTurn(
   const end: BattleAction = { type: "endTurn", unitId };
 
   const reachable = stopsFor(state, unitId);
+  // An engaged Pokémon that steps away breaks the engagement; a melee one gives up its pin for it.
+  const partnerId = self.engagedWith;
+  const stepOutCost = partnerId && !isRangedUnit(content, self) ? weights.breakEngagement : 0;
   const stops: (Point | null)[] = [null, ...reachable.filter((p) => anythingInReach(content, state, self, p))];
   let best: Plan | null = null;
   const plans: Plan[] = [];
@@ -253,7 +261,13 @@ export function planTurn(
         const at = unitById(result.state, unitId).pos;
         const exposed = (weights.exposure > 0 && result.state.outcome === "ongoing" ? weights.exposure * exposureAt(content, result.state, self, at) : 0)
           + DANGER * dangerAt(result.state, self, at);
-        const total = score + (follow?.score ?? 0) - exposed;
+        // Stepping out only to engage the same partner again is a dance, not a plan (it only buys momentum).
+        if (moveAction && partnerId) {
+          let final = result.state;
+          for (const a of follow?.actions ?? []) if (final.outcome === "ongoing") final = applyAction(final, content, a).state;
+          if (unitById(final, unitId).engagedWith === partnerId) continue;
+        }
+        const total = score + (follow?.score ?? 0) - exposed - (moveAction ? stepOutCost : 0);
         const plan = { actions: [...(moveAction ? [moveAction] : []), use, ...(follow?.actions ?? []), end], score: total };
         if (weights.slack > 0) plans.push(plan);
         if (!best || total > best.score) best = plan;
