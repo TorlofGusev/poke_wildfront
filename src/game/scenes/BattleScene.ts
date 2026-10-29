@@ -1,4 +1,5 @@
 import Phaser from "phaser";
+import { ArenaFx } from "../arenaFx";
 import { playMoveFx } from "../moveFx";
 import { playMusic, stopMusic } from "../music";
 import { CONTENT, type ScenarioDef } from "../../content";
@@ -163,6 +164,8 @@ export class BattleScene extends Phaser.Scene {
   private comboLabels: Phaser.GameObjects.Container | null = null;
   private boardGfx: Phaser.GameObjects.Graphics | null = null;
   private boardImage: Phaser.GameObjects.RenderTexture | null = null;
+  /** The field's life: motes, glinting water, burning and bubbling hazards, marks hits leave. */
+  private arena: ArenaFx | null = null;
   private units = new Map<string, UnitView>();
   private panel!: Phaser.GameObjects.Container;
   private infoText!: RichText;
@@ -206,6 +209,7 @@ export class BattleScene extends Phaser.Scene {
     this.units = new Map();
     this.boardGfx = null;
     this.boardImage = null;
+    this.arena = null;
     this.reachGfx = null;
     this.reachImage = null;
     this.reachFor = null;
@@ -338,6 +342,12 @@ export class BattleScene extends Phaser.Scene {
     const { width, height } = this.scale;
     this.boardImage ??= this.add.renderTexture(0, 0, width, height).setOrigin(0).setDepth(-1);
     this.boardImage.clear().draw(g).render();
+    const origin = fieldToWorld({ x: 0, y: 0 });
+    this.arena ??= new ArenaFx(this, { x: origin.x, y: origin.y, ...this.boardPx() }, theme, S);
+    const water: { x: number; y: number }[] = [];
+    for (let y = 0; y < field.height; y++)
+      for (let x = 0; x < field.width; x++) if (terrainAt(field, { x: x + 0.5, y: y + 0.5 }).id === "water") water.push(fieldToWorld({ x: x + 0.5, y: y + 0.5 }));
+    this.arena.syncWater(water);
   }
 
   /** The middle of the other side's starting spots. */
@@ -353,6 +363,8 @@ export class BattleScene extends Phaser.Scene {
     const teamColor = side === "player" ? COLORS.player : COLORS.enemy;
     // The base is the body's true size: what blocks and collides (the container is scaled by UNIT_SCALE).
     const foot = (UNIT_RADIUS * S * 2) / UNIT_SCALE;
+    // A soft shadow grounds the Pokémon on the field.
+    const shadow = this.add.ellipse(0, 6, foot * 0.95, foot * 0.5, 0x000000, 0.35);
     const ring = this.add.ellipse(0, 0, foot, foot, teamColor, 0.3).setStrokeStyle(2, teamColor);
     const body = this.add.circle(0, 0, 16, TYPE_COLORS[species.types[0]!] ?? 0x888888);
     const label = this.add
@@ -367,7 +379,7 @@ export class BattleScene extends Phaser.Scene {
     const hpBg = this.add.rectangle(-18, 21, 36, 4, 0x000000).setOrigin(0, 0.5);
     const hpBar = this.add.rectangle(-18, 21, 36, 4, 0x7ed321).setOrigin(0, 0.5);
     const spiritBar = this.add.rectangle(-18, 24, 0, 2, 0xf5d76e).setOrigin(0, 0.5);
-    const container = this.add.container(x, y, [ring, ...(sprite ? [sprite] : []), body, label, hpBg, hpBar, spiritBar]).setScale(UNIT_SCALE);
+    const container = this.add.container(x, y, [shadow, ring, ...(sprite ? [sprite] : []), body, label, hpBg, hpBar, spiritBar]).setScale(UNIT_SCALE);
     this.units.set(id, { container, hpBar, spiritBar, ring, body, label, sprite, speciesId, facing });
     // Species without a sprite show as a type-coloured disc with their initials.
     body.setVisible(!sprite);
@@ -528,11 +540,12 @@ export class BattleScene extends Phaser.Scene {
     const state = this.state;
     if (!state) return;
     const g = this.overlay;
+    this.arena?.syncHazards(state.hazards ?? [], fieldToWorld);
     for (const h of state.hazards ?? []) {
       if (h.kind === "mud") continue;
       const c = fieldToWorld(h.at);
-      g.fillStyle(HAZARD_COLORS[h.kind], 0.28).fillCircle(c.x, c.y, h.radius * S);
-      g.lineStyle(2, HAZARD_COLORS[h.kind], 0.8).strokeCircle(c.x, c.y, h.radius * S);
+      // The fire and bubbles are the arena's; here only a thin edge, so the area stays exact.
+      g.lineStyle(1.5, HAZARD_COLORS[h.kind], 0.55).strokeCircle(c.x, c.y, h.radius * S);
     }
     for (const p of state.pending ?? []) {
       const color = p.kind === "delayed" ? COLORS.target : 0xf5d76e;
@@ -1529,7 +1542,15 @@ export class BattleScene extends Phaser.Scene {
             // The move's effect, styled by its type, on everyone it touches (or the aimed spot).
             const hit = e.affected.map((id) => this.state?.units.find((u) => u.id === id)).filter((u) => u !== undefined).map((u) => fieldToWorld(u.pos));
             const move = CONTENT.moves[e.moveId];
-            if (move) await playMoveFx(this, move, { x: view.container.x, y: view.container.y }, hit.length ? hit : [fieldToWorld(e.target)]);
+            if (move) {
+              await playMoveFx(this, move, { x: view.container.x, y: view.container.y }, hit.length ? hit : [fieldToWorld(e.target)]);
+              // The ground answers: a shockwave and a lasting mark where it lands (each struck foe for single hits).
+              const sh = move.shape;
+              const radius = sh.kind === "burst" ? sh.radius + 0.5 : sh.kind === "single" ? 0.6 : 1;
+              const center = sh.kind === "burst" && move.range.max === 0 ? { x: view.container.x, y: view.container.y } : fieldToWorld(e.target);
+              if (sh.kind === "single") for (const p of hit) this.arena?.impact(move, p, radius);
+              else this.arena?.impact(move, center, radius);
+            }
           }
           break;
         }
@@ -1567,12 +1588,16 @@ export class BattleScene extends Phaser.Scene {
           this.cameras.main.shake(100, 0.003);
           break;
         case "terrainChanged":
+          this.arena?.terrainBurst(fieldToWorld(e.pos), e.terrain);
           this.drawBoard();
           break;
         case "hazardCreated":
         case "hazardExpired":
           // Mud is real terrain while it lasts; fire and poison are drawn with the overlay.
-          if ((e.type === "hazardCreated" ? e.hazard.kind : e.kind) === "mud") this.drawBoard();
+          if ((e.type === "hazardCreated" ? e.hazard.kind : e.kind) === "mud") {
+            if (e.type === "hazardCreated") this.arena?.terrainBurst(fieldToWorld(e.hazard.at), "m");
+            this.drawBoard();
+          }
           this.refreshOverlay();
           break;
         case "strikePrepared":
@@ -1589,6 +1614,7 @@ export class BattleScene extends Phaser.Scene {
           break;
         case "fainted":
           playCry(this, unitById(this.state!, e.unitId).speciesId, 0.75);
+          this.arena?.dust(fieldToWorld(unitById(this.state!, e.unitId).pos));
           await this.fadeOut(e.unitId);
           break;
         default:
