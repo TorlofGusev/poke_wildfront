@@ -84,7 +84,11 @@ export class PartyScene extends Phaser.Scene {
     new RichText(this, 100, 19, 300, 14).setMarkup(t("{money}   EV {ev}   Fatigue {fatigue}", { money: tag("num", `₽${money}`), ev: tag("num", session.game.ev ?? 0), fatigue: tag("num", world.fatigue) }));
     // The top row, packed from the right edge: back to the map (an arrow is enough), rest, bag, Pokédex, feedback.
     let right = 944;
-    const top = (w: number, label: string, onClick: () => void) => {
+    // Each as wide as its label (in either language), so none looks bigger than the rest.
+    const top = (min: number, label: string, onClick: () => void) => {
+      const probe = this.add.text(0, 0, label, { fontFamily: FONT, fontSize: "14px" });
+      const w = Math.max(min, Math.ceil(probe.width) + 24);
+      probe.destroy();
       right -= w;
       const b = new Button(this, right, 12, w, 26, label, onClick).centerLabel();
       right -= 6;
@@ -92,11 +96,11 @@ export class PartyScene extends Phaser.Scene {
     };
     top(40, "➜", () => this.scene.start("Overworld", {}));
     // Resting is a decision: pick a meal (or go hungry); wild groups move and this becomes the respawn point.
-    top(130, this.choosingMeal ? t("✕ Cancel") : t("⛺ Rest here…"), () =>
+    top(40, this.choosingMeal ? t("✕ Cancel") : t("⛺ Rest here…"), () =>
       this.scene.restart({ rested: this.rested, choosingMeal: !this.choosingMeal })).setEnabled(!this.rested);
-    top(90, t("🎒 Bag"), () => this.scene.start("Inventory", { from: "Party" }));
-    top(110, t("📖 Pokédex"), () => this.scene.start("Pokedex", { from: "Party" }));
-    if (FEEDBACK_URL) top(140, t("💬 Feedback"), () => openFeedback(this.game, "camp"));
+    top(40, t("🎒 Bag"), () => this.scene.start("Inventory", { from: "Party" }));
+    top(40, t("📖 Pokédex"), () => this.scene.start("Pokedex", { from: "Party" }));
+    if (FEEDBACK_URL) top(40, t("💬 Feedback"), () => openFeedback(this.game, "camp"));
     top(34, "?", () => showHelp(this));
     this.time.delayedCall(300, () => showTip(this, "camp"));
     const meal = world.meal;
