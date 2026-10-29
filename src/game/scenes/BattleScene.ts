@@ -1518,6 +1518,9 @@ export class BattleScene extends Phaser.Scene {
       const entry = formatEvent(e, ctx);
       if (entry) this.pushLog(entry);
       switch (e.type) {
+        case "roundStarted":
+          if (e.round > 1) await this.roundBanner(e.round);
+          break;
         case "moved":
           await this.settle();
           await this.tweenPath(e.unitId, e.path);
@@ -1729,6 +1732,23 @@ export class BattleScene extends Phaser.Scene {
     return new Promise((resolve) =>
       this.tweens.add({ targets: view.container, alpha: 0, scale: 0.4 * UNIT_SCALE, duration: 300, onComplete: () => resolve() }),
     );
+  }
+
+  /** A new round slides in over the field: everyone acts again, in a fresh Speed order. */
+  private roundBanner(round: number): Promise<void> {
+    const cx = (BOARD_X + PANEL_X) / 2;
+    const cy = BOARD_Y + 150;
+    const bg = this.add.rectangle(cx, cy, 300, 58, 0x10141c, 0.9).setStrokeStyle(2, 0xf5d76e);
+    const title = this.add.text(cx, cy - 9, t("Round {n}", { n: round }), { fontFamily: FONT, fontSize: "24px", color: "#f5d76e" }).setOrigin(0.5);
+    const sub = this.add.text(cx, cy + 16, t("Everyone acts again · new order"), { fontFamily: FONT, fontSize: px(11), color: COLORS.dim }).setOrigin(0.5);
+    const box = this.add.container(0, 0, [bg, title, sub]).setDepth(30).setAlpha(0);
+    box.x = -60;
+    const step = (props: Record<string, number>, duration: number, ease = "Linear") =>
+      new Promise<void>((resolve) => this.tweens.add({ targets: box, ...props, duration, ease, onComplete: () => resolve() }));
+    return step({ x: 0, alpha: 1 }, 220, "Cubic.easeOut")
+      .then(() => step({ x: 20 }, 650))
+      .then(() => step({ x: 80, alpha: 0 }, 200, "Cubic.easeIn"))
+      .then(() => void box.destroy());
   }
 
   private floatText(unitId: string, s: string, color: string): void {
