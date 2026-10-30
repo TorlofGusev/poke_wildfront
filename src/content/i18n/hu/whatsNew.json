@@ -1,5 +1,6 @@
 [
  {"items": [
+  "A térkép a mutatóhoz legközelebbi helyet mutatja bárhol a térképen, így egy útvonal a teljes hosszán reagál, nem csak egy apró ponton.",
   "A térkép emlékszik, hol jártál: ha egy meglátogatott helyre mutatsz (vagy rákattintasz), látod a vad Pokémonjait szintekkel (✓ a már meglévő fajoknál, a még ismeretleneket ???-ként számolja), a gym vezetőjét és hogy megvan-e a jelvény, hány trénert győztél le, van-e Pokémon Center és Mart, hány tárgy vár még, és merre vezetnek utak. Egy arany ! jelzi, hol vár a mostani célod, a cél pedig fent olvasható.",
   "A térkép most a játék többi részének stílusában készül: Kantót a térkép saját csempéi rajzolják ki (fű, fákkal szegett part, hegyek, erdők, városok a kis házaikkal, barlangok, tenger), teljes képernyőn, oldalsó panellel, amely mutatja, hol vagy és mire mutatsz.",
   "A térkép igazi térképként rajzolódik: Kantó sziget a tengerben homokos parttal, hegyekkel és erdőkkel, homokos utakkal és szaggatott tengeri útvonalakkal, a városok kis házakként, a barlangok és épületek ikonként látszanak. Kattintás után nyitva marad, és egy mellé kattintással vagy a K billentyűvel zárul.",

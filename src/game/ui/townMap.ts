@@ -174,9 +174,25 @@ export function openTownMap(scene: Phaser.Scene, game: GameState, hereId: string
       label.setX(Math.min(mx + mapW - label.width / 2 - 2, Math.max(mx + label.width / 2 + 2, x)));
       box.add(label);
     }
-    box.add(scene.add.zone(x, y, 22, 22).setInteractive({ useHandCursor: true })
-      .on("pointerover", () => describe(id)).on("pointerdown", () => { picked = id; describe(id); }).on("pointerout", () => describe(picked)));
   }
+  // The whole chart answers the pointer: the nearest place to it (towns and caves win when close, so a route
+  // reads along its whole length). A click keeps the place in the panel.
+  const ids = Object.keys(LAYOUT).filter((id) => WORLDS[id]);
+  const nearest = (px: number, py: number): string | null => {
+    let best: string | null = null, bestD = Infinity;
+    for (const id of ids) {
+      const q = at(id);
+      const d = Math.hypot(q.x - px, q.y - py) * (kindOf(id) === "route" ? 1.25 : 1);
+      if (d < bestD) { bestD = d; best = id; }
+    }
+    return bestD < 70 ? best : null;
+  };
+  let shown = "";
+  const show = (id: string) => { if (id !== shown) { shown = id; describe(id); } };
+  box.add(scene.add.zone(mx, my, mapW, mapH).setOrigin(0).setInteractive({ useHandCursor: true })
+    .on("pointermove", (ptr: Phaser.Input.Pointer) => show(nearest(ptr.x, ptr.y) ?? picked))
+    .on("pointerdown", (ptr: Phaser.Input.Pointer) => { picked = nearest(ptr.x, ptr.y) ?? picked; show(picked); })
+    .on("pointerout", () => show(picked)));
   // Where the party is: its leader's marker, a pulsing ring.
   if (LAYOUT[hereId]) {
     const { x, y } = at(hereId);
@@ -192,6 +208,6 @@ export function openTownMap(scene: Phaser.Scene, game: GameState, hereId: string
     box.add([badge, mark]);
     scene.tweens.add({ targets: [badge, mark], y: y - 16, duration: 500, yoyo: true, repeat: -1, ease: "Sine.easeInOut" });
   }
-  describe(hereId);
+  show(hereId);
   return close;
 }
