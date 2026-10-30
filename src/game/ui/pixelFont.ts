@@ -130,6 +130,7 @@ const GLYPHS: Readonly<Record<string, string>> = {
   "♪": "...##.. ...#.#. ...#... ...#... .###... ####... .##....",
   "\uE005": ".###... #...#.. #...#.. #...#.. .####.. ....##. .....##", // 🔍
   "\uE006": ".###. #...# #...# #...# .#.#. .###. .###.", // 💡
+  "\uE007": ".###. #...# #...# ##### ##.## ##.## #####", // 🔒
   "♥": ".##.##. ####### ####### .#####. ..###.. ...#...",
   "⚔": "#.....# .#...#. ..#.#.. ...#... ..#.#.. ##...## ##...##",
   "⚡": "...## ..##. .##.. ##### ..##. .##.. ##...",
@@ -222,7 +223,7 @@ export function ensurePixelFont(scene: Phaser.Scene, outline = true): string {
 }
 
 /** Symbols drawn with another glyph; emoji map to private-use stand-ins (bitmap text reads one UTF-16 unit per glyph). */
-const ALIASES: Readonly<Record<string, string>> = { "➜": "→", "❤": "♥", "⭐": "★", "🌟": "★", "📖": "\uE000", "🎒": "\uE001", "💬": "\uE002", "📦": "\uE003", "🛒": "\uE004", "🔍": "\uE005", "💡": "\uE006" };
+const ALIASES: Readonly<Record<string, string>> = { "➜": "→", "❤": "♥", "⭐": "★", "🌟": "★", "📖": "\uE000", "🎒": "\uE001", "💬": "\uE002", "📦": "\uE003", "🛒": "\uE004", "🔍": "\uE005", "💡": "\uE006", "🔒": "\uE007" };
 
 /** Whether this is a symbol (not a letter, digit or punctuation) the pixel font draws: a leading one becomes a pixel icon. */
 export const hasPixGlyph = (c: string): boolean => !/[\p{L}\p{N}\p{P}+=<>]/u.test(c) && GLYPHS[ALIASES[c] ?? c] !== undefined;

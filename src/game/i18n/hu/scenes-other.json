@@ -126,7 +126,6 @@
  "A new game erases your save: your team, items and progress are gone for good.": "Az új játék törli a mentésedet: a csapatod, a tárgyaid és az előrehaladásod végleg elvész.",
  "Erase and start": "Törlés és új játék",
  "Keep my save": "Megtartom a mentést",
- "Seen {n}/{total}": "Látott: {n}/{total}",
  "So you want {name}, the {type} Pokémon?": "Tehát {name} legyen? {type} típusú Pokémon.",
  "Yes, {name}!": "Igen, {name}!",
  "Let me think": "Még gondolkodom",
@@ -141,5 +140,6 @@
  "← Storage": "← Tároló",
  "📦 Storage ({n})": "📦 Tároló ({n})",
  "No stored Pokémon of this type.": "Nincs ilyen típusú Pokémon a tárolóban.",
- "Storage is empty. Pokémon you catch with a full party come here.": "A tároló üres. Ha teli csapattal fogsz Pokémont, ide kerül."
+ "Storage is empty. Pokémon you catch with a full party come here.": "A tároló üres. Ha teli csapattal fogsz Pokémont, ide kerül.",
+ "Seen {n}/{total} · caught {c}": "Látott: {n}/{total} · elkapott: {c}"
 }

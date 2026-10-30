@@ -5,6 +5,8 @@ import { focusOptions, masteryGrid, startingMoves } from "../../core/progression
 import { session } from "../session";
 import { hasSprite, portraitKey } from "../sprites";
 import { pixText } from "../ui/pixelFont";
+import { pokemonStage } from "../ui/stage";
+import { ballIcon } from "../ui/ballIcon";
 import { Button } from "../ui/Button";
 import { describeTalent, focusLabel, STAT_LABEL, statLine } from "../ui/describeEffects";
 import { describeMove } from "../ui/describeMove";
@@ -91,7 +93,10 @@ export class PokedexScene extends Phaser.Scene {
     const add = <T extends Phaser.GameObjects.GameObject>(o: T) => (this.root.add(o), o);
     const known = knownSpecies(session.game);
     add(screenTitle(this, LIST_X, 14, t("Pokédex")));
-    add(this.add.text(LIST_X + 140, 20, t("Seen {n}/{total}", { n: known.size, total: ALL.length }), { fontFamily: FONT, fontSize: px(13), color: COLORS.dim }));
+    // Caught: every species that has been in the team (party, storage or fallen).
+    const { party, storage, fallen } = session.game.roster;
+    const caught = new Set([...party, ...storage, ...fallen].map((m) => m.speciesId));
+    add(this.add.text(LIST_X + 140, 20, t("Seen {n}/{total} · caught {c}", { n: known.size, total: ALL.length, c: caught.size }), { fontFamily: FONT, fontSize: px(13), color: COLORS.dim }));
     add(new Button(this, 794, 12, 150, 26, t("← Back"), () => this.scene.start(this.from, { rested: false, choosingMeal: false })));
 
     // The list: met species by name, the rest as "???".
@@ -107,6 +112,8 @@ export class PokedexScene extends Phaser.Scene {
       }).setHighlighted(s.id === this.selected));
       if (met) b.setAccent(TYPE_COLORS[s.types[0]!] ?? 0x888888);
       else b.setMuted();
+      // A Poké Ball at the right of the ones caught.
+      if (caught.has(s.id)) add(this.add.image(LIST_X + LIST_W - 12, 76 + i * 24 + 11, ballIcon(this, "poke-ball")).setDisplaySize(14, 14));
     });
 
     if (this.selected && known.has(this.selected)) this.renderSpecies(this.selected, add);
@@ -140,13 +147,17 @@ export class PokedexScene extends Phaser.Scene {
     }).join(" → ");
     const ability = s.ability ? CONTENT.abilities[s.ability] : undefined;
     const header = [
-      `${tag("title", s.name)}  ${s.types.map((ty) => typeTag(ty)).join("/")}${role}`,
+      `${s.types.map((ty) => typeTag(ty)).join("/")}${role}`,
       `${t("Lv 1:")} ${STAT_LABEL.hp} ${tag("num", s.stats.hp)}  ${statLine(s.stats)}`,
       ...(ability ? [`${t("Ability:")} ${tag("special", ability.name)} ${tag("dim", ability.description)}`] : []),
       `${t("Evolution:")} ${line}`,
     ];
-    if (this.textures.exists(portraitKey(id))) add(this.add.image(DETAIL_X + DETAIL_W - 32, 48 + 32, portraitKey(id)).setDisplaySize(64, 64));
-    let y = 52 + add(new RichText(this, DETAIL_X, 52, DETAIL_W - 76, 12)).setMarkup(header.join("\n")) + 8;
+    // The Pokémon itself on its stage at the right (tap it for its cry), its number and name over the facts.
+    pokemonStage(this, DETAIL_X + DETAIL_W - 170, 46, 170, 104, id, add, true);
+    const no = add(pixText(this, DETAIL_X, 46, `No.${String(s.dex ?? "").padStart(3, "0")}`, 0x8a93a6, 2));
+    add(pixText(this, no.x + no.width + 10, 46, s.name, 0xffffff, 2));
+    let y = 74 + add(new RichText(this, DETAIL_X, 74, DETAIL_W - 186, 12)).setMarkup(header.slice(1).join("\n"));
+    y = Math.max(y, 150) + 8;
 
     const gridW = DETAIL_W - INFO_W - 12;
     const infoX = DETAIL_X + gridW + 12;

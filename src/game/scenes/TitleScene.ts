@@ -6,7 +6,7 @@ import { DISCLAIMER, FREE_FOREVER, GAME_VERSION } from "../../core/version";
 import { currentWorld, session } from "../session";
 import { portraitKey } from "../sprites";
 import { pixText } from "../ui/pixelFont";
-import { panel } from "../ui/frames";
+import { messageFrame } from "../ui/battleBookends";
 import { RichText } from "../ui/RichText";
 import { Button } from "../ui/Button";
 import { addFullscreenButton } from "../ui/fullscreen";
@@ -128,7 +128,7 @@ export class TitleScene extends Phaser.Scene {
     const layer = this.add.container(0, 0).setDepth(100);
     const dim = this.add.rectangle(0, 0, width, height, 0x05070c, 0.7).setOrigin(0).setInteractive();
     const bw = 420, bh = 150, bx = (width - bw) / 2, by = (height - bh) / 2;
-    const box = panel(this, bx, by, bw, bh, { edge: 0xd0021b, edgeWidth: 2 });
+    const box = messageFrame(this, bx, by, bw, bh);
     const title = pixText(this, width / 2, by + 22, t("Start over?"), 0xff8a8a, 3).setOrigin(0.5);
     const text = new RichText(this, bx + 20, by + 46, bw - 40, 13);
     text.setMarkup(t("A new game erases your save: your team, items and progress are gone for good."));

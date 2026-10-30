@@ -2,6 +2,7 @@ import Phaser from "phaser";
 import { CONTENT } from "../content";
 import { session } from "./session";
 import { Button } from "./ui/Button";
+import { messageFrame } from "./ui/battleBookends";
 import { tag } from "./ui/markup";
 import { RichText } from "./ui/RichText";
 import { t } from "./i18n";
@@ -76,14 +77,15 @@ function showBox(scene: Phaser.Scene, markup: string, w: number, onClose: () => 
   open.add(scene);
   const { width, height } = scene.scale;
   const x = (width - w) / 2;
-  const shade = scene.add.rectangle(0, 0, width, height, 0x000000, 0.45).setOrigin(0).setInteractive();
-  const body = new RichText(scene, x + 16, 0, w - 32, size);
-  const h = body.setMarkup(markup) + 64;
-  const y = Math.max(10, (height - h) / 2);
-  body.setY(y + 14);
-  const frame = scene.add.rectangle(x, y, w, h, 0x10141c, 0.97).setOrigin(0).setStrokeStyle(2, 0xf5d76e);
+  const shade = scene.add.rectangle(0, 0, width, height, 0x000000, 0.35).setOrigin(0).setInteractive();
+  const body = new RichText(scene, x + 20, 0, w - 40, size);
+  const h = Math.round(body.setMarkup(markup) + 70);
+  // In the handhelds' message window, at the foot of the screen (the scene above stays in view).
+  const y = Math.max(10, height - h - 12);
+  body.setY(y + 18);
+  const frame = messageFrame(scene, x, y, w, h);
   const box = scene.add.container(0, 0).setDepth(1000).setScrollFactor(0);
-  const ok = new Button(scene, x + w / 2 - 70, y + h - 40, 140, 28, t("Got it"), () => {
+  const ok = new Button(scene, x + w / 2 - 70, y + h - 44, 140, 28, t("Got it"), () => {
     box.destroy();
     open.delete(scene);
     onClose();

@@ -35,7 +35,7 @@ try {
   await tap(860, 37, 700);
   await shot("02-starter");
   await tap(172, 421, 500);
-  await tap(375, 469, 900);
+  await tap(355, 497, 900);
   await shot("03-overworld");
   // A new game opens with the welcome note: close it.
   await tap(345, 360, 600);

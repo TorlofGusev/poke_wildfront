@@ -12,6 +12,7 @@ import { FONT, px, TYPE_COLORS } from "../ui/theme";
 import { t } from "../i18n";
 import { typeTag } from "../ui/typeName";
 import { panel, screenTitle } from "../ui/frames";
+import { messageFrame } from "../ui/battleBookends";
 
 /** New game: choose one starter. */
 export class StarterScene extends Phaser.Scene {
@@ -73,11 +74,19 @@ export class StarterScene extends Phaser.Scene {
     const s = CONTENT.species[id]!;
     const layer = this.add.container(0, 0).setDepth(100);
     const dim = this.add.rectangle(0, 0, width, height, 0x05070c, 0.72).setOrigin(0).setInteractive();
-    const bw = 440, bh = 120, bx = (width - bw) / 2, by = height - bh - 40;
-    const box = panel(this, bx, by, bw, bh, { edge: TYPE_COLORS[s.types[0]!] ?? 0x5a6785, edgeWidth: 2 });
-    const text = new RichText(this, bx + 20, by + 16, bw - 40, 14);
+    const bw = 520, bh = 104, bx = (width - bw) / 2, by = height - bh - 12;
+    const box = messageFrame(this, bx, by, bw, bh);
+    // The chosen one stands over the window, lit, while the rest of the screen dims.
+    const parts: Phaser.GameObjects.GameObject[] = [];
+    if (hasSprite(id)) {
+      const base = TYPE_COLORS[s.types[0]!] ?? 0x888888;
+      parts.push(this.add.ellipse(width / 2, by - 8, 120, 26, base, 0.4).setStrokeStyle(2, base));
+      const spr = this.add.sprite(width / 2, by - 6, `${id}-idle`).play(animKey(id, "idle", 0));
+      parts.push(spr.setOrigin(0.5, footOrigin(this, id)).setScale(spr.frame.height <= 40 ? 4 : 3));
+    }
+    const text = new RichText(this, bx + 20, by + 18, bw - 40, 14);
     text.setMarkup(t("So you want {name}, the {type} Pokémon?", { name: tag("title", s.name), type: s.types.map((ty) => typeTag(ty)).join("/") }));
-    const yes = new Button(this, bx + 20, by + bh - 46, 190, 30, t("Yes, {name}!", { name: s.name }), () => {
+    const yes = new Button(this, bx + 20, by + bh - 46, 230, 30, t("Yes, {name}!", { name: s.name }), () => {
       layer.destroy();
       playCry(this, id);
       // The ball opens: a white flash, then the journey starts.
@@ -85,7 +94,7 @@ export class StarterScene extends Phaser.Scene {
       session.start([id]);
       this.time.delayedCall(320, () => this.scene.start("Overworld", { intro: true }));
     }).centerLabel().setSolid(0x2e8b3e);
-    const no = new Button(this, bx + bw - 210, by + bh - 46, 190, 30, t("Let me think"), () => layer.destroy()).centerLabel();
-    layer.add([dim, box, text, yes, no]);
+    const no = new Button(this, bx + bw - 250, by + bh - 46, 230, 30, t("Let me think"), () => layer.destroy()).centerLabel();
+    layer.add([dim, ...parts, box, text, yes, no]);
   }
 }

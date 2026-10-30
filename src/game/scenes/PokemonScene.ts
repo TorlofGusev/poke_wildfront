@@ -44,7 +44,7 @@ import { type Role, baseMovement, speedAtMoveCap, STAT_NAMES, type StatName } fr
 import { session } from "../session";
 import { animKey, footOrigin, hasSprite, portraitKey } from "../sprites";
 import { playCry, sfx } from "../audio";
-import { panel } from "../ui/frames";
+import { pokemonStage } from "../ui/stage";
 import { pixText } from "../ui/pixelFont";
 import { moveCard, type MoveCardLook } from "../ui/moveCard";
 import { Button } from "../ui/Button";
@@ -64,7 +64,7 @@ const DETAIL_W = 928;
 /** The hero band under the top buttons: the Pokémon's stage, then its name, chips and bars, then ability and focus. */
 const HERO_Y = 44;
 const HERO_H = 92;
-const HERO_STAGE_W = 150;
+const HERO_STAGE_W = 176;
 const HERO_INFO_X = 560;
 const BAR_W = 200;
 /** Stat bars: 20 segments, each stat in its own colour. */
@@ -80,19 +80,6 @@ const mixColor = (c: number, to: number, k: number): number => {
   const ch = (sh: number) => Math.round(((c >> sh) & 255) * (1 - k) + ((to >> sh) & 255) * k);
   return (ch(16) << 16) | (ch(8) << 8) | ch(0);
 };
-
-/** A 16×16 tile of one diagonal white stripe, made once. */
-function stripeTexture(scene: Phaser.Scene): string {
-  const key = "ui-stripe";
-  if (!scene.textures.exists(key)) {
-    const tex = scene.textures.createCanvas(key, 16, 16)!;
-    const ctx = tex.getContext();
-    ctx.fillStyle = "#ffffff";
-    for (let i = 0; i < 16; i++) ctx.fillRect(i, 15 - i, 4, 1);
-    tex.refresh();
-  }
-  return key;
-}
 
 /** One Pokémon: stats (and stat points), talent tree, moves, equipment. */
 /** Set once the player has read the EV explanation. */
@@ -113,8 +100,6 @@ export class PokemonScene extends Phaser.Scene {
   private tab: Tab = "stats";
   private selectedTalent: string | null = null;
   private selectedMove: string | null = null;
-  /** The hero backdrop's stripes, drifting slowly. */
-  private stripes: Phaser.GameObjects.TileSprite | null = null;
   /** A mastery (or focus) just learned: its cell celebrates on the next draw. */
   private justPicked: string | null = null;
 
@@ -224,30 +209,8 @@ export class PokemonScene extends Phaser.Scene {
    */
   private renderHero(m: PartyMember, add: <T extends Phaser.GameObjects.GameObject>(o: T) => T): void {
     const s = CONTENT.species[m.speciesId]!;
-    const base = TYPE_COLORS[s.types[0]!] ?? 0x888888;
     const x = DETAIL_X, y = HERO_Y, w = HERO_STAGE_W, h = HERO_H;
-    add(panel(this, x, y, w, h, { fill: mixColor(base, 0x10141c, 0.62), edge: mixColor(base, 0x000000, 0.45), edgeWidth: 2 }));
-    // Slow diagonal stripes and a soft light behind the Pokémon.
-    this.stripes = add(this.add.tileSprite(x + 2, y + 2, w - 4, h - 4, stripeTexture(this)).setOrigin(0).setAlpha(0.09));
-    add(this.add.ellipse(x + w / 2, y + h / 2 + 4, w * 0.8, h * 0.9, mixColor(base, 0xffffff, 0.3), 0.18));
-    add(this.add.ellipse(x + w / 2, y + h - 14, 64, 12, 0x000000, 0.35));
-    let body: Phaser.GameObjects.Sprite | Phaser.GameObjects.Image | null = null;
-    if (hasSprite(m.speciesId)) {
-      const spr = this.add.sprite(x + w / 2, y + h - 14, `${m.speciesId}-idle`).play(animKey(m.speciesId, "idle", 0));
-      // Whole-number scale keeps the pixels square: 3× for small sheets, 2× for big ones.
-      spr.setOrigin(0.5, footOrigin(this, m.speciesId)).setScale(spr.frame.height <= 40 ? 3 : 2);
-      body = add(spr);
-    } else if (this.textures.exists(portraitKey(m.speciesId))) {
-      body = add(this.add.image(x + w / 2, y + h / 2, portraitKey(m.speciesId)).setDisplaySize(64, 64));
-    }
-    if (body) {
-      const at = body.y;
-      const hit = add(this.add.rectangle(x, y, w, h, 0xffffff, 0.001).setOrigin(0).setInteractive({ useHandCursor: true }));
-      hit.on("pointerdown", () => {
-        playCry(this, m.speciesId);
-        this.tweens.add({ targets: body, y: at - 10, duration: 120, yoyo: true, ease: "Quad.easeOut" });
-      });
-    }
+    pokemonStage(this, x, y, w, h, m.speciesId, add);
 
     // Name and level, then the type chips (and how it fights).
     const ix = x + w + 14;
@@ -279,10 +242,6 @@ export class PokemonScene extends Phaser.Scene {
     const evo = s.evolution ? t("evolves at Lv {lv}", { lv: s.evolution.level }) : "";
     add(new RichText(this, ix, y + 78, HERO_INFO_X - ix - 10, 12)).setMarkup(
       `${evo ? `${tag("dim", evo)}   ` : ""}KO ${tag(m.knockouts ? "ko" : "dim", "●".repeat(m.knockouts) + "○".repeat(KNOCKOUTS_TO_DEATH - m.knockouts))}`);
-  }
-
-  update(_time: number, delta: number): void {
-    if (this.stripes?.active) this.stripes.tilePositionX += delta * 0.01;
   }
 
   private renderDetail(m: PartyMember, add: <T extends Phaser.GameObjects.GameObject>(o: T) => T): void {
@@ -573,21 +532,22 @@ ${into.types.map((ty) => typeTag(ty)).join("/")}`);
     // The picks, row by row: a gold path joins them so the build reads as one line through the tree.
     const path: { x: number; top: number; bottom: number }[] = [];
     const cell = (x: number, cy: number, w: number, label: string, key: string, state: "picked" | "open" | "excluded" | "locked", accent?: number) => {
-      const mark = state === "picked" ? "✓ " : state === "open" ? "★ " : "";
+      const mark = state === "picked" ? "✓ " : state === "open" ? "★ " : state === "locked" ? "🔒 " : "";
       const b = new Button(this, x, cy, w, 24, `${mark}${label}`, () => {
         this.selectedTalent = key;
         this.render();
       }).centerLabel();
       // One look per state. Picked: filled (a taught move in its type's colour, a passive in gold). Open: a pulsing
-      // gold frame. Excluded: pushed back. Locked (not reached yet): plain, its type stripe as a hint.
+      // gold frame on a lit cell. Excluded: pushed back. Locked (not reached yet): dark, with a padlock.
       if (state === "picked") {
-        b.setSolid(accent !== undefined ? mixColor(accent, 0x000000, 0.2) : 0x8a6a1c);
-        path.push({ x: x + w / 2, top: cy, bottom: cy + 24 });
-      } else if (state === "excluded") b.setMuted();
-      else {
-        if (accent !== undefined) b.setAccent(accent);
-        if (state === "locked") b.setLabelColor("#9aa3b6");
-      }
+        b.setSolid(accent ?? 0xc8961e);
+        // The path runs through the mastery rows (the focus row has its bonus line under it).
+        if (!key.startsWith("focus:")) path.push({ x: x + w / 2, top: cy, bottom: cy + 24 });
+      } else if (state === "excluded") b.setMuted().setAlpha(0.75);
+      else if (state === "locked") {
+        b.setMuted().setLabelColor("#6a7488");
+        if (accent !== undefined) b.setAccent(mixColor(accent, 0x12161f, 0.5)).setLabelColor("#6a7488");
+      } else if (accent !== undefined) b.setAccent(accent);
       add(b);
       if (state === "open") {
         const ring = add(this.add.rectangle(x - 1, cy - 1, w + 2, 26).setOrigin(0).setStrokeStyle(2, 0xf5d76e));
@@ -630,7 +590,6 @@ ${into.types.map((ty) => typeTag(ty)).join("/")}`);
       add(this.add.text(fx + focusW / 2, cy + 26, focusBonusLabel(f), { fontFamily: FONT, fontSize: px(11), color: "#7ed321" }).setOrigin(0.5, 0));
     });
     // The path leaves the focus pick below its bonus line, not through it.
-    if (path[0]) path[0] = { ...path[0], bottom: path[0].bottom + 16 };
     cy += rowH + 14;
 
     // Mastery rows.
@@ -645,7 +604,12 @@ ${into.types.map((ty) => typeTag(ty)).join("/")}`);
       });
       cy += rowH;
     }
-    path.slice(1).forEach((p, i) => lines.lineStyle(2, 0xf5d76e, 0.55).lineBetween(path[i]!.x, path[i]!.bottom, p.x, p.top));
+    // Centre to centre, under the cells: the line shows between the rows and runs into each pick.
+    path.slice(1).forEach((p, i) => {
+      const a = path[i]!;
+      lines.lineStyle(6, 0x10141c, 0.8).lineBetween(a.x, a.top + 12, p.x, p.top + 12);
+      lines.lineStyle(3, 0xf5d76e, 1).lineBetween(a.x, a.top + 12, p.x, p.top + 12);
+    });
 
     // Detail panel.
     const infoX = DETAIL_X + DETAIL_W - infoW;
