@@ -2,6 +2,7 @@
  {"version": "0.104",
   "date": "2026-10-29",
   "items": [
+  "Melee lunges that reach 2 (Vine Whip, Wing Attack, Mach Punch, Aqua Jet, Shadow Sneak, Jump Kick…) now count as melee: a hit from beside the foe locks the two in combat, they can be used on the foe you are locked with, they no longer lose damage there, and Far Sight no longer stretches them",
   "Foraging after wild battles finds about half as many berries as before, so food no longer piles up in the bag.",
   "Bond moves come in three prices: the mid-sized ones (Thunderbolt, Ice Beam, Surf, Psychic, Body Slam…) now cost 1 Bond, the strong ones 2 and the biggest 3. A Pokémon's Bond move slot becomes a real choice between a cheap one you can use often and a big finisher, and Bond moves show up about half again as often in battle.",
   "Melee Pokémon catch up: they walk 1 further each turn, ranged moves reach 2–3 (the big Bond ones 4), and the teams start farther apart, at the edges of the field, so nobody hits from the starting spot anymore. Melee were losing far more often, standing out of reach half their turns; now a melee-heavy team does nearly as well as a ranged one. Far Sight, Compound Eyes and Pressure now really add 1 to the reach of ranged moves, and the move descriptions show the reach that actually applies.",

@@ -190,7 +190,7 @@ export const MAX_RANGE = 4;
 
 /** A move's range for this unit (in hex widths): ranged moves (2+) reach further with a range bonus, up to MAX_RANGE unless a Bond move. */
 export const moveRange = (unit: { readonly mods: UnitModifiers; readonly statuses: readonly ActiveStatus[] }, move: MoveDef, content: BattleContent): { min: number; max: number } => {
-  if (move.range.max < 2) return { min: move.range.min, max: move.range.max };
+  if (!isRangedMove(move)) return { min: move.range.min, max: move.range.max };
   const bonus = unit.mods.rangeBonus;
   const reach = move.kind === "bond" ? move.range.max + bonus : Math.min(MAX_RANGE, Math.max(move.range.max, move.range.max + bonus));
   // Blinded: a shorter reach, never below the move's minimum.
@@ -407,7 +407,8 @@ export const basicOf = (content: BattleContent, unit: BattleUnit): string | unde
   unit.moves.find((m) => m !== "struggle" && content.moves[m]?.kind === "basic");
 
 /** Whether a move is ranged: it can reach 2 or more tiles. */
-export const isRangedMove = (move: MoveDef): boolean => move.range.max >= 2;
+/** A ranged move: its role class when it has one (melee lunges reach 2 yet stay melee), else a reach of 2+. */
+export const isRangedMove = (move: MoveDef): boolean => (move.reach ? move.reach === "ranged" : move.range.max >= 2);
 
 /** The foe a unit is engaged with, if any. */
 export function partnerOf(state: BattleState, unit: BattleUnit): BattleUnit | undefined {
@@ -744,7 +745,7 @@ function resolveHits(
         mech.vsHurt && (t.hp * 2 < t.maxHp || ailments(content, t).length > 0) ? mech.vsHurt : 1,
       ];
       // A ranged move used while engaged is hampered by the foe in its face.
-      if (user.engagedWith && move.range.max >= 2) ownFactors.push(content.rules.melee.engagedRangedPenalty);
+      if (user.engagedWith && isRangedMove(move)) ownFactors.push(content.rules.melee.engagedRangedPenalty);
       const bonus = ownFactors.reduce((sum, f) => sum + (f > 1 ? f - 1 : 0), 0);
       const penalty = ownFactors.reduce((prod, f) => prod * (f < 1 ? f : 1), 1);
       const own = penalty * (1 + Math.min(MAX_DAMAGE_BONUS, bonus));
