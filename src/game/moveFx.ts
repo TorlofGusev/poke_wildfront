@@ -1,6 +1,6 @@
 import Phaser from "phaser";
 import type { MoveDef } from "../core/battle";
-import { TYPE_COLORS } from "./ui/theme";
+import { FONT, TYPE_COLORS } from "./ui/theme";
 
 /**
  * Move effects drawn in code (no image files). A move's name picks how it looks — a vine lashes out,
@@ -457,7 +457,7 @@ async function shield(scene: Phaser.Scene, at: Pt, color: number): Promise<void>
 /** Green crosses rise from the healed Pokémon. */
 async function heal(scene: Phaser.Scene, at: Pt): Promise<void> {
   const crosses = [0, 1, 2, 3].map(async (i) => {
-    const t = scene.add.text(at.x + (i - 1.5) * 9, at.y, "+", { fontFamily: "monospace", fontSize: "16px", color: "#7ed321", fontStyle: "bold" })
+    const t = scene.add.text(at.x + (i - 1.5) * 9, at.y, "+", { fontFamily: FONT, fontSize: "16px", color: "#7ed321", fontStyle: "bold" })
       .setOrigin(0.5).setDepth(31).setStroke("#0f3a1c", 3);
     await tween(scene, { targets: t, y: at.y - 34, alpha: { from: 1, to: 0 }, delay: i * 80, duration: 520 });
     t.destroy();

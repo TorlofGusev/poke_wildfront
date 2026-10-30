@@ -14,6 +14,7 @@ import { RichText } from "../ui/RichText";
 import { COLORS, FONT, TYPE_COLORS, px } from "../ui/theme";
 import { t } from "../i18n";
 import { typeTag } from "../ui/typeName";
+import { panel, screenTitle } from "../ui/frames";
 
 /** Three cards per row: a full party of 9 fits in three rows. */
 const CARD_COLS = 3;
@@ -56,7 +57,7 @@ export class PartyScene extends Phaser.Scene {
       const x = 16 + (i % 2) * 470;
       const y = 92 + Math.floor(i / 2) * 96;
       const ok = canCook(game, meal);
-      this.add.rectangle(x, y, 460, 88, 0x1c2130).setOrigin(0).setStrokeStyle(1, ok ? 0x5a6785 : 0x2a3040);
+      panel(this, x, y, 460, 88, ok ? { edge: 0x5a6785 } : { fill: 0x161a24 });
       const needs = Object.entries(meal.ingredients).map(([id, n]) => {
         const have = bag[id] ?? 0;
         return tag(have >= n ? "good" : "bad", `${n} ${PROGRESSION.items[id]?.name ?? id} (${have})`);
@@ -80,10 +81,12 @@ export class PartyScene extends Phaser.Scene {
   }
 
   create(): void {
+    // Screens fade in from the background colour instead of cutting.
+    this.cameras.main.fadeIn(160, 16, 20, 28);
     playMusic(this, "overworld");
     const { roster, money, inventory, world } = session.game;
-    this.add.text(16, 14, t("Camp"), { fontFamily: FONT, fontSize: "20px", color: "#f5d76e" });
-    new RichText(this, 100, 19, 300, 14).setMarkup(t("{money}   EV {ev}   Fatigue {fatigue}", { money: tag("num", `₽${money}`), ev: tag("num", session.game.ev ?? 0), fatigue: tag("num", world.fatigue) }));
+    const title = screenTitle(this, 16, 14, t("Camp"));
+    new RichText(this, 16 + title.width + 18, 19, 300, 14).setMarkup(t("{money}   EV {ev}   Fatigue {fatigue}", { money: tag("num", `₽${money}`), ev: tag("num", session.game.ev ?? 0), fatigue: tag("num", world.fatigue) }));
     // The top row, packed from the right edge: back to the map (an arrow is enough), rest, bag, Pokédex, feedback.
     let right = 944;
     // Each as wide as its label (in either language), so none looks bigger than the rest.
@@ -176,9 +179,11 @@ export class PartyScene extends Phaser.Scene {
     return {
       h: 50 + textH + 36,
       finish: (h) => {
-        const bg = this.add.rectangle(x, y, CARD_W, h, 0x1c2130).setOrigin(0).setDepth(-1)
-          .setStrokeStyle(waiting.length ? 2 : 1, waiting.length ? 0xf5d76e : m.knockouts === 2 ? 0xd0021b : 0x3a4560);
-        bg.setInteractive({ useHandCursor: true }).on("pointerdown", () => this.open(m));
+        const frame = panel(this, x, y, CARD_W, h, waiting.length ? { edge: 0xf5d76e, edgeWidth: 2 } : m.knockouts === 2 ? { edge: 0xd0021b, edgeWidth: 2 } : {}).setDepth(-1);
+        const bg = frame.list[1] as Phaser.GameObjects.Rectangle;
+        // Hovering lifts the card's frame a little: it is a door to the Pokémon's page.
+        bg.setInteractive({ useHandCursor: true }).on("pointerdown", () => this.open(m))
+          .on("pointerover", () => bg.setFillStyle(0x252c3e)).on("pointerout", () => bg.setFillStyle(0x1c2130));
         const barY = y + h - 26;
         this.add.rectangle(x + 8, barY, CARD_W - 16, 6, 0x000000).setOrigin(0, 0.5);
         this.add.rectangle(x + 8, barY, (CARD_W - 16) * frac, 6, frac > 0.5 ? 0x7ed321 : frac > 0.25 ? 0xf5a623 : 0xd0021b).setOrigin(0, 0.5);

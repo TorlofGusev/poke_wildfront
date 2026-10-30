@@ -5,6 +5,7 @@ import { DISCLAIMER, LEGAL_NOTICE } from "../../core/version";
 import { Button } from "../ui/Button";
 import { COLORS, FONT, px } from "../ui/theme";
 import { t } from "../i18n";
+import { screenTitle } from "../ui/frames";
 
 /** Shows CREDITS.md (sprite artists, as the CC BY-NC licence requires) with wheel/drag scrolling. */
 export class CreditsScene extends Phaser.Scene {
@@ -13,6 +14,8 @@ export class CreditsScene extends Phaser.Scene {
   }
 
   create(): void {
+    // Screens fade in from the background colour instead of cutting.
+    this.cameras.main.fadeIn(160, 16, 20, 28);
     playMusic(this, "title");
     const { width, height } = this.scale;
     // Markdown table rows → "Artist — Pokémon" lines; prose lines are kept as they are.
@@ -30,7 +33,7 @@ export class CreditsScene extends Phaser.Scene {
       fontFamily: FONT, fontSize: px(12), color: COLORS.text, wordWrap: { width: width - 48 }, lineSpacing: 3,
     });
     this.add.rectangle(0, 0, width, 52, 0x10141c).setOrigin(0).setDepth(1);
-    this.add.text(24, 16, t("Credits"), { fontFamily: FONT, fontSize: "20px", color: "#f5d76e" }).setDepth(2);
+    screenTitle(this, 24, 16, t("Credits")).setDepth(2);
     new Button(this, width - 174, 12, 150, 28, t("← Back"), () => this.scene.start("Title")).setDepth(2);
 
     const minY = Math.min(60, height - 20 - body.height);

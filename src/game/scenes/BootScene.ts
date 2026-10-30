@@ -2,6 +2,7 @@ import Phaser from "phaser";
 import { preloadCries } from "../audio";
 import { createSpriteAnims, preloadSprites } from "../sprites";
 import { FONT } from "../ui/theme";
+import { loadTextFont } from "../fonts";
 
 const TIPS = [
   "Only travelling tires your team. Camp anywhere to rest.",
@@ -39,12 +40,14 @@ export class BootScene extends Phaser.Scene {
     });
     preloadSprites(this);
     preloadCries(this);
+    void loadTextFont();
   }
 
   create(): void {
     performance.mark("wildfront:assets-loaded");
     createSpriteAnims(this);
     performance.mark("wildfront:anims-ready");
-    this.scene.start("Title");
+    // Text is laid out by measuring it, so the font must be in before the first screen.
+    void loadTextFont().then(() => this.scene.start("Title"));
   }
 }

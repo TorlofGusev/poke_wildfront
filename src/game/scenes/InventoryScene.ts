@@ -10,6 +10,7 @@ import { tag } from "../ui/markup";
 import { RichText } from "../ui/RichText";
 import { FONT } from "../ui/theme";
 import { t } from "../i18n";
+import { screenTitle } from "../ui/frames";
 
 /** The bag: everything carried, grouped by use, with exact effects. Opened from the map or camp. */
 export class InventoryScene extends Phaser.Scene {
@@ -24,9 +25,11 @@ export class InventoryScene extends Phaser.Scene {
   }
 
   create(): void {
+    // Screens fade in from the background colour instead of cutting.
+    this.cameras.main.fadeIn(160, 16, 20, 28);
     playMusic(this, "overworld");
     const { inventory, money, roster } = session.game;
-    this.add.text(16, 14, t("Bag"), { fontFamily: FONT, fontSize: "20px", color: "#f5d76e" });
+    screenTitle(this, 16, 14, t("Bag"));
     new RichText(this, 90, 19, 400, 14).setMarkup(`${tag("num", `₽${money}`)}`);
     new Button(this, 794, 12, 150, 26, t("← Back"), () => this.scene.start(this.returnTo, this.returnTo === "Party" ? { rested: false, choosingMeal: false } : {}));
 

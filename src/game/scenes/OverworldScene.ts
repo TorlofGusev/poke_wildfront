@@ -46,6 +46,7 @@ import { trainerLook } from "../trainerLook";
 import { trainerTexture } from "../trainerSprites";
 import { battleWipe } from "../ui/battleBookends";
 import { COLORS, FONT, PHONE, TYPE_COLORS, px } from "../ui/theme";
+import { screenTitle } from "../ui/frames";
 
 const T = 28;
 const MAP_X = 16;
@@ -159,7 +160,7 @@ export class OverworldScene extends Phaser.Scene {
     const evolving = evolvingUids();
     if (evolving.length) return void this.scene.start("Evolution", { uids: evolving, next: "Overworld" });
     playMusic(this, "overworld");
-    this.add.text(MAP_X, 16, currentWorld().name, { fontFamily: FONT, fontSize: "20px", color: "#f5d76e" });
+    screenTitle(this, MAP_X, 16, currentWorld().name);
     this.add.text(MAP_X, 40, PHONE ? t("Tap twice or drag to walk · red ring: wild group · ★ ◆ ✚ pickups") : t("Click to walk. Red ring: wild group. Pickups: ★ rare · ◆ held item · ✚ heal · M: sound on/off"), {
       fontFamily: FONT, fontSize: px(11), color: COLORS.dim, wordWrap: { width: 672 },
     });

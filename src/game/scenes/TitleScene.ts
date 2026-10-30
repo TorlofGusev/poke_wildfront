@@ -1,7 +1,7 @@
 import Phaser from "phaser";
 import { LANG, setLang } from "../../content/lang";
 import { playMusic } from "../music";
-import { px } from "../ui/theme";
+import { FONT, px } from "../ui/theme";
 import { DISCLAIMER, FREE_FOREVER, GAME_VERSION } from "../../core/version";
 import { session } from "../session";
 import { Button } from "../ui/Button";
@@ -28,8 +28,8 @@ export class TitleScene extends Phaser.Scene {
     const hasSave = session.hasSave() && session.load();
     this.backdrop();
     // The name top left; the menu is a slim column on the right, so the replay behind stays in view.
-    this.add.text(24, 18, "Pokémon Wildfront", { fontFamily: "monospace", fontSize: "34px", color: "#f5d76e" }).setShadow(2, 2, "#000000", 4);
-    this.add.text(26, 60, t("Tactical RPG"), { fontFamily: "monospace", fontSize: "15px", color: "#c8d0e0" }).setShadow(1, 1, "#000000", 3);
+    this.add.text(24, 18, "Pokémon Wildfront", { fontFamily: FONT, fontSize: "34px", color: "#f5d76e" }).setShadow(2, 2, "#000000", 4);
+    this.add.text(26, 60, t("Tactical RPG"), { fontFamily: FONT, fontSize: "15px", color: "#c8d0e0" }).setShadow(1, 1, "#000000", 3);
 
     const w = MENU_W;
     const x = width - w - 20;
@@ -64,15 +64,15 @@ export class TitleScene extends Phaser.Scene {
     y += 32;
     if (session.loadError) {
       this.add.text(x, y + 4, t("Your save could not be loaded ({error}).", { error: session.loadError }), {
-        fontFamily: "monospace", fontSize: px(11), color: "#ff6b6b", wordWrap: { width: w },
+        fontFamily: FONT, fontSize: px(11), color: "#ff6b6b", wordWrap: { width: w },
       });
     }
 
     // Bottom left, under the name's column: free forever, then the version and the disclaimer.
     const footW = width - MENU_W - 80;
-    this.add.text(24, height - 64, `♥ ${t(FREE_FOREVER)}`, { fontFamily: "monospace", fontSize: px(12), color: "#7ed321", wordWrap: { width: footW } })
+    this.add.text(24, height - 64, `♥ ${t(FREE_FOREVER)}`, { fontFamily: FONT, fontSize: px(12), color: "#7ed321", wordWrap: { width: footW } })
       .setShadow(1, 1, "#000000", 3);
-    this.add.text(24, height - 42, `v${GAME_VERSION} · ${t(DISCLAIMER)}`, { fontFamily: "monospace", fontSize: px(11), color: "#9aa3b6", wordWrap: { width: footW } })
+    this.add.text(24, height - 42, `v${GAME_VERSION} · ${t(DISCLAIMER)}`, { fontFamily: FONT, fontSize: px(11), color: "#9aa3b6", wordWrap: { width: footW } })
       .setShadow(1, 1, "#000000", 3);
   }
 
@@ -104,7 +104,7 @@ export class TitleScene extends Phaser.Scene {
 
   /** Master volume: drag or tap the bar. */
   private volumeSlider(x: number, y: number, w: number): void {
-    const label = this.add.text(x, y, "", { fontFamily: "monospace", fontSize: px(13), color: "#c8d0e0" }).setOrigin(0, 0.5);
+    const label = this.add.text(x, y, "", { fontFamily: FONT, fontSize: px(13), color: "#c8d0e0" }).setOrigin(0, 0.5);
     const barX = x + 110;
     const barW = w - 110;
     this.add.rectangle(barX, y, barW, 6, 0x2a3242).setOrigin(0, 0.5);

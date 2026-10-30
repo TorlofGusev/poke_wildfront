@@ -97,6 +97,8 @@ export class PokemonScene extends Phaser.Scene {
   }
 
   create(): void {
+    // Screens fade in from the background colour instead of cutting.
+    this.cameras.main.fadeIn(160, 16, 20, 28);
     this.root = this.add.container(0, 0);
     this.bagRow = 0;
     this.input.on("wheel", (_p: unknown, _o: unknown, _dx: number, dy: number) => {

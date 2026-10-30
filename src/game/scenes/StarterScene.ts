@@ -11,6 +11,7 @@ import { RichText } from "../ui/RichText";
 import { FONT, px } from "../ui/theme";
 import { t } from "../i18n";
 import { typeTag } from "../ui/typeName";
+import { screenTitle } from "../ui/frames";
 
 /** New game: choose one starter. */
 export class StarterScene extends Phaser.Scene {
@@ -19,9 +20,11 @@ export class StarterScene extends Phaser.Scene {
   }
 
   create(): void {
+    // Screens fade in from the background colour instead of cutting.
+    this.cameras.main.fadeIn(160, 16, 20, 28);
     playMusic(this, "title");
     const { width } = this.scale;
-    this.add.text(width / 2, 28, t("Choose your first Pokémon"), { fontFamily: FONT, fontSize: "24px", color: "#f5d76e" }).setOrigin(0.5);
+    screenTitle(this, width / 2, 28, t("Choose your first Pokémon")).setOrigin(0.5);
     this.add.text(width / 2, 58, t("Build the rest of your team by catching wild Pokémon."), { fontFamily: FONT, fontSize: px(13), color: "#8a93a6" }).setOrigin(0.5);
 
     const gap = 12;

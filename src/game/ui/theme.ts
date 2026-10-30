@@ -10,7 +10,8 @@ export const PANEL_X = 664;
 /** Side panel width: the rest of the 960 px screen after the board. */
 export const PANEL_W = 960 - PANEL_X - 8;
 
-export const FONT = "monospace";
+/** Text font: the bundled Nunito (see fonts.ts), with system fallbacks until it has loaded. */
+export const FONT = '"Nunito", "Segoe UI", system-ui, sans-serif';
 
 export const COLORS = {
   floor: 0x3b4a3a,

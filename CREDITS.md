@@ -104,3 +104,9 @@ By [Juhani Junkala](https://www.youtube.com/watch?v=dbACpSy9FWY), released under
 - Battle: "Level 1" from [5 Chiptunes (Action)](https://opengameart.org/content/5-chiptunes-action)
 
 The victory jingle is synthesised in the browser.
+
+## Font
+
+Text is set in [Nunito](https://github.com/googlefonts/nunito) by Vernon Adams, Cyreal and Jacques Le Bailly,
+released under the SIL Open Font License 1.1 (bundled from the @fontsource/nunito package). The pixel font and the
+icons are drawn in code.

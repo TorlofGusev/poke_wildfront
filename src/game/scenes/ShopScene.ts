@@ -11,6 +11,7 @@ import { tag } from "../ui/markup";
 import { RichText } from "../ui/RichText";
 import { COLORS, FONT, px } from "../ui/theme";
 import { t } from "../i18n";
+import { screenTitle } from "../ui/frames";
 
 interface Ware {
   readonly id: string;
@@ -38,6 +39,8 @@ export class ShopScene extends Phaser.Scene {
   }
 
   create(): void {
+    // Screens fade in from the background colour instead of cutting.
+    this.cameras.main.fadeIn(160, 16, 20, 28);
     playMusic(this, "overworld");
     this.message = "";
     this.scroll = 0;
@@ -64,7 +67,7 @@ export class ShopScene extends Phaser.Scene {
   private render(): void {
     this.root.removeAll(true);
     const add = <T extends Phaser.GameObjects.GameObject>(o: T) => (this.root.add(o), o);
-    add(this.add.text(16, 14, "Poké Mart", { fontFamily: FONT, fontSize: "20px", color: "#f5d76e" }));
+    add(screenTitle(this, 16, 14, "Poké Mart"));
     add(this.add.text(160, 20, t("You have ₽{money}", { money: session.game.money }), { fontFamily: FONT, fontSize: px(14), color: "#f5d76e" }));
     add(new Button(this, 794, 12, 150, 26, t("➜ Leave"), () => this.scene.start("Overworld", {})));
     TABS.forEach((tab, i) => add(new Button(this, 16 + i * 128, 50, 120, 26, t(tab), () => {

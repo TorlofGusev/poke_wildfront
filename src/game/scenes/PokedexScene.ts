@@ -12,6 +12,7 @@ import { t } from "../i18n";
 import { RichText } from "../ui/RichText";
 import { COLORS, FONT, TYPE_COLORS, px } from "../ui/theme";
 import { typeTag } from "../ui/typeName";
+import { screenTitle } from "../ui/frames";
 
 const LIST_X = 16;
 const LIST_W = 200;
@@ -58,6 +59,8 @@ export class PokedexScene extends Phaser.Scene {
   }
 
   create(): void {
+    // Screens fade in from the background colour instead of cutting.
+    this.cameras.main.fadeIn(160, 16, 20, 28);
     this.root = this.add.container(0, 0);
     const known = knownSpecies(session.game);
     this.selected ??= ALL.find((s) => known.has(s.id))?.id ?? null;
@@ -74,7 +77,7 @@ export class PokedexScene extends Phaser.Scene {
     this.root.removeAll(true);
     const add = <T extends Phaser.GameObjects.GameObject>(o: T) => (this.root.add(o), o);
     const known = knownSpecies(session.game);
-    add(this.add.text(LIST_X, 14, t("Pokédex"), { fontFamily: FONT, fontSize: "20px", color: "#f5d76e" }));
+    add(screenTitle(this, LIST_X, 14, t("Pokédex")));
     add(this.add.text(LIST_X + 110, 20, `${known.size}/${ALL.length}`, { fontFamily: FONT, fontSize: px(13), color: COLORS.dim }));
     add(new Button(this, 794, 12, 150, 26, t("← Back"), () => this.scene.start(this.from, { rested: false, choosingMeal: false })));
 

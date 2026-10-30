@@ -6,6 +6,7 @@ import { RichText } from "../ui/RichText";
 import { tag } from "../ui/markup";
 import { FONT } from "../ui/theme";
 import { t } from "../i18n";
+import { screenTitle } from "../ui/frames";
 
 /** The player-facing changelog (content/whatsNew.json), newest first, with wheel/drag scrolling. */
 export class WhatsNewScene extends Phaser.Scene {
@@ -14,13 +15,15 @@ export class WhatsNewScene extends Phaser.Scene {
   }
 
   create(): void {
+    // Screens fade in from the background colour instead of cutting.
+    this.cameras.main.fadeIn(160, 16, 20, 28);
     playMusic(this, "title");
     const { width, height } = this.scale;
     const markup = WHATS_NEW.map((v) => [`${tag("title", `v${v.version}`)}  ${tag("dim", v.date)}`, ...v.items.map((i) => `• ${i}`)].join("\n")).join("\n\n");
     const body = new RichText(this, 24, 60, width - 48, 13);
     const bodyHeight = body.setMarkup(markup);
     this.add.rectangle(0, 0, width, 52, 0x10141c).setOrigin(0).setDepth(1);
-    this.add.text(24, 16, t("What's new"), { fontFamily: FONT, fontSize: "20px", color: "#f5d76e" }).setDepth(2);
+    screenTitle(this, 24, 16, t("What's new")).setDepth(2);
     new Button(this, width - 174, 12, 150, 28, t("← Back"), () => this.scene.start("Title")).setDepth(2);
 
     const minY = Math.min(60, height - 20 - bodyHeight);
