@@ -2,6 +2,7 @@
  {"version": "0.104",
   "date": "2026-10-29",
   "items": [
+  "Battles can play faster: the 1x button beside the message box (or the F key) switches to 2x and 4x, speeding up moves, hits and the foes' turns. The game remembers your choice.",
   "Cooking happens at the camp fire itself: the recipes line up on the left with how many of each ingredient you have, and when you cook, a pot is hung over the fire, the ingredients fly in from the recipe, the stew bubbles and the dish is named in a message window. After a rest the HP numbers count up with the bars. What's new and Credits read as one centred column with clear headings, and the starters call out only once as you sweep across them.",
   "The Pokémon summary fills its pages: Stats adds a radar of all six stats (each bar and axis now measured against your team's best in that stat), Moves shows the chosen move as a big card over its rules and, when the slots are full, swaps it in for one of your moves in a single tap, and Equipment is now Items with Take off right next to the held item.",
   "Tips and questions appear in the same blue message window as in battle, at the foot of the screen; your chosen starter stands over the \"So you want…?\" window. The mastery tree reads at a glance: picks are filled in their move's colour (passives in gold) and joined by a bright gold line, locked rows are dark with a padlock. The Pokédex shows each Pokémon on a lit stage with its number, marks the ones you have caught with a Poké Ball and counts seen and caught; the summary's stage got the same spotlight.",

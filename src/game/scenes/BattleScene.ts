@@ -14,6 +14,7 @@ import { calmEncounter, fatigueLevel, fatigueModifiers, removeEncounter, returnT
 import { readyToEvolve, teamBond, xpToNext } from "../../core/progression";
 import { nextRandom } from "../../core/rng";
 import { AI_LEVELS, planTurn } from "../../core/ai";
+import { cycleBattleSpeed, getBattleSpeed } from "../battleSpeed";
 import { playCry, sfx, silence } from "../audio";
 import { FEEDBACK_URL, openFeedback } from "../feedback";
 import { flushTips, queueTip, showHelp, tipOpen } from "../tips";
@@ -322,9 +323,17 @@ export class BattleScene extends Phaser.Scene {
   create(): void {
     if (this.demo) return void this.playDemo(this.demo).catch((e: unknown) => console.error("title replay stopped:", e));
     this.panelKey = "";
-    // A hurried intro (see playIntro) must not carry over into the next battle.
-    this.tweens.timeScale = 1;
-    this.time.timeScale = 1;
+    // The chosen battle speed (a hurried intro, see playIntro, must not carry over into the next battle). New
+    // particle effects play at it too; the animation clock is the game's, so it goes back to 1× on leaving.
+    this.applySpeed(getBattleSpeed());
+    const paceParticles = (o: Phaser.GameObjects.GameObject) => {
+      if (o instanceof Phaser.GameObjects.Particles.ParticleEmitter) o.timeScale = this.time.timeScale;
+    };
+    this.events.on(Phaser.Scenes.Events.ADDED_TO_SCENE, paceParticles);
+    this.events.once("shutdown", () => {
+      this.events.off(Phaser.Scenes.Events.ADDED_TO_SCENE, paceParticles);
+      this.anims.globalTimeScale = 1;
+    });
     playMusic(this, "battle");
     this.header = pixText(this, BOARD_X, 12, "", 0xf5d76e);
     this.add.text(BOARD_X, 44, this.scenario.name, { fontFamily: FONT, fontSize: px(13), color: COLORS.dim });
@@ -341,7 +350,7 @@ export class BattleScene extends Phaser.Scene {
     probe.destroy();
     // The message box under the field: what happened just before (dimmed) and what just happened, sliding in.
     const msgTop = BOARD_Y + board.h + 4, msgH = Math.min(54, this.scale.height - msgTop - 2);
-    const msgW = board.w - logW - 48;
+    const msgW = board.w - logW - 94;
     const frame = messageFrame(this, BOARD_X, msgTop, msgW, msgH);
     this.logPrev = new RichText(this, BOARD_X + 12, msgTop + 8, msgW - 24, 11, "#aab4cc", 16);
     this.logStrip = new RichText(this, BOARD_X + 12, msgTop + 27, msgW - 24, 12, "#ffffff", 16);
@@ -352,6 +361,15 @@ export class BattleScene extends Phaser.Scene {
     const logButton = new Button(this, BOARD_X + board.w - logW, BOARD_Y + board.h + 6, logW, 22, logLabel, () => this.toggleLogOverlay());
     logButton.setDepth(5);
     new Button(this, BOARD_X + board.w - logW - 40, BOARD_Y + board.h + 6, 34, 22, "?", () => showHelp(this)).centerLabel().setDepth(5);
+    // Playback speed, 1× → 2× → 4× (also the F key): lit while faster than normal.
+    const speedButton = new Button(this, BOARD_X + board.w - logW - 86, BOARD_Y + board.h + 6, 40, 22, `${getBattleSpeed()}x`, () => cycle()).centerLabel().setDepth(5);
+    const cycle = () => {
+      const next = cycleBattleSpeed();
+      this.applySpeed(next);
+      speedButton.setText(`${next}x`).setHighlighted(next > 1);
+    };
+    speedButton.setHighlighted(getBattleSpeed() > 1);
+    this.input.keyboard?.on("keydown-F", cycle);
     this.input.keyboard?.on("keydown-L", () => this.toggleLogOverlay());
     this.events.once("shutdown", () => this.input.setDefaultCursor("default"));
     this.input.on("wheel", (_p: unknown, _o: unknown, _dx: number, dy: number) => {
@@ -2424,10 +2442,7 @@ export class BattleScene extends Phaser.Scene {
     const npc = this.npc();
     const trainer = !!npc && npc.kind !== "wild";
     const blocker = this.add.zone(0, 0, this.scale.width, this.scale.height).setOrigin(0).setInteractive().setDepth(54);
-    blocker.once("pointerdown", () => {
-      this.tweens.timeScale = 3;
-      this.time.timeScale = 3;
-    });
+    blocker.once("pointerdown", () => this.applySpeed(Math.max(3, getBattleSpeed())));
     const foes = this.scenario.enemies.map((e) => this.units.get(e.id)).filter((v): v is UnitView => !!v);
     const homes = foes.map((v) => ({ x: v.container.x, y: v.container.y }));
     foes.forEach((v) => v.container.setAlpha(0));
@@ -2470,8 +2485,7 @@ export class BattleScene extends Phaser.Scene {
     this.pushLog({ text: line, tone: "info" });
     this.tweens.add({ targets: this.msgParts, alpha: 1, duration: 250 });
     foes.forEach((v, i) => v.container.setPosition(homes[i]!.x, homes[i]!.y).setScale(UNIT_SCALE).setAlpha(1));
-    this.tweens.timeScale = 1;
-    this.time.timeScale = 1;
+    this.applySpeed(getBattleSpeed());
     blocker.destroy();
     if (this.phase === "deploy") this.showFoePlates();
   }
@@ -2690,6 +2704,14 @@ export class BattleScene extends Phaser.Scene {
    */
   private settle(): Promise<void> {
     return new Promise((resolve) => this.events.once("postupdate", () => this.events.once("postupdate", () => resolve())));
+  }
+
+  /** Plays the battle at `speed`× (tweens, timers, sprite animations and particle effects alike). */
+  private applySpeed(speed: number): void {
+    this.tweens.timeScale = speed;
+    this.time.timeScale = speed;
+    this.anims.globalTimeScale = speed;
+    for (const o of this.children.list) if (o instanceof Phaser.GameObjects.Particles.ParticleEmitter) o.timeScale = speed;
   }
 
   private wait(ms: number): Promise<void> {
