@@ -46,8 +46,25 @@ export function formatEvent(e: BattleEvent, ctx: LogContext): LogEntry | null {
       return { text: t("{combo} {unit} exploits an ally's setup on {target}", { combo: tag("good", `${ctx.comboName(e.combo)}!`), unit: name(e.unitId), target: name(e.targetId) }), tone: side(e.unitId) };
     case "engaged":
       return { text: t("{unit} and {target} are {x}", { unit: name(e.unitId), target: name(e.targetId), x: tag("bad", t("engaged")) }), tone: "info" };
-    case "disengaged":
-      return { text: t("{unit} and {target} are no longer engaged", { unit: name(e.unitId), target: name(e.targetId) }), tone: "info" };
+    case "disengaged": {
+      // A faint or a capture already says it all.
+      if (e.reason === "fainted" || e.reason === "captured") return null;
+      const vars = { unit: name(e.unitId), target: name(e.targetId), move: tag("title", e.moveId ? ctx.moveName(e.moveId) : "") };
+      const text = {
+        brokeAway: t("{unit} breaks away from {target}", vars),
+        slipped: t("{unit} slips away from {target} unpunished", vars),
+        helpless: t("{unit} walks away from the helpless {target}", vars),
+        move: t("{unit} breaks away from {target} with {move}", vars),
+        swap: t("{unit} swaps out of the engagement with {target}", vars),
+        switched: t("{unit} and {target} are no longer engaged (a new foe stepped in)", vars),
+        pushed: t("{unit} is knocked out of the engagement with {target}", vars),
+      }[e.reason];
+      return { text, tone: "info" };
+    }
+    case "intercepted":
+      return { text: t("{unit} steps into the shot meant for {target}!", { unit: name(e.unitId), target: name(e.targetId) }), tone: side(e.unitId) };
+    case "confusedStrike":
+      return { text: t("{unit} is confused and lashes out at {target}!", { unit: name(e.unitId), target: name(e.targetId) }), tone: "status" };
     case "moveUsed": {
       const targets = e.affected.length ? ` → ${e.affected.map(name).join(", ")}` : "";
       return { text: t("{unit} uses {move}{targets}", { unit: name(e.unitId), move: tag("title", ctx.moveName(e.moveId)), targets }), tone: side(e.unitId) };
@@ -60,8 +77,10 @@ export function formatEvent(e: BattleEvent, ctx: LogContext): LogEntry | null {
     }
     case "critical":
       return { text: t("{x} {unit} lands a critical hit on {target}", { x: tag("good", t("Critical!")), unit: name(e.unitId), target: name(e.targetId) }), tone: side(e.unitId) };
-    case "statusResisted":
-      return { text: t("{unit} shrugs off {status} through willpower", { unit: name(e.unitId), status: e.status }), tone: "info" };
+    case "statusResisted": {
+      const vars = { unit: name(e.unitId), status: tag("status", ctx.statusName(e.status)) };
+      return { text: e.immune ? t("{unit} is immune to {status}", vars) : t("{unit} shrugs off {status} through willpower", vars), tone: "info" };
+    }
     case "healed":
       return { text: t("{unit} recovers {x} — {hp} HP", { unit: name(e.unitId), x: tag("heal", `${e.amount} HP`), hp: e.hp }), tone: "heal" };
     case "displaced": {

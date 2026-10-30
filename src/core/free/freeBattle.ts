@@ -292,12 +292,14 @@ function freeUseMove(
       .filter((u) => u.id !== user.id && distance(u.pos, user.pos) >= range.min && distance(u.pos, user.pos) <= Math.max(range.max, MELEE_REACH))
       .sort((a, b) => distance(a.pos, user.pos) - distance(b.pos, user.pos) || Number(b.side === user.side) - Number(a.side === user.side) || (a.id < b.id ? -1 : 1))[0];
     if (nearest) {
+      if (!affected.some((u) => u.id === nearest.id)) events.push({ type: "confusedStrike", unitId: user.id, targetId: nearest.id });
       target = nearest.pos;
       affected = unitsIn(state, freeArea(state, move, user, target), (u) => u.id !== user.id);
     }
     user.statuses = user.statuses.filter((st) => st !== confusion);
     events.push({ type: "statusExpired", unitId: user.id, status: confusion.id });
   } else if (intercept && check.interceptor && roll(state) < check.interceptChance!) {
+    events.push({ type: "intercepted", unitId: check.interceptor.id, userId: user.id, targetId: affected[0]!.id });
     target = check.interceptor.pos;
     affected = [unitById(state, check.interceptor.id)];
   }

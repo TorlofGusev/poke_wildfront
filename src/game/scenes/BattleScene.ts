@@ -2201,7 +2201,7 @@ export class BattleScene extends Phaser.Scene {
           this.syncUnits(false);
           break;
         case "statusResisted":
-          this.floatText(e.unitId, t("Resisted"), "#e8ecf4");
+          this.floatText(e.unitId, e.immune ? t("Immune") : t("Resisted"), "#e8ecf4");
           break;
         case "critical":
           this.pendingCrit.add(e.targetId);

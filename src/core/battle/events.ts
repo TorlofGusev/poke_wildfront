@@ -3,6 +3,8 @@ import type { FreeArea } from "../free/field";
 import type { HazardKind } from "./content";
 import type { BattleOutcome, Hazard } from "./state";
 
+export type DisengageReason = "brokeAway" | "slipped" | "helpless" | "move" | "swap" | "switched" | "pushed" | "fainted" | "captured";
+
 /** Everything the presentation layer needs to animate what happened, in order. */
 export type BattleEvent =
   | { type: "roundStarted"; round: number; order: string[] }
@@ -15,7 +17,16 @@ export type BattleEvent =
   /** A hit exploited an ally's setup (engagement or status): the team gains Bond. */
   /** A named combo (rules.combos): the hit exploited an ally's engagement or status. */
   | { type: "combo"; unitId: string; targetId: string; combo: string }
-  | { type: "disengaged"; unitId: string; targetId: string }
+  /**
+   * An engagement ends: `brokeAway` after the partner's free strike, `slipped` without one (an escape passive),
+   * `helpless` (the partner could not strike), `move` (a disengaging move, `moveId`), `swap` (ally swap),
+   * `switched` (it engaged another foe), `pushed` (knocked apart), `fainted` / `captured`.
+   */
+  | { type: "disengaged"; unitId: string; targetId: string; reason: DisengageReason; moveId?: string }
+  /** A shot aimed at `targetId` was caught by `unitId` standing in the way. */
+  | { type: "intercepted"; unitId: string; userId: string; targetId: string }
+  /** A confused Pokémon's attack went to the nearest Pokémon instead of its aim. */
+  | { type: "confusedStrike"; unitId: string; targetId: string }
   | { type: "damaged"; unitId: string; amount: number; hp: number; source: "move" | "status" | "impact" | "thorns" | "recoil"; effectiveness?: number }
   | { type: "healed"; unitId: string; amount: number; hp: number }
   /** Pushed or pulled; `engage` marks an engaged pair stepping together (not a knockback). */
@@ -23,7 +34,7 @@ export type BattleEvent =
   | { type: "statusApplied"; unitId: string; status: string; duration: number }
   | { type: "statusExpired"; unitId: string; status: string }
   /** Willpower shrugged off a status a foe tried to inflict. */
-  | { type: "statusResisted"; unitId: string; status: string }
+  | { type: "statusResisted"; unitId: string; status: string; immune?: true }
   /** A critical hit (followed by its damaged event). */
   | { type: "critical"; unitId: string; targetId: string }
   | { type: "fainted"; unitId: string }

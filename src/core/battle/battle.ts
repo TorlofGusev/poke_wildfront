@@ -8,7 +8,7 @@ import type { BaseStats, BattleContent, HazardKind, MoveDef } from "./content";
 import { combineModifiers, type UnitModifiers } from "./modifiers";
 import type { TypeUnitTraits } from "./species";
 
-import type { BattleEvent } from "./events";
+import type { BattleEvent, DisengageReason } from "./events";
 import type { BattleState, BattleUnit, Hazard, Side } from "./state";
 
 export interface UnitSetup {
@@ -218,8 +218,8 @@ function dispel(content: BattleContent, unit: BattleUnit, events: BattleEvent[])
 
 /** Two allies trade places; both leave their engagements without a free attack. */
 function swapPlaces(state: BattleState, a: BattleUnit, b: BattleUnit, events: BattleEvent[]): void {
-  disengage(state, a, events);
-  disengage(state, b, events);
+  disengage(state, a, events, "swap");
+  disengage(state, b, events, "swap");
   const from = { ...a.pos }, to = { ...b.pos };
   a.pos = to;
   b.pos = from;
@@ -421,12 +421,12 @@ function engage(a: BattleUnit, b: BattleUnit, events: BattleEvent[]): void {
   events.push({ type: "engaged", unitId: a.id, targetId: b.id });
 }
 
-function disengage(state: BattleState, unit: BattleUnit, events: BattleEvent[]): void {
+function disengage(state: BattleState, unit: BattleUnit, events: BattleEvent[], reason: DisengageReason, moveId?: string): void {
   const partner = partnerOf(state, unit);
   unit.engagedWith = null;
   if (!partner) return;
   partner.engagedWith = null;
-  events.push({ type: "disengaged", unitId: unit.id, targetId: partner.id });
+  events.push({ type: "disengaged", unitId: unit.id, targetId: partner.id, reason, ...(moveId && { moveId }) });
 }
 
 /** The partner's free attack on a unit breaking away: its basic attack, or Struggle for a ranged Pokémon. */
@@ -452,9 +452,10 @@ export function effectiveMove(content: BattleContent, unit: BattleUnit, moveId: 
 export function breakAway(state: BattleState, content: BattleContent, unit: BattleUnit, events: BattleEvent[]): void {
   const partner = partnerOf(state, unit);
   if (!partner) return;
-  const canStrike = (!unit.mods.disengage || partner.mods.noEscape) && !partner.statuses.some((st) => content.statuses[st.id]?.noAction);
-  if (canStrike) engagementStrike(state, content, partner, unit, events);
-  if (unit.hp > 0) disengage(state, unit, events);
+  const helpless = partner.statuses.some((st) => content.statuses[st.id]?.noAction);
+  const slips = unit.mods.disengage && !partner.mods.noEscape;
+  if (!slips && !helpless) engagementStrike(state, content, partner, unit, events);
+  if (unit.hp > 0) disengage(state, unit, events, slips ? "slipped" : helpless ? "helpless" : "brokeAway");
 }
 
 /** Spends what a move costs (action, cooldown, Bond), then resolves it on the affected units. */
@@ -606,7 +607,10 @@ function spirit(state: BattleState, content: BattleContent, unit: BattleUnit, am
 }
 
 function applyStatus(content: BattleContent, user: BattleUnit, t: BattleUnit, status: string, base: number, events: BattleEvent[], state?: BattleState): void {
-  if (t.mods.statusImmune.includes(status) || t.mods.statusImmune.includes("*")) return;
+  if (t.mods.statusImmune.includes(status) || t.mods.statusImmune.includes("*")) {
+    events.push({ type: "statusResisted", unitId: t.id, status, immune: true });
+    return;
+  }
   // Willpower: a chance to shrug off what a foe inflicts.
   if (state && user.side !== t.side && roll(state) < statusResistChance(content, t)) {
     events.push({ type: "statusResisted", unitId: t.id, status });
@@ -815,7 +819,7 @@ function resolveHits(
     for (const effect of move.effects ?? []) {
       if (t.hp <= 0) break;
       if (shrugs) {
-        if (effect.kind === "status") events.push({ type: "statusResisted", unitId: t.id, status: effect.status });
+        if (effect.kind === "status") events.push({ type: "statusResisted", unitId: t.id, status: effect.status, immune: true });
         continue;
       }
       if (move.affects === "any" && (effect.kind === "heal" || effect.kind === "healShare") === isFoe) continue;
@@ -839,8 +843,8 @@ function resolveHits(
           break;
         case "engage":
           if (isFoe && t.engagedWith !== user.id && adjacent(state, user.pos, t.pos)) {
-            disengage(state, user, events);
-            disengage(state, t, events);
+            disengage(state, user, events, "switched");
+            disengage(state, t, events, "switched");
             engage(user, t, events);
             closeIn(state, user, t, events);
           }
@@ -871,7 +875,7 @@ function resolveHits(
           break;
         case "disengage":
           // Applied once to the user, whoever the move hit.
-          if (t === affected[0]) disengage(state, user, events);
+          if (t === affected[0]) disengage(state, user, events, "move", move.id);
           break;
       }
     }
@@ -916,7 +920,7 @@ function doThrowBall(
   events.push({ type: "ballThrown", unitId, targetId: victim.id, ballId, chance, success });
   if (success) {
     victim.captured = true;
-    disengage(state, victim, events);
+    disengage(state, victim, events, "captured");
     state.queue = state.queue.filter((id, i) => i === 0 || id !== victim.id);
     events.push({ type: "captured", unitId: victim.id });
     checkOutcome(state, events);
@@ -939,7 +943,7 @@ function displace(
   displaceFree(state, content, user, target, kind, distance, events);
   // Pushed (or pulled) out of its partner's reach: the engagement breaks, with no free attack.
   const partner = partnerOf(state, target);
-  if (partner && apart(state, partner.pos, target.pos) > MELEE_REACH) disengage(state, target, events);
+  if (partner && apart(state, partner.pos, target.pos) > MELEE_REACH) disengage(state, target, events, "pushed");
 }
 
 /** An engaged pair steps in until they touch (immovable ones hold their ground). */
@@ -973,7 +977,7 @@ function displaceFree(
   target.pos = to;
   events.push({ type: "displaced", unitId: target.id, from, to: { ...to }, blocked });
   const partner = partnerOf(state, target);
-  if (partner && !adjacent(state, partner.pos, target.pos)) disengage(state, target, events);
+  if (partner && !adjacent(state, partner.pos, target.pos)) disengage(state, target, events, "pushed");
   if (blocked && kind === "push") dealDamage(state, target, content.rules.impactDamage + user.mods.impactBonus, "impact", events);
 }
 
@@ -1001,7 +1005,7 @@ function dealDamage(
   }
   if (unit.hp === 0) {
     events.push({ type: "fainted", unitId: unit.id });
-    disengage(state, unit, events);
+    disengage(state, unit, events, "fainted");
     if (state.pending?.some((p) => p.unitId === unit.id)) state.pending = state.pending.filter((p) => p.unitId !== unit.id);
     if (unit.mods.bondOnFaint) gainBond(state, unit.side, unit.mods.bondOnFaint, "fainted", events);
     state.queue = state.queue.filter((id, i) => i === 0 || id !== unit.id);
