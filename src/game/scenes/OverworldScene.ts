@@ -44,13 +44,16 @@ import { boardTheme, drawFloorDecor, drawWaterDecor, tileRand } from "../ui/boar
 import { ballIcon } from "../ui/ballIcon";
 import { trainerLook } from "../trainerLook";
 import { trainerTexture } from "../trainerSprites";
-import { battleWipe } from "../ui/battleBookends";
+import { battleWipe, messageFrame } from "../ui/battleBookends";
 import { COLORS, FONT, PHONE, TYPE_COLORS, px } from "../ui/theme";
-import { screenTitle } from "../ui/frames";
+import { panel, screenTitle } from "../ui/frames";
+import { pixText } from "../ui/pixelFont";
 
 const T = 28;
 const MAP_X = 16;
 const MAP_Y = 60;
+/** The map's width on screen (24 tiles of 28 px). */
+const MAP_W = 672;
 const HUD_X = 704;
 /** The party grid in the HUD column: 3 portraits a row, the money and items beside it. */
 const STRIP_COLS = 3;
@@ -117,6 +120,10 @@ export class OverworldScene extends Phaser.Scene {
   private groupViews = new Map<string, Phaser.GameObjects.Container>();
   private preview!: Phaser.GameObjects.Graphics;
   private hud!: RichText;
+  /** Framed blocks behind the HUD column (status, party and stock). */
+  private hudPanels!: Phaser.GameObjects.Container;
+  /** The area name banner, while shown. */
+  private areaToast: Phaser.GameObjects.Container | null = null;
   private buttons!: Phaser.GameObjects.Container;
   private moving = false;
   private leader: string | null = null;
@@ -161,9 +168,6 @@ export class OverworldScene extends Phaser.Scene {
     if (evolving.length) return void this.scene.start("Evolution", { uids: evolving, next: "Overworld" });
     playMusic(this, "overworld");
     screenTitle(this, MAP_X, 10, currentWorld().name);
-    this.add.text(MAP_X, 40, PHONE ? t("Tap twice or drag to walk · red ring: wild group · ★ ◆ ✚ pickups") : t("Click to walk. Red ring: wild group. Pickups: ★ rare · ◆ held item · ✚ heal · M: sound on/off"), {
-      fontFamily: FONT, fontSize: px(11), color: COLORS.dim, wordWrap: { width: 672 },
-    });
     this.drawMap();
     // The map legend, once; after the intro if one opens.
     this.time.delayedCall(400, () => this.dialog || showTip(this, "map"));
@@ -182,6 +186,7 @@ export class OverworldScene extends Phaser.Scene {
         this.add.text(0, 0, "★", { fontFamily: FONT, fontSize: px(12), color: "#10141c" }).setOrigin(0.5),
       ]),
     ]).setDepth(5);
+    this.hudPanels = this.add.container(0, 0).setDepth(-1);
     this.hud = new RichText(this, HUD_X, 16, 240, 12);
     this.buttons = this.add.container(HUD_X, 0);
     // The HUD column is rebuilt piece by piece, and only what changed: rebuilding text and buttons
@@ -439,9 +444,8 @@ export class OverworldScene extends Phaser.Scene {
   /** A few lines for a new game: what this is and how to play. */
   private showIntro(): void {
     this.closeDialog();
-    const w = 600;
-    const x0 = MAP_X + 30, y0 = MAP_Y + 40;
-    const text = new RichText(this, x0 + 16, y0 + 12, w - 32, 13);
+    const w = 620;
+    const text = new RichText(this, 0, 0, w - 40, 13);
     const fatigue = tag("bad", t("fatigue"));
     const h = text.setMarkup([
       tag("title", t("Welcome to Pokémon Wildfront!")),
@@ -453,16 +457,26 @@ export class OverworldScene extends Phaser.Scene {
       `${tag("num", t("Battle:"))} ${t("place up to 3 Pokémon on the blue spots. On a turn a Pokémon can walk, use one basic attack, and use its skills whenever they are off cooldown. Tap a foe to see how far it can reach.")}`,
       `${tag("num", t("Grow:"))} ${t("Pokémon level up, choose a focus at Lv 3 and masteries later (Camp → a Pokémon). Weaken wild Pokémon and throw a ball to catch them.")}`,
       tag("dim", t("Three knockouts and a Pokémon is gone for good, so retreat in time.")),
-    ].join("\n")) + 60;
+    ].join("\n")) + 70;
+    const { x0, y0 } = this.messageWindow(text, w, h);
     const items: Phaser.GameObjects.GameObject[] = [
-      this.add.rectangle(x0, y0, w, h, 0x10141c, 0.97).setOrigin(0).setStrokeStyle(2, 0xf5d76e).setInteractive(),
+      messageFrame(this, x0, y0, w, h).setOrigin(0).setInteractive(),
       text,
-      new Button(this, x0 + w / 2 - 90, y0 + h - 40, 180, 28, t("Let's go!"), () => {
+      new Button(this, x0 + w / 2 - 90, y0 + h - 44, 180, 28, t("Let's go!"), () => {
         this.closeDialog();
         showTip(this, "map");
       }).setHighlighted(true),
     ];
     this.dialog = this.add.container(0, 0, items).setDepth(30);
+  }
+
+  /** The handhelds' message window at the foot of the map (as tips and battle use): places `text` inside it. */
+  private messageWindow(text: RichText, w: number, h: number): { x0: number; y0: number } {
+    this.areaToast?.destroy();
+    this.areaToast = null;
+    const x0 = Math.round(MAP_X + (MAP_W - w) / 2), y0 = Math.max(10, this.scale.height - h - 12);
+    text.setPosition(x0 + 20, y0 + 18);
+    return { x0, y0 };
   }
 
   private closeDialog(): void {
@@ -477,12 +491,12 @@ export class OverworldScene extends Phaser.Scene {
     const done = npcDone(g, npc);
     const ready = meets(g, npc.requires);
     const lines = done ? (npc.afterText ?? npc.text ?? []) : ready ? (npc.text ?? []) : (npc.lockedText ?? npc.text ?? []);
-    const w = 560;
-    const x0 = MAP_X + 56, y0 = MAP_Y + 250;
+    const w = 580;
     const items: Phaser.GameObjects.GameObject[] = [];
-    const text = new RichText(this, x0 + 16, y0 + 12, w - 32, 13);
-    const h = text.setMarkup([tag("title", npc.name), ...lines].join("\n")) + 64;
-    items.push(this.add.rectangle(x0, y0, w, h, 0x10141c, 0.96).setOrigin(0).setStrokeStyle(2, 0xf5d76e).setInteractive(), text);
+    const text = new RichText(this, 0, 0, w - 40, 13);
+    const h = text.setMarkup([tag("title", npc.name), ...lines].join("\n")) + 70;
+    const { x0, y0 } = this.messageWindow(text, w, h);
+    items.push(messageFrame(this, x0, y0, w, h).setOrigin(0).setInteractive(), text);
     const buttons: [string, () => void][] = [];
     if (!done && ready) {
       if (isBattler(npc)) buttons.push([t("Battle!"), () => this.startNpcBattle(npc)]);
@@ -490,8 +504,8 @@ export class OverworldScene extends Phaser.Scene {
       else buttons.push([t("OK"), () => this.finishNpc(npc)]);
     }
     buttons.push([done || !ready || !isBattler(npc) ? t("Close") : t("Not now"), () => this.closeDialog()]);
-    const bw = Math.min(170, (w - 32 - (buttons.length - 1) * 8) / buttons.length);
-    buttons.forEach(([label, fn], i) => items.push(new Button(this, x0 + 16 + i * (bw + 8), y0 + h - 40, bw, 28, label, fn)));
+    const bw = Math.min(170, (w - 40 - (buttons.length - 1) * 8) / buttons.length);
+    buttons.forEach(([label, fn], i) => items.push(new Button(this, x0 + 20 + i * (bw + 8), y0 + h - 44, bw, 28, label, fn)));
     this.dialog = this.add.container(0, 0, items).setDepth(30);
     sfx(this, "talk");
   }
@@ -514,8 +528,8 @@ export class OverworldScene extends Phaser.Scene {
     const text = this.add.text(0, 0, t("Found {items}!", { items: found.join(", ") }), {
       fontFamily: FONT, fontSize: px(14), color: "#f5d76e", fontStyle: "bold", align: "center", wordWrap: { width: 360 },
     }).setOrigin(0.5);
-    const w = text.width + 28, h = text.height + 16;
-    const box = this.add.rectangle(0, 0, w, h, 0x10141c, 0.92).setStrokeStyle(2, 0xf5d76e);
+    const w = Math.ceil(text.width + 40), h = Math.ceil(text.height + 28);
+    const box = messageFrame(this, 0, 0, w, h);
     const toast = this.add.container(this.scale.width / 2, 92, [box, text]).setDepth(40).setAlpha(0);
     this.tweens.add({ targets: toast, alpha: 1, y: 84, duration: 180 });
     this.tweens.add({ targets: toast, alpha: 0, delay: 3200, duration: 500, onComplete: () => toast.destroy() });
@@ -585,7 +599,7 @@ export class OverworldScene extends Phaser.Scene {
       `${tag("title", t("Meal"))} ${world.meal ? tag(world.meal.id === "hungry" ? "bad" : "good", world.meal.name) : tag("dim", t("none"))}`,
     ];
     const h = this.hud.setMarkup(lines.join("\n"));
-    let y = 16 + h + 6;
+    let y = 16 + h + 16;
     const stripTop = y;
     const below = this.partyStrip(y);
     this.statsText.setY(stripTop - 2);
@@ -603,6 +617,10 @@ export class OverworldScene extends Phaser.Scene {
       });
     }
     y = Math.max(below, stripTop + statsH + 24);
+    // Framed like the menus' cards: the status block, then the party with its stock.
+    this.hudPanels.removeAll(true);
+    this.hudPanels.add([panel(this, HUD_X - 8, 8, 256, h + 14), panel(this, HUD_X - 8, stripTop - 8, 256, y - stripTop + 4)]);
+    y += 8;
     // The latest message (path preview, heal, errors) sits right under the stats, so it never falls off small screens.
     this.msgText.setY(y);
     const mh = this.msgText.setMarkup(this.message);
@@ -716,10 +734,14 @@ export class OverworldScene extends Phaser.Scene {
 
   /** Floating banner when the party enters a new area. */
   private toast(text: string): void {
-    const t = this.add.text(MAP_X + 336, MAP_Y + 30, text, {
-      fontFamily: FONT, fontSize: "18px", color: "#f5d76e", align: "center", backgroundColor: "#10141cdd", padding: { x: 14, y: 8 },
-    }).setOrigin(0.5).setDepth(20).setAlpha(0);
-    this.tweens.add({ targets: t, alpha: 1, y: t.y + 10, duration: 250, yoyo: true, hold: 1600, onComplete: () => t.destroy() });
+    this.areaToast?.destroy();
+    // Not over an open dialogue: the window says enough.
+    if (this.dialog) return void (this.areaToast = null);
+    const label = pixText(this, 0, 0, text, 0xf5d76e, 2).setOrigin(0.5).setCenterAlign();
+    const w = Math.ceil(label.width + 40), h = Math.ceil(label.height + 26);
+    const box = this.add.container(MAP_X + MAP_W / 2, MAP_Y + 34, [messageFrame(this, -w / 2, -h / 2, w, h).setOrigin(0), label]).setDepth(20).setAlpha(0);
+    this.areaToast = box;
+    this.tweens.add({ targets: box, alpha: 1, y: box.y + 10, duration: 250, yoyo: true, hold: 1600, onComplete: () => { box.destroy(); if (this.areaToast === box) this.areaToast = null; } });
   }
 
   /** Walks to a tile, talks to the NPC on it, or explains what blocks it. */

@@ -2,6 +2,7 @@
  {"version": "0.104",
   "date": "2026-10-29",
   "items": [
+  "The map matches the new menus: people talk in the blue message window at the foot of the map, as in battle, the area name appears in a framed pixel banner (never behind a conversation), finds pop up in the same window, and the side column sits in framed cards. The tiny legend line over the map is gone; the map tip and the ? button explain the icons",
   "Every gym fights on its own floor: a rocky hall in Pewter, a pool in Cerulean, cover and steel in Vermilion, a greenhouse in Celadon, tiled halls in Saffron and an open, bare hall in Viridian. Gym trainers no longer battle on the mountain, in the forest, in the Power Plant or in Silph Co.",
   "The battle log says why an engagement ends: breaking away under a free strike, slipping away unpunished (Run Away…), leaving a helpless foe, a move such as U-turn, swapping places or being knocked apart. It also tells when a Pokémon catches a shot meant for an ally, when a confused one lashes out at the wrong target, and when a Pokémon is immune to a status rather than shrugging it off through willpower",
   "Melee lunges that reach 2 (Vine Whip, Wing Attack, Mach Punch, Aqua Jet, Shadow Sneak, Jump Kick…) now count as melee: a hit from beside the foe locks the two in combat, they can be used on the foe you are locked with, they no longer lose damage there, and Far Sight no longer stretches them",
