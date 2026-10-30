@@ -52,6 +52,7 @@ import { t } from "../i18n";
 import { RichText } from "../ui/RichText";
 import { showTip } from "../tips";
 import { COLORS, FONT, TYPE_COLORS, px } from "../ui/theme";
+import { typeName, typeTag } from "../ui/typeName";
 
 const LIST_X = 16;
 const DETAIL_X = 16;
@@ -155,7 +156,9 @@ export class PokemonScene extends Phaser.Scene {
     if (shown) {
       const inParty = roster.party.some((x) => x.uid === shown.uid);
       const store = add(new Button(this, prev.x - 136, 12, 128, 26, inParty ? t("📦 To storage") : t("↩ To party"), () =>
-        this.act(() => session.update({ ...session.game, roster: moveBetweenPartyAndStorage(session.game.roster, shown.uid) }))));
+        this.act(() => session.update({ ...session.game, roster: moveBetweenPartyAndStorage(session.game.roster, shown.uid) })))
+        // The last Pokémon in the party stays; a full party takes no one from storage.
+        .setEnabled(inParty ? roster.party.length > 1 : roster.party.length < MAX_PARTY_SIZE));
       // A held-back (or just reached) evolution starts here, with its scene.
       if (evolutionDue(CONTENT, shown)) {
         add(new Button(this, store.x - 128, 12, 120, 26, t("✦ Evolve"), () => this.evolve(shown.uid)).setHighlighted(true));
@@ -167,36 +170,13 @@ export class PokemonScene extends Phaser.Scene {
     if (this.message) add(new RichText(this, DETAIL_X, 506, DETAIL_W, 12)).setMarkup(this.message);
   }
 
-  private card(x: number, y: number, m: PartyMember): Phaser.GameObjects.Container {
-    const s = CONTENT.species[m.speciesId]!;
-    const sel = m.uid === this.selected;
-    const pending = pendingChoice(CONTENT, PROGRESSION, m) ?? (m.unspentPoints > 0 ? "points" : null);
-    const bg = this.add.rectangle(0, 0, 304, 36, sel ? 0x2a3245 : 0x1c2130).setOrigin(0)
-      .setStrokeStyle(sel ? 2 : 1, sel ? 0xf5d76e : m.knockouts === 2 ? 0xd0021b : 0x3a4560);
-    bg.setInteractive({ useHandCursor: true }).on("pointerdown", () => {
-      this.selected = m.uid;
-      this.selectedTalent = null;
-      this.message = "";
-      this.render();
-    });
-    const dot = this.textures.exists(portraitKey(m.speciesId))
-      ? this.add.image(18, 18, portraitKey(m.speciesId)).setDisplaySize(30, 30)
-      : this.add.circle(18, 18, 11, TYPE_COLORS[s.types[0]!] ?? 0x888888);
-    const name = this.add.text(36, 3, `${s.name}  Lv ${m.level}`, { fontFamily: FONT, fontSize: px(13), color: COLORS.text });
-    const max = memberMaxHp(CONTENT, PROGRESSION, m);
-    const hp = this.add.text(36, 19, m.hp > 0 ? `HP ${m.hp}/${max}` : t("fainted"), { fontFamily: FONT, fontSize: px(11), color: m.hp > 0 ? COLORS.dim : COLORS.bad });
-    const pips = "●".repeat(m.knockouts) + "○".repeat(KNOCKOUTS_TO_DEATH - m.knockouts);
-    const ko = this.add.text(296, 18, `${pending ? "★ " : ""}KO ${pips}`, { fontFamily: FONT, fontSize: px(12), color: pending ? "#f5d76e" : m.knockouts === 2 ? COLORS.bad : COLORS.dim }).setOrigin(1, 0.5);
-    return this.add.container(x, y, [bg, dot, name, hp, ko]);
-  }
-
   private renderDetail(m: PartyMember, add: <T extends Phaser.GameObjects.GameObject>(o: T) => T): void {
     const s = CONTENT.species[m.speciesId]!;
     const { stats, maxHp } = memberStats(CONTENT, PROGRESSION, m);
     const held = m.heldItem ? PROGRESSION.items[m.heldItem] : null;
     const evo = s.evolution ? t(" · evolves at Lv {lv}", { lv: s.evolution.level }) : "";
     const header = [
-      `${tag("title", s.name)}  ${s.types.map((t) => tag(t, t)).join("/")}${roleTag(s.role)}  Lv ${tag("num", m.level)}  XP ${m.xp}/${xpToNext(PROGRESSION, m.level)}${tag("dim", evo)}`,
+      `${tag("title", s.name)}  ${s.types.map((ty) => typeTag(ty)).join("/")}${roleTag(s.role)}  Lv ${tag("num", m.level)}  XP ${m.xp}/${xpToNext(PROGRESSION, m.level)}${tag("dim", evo)}`,
       // The stats themselves live on the Stats tab, with what each one does.
       `HP ${tag(m.hp > 0 ? "heal" : "ko", `${m.hp}/${maxHp}`)}  KO ${tag(m.knockouts ? "ko" : "dim", `${m.knockouts}/${KNOCKOUTS_TO_DEATH}`)}`,
       ...(s.ability && CONTENT.abilities[s.ability] ? [`${t("Ability:")} ${tag("special", CONTENT.abilities[s.ability]!.name)} ${tag("dim", CONTENT.abilities[s.ability]!.description)}`] : []),
@@ -265,7 +245,9 @@ export class PokemonScene extends Phaser.Scene {
     // With nothing hovered the panel explains the focus stat (or HP), so the space is never empty.
     const rest = () => show(m.focus ?? "hp");
     const offers = points ? statOffer(CONTENT, PROGRESSION, m) : [];
-    const max = Math.max(10, ...STAT_NAMES.map((st) => stats[st]));
+    // One scale for every Pokémon you have (the highest stat among them), so bars compare across the team.
+    const { party, storage } = session.game.roster;
+    const max = Math.max(10, ...[...party, ...storage].flatMap((x) => STAT_NAMES.map((st) => memberStats(CONTENT, PROGRESSION, x).stats[st])));
     for (const st of STAT_NAMES) {
       const offer = offers.find((o) => o.stat === st);
       const hit = add(this.add.rectangle(DETAIL_X, y - 2, 300, 22, 0xffffff, offer ? 0.05 : 0.001).setOrigin(0).setInteractive({ useHandCursor: true }));
@@ -364,13 +346,15 @@ export class PokemonScene extends Phaser.Scene {
     const kindLabel = (id: string) => {
       const d = CONTENT.moves[id]!;
       const r = reachShort(d);
-      return `${d.type.padEnd(9)}↔${r.padEnd(4)}${d.power ? `⚔${String(d.power).padStart(3)}` : "    "}${d.kind === "bond" ? `  ${"●".repeat(d.bondCost ?? 0)}` : ""}`;
+      return `${typeName(d.type).padEnd(11)}↔${r.padEnd(4)}${d.power ? `⚔${String(d.power).padStart(3)}` : "    "}${d.kind === "bond" ? `  ${"●".repeat(d.bondCost ?? 0)}` : ""}`;
     };
     const shown = this.selectedMove && (m.knownMoves.includes(this.selectedMove) || this.selectedMove === basic) ? this.selectedMove : activeBasic;
     // Grouped by kind (basic attacks, skills, Bond moves), a thin rule between the groups.
     const order = { basic: 0, skill: 1, bond: 2 } as const;
     const rows = [basic, ...m.knownMoves.filter((mv) => mv !== basic)].sort((a, b) => order[slotOf(CONTENT, a)] - order[slotOf(CONTENT, b)]);
     let rowY = y;
+    // The name column as wide as the longest name, so a long one never runs into its type.
+    const nameW = Math.max(...rows.map((mv) => CONTENT.moves[mv]!.name.length)) + 1;
     rows.forEach((mv, i) => {
       if (i > 0 && slotOf(CONTENT, mv) !== slotOf(CONTENT, rows[i - 1]!)) {
         add(this.add.rectangle(DETAIL_X, rowY + 1, listW, 1, 0x6b7899, 0.9).setOrigin(0));
@@ -381,7 +365,7 @@ export class PokemonScene extends Phaser.Scene {
       const slotOfMv = slotOf(CONTENT, mv);
       const inUse = mv === activeBasic || fighting.includes(mv);
       const mark = slotOfMv === "basic" ? (inUse ? "◆" : "◇") : slotOfMv === "bond" ? (inUse ? "▲" : "△") : inUse ? "■" : "□";
-      add(new Button(this, DETAIL_X, rowY, listW, 24, `${mark} ${def.name.padEnd(13)} ${kindLabel(mv)}`, () => {
+      add(new Button(this, DETAIL_X, rowY, listW, 24, `${mark} ${def.name.padEnd(nameW)} ${kindLabel(mv)}`, () => {
         this.selectedMove = mv;
         this.render();
       }).setHighlighted(mv === shown));
@@ -430,7 +414,7 @@ export class PokemonScene extends Phaser.Scene {
         const x = DETAIL_X + i * 210;
         if (this.textures.exists(portraitKey(id))) add(this.add.image(x + 30, y + 30, portraitKey(id)).setDisplaySize(56, 56));
         add(new RichText(this, x + 66, y + 4, 140, 12)).setMarkup(`${tag("title", into.name)}
-${into.types.map((ty) => tag(ty, ty)).join("/")}`);
+${into.types.map((ty) => typeTag(ty)).join("/")}`);
         add(new Button(this, x, y + 66, 200, 28, t("Evolve into {name}", { name: into.name }), () => {
           this.act(() => this.updateMember(m, (x2) => chooseEvolution(CONTENT, PROGRESSION, x2, id).member), t("{name} evolved into {into}!", { name: s.name, into: into.name }));
         }).setHighlighted(true));

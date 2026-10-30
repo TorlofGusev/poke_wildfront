@@ -40,7 +40,7 @@
    "description": "A lefogott ellenfelek távozáskor mindig szabad ütést kapnak, akkor is, ha kiszakadnának."
   },
   "ditto-imposter": {
-   "description": "Capstone. Minden kiütéssel 1 Attackot nyer a csata végéig (max +3); az általa okozott állapotok 1 körrel tovább tartanak (a Paralysis, Freeze és Sleep kivételével; összesen legfeljebb +2)."
+   "description": "Capstone. Minden kiütéssel 1 Támadást nyer a csata végéig (max +3); az általa okozott állapotok 1 körrel tovább tartanak (a Bénulás, Fagyás és Alvás kivételével; összesen legfeljebb +2)."
   },
   "ditto-living-mirror": {
    "description": "Csúcstudás. 15%-kal kevesebb sebzést kap; a közelharcban őt ütő ellenfelek 8 sebzést kapnak."

@@ -16,6 +16,6 @@ describe("exact effect descriptions", () => {
   it("describes every talent and held item with at least one effect line", () => {
     for (const t of Object.values(PROGRESSION.talents)) expect(describeTalent(CONTENT, PROGRESSION, t).length, t.id).toBeGreaterThan(0);
     for (const i of Object.values(PROGRESSION.items)) expect(describeItem(CONTENT, i).length, i.id).toBeGreaterThan(0);
-    expect(plain(describeItem(CONTENT, PROGRESSION.items.charcoal!))).toBe("fire moves deal +20% damage");
+    expect(plain(describeItem(CONTENT, PROGRESSION.items.charcoal!))).toBe("Fire moves deal +20% damage");
   });
 });

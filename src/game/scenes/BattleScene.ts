@@ -69,6 +69,7 @@ import { t } from "../i18n";
 import { boardTheme, drawFlowerClusters, drawFloorDecor, drawGrassStipple, drawGymCourt, drawIndoorFloor, drawPath, floorColor, tileRand, type BoardTheme } from "../ui/boardDecor";
 import { footOrigin, animKey, FACE_LEFT, FACE_RIGHT, facingFor, hasSprite, portraitKey, type Facing, type SpriteAnim } from "../sprites";
 import { BOARD_X, BOARD_Y, COLORS, FIELD_S, fieldToWorld, FONT, PANEL_X, PANEL_W, TYPE_COLORS, UNIT_SCALE, worldToField, px, fs, PHONE } from "../ui/theme";
+import { typeName, typeTag } from "../ui/typeName";
 
 type Phase = "deploy" | "battle" | "over";
 
@@ -1562,7 +1563,7 @@ export class BattleScene extends Phaser.Scene {
     // Type chips, then status pills.
     let cx = 56;
     for (const ty of s.types) {
-      const label = this.add.text(0, 0, ty.toUpperCase(), { fontFamily: FONT, fontSize: "9px", color: "#ffffff", fontStyle: "bold" }).setOrigin(0.5).setStroke("#10141c", 2);
+      const label = this.add.text(0, 0, typeName(ty).toUpperCase(), { fontFamily: FONT, fontSize: "9px", color: "#ffffff", fontStyle: "bold" }).setOrigin(0.5).setStroke("#10141c", 2);
       const cw = label.width + 8;
       parts.push(this.add.rectangle(cx, 26, cw, 11, TYPE_COLORS[ty] ?? 0x888888).setOrigin(0, 0.5).setStrokeStyle(1, 0x10141c), label.setPosition(cx + cw / 2, 26));
       cx += cw + 4;
@@ -1611,7 +1612,7 @@ export class BattleScene extends Phaser.Scene {
       .setStroke("#10141c", 3);
     name.setCrop(0, 0, w - 12, 30);
     // Bottom row: the type in a white chip, power, and reach or state at the right.
-    const chipLabel = this.add.text(0, 0, move.type.toUpperCase(), { fontFamily: FONT, fontSize: "9px", color: `#${mix(base, 0x000000, 0.25).toString(16).padStart(6, "0")}`, fontStyle: "bold" }).setOrigin(0.5);
+    const chipLabel = this.add.text(0, 0, typeName(move.type).toUpperCase(), { fontFamily: FONT, fontSize: "9px", color: `#${mix(base, 0x000000, 0.25).toString(16).padStart(6, "0")}`, fontStyle: "bold" }).setOrigin(0.5);
     const chipW = chipLabel.width + 8;
     const chip = this.add.rectangle(8, h - 11, chipW, 11, 0xf8f8f8, dimText ? 0.5 : 1).setOrigin(0, 0.5);
     chipLabel.setPosition(8 + chipW / 2, h - 11).setAlpha(dimText ? 0.6 : 1);
@@ -1685,7 +1686,7 @@ export class BattleScene extends Phaser.Scene {
   private refreshInfo(): void {
     this.syncTooltip();
     if (this.hoveredMove) {
-      let text = describeMove(CONTENT, CONTENT.moves[this.hoveredMove]!);
+      let text = describeMove(CONTENT, CONTENT.moves[this.hoveredMove]!, true);
       const unit = this.state ? activeUnit(this.state) : null;
       if (unit) {
         const raw = moveUnavailableReason(this.state!, CONTENT, unit.id, this.hoveredMove);
@@ -1709,13 +1710,13 @@ export class BattleScene extends Phaser.Scene {
     }
     // While aiming or walking, the aim's note (cost, failure reason, catch warning) leads.
     if (this.aimNote && (this.selectedMove || !unit)) {
-      this.setInfo([this.aimNote, unit ? "" : this.selectedMove ? describeMove(CONTENT, CONTENT.moves[this.selectedMove]!) : ""].filter(Boolean).join("\n\n"));
+      this.setInfo([this.aimNote, unit ? "" : this.selectedMove ? describeMove(CONTENT, CONTENT.moves[this.selectedMove]!, true) : ""].filter(Boolean).join("\n\n"));
       return;
     }
     if (!unit) {
       const terrainText = hover && this.inField(hover) ? this.terrainInfo(terrainAt(this.scenario.field, hover).id) : "";
       // Without a hovered unit, show the selected move's rules (also covers touch screens).
-      const moveText = this.selectedMove ? describeMove(CONTENT, CONTENT.moves[this.selectedMove]!) : "";
+      const moveText = this.selectedMove ? describeMove(CONTENT, CONTENT.moves[this.selectedMove]!, true) : "";
       this.infoText.setMarkup([moveText, terrainText].filter(Boolean).join("\n\n"));
       return;
     }
@@ -1724,12 +1725,12 @@ export class BattleScene extends Phaser.Scene {
       // Phone: only what a turn needs. Name, types and HP (plus statuses); for an own Pokémon the
       // selected move's rules, for a foe how well the selected move hits it.
       const head = [
-        `${tag(`${unit.side === "player" ? "ally" : "foe"}:${s.types[0]}`, s.name)} ${tag("num", `Lv ${unit.level}`)}  ${s.types.map((ty) => tag(ty, ty)).join("/")}${s.role ? ` ${tag("special", s.role === "melee" ? t("Melee") : t("Ranged"))}` : ""}  HP ${tag(unit.hp / unit.maxHp > 0.5 ? "heal" : "dmg", `${unit.hp}/${unit.maxHp}`)}`,
+        `${tag(`${unit.side === "player" ? "ally" : "foe"}:${s.types[0]}`, s.name)} ${tag("num", `Lv ${unit.level}`)}  ${s.types.map((ty) => typeTag(ty)).join("/")}${s.role ? ` ${tag("special", s.role === "melee" ? t("Melee") : t("Ranged"))}` : ""}  HP ${tag(unit.hp / unit.maxHp > 0.5 ? "heal" : "dmg", `${unit.hp}/${unit.maxHp}`)}`,
         unit.statuses.length ? `${t("Status:")} ${unit.statuses.map((x) => `${tag("status", CONTENT.statuses[x.id]?.name ?? x.id)} (${x.turnsLeft})`).join(", ")}` : "",
         this.engagementLine(unit),
       ];
       const active = this.state ? activeUnit(this.state) : null;
-      if (unit.side === "player" && this.selectedMove) head.push("", describeMove(CONTENT, CONTENT.moves[this.selectedMove]!));
+      if (unit.side === "player" && this.selectedMove) head.push("", describeMove(CONTENT, CONTENT.moves[this.selectedMove]!, true));
       if (active && active.side === "player" && unit.side === "enemy" && this.selectedMove) {
         const mv = CONTENT.moves[this.selectedMove]!;
         // Only damaging moves: a status move's type changes nothing.
@@ -1740,9 +1741,9 @@ export class BattleScene extends Phaser.Scene {
       return;
     }
     const lines = [
-      `${tag(`${unit.side === "player" ? "ally" : "foe"}:${s.types[0]}`, s.name)} ${tag("num", `Lv ${unit.level}`)} ${tag("dim", unit.side === "enemy" ? t("(foe)") : t("(yours)"))}  ${s.types.map((t) => tag(t, t)).join("/")}${s.role ? `  ${tag("special", s.role === "melee" ? t("Melee") : t("Ranged"))}` : ""}`,
+      `${tag(`${unit.side === "player" ? "ally" : "foe"}:${s.types[0]}`, s.name)} ${tag("num", `Lv ${unit.level}`)} ${tag("dim", unit.side === "enemy" ? t("(foe)") : t("(yours)"))}  ${s.types.map((ty) => typeTag(ty)).join("/")}${s.role ? `  ${tag("special", s.role === "melee" ? t("Melee") : t("Ranged"))}` : ""}`,
       `HP ${tag(unit.hp / unit.maxHp > 0.5 ? "heal" : "dmg", `${unit.hp}/${unit.maxHp}`)}`,
-      ...s.types.map((t) => `${tag(t, t)}: ${tag("dim", CONTENT.types[t]?.summary ?? "")}`),
+      ...s.types.map((ty) => `${typeTag(ty)}: ${tag("dim", CONTENT.types[ty]?.summary ?? "")}`),
       unit.ability ? `${tag("special", unit.ability.name)}: ${tag("dim", unit.ability.description)}${unit.attackBoost ? tag("num", ` (+${unit.attackBoost} Atk)`) : ""}` : "",
       unit.statuses.length ? `${t("Status:")} ${unit.statuses.map((x) => `${tag("status", CONTENT.statuses[x.id]?.name ?? x.id)} (${x.turnsLeft})`).join(", ")}` : "",
       this.engagementLine(unit),
@@ -1750,7 +1751,7 @@ export class BattleScene extends Phaser.Scene {
       ...unit.moves.filter((m) => m !== "struggle").map((m) => {
         const mv = CONTENT.moves[m]!;
         const shape = mv.shape.kind === "single" ? "" : mv.shape.kind === "burst" ? t(", area {n}", { n: mv.shape.radius }) : t(", line {n}", { n: mv.shape.length });
-        return `· ${tag(mv.kind, mv.name)} ${tag(mv.type, mv.type)}${selfCentred(mv) ? t(", around itself {n}", { n: selfCentred(mv) }) : `${t(", range {min}-{max}", { min: moveRange(unit, mv, CONTENT).min, max: moveRange(unit, mv, CONTENT).max })}${shape}`}${mv.power ? t(", power {n}", { n: tag("dmg", mv.power) }) : ""}`;
+        return `· ${tag(mv.kind, mv.name)} ${typeTag(mv.type)}${selfCentred(mv) ? t(", around itself {n}", { n: selfCentred(mv) }) : `${t(", range {min}-{max}", { min: moveRange(unit, mv, CONTENT).min, max: moveRange(unit, mv, CONTENT).max })}${shape}`}${mv.power ? t(", power {n}", { n: tag("dmg", mv.power) }) : ""}`;
       }),
     ];
     const active = this.state ? activeUnit(this.state) : null;
@@ -1766,7 +1767,7 @@ export class BattleScene extends Phaser.Scene {
     }
     if (unit.side === "player" && this.knockoutsOf(unit.id) > 0) lines.push(`${t("Knockouts:")} ${tag("ko", `${this.knockoutsOf(unit.id)}/${KNOCKOUTS_TO_DEATH}`)}`);
     // Compact: no type summaries, the moves on one line.
-    const typeLines = new Set(s.types.map((t) => `${tag(t, t)}: ${tag("dim", CONTENT.types[t]?.summary ?? "")}`));
+    const typeLines = new Set(s.types.map((ty) => `${typeTag(ty)}: ${tag("dim", CONTENT.types[ty]?.summary ?? "")}`));
     const moveNames = unit.moves.filter((m) => m !== "struggle").map((m) => tag(CONTENT.moves[m]!.kind, CONTENT.moves[m]!.name)).join(", ");
     const compact = lines.filter((l) => l && !typeLines.has(l) && !l.startsWith("· "));
     compact.splice(Math.min(compact.length, 4), 0, `${t("Moves:")} ${moveNames}`);

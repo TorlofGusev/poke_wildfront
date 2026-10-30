@@ -22,7 +22,9 @@ export class CreditsScene extends Phaser.Scene {
         const [artist, contact, mons] = l.split("|").slice(1, 4).map((c) => c.trim());
         return [`${artist}${contact ? ` (${contact})` : ""}: ${mons}`];
       }
-      return [l.replace(/^#+ /, "").replace(/\[([^\]]+)\]\(([^)]+)\)/g, "$1 ($2)").replace(/[*`]/g, "")];
+      // Notes for developers (which script made a file) are not for players.
+      const prose = l.replace(/ ?(Generated|[Ff]etched) by `tools\/[^`]+`\.?/g, "");
+      return [prose.replace(/^#+ /, "").replace(/\[([^\]]+)\]\(([^)]+)\)/g, "$1 ($2)").replace(/[*`]/g, "")];
     });
     const body = this.add.text(24, 60, [t(LEGAL_NOTICE), "", ...lines, "", t(DISCLAIMER)].join("\n"), {
       fontFamily: FONT, fontSize: px(12), color: COLORS.text, wordWrap: { width: width - 48 }, lineSpacing: 3,

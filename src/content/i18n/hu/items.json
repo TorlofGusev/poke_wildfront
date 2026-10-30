@@ -6,22 +6,22 @@
   "description": "90 HP-t állít vissza csatán kívül."
  },
  "charcoal": {
-  "description": "A Fire támadások 20%-kal többet sebeznek."
+  "description": "A Tűz támadások 20%-kal többet sebeznek."
  },
  "mystic-water": {
-  "description": "A Water támadások 20%-kal többet sebeznek."
+  "description": "A Víz támadások 20%-kal többet sebeznek."
  },
  "miracle-seed": {
-  "description": "A Grass támadások 20%-kal többet sebeznek."
+  "description": "A Fű támadások 20%-kal többet sebeznek."
  },
  "magnet": {
-  "description": "Az Electric támadások 20%-kal többet sebeznek."
+  "description": "Az Elektromos támadások 20%-kal többet sebeznek."
  },
  "hard-stone": {
-  "description": "A Rock támadások 20%-kal többet sebeznek."
+  "description": "A Kő támadások 20%-kal többet sebeznek."
  },
  "sharp-beak": {
-  "description": "A Flying támadások 20%-kal többet sebeznek."
+  "description": "A Repülő támadások 20%-kal többet sebeznek."
  },
  "leftovers": {
   "description": "Minden kör elején gyógyít max HP 6%-ot."
@@ -53,31 +53,31 @@
   "description": "Csatánként egyszer 1 HP-val túléli a kiütő csapást."
  },
  "soft-sand": {
-  "description": "A Ground támadások 20%-kal többet sebeznek."
+  "description": "A Föld támadások 20%-kal többet sebeznek."
  },
  "never-melt-ice": {
-  "description": "Az Ice támadások 20%-kal többet sebeznek."
+  "description": "A Jég támadások 20%-kal többet sebeznek."
  },
  "spell-tag": {
-  "description": "A Ghost támadások 20%-kal többet sebeznek."
+  "description": "A Szellem támadások 20%-kal többet sebeznek."
  },
  "black-belt": {
-  "description": "A Fighting támadások 20%-kal többet sebeznek."
+  "description": "A Harci támadások 20%-kal többet sebeznek."
  },
  "poison-barb": {
-  "description": "A Poison támadások 20%-kal többet sebeznek."
+  "description": "A Méreg támadások 20%-kal többet sebeznek."
  },
  "silver-powder": {
-  "description": "A Bug támadások 20%-kal többet sebeznek."
+  "description": "A Bogár támadások 20%-kal többet sebeznek."
  },
  "twisted-spoon": {
-  "description": "A Psychic támadások 20%-kal többet sebeznek."
+  "description": "A Pszichikus támadások 20%-kal többet sebeznek."
  },
  "dragon-fang": {
-  "description": "A Dragon támadások 20%-kal többet sebeznek."
+  "description": "A Sárkány támadások 20%-kal többet sebeznek."
  },
  "silk-scarf": {
-  "description": "A Normal támadások 20%-kal többet sebeznek."
+  "description": "A Normál támadások 20%-kal többet sebeznek."
  },
  "shell-bell": {
   "description": "15% max HP-t gyógyul, ha kiüt egy ellenfelet."
@@ -92,12 +92,12 @@
   "description": "Szabad ütés nélkül léphet el a lefogó ellenfelek mellől."
  },
  "black-glasses": {
-  "description": "A Dark támadások 20%-kal többet sebeznek."
+  "description": "A Sötét támadások 20%-kal többet sebeznek."
  },
  "metal-coat": {
-  "description": "A Steel támadások 20%-kal többet sebeznek."
+  "description": "Az Acél támadások 20%-kal többet sebeznek."
  },
  "fairy-feather": {
-  "description": "A Fairy támadások 20%-kal többet sebeznek."
+  "description": "A Tündér támadások 20%-kal többet sebeznek."
  }
 }

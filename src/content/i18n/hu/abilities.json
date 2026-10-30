@@ -1,15 +1,15 @@
 {
  "overgrow": {
-  "description": "+30% Grass sebzés, amíg HP-ja a fele alatt van."
+  "description": "+30% Fű sebzés, amíg HP-ja a fele alatt van."
  },
  "blaze": {
-  "description": "+30% Fire sebzés, amíg HP-ja a fele alatt van."
+  "description": "+30% Tűz sebzés, amíg HP-ja a fele alatt van."
  },
  "torrent": {
-  "description": "+30% Water sebzés, amíg HP-ja a fele alatt van."
+  "description": "+30% Víz sebzés, amíg HP-ja a fele alatt van."
  },
  "static": {
-  "description": "A közelharcban őt eltaláló Pokémonok Paralysis-t kapnak."
+  "description": "A közelharcban őt eltaláló Pokémonok megbénulnak."
  },
  "sturdy": {
   "description": "Csatánként egyszer 1 HP-val túlél egy kiütő csapást."
@@ -24,22 +24,22 @@
   "description": "Immunis minden állapotra."
  },
  "poison-point": {
-  "description": "A közelharcban őt eltaláló Pokémonok Poison-t kapnak."
+  "description": "A közelharcban őt eltaláló Pokémonok megmérgeződnek."
  },
  "inner-focus": {
   "description": "Nem lehet megfélemlíteni: immunis a Weakenedre."
  },
  "effect-spore": {
-  "description": "A közelharcban őt eltaláló Pokémonok Poison-t kapnak."
+  "description": "A közelharcban őt eltaláló Pokémonok megmérgeződnek."
  },
  "anger-point": {
-  "description": "+1 Attack minden alkalommal, amikor egy támadás eltalálja (max +3, erre a csatára)."
+  "description": "+1 Támadás minden alkalommal, amikor egy támadás eltalálja (max +3, erre a csatára)."
  },
  "arena-trap": {
   "description": "A mellette kört kezdő ellenfelek nem mozoghatnak."
  },
  "swarm": {
-  "description": "+30% Bug sebzés, amíg HP-ja a fele alatt van."
+  "description": "+30% Bogár sebzés, amíg HP-ja a fele alatt van."
  },
  "chlorophyll": {
   "description": "+1 mozgás (a mozgás felső határáig)."
@@ -63,7 +63,7 @@
   "description": "Sosem kap kritikus találatot, és 10%-kal kevesebb sebzést kap."
  },
  "flame-body": {
-  "description": "A közelharcban őt eltaláló Pokémonok Burn-t kapnak."
+  "description": "A közelharcban őt eltaláló Pokémonok megégnek."
  },
  "guts": {
   "description": "+30% sebzés, amíg állapot van rajta, és az égés nem csökkenti a sebzését."
@@ -72,7 +72,7 @@
   "description": "50%-kal kevesebb sebzést kap a Tűz támadásoktól, és Tűz támadásai 25%-kal többet sebeznek."
  },
  "pressure": {
-  "description": "Az általa okozott állapotok 1 körrel tovább tartanak (a Paralysis, Freeze és Sleep kivételével; összesen legfeljebb +2)."
+  "description": "Az általa okozott állapotok 1 körrel tovább tartanak (a Bénulás, Fagyás és Alvás kivételével; összesen legfeljebb +2)."
  },
  "oblivious": {
   "description": "Nem lehet elbűvölni vagy provokálni: a Slow és a Taunted nem hat rá."
@@ -84,10 +84,10 @@
   "description": "A támadása nem csökkenthető: immunis a Weakenedre."
  },
  "insomnia": {
-  "description": "Nem lehet elaltatni: immunis a Sleep-re."
+  "description": "Nem lehet elaltatni: immunis az Alvásra."
  },
  "natural-cure": {
-  "description": "Immunis a Poisonra és a Burnre."
+  "description": "Immunis a Mérgezésre és az Égésre."
  },
  "water-absorb": {
   "description": "50%-kal kevesebb sebzést kap a Víz támadásoktól, és minden köre elején max HP-ja 5%-át gyógyítja."
@@ -102,13 +102,13 @@
   "description": "+1 max hatótáv a legalább 2-es hatótávú támadásokra (legfeljebb 3-ig; Bond támadásoknál nincs korlát), és lövései átszállnak az útban álló Pokémonokon."
  },
  "limber": {
-  "description": "Immunis a Paralysisre."
+  "description": "Immunis a Bénulásra."
  },
  "shed-skin": {
   "description": "Köre elején, az állapot-sebzés után lerázza az ellenfél okozta állapotokat."
  },
  "moxie": {
-  "description": "+1 Attack minden kiütött ellenfél után (max +3, erre a csatára)."
+  "description": "+1 Támadás minden kiütött ellenfél után (max +3, erre a csatára)."
  },
  "download": {
   "description": "+10% okozott sebzés."

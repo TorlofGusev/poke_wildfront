@@ -1,56 +1,74 @@
 {
  "normal": {
+  "name": "Normál",
   "summary": "Alkalmazkodó mindenes. A Normál támadásokra semmi sem ellenálló."
  },
  "fire": {
+  "name": "Tűz",
   "summary": "Robbanékony támadó. A Tűz támadások megégetnek: körönként sebeznek."
  },
  "water": {
+  "name": "Víz",
   "summary": "Kiszorítás és kitartás. A Víz támadások 1-gyel tovább lökik a célpontot."
  },
  "grass": {
+  "name": "Fű",
   "summary": "Életszívás és irányítás. A Fű támadások a sebzés 25%-át visszagyógyítják."
  },
  "electric": {
+  "name": "Elektromos",
   "summary": "Gyors portyázó. Az Elektromos támadások megbénítanak: a célpont a következő körében nem mozoghat."
  },
  "ice": {
+  "name": "Jég",
   "summary": "Lefogó irányítás. A Jég támadások megfagyasztanak: a célpont a következő körében nem cselekedhet."
  },
  "fighting": {
+  "name": "Harci",
   "summary": "Közelharci verekedő. +25% sebzés, ha egy szövetséges is a célpont mellett áll."
  },
  "poison": {
+  "name": "Méreg",
   "summary": "Felőrlés. A méreg halmozódik: minden újabb mérgezés hozzáadja a köreit."
  },
  "ground": {
+  "name": "Föld",
   "summary": "Terepformáló. A Föld támadások sárrá változtatják a talajt a célpont alatt."
  },
  "flying": {
+  "name": "Repülő",
   "summary": "Mozgékonyság. Átrepül a vízen, a sáron és más Pokémonokon."
  },
  "psychic": {
+  "name": "Pszichikus",
   "summary": "Távolsági manipuláció. A Pszichikus támadások 1-gyel közelebb húzzák a célpontot."
  },
  "bug": {
+  "name": "Bogár",
   "summary": "Raj-taktika. +10% sebzés minden, a célpont mellett álló szövetséges után."
  },
  "rock": {
+  "name": "Kő",
   "summary": "Erőd. Nem lehet ellökni vagy elhúzni."
  },
  "ghost": {
+  "name": "Szellem",
   "summary": "Csaló. Átmegy az ellenfeleken; a Szellem támadások megátkoznak: +25% elszenvedett sebzés."
  },
  "dragon": {
+  "name": "Sárkány",
   "summary": "Ritka mindenes. A Sárkány támadások figyelmen kívül hagyják a Védelmet."
  },
  "dark": {
+  "name": "Sötét",
   "summary": "Opportunista. A Sötét támadások +30%-ot sebeznek a félig sérült vagy állapotot viselő ellenfelekre."
  },
  "steel": {
+  "name": "Acél",
   "summary": "Védőbástya. Az Acél Pokémonok minden találatból 15%-kal kevesebb sebzést kapnak."
  },
  "fairy": {
+  "name": "Tündér",
   "summary": "Bűvölő. A Tündér támadások enyhén gyengítenek (Softened): a célpont a következő körében 15%-kal kevesebbet sebez."
  }
 }

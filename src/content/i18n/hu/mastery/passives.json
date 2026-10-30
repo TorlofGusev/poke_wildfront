@@ -102,7 +102,7 @@
   "description": "Bevetve a csapat +1 Bonddal kezdi a csatát."
  },
  "lingering-effects": {
-  "description": "Az általa okozott státuszok 1 körrel tovább tartanak (a Paralysis, Freeze és Sleep kivételével; összesen legfeljebb +2)."
+  "description": "Az általa okozott státuszok 1 körrel tovább tartanak (a Bénulás, Fagyás és Alvás kivételével; összesen legfeljebb +2)."
  },
  "prankster": {
   "description": "A nem sebző támadásai 1 körrel gyorsabban töltődnek (legalább 1 kör marad)."
@@ -168,88 +168,88 @@
   "description": "Célpont melletti szövetségesenként +15% rajbónusz."
  },
  "blaze": {
-  "description": "Fél HP alatt a Fire támadások 30%-kal erősebbek."
+  "description": "Fél HP alatt a Tűz támadások 30%-kal erősebbek."
  },
  "overgrow": {
-  "description": "Fél HP alatt a Grass támadások 30%-kal erősebbek."
+  "description": "Fél HP alatt a Fű támadások 30%-kal erősebbek."
  },
  "torrent": {
-  "description": "Fél HP alatt a Water támadások 30%-kal erősebbek."
+  "description": "Fél HP alatt a Víz támadások 30%-kal erősebbek."
  },
  "swarm": {
-  "description": "Fél HP alatt a Bug támadások 30%-kal erősebbek."
+  "description": "Fél HP alatt a Bogár támadások 30%-kal erősebbek."
  },
  "attack-training": {
-  "description": "+1 Attack."
+  "description": "+1 Támadás."
  },
  "defense-training": {
-  "description": "+1 Defense."
+  "description": "+1 Védekezés."
  },
  "vitality-training": {
   "description": "+1 Vitality."
  },
  "speed-training": {
-  "description": "+1 Speed."
+  "description": "+1 Gyorsaság."
  },
  "willpower-training": {
-  "description": "+1 Willpower."
+  "description": "+1 Akaraterő."
  },
  "crit-training": {
-  "description": "+1 Crit."
+  "description": "+1 Krit."
  },
  "normal-power": {
-  "description": "A Normal támadások 15%-kal erősebbek."
+  "description": "A Normál támadások 15%-kal erősebbek."
  },
  "fire-power": {
-  "description": "A Fire támadások 15%-kal erősebbek."
+  "description": "A Tűz támadások 15%-kal erősebbek."
  },
  "water-power": {
-  "description": "A Water támadások 15%-kal erősebbek."
+  "description": "A Víz támadások 15%-kal erősebbek."
  },
  "grass-power": {
-  "description": "A Grass támadások 15%-kal erősebbek."
+  "description": "A Fű támadások 15%-kal erősebbek."
  },
  "electric-power": {
-  "description": "A Electric támadások 15%-kal erősebbek."
+  "description": "Az Elektromos támadások 15%-kal erősebbek."
  },
  "ice-power": {
-  "description": "A Ice támadások 15%-kal erősebbek."
+  "description": "A Jég támadások 15%-kal erősebbek."
  },
  "fighting-power": {
-  "description": "A Fighting támadások 15%-kal erősebbek."
+  "description": "A Harci támadások 15%-kal erősebbek."
  },
  "poison-power": {
-  "description": "A Poison támadások 15%-kal erősebbek."
+  "description": "A Méreg támadások 15%-kal erősebbek."
  },
  "ground-power": {
-  "description": "A Ground támadások 15%-kal erősebbek."
+  "description": "A Föld támadások 15%-kal erősebbek."
  },
  "flying-power": {
-  "description": "A Flying támadások 15%-kal erősebbek."
+  "description": "A Repülő támadások 15%-kal erősebbek."
  },
  "psychic-power": {
-  "description": "A Psychic támadások 15%-kal erősebbek."
+  "description": "A Pszichikus támadások 15%-kal erősebbek."
  },
  "bug-power": {
-  "description": "A Bug támadások 15%-kal erősebbek."
+  "description": "A Bogár támadások 15%-kal erősebbek."
  },
  "rock-power": {
-  "description": "A Rock támadások 15%-kal erősebbek."
+  "description": "A Kő támadások 15%-kal erősebbek."
  },
  "ghost-power": {
-  "description": "A Ghost támadások 15%-kal erősebbek."
+  "description": "A Szellem támadások 15%-kal erősebbek."
  },
  "dragon-power": {
-  "description": "A Dragon támadások 15%-kal erősebbek."
+  "description": "A Sárkány támadások 15%-kal erősebbek."
  },
  "dark-power": {
-  "description": "A Dark támadások 15%-kal erősebbek."
+  "description": "A Sötét támadások 15%-kal erősebbek."
  },
  "steel-power": {
-  "description": "A Steel támadások 15%-kal erősebbek."
+  "description": "Az Acél támadások 15%-kal erősebbek."
  },
  "fairy-power": {
-  "description": "A Fairy támadások 15%-kal erősebbek."
+  "description": "A Tündér támadások 15%-kal erősebbek."
  },
  "pursuit": {
   "description": "Az engage-ből kilépő ellenfélre mért szabad támadásai 50%-kal többet sebeznek."

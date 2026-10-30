@@ -11,6 +11,7 @@ import { tag } from "../ui/markup";
 import { t } from "../i18n";
 import { RichText } from "../ui/RichText";
 import { COLORS, FONT, TYPE_COLORS, px } from "../ui/theme";
+import { typeTag } from "../ui/typeName";
 
 const LIST_X = 16;
 const LIST_W = 200;
@@ -106,7 +107,7 @@ export class PokedexScene extends Phaser.Scene {
     }).join(" → ");
     const ability = s.ability ? CONTENT.abilities[s.ability] : undefined;
     const header = [
-      `${tag("title", s.name)}  ${s.types.map((ty) => tag(ty, ty)).join("/")}${role}`,
+      `${tag("title", s.name)}  ${s.types.map((ty) => typeTag(ty)).join("/")}${role}`,
       `${t("Lv 1:")} ${STAT_LABEL.hp} ${tag("num", s.stats.hp)}  ${statLine(s.stats)}`,
       ...(ability ? [`${t("Ability:")} ${tag("special", ability.name)} ${tag("dim", ability.description)}`] : []),
       `${t("Evolution:")} ${line}`,

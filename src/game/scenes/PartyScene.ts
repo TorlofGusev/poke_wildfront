@@ -13,11 +13,13 @@ import { tag } from "../ui/markup";
 import { RichText } from "../ui/RichText";
 import { COLORS, FONT, TYPE_COLORS, px } from "../ui/theme";
 import { t } from "../i18n";
+import { typeTag } from "../ui/typeName";
 
-/** Five compact cards per row: the full party of 10 fits in two rows. */
+/** Three cards per row: a full party of 9 fits in three rows. */
 const CARD_COLS = 3;
 const CARD_W = 178;
-const CARD_H = 130;
+/** The least a card is tall; a row grows to its tallest card's text (fonts are larger on phones). */
+const CARD_H = 112;
 /** Storage fills the right side, two columns of small cards. */
 const STORE_X = 16 + CARD_COLS * (CARD_W + 10) + 6;
 const STORE_COLS = 2;
@@ -73,7 +75,7 @@ export class PartyScene extends Phaser.Scene {
     });
     const hy = 92 + Math.ceil(Object.keys(MEALS).length / 2) * 96 + 6;
     const h = CAMP.hungry;
-    new RichText(this, 16, hy, 700, 12).setMarkup(t("{label}: only {pct}% HP, fatigue stays at {fatigue}, and {effect}", { label: tag("bad", t("Rest without eating")), pct: Math.round(h.hpFraction * 100), fatigue: h.fatigue, effect: h.effect.description.toLowerCase() }));
+    new RichText(this, 16, hy, 700, 12).setMarkup(t("{label}: only {pct}% HP, fatigue becomes {fatigue}, and {effect}", { label: tag("bad", t("Rest without eating")), pct: Math.round(h.hpFraction * 100), fatigue: h.fatigue, effect: midSentence(h.effect.description) }));
     new Button(this, 734, hy, 210, 26, t("Rest hungry"), () => doRest(null));
   }
 
@@ -117,7 +119,14 @@ export class PartyScene extends Phaser.Scene {
     this.add.text(16, 64, t("Party {n}/{max} · tap a Pokémon for its details", { n: roster.party.length, max: MAX_PARTY_SIZE }), {
       fontFamily: FONT, fontSize: px(12), color: COLORS.dim,
     });
-    roster.party.forEach((m, i) => this.card(16 + (i % CARD_COLS) * (CARD_W + 10), 84 + Math.floor(i / CARD_COLS) * (CARD_H + 8), m));
+    // Row by row: every card in a row as tall as the tallest, so the HP bars line up.
+    let rowY = 84;
+    for (let r = 0; r * CARD_COLS < roster.party.length; r++) {
+      const row = roster.party.slice(r * CARD_COLS, (r + 1) * CARD_COLS).map((m, i) => this.card(16 + i * (CARD_W + 10), rowY, m));
+      const h = Math.max(CARD_H, ...row.map((c) => c.h));
+      row.forEach((c) => c.finish(h));
+      rowY += h + 8;
+    }
 
     this.add.text(STORE_X, 64, t("Storage ({n})", { n: roster.storage.length }), { fontFamily: FONT, fontSize: px(12), color: COLORS.dim });
     const room = STORE_COLS * STORE_ROWS;
@@ -139,14 +148,14 @@ export class PartyScene extends Phaser.Scene {
     else this.add.circle(x + size / 2, y + size / 2, size / 2 - 2, TYPE_COLORS[CONTENT.species[speciesId]!.types[0]!] ?? 0x888888);
   }
 
-  /** A party card: portrait, name, level, types, role, held item, HP bar, knockouts and what is waiting. */
-  private card(x: number, y: number, m: PartyMember): void {
+  /**
+   * A party card: portrait, name, level, types, role, held item and what is waiting, then (in `finish`, once the
+   * row's height is known) the frame, the HP bar and the HP/knockout line at the card's foot.
+   */
+  private card(x: number, y: number, m: PartyMember): { h: number; finish: (h: number) => void } {
     const s = CONTENT.species[m.speciesId]!;
     const pending = pendingChoice(CONTENT, PROGRESSION, m);
     const waiting = [pending === "evolution" ? t("choose its evolution") : pending === "focus" ? t("choose its focus") : pending === "talent" ? t("learn a mastery") : "", m.unspentPoints ? (m.unspentPoints > 1 ? t("{n} stat points", { n: m.unspentPoints }) : t("{n} stat point", { n: m.unspentPoints })) : ""].filter(Boolean);
-    const bg = this.add.rectangle(x, y, CARD_W, CARD_H, 0x1c2130).setOrigin(0)
-      .setStrokeStyle(waiting.length ? 2 : 1, waiting.length ? 0xf5d76e : m.knockouts === 2 ? 0xd0021b : 0x3a4560);
-    bg.setInteractive({ useHandCursor: true }).on("pointerdown", () => this.open(m));
     this.portrait(x + 6, y + 6, 40, m.speciesId);
 
     const max = memberMaxHp(CONTENT, PROGRESSION, m);
@@ -154,21 +163,29 @@ export class PartyScene extends Phaser.Scene {
     const role = m.focus ? focusLabel(m.focus) : t("no focus yet");
     const held = m.heldItem ? PROGRESSION.items[m.heldItem]!.name : t("no item");
     const pips = "●".repeat(m.knockouts) + "○".repeat(KNOCKOUTS_TO_DEATH - m.knockouts);
-    // Text first; the HP bar goes below however tall the text turned out (fonts are larger on phones).
     new RichText(this, x + 52, y + 6, CARD_W - 58, 12).setMarkup([
       tag("title", s.name),
       t("Lv {level} {xp}", { level: tag("num", m.level), xp: tag("dim", t("XP {xp}/{next}", { xp: m.xp, next: xpToNext(PROGRESSION, m.level) })) }),
     ].join("\n"));
+    // What is waiting gets its own line, in words (the Pokémon's page has the details).
     const textH = new RichText(this, x + 6, y + 50, CARD_W - 12, 11).setMarkup([
-      `${s.types.map((ty) => tag(ty, ty)).join("/")} ${tag("dim", `· ${role}`)}`,
+      `${s.types.map((ty) => typeTag(ty)).join("/")} ${tag("dim", `· ${role}`)}`,
       tag("dim", held),
+      ...(waiting.length ? [tag("num", `★ ${waiting.join(", ")}`)] : []),
     ].join("\n"));
-    const barY = y + 50 + textH + 8;
-    this.add.rectangle(x + 8, barY, CARD_W - 16, 6, 0x000000).setOrigin(0, 0.5);
-    this.add.rectangle(x + 8, barY, (CARD_W - 16) * frac, 6, frac > 0.5 ? 0x7ed321 : frac > 0.25 ? 0xf5a623 : 0xd0021b).setOrigin(0, 0.5);
-    new RichText(this, x + 8, barY + 8, CARD_W - 16, 12).setMarkup(
-      // A pending choice is just flagged here (the Pokémon's page has the details).
-      `${m.hp > 0 ? `HP ${Math.min(m.hp, max)}/${max}` : tag("ko", t("fainted"))}  KO ${tag(m.knockouts ? "ko" : "dim", pips)}${waiting.length ? `  ${tag("num", t("★ Lv up"))}` : ""}`);
+    return {
+      h: 50 + textH + 36,
+      finish: (h) => {
+        const bg = this.add.rectangle(x, y, CARD_W, h, 0x1c2130).setOrigin(0).setDepth(-1)
+          .setStrokeStyle(waiting.length ? 2 : 1, waiting.length ? 0xf5d76e : m.knockouts === 2 ? 0xd0021b : 0x3a4560);
+        bg.setInteractive({ useHandCursor: true }).on("pointerdown", () => this.open(m));
+        const barY = y + h - 26;
+        this.add.rectangle(x + 8, barY, CARD_W - 16, 6, 0x000000).setOrigin(0, 0.5);
+        this.add.rectangle(x + 8, barY, (CARD_W - 16) * frac, 6, frac > 0.5 ? 0x7ed321 : frac > 0.25 ? 0xf5a623 : 0xd0021b).setOrigin(0, 0.5);
+        new RichText(this, x + 8, barY + 6, CARD_W - 16, 12).setMarkup(
+          `${m.hp > 0 ? `HP ${Math.min(m.hp, max)}/${max}` : tag("ko", t("fainted"))}  KO ${tag(m.knockouts ? "ko" : "dim", pips)}`);
+      },
+    };
   }
 
   private mini(x: number, y: number, m: PartyMember): void {

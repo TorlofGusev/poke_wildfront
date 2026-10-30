@@ -1,7 +1,7 @@
 {
  "passives": {
   "flame-caster-drought": {
-   "description": "Tűz támadásai 20%-kal többet sebeznek, és az általa okozott állapotok 1 körrel tovább tartanak (a Paralysis, Freeze és Sleep kivételével; összesen legfeljebb +2)."
+   "description": "Tűz támadásai 20%-kal többet sebeznek, és az általa okozott állapotok 1 körrel tovább tartanak (a Bénulás, Fagyás és Alvás kivételével; összesen legfeljebb +2)."
   },
   "flame-caster-magma-armor": {
    "description": "15%-kal kevesebb sebzést kap, és a szomszédos találatai 1 körre megégetik az ellenfelet."

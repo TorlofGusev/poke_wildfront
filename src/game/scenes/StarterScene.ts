@@ -10,6 +10,7 @@ import { statLine } from "../ui/describeEffects";
 import { RichText } from "../ui/RichText";
 import { FONT, px } from "../ui/theme";
 import { t } from "../i18n";
+import { typeTag } from "../ui/typeName";
 
 /** New game: choose one starter. */
 export class StarterScene extends Phaser.Scene {
@@ -33,7 +34,7 @@ export class StarterScene extends Phaser.Scene {
       if (this.textures.exists(portraitKey(id))) this.add.image(x + cardW / 2, y + 52, portraitKey(id)).setDisplaySize(80, 80);
       const ability = s.ability ? CONTENT.abilities[s.ability] : undefined;
       new RichText(this, x + 10, y + 98, cardW - 20, 11).setMarkup([
-        `${tag("title", s.name)}  ${s.types.map((ty) => tag(ty, ty)).join("/")}`,
+        `${tag("title", s.name)}  ${s.types.map((ty) => typeTag(ty)).join("/")}`,
         // Two even rows: the card is too narrow for all six stats on one.
         `HP ${s.stats.hp}  ${statLine(s.stats).split("  ").slice(0, 2).join("  ")}`,
         statLine(s.stats).split("  ").slice(2).join("  "),

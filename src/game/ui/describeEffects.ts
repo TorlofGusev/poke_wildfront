@@ -3,6 +3,7 @@ import type { ItemDef, ProgressionContent, TalentDef } from "../../core/progress
 import { t } from "../i18n";
 import { describeMove } from "./describeMove";
 import { tag } from "./markup";
+import { typeTag } from "./typeName";
 
 const pct = (x: number) => `${Math.round(Math.abs(x) * 100)}%`;
 
@@ -19,8 +20,8 @@ export function describeModifiers(content: BattleContent, m: Partial<UnitModifie
   if (m.damageDealt && m.damageDealt !== 1) out.push(t("{x} with every move", { x: up(t("{v} damage", { v: `${m.damageDealt > 1 ? "+" : "−"}${pct(m.damageDealt - 1)}` })) }));
   if (m.damageTaken && m.damageTaken !== 1) out.push(t("Takes {x}", { x: up(m.damageTaken < 1 ? t("{v} less damage", { v: pct(1 - m.damageTaken) }) : t("{v} more damage", { v: pct(1 - m.damageTaken) })) }));
   const plusDmg = (x: number) => up(t("{v} damage", { v: `+${pct(x - 1)}` }));
-  for (const [ty, x] of Object.entries(m.typeDamage ?? {})) out.push(t("{type} moves deal {x}", { type: tag(ty, ty), x: plusDmg(x) }));
-  for (const [ty, x] of Object.entries(m.lowHpTypeDamage ?? {})) out.push(t("{type} moves deal {x} while below half HP", { type: tag(ty, ty), x: plusDmg(x) }));
+  for (const [ty, x] of Object.entries(m.typeDamage ?? {})) out.push(t("{type} moves deal {x}", { type: typeTag(ty), x: plusDmg(x) }));
+  for (const [ty, x] of Object.entries(m.lowHpTypeDamage ?? {})) out.push(t("{type} moves deal {x} while below half HP", { type: typeTag(ty), x: plusDmg(x) }));
   if (m.fullHpTargetDamage && m.fullHpTargetDamage !== 1) out.push(t("{x} against foes at full HP", { x: plusDmg(m.fullHpTargetDamage) }));
   if (m.lowHpDamage && m.lowHpDamage !== 1) out.push(t("{x} while its HP is below half", { x: plusDmg(m.lowHpDamage) }));
   if (m.vsStatusDamage && m.vsStatusDamage !== 1) out.push(t("{x} against foes with a status effect", { x: plusDmg(m.vsStatusDamage) }));
@@ -74,7 +75,7 @@ export function describeModifiers(content: BattleContent, m: Partial<UnitModifie
   mul(m.ownTypeDamage, "{v} damage with moves of its own types");
   mul(m.superEffectiveTaken, "{v} super-effective damage taken");
   mul(m.statusedDamageTaken, "{v} damage taken while it carries a status");
-  for (const [ty, v] of Object.entries(m.typeDamageTaken ?? {})) mul(v, "{v} damage taken from {type} moves", { type: tag(ty, ty) });
+  for (const [ty, v] of Object.entries(m.typeDamageTaken ?? {})) mul(v, "{v} damage taken from {type} moves", { type: typeTag(ty) });
   if (m.critImmune) out.push(t("{x} critical hits", { x: up(t("Never takes")) }));
   if (m.sheerForce) out.push(t("Moves with a status effect deal {x} but drop the status", { x: up("+30%") }));
   if (m.hitStatus) {
@@ -86,7 +87,7 @@ export function describeModifiers(content: BattleContent, m: Partial<UnitModifie
 }
 
 export const STAT_LABEL: Record<StatName, string> = { hp: t("Vitality"), attack: t("Attack"), defense: t("Defense"), speed: t("Speed"), willpower: t("Willpower"), crit: t("Crit") };
-export const STAT_SHORT: Record<StatName, string> = { hp: t("Vit"), attack: t("Atk"), defense: t("Def"), speed: t("Spe"), willpower: t("Will"), crit: t("Crit") };
+export const STAT_SHORT: Record<StatName, string> = { hp: t("Vit"), attack: t("Atk"), defense: t("Def"), speed: t("Spd"), willpower: t("Will"), crit: t("Crit") };
 
 /** "Atk 7  Def 3  SpA 8  SpD 5  Spe 6" (HP is shown separately as current/max). */
 export const statLine = (stats: BaseStats): string =>

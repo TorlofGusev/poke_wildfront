@@ -17,6 +17,7 @@ export class Button extends Phaser.GameObjects.Container {
     this.label = scene.add.text(8, h / 2, text, { fontFamily: FONT, fontSize: "14px", color: "#e8ecf4" }).setOrigin(0, 0.5);
     this.add([this.bg, this.label]);
     this.setSize(w, h);
+    this.fit();
     this.bg.setInteractive({ useHandCursor: true });
     this.bg.on("pointerover", () => this.enabled && this.bg.setFillStyle(this.hoverFill));
     this.bg.on("pointerout", () => this.bg.setFillStyle(this.enabled ? this.fill : 0x1c2130));
@@ -60,7 +61,18 @@ export class Button extends Phaser.GameObjects.Container {
 
   setText(text: string): this {
     this.label.setText(text);
+    this.fit();
     return this;
+  }
+
+  /** A label too long for the button (a longer translation) steps its size down, then is cut at the edge. */
+  private fit(): void {
+    const room = this.width - 12;
+    for (let size = 14; size >= 11; size--) {
+      this.label.setFontSize(size);
+      if (this.label.width <= room) return void this.label.setCrop();
+    }
+    this.label.setCrop(0, 0, room, this.height);
   }
 
   setEnabled(enabled: boolean): this {

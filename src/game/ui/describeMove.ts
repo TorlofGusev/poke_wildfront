@@ -1,6 +1,7 @@
 import type { BattleContent, MoveDef, StatusDef } from "../../core/battle";
 import { t } from "../i18n";
 import { tag } from "./markup";
+import { typeTag } from "./typeName";
 
 /** Rules text (with colour markup) generated from move data, so it never drifts from the rules. */
 /** Radius of a move that bursts around the user itself (Earthquake: range 0, area 2), else 0. */
@@ -12,7 +13,8 @@ export const reachText = (r: { readonly min: number; readonly max: number }): st
 /** Short reach for tight columns: ◎2 for a burst around the user, else the reach. */
 export const reachShort = (move: MoveDef, r: { readonly min: number; readonly max: number } = move.range): string => (selfCentred(move) ? `◎${selfCentred(move)}` : reachText(r));
 
-export function describeMove(content: BattleContent, move: MoveDef): string {
+/** `inBattle` adds the hint that hovering a target shows the exact damage (only true there). */
+export function describeMove(content: BattleContent, move: MoveDef, inBattle = false): string {
   const bond = content.terms.bond;
   const kind =
     move.kind === "basic" ? t("{x} · usable every turn", { x: tag("basic", t("Basic attack")) })
@@ -26,18 +28,18 @@ export function describeMove(content: BattleContent, move: MoveDef): string {
     : t("line: {n} long in a straight direction, stopped by rocks and bushes", { n: tag("num", move.shape.length) });
   const los = move.requiresLineOfSight ? t(" · needs line of sight (Pokémon in the way block it)") : "";
   const lines = [
-    `${tag("title", move.name)} — ${tag(move.type, move.type.toUpperCase())}`,
+    `${tag("title", move.name)} — ${typeTag(move.type)}`,
     kind,
     selfCentred(move) ? t("Around itself, radius {n}{los}", { n: tag("num", selfCentred(move)), los }) : t("Range {n} · {shape}{los}", { n: tag("num", reachText(move.range)), shape, los }),
     move.currentHpDamage ? t("Deals {n} of the target's current HP, whatever the stats and type", { n: tag("dmg", `${Math.round(move.currentHpDamage * 100)}%`) })
-    : move.power > 0 ? t("Power {n} {hint}", { n: tag("dmg", move.power), hint: tag("dim", t("(hover a target to see the exact damage)")) }) : tag("dim", t("No damage")),
+    : move.power > 0 ? t("Power {n} {hint}", { n: tag("dmg", move.power), hint: inBattle ? tag("dim", t("(hover a target to see the exact damage)")) : "" }).trimEnd() : tag("dim", t("No damage")),
   ];
   if (move.hits) lines.push(t("Hits {n} times, its power split between them; each hit can be critical", { n: tag("num", move.hits) }));
   if (move.recoil) lines.push(t("Recoil: the user takes {n} of the damage it deals", { n: tag("bad", `${Math.round(move.recoil * 100)}%`) }));
   // A drawback on the user is its price; a buff (Helping Hand) is said after what the target gets.
   const selfBuff = move.selfStatus && content.statuses[move.selfStatus.status]?.buff;
   if (move.selfStatus && !selfBuff) lines.push(t("Price: the user becomes {status} for {n} turns", { status: tag("status", content.statuses[move.selfStatus.status]?.name ?? move.selfStatus.status), n: tag("num", move.selfStatus.duration) }));
-  if (move.failsVs?.length) lines.push(t("No effect on {types} Pokémon", { types: move.failsVs.map((ty) => tag(ty, ty)).join(", ") }));
+  if (move.failsVs?.length) lines.push(t("No effect on {types} Pokémon", { types: move.failsVs.map((ty) => typeTag(ty)).join(", ") }));
   if (move.nonLethal) lines.push(t("Never knocks out: leaves the target at 1 HP at least (handy for catching)"));
   if (move.statusedPower) lines.push(t("Hits harder while the user has an ailment: {n} power", { n: tag("dmg", Math.round(move.power * (1 + move.statusedPower))) }));
   if (move.ignoresBuffs) lines.push(t("Ignores the target's protective buffs"));

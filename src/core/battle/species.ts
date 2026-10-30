@@ -47,6 +47,8 @@ export interface TypeUnitTraits {
 export interface TypeDef extends TypeProfile {
   /** One-line summary of the playstyle and mechanic, shown in the UI. */
   readonly summary?: string;
+  /** Display name ("Fire"; translated in other languages). */
+  readonly name?: string;
   readonly move?: TypeMoveMechanic;
   readonly unit?: TypeUnitTraits;
 }
