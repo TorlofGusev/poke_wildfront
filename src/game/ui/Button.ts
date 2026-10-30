@@ -123,7 +123,7 @@ export class Button extends Phaser.GameObjects.Container {
     this.label.setFontStyle("bold").setStroke("#10141c", 3);
     this.labelColor = "#ffffff";
     this.shine.setFillStyle(0xffffff, 0.35);
-    if (this.enabled) this.bg.setFillStyle(this.fill).setStrokeStyle(2, 0xffffff);
+    if (this.enabled) this.bg.setFillStyle(this.fill).setStrokeStyle(1, EDGE);
     this.fit();
     this.place();
     return this.paintLabel();

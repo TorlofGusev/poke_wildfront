@@ -6,7 +6,7 @@ import { session, STARTERS } from "../session";
 import { animKey, footOrigin, hasSprite, portraitKey } from "../sprites";
 import { Button } from "../ui/Button";
 import { tag } from "../ui/markup";
-import { statLine } from "../ui/describeEffects";
+import { STAT_SHORT, statLine } from "../ui/describeEffects";
 import { RichText } from "../ui/RichText";
 import { FONT, px, TYPE_COLORS } from "../ui/theme";
 import { t } from "../i18n";
@@ -53,7 +53,7 @@ export class StarterScene extends Phaser.Scene {
       new RichText(this, x + 10, y + 98, cardW - 20, 11).setMarkup([
         `${tag("title", s.name)}  ${s.types.map((ty) => typeTag(ty)).join("/")}`,
         // Two even rows: the card is too narrow for all six stats on one.
-        `HP ${s.stats.hp}  ${statLine(s.stats).split("  ").slice(0, 2).join("  ")}`,
+        `${STAT_SHORT.hp} ${s.stats.hp}  ${statLine(s.stats).split("  ").slice(0, 2).join("  ")}`,
         statLine(s.stats).split("  ").slice(2).join("  "),
         "",
         ...s.types.map((ty) => tag("dim", CONTENT.types[ty]?.summary ?? "")),

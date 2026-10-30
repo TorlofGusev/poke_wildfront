@@ -29,7 +29,6 @@ const CARD_W = 178;
 const CARD_H = 112;
 /** Storage fills the right side, two columns of small cards. */
 const STORE_X = 16 + CARD_COLS * (CARD_W + 10) + 6;
-const STORE_COLS = 2;
 /** Seats round the camp fire, in degrees (0 = right, 90 = towards the viewer), in the order they fill. */
 const SEATS = [180, 0, 232, 308, 270, 148, 32, 205, 335];
 /** The camp scene's width (the right column). */
@@ -134,9 +133,9 @@ export class PartyScene extends Phaser.Scene {
     this.time.delayedCall(300, () => showTip(this, "camp"));
     const meal = world.meal;
     new RichText(this, 16, 44, 928, 12).setMarkup(this.rested
-      ? tag("good", meal && meal.id !== CAMP.hungry.effect.id
-        ? t("Rested and ate {meal}. Wild Pokémon have moved; defeat brings you back here.", { meal: meal.name })
-        : t("Rested hungry. Wild Pokémon have moved; defeat brings you back here."))
+      ? meal && meal.id !== CAMP.hungry.effect.id
+        ? tag("good", t("Rested and ate {meal}. Wild Pokémon have moved; defeat brings you back here.", { meal: meal.name }))
+        : tag("num", t("Rested hungry. Wild Pokémon have moved; defeat brings you back here."))
       : meal ? `${tag("dim", t("Current meal:"))} ${tag("num", meal.name)} ${tag("dim", `— ${(MEALS[meal.id] ?? CAMP.hungry.effect).description}`)}` : tag("dim", t("Rest here to restore HP and fatigue with a camp meal.")));
     if (this.choosingMeal) {
       this.mealChooser();
@@ -155,16 +154,14 @@ export class PartyScene extends Phaser.Scene {
       rowY += h + 8;
     }
 
-    // The camp itself on the right (taller while storage is empty), storage under it.
-    const sceneH = roster.storage.length ? 220 : 300;
+    // The camp itself on the right; storage (the PC box) opens as its own scrolling screen, the newest arrivals shown here.
+    const sceneH = 340;
     this.campScene(STORE_X, 66, SCENE_W, sceneH, roster.party);
     const storeY = 66 + sceneH + 12;
-    this.add.text(STORE_X, storeY, t("Storage ({n})", { n: roster.storage.length }), { fontFamily: FONT, fontSize: px(12), color: COLORS.dim });
-    const room = STORE_COLS * Math.max(1, Math.floor((508 - storeY - 20) / 46));
-    const shown = roster.storage.length > room ? room - 1 : roster.storage.length;
-    const at = (i: number) => ({ x: STORE_X + (i % STORE_COLS) * 154, y: storeY + 20 + Math.floor(i / STORE_COLS) * 46 });
-    roster.storage.slice(0, shown).forEach((m, i) => this.mini(at(i).x, at(i).y, m));
-    if (roster.storage.length > shown) this.add.text(at(shown).x + 8, at(shown).y + 12, t("+{n} more", { n: roster.storage.length - shown }), { fontFamily: FONT, fontSize: px(11), color: COLORS.dim });
+    new Button(this, STORE_X, storeY, SCENE_W, 30, t("📦 Storage ({n})", { n: roster.storage.length }), () => this.scene.start("Storage", {})).centerLabel();
+    roster.storage.slice(-6).reverse().forEach((m, i) => {
+      if (this.textures.exists(portraitKey(m.speciesId))) this.add.image(STORE_X + i * 52, storeY + 40, portraitKey(m.speciesId)).setOrigin(0).setDisplaySize(44, 44);
+    });
     if (roster.fallen.length) {
       new RichText(this, 16, 512, 928, 12).setMarkup(`${tag("ko", t("Fallen"))}: ${roster.fallen.map((m) => CONTENT.species[m.speciesId]!.name).join(", ")}`);
     }
@@ -290,21 +287,12 @@ export class PartyScene extends Phaser.Scene {
           fill.width = (CARD_W - 16) * Math.min(1, before / max);
           const order = session.game.roster.party.indexOf(m);
           this.tweens.add({ targets: fill, width: (CARD_W - 16) * frac, delay: 350 + order * 90, duration: 600, ease: "Cubic.easeOut", onStart: () => order === 0 && sfx(this, "heal") });
-          const gain = pixText(this, x + CARD_W - 12, barY - 6, `+${m.hp - before}`, 0x9be36b, 2).setOrigin(1, 1).setAlpha(0);
-          this.tweens.add({ targets: gain, alpha: 1, y: barY - 14, delay: 350 + order * 90, duration: 300, hold: 900, yoyo: true });
+          const gain = pixText(this, x + 26, y + 30, `+${m.hp - before}`, 0x9be36b, 2).setOrigin(0.5, 1).setAlpha(0);
+          this.tweens.add({ targets: gain, alpha: 1, y: y + 22, delay: 350 + order * 90, duration: 300, hold: 900, yoyo: true });
         }
         new RichText(this, x + 8, barY + 6, CARD_W - 16, 12).setMarkup(
           `${m.hp > 0 ? `HP ${Math.min(m.hp, max)}/${max}` : tag("ko", t("fainted"))}  KO ${tag(m.knockouts ? "ko" : "dim", pips)}`);
       },
     };
-  }
-
-  private mini(x: number, y: number, m: PartyMember): void {
-    const s = CONTENT.species[m.speciesId]!;
-    const bg = this.add.rectangle(x, y, 148, 40, 0x1c2130).setOrigin(0).setStrokeStyle(1, 0x3a4560);
-    bg.setInteractive({ useHandCursor: true }).on("pointerdown", () => this.open(m));
-    this.portrait(x + 4, y + 4, 32, m.speciesId);
-    this.add.text(x + 42, y + 4, `${s.name}`, { fontFamily: FONT, fontSize: px(12), color: COLORS.text });
-    this.add.text(x + 42, y + 21, t("Lv {level}", { level: m.level }), { fontFamily: FONT, fontSize: px(11), color: COLORS.dim });
   }
 }

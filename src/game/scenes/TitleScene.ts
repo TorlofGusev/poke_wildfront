@@ -100,16 +100,17 @@ export class TitleScene extends Phaser.Scene {
     }
     this.add.image(x + 140, y + 62, key).setDisplaySize(560, 260);
     const words: Phaser.GameObjects.GameObject[] = [];
+    const ring = [[-1, 0], [1, 0], [0, -1], [0, 1], [-1, -1], [1, -1], [-1, 1], [1, 1]] as const;
     const outlined = (wx: number, wy: number, text: string, scale: number, fill: number) => {
-      const o = scale;
-      for (const [dx, dy] of [[-o, 0], [o, 0], [0, -o], [0, o], [-o, -o], [o, -o], [-o, o], [o, o]] as const)
-        words.push(pixText(this, wx + dx, wy + dy, text, 0x2a5aa8, scale));
-      const top = pixText(this, wx, wy, text, fill, scale);
+      for (const [dx, dy] of ring) words.push(pixText(this, wx + dx * scale * 2, wy + dy * scale * 2, text, 0x10141c, scale, false));
+      for (const [dx, dy] of ring) words.push(pixText(this, wx + dx * scale, wy + dy * scale, text, 0x3d7dca, scale, false));
+      // Each letter light at the top, gold below, as on the classic logo.
+      const top = pixText(this, wx, wy, text, 0xffffff, scale, false).setCharacterTint(0, -1, Phaser.TintModes.MULTIPLY, 0xfff6b0, 0xfff6b0, fill, fill);
       words.push(top);
       return top;
     };
     const big = outlined(0, 0, "POKÉMON", 5, 0xffcb05);
-    const second = outlined(4, big.height - 14, "WILDFRONT", 4, 0xffe27a);
+    const second = outlined(4, big.height - 6, "WILDFRONT", 4, 0xffcb05);
     words.push(pixText(this, 6, second.y + second.height - 6, t("Tactical RPG"), 0xc8d0e0, 2));
     const box = this.add.container(x, y, words);
     this.tweens.add({ targets: box, y: y + 3, duration: 1600, yoyo: true, repeat: -1, ease: "Sine.easeInOut" });

@@ -179,16 +179,17 @@ function glyphRows(ch: string): { rows: string[]; width: number } | null {
 }
 
 /** Registers the font once per game (the texture and font data live in the game's caches). */
-export function ensurePixelFont(scene: Phaser.Scene): string {
-  if (scene.cache.bitmapFont.exists(PIXEL_FONT)) return PIXEL_FONT;
+export function ensurePixelFont(scene: Phaser.Scene, outline = true): string {
+  const font = outline ? PIXEL_FONT : `${PIXEL_FONT}-clean`;
+  if (scene.cache.bitmapFont.exists(font)) return font;
   const chars = [...Object.keys(GLYPHS), ...Object.keys(ACCENTS)];
   const glyphs = chars.map((ch) => ({ ch, g: glyphRows(ch)! }));
   const perRow = 16;
   const cellW = 9; // the widest glyph (5) plus outline, with room
   const texW = perRow * cellW, texH = Math.ceil((glyphs.length + 1) / perRow) * CELL_H;
-  const tex = scene.textures.createCanvas(`${PIXEL_FONT}-tex`, texW, texH)!;
+  const tex = scene.textures.createCanvas(`${font}-tex`, texW, texH)!;
   const ctx = tex.getContext();
-  const data: Phaser.Types.GameObjects.BitmapText.BitmapFontData = { font: PIXEL_FONT, size: CELL_H, lineHeight: CELL_H + 1, retroFont: true, chars: {} };
+  const data: Phaser.Types.GameObjects.BitmapText.BitmapFontData = { font, size: CELL_H, lineHeight: CELL_H + 1, retroFont: true, chars: {} };
   const add = (code: number, x: number, y: number, w: number, advance: number) => {
     data.chars[code] = {
       x, y, width: w, height: CELL_H, centerX: Math.floor(w / 2), centerY: Math.floor(CELL_H / 2), xOffset: 0, yOffset: 0, xAdvance: advance,
@@ -199,7 +200,7 @@ export function ensurePixelFont(scene: Phaser.Scene): string {
     const ox = (i % perRow) * cellW, oy = Math.floor(i / perRow) * CELL_H;
     const ink = (x: number, y: number) => g.rows[y]?.[x] === "#";
     // Outline first (every empty pixel touching ink, diagonals too), then the ink.
-    ctx.fillStyle = "#10141c";
+    ctx.fillStyle = outline ? "#10141c" : "rgba(0,0,0,0)";
     for (let y = -1; y <= 11; y++)
       for (let x = -1; x <= g.width; x++) {
         if (ink(x, y)) continue;
@@ -216,8 +217,8 @@ export function ensurePixelFont(scene: Phaser.Scene): string {
   add(32, (si % perRow) * cellW, Math.floor(si / perRow) * CELL_H, SPACE, SPACE);
   tex.refresh();
   tex.setFilter(Phaser.Textures.FilterMode.NEAREST);
-  scene.cache.bitmapFont.add(PIXEL_FONT, { data, texture: `${PIXEL_FONT}-tex`, frame: null });
-  return PIXEL_FONT;
+  scene.cache.bitmapFont.add(font, { data, texture: `${font}-tex`, frame: null });
+  return font;
 }
 
 /** Symbols drawn with another glyph; emoji map to private-use stand-ins (bitmap text reads one UTF-16 unit per glyph). */
@@ -235,9 +236,8 @@ function normalize(s: string): string {
 }
 
 /** Pixel text at a whole scale (2× reads like the handhelds on this screen), tinted. */
-export function pixText(scene: Phaser.Scene, x: number, y: number, text: string, color = 0xffffff, scale = 2): Phaser.GameObjects.BitmapText {
-  ensurePixelFont(scene);
-  return scene.add.bitmapText(x, y, PIXEL_FONT, normalize(text), CELL_H * scale).setTint(color);
+export function pixText(scene: Phaser.Scene, x: number, y: number, text: string, color = 0xffffff, scale = 2, outline = true): Phaser.GameObjects.BitmapText {
+  return scene.add.bitmapText(x, y, ensurePixelFont(scene, outline), normalize(text), CELL_H * scale).setTint(color);
 }
 
 /** Changes a pixel text's words, with the same fallbacks. */

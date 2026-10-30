@@ -1477,7 +1477,9 @@ export class BattleScene extends Phaser.Scene {
             : used ? { state: "spent", note: t("used") }
             : cd > 0 ? { state: "spent", note: `⏳${cd}` }
             : move.kind === "ultimate" && unit.usedUltimates.includes(moveId) ? { state: "spent", note: t("ult used") }
-            : !hasTarget ? { state: "noTarget", note: `✕ ${reachShort(move, range)}` }
+            // Why it can't be used, in a word: not enough Bond, a status, being engaged, or no one in reach.
+            : reason ? { state: "noTarget", note: move.kind === "bond" && reason.startsWith("needs") ? `✕ ${"●".repeat(bondCostFor(move, unit))}` : reason.startsWith("engaged") || reason.startsWith("only while") ? t("✕ engaged") : t("✕ blocked") }
+            : !hasTarget ? { state: "noTarget", note: t("✕ out of reach") }
             : { state: "ready", note: move.kind === "bond" ? "●".repeat(bondCostFor(move, unit)) : move.kind === "ultimate" ? t("ult 1×") : reachShort(move, range) };
           const lit = locked ? this.usingMove === moveId : this.selectedMove === moveId;
           const card = this.cachedCard(JSON.stringify(["mc", unit.id, moveId, power, look, lit, locked]), () => moveCard(this, move, power, look, cardW, cardH, lit, () => {

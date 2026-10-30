@@ -33,7 +33,6 @@
  "Current meal:": "Jelenlegi étel:",
  "Rest here to restore HP and fatigue with a camp meal.": "Pihenj itt egy tábori étellel, hogy visszanyerd a HP-t és csökkentsd a fáradtságot.",
  "Party {n}/{max} · tap a Pokémon for its details": "Csapat {n}/{max} · koppints egy Pokémonra a részletekért",
- "Storage ({n})": "Tároló ({n})",
  "+{n} more": "+{n} további",
  "Fallen": "Elesettek",
  "learn a mastery": "tanulj jártasságot",
@@ -130,5 +129,17 @@
  "Seen {n}/{total}": "Látott: {n}/{total}",
  "So you want {name}, the {type} Pokémon?": "Tehát {name} legyen? {type} típusú Pokémon.",
  "Yes, {name}!": "Igen, {name}!",
- "Let me think": "Még gondolkodom"
+ "Let me think": "Még gondolkodom",
+ "Storage": "Tároló",
+ "{n} stored · party {p}/{max}": "{n} tárolva · csapat {p}/{max}",
+ "Sort:": "Rendezés:",
+ "Newest": "Legújabb",
+ "Pokédex no.": "Pokédex-szám",
+ "Level": "Szint",
+ "Name": "Név",
+ "All": "Mind",
+ "← Storage": "← Tároló",
+ "📦 Storage ({n})": "📦 Tároló ({n})",
+ "No stored Pokémon of this type.": "Nincs ilyen típusú Pokémon a tárolóban.",
+ "Storage is empty. Pokémon you catch with a full party come here.": "A tároló üres. Ha teli csapattal fogsz Pokémont, ide kerül."
 }

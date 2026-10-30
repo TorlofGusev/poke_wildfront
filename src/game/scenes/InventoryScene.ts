@@ -11,6 +11,7 @@ import { RichText } from "../ui/RichText";
 import { FONT } from "../ui/theme";
 import { t } from "../i18n";
 import { panel, screenTitle } from "../ui/frames";
+import { scrollArea } from "../ui/scrollArea";
 import { pixText } from "../ui/pixelFont";
 
 /** The bag: everything carried, grouped by use, with exact effects. Opened from the map or camp. */
@@ -30,8 +31,8 @@ export class InventoryScene extends Phaser.Scene {
     this.cameras.main.fadeIn(160, 16, 20, 28);
     playMusic(this, "overworld");
     const { inventory, money, roster } = session.game;
-    screenTitle(this, 16, 14, t("Bag"));
-    new RichText(this, 110, 19, 400, 14).setMarkup(`${tag("num", `₽${money}`)}`);
+    const title = screenTitle(this, 16, 14, t("Bag"));
+    new RichText(this, 16 + title.width + 18, 19, 400, 14).setMarkup(`${tag("num", `₽${money}`)}`);
     new Button(this, 794, 12, 150, 26, t("← Back"), () => this.scene.start(this.returnTo, this.returnTo === "Party" ? { rested: false, choosingMeal: false } : {}));
 
     // Who holds an item, a repeated species counted once ("Charizard ×2").
@@ -46,7 +47,7 @@ export class InventoryScene extends Phaser.Scene {
       [t("Held items"), Object.values(PROGRESSION.items).filter((i) => i.kind === "held").map((i) => i.id)],
     ];
     // Pockets: framed panels in two columns, each pocket going where there is more room.
-    const colX = [16, 488], colY = [52, 52], pocketW = 456;
+    const colX = [16, 488], colY = [54, 54], pocketW = 450;
     const pocket = (title: string, rows: readonly { id: string; text: string }[]) => {
       const c = colY[0]! <= colY[1]! ? 0 : 1;
       const x = colX[c]!, top = colY[c]!;
@@ -60,23 +61,27 @@ export class InventoryScene extends Phaser.Scene {
       panel(this, x, top, pocketW, y - top + 6).setDepth(-1);
       colY[c] = y + 18;
     };
-    for (const [title, ids] of groups) {
-      const rows = ids
-        .map((id) => {
-          const ball = CONTENT.balls[id];
-          const count = ball ? inventory.balls[id] ?? 0 : inventory.items[id] ?? 0;
-          const holders = ball ? [] : heldBy(id);
-          if (count <= 0 && holders.length === 0) return null;
-          const name = ball?.name ?? PROGRESSION.items[id]!.name;
-          const effect = ball ? t("catch chance ×{x}", { x: ball.multiplier }) : describeItem(CONTENT, PROGRESSION.items[id]!).join(" · ");
-          // Every one of them held: no "0×" in front, the holders say where they are.
-          return { id, text: `${count > 0 ? `${tag("num", `${count}×`)} ` : ""}${tag("title", name)} ${tag("dim", "—")} ${effect}${holders.length ? tag("dim", t(" (held by {names})", { names: holders.join(", ") })) : ""}` };
-        })
-        .filter((r): r is { id: string; text: string } => r !== null);
-      pocket(title, rows);
-    }
-    const keyItems = (session.game.keyItems ?? []).map((k) => PROGRESSION.keyItems?.[k]).filter((k) => k !== undefined);
-    pocket(t("Key items"), keyItems.map((k) => ({ id: k.id, text: `${tag("title", k.name)} ${tag("dim", "—")} ${k.description}` })));
+    // The pockets scroll (wheel, drag or the bar) once there is more than a screen of them.
+    scrollArea(this, 0, 48, 960, 492, () => {
+      for (const [title, ids] of groups) {
+        const rows = ids
+          .map((id) => {
+            const ball = CONTENT.balls[id];
+            const count = ball ? inventory.balls[id] ?? 0 : inventory.items[id] ?? 0;
+            const holders = ball ? [] : heldBy(id);
+            if (count <= 0 && holders.length === 0) return null;
+            const name = ball?.name ?? PROGRESSION.items[id]!.name;
+            const effect = ball ? t("catch chance ×{x}", { x: ball.multiplier }) : describeItem(CONTENT, PROGRESSION.items[id]!).join(" · ");
+            // Every one of them held: no "0×" in front, the holders say where they are.
+            return { id, text: `${count > 0 ? `${tag("num", `${count}×`)} ` : ""}${tag("title", name)} ${tag("dim", "—")} ${effect}${holders.length ? tag("dim", t(" (held by {names})", { names: holders.join(", ") })) : ""}` };
+          })
+          .filter((r): r is { id: string; text: string } => r !== null);
+        pocket(title, rows);
+      }
+      const keyItems = (session.game.keyItems ?? []).map((k) => PROGRESSION.keyItems?.[k]).filter((k) => k !== undefined);
+      pocket(t("Key items"), keyItems.map((k) => ({ id: k.id, text: `${tag("title", k.name)} ${tag("dim", "—")} ${k.description}` })));
+      return Math.max(...colY);
+    });
   }
 
   /** One line of the bag with the thing's icon in front (a ball's, else the item's). Returns its height. */

@@ -272,7 +272,10 @@
  "+{n} EXP": "+{n} EXP",
  "Critical hit!": "Kritikus találat!",
  "{n} in use": "{n} használatban",
- "Full colour: in use. Grey: known, resting. Tap a card for its rules.": "Teljes szín: használatban. Szürke: ismert, pihen. Koppints egy kártyára a szabályaiért.",
  "evolves at Lv {lv}": "fejlődik: Lv {lv}",
- "HP full": "HP tele"
+ "HP full": "HP tele",
+ "✕ engaged": "✕ lekötve",
+ "✕ blocked": "✕ tiltva",
+ "✕ out of reach": "✕ nem ér el",
+ "✓ and full colour: in use. Dim: known, resting. Tap a card for its rules.": "✓ és teljes szín: használatban. Halvány: ismert, pihen. Koppints egy kártyára a szabályaiért."
 }

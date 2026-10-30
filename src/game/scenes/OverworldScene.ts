@@ -160,7 +160,7 @@ export class OverworldScene extends Phaser.Scene {
     const evolving = evolvingUids();
     if (evolving.length) return void this.scene.start("Evolution", { uids: evolving, next: "Overworld" });
     playMusic(this, "overworld");
-    screenTitle(this, MAP_X, 16, currentWorld().name);
+    screenTitle(this, MAP_X, 10, currentWorld().name);
     this.add.text(MAP_X, 40, PHONE ? t("Tap twice or drag to walk · red ring: wild group · ★ ◆ ✚ pickups") : t("Click to walk. Red ring: wild group. Pickups: ★ rare · ◆ held item · ✚ heal · M: sound on/off"), {
       fontFamily: FONT, fontSize: px(11), color: COLORS.dim, wordWrap: { width: 672 },
     });

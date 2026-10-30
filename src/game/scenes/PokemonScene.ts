@@ -129,7 +129,11 @@ export class PokemonScene extends Phaser.Scene {
   /** First shown row of the bag's held items on the Equipment tab (wheel or ▲▼ scrolls). */
   private bagRow = 0;
 
-  init(data: { uid: string; tab?: Tab }): void {
+  /** Where "back" leads: the camp, or storage when the Pokémon was opened from there. */
+  private from: "Party" | "Storage" = "Party";
+
+  init(data: { uid: string; tab?: Tab; from?: "Party" | "Storage" }): void {
+    this.from = data.from ?? "Party";
     this.message = "";
     this.selected = data.uid;
     this.tab = data.tab ?? (pendingChoice(CONTENT, PROGRESSION, findMember(session.game, data.uid)!) ? "talents" : "stats");
@@ -161,7 +165,7 @@ export class PokemonScene extends Phaser.Scene {
   }
 
   private evolve(uid: string): void {
-    this.scene.start("Evolution", { uids: [uid], next: "Pokemon", nextData: { uid, tab: this.tab } });
+    this.scene.start("Evolution", { uids: [uid], next: "Pokemon", nextData: { uid, tab: this.tab, from: this.from } });
   }
 
   private updateMember(member: PartyMember, f: (m: PartyMember) => PartyMember): void {
@@ -190,7 +194,8 @@ export class PokemonScene extends Phaser.Scene {
       this.render();
     };
     const right = DETAIL_X + DETAIL_W;
-    add(new Button(this, right - 120, 12, 120, 26, t("← Camp"), () => this.scene.start("Party", { rested: false, choosingMeal: false })));
+    add(new Button(this, right - 120, 12, 120, 26, this.from === "Storage" ? t("← Storage") : t("← Camp"), () =>
+      this.from === "Storage" ? this.scene.start("Storage", {}) : this.scene.start("Party", { rested: false, choosingMeal: false })));
     add(new Button(this, right - 172, 12, 40, 26, " ▶", () => go(1)).setEnabled(list.length > 1));
     const count = text(right - 180, 17, list === roster.storage ? t("{i}/{n} in storage", { i: idx + 1, n: list.length }) : `${idx + 1}/${list.length}`, COLORS.dim, 13).setOrigin(1, 0);
     const prev = add(new Button(this, count.x - count.width - 48, 12, 40, 26, " ◀", () => go(-1)).setEnabled(list.length > 1));
@@ -252,11 +257,11 @@ export class PokemonScene extends Phaser.Scene {
     for (const ty of s.types) {
       const label = this.add.text(0, 0, typeName(ty).toUpperCase(), { fontFamily: FONT, fontSize: "10px", color: "#ffffff", fontStyle: "bold" }).setOrigin(0.5).setStroke("#10141c", 2);
       const cw = label.width + 10;
-      add(this.add.rectangle(cx, y + 31, cw, 14, TYPE_COLORS[ty] ?? 0x888888).setOrigin(0, 0.5).setStrokeStyle(1, 0x10141c));
-      add(label.setPosition(cx + cw / 2, y + 31));
+      add(this.add.rectangle(cx, y + 35, cw, 15, TYPE_COLORS[ty] ?? 0x888888).setOrigin(0, 0.5).setStrokeStyle(1, 0x10141c));
+      add(label.setPosition(cx + cw / 2, y + 35));
       cx += cw + 4;
     }
-    if (s.role) add(this.add.text(cx + 4, y + 31, s.role === "melee" ? t("Melee") : t("Ranged"), { fontFamily: FONT, fontSize: px(12), color: "#7fb8ff" }).setOrigin(0, 0.5));
+    if (s.role) add(this.add.text(cx + 4, y + 35, s.role === "melee" ? t("Melee") : t("Ranged"), { fontFamily: FONT, fontSize: px(12), color: "#7fb8ff" }).setOrigin(0, 0.5));
 
     // HP and EXP as framed bars, as in battle.
     const { maxHp } = memberStats(CONTENT, PROGRESSION, m);
@@ -485,7 +490,7 @@ export class PokemonScene extends Phaser.Scene {
       moves.forEach((mv, i) => {
         const def = CONTENT.moves[mv]!;
         const inUse = mv === activeBasic || fighting.includes(mv);
-        const look: MoveCardLook = { state: inUse ? "ready" : "noTarget", note: def.kind === "bond" ? "●".repeat(def.bondCost ?? 0) : reachShort(def) };
+        const look: MoveCardLook = { state: inUse ? "ready" : "resting", inUse, note: def.kind === "bond" ? "●".repeat(def.bondCost ?? 0) : reachShort(def) };
         add(moveCard(this, def, def.power, look, cardW, cardH, mv === shown, () => {
           this.selectedMove = mv;
           this.render();
@@ -493,7 +498,7 @@ export class PokemonScene extends Phaser.Scene {
       });
       rowY += Math.ceil(moves.length / cols) * (cardH + 6) + 6;
     }
-    add(new RichText(this, DETAIL_X, rowY, gridW, 11)).setMarkup(tag("dim", t("Full colour: in use. Grey: known, resting. Tap a card for its rules.")));
+    add(new RichText(this, DETAIL_X, rowY, gridW, 11)).setMarkup(tag("dim", t("✓ and full colour: in use. Dim: known, resting. Tap a card for its rules.")));
     const infoX = DETAIL_X + gridW + 20;
     const infoW = DETAIL_X + DETAIL_W - infoX;
     const h = add(new RichText(this, infoX, y, infoW, 12)).setMarkup(describeMove(CONTENT, CONTENT.moves[shown]!));
