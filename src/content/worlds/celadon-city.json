@@ -103,7 +103,7 @@
     "x": 10,
     "y": 4
    },
-   "arena": "forest",
+   "arena": "celadon-gym",
    "text": [
     "Erika's garden is no place for rough types!"
    ],
@@ -136,7 +136,7 @@
     "x": 14,
     "y": 4
    },
-   "arena": "forest",
+   "arena": "celadon-gym",
    "text": [
     "Grass Pokémon are elegant, don't you agree?"
    ],
@@ -165,7 +165,7 @@
     "x": 12,
     "y": 2
    },
-   "arena": "forest",
+   "arena": "celadon-gym",
    "text": [
     "Oh, hello. I was dozing among the flowers.",
     "I am Erika. I shall not lose."

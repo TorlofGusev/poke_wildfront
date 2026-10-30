@@ -125,7 +125,7 @@
     "x": 17,
     "y": 5
    },
-   "arena": "mountain",
+   "arena": "viridian-gym",
    "requires": {
     "badges": 7
    },
@@ -160,7 +160,7 @@
     "x": 20,
     "y": 5
    },
-   "arena": "mountain",
+   "arena": "viridian-gym",
    "requires": {
     "badges": 7
    },
@@ -195,7 +195,7 @@
     "x": 18,
     "y": 3
    },
-   "arena": "mountain",
+   "arena": "viridian-gym",
    "requires": {
     "badges": 7
    },

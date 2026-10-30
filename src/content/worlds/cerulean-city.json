@@ -154,7 +154,7 @@
     "x": 3,
     "y": 4
    },
-   "arena": "cerulean-water",
+   "arena": "cerulean-gym",
    "text": [
     "Misty's gym is no splash pool!"
    ],
@@ -183,7 +183,7 @@
     "x": 6,
     "y": 4
    },
-   "arena": "cerulean-water",
+   "arena": "cerulean-gym",
    "text": [
     "You'll have to get past me first!"
    ],
@@ -212,7 +212,7 @@
     "x": 4,
     "y": 3
    },
-   "arena": "cerulean-water",
+   "arena": "cerulean-gym",
    "text": [
     "I'm Misty, the Tomboyish Mermaid!",
     "My policy is an all-out offensive with water Pokémon!"

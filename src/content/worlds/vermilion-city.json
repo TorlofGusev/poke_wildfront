@@ -119,7 +119,7 @@
     "x": 16,
     "y": 11
    },
-   "arena": "power-plant",
+   "arena": "vermilion-gym",
    "text": [
     "Lt. Surge's gym runs on pure voltage!"
    ],
@@ -148,7 +148,7 @@
     "x": 20,
     "y": 11
    },
-   "arena": "power-plant",
+   "arena": "vermilion-gym",
    "text": [
     "Surge taught me everything!"
    ],
@@ -177,7 +177,7 @@
     "x": 18,
     "y": 12
    },
-   "arena": "power-plant",
+   "arena": "vermilion-gym",
    "text": [
     "Hey kid! Electric Pokémon saved me during the war!",
     "You won't live long in combat, that's for sure!"

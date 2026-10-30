@@ -179,7 +179,7 @@
     "x": 16,
     "y": 12
    },
-   "arena": "silph-office",
+   "arena": "saffron-gym",
    "text": [
     "I saw you coming in a vision."
    ],
@@ -212,7 +212,7 @@
     "x": 20,
     "y": 12
    },
-   "arena": "silph-office",
+   "arena": "saffron-gym",
    "text": [
     "Sabrina's power is beyond yours."
    ],
@@ -241,7 +241,7 @@
     "x": 18,
     "y": 13
    },
-   "arena": "silph-office",
+   "arena": "saffron-gym",
    "requires": {
     "flags": [
      "npc:giovanni-silph"

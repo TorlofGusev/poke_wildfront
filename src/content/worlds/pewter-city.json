@@ -87,7 +87,7 @@
     "x": 3,
     "y": 4
    },
-   "arena": "mountain",
+   "arena": "pewter-gym",
    "text": [
     "Stop right there! You're light-years from facing Brock!"
    ],
@@ -116,7 +116,7 @@
     "x": 5,
     "y": 2
    },
-   "arena": "mountain",
+   "arena": "pewter-gym",
    "text": [
     "I'm Brock, Pewter's Gym Leader.",
     "My rock-hard willpower shows in my Pokémon. Show me your best!"
