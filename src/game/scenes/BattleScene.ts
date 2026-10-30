@@ -9,7 +9,7 @@ import type { DemoBattle } from "../../content/demoBattles";
 import { captureChance, captureTargets, captureUnavailableReason } from "../../core/capture";
 import { KNOCKOUTS_TO_DEATH, resolveBattle, type BattleSummary } from "../../core/party";
 import { currentWorld, session } from "../session";
-import { PROGRESSION, WORLD_CONTENT, WORLDS } from "../../content";
+import { CAMP, PROGRESSION, WORLD_CONTENT, WORLDS } from "../../content";
 import { calmEncounter, fatigueLevel, fatigueModifiers, removeEncounter, returnToLastCamp, rollLoot } from "../../core/expedition";
 import { readyToEvolve, teamBond, xpToNext } from "../../core/progression";
 import { nextRandom } from "../../core/rng";
@@ -2015,14 +2015,23 @@ export class BattleScene extends Phaser.Scene {
           game = { ...game, inventory: { ...game.inventory, balls: { ...game.inventory.balls, "poke-ball": (game.inventory.balls["poke-ball"] ?? 0) + 1 } } };
           this.rewardText = t("Found a Poké Ball after the battle!");
         }
-        // Foraging: the area's food is found after a won wild battle.
+        // Foraging: after a won wild battle each berry of the area's food turns up by chance.
         const forage = this.biome ? WORLD_CONTENT.biomes[this.biome]?.forage : undefined;
         if (forage) {
           const items = { ...game.inventory.items };
-          for (const [id, n] of Object.entries(forage)) items[id] = (items[id] ?? 0) + n;
-          game = { ...game, inventory: { ...game.inventory, items } };
-          const found = Object.entries(forage).map(([id, n]) => `${n} ${PROGRESSION.items[id]?.name ?? id}`).join(", ");
-          this.rewardText = [this.rewardText, t("Foraged {items}.", { items: found })].filter(Boolean).join(" ");
+          const got: [string, number][] = [];
+          let rng = game.world.rngState;
+          for (const [id, n] of Object.entries(forage)) {
+            let k = 0;
+            for (let i = 0; i < n; i++) {
+              const r = nextRandom(rng);
+              rng = r.state;
+              if (r.value < CAMP.forageChance) k++;
+            }
+            if (k) { items[id] = (items[id] ?? 0) + k; got.push([id, k]); }
+          }
+          game = { ...game, inventory: { ...game.inventory, items }, world: { ...game.world, rngState: rng } };
+          if (got.length) this.rewardText = [this.rewardText, t("Foraged {items}.", { items: got.map(([id, n]) => `${n} ${PROGRESSION.items[id]?.name ?? id}`).join(", ") })].filter(Boolean).join(" ");
         }
         // Loot: at most one of the area's items turns up.
         const loot = rollLoot((this.biome ? WORLD_CONTENT.biomes[this.biome]?.loot : undefined) ?? [], game.world.rngState);

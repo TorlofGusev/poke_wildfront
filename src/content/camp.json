@@ -11,5 +11,6 @@
    }
   }
  },
- "treatmentPerMark": 150
+ "treatmentPerMark": 150,
+ "forageChance": 0.5
 }

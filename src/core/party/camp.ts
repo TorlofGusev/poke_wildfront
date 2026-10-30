@@ -16,6 +16,8 @@ export interface MealDef {
 export interface CampRules {
   /** Pokémon Center treatment price per knockout mark. */
   readonly treatmentPerMark: number;
+  /** Each berry of an area's forage turns up after a won wild battle with this chance. */
+  readonly forageChance: number;
   /** Resting without a meal: fraction of max HP restored, fatigue left, and the lasting penalty. */
   readonly hungry: {
     readonly hpFraction: number;
