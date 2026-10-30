@@ -292,7 +292,7 @@
   "affects": "enemies",
   "canonPower": 90,
   "reach": "melee",
-  "bondCost": 2
+  "bondCost": 1
  },
  "aromatherapy": {
   "id": "aromatherapy",
@@ -670,7 +670,7 @@
   "category": "physical",
   "canonPower": 85,
   "reach": "melee",
-  "bondCost": 2
+  "bondCost": 1
  },
  "blizzard": {
   "id": "blizzard",
@@ -761,7 +761,7 @@
   "canonPower": 85,
   "category": "physical",
   "reach": "melee",
-  "bondCost": 2
+  "bondCost": 1
  },
  "bone-rush": {
   "id": "bone-rush",
@@ -830,7 +830,7 @@
   ],
   "canonPower": 85,
   "reach": "melee",
-  "bondCost": 2
+  "bondCost": 1
  },
  "brave-bird": {
   "id": "brave-bird",
@@ -993,7 +993,7 @@
   "affects": "enemies",
   "canonPower": 90,
   "reach": "ranged",
-  "bondCost": 2
+  "bondCost": 1
  },
  "bulk-up": {
   "id": "bulk-up",
@@ -1718,7 +1718,7 @@
   "category": "physical",
   "canonPower": 85,
   "reach": "melee",
-  "bondCost": 2
+  "bondCost": 1
  },
  "dazzling-gleam": {
   "id": "dazzling-gleam",
@@ -2110,7 +2110,7 @@
   "affects": "enemies",
   "canonPower": 85,
   "reach": "ranged",
-  "bondCost": 2
+  "bondCost": 1
  },
  "dragon-rage": {
   "id": "dragon-rage",
@@ -2389,7 +2389,7 @@
   "affects": "enemies",
   "canonPower": 90,
   "reach": "ranged",
-  "bondCost": 2
+  "bondCost": 1
  },
  "earthquake": {
   "id": "earthquake",
@@ -2589,7 +2589,7 @@
   "affects": "enemies",
   "canonPower": 90,
   "reach": "ranged",
-  "bondCost": 2
+  "bondCost": 1
  },
  "explosion": {
   "id": "explosion",
@@ -2921,7 +2921,7 @@
   "category": "physical",
   "canonPower": 90,
   "reach": "melee",
-  "bondCost": 2
+  "bondCost": 1
  },
  "fissure": {
   "id": "fissure",
@@ -3062,7 +3062,7 @@
   "canonPower": 90,
   "category": "special",
   "reach": "ranged",
-  "bondCost": 2
+  "bondCost": 1
  },
  "flare-blitz": {
   "id": "flare-blitz",
@@ -3204,7 +3204,7 @@
   "canonPower": 90,
   "category": "physical",
   "reach": "melee",
-  "bondCost": 2
+  "bondCost": 1
  },
  "focus-blast": {
   "id": "focus-blast",
@@ -4176,7 +4176,7 @@
   "affects": "enemies",
   "canonPower": 90,
   "reach": "ranged",
-  "bondCost": 2
+  "bondCost": 1
  },
  "hypnosis": {
   "id": "hypnosis",
@@ -4240,7 +4240,7 @@
   "canonPower": 90,
   "category": "special",
   "reach": "ranged",
-  "bondCost": 2
+  "bondCost": 1
  },
  "ice-fang": {
   "id": "ice-fang",
@@ -4350,7 +4350,7 @@
   "affects": "enemies",
   "canonPower": 85,
   "reach": "melee",
-  "bondCost": 2
+  "bondCost": 1
  },
  "icicle-spear": {
   "id": "icicle-spear",
@@ -4681,7 +4681,7 @@
   "affects": "enemies",
   "canonPower": 90,
   "reach": "melee",
-  "bondCost": 2
+  "bondCost": 1
  },
  "leaf-storm": {
   "id": "leaf-storm",
@@ -4850,7 +4850,7 @@
   "affects": "enemies",
   "canonPower": 85,
   "reach": "melee",
-  "bondCost": 2,
+  "bondCost": 1,
   "effects": [
    {
     "kind": "status",
@@ -5371,7 +5371,7 @@
   "category": "physical",
   "canonPower": 90,
   "reach": "melee",
-  "bondCost": 2
+  "bondCost": 1
  },
  "mind-reader": {
   "id": "mind-reader",
@@ -5680,7 +5680,7 @@
    }
   ],
   "reach": "ranged",
-  "bondCost": 2
+  "bondCost": 1
  },
  "mystical-fire": {
   "id": "mystical-fire",
@@ -6010,7 +6010,7 @@
   },
   "canonPower": 90,
   "category": "physical",
-  "bondCost": 2
+  "bondCost": 1
  },
  "petal-dance": {
   "id": "petal-dance",
@@ -6059,7 +6059,7 @@
   "canonPower": 90,
   "category": "physical",
   "reach": "melee",
-  "bondCost": 2
+  "bondCost": 1
  },
  "pin-missile": {
   "id": "pin-missile",
@@ -6124,7 +6124,7 @@
   "affects": "enemies",
   "canonPower": 90,
   "reach": "melee",
-  "bondCost": 2
+  "bondCost": 1
  },
  "poison-fang": {
   "id": "poison-fang",
@@ -6256,7 +6256,7 @@
    }
   ],
   "reach": "ranged",
-  "bondCost": 2
+  "bondCost": 1
  },
  "pounce": {
   "id": "pounce",
@@ -6485,7 +6485,7 @@
   "canonPower": 90,
   "category": "special",
   "reach": "ranged",
-  "bondCost": 2
+  "bondCost": 1
  },
  "psychic-fangs": {
   "id": "psychic-fangs",
@@ -6505,7 +6505,7 @@
   "category": "physical",
   "canonPower": 85,
   "reach": "melee",
-  "bondCost": 2
+  "bondCost": 1
  },
  "psychic-noise": {
   "id": "psychic-noise",
@@ -6725,7 +6725,7 @@
   ],
   "canonPower": 90,
   "reach": "melee",
-  "bondCost": 2
+  "bondCost": 1
  },
  "raging-fury": {
   "id": "raging-fury",
@@ -7020,7 +7020,7 @@
   "category": "physical",
   "canonPower": 90,
   "reach": "melee",
-  "bondCost": 2
+  "bondCost": 1
  },
  "rock-polish": {
   "id": "rock-polish",
@@ -7808,7 +7808,7 @@
   ],
   "canonPower": 85,
   "reach": "melee",
-  "bondCost": 2
+  "bondCost": 1
  },
  "slack-off": {
   "id": "slack-off",
@@ -7949,7 +7949,7 @@
   ],
   "canonPower": 90,
   "reach": "ranged",
-  "bondCost": 2
+  "bondCost": 1
  },
  "sludge-wave": {
   "id": "sludge-wave",
@@ -8224,7 +8224,7 @@
   "affects": "enemies",
   "category": "special",
   "canonPower": 90,
-  "bondCost": 2
+  "bondCost": 1
  },
  "spike-cannon": {
   "id": "spike-cannon",
@@ -8783,7 +8783,7 @@
   "canonPower": 90,
   "category": "special",
   "reach": "ranged",
-  "bondCost": 2
+  "bondCost": 1
  },
  "swagger": {
   "id": "swagger",
@@ -9045,7 +9045,7 @@
   "canonPower": 90,
   "category": "physical",
   "reach": "melee",
-  "bondCost": 2
+  "bondCost": 1
  },
  "taunt": {
   "id": "taunt",
@@ -9274,7 +9274,7 @@
   "canonPower": 90,
   "category": "special",
   "reach": "ranged",
-  "bondCost": 2
+  "bondCost": 1
  },
  "tickle": {
   "id": "tickle",
@@ -9503,7 +9503,7 @@
   },
   "affects": "enemies",
   "canonPower": 90,
-  "bondCost": 2
+  "bondCost": 1
  },
  "vacuum-wave": {
   "id": "vacuum-wave",
@@ -9877,7 +9877,7 @@
   "canonPower": 90,
   "category": "physical",
   "reach": "melee",
-  "bondCost": 2
+  "bondCost": 1
  },
  "will-o-wisp": {
   "id": "will-o-wisp",

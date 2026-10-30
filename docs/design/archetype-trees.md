@@ -41,7 +41,7 @@ Volt Switch end the engagement, Dream Eater and Nightmare only aim at sleepers, 
 an ally, Taunt disables, Perish Song curses around the user. Pursuit is a tank passive (+50% free strikes).
 
 **One kind per row (v0.101).** A move's kind is its own (move data), not where it is taught: **Bond** = canon
-power 85+ (Bond cost 3 from 100, else 2), **basic** = already basic, or canon power ≤ 60 with no extra effect, one
+power 85+ (Bond cost 1 up to 90, 2 at 91–99, 3 from 100; Cross Chop and Self-Destruct cost 2 beside their pricier twins), **basic** = already basic, or canon power ≤ 60 with no extra effect, one
 target and not a starting skill, **special** = the rest, every utility included. Each skill row offers one kind:
 
 | Row | Offers |
