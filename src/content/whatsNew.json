@@ -2,6 +2,7 @@
  {"version": "0.104",
   "date": "2026-10-29",
   "items": [
+  "The Pokémon screen is a real summary now: the Pokémon stands animated on a stage in its type's colour (tap it to hear its cry), with type chips and HP and EXP bars beside it; the tabs work like a folder; moves are the same type-coloured cards as in battle (resting ones greyed); the mastery tree shows picks filled in their move's colour (passives in gold) joined by a gold path, open picks pulsing, ruled-out ones pushed back, and a new pick pops with sparks; stats get segmented bars in their own colours; a greyed Potion says why.",
   "A new look for the whole game: a rounded, easy-to-read font that looks the same on every computer and phone, screen titles in the pixel font, buttons with a raised frame that lift under the pointer and sink when pressed, pixel icons instead of emoji, framed cards in the camp, and screens that fade in instead of cutting.",
   "Menu fixes: camp cards line up and say what is waiting (\"2 stat points\", \"learn a mastery\"), nothing spills out of cards or buttons any more (also on phones), the move list keeps its columns, stat bars use one scale for your whole team, the storage button only shows when it can be used, and type names read \"Fire\" rather than \"fire\".",
   "Smoother battles: the field, panel cards and chips are drawn once and reused instead of every frame, the ground shader rests when nothing on it moves, and walk areas and the message box are cached, so battles stay smooth on slower devices too.",

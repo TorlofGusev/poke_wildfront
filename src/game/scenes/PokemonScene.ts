@@ -42,7 +42,11 @@ import {
 } from "../../core/progression";
 import { type Role, baseMovement, speedAtMoveCap, STAT_NAMES, type StatName } from "../../core/battle";
 import { session } from "../session";
-import { portraitKey } from "../sprites";
+import { animKey, footOrigin, hasSprite, portraitKey } from "../sprites";
+import { playCry, sfx } from "../audio";
+import { panel } from "../ui/frames";
+import { pixText } from "../ui/pixelFont";
+import { moveCard, type MoveCardLook } from "../ui/moveCard";
 import { Button } from "../ui/Button";
 import { itemIcon } from "../ui/itemIcon";
 import { describeItem, focusLabel, describeTalent, STAT_LABEL, STAT_SHORT } from "../ui/describeEffects";
@@ -57,6 +61,38 @@ import { typeName, typeTag } from "../ui/typeName";
 const LIST_X = 16;
 const DETAIL_X = 16;
 const DETAIL_W = 928;
+/** The hero band under the top buttons: the Pokémon's stage, then its name, chips and bars, then ability and focus. */
+const HERO_Y = 44;
+const HERO_H = 92;
+const HERO_STAGE_W = 150;
+const HERO_INFO_X = 560;
+const BAR_W = 200;
+/** Stat bars: 20 segments, each stat in its own colour. */
+const SEGMENTS = 20;
+const STAT_COLORS: Record<StatName, number> = {
+  hp: 0xff6b6b, attack: 0xf5a05a, defense: 0xf5d76e, speed: 0xf88fb8, willpower: 0x9db7f5, crit: 0x7ed6c8,
+};
+/** The open tab's page. */
+const PAGE_FILL = 0x161c28;
+
+/** Mixes colour `c` towards `to` by `k` (0–1). */
+const mixColor = (c: number, to: number, k: number): number => {
+  const ch = (sh: number) => Math.round(((c >> sh) & 255) * (1 - k) + ((to >> sh) & 255) * k);
+  return (ch(16) << 16) | (ch(8) << 8) | ch(0);
+};
+
+/** A 16×16 tile of one diagonal white stripe, made once. */
+function stripeTexture(scene: Phaser.Scene): string {
+  const key = "ui-stripe";
+  if (!scene.textures.exists(key)) {
+    const tex = scene.textures.createCanvas(key, 16, 16)!;
+    const ctx = tex.getContext();
+    ctx.fillStyle = "#ffffff";
+    for (let i = 0; i < 16; i++) ctx.fillRect(i, 15 - i, 4, 1);
+    tex.refresh();
+  }
+  return key;
+}
 
 /** One Pokémon: stats (and stat points), talent tree, moves, equipment. */
 /** Set once the player has read the EV explanation. */
@@ -77,6 +113,10 @@ export class PokemonScene extends Phaser.Scene {
   private tab: Tab = "stats";
   private selectedTalent: string | null = null;
   private selectedMove: string | null = null;
+  /** The hero backdrop's stripes, drifting slowly. */
+  private stripes: Phaser.GameObjects.TileSprite | null = null;
+  /** A mastery (or focus) just learned: its cell celebrates on the next draw. */
+  private justPicked: string | null = null;
 
   constructor() {
     super("Pokemon");
@@ -114,6 +154,7 @@ export class PokemonScene extends Phaser.Scene {
       f();
       this.message = success ? tag("good", success) : "";
     } catch (e) {
+      this.justPicked = null;
       this.message = tag("bad", e instanceof Error ? t("Cannot do that: {reason}.", { reason: t(e.message) }) : t("Cannot do that."));
     }
     this.render();
@@ -172,6 +213,73 @@ export class PokemonScene extends Phaser.Scene {
     if (this.message) add(new RichText(this, DETAIL_X, 506, DETAIL_W, 12)).setMarkup(this.message);
   }
 
+  /**
+   * The summary's hero band: the Pokémon itself, animated, on a backdrop in its type's colour (tap it for its cry),
+   * then its name, level, type chips, HP and EXP bars and when it evolves.
+   */
+  private renderHero(m: PartyMember, add: <T extends Phaser.GameObjects.GameObject>(o: T) => T): void {
+    const s = CONTENT.species[m.speciesId]!;
+    const base = TYPE_COLORS[s.types[0]!] ?? 0x888888;
+    const x = DETAIL_X, y = HERO_Y, w = HERO_STAGE_W, h = HERO_H;
+    add(panel(this, x, y, w, h, { fill: mixColor(base, 0x10141c, 0.62), edge: mixColor(base, 0x000000, 0.45), edgeWidth: 2 }));
+    // Slow diagonal stripes and a soft light behind the Pokémon.
+    this.stripes = add(this.add.tileSprite(x + 2, y + 2, w - 4, h - 4, stripeTexture(this)).setOrigin(0).setAlpha(0.09));
+    add(this.add.ellipse(x + w / 2, y + h / 2 + 4, w * 0.8, h * 0.9, mixColor(base, 0xffffff, 0.3), 0.18));
+    add(this.add.ellipse(x + w / 2, y + h - 14, 64, 12, 0x000000, 0.35));
+    let body: Phaser.GameObjects.Sprite | Phaser.GameObjects.Image | null = null;
+    if (hasSprite(m.speciesId)) {
+      const spr = this.add.sprite(x + w / 2, y + h - 14, `${m.speciesId}-idle`).play(animKey(m.speciesId, "idle", 0));
+      // Whole-number scale keeps the pixels square: 3× for small sheets, 2× for big ones.
+      spr.setOrigin(0.5, footOrigin(this, m.speciesId)).setScale(spr.frame.height <= 40 ? 3 : 2);
+      body = add(spr);
+    } else if (this.textures.exists(portraitKey(m.speciesId))) {
+      body = add(this.add.image(x + w / 2, y + h / 2, portraitKey(m.speciesId)).setDisplaySize(64, 64));
+    }
+    if (body) {
+      const at = body.y;
+      const hit = add(this.add.rectangle(x, y, w, h, 0xffffff, 0.001).setOrigin(0).setInteractive({ useHandCursor: true }));
+      hit.on("pointerdown", () => {
+        playCry(this, m.speciesId);
+        this.tweens.add({ targets: body, y: at - 10, duration: 120, yoyo: true, ease: "Quad.easeOut" });
+      });
+    }
+
+    // Name and level, then the type chips (and how it fights).
+    const ix = x + w + 14;
+    const name = add(pixText(this, ix, y + 2, s.name, 0xffffff, 2));
+    add(pixText(this, ix + name.width + 10, y + 2, `Lv${m.level}`, 0xf5d76e, 2));
+    let cx = ix;
+    for (const ty of s.types) {
+      const label = this.add.text(0, 0, typeName(ty).toUpperCase(), { fontFamily: FONT, fontSize: "10px", color: "#ffffff", fontStyle: "bold" }).setOrigin(0.5).setStroke("#10141c", 2);
+      const cw = label.width + 10;
+      add(this.add.rectangle(cx, y + 31, cw, 14, TYPE_COLORS[ty] ?? 0x888888).setOrigin(0, 0.5).setStrokeStyle(1, 0x10141c));
+      add(label.setPosition(cx + cw / 2, y + 31));
+      cx += cw + 4;
+    }
+    if (s.role) add(this.add.text(cx + 4, y + 31, s.role === "melee" ? t("Melee") : t("Ranged"), { fontFamily: FONT, fontSize: px(12), color: "#7fb8ff" }).setOrigin(0, 0.5));
+
+    // HP and EXP as framed bars, as in battle.
+    const { maxHp } = memberStats(CONTENT, PROGRESSION, m);
+    const next = xpToNext(PROGRESSION, m.level);
+    const bar = (by: number, label: string, frac: number, color: number, value: string) => {
+      add(pixText(this, ix, by, label, 0xc8d0e0, 1).setOrigin(0, 0.5));
+      add(this.add.rectangle(ix + 26, by, BAR_W, 8, 0x0c1018).setOrigin(0, 0.5).setStrokeStyle(1, 0x3a4560));
+      add(this.add.rectangle(ix + 27, by, Math.max(0, (BAR_W - 2) * Math.min(1, frac)), 6, color).setOrigin(0, 0.5));
+      add(this.add.text(ix + 34 + BAR_W, by, value, { fontFamily: FONT, fontSize: px(12), color: COLORS.text }).setOrigin(0, 0.5));
+    };
+    const hpFrac = m.hp / maxHp;
+    bar(y + 52, "HP", hpFrac, hpFrac > 0.5 ? 0x58d058 : hpFrac > 0.2 ? 0xf0c838 : 0xf05050, m.hp > 0 ? `${m.hp}/${maxHp}` : t("fainted"));
+    bar(y + 68, "EXP", m.xp / next, 0x58b8f8, `${m.xp}/${next}`);
+    // When it evolves, and its knockouts (three and it is gone).
+    const evo = s.evolution ? t("evolves at Lv {lv}", { lv: s.evolution.level }) : "";
+    add(new RichText(this, ix, y + 78, HERO_INFO_X - ix - 10, 12)).setMarkup(
+      `${evo ? `${tag("dim", evo)}   ` : ""}KO ${tag(m.knockouts ? "ko" : "dim", "●".repeat(m.knockouts) + "○".repeat(KNOCKOUTS_TO_DEATH - m.knockouts))}`);
+  }
+
+  update(_time: number, delta: number): void {
+    if (this.stripes?.active) this.stripes.tilePositionX += delta * 0.01;
+  }
+
   private renderDetail(m: PartyMember, add: <T extends Phaser.GameObjects.GameObject>(o: T) => T): void {
     const s = CONTENT.species[m.speciesId]!;
     const { stats, maxHp } = memberStats(CONTENT, PROGRESSION, m);
@@ -184,28 +292,42 @@ export class PokemonScene extends Phaser.Scene {
       ...(s.ability && CONTENT.abilities[s.ability] ? [`${t("Ability:")} ${tag("special", CONTENT.abilities[s.ability]!.name)} ${tag("dim", CONTENT.abilities[s.ability]!.description)}`] : []),
       `${t("Focus:")} ${m.focus ? tag("special", focusLabel(m.focus)) : tag("dim", m.level < PROGRESSION.rules.focusLevel ? t("chosen at Lv {lv}", { lv: PROGRESSION.rules.focusLevel }) : t("not chosen"))}  ${t("Held:")} ${held ? tag("num", held.name) : tag("dim", t("nothing"))}`,
     ];
-    let y = 48;
-    if (this.textures.exists(portraitKey(m.speciesId))) add(this.add.image(DETAIL_X + 32, y + 32, portraitKey(m.speciesId)).setDisplaySize(64, 64));
-    y += Math.max(64, add(new RichText(this, DETAIL_X + 76, y, DETAIL_W - 76, 13)).setMarkup(header.join("\n"))) + 8;
+    this.renderHero(m, add);
+    // Ability, focus and held item at the right of the hero band.
+    add(new RichText(this, HERO_INFO_X, HERO_Y + 2, DETAIL_X + DETAIL_W - HERO_INFO_X, 12)).setMarkup(header.slice(2).join("\n"));
 
-    // Tabs. A ★ marks where a decision is waiting.
+    // Tabs on a folder: the open one joins the page below; a gold dot marks where a decision is waiting.
     const pending = pendingChoice(CONTENT, PROGRESSION, m);
-    const tabs: [Tab, string][] = [
-      ["stats", `${m.unspentPoints > 0 ? "★ " : ""}${t("Stats")}`],
-      ["talents", `${pending ? "★ " : ""}${t("Masteries")}`],
-      ["moves", t("Moves")],
-      ["equipment", t("Equipment")],
+    const tabs: [Tab, string, boolean][] = [
+      ["stats", t("Stats"), m.unspentPoints > 0],
+      ["talents", t("Masteries"), !!pending],
+      ["moves", t("Moves"), false],
+      ["equipment", t("Equipment"), false],
     ];
+    const tabY = HERO_Y + HERO_H + 8, tabH = 28;
     const tw = Math.floor((DETAIL_W - 18) / 4);
-    tabs.forEach(([id, label], i) => {
-      add(new Button(this, DETAIL_X + i * (tw + 6), y, tw, 26, label, () => {
+    add(this.add.rectangle(DETAIL_X, tabY + tabH, DETAIL_W, 540 - 8 - tabY - tabH, PAGE_FILL).setOrigin(0).setStrokeStyle(1, 0x2c3650));
+    tabs.forEach(([id, label, waiting], i) => {
+      const x = DETAIL_X + i * (tw + 6), on = this.tab === id;
+      const tab = add(this.add.rectangle(x, tabY + (on ? 0 : 3), tw, tabH + (on ? 2 : -3), on ? PAGE_FILL : 0x121722).setOrigin(0)
+        .setStrokeStyle(1, on ? 0x2c3650 : 0x1c2232));
+      if (on) add(this.add.rectangle(x, tabY, tw, 2, 0xf5d76e).setOrigin(0));
+      const word = add(pixText(this, x + tw / 2, tabY + tabH / 2 + 1, label, on ? 0xffffff : 0x8a93a6, 2).setOrigin(0.5));
+      if (waiting) {
+        const dot = add(this.add.circle(word.x + word.width / 2 + 10, word.y, 4, 0xf5d76e));
+        this.tweens.add({ targets: dot, alpha: 0.35, duration: 600, yoyo: true, repeat: -1 });
+      }
+      tab.setInteractive({ useHandCursor: true }).on("pointerdown", () => {
+        if (on) return;
+        sfx(this, "select");
         this.tab = id;
         this.selectedTalent = null;
         this.message = "";
         this.render();
-      }).setHighlighted(this.tab === id));
+      });
+      if (!on) tab.on("pointerover", () => tab.setFillStyle(0x1a2130)).on("pointerout", () => tab.setFillStyle(0x121722));
     });
-    y += 34;
+    let y = tabY + tabH + 10;
     if (this.tab === "moves") this.renderMoves(m, y, add);
     else if (this.tab === "equipment") this.renderEquipment(m, y, add);
     else if (this.tab === "talents") this.renderTalents(m, y, add);
@@ -250,6 +372,7 @@ export class PokemonScene extends Phaser.Scene {
     // One scale for every Pokémon you have (the highest stat among them), so bars compare across the team.
     const { party, storage } = session.game.roster;
     const max = Math.max(10, ...[...party, ...storage].flatMap((x) => STAT_NAMES.map((st) => memberStats(CONTENT, PROGRESSION, x).stats[st])));
+    const segs = add(this.add.graphics());
     for (const st of STAT_NAMES) {
       const offer = offers.find((o) => o.stat === st);
       const hit = add(this.add.rectangle(DETAIL_X, y - 2, 300, 22, 0xffffff, offer ? 0.05 : 0.001).setOrigin(0).setInteractive({ useHandCursor: true }));
@@ -258,8 +381,9 @@ export class PokemonScene extends Phaser.Scene {
       hit.on("pointerdown", () => show(st));
       add(new RichText(this, DETAIL_X + 6, y, 120, 13)).setMarkup(`${STAT_LABEL[st]}${m.focus === st ? ` ${tag("good", "★")}` : ""}`);
       add(new RichText(this, DETAIL_X + 130, y, 40, 13)).setMarkup(tag("num", `${stats[st]}`));
-      add(this.add.rectangle(DETAIL_X + 172, y + 7, 120, 5, 0x10141c).setOrigin(0, 0.5));
-      add(this.add.rectangle(DETAIL_X + 172, y + 7, Math.max(2, (120 * stats[st]) / max), 5, 0x7ed321).setOrigin(0, 0.5));
+      // Segmented, in the stat's own colour (as on the handhelds' summary), on one scale for the whole team.
+      const lit = Math.max(1, Math.round((SEGMENTS * stats[st]) / max));
+      for (let k = 0; k < SEGMENTS; k++) segs.fillStyle(k < lit ? STAT_COLORS[st] : 0x0c1018, 1).fillRect(DETAIL_X + 172 + k * 6, y + 4, 5, 7);
       if (points) {
         // What a point gives here and what it costs: offered stats are free at their +1 (or lucky +2).
         const lucky = offer?.plus === 2;
@@ -341,39 +465,36 @@ export class PokemonScene extends Phaser.Scene {
     const fighting = battleMoves(CONTENT, m);
     const activeBasic = fighting[0]!;
     const count = (slot: "skill" | "bond") => fighting.filter((mv) => slotOf(CONTENT, mv) === slot).length;
-    y += add(new RichText(this, DETAIL_X, y, DETAIL_W, 13)).setMarkup(
-      `${tag("title", t("Moves"))}  ◆ ${tag("basic", t("basic"))} 1/1  ■ ${tag("special", t("special"))} ${count("skill")}/${LOADOUT.skill}  ▲ ${tag("ultimate", CONTENT.terms.bond)} ${count("bond")}/${LOADOUT.bond}  ${tag("dim", t("(filled: in use; tap to inspect)"))}`) + 4;
-    const listW = 440;
-    // As on the battle buttons: type, reach ↔, power ⚔, a Bond move's cost in Bond pips (the groups give the kind).
-    const kindLabel = (id: string) => {
-      const d = CONTENT.moves[id]!;
-      const r = reachShort(d);
-      return `${typeName(d.type).padEnd(11)}↔${r.padEnd(4)}${d.power ? `⚔${String(d.power).padStart(3)}` : "    "}${d.kind === "bond" ? `  ${"●".repeat(d.bondCost ?? 0)}` : ""}`;
-    };
     const shown = this.selectedMove && (m.knownMoves.includes(this.selectedMove) || this.selectedMove === basic) ? this.selectedMove : activeBasic;
-    // Grouped by kind (basic attacks, skills, Bond moves), a thin rule between the groups.
-    const order = { basic: 0, skill: 1, bond: 2 } as const;
-    const rows = [basic, ...m.knownMoves.filter((mv) => mv !== basic)].sort((a, b) => order[slotOf(CONTENT, a)] - order[slotOf(CONTENT, b)]);
+    // Cards in the battle's look, grouped by kind: in use in their full colour, resting ones greyed. Tap one for its rules.
+    const cols = 3, cardW = 140, cardH = 44, gap = 8;
+    const gridW = cols * cardW + (cols - 1) * gap;
+    const groups: { slot: "basic" | "skill" | "bond"; label: string; used: string }[] = [
+      { slot: "basic", label: t("Basic attack"), used: "1/1" },
+      { slot: "skill", label: t("Special"), used: `${count("skill")}/${LOADOUT.skill}` },
+      { slot: "bond", label: CONTENT.terms.bond, used: `${count("bond")}/${LOADOUT.bond}` },
+    ];
+    const known = [basic, ...m.knownMoves.filter((mv) => mv !== basic)];
     let rowY = y;
-    // The name column as wide as the longest name, so a long one never runs into its type.
-    const nameW = Math.max(...rows.map((mv) => CONTENT.moves[mv]!.name.length)) + 1;
-    rows.forEach((mv, i) => {
-      if (i > 0 && slotOf(CONTENT, mv) !== slotOf(CONTENT, rows[i - 1]!)) {
-        add(this.add.rectangle(DETAIL_X, rowY + 1, listW, 1, 0x6b7899, 0.9).setOrigin(0));
-        rowY += 6;
-      }
-      const def = CONTENT.moves[mv]!;
-      // Filled: in use; hollow: known but resting. ◆ basic, ■ special, ▲ Bond.
-      const slotOfMv = slotOf(CONTENT, mv);
-      const inUse = mv === activeBasic || fighting.includes(mv);
-      const mark = slotOfMv === "basic" ? (inUse ? "◆" : "◇") : slotOfMv === "bond" ? (inUse ? "▲" : "△") : inUse ? "■" : "□";
-      add(new Button(this, DETAIL_X, rowY, listW, 24, `${mark} ${def.name.padEnd(nameW)} ${kindLabel(mv)}`, () => {
-        this.selectedMove = mv;
-        this.render();
-      }).setHighlighted(mv === shown));
-      rowY += 28;
-    });
-    const infoX = DETAIL_X + listW + 16;
+    for (const g of groups) {
+      const moves = known.filter((mv) => slotOf(CONTENT, mv) === g.slot);
+      if (!moves.length) continue;
+      add(pixText(this, DETAIL_X, rowY, g.label.toUpperCase(), 0xc8d0e0, 1));
+      add(pixText(this, DETAIL_X + gridW, rowY, t("{n} in use", { n: g.used }), 0x8a93a6, 1).setOrigin(1, 0));
+      rowY += 14;
+      moves.forEach((mv, i) => {
+        const def = CONTENT.moves[mv]!;
+        const inUse = mv === activeBasic || fighting.includes(mv);
+        const look: MoveCardLook = { state: inUse ? "ready" : "noTarget", note: def.kind === "bond" ? "●".repeat(def.bondCost ?? 0) : reachShort(def) };
+        add(moveCard(this, def, def.power, look, cardW, cardH, mv === shown, () => {
+          this.selectedMove = mv;
+          this.render();
+        }, () => {}, "always").setPosition(DETAIL_X + (i % cols) * (cardW + gap), rowY + Math.floor(i / cols) * (cardH + 6)));
+      });
+      rowY += Math.ceil(moves.length / cols) * (cardH + 6) + 6;
+    }
+    add(new RichText(this, DETAIL_X, rowY, gridW, 11)).setMarkup(tag("dim", t("Full colour: in use. Grey: known, resting. Tap a card for its rules.")));
+    const infoX = DETAIL_X + gridW + 20;
     const infoW = DETAIL_X + DETAIL_W - infoX;
     const h = add(new RichText(this, infoX, y, infoW, 12)).setMarkup(describeMove(CONTENT, CONTENT.moves[shown]!));
     const slot = slotOf(CONTENT, shown);
@@ -443,18 +564,43 @@ ${into.types.map((ty) => typeTag(ty)).join("/")}`);
     const labelW = 50;
     const infoW = 270;
     const gridW = DETAIL_W - labelW - infoW - 16;
-    const rowH = 30;
+    const rowH = 28;
+    // The picks, row by row: a gold path joins them so the build reads as one line through the tree.
+    const path: { x: number; top: number; bottom: number }[] = [];
     const cell = (x: number, cy: number, w: number, label: string, key: string, state: "picked" | "open" | "excluded" | "locked", accent?: number) => {
       const mark = state === "picked" ? "✓ " : state === "open" ? "★ " : "";
       const b = new Button(this, x, cy, w, 24, `${mark}${label}`, () => {
         this.selectedTalent = key;
         this.render();
-      }).setHighlighted(this.selectedTalent === key || state === "picked").centerLabel();
-      // Masteries that teach a new move wear that move's type colour.
-      if (accent !== undefined) b.setAccent(accent);
-      if (state === "excluded") b.setAlpha(0.35);
-      if (state === "locked") b.setAlpha(0.6);
+      }).centerLabel();
+      // One look per state. Picked: filled (a taught move in its type's colour, a passive in gold). Open: a pulsing
+      // gold frame. Excluded: pushed back. Locked (not reached yet): plain, its type stripe as a hint.
+      if (state === "picked") {
+        b.setSolid(accent !== undefined ? mixColor(accent, 0x000000, 0.2) : 0x8a6a1c);
+        path.push({ x: x + w / 2, top: cy, bottom: cy + 24 });
+      } else if (state === "excluded") b.setMuted();
+      else {
+        if (accent !== undefined) b.setAccent(accent);
+        if (state === "locked") b.setLabelColor("#9aa3b6");
+      }
       add(b);
+      if (state === "open") {
+        const ring = add(this.add.rectangle(x - 1, cy - 1, w + 2, 26).setOrigin(0).setStrokeStyle(2, 0xf5d76e));
+        this.tweens.add({ targets: ring, alpha: 0.3, duration: 650, yoyo: true, repeat: -1 });
+      }
+      if (this.selectedTalent === key) add(this.add.rectangle(x + 2, cy + 2, w - 4, 20).setOrigin(0).setStrokeStyle(1, 0xffffff, 0.9));
+      // Just learned: the cell pops and sparks fly.
+      if (state === "picked" && this.justPicked === key) {
+        this.justPicked = null;
+        b.setScale(1.12);
+        this.tweens.add({ targets: b, scale: 1, x: { from: x - w * 0.06, to: x }, y: { from: cy - 1.5, to: cy }, duration: 260, ease: "Back.easeOut" });
+        sfx(this, "levelUp");
+        for (let i = 0; i < 10; i++) {
+          const a = (i / 10) * Math.PI * 2;
+          const st = add(this.add.star(x + w / 2, cy + 12, 5, 2, 5, 0xfff3a0));
+          this.tweens.add({ targets: st, x: st.x + Math.cos(a) * (w / 2 + 14), y: st.y + Math.sin(a) * 22, alpha: 0, duration: 600, onComplete: () => st.destroy() });
+        }
+      }
     };
     const rowLabel = (cy: number, lv: number) =>
       add(new RichText(this, DETAIL_X, cy + 5, labelW, 12)).setMarkup(tag(m.level >= lv ? "num" : "dim", `Lv ${lv}`));
@@ -478,6 +624,8 @@ ${into.types.map((ty) => typeTag(ty)).join("/")}`);
       // Under the skill: what the pick adds to its stat.
       add(this.add.text(fx + focusW / 2, cy + 26, focusBonusLabel(f), { fontFamily: FONT, fontSize: px(11), color: "#7ed321" }).setOrigin(0.5, 0));
     });
+    // The path leaves the focus pick below its bonus line, not through it.
+    if (path[0]) path[0] = { ...path[0], bottom: path[0].bottom + 16 };
     cy += rowH + 14;
 
     // Mastery rows.
@@ -492,6 +640,7 @@ ${into.types.map((ty) => typeTag(ty)).join("/")}`);
       });
       cy += rowH;
     }
+    path.slice(1).forEach((p, i) => lines.lineStyle(2, 0xf5d76e, 0.55).lineBetween(path[i]!.x, path[i]!.bottom, p.x, p.top));
 
     // Detail panel.
     const infoX = DETAIL_X + DETAIL_W - infoW;
@@ -511,7 +660,7 @@ ${into.types.map((ty) => typeTag(ty)).join("/")}`);
       ].join("\n")) + 8;
       if (pending === "focus")
         add(new Button(this, infoX, iy, infoW, 28, t("Choose {focus}", { focus: skill.name }), () =>
-          this.act(() => this.updateMember(m, (x2) => chooseFocus(CONTENT, PROGRESSION, x2, focus.skill)), t("{name} chose {focus}.", { name: s.name, focus: skill.name }))).setHighlighted(true));
+          ((this.justPicked = `focus:${focus.skill}`), this.act(() => this.updateMember(m, (x2) => chooseFocus(CONTENT, PROGRESSION, x2, focus.skill)), t("{name} chose {focus}.", { name: s.name, focus: skill.name })))).setHighlighted(true));
     } else if (key && PROGRESSION.talents[key]) {
       const tal = PROGRESSION.talents[key]!;
       const row = grid.find((r) => r.options.includes(key));
@@ -520,6 +669,7 @@ ${into.types.map((ty) => typeTag(ty)).join("/")}`);
         [tag("title", tal.name), tag("dim", `${kind} · Lv ${row?.level ?? "?"}`), ...describeTalent(CONTENT, PROGRESSION, tal)].join("\n")) + 8;
       if (open.has(key)) {
         add(new Button(this, infoX, iy, infoW, 28, t("Learn {talent}", { talent: tal.name }), () => {
+          this.justPicked = key;
           this.act(() => this.updateMember(m, (x2) => chooseTalent(CONTENT, PROGRESSION, x2, key)), t("{name} learned {talent}.", { name: s.name, talent: tal.name }));
           this.selectedTalent = null;
         }).setHighlighted(true));
@@ -555,7 +705,9 @@ ${into.types.map((ty) => typeTag(ty)).join("/")}`);
     const uses: { id: string; label: string; enabled: boolean; run: () => void; ok: string }[] = [
       ...potions.map(([id, n]) => {
         const item = PROGRESSION.items[id]!;
-        return { id, label: t("Use {item} (+{hp} HP) ×{n}", { item: item.name, hp: String(item.heal), n }), enabled: m.hp > 0 && m.hp < max,
+        // Greyed with its reason: full HP, or fainted (only a Pokémon Center helps then).
+        const why = m.hp <= 0 ? t("fainted") : m.hp >= max ? t("HP full") : "";
+        return { id, label: `${t("Use {item} (+{hp} HP) ×{n}", { item: item.name, hp: String(item.heal), n })}${why ? ` · ${why}` : ""}`, enabled: m.hp > 0 && m.hp < max,
           run: () => session.update(usePotion(CONTENT, PROGRESSION, session.game, m.uid, id)), ok: t("{name} recovered HP.", { name: s.name }) };
       }),
       // Rare Candy: one level at once; reaching the evolution level plays its scene at once.

@@ -127,6 +127,22 @@ export class Button extends Phaser.GameObjects.Container {
     return this.paintLabel();
   }
 
+  /** Pushed back: a dark fill and a grey label, still clickable (an option ruled out, kept to look at). */
+  setMuted(): this {
+    this.fill = 0x12161f;
+    this.hoverFill = 0x1a1f2b;
+    this.labelColor = "#566078";
+    this.shine.setVisible(false);
+    if (this.enabled) this.bg.setFillStyle(this.fill);
+    return this.paintLabel();
+  }
+
+  /** The label's colour (when enabled). */
+  setLabelColor(color: string): this {
+    this.labelColor = color;
+    return this.paintLabel();
+  }
+
   /** A gold frame: the chosen tab, option or the one to take. */
   setHighlighted(on: boolean): this {
     this.bg.setStrokeStyle(on ? 2 : 1, on ? GOLD : EDGE);
