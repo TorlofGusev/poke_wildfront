@@ -3,7 +3,8 @@ import { CONTENT, PROGRESSION } from "../../content";
 import { knownSpecies } from "../../core/party";
 import { focusOptions, masteryGrid, startingMoves } from "../../core/progression";
 import { session } from "../session";
-import { portraitKey } from "../sprites";
+import { hasSprite, portraitKey } from "../sprites";
+import { pixText } from "../ui/pixelFont";
 import { Button } from "../ui/Button";
 import { describeTalent, focusLabel, STAT_LABEL, statLine } from "../ui/describeEffects";
 import { describeMove } from "../ui/describeMove";
@@ -65,6 +66,18 @@ export class PokedexScene extends Phaser.Scene {
     const known = knownSpecies(session.game);
     this.selected ??= ALL.find((s) => known.has(s.id))?.id ?? null;
     this.input.on("wheel", (_p: unknown, _o: unknown, _dx: number, dy: number) => this.scroll(Math.sign(dy) * 3));
+    // On a phone the list scrolls by dragging it: a row per row's height dragged.
+    let dragged = 0;
+    this.input.on("pointermove", (p: Phaser.Input.Pointer) => {
+      if (!p.isDown || p.downX > LIST_X + LIST_W) return;
+      dragged += p.prevPosition.y - p.y;
+      const rows = Math.trunc(dragged / 24);
+      if (rows) {
+        dragged -= rows * 24;
+        this.scroll(rows);
+      }
+    });
+    this.input.on("pointerup", () => (dragged = 0));
     this.render();
   }
 
@@ -78,7 +91,7 @@ export class PokedexScene extends Phaser.Scene {
     const add = <T extends Phaser.GameObjects.GameObject>(o: T) => (this.root.add(o), o);
     const known = knownSpecies(session.game);
     add(screenTitle(this, LIST_X, 14, t("Pokédex")));
-    add(this.add.text(LIST_X + 110, 20, `${known.size}/${ALL.length}`, { fontFamily: FONT, fontSize: px(13), color: COLORS.dim }));
+    add(this.add.text(LIST_X + 140, 20, t("Seen {n}/{total}", { n: known.size, total: ALL.length }), { fontFamily: FONT, fontSize: px(13), color: COLORS.dim }));
     add(new Button(this, 794, 12, 150, 26, t("← Back"), () => this.scene.start(this.from, { rested: false, choosingMeal: false })));
 
     // The list: met species by name, the rest as "???".
@@ -91,12 +104,29 @@ export class PokedexScene extends Phaser.Scene {
         this.selected = s.id;
         this.detail = null;
         this.render();
-      }).setHighlighted(s.id === this.selected).setEnabled(met));
+      }).setHighlighted(s.id === this.selected));
       if (met) b.setAccent(TYPE_COLORS[s.types[0]!] ?? 0x888888);
+      else b.setMuted();
     });
 
     if (this.selected && known.has(this.selected)) this.renderSpecies(this.selected, add);
+    else if (this.selected) this.renderUnknown(this.selected, add);
     else add(new RichText(this, DETAIL_X, 52, DETAIL_W, 13)).setMarkup(tag("dim", t("Meet a Pokémon in battle to add it to the Pokédex.")));
+  }
+
+  /** A Pokémon not met yet: only its shape, black, on a light burst (who's that Pokémon?). */
+  private renderUnknown(id: string, add: <T extends Phaser.GameObjects.GameObject>(o: T) => T): void {
+    const s = CONTENT.species[id]!;
+    const cx = DETAIL_X + DETAIL_W / 2, cy = 250;
+    const rays = add(this.add.graphics({ x: cx, y: cy }));
+    for (let i = 0; i < 16; i++) rays.fillStyle(i % 2 ? 0x2a5aa8 : 0x3d7dca, 0.5).slice(0, 0, 190, (i / 16) * Math.PI * 2, ((i + 1) / 16) * Math.PI * 2, false).fillPath();
+    this.tweens.add({ targets: rays, angle: 360, duration: 30_000, repeat: -1 });
+    if (hasSprite(id)) {
+      const shape = add(this.add.image(cx, cy + 40, `${id}-idle`, 0).setOrigin(0.5, 1));
+      shape.setScale(shape.frame.height > 64 ? 2 : 4).setTint(0x0b0e14).setTintMode(Phaser.TintModes.FILL);
+    }
+    add(pixText(this, cx, cy + 90, `No.${String(s.dex ?? "").padStart(3, "0")}  ???`, 0xffffff, 3).setOrigin(0.5));
+    add(new RichText(this, cx - 200, cy + 120, 400, 13)).setMarkup(tag("dim", t("Meet a Pokémon in battle to add it to the Pokédex.")));
   }
 
   private renderSpecies(id: string, add: <T extends Phaser.GameObjects.GameObject>(o: T) => T): void {

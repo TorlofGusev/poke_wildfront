@@ -1,7 +1,7 @@
 import Phaser from "phaser";
 import { sfx } from "../audio";
 import { hasPixGlyph, pixText } from "./pixelFont";
-import { FONT } from "./theme";
+import { FONT, PHONE } from "./theme";
 
 const EDGE = 0x0b0e14;
 const GOLD = 0xf5d76e;
@@ -39,7 +39,9 @@ export class Button extends Phaser.GameObjects.Container {
     this.add([shadow, this.face]);
     this.setSize(w, h);
     this.setText(text);
-    this.bg.setInteractive({ useHandCursor: true });
+    // On a phone the touch area reaches into the gaps around the button (fingers are wider than the pointer).
+    const pad = PHONE ? 3 : 0;
+    this.bg.setInteractive({ hitArea: new Phaser.Geom.Rectangle(-pad, -pad, w + pad * 2, h + pad * 2), hitAreaCallback: Phaser.Geom.Rectangle.Contains, useHandCursor: true });
     const rest = () => this.face.setY(0);
     this.bg.on("pointerover", () => {
       if (!this.enabled) return;

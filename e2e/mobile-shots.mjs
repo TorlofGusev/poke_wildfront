@@ -34,10 +34,11 @@ try {
   await shot("01-title");
   await tap(860, 37, 700);
   await shot("02-starter");
-  await tap(172, 421, 900);
+  await tap(172, 421, 500);
+  await tap(375, 469, 900);
   await shot("03-overworld");
   // A new game opens with the welcome note: close it.
-  await tap(344, 399, 600);
+  await tap(345, 360, 600);
   const s = await save();
   const target = s.game.world.encounters[0].pos;
   const tx = 16 + target.x * 28 + 14, ty = 60 + target.y * 28 + 14;

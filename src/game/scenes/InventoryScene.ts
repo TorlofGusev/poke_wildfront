@@ -10,7 +10,8 @@ import { tag } from "../ui/markup";
 import { RichText } from "../ui/RichText";
 import { FONT } from "../ui/theme";
 import { t } from "../i18n";
-import { screenTitle } from "../ui/frames";
+import { panel, screenTitle } from "../ui/frames";
+import { pixText } from "../ui/pixelFont";
 
 /** The bag: everything carried, grouped by use, with exact effects. Opened from the map or camp. */
 export class InventoryScene extends Phaser.Scene {
@@ -30,7 +31,7 @@ export class InventoryScene extends Phaser.Scene {
     playMusic(this, "overworld");
     const { inventory, money, roster } = session.game;
     screenTitle(this, 16, 14, t("Bag"));
-    new RichText(this, 90, 19, 400, 14).setMarkup(`${tag("num", `₽${money}`)}`);
+    new RichText(this, 110, 19, 400, 14).setMarkup(`${tag("num", `₽${money}`)}`);
     new Button(this, 794, 12, 150, 26, t("← Back"), () => this.scene.start(this.returnTo, this.returnTo === "Party" ? { rested: false, choosingMeal: false } : {}));
 
     // Who holds an item, a repeated species counted once ("Charizard ×2").
@@ -44,8 +45,21 @@ export class InventoryScene extends Phaser.Scene {
       [t("Healing and Rare Candy"), Object.values(PROGRESSION.items).filter((i) => i.kind === "potion" || i.kind === "candy" || i.kind === "remedy").map((i) => i.id)],
       [t("Held items"), Object.values(PROGRESSION.items).filter((i) => i.kind === "held").map((i) => i.id)],
     ];
-    let y = 52;
-    const col = { x: 16 };
+    // Pockets: framed panels in two columns, each pocket going where there is more room.
+    const colX = [16, 488], colY = [52, 52], pocketW = 456;
+    const pocket = (title: string, rows: readonly { id: string; text: string }[]) => {
+      const c = colY[0]! <= colY[1]! ? 0 : 1;
+      const x = colX[c]!, top = colY[c]!;
+      const frame = panel(this, x, top, pocketW, 40).setDepth(-1);
+      let y = top + 10;
+      pixText(this, x + 12, y, title.toUpperCase(), 0xf5d76e, 2);
+      y += 24;
+      if (!rows.length) y += new RichText(this, x + 12, y, pocketW - 24, 12).setMarkup(tag("dim", t("none")));
+      for (const row of rows) y += this.iconRow(x + 12, y, row.id, row.text) + 4;
+      frame.destroy();
+      panel(this, x, top, pocketW, y - top + 6).setDepth(-1);
+      colY[c] = y + 18;
+    };
     for (const [title, ids] of groups) {
       const rows = ids
         .map((id) => {
@@ -59,25 +73,15 @@ export class InventoryScene extends Phaser.Scene {
           return { id, text: `${count > 0 ? `${tag("num", `${count}×`)} ` : ""}${tag("title", name)} ${tag("dim", "—")} ${effect}${holders.length ? tag("dim", t(" (held by {names})", { names: holders.join(", ") })) : ""}` };
         })
         .filter((r): r is { id: string; text: string } => r !== null);
-      y += new RichText(this, col.x, y, 450, 12).setMarkup(tag("special", title));
-      if (!rows.length) y += new RichText(this, col.x, y, 450, 12).setMarkup(tag("dim", t("none")));
-      for (const row of rows) y += this.iconRow(col.x, y, row.id, row.text);
-      y += 14;
-      // Two columns: move to the right when the left fills up.
-      if (y > 420 && col.x === 16) {
-        col.x = 490;
-        y = 52;
-      }
+      pocket(title, rows);
     }
     const keyItems = (session.game.keyItems ?? []).map((k) => PROGRESSION.keyItems?.[k]).filter((k) => k !== undefined);
-    y += new RichText(this, col.x, y, 450, 12).setMarkup(tag("special", t("Key items")));
-    if (!keyItems.length) new RichText(this, col.x, y, 450, 12).setMarkup(tag("dim", t("none")));
-    for (const k of keyItems) y += this.iconRow(col.x, y, k.id, `${tag("title", k.name)} ${tag("dim", "—")} ${k.description}`);
+    pocket(t("Key items"), keyItems.map((k) => ({ id: k.id, text: `${tag("title", k.name)} ${tag("dim", "—")} ${k.description}` })));
   }
 
   /** One line of the bag with the thing's icon in front (a ball's, else the item's). Returns its height. */
   private iconRow(x: number, y: number, id: string, text: string): number {
-    this.add.image(x + 8, y + 8, CONTENT.balls[id] ? ballIcon(this, id) : itemIcon(this, id)).setDisplaySize(16, 16);
-    return Math.max(18, new RichText(this, x + 22, y, 428, 12).setMarkup(text));
+    this.add.image(x + 12, y + 11, CONTENT.balls[id] ? ballIcon(this, id) : itemIcon(this, id)).setDisplaySize(24, 24);
+    return Math.max(24, new RichText(this, x + 32, y + 3, 400, 12).setMarkup(text));
   }
 }

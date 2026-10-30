@@ -28,7 +28,11 @@ try {
     await page.waitForTimeout(600);
     if (await save()) throw new Error("a save was created before choosing a starter");
     await page.mouse.click(172, 421);
-    await page.waitForTimeout(600);
+    await page.waitForTimeout(400);
+    // The choice is asked once more: nothing is saved until "Yes".
+    if (await save()) throw new Error("a save was created before confirming the starter");
+    await page.mouse.click(375, 469);
+    await page.waitForTimeout(900);
     const s = await save();
     if (!s || s.game.roster.party.length !== 1) throw new Error("no save with the chosen starter");
     // Continue from the title instead of clicking through the new-game intro (map legend tip already seen).

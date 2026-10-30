@@ -553,6 +553,8 @@ export class BattleScene extends Phaser.Scene {
     const spiritBar = this.add.rectangle(-18, 25.5, 0, 2, 0xf5d76e).setOrigin(0, 0.5);
     const container = this.add.container(x, y, [shadow, ring, ...(sprite ? [sprite] : []), body, label, hpBg, hpLag, hpBar, spiritBar, chevron, pill]).setScale(UNIT_SCALE);
     this.units.set(id, { container, hpBar, hpLag, chevron, pill, statusFx: { id: null, stop: () => {} }, spiritBar, ring, body, label, sprite, speciesId, facing });
+    // Behind the title menu the replay is scenery: no bars or rings, just the Pokémon fighting.
+    if (this.demo) for (const o of [hpBg, hpLag, hpBar, spiritBar, ring]) o.setVisible(false);
     // Species without a sprite show as a type-coloured disc with their initials.
     body.setVisible(!sprite);
     label.setVisible(!sprite);
@@ -737,7 +739,7 @@ export class BattleScene extends Phaser.Scene {
       view.spiritBar.fillColor = pumped ? 0xffffff : 0xf5d76e;
       const active = this.state.turn?.unitId === u.id;
       view.ring.setStrokeStyle(active ? 3 : 2, active ? COLORS.active : u.side === "player" ? COLORS.player : COLORS.enemy);
-      view.chevron.setVisible(active && !this.busy && this.phase === "battle");
+      view.chevron.setVisible(active && !this.busy && this.phase === "battle" && !this.demo);
       if (u.hp > 0 && !u.captured) this.syncStatusLook(view, u.statuses);
     }
   }
