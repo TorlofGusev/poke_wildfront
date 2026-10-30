@@ -109,10 +109,10 @@ export function momentumBonus(content: BattleContent, unit: BattleUnit, state: B
   return Math.min(r.momentum.max, Math.max(0, Math.floor(excess / r.momentum.speedPerStep)) * r.momentum.stepBonus);
 }
 
-/** Movement points a Speed gives before statuses and bonuses: every Speed point counts. */
-export const baseMovement = (content: BattleContent, speed: number): number => {
+/** Movement points a Speed gives before statuses and bonuses: every Speed point counts; melee Pokémon walk further. */
+export const baseMovement = (content: BattleContent, speed: number, melee = false): number => {
   const m = content.rules.movement;
-  return Math.min(m.max, m.base + m.perSpeed * speed);
+  return Math.min(m.max, m.base + (melee ? m.meleeBonus ?? 0 : 0) + m.perSpeed * speed);
 };
 
 /** The Speed at which movement reaches its cap (momentum builds past it). */
@@ -126,7 +126,7 @@ export function movementPoints(content: BattleContent, unit: BattleUnit, state?:
   if (unit.statuses.some((st) => content.statuses[st.id]?.noMove) && !unit.mods.statusedMove) return 0;
   if (state && livingUnits(state).some((o) => o.side !== unit.side && o.ability?.arenaTrap && adjacent(state, o.pos, unit.pos))) return 0;
   const max = content.rules.movement.max;
-  const base = baseMovement(content, unit.stats.speed);
+  const base = baseMovement(content, unit.stats.speed, !isRangedUnit(content, unit));
   const penalty = unit.statuses.reduce((s, st) => s + (content.statuses[st.id]?.movePenalty ?? 0), 0);
   // Bonuses (abilities, items, masteries) help slow Pokémon but never lift anyone past the cap.
   return Math.max(0, Math.min(max, base - penalty + unit.mods.moveBonus + (ailments(content, unit).length ? unit.mods.statusedMove : 0)));
@@ -185,8 +185,8 @@ export function isRangedUnit(content: BattleContent, unit: BattleUnit): boolean 
 /** The attacker's own damage bonuses add up to at most this (+100%). */
 export const MAX_DAMAGE_BONUS = 1;
 
-/** Only Bond moves reach further than this. */
-export const MAX_RANGE = 3;
+/** Ranged moves reach 3 (Bond ones 3–4); a range bonus (Far Sight…) lifts the others to this, Bond moves past it. */
+export const MAX_RANGE = 4;
 
 /** A move's range for this unit (in hex widths): ranged moves (2+) reach further with a range bonus, up to MAX_RANGE unless a Bond move. */
 export const moveRange = (unit: { readonly mods: UnitModifiers; readonly statuses: readonly ActiveStatus[] }, move: MoveDef, content: BattleContent): { min: number; max: number } => {

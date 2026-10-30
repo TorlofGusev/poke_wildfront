@@ -765,7 +765,7 @@
  "far-sight": {
   "id": "far-sight",
   "name": "Far Sight",
-  "description": "+1 range on moves that already reach 2 or more (up to 3; Bond moves no limit).",
+  "description": "+1 range on moves that already reach 2 or more (up to 4; Bond moves no limit).",
   "mods": {
    "rangeBonus": 1
   }

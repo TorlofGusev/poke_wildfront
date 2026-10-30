@@ -99,7 +99,7 @@
   "description": "15%-kal kevesebb sebzést kap."
  },
  "compound-eyes": {
-  "description": "+1 max hatótáv a legalább 2-es hatótávú támadásokra (legfeljebb 3-ig; Bond támadásoknál nincs korlát), és lövései átszállnak az útban álló Pokémonokon."
+  "description": "+1 max hatótáv a legalább 2-es hatótávú támadásokra (legfeljebb 4-ig; Bond támadásoknál nincs korlát), és lövései átszállnak az útban álló Pokémonokon."
  },
  "limber": {
   "description": "Immunis a Bénulásra."

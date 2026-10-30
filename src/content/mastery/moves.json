@@ -33,7 +33,7 @@
   "power": 40,
   "range": {
    "min": 2,
-   "max": 4
+   "max": 3
   },
   "requiresLineOfSight": true,
   "shape": {
@@ -132,7 +132,7 @@
   "power": 45,
   "range": {
    "min": 2,
-   "max": 4
+   "max": 3
   },
   "requiresLineOfSight": true,
   "shape": {
@@ -152,7 +152,7 @@
   "power": 60,
   "range": {
    "min": 2,
-   "max": 4
+   "max": 3
   },
   "requiresLineOfSight": true,
   "shape": {
@@ -170,7 +170,7 @@
   "power": 60,
   "range": {
    "min": 2,
-   "max": 4
+   "max": 3
   },
   "requiresLineOfSight": true,
   "shape": {
@@ -214,7 +214,7 @@
   "power": 45,
   "range": {
    "min": 2,
-   "max": 4
+   "max": 3
   },
   "requiresLineOfSight": true,
   "shape": {
@@ -376,7 +376,7 @@
   "power": 60,
   "range": {
    "min": 2,
-   "max": 4
+   "max": 3
   },
   "requiresLineOfSight": true,
   "shape": {
@@ -397,7 +397,7 @@
   "power": 55,
   "range": {
    "min": 2,
-   "max": 4
+   "max": 3
   },
   "requiresLineOfSight": true,
   "shape": {
@@ -536,7 +536,7 @@
   "power": 35,
   "range": {
    "min": 2,
-   "max": 4
+   "max": 3
   },
   "requiresLineOfSight": true,
   "shape": {
@@ -640,7 +640,7 @@
   "power": 80,
   "range": {
    "min": 2,
-   "max": 4
+   "max": 3
   },
   "requiresLineOfSight": true,
   "shape": {
@@ -680,7 +680,7 @@
   "power": 65,
   "range": {
    "min": 2,
-   "max": 5
+   "max": 4
   },
   "requiresLineOfSight": true,
   "shape": {
@@ -793,7 +793,7 @@
   "power": 80,
   "range": {
    "min": 2,
-   "max": 4
+   "max": 3
   },
   "requiresLineOfSight": true,
   "shape": {
@@ -918,7 +918,7 @@
   "vsLowHpPower": 0.8,
   "range": {
    "min": 2,
-   "max": 4
+   "max": 3
   },
   "requiresLineOfSight": true,
   "shape": {
@@ -957,7 +957,7 @@
   "power": 55,
   "range": {
    "min": 2,
-   "max": 4
+   "max": 3
   },
   "requiresLineOfSight": true,
   "shape": {
@@ -984,7 +984,7 @@
   "power": 75,
   "range": {
    "min": 2,
-   "max": 4
+   "max": 3
   },
   "requiresLineOfSight": true,
   "shape": {
@@ -1078,7 +1078,7 @@
   "power": 60,
   "range": {
    "min": 2,
-   "max": 4
+   "max": 3
   },
   "requiresLineOfSight": true,
   "shape": {
@@ -1099,7 +1099,7 @@
   "power": 90,
   "range": {
    "min": 2,
-   "max": 4
+   "max": 3
   },
   "requiresLineOfSight": true,
   "shape": {
@@ -1219,7 +1219,7 @@
   "power": 45,
   "range": {
    "min": 2,
-   "max": 4
+   "max": 3
   },
   "requiresLineOfSight": true,
   "shape": {
@@ -1263,7 +1263,7 @@
   "power": 45,
   "range": {
    "min": 2,
-   "max": 4
+   "max": 3
   },
   "requiresLineOfSight": true,
   "shape": {
@@ -1339,7 +1339,7 @@
   "power": 45,
   "range": {
    "min": 2,
-   "max": 4
+   "max": 3
   },
   "requiresLineOfSight": true,
   "shape": {
@@ -1689,7 +1689,7 @@
   "power": 60,
   "range": {
    "min": 2,
-   "max": 4
+   "max": 3
   },
   "requiresLineOfSight": true,
   "shape": {
@@ -1730,7 +1730,7 @@
   "power": 50,
   "range": {
    "min": 2,
-   "max": 4
+   "max": 3
   },
   "requiresLineOfSight": true,
   "shape": {
@@ -1867,7 +1867,7 @@
   "power": 30,
   "range": {
    "min": 2,
-   "max": 4
+   "max": 3
   },
   "requiresLineOfSight": false,
   "shape": {
@@ -2003,7 +2003,7 @@
   "power": 85,
   "range": {
    "min": 2,
-   "max": 5
+   "max": 4
   },
   "requiresLineOfSight": true,
   "shape": {
@@ -2026,7 +2026,7 @@
   "power": 50,
   "range": {
    "min": 2,
-   "max": 4
+   "max": 3
   },
   "requiresLineOfSight": true,
   "shape": {
@@ -2101,7 +2101,7 @@
   "power": 70,
   "range": {
    "min": 2,
-   "max": 4
+   "max": 3
   },
   "requiresLineOfSight": true,
   "shape": {
@@ -2120,7 +2120,7 @@
   "power": 60,
   "range": {
    "min": 2,
-   "max": 4
+   "max": 3
   },
   "requiresLineOfSight": true,
   "shape": {
@@ -2216,7 +2216,7 @@
   "power": 45,
   "range": {
    "min": 2,
-   "max": 4
+   "max": 3
   },
   "requiresLineOfSight": true,
   "shape": {
@@ -2242,7 +2242,7 @@
   "power": 80,
   "range": {
    "min": 2,
-   "max": 4
+   "max": 3
   },
   "requiresLineOfSight": true,
   "shape": {
@@ -2380,7 +2380,7 @@
   "power": 75,
   "range": {
    "min": 2,
-   "max": 4
+   "max": 3
   },
   "requiresLineOfSight": true,
   "shape": {
@@ -2443,7 +2443,7 @@
   "power": 80,
   "range": {
    "min": 2,
-   "max": 4
+   "max": 3
   },
   "requiresLineOfSight": true,
   "shape": {
@@ -2466,7 +2466,7 @@
   "power": 80,
   "range": {
    "min": 2,
-   "max": 4
+   "max": 3
   },
   "requiresLineOfSight": true,
   "shape": {
@@ -2483,7 +2483,7 @@
   "power": 40,
   "range": {
    "min": 2,
-   "max": 4
+   "max": 3
   },
   "requiresLineOfSight": true,
   "shape": {
@@ -2580,7 +2580,7 @@
   "power": 75,
   "range": {
    "min": 2,
-   "max": 4
+   "max": 3
   },
   "requiresLineOfSight": true,
   "shape": {
@@ -2621,7 +2621,7 @@
   "power": 60,
   "range": {
    "min": 2,
-   "max": 4
+   "max": 3
   },
   "requiresLineOfSight": true,
   "shape": {
@@ -2850,7 +2850,7 @@
   "power": 65,
   "range": {
    "min": 2,
-   "max": 5
+   "max": 4
   },
   "requiresLineOfSight": true,
   "shape": {
@@ -2972,7 +2972,7 @@
   "power": 55,
   "range": {
    "min": 2,
-   "max": 4
+   "max": 3
   },
   "requiresLineOfSight": true,
   "shape": {
@@ -3127,7 +3127,7 @@
   "power": 60,
   "range": {
    "min": 2,
-   "max": 4
+   "max": 3
   },
   "requiresLineOfSight": true,
   "shape": {
@@ -3214,7 +3214,7 @@
   "power": 90,
   "range": {
    "min": 2,
-   "max": 5
+   "max": 4
   },
   "requiresLineOfSight": true,
   "shape": {
@@ -3299,7 +3299,7 @@
   "power": 55,
   "range": {
    "min": 2,
-   "max": 4
+   "max": 3
   },
   "requiresLineOfSight": true,
   "shape": {
@@ -3326,7 +3326,7 @@
   "power": 100,
   "range": {
    "min": 2,
-   "max": 4
+   "max": 3
   },
   "requiresLineOfSight": true,
   "shape": {
@@ -3347,7 +3347,7 @@
   "power": 50,
   "range": {
    "min": 2,
-   "max": 4
+   "max": 3
   },
   "requiresLineOfSight": true,
   "shape": {
@@ -3392,7 +3392,7 @@
   "power": 100,
   "range": {
    "min": 2,
-   "max": 5
+   "max": 4
   },
   "requiresLineOfSight": false,
   "shape": {
@@ -3413,7 +3413,7 @@
   "power": 60,
   "range": {
    "min": 2,
-   "max": 4
+   "max": 3
   },
   "requiresLineOfSight": true,
   "shape": {
@@ -3614,7 +3614,7 @@
   "power": 90,
   "range": {
    "min": 2,
-   "max": 5
+   "max": 4
   },
   "requiresLineOfSight": true,
   "shape": {
@@ -3912,7 +3912,7 @@
   "power": 55,
   "range": {
    "min": 2,
-   "max": 4
+   "max": 3
   },
   "requiresLineOfSight": true,
   "shape": {
@@ -4046,7 +4046,7 @@
   "power": 85,
   "range": {
    "min": 2,
-   "max": 5
+   "max": 4
   },
   "requiresLineOfSight": true,
   "shape": {
@@ -4065,7 +4065,7 @@
   "power": 100,
   "range": {
    "min": 2,
-   "max": 4
+   "max": 3
   },
   "requiresLineOfSight": true,
   "shape": {
@@ -4091,7 +4091,7 @@
   "power": 85,
   "range": {
    "min": 2,
-   "max": 5
+   "max": 4
   },
   "requiresLineOfSight": false,
   "shape": {
@@ -4166,7 +4166,7 @@
   "power": 60,
   "range": {
    "min": 2,
-   "max": 4
+   "max": 3
   },
   "requiresLineOfSight": true,
   "shape": {
@@ -4210,7 +4210,7 @@
   "power": 30,
   "range": {
    "min": 2,
-   "max": 4
+   "max": 3
   },
   "requiresLineOfSight": false,
   "shape": {
@@ -4361,7 +4361,7 @@
   "power": 60,
   "range": {
    "min": 2,
-   "max": 4
+   "max": 3
   },
   "requiresLineOfSight": true,
   "shape": {
@@ -4411,7 +4411,7 @@
   "power": 80,
   "range": {
    "min": 2,
-   "max": 4
+   "max": 3
   },
   "requiresLineOfSight": true,
   "shape": {
@@ -4437,7 +4437,7 @@
   "power": 25,
   "range": {
    "min": 2,
-   "max": 4
+   "max": 3
   },
   "requiresLineOfSight": true,
   "shape": {
@@ -4696,7 +4696,7 @@
   "power": 100,
   "range": {
    "min": 2,
-   "max": 4
+   "max": 3
   },
   "requiresLineOfSight": true,
   "shape": {
@@ -4715,7 +4715,7 @@
   "power": 55,
   "range": {
    "min": 2,
-   "max": 4
+   "max": 3
   },
   "requiresLineOfSight": true,
   "shape": {
@@ -5020,7 +5020,7 @@
   "power": 45,
   "range": {
    "min": 2,
-   "max": 4
+   "max": 3
   },
   "requiresLineOfSight": false,
   "shape": {
@@ -5038,7 +5038,7 @@
   "power": 45,
   "range": {
    "min": 2,
-   "max": 4
+   "max": 3
   },
   "requiresLineOfSight": false,
   "shape": {
@@ -5175,7 +5175,7 @@
   "power": 40,
   "range": {
    "min": 2,
-   "max": 4
+   "max": 3
   },
   "requiresLineOfSight": true,
   "shape": {
@@ -5341,7 +5341,7 @@
   "power": 90,
   "range": {
    "min": 2,
-   "max": 5
+   "max": 4
   },
   "requiresLineOfSight": true,
   "shape": {
@@ -5429,7 +5429,7 @@
   "power": 55,
   "range": {
    "min": 2,
-   "max": 4
+   "max": 3
   },
   "requiresLineOfSight": true,
   "shape": {
@@ -5505,7 +5505,7 @@
   "power": 75,
   "range": {
    "min": 2,
-   "max": 4
+   "max": 3
   },
   "requiresLineOfSight": true,
   "shape": {
@@ -5572,7 +5572,7 @@
   "power": 45,
   "range": {
    "min": 2,
-   "max": 4
+   "max": 3
   },
   "requiresLineOfSight": true,
   "shape": {
@@ -5605,7 +5605,7 @@
   "power": 50,
   "range": {
    "min": 2,
-   "max": 4
+   "max": 3
   },
   "requiresLineOfSight": true,
   "shape": {
@@ -5630,7 +5630,7 @@
   "power": 25,
   "range": {
    "min": 2,
-   "max": 4
+   "max": 3
   },
   "requiresLineOfSight": true,
   "shape": {
@@ -5658,7 +5658,7 @@
   "power": 60,
   "range": {
    "min": 2,
-   "max": 4
+   "max": 3
   },
   "requiresLineOfSight": true,
   "shape": {
@@ -5692,7 +5692,7 @@
   "power": 60,
   "range": {
    "min": 2,
-   "max": 4
+   "max": 3
   },
   "requiresLineOfSight": true,
   "shape": {
@@ -5741,7 +5741,7 @@
   "power": 30,
   "range": {
    "min": 2,
-   "max": 4
+   "max": 3
   },
   "requiresLineOfSight": false,
   "shape": {
@@ -5840,7 +5840,7 @@
   "power": 55,
   "range": {
    "min": 2,
-   "max": 4
+   "max": 3
   },
   "requiresLineOfSight": true,
   "shape": {
@@ -5866,7 +5866,7 @@
   "power": 45,
   "range": {
    "min": 2,
-   "max": 4
+   "max": 3
   },
   "requiresLineOfSight": true,
   "shape": {
@@ -5914,7 +5914,7 @@
   "power": 100,
   "range": {
    "min": 2,
-   "max": 4
+   "max": 3
   },
   "requiresLineOfSight": true,
   "shape": {
@@ -6024,7 +6024,7 @@
   "power": 100,
   "range": {
    "min": 2,
-   "max": 4
+   "max": 3
   },
   "requiresLineOfSight": false,
   "shape": {
@@ -6070,7 +6070,7 @@
   "power": 60,
   "range": {
    "min": 2,
-   "max": 4
+   "max": 3
   },
   "requiresLineOfSight": true,
   "shape": {
@@ -6241,7 +6241,7 @@
   "power": 75,
   "range": {
    "min": 2,
-   "max": 4
+   "max": 3
   },
   "requiresLineOfSight": true,
   "shape": {
@@ -6294,7 +6294,7 @@
   "power": 40,
   "range": {
    "min": 2,
-   "max": 4
+   "max": 3
   },
   "requiresLineOfSight": true,
   "shape": {
@@ -6322,7 +6322,7 @@
   "power": 60,
   "range": {
    "min": 2,
-   "max": 4
+   "max": 3
   },
   "requiresLineOfSight": true,
   "shape": {
@@ -6475,7 +6475,7 @@
   "power": 75,
   "range": {
    "min": 2,
-   "max": 4
+   "max": 3
   },
   "requiresLineOfSight": true,
   "shape": {
@@ -6515,7 +6515,7 @@
   "power": 60,
   "range": {
    "min": 2,
-   "max": 4
+   "max": 3
   },
   "requiresLineOfSight": true,
   "shape": {
@@ -6557,7 +6557,7 @@
   "power": 60,
   "range": {
    "min": 2,
-   "max": 4
+   "max": 3
   },
   "requiresLineOfSight": true,
   "shape": {
@@ -6577,7 +6577,7 @@
   "power": 80,
   "range": {
    "min": 2,
-   "max": 5
+   "max": 4
   },
   "requiresLineOfSight": true,
   "shape": {
@@ -6598,7 +6598,7 @@
   "power": 55,
   "range": {
    "min": 2,
-   "max": 4
+   "max": 3
   },
   "requiresLineOfSight": true,
   "shape": {
@@ -6984,7 +6984,7 @@
   "power": 60,
   "range": {
    "min": 2,
-   "max": 4
+   "max": 3
   },
   "requiresLineOfSight": true,
   "shape": {
@@ -7054,7 +7054,7 @@
   "power": 45,
   "range": {
    "min": 2,
-   "max": 4
+   "max": 3
   },
   "requiresLineOfSight": true,
   "shape": {
@@ -7104,7 +7104,7 @@
   "power": 50,
   "range": {
    "min": 2,
-   "max": 4
+   "max": 3
   },
   "requiresLineOfSight": true,
   "shape": {
@@ -7234,7 +7234,7 @@
   "power": 35,
   "range": {
    "min": 2,
-   "max": 4
+   "max": 3
   },
   "requiresLineOfSight": true,
   "shape": {
@@ -7261,7 +7261,7 @@
   "power": 60,
   "range": {
    "min": 2,
-   "max": 4
+   "max": 3
   },
   "requiresLineOfSight": true,
   "shape": {
@@ -7286,7 +7286,7 @@
   "power": 60,
   "range": {
    "min": 2,
-   "max": 4
+   "max": 3
   },
   "requiresLineOfSight": false,
   "shape": {
@@ -7333,7 +7333,7 @@
   "power": 55,
   "range": {
    "min": 2,
-   "max": 4
+   "max": 3
   },
   "requiresLineOfSight": true,
   "shape": {
@@ -7384,7 +7384,7 @@
   "power": 50,
   "range": {
    "min": 2,
-   "max": 4
+   "max": 3
   },
   "requiresLineOfSight": true,
   "shape": {
@@ -7449,7 +7449,7 @@
   "power": 60,
   "range": {
    "min": 2,
-   "max": 4
+   "max": 3
   },
   "requiresLineOfSight": true,
   "shape": {
@@ -7551,7 +7551,7 @@
   "power": 110,
   "range": {
    "min": 2,
-   "max": 4
+   "max": 3
   },
   "requiresLineOfSight": true,
   "shape": {
@@ -7607,7 +7607,7 @@
   "power": 50,
   "range": {
    "min": 2,
-   "max": 4
+   "max": 3
   },
   "requiresLineOfSight": true,
   "shape": {
@@ -7627,7 +7627,7 @@
   "power": 60,
   "range": {
    "min": 2,
-   "max": 4
+   "max": 3
   },
   "requiresLineOfSight": true,
   "shape": {
@@ -7654,7 +7654,7 @@
   "power": 40,
   "range": {
    "min": 2,
-   "max": 4
+   "max": 3
   },
   "requiresLineOfSight": true,
   "shape": {
@@ -7906,7 +7906,7 @@
   "power": 55,
   "range": {
    "min": 2,
-   "max": 4
+   "max": 3
   },
   "requiresLineOfSight": true,
   "shape": {
@@ -7933,7 +7933,7 @@
   "power": 75,
   "range": {
    "min": 2,
-   "max": 4
+   "max": 3
   },
   "requiresLineOfSight": true,
   "shape": {
@@ -7988,7 +7988,7 @@
   "power": 45,
   "range": {
    "min": 2,
-   "max": 4
+   "max": 3
   },
   "requiresLineOfSight": true,
   "shape": {
@@ -8169,7 +8169,7 @@
   "power": 45,
   "range": {
    "min": 2,
-   "max": 4
+   "max": 3
   },
   "requiresLineOfSight": false,
   "shape": {
@@ -8234,7 +8234,7 @@
   "power": 45,
   "range": {
    "min": 2,
-   "max": 4
+   "max": 3
   },
   "requiresLineOfSight": true,
   "shape": {
@@ -8255,7 +8255,7 @@
   "power": 90,
   "range": {
    "min": 2,
-   "max": 4
+   "max": 3
   },
   "requiresLineOfSight": true,
   "shape": {
@@ -8343,7 +8343,7 @@
   "power": 95,
   "range": {
    "min": 2,
-   "max": 4
+   "max": 3
   },
   "requiresLineOfSight": true,
   "shape": {
@@ -8454,7 +8454,7 @@
   "power": 80,
   "range": {
    "min": 2,
-   "max": 4
+   "max": 3
   },
   "requiresLineOfSight": false,
   "shape": {
@@ -8473,7 +8473,7 @@
   "power": 25,
   "range": {
    "min": 2,
-   "max": 4
+   "max": 3
   },
   "requiresLineOfSight": true,
   "shape": {
@@ -9196,7 +9196,7 @@
   "power": 65,
   "range": {
    "min": 2,
-   "max": 5
+   "max": 4
   },
   "requiresLineOfSight": true,
   "shape": {
@@ -9264,7 +9264,7 @@
   "power": 75,
   "range": {
    "min": 2,
-   "max": 4
+   "max": 3
   },
   "requiresLineOfSight": true,
   "shape": {
@@ -9382,7 +9382,7 @@
   "power": 60,
   "range": {
    "min": 2,
-   "max": 4
+   "max": 3
   },
   "requiresLineOfSight": true,
   "shape": {
@@ -9568,7 +9568,7 @@
   "power": 55,
   "range": {
    "min": 2,
-   "max": 4
+   "max": 3
   },
   "requiresLineOfSight": true,
   "shape": {
@@ -9614,7 +9614,7 @@
   "power": 55,
   "range": {
    "min": 2,
-   "max": 4
+   "max": 3
   },
   "requiresLineOfSight": true,
   "shape": {
@@ -9685,7 +9685,7 @@
   "power": 50,
   "range": {
    "min": 2,
-   "max": 4
+   "max": 3
   },
   "requiresLineOfSight": true,
   "shape": {
@@ -9713,7 +9713,7 @@
   "power": 80,
   "range": {
    "min": 2,
-   "max": 4
+   "max": 3
   },
   "requiresLineOfSight": true,
   "shape": {
@@ -9780,7 +9780,7 @@
   "power": 35,
   "range": {
    "min": 2,
-   "max": 4
+   "max": 3
   },
   "requiresLineOfSight": true,
   "shape": {
@@ -10005,7 +10005,7 @@
   "vsFullHpPower": 1.5,
   "range": {
    "min": 2,
-   "max": 4
+   "max": 3
   },
   "requiresLineOfSight": false,
   "shape": {
@@ -10073,7 +10073,7 @@
   "power": 90,
   "range": {
    "min": 2,
-   "max": 5
+   "max": 4
   },
   "requiresLineOfSight": true,
   "shape": {

@@ -4,7 +4,7 @@ import { movementPoints, STAT_NAMES, type BattleState, type UnitSetup } from "..
 import { distance, freeReachFor } from "../src/core/free";
 import { applyAction, createBattle, validTargets } from "./core/hexFixture";
 import { newMember, type PartyMember } from "../src/core/party";
-import { chooseFocus, chooseTalent, defaultActiveMoves, focusOptions, gainXp, memberStats, pendingChoice, statOffer, takeOffer, talentOptions, teamBond, xpToNext } from "../src/core/progression";
+import { chooseEvolution, chooseFocus, chooseTalent, defaultActiveMoves, evolutionChoices, focusOptions, gainXp, memberStats, pendingChoice, statOffer, takeOffer, talentOptions, teamBond, xpToNext } from "../src/core/progression";
 
 /** AI-vs-AI battle helpers shared by the report tests (not pass/fail tests). */
 // Mirror-symmetric arena and start positions, so neither side has a terrain advantage
@@ -26,6 +26,9 @@ export function develop(m: PartyMember, pick: Pick, seed: number, candies = { n:
     if (p === "focus") {
       const skills = focusOptions(PROGRESSION, cur.speciesId).map((f) => f.skill);
       cur = chooseFocus(CONTENT, PROGRESSION, cur, pick(skills, seed));
+    } else if (p === "evolution") {
+      // A branching evolution (Eevee): a seeded pick of its forms, as a player would choose one.
+      cur = chooseEvolution(CONTENT, PROGRESSION, cur, pick(evolutionChoices(CONTENT, cur), seed)).member;
     } else if (p === "talent") {
       const opts = talentOptions(CONTENT, PROGRESSION, cur);
       if (!opts.length) throw new Error(`${cur.speciesId} L${cur.level}: talent pending but no options`);

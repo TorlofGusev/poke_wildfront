@@ -79,7 +79,7 @@
   "power": 20,
   "range": {
    "min": 2,
-   "max": 4
+   "max": 3
   },
   "requiresLineOfSight": true,
   "shape": {
@@ -103,7 +103,7 @@
   "power": 35,
   "range": {
    "min": 2,
-   "max": 4
+   "max": 3
   },
   "requiresLineOfSight": true,
   "shape": {
@@ -121,7 +121,7 @@
   "power": 35,
   "range": {
    "min": 2,
-   "max": 4
+   "max": 3
   },
   "requiresLineOfSight": true,
   "shape": {
@@ -139,7 +139,7 @@
   "power": 35,
   "range": {
    "min": 2,
-   "max": 4
+   "max": 3
   },
   "requiresLineOfSight": true,
   "shape": {
@@ -157,7 +157,7 @@
   "power": 35,
   "range": {
    "min": 2,
-   "max": 4
+   "max": 3
   },
   "requiresLineOfSight": true,
   "shape": {
@@ -207,7 +207,7 @@
   "power": 30,
   "range": {
    "min": 2,
-   "max": 4
+   "max": 3
   },
   "requiresLineOfSight": true,
   "shape": {
@@ -261,7 +261,7 @@
   "power": 45,
   "range": {
    "min": 2,
-   "max": 4
+   "max": 3
   },
   "requiresLineOfSight": true,
   "shape": {
@@ -410,7 +410,7 @@
   "power": 40,
   "range": {
    "min": 2,
-   "max": 4
+   "max": 3
   },
   "requiresLineOfSight": true,
   "shape": {
@@ -456,7 +456,7 @@
   "power": 35,
   "range": {
    "min": 2,
-   "max": 4
+   "max": 3
   },
   "requiresLineOfSight": true,
   "shape": {
@@ -474,7 +474,7 @@
   "power": 45,
   "range": {
    "min": 2,
-   "max": 4
+   "max": 3
   },
   "requiresLineOfSight": false,
   "shape": {
@@ -493,7 +493,7 @@
   "power": 30,
   "range": {
    "min": 2,
-   "max": 4
+   "max": 3
   },
   "requiresLineOfSight": true,
   "shape": {
@@ -726,7 +726,7 @@
   "power": 30,
   "range": {
    "min": 2,
-   "max": 4
+   "max": 3
   },
   "requiresLineOfSight": true,
   "shape": {
@@ -807,7 +807,7 @@
   "power": 35,
   "range": {
    "min": 2,
-   "max": 4
+   "max": 3
   },
   "requiresLineOfSight": true,
   "shape": {
@@ -970,7 +970,7 @@
   "power": 35,
   "range": {
    "min": 2,
-   "max": 4
+   "max": 3
   },
   "requiresLineOfSight": true,
   "shape": {
@@ -989,7 +989,7 @@
   "power": 30,
   "range": {
    "min": 2,
-   "max": 4
+   "max": 3
   },
   "requiresLineOfSight": true,
   "shape": {

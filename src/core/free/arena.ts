@@ -205,15 +205,15 @@ function zonesFor(rng: Rng, f: Formation): Zones {
   const cy = H / 2;
   switch (f) {
     case "sides":
-      return { player: fb({ x0: 2.5, y0: 1.5, x1: 5.5, y1: H - 1.5 }), enemies: [fb({ x0: 10.5, y0: 1.5, x1: 13.5, y1: H - 1.5 })] };
+      return { player: fb({ x0: 0.8, y0: 1.2, x1: 3.8, y1: H - 1.2 }), enemies: [fb({ x0: W - 3.8, y0: 1.2, x1: W - 0.8, y1: H - 1.2 })] };
     case "topBottom":
-      return { player: fb({ x0: 4, y0: H - 3.2, x1: W - 4, y1: H - 0.7 }), enemies: [fb({ x0: 4, y0: 0.7, x1: W - 4, y1: 2.6 })] };
+      return { player: fb({ x0: 2.5, y0: H - 2.3, x1: W - 2.5, y1: H - 0.7 }), enemies: [fb({ x0: 2.5, y0: 0.7, x1: W - 2.5, y1: 2.3 })] };
     case "cornerVsCorner":
       return { player: fb({ x0: 1, y0: H - 4.5, x1: 5.5, y1: H - 0.7 }), enemies: [fb({ x0: W - 6, y0: 0.7, x1: W - 1.5, y1: 4 })] };
     case "pincer":
       return {
-        player: fb({ x0: 2.5, y0: cy - 2.5, x1: 5.5, y1: cy + 2.5 }),
-        enemies: [fb({ x0: 10, y0: 0.7, x1: 13.5, y1: 2.8 }), fb({ x0: 10, y0: H - 2.8, x1: 13.5, y1: H - 0.7 })],
+        player: fb({ x0: 0.8, y0: cy - 2.5, x1: 3.8, y1: cy + 2.5 }),
+        enemies: [fb({ x0: W - 5, y0: 0.7, x1: W - 0.8, y1: 2.6 }), fb({ x0: W - 5, y0: H - 2.6, x1: W - 0.8, y1: H - 0.7 })],
       };
     case "surrounded":
       return {

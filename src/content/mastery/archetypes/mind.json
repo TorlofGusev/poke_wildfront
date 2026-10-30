@@ -164,7 +164,7 @@
   "mind-pressure": {
    "id": "mind-pressure",
    "name": "Pressure",
-   "description": "+1 range on moves that already reach 2 or more (up to 3; Bond moves no limit), and +15% damage to foes out of melee reach.",
+   "description": "+1 range on moves that already reach 2 or more (up to 4; Bond moves no limit), and +15% damage to foes out of melee reach.",
    "mods": {
     "rangeBonus": 1,
     "farDamage": 1.15

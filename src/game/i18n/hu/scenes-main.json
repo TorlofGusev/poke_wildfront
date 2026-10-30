@@ -279,5 +279,6 @@
  "✕ out of reach": "✕ nem ér el",
  "✓ and full colour: in use. Dim: known, resting. Tap a card for its rules.": "✓ és teljes szín: használatban. Halvány: ismert, pihen. Koppints egy kártyára a szabályaiért.",
  "Items": "Tárgyak",
- "↔ Swap with {move}": "↔ Csere: {move}"
+ "↔ Swap with {move}": "↔ Csere: {move}",
+ "(melee)": "(közelharci)"
 }

@@ -129,7 +129,7 @@ export interface MoveDef {
    * there then. watch: guards the area until the user's next turn; the first foe moving in it is struck.
    */
   readonly timing?: "delayed" | "watch";
-  /** Damaging moves: melee ones reach 1–2, ranged ones 2–4 (a few big ones 5); a line's tree only has its role's. */
+  /** Damaging moves: melee ones reach 1–2, ranged ones 2–3 (a few big Bond ones 4); a line's tree only has its role's. */
   readonly reach?: Role;
 }
 
@@ -210,7 +210,8 @@ export interface BattleRules {
   readonly statOffset: number;
   readonly damageDivisor: number;
   /** Movement points (hex widths walked per turn) = base + perSpeed × Speed; `max` caps it, bonuses included. */
-  readonly movement: { readonly base: number; readonly perSpeed: number; readonly max: number };
+  /** Movement: base + perSpeed × Speed (melee Pokémon + meleeBonus, so they reach as far as ranged ones shoot), at most max. */
+  readonly movement: { readonly base: number; readonly perSpeed: number; readonly max: number; readonly meleeBonus?: number };
   /** Damage taken when pushed into an obstacle or another unit. */
   readonly impactDamage: number;
   /**

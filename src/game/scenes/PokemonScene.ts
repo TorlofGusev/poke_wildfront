@@ -400,13 +400,15 @@ export class PokemonScene extends Phaser.Scene {
     const growth = memberFocusGrowth(PROGRESSION, m)[st];
     const talents = m.talents.reduce((sum, id) => sum + (PROGRESSION.talents[id]?.stats?.[st] ?? 0), 0);
     const r = CONTENT.rules;
+    const melee = CONTENT.species[m.speciesId]!.role === "melee";
     const pct = (x: number) => `${Math.round(x * 100)}%`;
     const what: Record<StatName, string> = {
       hp: t("Max HP: +{n} per point. Now {max} HP; sturdier species also gain more HP per level.", { n: r.hpPerPoint, max: tag("num", maxHp) }),
       attack: t("Raises the damage of every move."),
       defense: t("Lowers the damage of every move that hits it."),
       speed: t("Movement: {base} + {per} per Speed point, at most {max}; now {n}. Past {last} Speed it hits harder after moving (momentum).", {
-        base: r.movement.base, per: r.movement.perSpeed, max: r.movement.max, n: tag("num", baseMovement(CONTENT, stats.speed).toFixed(1)), last: speedAtMoveCap(CONTENT) }),
+        base: melee ? `${r.movement.base} + ${r.movement.meleeBonus ?? 0} ${t("(melee)")}` : r.movement.base, per: r.movement.perSpeed, max: r.movement.max,
+        n: tag("num", baseMovement(CONTENT, stats.speed, melee).toFixed(1)), last: speedAtMoveCap(CONTENT) }),
       willpower: t("Fills the Spirit bar faster (full: Pumped, more damage and +1 move) and shrugs off statuses foes inflict: {n} chance now.", {
         n: tag("num", pct(Math.min(0.5, r.willpower.resistPerPoint * stats.willpower))) }),
       crit: t("Critical hits: {c} chance, ×{x} damage now.", {

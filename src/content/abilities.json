@@ -305,7 +305,7 @@
  "compound-eyes": {
   "id": "compound-eyes",
   "name": "Compound Eyes",
-  "description": "+1 max range on moves that reach 2 or more (up to 3; Bond moves no limit), and its shots pass over Pokémon in the way.",
+  "description": "+1 max range on moves that reach 2 or more (up to 4; Bond moves no limit), and its shots pass over Pokémon in the way.",
   "mods": {
    "rangeBonus": 1,
    "shootOver": true

@@ -7,12 +7,12 @@ import { CONTENT, PROGRESSION, WORLD_CONTENT } from "../src/content";
 import { maxHpOf } from "../src/core/battle";
 
 describe("content integrity", () => {
-  it("melee moves reach 1–2, ranged ones 2–4 (5 at most), and every species has its role's basic attack", () => {
+  it("melee moves reach 1–2, ranged ones 2–3 (4 at most), and every species has its role's basic attack", () => {
     const off: string[] = [];
     for (const m of Object.values(CONTENT.moves)) {
       if (!m.reach || m.shape.kind === "line" || m.shape.kind === "cone") continue;
       if (m.reach === "melee" && (m.range.min > 1 || m.range.max > 2)) off.push(`${m.id} melee ${m.range.min}-${m.range.max}`);
-      if (m.reach === "ranged" && (m.range.min !== 2 || m.range.max < 4 || m.range.max > 5)) off.push(`${m.id} ranged ${m.range.min}-${m.range.max}`);
+      if (m.reach === "ranged" && (m.range.min !== 2 || m.range.max < 3 || m.range.max > 4)) off.push(`${m.id} ranged ${m.range.min}-${m.range.max}`);
     }
     for (const s of Object.values(CONTENT.species)) {
       const basics = s.moves.filter((m) => CONTENT.moves[m]?.kind === "basic");

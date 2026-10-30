@@ -27,7 +27,8 @@
  "movement": {
   "base": 1,
   "perSpeed": 0.35,
-  "max": 5
+  "max": 5,
+  "meleeBonus": 1
  },
  "crit": {
   "base": 0.05,

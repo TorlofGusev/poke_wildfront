@@ -156,7 +156,7 @@
   "swarm-compound-eyes": {
    "id": "swarm-compound-eyes",
    "name": "Compound Eyes",
-   "description": "+1 range on moves that already reach 2 or more (up to 3; Bond moves no limit), and its Bug moves deal 15% more damage.",
+   "description": "+1 range on moves that already reach 2 or more (up to 4; Bond moves no limit), and its Bug moves deal 15% more damage.",
    "mods": {
     "rangeBonus": 1,
     "typeDamage": {
