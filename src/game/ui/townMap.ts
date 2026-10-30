@@ -1,10 +1,12 @@
 import Phaser from "phaser";
 import { WORLDS } from "../../content";
 import { t } from "../i18n";
-import { messageFrame } from "./battleBookends";
+import { Button } from "./Button";
+import { panel, screenTitle } from "./frames";
 import { pixText } from "./pixelFont";
 import { RichText } from "./RichText";
 import { tag } from "./markup";
+import { drawWorldTile, T } from "./worldTiles";
 
 /** Where each map sits on the Town Map, in Kanto grid cells (the handhelds' layout, roughly). */
 const LAYOUT: Readonly<Record<string, readonly [number, number]>> = {
@@ -28,16 +30,16 @@ const kindOf = (id: string): Kind =>
   : /-(city|town|island|plateau)$/.test(id) ? "city"
   : /cave|tunnel|moon|road|seafoam|forest/.test(id) ? "cave" : "building";
 
-/** Routes over the sea: drawn as dashed water lanes instead of roads. */
+/** Routes over the sea: their lanes stay water. */
 const SEA_ROUTES = new Set(["route-19", "route-20", "route-21"]);
 
-/** Kanto's coast in layout cells, clockwise; the islands south of it. */
+/** Kanto's coast in layout cells, clockwise; the islands south of it (centre, radii). */
 const MAINLAND: readonly (readonly [number, number])[] = [
   [0.2, 2.2], [1.4, 0.7], [5, 0.9], [9, 1.5], [11, 0.5], [14.5, 0.3], [17.5, 0.4], [19.9, 1.2], [20, 7], [19.9, 12.5],
   [19, 15.6], [16.5, 16.3], [14.5, 16.7], [12, 16.9], [9.5, 16.8], [7.5, 16.5], [5.5, 16.1], [3.2, 16], [1.2, 15.2], [0.2, 13],
 ];
-const ISLANDS: readonly (readonly [number, number, number, number])[] = [[3.5, 18.6, 1.7, 0.75], [6.2, 18.6, 0.75, 0.5]];
-/** Mountain ranges and woods, as decoration (cells). */
+const ISLANDS: readonly (readonly [number, number, number, number])[] = [[3.5, 18.6, 1.7, 0.8], [6.2, 18.6, 0.8, 0.6]];
+/** Mountain ranges and woods, in cells. */
 const PEAKS: readonly (readonly [number, number])[] = [
   [7.8, 4.4], [8.8, 3.9], [9.9, 4.1], [10.6, 5.1], [8.2, 5.9], [0.5, 5.2], [1.8, 5.5], [0.6, 6.9], [1.9, 7.2],
   [17.3, 6.2], [18.8, 6.4], [17.6, 7.4], [19.2, 7.5], [11.2, 2.4], [12.4, 2.1], [3, 4.5], [5.4, 4.8],
@@ -47,58 +49,26 @@ const WOODS: readonly (readonly [number, number])[] = [
   [15, 2.2], [16.2, 2.6], [2.4, 12.4], [2, 9.6], [7.6, 10.5], [8.2, 11.4], [15.4, 10.5], [16.4, 11.2],
 ];
 
-const W = 660, H = 486, PAD = 18;
+/** Tiles per layout cell, and the chart's size in tiles. */
+const PER = 2, COLS = 41, ROWS = 40;
 
-/** Kanto at a glance: every map, the roads between them (from the exits), and where the party stands. */
-export function openTownMap(scene: Phaser.Scene, hereId: string, onClose: () => void): () => void {
-  const { width, height } = scene.scale;
-  const x0 = Math.round((width - W) / 2), y0 = Math.max(4, Math.round((height - H) / 2));
-  const box = scene.add.container(0, 0).setDepth(1000).setScrollFactor(0);
-  const close = () => { box.destroy(); onClose(); };
-  // Closes on a fresh press outside the map (not on the release of the click that opened it).
-  const shade = scene.add.rectangle(0, 0, width, height, 0x000000, 0.5).setOrigin(0).setInteractive().on("pointerdown", close);
-  const frame = messageFrame(scene, x0, y0, W, H).setOrigin(0).setInteractive();
-  box.add([shade, frame]);
+const inside = (pts: readonly (readonly [number, number])[], x: number, y: number): boolean => {
+  let hit = false;
+  for (let i = 0, j = pts.length - 1; i < pts.length; j = i++) {
+    const [xi, yi] = pts[i]!, [xj, yj] = pts[j]!;
+    if (yi > y !== yj > y && x < ((xj - xi) * (y - yi)) / (yj - yi) + xi) hit = !hit;
+  }
+  return hit;
+};
+const segDist = (px: number, py: number, ax: number, ay: number, bx: number, by: number): number => {
+  const dx = bx - ax, dy = by - ay, l = dx * dx + dy * dy;
+  const k = l ? Math.max(0, Math.min(1, ((px - ax) * dx + (py - ay) * dy) / l)) : 0;
+  return Math.hypot(px - ax - k * dx, py - ay - k * dy);
+};
 
-  // The chart: sea, then land, inside the frame.
-  const cx0 = x0 + PAD, cy0 = y0 + 40, cw = W - PAD * 2, ch = H - 40 - 46;
-  const sx = (c: number) => cx0 + (c / 20.2) * cw, sy = (c: number) => cy0 + (c / 19.6) * ch;
-  const at = (id: string) => ({ x: sx(LAYOUT[id]![0]), y: sy(LAYOUT[id]![1]) });
-  const g = scene.add.graphics();
-  box.add(g);
-  g.fillStyle(0x2f6fb0, 1).fillRoundedRect(cx0 - 4, cy0 - 4, cw + 8, ch + 8, 6);
-  // Wave marks on the sea, laid out on a fixed grid so the chart never shimmers.
-  g.lineStyle(1, 0x7fb4e6, 0.5);
-  for (let y = cy0 + 8; y < cy0 + ch; y += 18) for (let x = cx0 + ((y / 18) % 2) * 14; x < cx0 + cw - 10; x += 28) g.lineBetween(x, y, x + 6, y - 2).lineBetween(x + 6, y - 2, x + 12, y);
-  const land = (fill: number, grow: number) => {
-    g.fillStyle(fill, 1);
-    const pts = MAINLAND.map(([x, y]) => new Phaser.Math.Vector2(sx(x), sy(y)));
-    const c = pts.reduce((a, p) => a.add(p), new Phaser.Math.Vector2()).scale(1 / pts.length);
-    g.fillPoints(pts.map((p) => p.clone().subtract(c).scale(1 + grow).add(c)), true);
-    for (const [x, y, rx, ry] of ISLANDS) g.fillEllipse(sx(x), sy(y), (rx * 2 * cw) / 20.2 + grow * 60, (ry * 2 * ch) / 19.6 + grow * 60);
-  };
-  land(0xe8d9a0, 0.012); // a sandy shore under the grass
-  land(0x6fae4f, 0);
-  // Grass speckle.
-  g.fillStyle(0x5f9c42, 1);
-  for (let i = 0; i < 140; i++) {
-    const x = ((i * 97) % 200) / 10, y = ((i * 61) % 170) / 10;
-    g.fillRect(sx(x), sy(y), 3, 2);
-  }
-  for (const [x, y] of WOODS) {
-    const px = sx(x), py = sy(y);
-    g.fillStyle(0x2e6b34, 1).fillTriangle(px - 6, py + 5, px + 6, py + 5, px, py - 8);
-    g.fillStyle(0x3f8a44, 1).fillTriangle(px - 4, py + 2, px + 4, py + 2, px, py - 6);
-  }
-  for (const [x, y] of PEAKS) {
-    const px = sx(x), py = sy(y);
-    g.fillStyle(0x8a7a62, 1).fillTriangle(px - 11, py + 8, px + 11, py + 8, px, py - 10);
-    g.fillStyle(0xa8977c, 1).fillTriangle(px - 11, py + 8, px, py + 8, px, py - 10);
-    g.fillStyle(0xf2f2f2, 1).fillTriangle(px - 3, py - 6, px + 3, py - 6, px, py - 10);
-  }
-
-  // Roads from the exits: sandy paths on land, dashed lanes on the sea.
-  const roads: [Phaser.Math.Vector2, Phaser.Math.Vector2, boolean][] = [];
+/** The roads between maps (from their exits), in cells; `sea` for lanes over water. */
+function roads(): { a: readonly [number, number]; b: readonly [number, number]; sea: boolean }[] {
+  const out: { a: readonly [number, number]; b: readonly [number, number]; sea: boolean }[] = [];
   const seen = new Set<string>();
   for (const w of Object.values(WORLDS)) {
     if (!LAYOUT[w.id]) continue;
@@ -107,55 +77,105 @@ export function openTownMap(scene: Phaser.Scene, hereId: string, onClose: () => 
       const key = [w.id, e.to].sort().join("|");
       if (seen.has(key)) continue;
       seen.add(key);
-      const a = at(w.id), b = at(e.to);
-      roads.push([new Phaser.Math.Vector2(a.x, a.y), new Phaser.Math.Vector2(b.x, b.y), SEA_ROUTES.has(w.id) || SEA_ROUTES.has(e.to)]);
+      out.push({ a: LAYOUT[w.id]!, b: LAYOUT[e.to]!, sea: SEA_ROUTES.has(w.id) || SEA_ROUTES.has(e.to) });
     }
   }
-  for (const [a, b, sea] of roads) if (!sea) g.lineStyle(9, 0x5a4a30, 1).lineBetween(a.x, a.y, b.x, b.y);
-  for (const [a, b, sea] of roads) {
-    if (!sea) { g.lineStyle(5, 0xe6cf8f, 1).lineBetween(a.x, a.y, b.x, b.y); continue; }
-    const len = a.distance(b), dir = b.clone().subtract(a).normalize();
-    g.lineStyle(3, 0xd8ecff, 0.9);
-    for (let d = 0; d < len; d += 10) {
-      const p = a.clone().add(dir.clone().scale(d)), q = a.clone().add(dir.clone().scale(Math.min(len, d + 5)));
-      g.lineBetween(p.x, p.y, q.x, q.y);
-    }
-  }
+  return out;
+}
 
-  // Landmarks: towns as houses, caves as dark mouths, buildings as blocks; routes stay plain road.
-  const caption = new RichText(scene, x0 + 20, y0 + H - 36, W - 40, 13);
-  const describe = (id: string) => caption.setMarkup(id === hereId ? `${tag("bad", t("You are here:"))} ${tag("title", WORLDS[id]!.name)}` : tag("title", WORLDS[id]!.name));
+/** What each chart tile is, as an overworld biome id (so it is drawn with the map's own tiles). */
+function terrain(): string[][] {
+  const ways = roads();
+  const places = Object.entries(LAYOUT).filter(([id]) => WORLDS[id]);
+  return Array.from({ length: ROWS }, (_, ty) => Array.from({ length: COLS }, (_, tx) => {
+    const x = (tx + 0.5) / PER, y = (ty + 0.5) / PER;
+    const land = inside(MAINLAND, x, y) || ISLANDS.some(([cx, cy, rx, ry]) => ((x - cx) / rx) ** 2 + ((y - cy) / ry) ** 2 <= 1);
+    const near = (d: number) => places.find(([, [px, py]]) => Math.abs(px - x) <= d && Math.abs(py - y) <= d)?.[0];
+    const city = near(0.75);
+    if (city && kindOf(city) === "city") return "town";
+    const spot = near(0.3);
+    if (spot && kindOf(spot) === "cave") return "cave";
+    if (spot && kindOf(spot) === "building") return "power-plant";
+    if (!land) return "water";
+    if (ways.some((r) => !r.sea && segDist(x, y, r.a[0], r.a[1], r.b[0], r.b[1]) < 0.3)) return "path";
+    if (PEAKS.some(([px, py]) => Math.hypot(px - x, py - y) < 0.6)) return "mountain";
+    if (WOODS.some(([px, py]) => Math.hypot(px - x, py - y) < 0.55)) return "forest";
+    // The coast is lined with trees, as the maps' edges are.
+    if (!inside(MAINLAND, x + 0.5, y) || !inside(MAINLAND, x - 0.5, y) || !inside(MAINLAND, x, y + 0.5) || !inside(MAINLAND, x, y - 0.5)) return land && !ISLANDS.some(([cx, cy]) => Math.abs(cx - x) < 2 && Math.abs(cy - y) < 1.2) ? "trees" : "route";
+    return "route";
+  }));
+}
+
+/** Kanto at a glance, drawn with the overworld's own tiles: every map, the roads between them, where the party is. */
+export function openTownMap(scene: Phaser.Scene, hereId: string, onClose: () => void): () => void {
+  const { width, height } = scene.scale;
+  const box = scene.add.container(0, 0).setDepth(1000).setScrollFactor(0);
+  const close = () => { box.destroy(); onClose(); };
+  // A full-screen panel (nothing of the map screen peeks out); a fresh press on the side panel's close button or K shuts it.
+  box.add(scene.add.rectangle(0, 0, width, height, 0x0b0e14, 1).setOrigin(0).setInteractive());
+  const mapH = height - 24, scale = mapH / (ROWS * T), mapW = COLS * T * scale;
+  const mx = 12, my = 12;
+  box.add(panel(scene, mx - 6, my - 6, mapW + 12, mapH + 12));
+
+  // The chart, drawn at the overworld's tile size and scaled down (one texture, cheap to show).
+  const grid = terrain();
+  const g = scene.make.graphics({}, false);
+  for (let y = 0; y < ROWS; y++) for (let x = 0; x < COLS; x++) {
+    const id = grid[y]![x]!;
+    if (id === "path") {
+      g.fillStyle(0xb39a68, 1).fillRect(x * T, y * T, T, T);
+      g.fillStyle(0x9c8458, 1).fillRect(x * T + 4, y * T + 6, 4, 3).fillRect(x * T + 17, y * T + 18, 5, 3);
+    } else drawWorldTile(g, id, x, y, x * T, y * T);
+  }
+  // Lanes over the sea: a dotted wake.
+  g.fillStyle(0xd8ecff, 0.8);
+  for (const r of roads().filter((w) => w.sea)) {
+    const len = Math.hypot(r.b[0] - r.a[0], r.b[1] - r.a[1]);
+    for (let d = 0; d < len; d += 0.35) {
+      const k = d / len;
+      g.fillCircle((r.a[0] + (r.b[0] - r.a[0]) * k) * PER * T, (r.a[1] + (r.b[1] - r.a[1]) * k) * PER * T, 5);
+    }
+  }
+  g.lineStyle(1, 0x000000, 0.15);
+  for (let x = 0; x <= COLS; x++) g.lineBetween(x * T, 0, x * T, ROWS * T);
+  for (let y = 0; y <= ROWS; y++) g.lineBetween(0, y * T, COLS * T, y * T);
+  const rt = scene.add.renderTexture(mx, my, COLS * T, ROWS * T).setOrigin(0).setScale(scale);
+  rt.draw(g).render();
+  g.destroy();
+  box.add(rt);
+  const at = (id: string) => ({ x: mx + LAYOUT[id]![0] * PER * T * scale, y: my + LAYOUT[id]![1] * PER * T * scale });
+
+  // The side panel: title, where you are, what is pointed at, how to close.
+  const sx = mx + mapW + 20, sw = width - sx - 12;
+  box.add(panel(scene, sx, 6, sw, height - 12));
+  box.add(screenTitle(scene, sx + 14, 22, t("Town Map")));
+  const caption = new RichText(scene, sx + 14, 70, sw - 28, 13);
+  const describe = (id: string) => caption.setMarkup([
+    `${tag("bad", t("You are here:"))}\n${tag("title", WORLDS[hereId]?.name ?? hereId)}`,
+    ...(id !== hereId ? ["", `${tag("num", t("Pointed at:"))}\n${tag("title", WORLDS[id]!.name)}`] : []),
+  ].join("\n"));
+  box.add(caption);
+  box.add(new Button(scene, sx + 14, height - 50, sw - 28, 30, t("✕ Close [K]"), close).centerLabel());
+
   for (const id of Object.keys(LAYOUT)) {
     if (!WORLDS[id]) continue;
     const { x, y } = at(id);
-    const kind = kindOf(id);
-    if (kind === "city") {
-      g.fillStyle(0x10141c, 1).fillRect(x - 10, y - 9, 20, 18);
-      g.fillStyle(0xf4efe2, 1).fillRect(x - 8, y - 2, 16, 9);
-      g.fillStyle(0xd0463c, 1).fillTriangle(x - 10, y - 1, x + 10, y - 1, x, y - 9);
-      g.fillStyle(0x3a4a6a, 1).fillRect(x - 2, y + 2, 4, 5);
-      const label = WORLDS[id]!.name.replace(/ (City|Town|Island)$/, "");
-      box.add(pixText(scene, x, y + 11, label, 0xffffff, 1).setOrigin(0.5, 0));
-    } else if (kind === "cave") {
-      g.fillStyle(0x10141c, 1).fillCircle(x, y, 7);
-      g.fillStyle(0x7a5a3a, 1).fillCircle(x, y, 5.5);
-      g.fillStyle(0x10141c, 1).fillEllipse(x, y + 2, 6, 6);
-    } else if (kind === "building") {
-      g.fillStyle(0x10141c, 1).fillRect(x - 7, y - 7, 14, 14);
-      g.fillStyle(0xb8c0d0, 1).fillRect(x - 5, y - 5, 10, 10);
-      g.fillStyle(0x4a5a7a, 1).fillRect(x - 3, y - 3, 2, 2).fillRect(x + 1, y - 3, 2, 2).fillRect(x - 3, y + 1, 2, 2).fillRect(x + 1, y + 1, 2, 2);
+    if (kindOf(id) === "city") {
+      const label = pixText(scene, x, y + 12, WORLDS[id]!.name.replace(/ (City|Town|Island)$/, ""), 0xffffff, 1).setOrigin(0.5, 0);
+      // Kept inside the chart at its edges.
+      label.setX(Math.min(mx + mapW - label.width / 2 - 2, Math.max(mx + label.width / 2 + 2, x)));
+      box.add(label);
     }
-    box.add(scene.add.zone(x, y, 24, 24).setInteractive({ useHandCursor: true })
+    box.add(scene.add.zone(x, y, 22, 22).setInteractive({ useHandCursor: true })
       .on("pointerover", () => describe(id)).on("pointerdown", () => describe(id)).on("pointerout", () => describe(hereId)));
   }
-  // Where the party is: a pulsing red ring over its spot.
+  // Where the party is: its leader's marker, a pulsing ring.
   if (LAYOUT[hereId]) {
     const { x, y } = at(hereId);
-    const ring = scene.add.circle(x, y, 13).setStrokeStyle(3, 0xff4040);
-    box.add(ring);
-    scene.tweens.add({ targets: ring, scale: 1.3, alpha: 0.35, duration: 650, yoyo: true, repeat: -1 });
+    const ring = scene.add.circle(x, y, 12).setStrokeStyle(3, 0xff4040);
+    box.add([ring, scene.add.circle(x, y, 4, 0xff4040)]);
+    scene.tweens.add({ targets: ring, scale: 1.35, alpha: 0.35, duration: 650, yoyo: true, repeat: -1 });
   }
-  box.add([caption, pixText(scene, x0 + 20, y0 + 12, t("Town Map"), 0xf5d76e, 2), pixText(scene, x0 + W - 20, y0 + 16, t("✕ close [K]"), 0xc0c8d8, 1).setOrigin(1, 0)]);
   describe(hereId);
   return close;
 }

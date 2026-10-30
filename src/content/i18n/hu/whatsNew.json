@@ -1,5 +1,6 @@
 [
  {"items": [
+  "A térkép most a játék többi részének stílusában készül: Kantót a térkép saját csempéi rajzolják ki (fű, fákkal szegett part, hegyek, erdők, városok a kis házaikkal, barlangok, tenger), teljes képernyőn, oldalsó panellel, amely mutatja, hol vagy és mire mutatsz.",
   "A térkép igazi térképként rajzolódik: Kantó sziget a tengerben homokos parttal, hegyekkel és erdőkkel, homokos utakkal és szaggatott tengeri útvonalakkal, a városok kis házakként, a barlangok és épületek ikonként látszanak. Kattintás után nyitva marad, és egy mellé kattintással vagy a K billentyűvel zárul.",
   "Új térkép mutatja egész Kantót: a városokat, utakat, barlangokat és épületeket az összekötő utakkal, és egy lüktető gyűrű jelzi, hol vagy. A Térkép gombbal vagy a K billentyűvel nyílik; egy pontra mutatva (vagy rábökve) kiírja a nevét.",
   "A térkép illeszkedik az új menükhöz: a szereplők a térkép alján, a kék üzenetablakban beszélnek, mint a csatában, a terület neve keretes, pixeles feliratban jelenik meg (sosem egy beszélgetés mögött), a talált tárgyak ugyanilyen ablakban ugranak fel, az oldalsáv pedig keretes kártyákba került. A térkép feletti apró jelmagyarázat-sor eltűnt; az ikonokat a térkép-tipp és a ? gomb magyarázza",
