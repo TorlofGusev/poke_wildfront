@@ -2,6 +2,7 @@
  {"version": "0.104",
   "date": "2026-10-29",
   "items": [
+  "The Town Map remembers where you have been: pointing at (or clicking) a place you visited shows its wild Pokémon with their levels (✓ for species you own, the unmet ones counted as ???), its gym leader and whether the badge is yours, how many trainers you have beaten, its Pokémon Center and Mart, items still to find and the roads out. A gold ! marks where your current goal waits, and the goal is written at the top.",
   "The Town Map now looks like the rest of the game: Kanto is laid out with the map screen's own tiles (grass, tree-lined coast, mountains, woods, towns with their little houses, caves, the sea), on a full screen with a side panel saying where you are and what you point at.",
   "The Town Map is drawn as a real chart: Kanto as an island in the sea with sandy shores, mountains and woods, sandy roads and dashed sea lanes, little houses for towns and icons for caves and buildings. It stays open after a click and closes with a click outside it or the K key.",
   "A Town Map shows all of Kanto: towns, routes, caves and buildings joined by the roads between them, with a pulsing ring where you are. Open it with the Town Map button or the K key; point at (or tap) a spot to see its name.",

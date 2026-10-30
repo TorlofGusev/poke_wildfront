@@ -41,6 +41,7 @@ import { tag } from "../ui/markup";
 import { t } from "../i18n";
 import { RichText } from "../ui/RichText";
 import { openTownMap } from "../ui/townMap";
+import { visitFlag } from "../ui/townMapInfo";
 import { drawWorldTile } from "../ui/worldTiles";
 import { boardTheme, drawFloorDecor, drawWaterDecor, tileRand } from "../ui/boardDecor";
 import { ballIcon } from "../ui/ballIcon";
@@ -119,6 +120,9 @@ export class OverworldScene extends Phaser.Scene {
     // Back from a battle (or anywhere) with a due evolution: its scene plays first.
     const evolving = evolvingUids();
     if (evolving.length) return void this.scene.start("Evolution", { uids: evolving, next: "Overworld" });
+    // The Town Map tells what is known of the maps the party has been to.
+    const visit = visitFlag(this.world.mapId);
+    if (!(session.game.flags ?? []).includes(visit)) session.update({ ...session.game, flags: [...(session.game.flags ?? []), visit] });
     playMusic(this, "overworld");
     screenTitle(this, MAP_X, 10, currentWorld().name);
     this.drawMap();
@@ -628,7 +632,7 @@ export class OverworldScene extends Phaser.Scene {
   private toggleTownMap(): void {
     if (this.townMap) return this.townMap();
     if (this.moving) return;
-    this.townMap = openTownMap(this, this.world.mapId, () => { this.townMap = null; });
+    this.townMap = openTownMap(this, session.game, this.world.mapId, () => { this.townMap = null; });
   }
 
   private announceArea(p: Point): void {

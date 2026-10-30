@@ -7,6 +7,8 @@ import { pixText } from "./pixelFont";
 import { RichText } from "./RichText";
 import { tag } from "./markup";
 import { drawWorldTile, T } from "./worldTiles";
+import type { GameState } from "../../core/party/roster";
+import { goalMap, mapInfo, visitedMaps } from "./townMapInfo";
 
 /** Where each map sits on the Town Map, in Kanto grid cells (the handhelds' layout, roughly). */
 const LAYOUT: Readonly<Record<string, readonly [number, number]>> = {
@@ -107,7 +109,7 @@ function terrain(): string[][] {
 }
 
 /** Kanto at a glance, drawn with the overworld's own tiles: every map, the roads between them, where the party is. */
-export function openTownMap(scene: Phaser.Scene, hereId: string, onClose: () => void): () => void {
+export function openTownMap(scene: Phaser.Scene, game: GameState, hereId: string, onClose: () => void): () => void {
   const { width, height } = scene.scale;
   const box = scene.add.container(0, 0).setDepth(1000).setScrollFactor(0);
   const close = () => { box.destroy(); onClose(); };
@@ -149,12 +151,18 @@ export function openTownMap(scene: Phaser.Scene, hereId: string, onClose: () => 
   const sx = mx + mapW + 20, sw = width - sx - 12;
   box.add(panel(scene, sx, 6, sw, height - 12));
   box.add(screenTitle(scene, sx + 14, 22, t("Town Map")));
-  const caption = new RichText(scene, sx + 14, 70, sw - 28, 13);
-  const describe = (id: string) => caption.setMarkup([
-    `${tag("bad", t("You are here:"))}\n${tag("title", WORLDS[hereId]?.name ?? hereId)}`,
-    ...(id !== hereId ? ["", `${tag("num", t("Pointed at:"))}\n${tag("title", WORLDS[id]!.name)}`] : []),
+  // The goal and where the party is, then what is known of the map pointed at (or picked with a click).
+  const visited = visitedMaps(game, hereId);
+  const goal = goalMap(game);
+  const head = new RichText(scene, sx + 14, 62, sw - 28, 12);
+  const headH = head.setMarkup([
+    ...(goal ? [`${tag("special", t("Goal:"))} ${goal.text}`] : []),
+    `${tag("bad", t("You are here:"))} ${tag("title", WORLDS[hereId]?.name ?? hereId)}`,
   ].join("\n"));
-  box.add(caption);
+  const caption = new RichText(scene, sx + 14, 62 + headH + 14, sw - 28, 12);
+  let picked = hereId;
+  const describe = (id: string) => caption.setMarkup(mapInfo(game, id, visited.has(id)));
+  box.add([head, scene.add.rectangle(sx + 14, 62 + headH + 6, sw - 28, 1, 0x3a4560).setOrigin(0), caption]);
   box.add(new Button(scene, sx + 14, height - 50, sw - 28, 30, t("✕ Close [K]"), close).centerLabel());
 
   for (const id of Object.keys(LAYOUT)) {
@@ -167,7 +175,7 @@ export function openTownMap(scene: Phaser.Scene, hereId: string, onClose: () => 
       box.add(label);
     }
     box.add(scene.add.zone(x, y, 22, 22).setInteractive({ useHandCursor: true })
-      .on("pointerover", () => describe(id)).on("pointerdown", () => describe(id)).on("pointerout", () => describe(hereId)));
+      .on("pointerover", () => describe(id)).on("pointerdown", () => { picked = id; describe(id); }).on("pointerout", () => describe(picked)));
   }
   // Where the party is: its leader's marker, a pulsing ring.
   if (LAYOUT[hereId]) {
@@ -175,6 +183,14 @@ export function openTownMap(scene: Phaser.Scene, hereId: string, onClose: () => 
     const ring = scene.add.circle(x, y, 12).setStrokeStyle(3, 0xff4040);
     box.add([ring, scene.add.circle(x, y, 4, 0xff4040)]);
     scene.tweens.add({ targets: ring, scale: 1.35, alpha: 0.35, duration: 650, yoyo: true, repeat: -1 });
+  }
+  // The goal's map: a gold "!" over it.
+  if (goal?.mapId && LAYOUT[goal.mapId]) {
+    const { x, y } = at(goal.mapId);
+    const mark = pixText(scene, x + 9, y - 12, "!", 0x10141c, 2).setOrigin(0.5);
+    const badge = scene.add.circle(x + 9, y - 12, 8, 0xf5d76e).setStrokeStyle(2, 0x10141c);
+    box.add([badge, mark]);
+    scene.tweens.add({ targets: [badge, mark], y: y - 16, duration: 500, yoyo: true, repeat: -1, ease: "Sine.easeInOut" });
   }
   describe(hereId);
   return close;

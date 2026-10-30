@@ -285,5 +285,17 @@
  "Town Map": "Térkép",
  "You are here:": "Itt vagy:",
  "✕ Close [K]": "✕ Bezár [K]",
- "Pointed at:": "Kijelölve:"
+ "Goal:": "Cél:",
+ "Not visited yet.": "Itt még nem jártál.",
+ "Wild Pokémon": "Vad Pokémonok",
+ "Gym": "Gym",
+ "badge won ✓": "jelvény megvan ✓",
+ "not yet beaten": "még nincs legyőzve",
+ "Trainers": "Trénerek",
+ "beaten": "legyőzve",
+ "Services": "Szolgáltatás",
+ "Pokémon Center · Poké Mart": "Pokémon Center · Poké Mart",
+ "{n} still to find": "még {n} vár rád",
+ "Roads": "Utak",
+ "??? ×{n} not met yet": "??? ×{n} még ismeretlen"
 }
