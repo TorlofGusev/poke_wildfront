@@ -64,6 +64,7 @@ import { describeMove, reachShort, selfCentred } from "../ui/describeMove";
 import { stripMarkup, tag } from "../ui/markup";
 import { RichText } from "../ui/RichText";
 import { pixText, setPixText } from "../ui/pixelFont";
+import { baked } from "../ui/bake";
 import { t } from "../i18n";
 import { boardTheme, drawFlowerClusters, drawFloorDecor, drawGrassStipple, drawGymCourt, drawIndoorFloor, drawPath, floorColor, tileRand, type BoardTheme } from "../ui/boardDecor";
 import { footOrigin, animKey, FACE_LEFT, FACE_RIGHT, facingFor, hasSprite, portraitKey, type Facing, type SpriteAnim } from "../sprites";
@@ -199,7 +200,7 @@ export class BattleScene extends Phaser.Scene {
   private logPrev: RichText | null = null;
   private logChars = 64;
   /** The message box under the field (frame and lines), faded in after the opening. */
-  private msgParts: (Phaser.GameObjects.Graphics | RichText)[] = [];
+  private msgParts: (Phaser.GameObjects.Image | RichText)[] = [];
   private logOverlay: Phaser.GameObjects.Container | null = null;
   /** How far the open log is scrolled back from the newest line, in pixels. */
   private logScroll = 0;
@@ -245,11 +246,13 @@ export class BattleScene extends Phaser.Scene {
   private orderStrip: Phaser.GameObjects.Container | null = null;
   /** Who led the turn order when it was last drawn (a change slides the row along). */
   private orderHead: string | null = null;
+  /** What the turn order showed when last drawn (it is redrawn only when that changes). */
+  private orderSig = "";
   /** The card next to the Pokémon under the pointer, and what it shows (rebuilt only when that changes). */
   private tooltip: Phaser.GameObjects.Container | null = null;
   private tooltipKey = "";
   /** Deployment: the spots' pads (a base and a pulsing ring) and the foes' name plates. */
-  private deployPads: { pos: Point; base: Phaser.GameObjects.Graphics; glow: Phaser.GameObjects.Arc }[] = [];
+  private deployPads: { pos: Point; base: Phaser.GameObjects.Image; glow: Phaser.GameObjects.Arc }[] = [];
   private foePlates: Phaser.GameObjects.Container | null = null;
   private plateOf = new Map<string, Phaser.GameObjects.Container>();
   /** Glowing crystals on a cave floor (lights for the dark cave). */
@@ -313,6 +316,8 @@ export class BattleScene extends Phaser.Scene {
     this.deployPads = [];
     this.foePlates = null;
     this.plateOf = new Map();
+    this.cardCache = new Map();
+    this.cardsUsed = new Set();
     this.msgParts = [];
     this.pendingCrit = new Set();
     this.usingMove = null;
@@ -341,7 +346,7 @@ export class BattleScene extends Phaser.Scene {
     // The message box under the field: what happened just before (dimmed) and what just happened, sliding in.
     const msgTop = BOARD_Y + board.h + 4, msgH = Math.min(54, this.scale.height - msgTop - 2);
     const msgW = board.w - logW - 48;
-    const frame = messageFrame(this.add.graphics(), BOARD_X, msgTop, msgW, msgH);
+    const frame = messageFrame(this, BOARD_X, msgTop, msgW, msgH);
     this.logPrev = new RichText(this, BOARD_X + 12, msgTop + 8, msgW - 24, 11, "#aab4cc", 16);
     this.logStrip = new RichText(this, BOARD_X + 12, msgTop + 27, msgW - 24, 12, "#ffffff", 16);
     // Hidden until the opening's own box has spoken (see playIntro).
@@ -1210,8 +1215,7 @@ export class BattleScene extends Phaser.Scene {
     const view = this.units.get(unitId);
     if (!view) return;
     this.previewLabels ??= this.add.container(0, 0).setDepth(16);
-    const g = this.add.graphics();
-    const parts: Phaser.GameObjects.GameObject[] = [g];
+    const parts: Phaser.GameObjects.GameObject[] = [];
     const laid: { x: number; w: number; h: number; look: (typeof CHIP_LOOKS)[PreviewChip["kind"]] }[] = [];
     let x = 0;
     for (const c of chips) {
@@ -1225,14 +1229,19 @@ export class BattleScene extends Phaser.Scene {
     }
     const total = x - 3;
     // Centre the row over the Pokémon, then draw the chips and the tail under the first (largest) one.
-    parts.forEach((o) => o !== g && ((o as Phaser.GameObjects.Text).x -= total / 2));
-    for (const c of laid) {
-      g.fillStyle(0x000000, 0.35).fillRoundedRect(c.x - total / 2 + 1, -c.h / 2 + 2, c.w, c.h, 5);
-      g.fillStyle(c.look.fill, 0.95).fillRoundedRect(c.x - total / 2, -c.h / 2, c.w, c.h, 5);
-      g.lineStyle(1.5, c.look.rim, 1).strokeRoundedRect(c.x - total / 2, -c.h / 2, c.w, c.h, 5);
-    }
+    parts.forEach((o) => ((o as Phaser.GameObjects.Text).x -= total / 2));
     const first = laid[0]!;
-    g.fillStyle(first.look.rim, 1).fillTriangle(-4, first.h / 2, 4, first.h / 2, 0, first.h / 2 + 5);
+    const H = Math.max(...laid.map((c) => c.h));
+    const key = `chip:${laid.map((c) => `${c.look.fill}/${c.w}/${c.h}`).join(",")}`;
+    parts.unshift(baked(this, key, total + 6, H + 12, (b) => {
+      b.translateCanvas(total / 2 + 3, H / 2 + 3);
+      for (const c of laid) {
+        b.fillStyle(0x000000, 0.35).fillRoundedRect(c.x - total / 2 + 1, -c.h / 2 + 2, c.w, c.h, 5);
+        b.fillStyle(c.look.fill, 0.95).fillRoundedRect(c.x - total / 2, -c.h / 2, c.w, c.h, 5);
+        b.lineStyle(1.5, c.look.rim, 1).strokeRoundedRect(c.x - total / 2, -c.h / 2, c.w, c.h, 5);
+      }
+      b.fillStyle(first.look.rim, 1).fillTriangle(-4, first.h / 2, 4, first.h / 2, 0, first.h / 2 + 5);
+    }).setPosition(-total / 2 - 3, -H / 2 - 3));
     const chip = this.add.container(view.container.x, view.container.y - 34, parts);
     const box = () => new Phaser.Geom.Rectangle(chip.x - total / 2, chip.y - 10, total, 20);
     const others = this.previewLabels.list.filter((o): o is Phaser.GameObjects.Container => o instanceof Phaser.GameObjects.Container);
@@ -1273,6 +1282,9 @@ export class BattleScene extends Phaser.Scene {
    * the rest on plates of their side's colour. When the turn passes the row slides along.
    */
   private renderTurnOrder(state: BattleState): void {
+    const sig = JSON.stringify(state.queue.map((id) => [id, unitById(state, id).level]));
+    if (this.orderStrip?.active && sig === this.orderSig) return;
+    this.orderSig = sig;
     this.orderStrip?.destroy();
     const items: Phaser.GameObjects.GameObject[] = [];
     const big = 40, small = 30, gap = 4, cy = 30;
@@ -1283,11 +1295,12 @@ export class BattleScene extends Phaser.Scene {
       const now = i === 0;
       const size = now ? big : small;
       const foe = u.side === "enemy";
-      const g = this.add.graphics();
-      if (now) g.fillStyle(0xf5d76e, 0.25).fillRoundedRect(x - 3, cy - size / 2 - 3, size + 6, size + 6, 8);
-      g.fillStyle(foe ? 0x5a1a20 : 0x1a3a6a, 1).fillRoundedRect(x, cy - size / 2, size, size, 6);
-      g.lineStyle(now ? 3 : 2, now ? 0xf5d76e : foe ? COLORS.enemy : COLORS.player, 1).strokeRoundedRect(x, cy - size / 2, size, size, 6);
-      items.push(g);
+      items.push(baked(this, `tb:${foe}:${now}:${size}`, size + 8, size + 8, (b) => {
+        b.translateCanvas(4, 4);
+        if (now) b.fillStyle(0xf5d76e, 0.25).fillRoundedRect(-3, -3, size + 6, size + 6, 8);
+        b.fillStyle(foe ? 0x5a1a20 : 0x1a3a6a, 1).fillRoundedRect(0, 0, size, size, 6);
+        b.lineStyle(now ? 3 : 2, now ? 0xf5d76e : foe ? COLORS.enemy : COLORS.player, 1).strokeRoundedRect(0, 0, size, size, 6);
+      }).setPosition(x - 4, cy - size / 2 - 4));
       if (this.textures.exists(portraitKey(u.speciesId))) items.push(this.add.image(x + size / 2, cy, portraitKey(u.speciesId)).setDisplaySize(size - 4, size - 4));
       items.push(this.add.text(x + size - 2, cy + size / 2 - 1, String(u.level), { fontFamily: FONT, fontSize: "9px", color: "#ffffff", stroke: "#10141c", strokeThickness: 3 }).setOrigin(1, 1));
       if (now) {
@@ -1307,6 +1320,8 @@ export class BattleScene extends Phaser.Scene {
   }
 
   private panelKey = "";
+  private cardCache = new Map<string, Phaser.GameObjects.Container | Phaser.GameObjects.Text>();
+  private cardsUsed = new Set<string>();
 
   /** Everything the side panel shows depends on; when it is unchanged the panel is not rebuilt (that costs GPU textures). */
   private panelSignature(): string {
@@ -1322,13 +1337,22 @@ export class BattleScene extends Phaser.Scene {
     const sig = this.panelSignature();
     if (sig === this.panelKey) return;
     this.panelKey = sig;
-    this.orderStrip?.destroy();
-    this.orderStrip = null;
+    // Cards from the last build are kept aside (unchanged ones are reused below); the rest of the panel goes.
+    for (const [key, card] of this.cardCache) {
+      if (!this.cardsUsed.has(key) || !card.active) {
+        card.destroy();
+        this.cardCache.delete(key);
+        continue;
+      }
+      this.panel.remove(card, false);
+      card.setVisible(false);
+    }
+    this.cardsUsed = new Set();
     this.panel.removeAll(true);
     this.hoveredMove = null;
     let y = 0;
     const text = (s: string, color: string = COLORS.text, size = 13) => {
-      const t = this.add.text(0, y, s, { fontFamily: FONT, fontSize: px(size), color, wordWrap: { width: PANEL_W } });
+      const t = this.cachedCard(JSON.stringify(["tx", s, color, size]), () => this.add.text(0, 0, s, { fontFamily: FONT, fontSize: px(size), color, wordWrap: { width: PANEL_W } })).setPosition(0, y);
       this.panel.add(t);
       y += t.height + 4;
     };
@@ -1404,6 +1428,8 @@ export class BattleScene extends Phaser.Scene {
 
     const state = this.state!;
     if (this.phase === "over") {
+      this.orderStrip?.destroy();
+      this.orderStrip = null;
       // The results card says it; the header steps aside.
       setPixText(this.header, "");
       // Everything else is on the results card over the field.
@@ -1421,7 +1447,8 @@ export class BattleScene extends Phaser.Scene {
     const bond = state.bond.player;
     text(`${CONTENT.terms.bond} ${"●".repeat(bond)}${"○".repeat(Math.max(0, state.bondMax.player - bond))} ${bond}/${state.bondMax.player}`, "#f5d76e", 13);
     if (unit) {
-      this.panel.add(this.activeCard(unit, 0, y));
+      const steps = this.state?.turn?.movePointsLeft ?? 0;
+      this.panel.add(this.cachedCard(JSON.stringify(["ac", unit.id, unit.hp, unit.maxHp, unit.level, unit.statuses.map((x) => x.id), steps.toFixed(1)]), () => this.activeCard(unit, 0, 0)).setPosition(0, y));
       y += 60;
     }
     // The acting Pokémon's moves always show: live on the player's turn, locked (dimmed, the one in use lit)
@@ -1454,7 +1481,8 @@ export class BattleScene extends Phaser.Scene {
             : move.kind === "ultimate" && unit.usedUltimates.includes(moveId) ? { state: "spent", note: t("ult used") }
             : !hasTarget ? { state: "noTarget", note: `✕ ${reachShort(move, range)}` }
             : { state: "ready", note: move.kind === "bond" ? "●".repeat(bondCostFor(move, unit)) : move.kind === "ultimate" ? t("ult 1×") : reachShort(move, range) };
-          const card = this.moveCard(move, power, look, cardW, cardH, locked ? this.usingMove === moveId : this.selectedMove === moveId, () => {
+          const lit = locked ? this.usingMove === moveId : this.selectedMove === moveId;
+          const card = this.cachedCard(JSON.stringify(["mc", unit.id, moveId, power, look, lit, locked]), () => this.moveCard(move, power, look, cardW, cardH, lit, () => {
             this.selectedBall = null;
             this.selectedMove = this.selectedMove === moveId ? null : moveId;
             this.refreshAll();
@@ -1462,10 +1490,10 @@ export class BattleScene extends Phaser.Scene {
             this.hoveredMove = over ? moveId : this.hoveredMove === moveId ? null : this.hoveredMove;
             this.refreshInfo();
             this.refreshOverlay();
-          });
+          }));
           card.setPosition((i % 2) * (cardW + 8), y + Math.floor(i / 2) * (cardH + 6));
-          if (locked) {
-            card.disableInteractive();
+          if (locked && card.alpha === 1 && !card.getData("locked")) {
+            card.setData("locked", true);
             card.list.forEach((o) => (o as Phaser.GameObjects.Rectangle).input && (o as Phaser.GameObjects.Rectangle).disableInteractive());
             if (this.usingMove !== moveId) card.setAlpha(0.6);
           }
@@ -1518,11 +1546,13 @@ export class BattleScene extends Phaser.Scene {
     const s = CONTENT.species[unit.speciesId]!;
     const foe = unit.side === "enemy";
     const h = 54;
-    const g = this.add.graphics();
-    g.fillStyle(0x000000, 0.3).fillRoundedRect(2, 3, w, h, 8);
-    g.fillStyle(foe ? 0x2a1a22 : 0x1a2338, 1).fillRoundedRect(0, 0, w, h, 8);
-    g.lineStyle(2, foe ? COLORS.enemy : COLORS.player, 1).strokeRoundedRect(0, 0, w, h, 8);
-    g.fillStyle(0x0c1018, 1).fillRoundedRect(6, 6, 42, 42, 6);
+    const g = baked(this, `ac:${foe}:${w}`, w + 6, h + 7, (b) => {
+      b.translateCanvas(2, 2);
+      b.fillStyle(0x000000, 0.3).fillRoundedRect(2, 3, w, h, 8);
+      b.fillStyle(foe ? 0x2a1a22 : 0x1a2338, 1).fillRoundedRect(0, 0, w, h, 8);
+      b.lineStyle(2, foe ? COLORS.enemy : COLORS.player, 1).strokeRoundedRect(0, 0, w, h, 8);
+      b.fillStyle(0x0c1018, 1).fillRoundedRect(6, 6, 42, 42, 6);
+    }).setPosition(-2, -2);
     const parts: Phaser.GameObjects.GameObject[] = [g];
     if (this.textures.exists(portraitKey(unit.speciesId))) parts.push(this.add.image(27, 27, portraitKey(unit.speciesId)).setDisplaySize(40, 40));
     // The tooltip leaves out "Foe": its red rim says it.
@@ -1566,13 +1596,16 @@ export class BattleScene extends Phaser.Scene {
       return (ch(16) << 16) | (ch(8) << 8) | ch(0);
     };
     const fill = look.state === "ready" ? base : look.state === "noTarget" ? mix(base, 0x5a6070, 0.55) : mix(base, 0x141820, 0.75);
-    const g = this.add.graphics();
-    g.fillStyle(0x000000, 0.35).fillRoundedRect(1, 3, w, h, 7);
-    g.fillStyle(mix(fill, 0x000000, 0.25), 1).fillRoundedRect(0, 0, w, h, 7);
-    g.fillStyle(fill, 1).fillRoundedRect(2, 2, w - 4, h - 4, 6);
-    // The sheen: a lighter upper half.
-    g.fillStyle(0xffffff, look.state === "spent" ? 0.05 : 0.16).fillRoundedRect(3, 3, w - 6, h / 2 - 3, { tl: 5, tr: 5, bl: 0, br: 0 });
-    if (selected) g.lineStyle(3, 0xf5d76e, 1).strokeRoundedRect(0, 0, w, h, 7);
+    // Drawn once per look into a texture (a live Graphics would re-tessellate its rounded shapes every frame).
+    const g = baked(this, `mc:${fill}:${look.state}:${selected}:${w}x${h}`, w + 4, h + 6, (b) => {
+      b.translateCanvas(2, 2);
+      b.fillStyle(0x000000, 0.35).fillRoundedRect(1, 3, w, h, 7);
+      b.fillStyle(mix(fill, 0x000000, 0.25), 1).fillRoundedRect(0, 0, w, h, 7);
+      b.fillStyle(fill, 1).fillRoundedRect(2, 2, w - 4, h - 4, 6);
+      // The sheen: a lighter upper half.
+      b.fillStyle(0xffffff, look.state === "spent" ? 0.05 : 0.16).fillRoundedRect(3, 3, w - 6, h / 2 - 3, { tl: 5, tr: 5, bl: 0, br: 0 });
+      if (selected) b.lineStyle(3, 0xf5d76e, 1).strokeRoundedRect(0, 0, w, h, 7);
+    }).setPosition(-2, -2);
     const dimText = look.state === "spent";
     const name = this.add.text(8, 5, move.name, { fontFamily: FONT, fontSize: px(12), color: dimText ? "#9aa0ae" : "#ffffff", fontStyle: "bold" })
       .setStroke("#10141c", 3);
@@ -1610,6 +1643,17 @@ export class BattleScene extends Phaser.Scene {
       onClick();
     });
     return card;
+  }
+
+  /** A panel card built once per look and reused while nothing on it changes (new Text objects are costly). */
+  private cachedCard<T extends Phaser.GameObjects.Container | Phaser.GameObjects.Text>(key: string, make: () => T): T {
+    this.cardsUsed.add(key);
+    let card = this.cardCache.get(key) as T | undefined;
+    if (!card?.active) {
+      card = make();
+      this.cardCache.set(key, card);
+    }
+    return card.setVisible(true) as T;
   }
 
   /** Shows info right under the panel; when it would run off the screen, the compact version is used. */
@@ -2378,12 +2422,14 @@ export class BattleScene extends Phaser.Scene {
     const r = UNIT_RADIUS * S + 2;
     this.deployPads = this.scenario.deploymentZone.map((pos) => {
       const c = fieldToWorld(pos);
-      const base = this.add.graphics({ x: c.x, y: c.y });
-      base.fillStyle(COLORS.zone, 0.22).fillCircle(0, 0, r);
-      base.fillStyle(0xffffff, 0.1).slice(0, 0, r * 0.62, Math.PI, 0, false).fillPath();
-      base.lineStyle(2, COLORS.zone, 0.95).strokeCircle(0, 0, r);
-      base.lineStyle(1.5, 0xffffff, 0.45).strokeCircle(0, 0, r * 0.62);
-      base.lineBetween(-r * 0.62, 0, -r * 0.2, 0).lineBetween(r * 0.2, 0, r * 0.62, 0).strokeCircle(0, 0, r * 0.2);
+      const base = baked(this, `pad:${r}`, r * 2 + 4, r * 2 + 4, (b) => {
+        b.translateCanvas(r + 2, r + 2);
+        b.fillStyle(COLORS.zone, 0.22).fillCircle(0, 0, r);
+        b.fillStyle(0xffffff, 0.1).slice(0, 0, r * 0.62, Math.PI, 0, false).fillPath();
+        b.lineStyle(2, COLORS.zone, 0.95).strokeCircle(0, 0, r);
+        b.lineStyle(1.5, 0xffffff, 0.45).strokeCircle(0, 0, r * 0.62);
+        b.lineBetween(-r * 0.62, 0, -r * 0.2, 0).lineBetween(r * 0.2, 0, r * 0.62, 0).strokeCircle(0, 0, r * 0.2);
+      }).setOrigin(0.5).setPosition(c.x, c.y);
       const glow = this.add.circle(c.x, c.y, r, COLORS.zone, 0).setStrokeStyle(2, COLORS.zone, 0.9);
       this.tweens.add({ targets: glow, scale: { from: 1, to: 1.45 }, alpha: { from: 0.9, to: 0 }, duration: 1000, repeat: -1, ease: "Sine.easeOut" });
       return { pos, base, glow };
@@ -2400,9 +2446,10 @@ export class BattleScene extends Phaser.Scene {
       const top = v.sprite ? v.container.y + (v.sprite.y - v.sprite.displayHeight * v.sprite.originY) * UNIT_SCALE : v.container.y - 20;
       const label = this.add.text(0, 0, `${CONTENT.species[e.speciesId]!.name} Lv${e.level ?? 1}`, { fontFamily: FONT, fontSize: px(10), color: "#ffffff", fontStyle: "bold" }).setOrigin(0.5);
       const w = label.width + 10;
-      const g = this.add.graphics();
-      g.fillStyle(0x10141c, 0.85).fillRoundedRect(-w / 2, -8, w, 16, 5);
-      g.lineStyle(1.5, COLORS.enemy, 1).strokeRoundedRect(-w / 2, -8, w, 16, 5);
+      const g = baked(this, `pl:${w}`, w + 4, 20, (b) => {
+        b.fillStyle(0x10141c, 0.85).fillRoundedRect(2, 2, w, 16, 5);
+        b.lineStyle(1.5, COLORS.enemy, 1).strokeRoundedRect(2, 2, w, 16, 5);
+      }).setPosition(-w / 2 - 2, -10);
       // Kept on the board, like the floating numbers.
       const board = this.boardPx();
       const plateX = Phaser.Math.Clamp(v.container.x, BOARD_X + w / 2 + 2, BOARD_X + board.w - w / 2 - 2);
@@ -2646,12 +2693,15 @@ export class BattleScene extends Phaser.Scene {
     y += 42;
     // The card: dark, rimmed in the outcome's colour, a lighter band under the title.
     const rim = win ? 0xf5d76e : state.outcome === "defeat" ? 0xb04040 : 0x7a8498;
-    const bg = this.add.graphics();
-    bg.fillStyle(0x000000, 0.35).fillRoundedRect(4, 6, W, y, 10);
-    bg.fillStyle(0x10141c, 0.96).fillRoundedRect(0, 0, W, y, 10);
-    bg.fillStyle(rim, 0.16).fillRoundedRect(0, 0, W, 56, { tl: 10, tr: 10, bl: 0, br: 0 });
-    bg.lineStyle(3, rim, 1).strokeRoundedRect(0, 0, W, y, 10);
-    bg.lineStyle(1, rim, 0.5).strokeRoundedRect(5, 5, W - 10, y - 10, 7);
+    const H = y;
+    const bg = baked(this, `res:${W}x${H}:${rim}`, W + 8, H + 10, (b) => {
+      b.translateCanvas(2, 2);
+      b.fillStyle(0x000000, 0.35).fillRoundedRect(4, 6, W, H, 10);
+      b.fillStyle(0x10141c, 0.96).fillRoundedRect(0, 0, W, H, 10);
+      b.fillStyle(rim, 0.16).fillRoundedRect(0, 0, W, 56, { tl: 10, tr: 10, bl: 0, br: 0 });
+      b.lineStyle(3, rim, 1).strokeRoundedRect(0, 0, W, H, 10);
+      b.lineStyle(1, rim, 0.5).strokeRoundedRect(5, 5, W - 10, H - 10, 7);
+    }).setPosition(-2, -2);
     const left = BOARD_X + (board.w - W) / 2;
     const top = Math.max(8, Math.min(BOARD_Y + (board.h - y) / 2, this.scale.height - y - 8));
     const dim = this.add.rectangle(BOARD_X, BOARD_Y, board.w, board.h, 0x000000, 0).setOrigin(0).setDepth(49);

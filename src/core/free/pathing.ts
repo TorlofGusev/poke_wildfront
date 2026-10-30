@@ -82,6 +82,29 @@ function segmentCost(field: FreeField, lat: Lattice, a: Point, b: Point, blocked
  * unit walked costs the terrain's moveCost (mud and water twice). Foes block; allies can be crossed but not stopped on.
  */
 export function freeReach(field: FreeField, from: Point, budget: number, bodies: readonly FreeBody[], flies: boolean): FreeReach {
+  // A pure function of its inputs, asked again and again with the same ones (the AI simulates every spot and
+  // move from the same position; the UI redraws): answers are remembered per field content and walker.
+  let fk = fieldKeys.get(field);
+  if (fk === undefined) fieldKeys.set(field, (fk = JSON.stringify(field)));
+  let id = fieldIds.get(fk);
+  if (id === undefined) {
+    if (fieldIds.size >= 8) fieldIds.clear();
+    fieldIds.set(fk, (id = nextFieldId++));
+  }
+  const key = `${id}|${from.x},${from.y}|${budget}|${flies ? 1 : 0}|${bodies.map((b) => `${b.pos.x},${b.pos.y},${b.passable ? 1 : 0}`).join(";")}`;
+  const hit = reachCache.get(key);
+  if (hit) return hit;
+  if (reachCache.size >= 512) reachCache.clear();
+  const reach = computeReach(field, from, budget, bodies, flies);
+  reachCache.set(key, reach);
+  return reach;
+}
+
+const fieldIds = new Map<string, number>();
+let nextFieldId = 0;
+const reachCache = new Map<string, FreeReach>();
+
+function computeReach(field: FreeField, from: Point, budget: number, bodies: readonly FreeBody[], flies: boolean): FreeReach {
   const lat = latticeFor(field, flies);
   const { cols, rows } = lat;
   const near = (p: Point, d: number, list: readonly FreeBody[]) => list.some((b) => distance(b.pos, p) < d);

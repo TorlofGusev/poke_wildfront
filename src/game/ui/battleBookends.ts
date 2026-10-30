@@ -1,4 +1,5 @@
 import Phaser from "phaser";
+import { baked } from "./bake";
 import { pixText, setPixText } from "./pixelFont";
 
 /**
@@ -47,18 +48,19 @@ export function battleWipe(scene: Phaser.Scene, trainer: boolean, done: () => vo
 }
 
 /** The message box's frame (DS style): a dark outer edge, a white rim, a navy field with a faint inner line. */
-export function messageFrame(g: Phaser.GameObjects.Graphics, x: number, y: number, w: number, h: number): Phaser.GameObjects.Graphics {
-  g.fillStyle(0x10141c, 1).fillRoundedRect(x, y, w, h, 7);
-  g.fillStyle(0xf0f0f0, 1).fillRoundedRect(x + 2, y + 2, w - 4, h - 4, 6);
-  g.fillStyle(0x24345e, 1).fillRoundedRect(x + 4, y + 4, w - 8, h - 8, 5);
-  g.lineStyle(1, 0x4a6098, 1).strokeRoundedRect(x + 7, y + 7, w - 14, h - 14, 3);
-  return g;
+export function messageFrame(scene: Phaser.Scene, x: number, y: number, w: number, h: number): Phaser.GameObjects.Image {
+  return baked(scene, `msg:${w}x${h}`, w, h, (g) => {
+    g.fillStyle(0x10141c, 1).fillRoundedRect(0, 0, w, h, 7);
+    g.fillStyle(0xf0f0f0, 1).fillRoundedRect(2, 2, w - 4, h - 4, 6);
+    g.fillStyle(0x24345e, 1).fillRoundedRect(4, 4, w - 8, h - 8, 5);
+    g.lineStyle(1, 0x4a6098, 1).strokeRoundedRect(7, 7, w - 14, h - 14, 3);
+  }).setPosition(x, y);
 }
 
 /** A message box over the field; the text types itself out. */
 export function messageBox(scene: Phaser.Scene, x: number, y: number, w: number, text: string): { box: Phaser.GameObjects.Container; typed: Promise<void> } {
   const h = 44;
-  const g = messageFrame(scene.add.graphics(), 0, 0, w, h);
+  const g = messageFrame(scene, 0, 0, w, h);
   const label = pixText(scene, 16, h / 2, "").setOrigin(0, 0.5);
   const box = scene.add.container(x, y, [g, label]).setDepth(60);
   box.setAlpha(0);

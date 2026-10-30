@@ -189,6 +189,10 @@ export class TerrainShader {
   private readonly keyB: string;
   private lights: GroundLight[] = [];
   private pools: GroundPool[] = [];
+  /** Whether any water moves on this board (otherwise, with no pools and unchanged lights, a frame is skipped). */
+  private hasWater = false;
+  /** What the last drawn still frame showed; null forces the next frame. */
+  private stillKey: string | null = null;
   private frame = 0;
 
   constructor(
@@ -245,6 +249,13 @@ export class TerrainShader {
 
   private tick(): void {
     if (this.frame++ % 2) return;
+    // Nothing moving (no water, no burning or poisoned ground) and the same lights as last time: the picture
+    // is the same, so the full-board shader pass is skipped (an idle board then costs nothing).
+    if (!this.hasWater && !this.pools.length) {
+      const key = this.lights.map((l) => `${Math.round(l.x)},${Math.round(l.y)},${l.intensity.toFixed(2)},${l.radius}`).join(";");
+      if (key === this.stillKey) return;
+      this.stillKey = key;
+    } else this.stillKey = null;
     this.view.clear().draw(this.moving).render();
   }
 
@@ -255,6 +266,8 @@ export class TerrainShader {
 
   /** Paints the terrain masks from the field (later zones cover earlier ones, as in the rules), softened. */
   update(field: FreeField, base: Phaser.GameObjects.Graphics): void {
+    this.hasWater = field.zones.some((z) => z.terrain === "water");
+    this.stillKey = null;
     const masks = ["rock", "bush", "water", "mud"].map(() => {
       const c = document.createElement("canvas");
       c.width = Math.ceil(this.board.w / CELL);

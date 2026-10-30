@@ -31,7 +31,8 @@ export class RichText extends Phaser.GameObjects.Container {
   private style(color: string, background?: string): Phaser.Types.GameObjects.Text.TextStyle {
     return {
       fontFamily: FONT, fontSize: `${this.fontSize}px`, color,
-      ...(background && { backgroundColor: background, padding: { x: 3, y: 0 } }),
+      // Spelled out either way, so a pooled piece restyled from a chip loses its background.
+      backgroundColor: background ?? (null as unknown as string), padding: background ? { x: 3, y: 0 } : { x: 0, y: 0 },
     };
   }
 
@@ -58,7 +59,11 @@ export class RichText extends Phaser.GameObjects.Container {
   setMarkup(markup: string): number {
     if (markup === this.lastMarkup) return this.lastHeight;
     this.lastMarkup = markup;
-    this.removeAll(true);
+    // The old pieces go back to the pool instead of being destroyed: creating and destroying Text objects
+    // (a canvas and a GPU texture each) was the main cost of a busy log.
+    this.spare = [...(this.list as Phaser.GameObjects.Text[])];
+    this.spare.forEach((o) => o.setVisible(false));
+    this.spareAt = 0;
     let cx = 0;
     let cy = 0;
     // The run being collected: words of one colour on the current line.
@@ -66,7 +71,7 @@ export class RichText extends Phaser.GameObjects.Container {
     let runX = 0;
     let runColor = this.baseColor;
     const flush = () => {
-      if (run) this.add(this.scene.add.text(runX, cy, run, this.style(runColor)));
+      if (run) this.take(runX, cy, run, runColor);
       run = "";
     };
     const newline = () => {
@@ -81,10 +86,9 @@ export class RichText extends Phaser.GameObjects.Container {
         if (background) {
           // Chips never wrap internally; leave a small gap around them.
           flush();
-          const chip = this.scene.add.text(0, cy, seg.text, this.style(color, background));
+          const chip = this.take(0, cy, seg.text, color, background);
           if (cx > 0 && cx + chip.width > this.wrapWidth) newline();
           chip.setPosition(cx, cy);
-          this.add(chip);
           cx += chip.width + 1;
           continue;
         }
@@ -102,8 +106,37 @@ export class RichText extends Phaser.GameObjects.Container {
       }
     }
     flush();
+    // Pieces not needed this time stay hidden in the pool (a few spare); the rest go.
+    this.spare.slice(this.spareAt + 12).forEach((o) => o.destroy());
     this.lastHeight = markup ? cy + this.lineHeight : 0;
     return this.lastHeight;
+  }
+
+  private spare: Phaser.GameObjects.Text[] = [];
+  private spareAt = 0;
+  /** What each pooled piece is styled as now, so a reused one is restyled only when it has to be. */
+  private looks = new WeakMap<Phaser.GameObjects.Text, string>();
+
+  /** A text piece at (x, y): a pooled one when there is one, else a new one. */
+  private take(x: number, y: number, text: string, color: string, background?: string): Phaser.GameObjects.Text {
+    const look = `${color}|${background ?? ""}`;
+    let t = this.spareAt < this.spare.length ? this.spare[this.spareAt++] : undefined;
+    if (t) {
+      if (this.looks.get(t) !== look) {
+        // Not resetting to defaults: that would also zero the resolution, and the piece would draw nothing.
+        t.style.setStyle(this.style(color, background), false, false);
+        // Padding lives on the Text, not its style.
+        t.padding = background ? { left: 3, right: 3, top: 0, bottom: 0 } : { left: 0, right: 0, top: 0, bottom: 0 };
+        // setText skips an unchanged string; the new style still has to be drawn.
+        if (t.text === text) t.updateText();
+      }
+      t.setText(text).setPosition(x, y).setVisible(true);
+    } else {
+      t = this.scene.add.text(x, y, text, this.style(color, background));
+      this.add(t);
+    }
+    this.looks.set(t, look);
+    return t;
   }
 
 }

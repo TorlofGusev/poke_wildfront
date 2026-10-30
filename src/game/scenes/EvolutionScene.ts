@@ -62,7 +62,7 @@ export class EvolutionScene extends Phaser.Scene {
     const from = CONTENT.species[m.speciesId]!;
     const to = CONTENT.species[into]!;
     // The message box, as in battle.
-    messageFrame(this.add.graphics(), 40, height - 206, width - 80, 98);
+    messageFrame(this, 40, height - 206, width - 80, 98);
     const say = pixText(this, 60, height - 192, t("What? {name} is evolving!", { name: from.name })).setMaxWidth(width - 120);
 
     const oldView = this.formView(m.speciesId, cx, cy);
