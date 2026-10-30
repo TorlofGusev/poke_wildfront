@@ -36,11 +36,10 @@ const talents: Record<string, TalentDef> = {};
 /**
  * Archetype trees (docs/design/archetype-trees.md): lines grouped by type and role share one tree of rows;
  * each line brings its own Lv 3 focus. Row and focus entries are shared passives (mastery/passives.json),
- * the tree's own capstones, or `skill:<move id>` (a skill that teaches that canon move). Focus skills and the
- * strongest row skills (canon power ≥ progression bondCanonPower) are Bond moves, paid with Bond and hitting
- * harder, so a tree's big hits can't be spammed. Every move has one definition: a tree move turns Bond
- * everywhere. Pokémon start with a basic attack and one typed move (species.json); every other move comes
- * from the tree.
+ * the tree's own capstones, or `skill:<move id>` (a skill that teaches that canon move). A move's kind is its
+ * own (move data): canon power 85+ makes a Bond move (focus skills and the Lv 24 row), paid with Bond and hitting
+ * harder, so a tree's big hits can't be spammed. Pokémon start with a basic attack and one typed move
+ * (species.json); every other move comes from the tree.
  */
 export interface ArchetypeFile {
   readonly id: string;
@@ -74,7 +73,6 @@ const roleOfSpecies = (id: string): Role | undefined => (speciesData as Record<s
 /** Every move some species starts with: a swap never brings one in, as a tree move would turn it Bond everywhere. */
 const STARTING = new Set(Object.values(speciesData as Record<string, { moves: string[] }>).flatMap((s) => s.moves));
 const moveOfSkill = (id: string) => (id.startsWith(SKILL) ? id.slice(SKILL.length) : null);
-const strong = (id: string) => (moves[id]?.canonPower ?? 0) >= progression.bondCanonPower;
 /** The tree as one species sees it: every skill of the other reach swapped for a counterpart of its role. */
 function treeForRole(tree: MasteryTree, role: Role | undefined, start: readonly string[] = []): MasteryTree {
   if (!role) return tree;

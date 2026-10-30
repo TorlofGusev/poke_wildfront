@@ -16,7 +16,10 @@ const LEVEL = Number(process.env.TREEBAL_LEVEL ?? 20);
 if (process.env.MELEE) Object.assign(CONTENT.rules.melee, JSON.parse(process.env.MELEE));
 /** Fights per pairing (TREEBAL_SEEDS, default 2); more seeds, steadier numbers. */
 const SEEDS = Array.from({ length: Number(process.env.TREEBAL_SEEDS ?? 2) }, (_, i) => i + 1);
-const lines = [...new Set(Object.values(PROGRESSION.trees))];
+/** Each line once (every member has its own tree object), or only TREEBAL_LINES=paras,scyther (first species). */
+const ONLY = process.env.TREEBAL_LINES?.split(",");
+const allLines = [...new Map(Object.values(PROGRESSION.trees).map((t) => [t.line[0]!, t])).values()];
+const lines = allLines.filter((t) => !ONLY || ONLY.includes(t.line[0]!));
 const first = (t: (typeof lines)[number]) => t.line[0]!;
 
 /** Picks the focus with Bond skill `focus` and `force` whenever offered, else seeded. */
@@ -34,8 +37,9 @@ it.skipIf(!process.env.TREEBAL)("tree balance report", () => {
   const t0 = Date.now();
   // 1) Line power vs a gauntlet.
   // Every line once, in mixed trios (a seeded shuffle), so every type faces the lines at its real share.
-  const shuffled = lines.map(first).map((id, i) => ({ id, key: (i * 7919 + 13) % 104729 })).sort((x, y) => x.key - y.key).map((x) => x.id);
-  const gauntletSpecies = Array.from({ length: Math.floor(shuffled.length / 3) }, (_, k) => shuffled.slice(k * 3, k * 3 + 3));
+  const shuffled = allLines.map(first).map((id, i) => ({ id, key: (i * 7919 + 13) % 104729 })).sort((x, y) => x.key - y.key).map((x) => x.id);
+  // The first TREEBAL_GAUNTLET trios only (default all), for quicker runs.
+  const gauntletSpecies = Array.from({ length: Math.floor(shuffled.length / 3) }, (_, k) => shuffled.slice(k * 3, k * 3 + 3)).slice(0, Number(process.env.TREEBAL_GAUNTLET ?? 999));
   const gauntlet = gauntletSpecies.map((team, k) => {
     const members = team.map((sp, i) => raise(sp, LEVEL, (o, s) => o[s % o.length]!, k * 7 + i));
     return { units: members.map((m) => toUnitSetup(CONTENT, PROGRESSION, m)), bond: bondOf(members) };

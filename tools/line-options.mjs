@@ -1,10 +1,13 @@
 // Suggests each line's own option for its archetype tree's skill rows (Lv 6/12/18/24): a move the line can learn,
 // preferably of a type the row's shared options don't cover (the line's other types first), at a power that fits
-// the row. Usage: node tools/line-options.mjs blaze,bloom,brawler
+// the row; a move the line learns in Let's Go Pikachu/Eevee (its signature moves there) goes first.
+// Usage: node tools/line-options.mjs blaze,bloom,brawler
 import fs from "node:fs";
 
 const read = (p) => JSON.parse(fs.readFileSync(p, "utf8"));
 const learn = read("tools/data/learnsets.json");
+/** Let's Go Pikachu/Eevee learnsets (PokeAPI version group lets-go-pikachu-lets-go-eevee): move → how it is learnt. */
+const lgpe = read("tools/data/learnsets-lgpe.json");
 const canon = read("tools/data/canon-moves.json");
 const species = read("src/content/species.json");
 const moves = { ...read("src/content/mastery/moves.json"), ...read("src/content/moves.json") };
@@ -26,6 +29,7 @@ for (const id of (process.argv[2] ?? "").split(",").filter(Boolean)) {
     const types = [...new Set(l.line.flatMap((s) => species[s].types))];
     const taken = new Set([...Object.values(a.rows).flat().map(skill), ...l.focus.map((f) => skill(f.skill)), ...l.line.flatMap((s) => species[s].moves)]);
     const can = [...new Set(l.line.flatMap((s) => learn[s] ?? []))].filter((m) => canon[m] && moves[m] && !taken.has(m) && !focusMoves.has(m) && canon[m].power && !UNSUPPORTED.test(canon[m].effect) && !SKIP.has(m));
+    const inLgpe = new Set(l.line.flatMap((s) => Object.keys(lgpe[s] ?? {})));
     const used = new Set();
     const usedTypes = new Map();
     console.log(`${l.line[0]} [${types.join("/")}]`);
@@ -37,12 +41,12 @@ for (const id of (process.argv[2] ?? "").split(",").filter(Boolean)) {
         const t = c.type;
         // The line's other types first, then any type the row lacks; a type the line's own options already use counts less.
         const fit = types.includes(t) && !rowTypes.has(t) ? 0 : !rowTypes.has(t) && t !== "normal" ? 1 : 2;
-        return fit * 1000 + 1100 * (usedTypes.get(t) ?? 0) + Math.abs(c.power - (lo + hi) / 2);
+        return fit * 1000 + 1100 * (usedTypes.get(t) ?? 0) + (inLgpe.has(m) ? 0 : 500) + Math.abs(c.power - (lo + hi) / 2);
       };
       const picks = can.filter((m) => !used.has(m) && canon[m].power >= lo && canon[m].power <= hi).sort((x, y) => score(x) - score(y)).slice(0, 4);
       if (picks[0]) { used.add(picks[0]); usedTypes.set(canon[picks[0]].type, (usedTypes.get(canon[picks[0]].type) ?? 0) + 1); }
       if (WRITE && picks[0] && !l.rows?.[lv]) (l.rows ??= {})[lv] = `skill:${picks[0]}`;
-      console.log(`  Lv${lv} shared ${a.rows[lv].map(skill).map((m) => `${m}(${canon[m]?.type})`).join(", ")} | own: ${picks.map((m) => `${m}(${canon[m].type} ${canon[m].power})`).join(", ")}`);
+      console.log(`  Lv${lv} shared ${a.rows[lv].map(skill).map((m) => `${m}(${canon[m]?.type})`).join(", ")} | own: ${picks.map((m) => `${m}(${canon[m].type} ${canon[m].power}${inLgpe.has(m) ? " LG" : ""})`).join(", ")}`);
     }
   }
   if (WRITE) fs.writeFileSync(`src/content/mastery/archetypes/${id}.json`, JSON.stringify(a, null, 1) + "\n");

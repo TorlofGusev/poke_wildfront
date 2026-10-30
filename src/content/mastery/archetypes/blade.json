@@ -10,7 +10,7 @@
    "focus": [
     {
      "stat": "attack",
-     "skill": "skill:skull-bash"
+     "skill": "skill:first-impression"
     },
     {
      "stat": "attack",
@@ -46,7 +46,7 @@
    "focus": [
     {
      "stat": "attack",
-     "skill": "skill:outrage"
+     "skill": "skill:megahorn"
     },
     {
      "stat": "attack",
@@ -83,7 +83,7 @@
    "focus": [
     {
      "stat": "attack",
-     "skill": "skill:skull-bash"
+     "skill": "skill:leaf-blade"
     },
     {
      "stat": "attack",
@@ -92,15 +92,16 @@
     },
     {
      "stat": "attack",
-     "skill": "skill:giga-impact"
+     "skill": "skill:first-impression"
     }
    ],
    "rows": {
     "6": [
-     "skill:flash"
+     "skill:spore"
     ],
     "12": [
-     "skill:aromatherapy"
+     "skill:aromatherapy",
+     "skill:x-scissor"
     ],
     "18": [
      "skill:leech-life",

@@ -494,7 +494,14 @@
   "category": "physical",
   "canonPower": 120,
   "reach": "melee",
-  "bondCost": 3
+  "bondCost": 3,
+  "effects": [
+   {
+    "kind": "status",
+    "status": "confused",
+    "duration": 1
+   }
+  ]
  },
  "baby-doll-eyes": {
   "id": "baby-doll-eyes",
@@ -537,7 +544,8 @@
   },
   "affects": "enemies",
   "canonPower": 45,
-  "reach": "ranged"
+  "reach": "ranged",
+  "hits": 3
  },
  "barrier": {
   "id": "barrier",
@@ -773,7 +781,8 @@
   "affects": "enemies",
   "canonPower": 75,
   "cooldown": 2,
-  "reach": "melee"
+  "reach": "melee",
+  "hits": 3
  },
  "bonemerang": {
   "id": "bonemerang",
@@ -1079,7 +1088,8 @@
   "cooldown": 2,
   "category": "physical",
   "canonPower": 75,
-  "reach": "ranged"
+  "reach": "ranged",
+  "hits": 3
  },
  "burn-up": {
   "id": "burn-up",
@@ -1349,7 +1359,7 @@
   "name": "Close Combat",
   "type": "fighting",
   "selfStatus": {
-   "status": "weakened",
+   "status": "exposed",
    "duration": 2
   },
   "kind": "bond",
@@ -1358,7 +1368,7 @@
    "min": 1,
    "max": 1
   },
-  "requiresLineOfSight": true,
+  "requiresLineOfSight": false,
   "shape": {
    "kind": "single"
   },
@@ -1562,7 +1572,7 @@
   "canonPower": 100,
   "category": "physical",
   "reach": "melee",
-  "bondCost": 3
+  "bondCost": 2
  },
  "cross-poison": {
   "id": "cross-poison",
@@ -2595,7 +2605,7 @@
   "requiresLineOfSight": false,
   "shape": {
    "kind": "burst",
-   "radius": 1
+   "radius": 2
   },
   "affects": "enemies",
   "canonPower": 250,
@@ -2664,7 +2674,8 @@
   "cooldown": 2,
   "category": "physical",
   "canonPower": 70,
-  "reach": "melee"
+  "reach": "melee",
+  "statusedPower": 0.5
  },
  "fake-out": {
   "id": "fake-out",
@@ -3411,7 +3422,13 @@
   "affects": "enemies",
   "canonPower": 75,
   "category": "special",
-  "reach": "ranged"
+  "reach": "ranged",
+  "effects": [
+   {
+    "kind": "drain",
+    "amount": 0.25
+   }
+  ]
  },
  "giga-impact": {
   "id": "giga-impact",
@@ -3431,7 +3448,17 @@
   "affects": "enemies",
   "canonPower": 150,
   "reach": "melee",
-  "bondCost": 3
+  "bondCost": 3,
+  "effects": [
+   {
+    "kind": "push",
+    "distance": 2
+   }
+  ],
+  "selfStatus": {
+   "status": "slow",
+   "duration": 1
+  }
  },
  "glare": {
   "id": "glare",
@@ -4343,7 +4370,8 @@
   "affects": "enemies",
   "canonPower": 75,
   "cooldown": 2,
-  "reach": "ranged"
+  "reach": "ranged",
+  "hits": 3
  },
  "icy-wind": {
   "id": "icy-wind",
@@ -4605,7 +4633,8 @@
   "affects": "enemies",
   "canonPower": 140,
   "reach": "melee",
-  "bondCost": 3
+  "bondCost": 3,
+  "ignoresBuffs": true
  },
  "lava-plume": {
   "id": "lava-plume",
@@ -4791,7 +4820,7 @@
   "requiresLineOfSight": false,
   "shape": {
    "kind": "burst",
-   "radius": 1
+   "radius": 2
   },
   "affects": "allies",
   "effects": [
@@ -4801,7 +4830,7 @@
     "duration": 2
    }
   ],
-  "cooldown": 2
+  "cooldown": 3
  },
  "liquidation": {
   "id": "liquidation",
@@ -4821,7 +4850,14 @@
   "affects": "enemies",
   "canonPower": 85,
   "reach": "melee",
-  "bondCost": 2
+  "bondCost": 2,
+  "effects": [
+   {
+    "kind": "status",
+    "status": "exposed",
+    "duration": 1
+   }
+  ]
  },
  "lock-on": {
   "id": "lock-on",
@@ -5147,7 +5183,13 @@
   },
   "affects": "enemies",
   "canonPower": 40,
-  "reach": "ranged"
+  "reach": "ranged",
+  "effects": [
+   {
+    "kind": "drain",
+    "amount": 0.25
+   }
+  ]
  },
  "mega-kick": {
   "id": "mega-kick",
@@ -5701,13 +5743,14 @@
    "min": 2,
    "max": 4
   },
-  "requiresLineOfSight": true,
+  "requiresLineOfSight": false,
   "shape": {
    "kind": "single"
   },
   "affects": "enemies",
   "category": "special",
-  "reach": "ranged"
+  "reach": "ranged",
+  "ignoresBuffs": true
  },
  "night-slash": {
   "id": "night-slash",
@@ -6036,7 +6079,8 @@
   "affects": "enemies",
   "canonPower": 75,
   "category": "physical",
-  "reach": "ranged"
+  "reach": "ranged",
+  "hits": 3
  },
  "play-nice": {
   "id": "play-nice",
@@ -6088,7 +6132,7 @@
   "type": "poison",
   "kind": "special",
   "category": "physical",
-  "cooldown": 4,
+  "cooldown": 3,
   "power": 55,
   "range": {
    "min": 1,
@@ -6103,7 +6147,7 @@
    {
     "kind": "status",
     "status": "poison",
-    "duration": 2
+    "duration": 3
    }
   ],
   "canonPower": 50,
@@ -6521,7 +6565,8 @@
   },
   "affects": "enemies",
   "canonPower": 80,
-  "reach": "ranged"
+  "reach": "ranged",
+  "ignoresBuffs": true
  },
  "psystrike": {
   "id": "psystrike",
@@ -6863,7 +6908,8 @@
   "cooldown": 2,
   "category": "physical",
   "canonPower": 70,
-  "reach": "melee"
+  "reach": "melee",
+  "lowHpPower": 0.5
  },
  "revenge": {
   "id": "revenge",
@@ -6953,7 +6999,8 @@
    }
   ],
   "canonPower": 75,
-  "reach": "ranged"
+  "reach": "ranged",
+  "hits": 3
  },
  "rock-climb": {
   "id": "rock-climb",
@@ -7249,7 +7296,8 @@
   "cooldown": 2,
   "category": "physical",
   "canonPower": 75,
-  "reach": "ranged"
+  "reach": "ranged",
+  "hits": 3
  },
  "scary-face": {
   "id": "scary-face",
@@ -7332,15 +7380,16 @@
   "type": "grass",
   "kind": "special",
   "category": "physical",
-  "cooldown": 4,
-  "power": 60,
+  "cooldown": 3,
+  "power": 50,
   "range": {
    "min": 2,
    "max": 4
   },
   "requiresLineOfSight": true,
   "shape": {
-   "kind": "single"
+   "kind": "burst",
+   "radius": 1
   },
   "affects": "enemies",
   "canonPower": 80,
@@ -7389,7 +7438,7 @@
   "affects": "enemies",
   "canonPower": 200,
   "category": "physical",
-  "bondCost": 3
+  "bondCost": 2
  },
  "shadow-ball": {
   "id": "shadow-ball",
@@ -8194,7 +8243,8 @@
   "affects": "enemies",
   "canonPower": 60,
   "category": "physical",
-  "reach": "ranged"
+  "reach": "ranged",
+  "hits": 3
  },
  "spit-up": {
   "id": "spit-up",
@@ -8220,7 +8270,7 @@
   "name": "Spore",
   "type": "grass",
   "kind": "special",
-  "cooldown": 4,
+  "cooldown": 3,
   "power": 0,
   "range": {
    "min": 1,
@@ -8917,7 +8967,8 @@
   "cooldown": 2,
   "category": "physical",
   "canonPower": 75,
-  "reach": "melee"
+  "reach": "melee",
+  "hits": 3
  },
  "tail-whip": {
   "id": "tail-whip",
@@ -9366,7 +9417,8 @@
   "affects": "enemies",
   "category": "physical",
   "canonPower": 60,
-  "reach": "melee"
+  "reach": "melee",
+  "hits": 3
  },
  "twister": {
   "id": "twister",

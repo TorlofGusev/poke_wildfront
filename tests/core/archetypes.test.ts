@@ -16,6 +16,18 @@ const moveOf = (id: string) => (id.startsWith("skill:") ? id.slice(6) : null);
 /** A line's own options at a row (one id or a list). */
 const ownAt = (l: (typeof ARCHETYPES)[number]["lines"][number], lv: string): string[] => { const o = l.rows?.[lv]; return o === undefined ? [] : typeof o === "string" ? [o] : [...o]; };
 const ownAll = (l: (typeof ARCHETYPES)[number]["lines"][number]) => Object.keys(l.rows ?? {}).flatMap((lv) => ownAt(l, lv));
+/**
+ * A focus may teach a move its line cannot learn in canon only to fill a hole: a Bond move of one of the line's
+ * types that fits its role, when the line can learn no Bond move of that type fitting its role (no canon melee
+ * Bond moves of Bug for Scyther, Pinsir, Beedrill and Paras; none of Grass for Paras or of Rock for Aerodactyl).
+ */
+const fillsTypeHole = (line: readonly string[], mv: string): boolean => {
+  const move = CONTENT.moves[mv];
+  const role = CONTENT.species[line[line.length - 1]!]!.role;
+  const fits = (m: (typeof CONTENT.moves)[string]) => m.kind === "bond" && (!m.reach || m.reach === role);
+  if (!move || !fits(move) || !line.some((sp) => CONTENT.species[sp]!.types.includes(move.type))) return false;
+  return !Object.values(CONTENT.moves).some((m) => m.type === move.type && fits(m) && line.some((sp) => learn[sp]?.includes(m.id)));
+};
 /** What each skill row offers (Lv 18: basic attacks, or skills where the line has too few). */
 const ROW_KIND: Record<string, readonly string[]> = { "6": ["special"], "12": ["special"], "18": ["basic", "special"], "24": ["bond"] };
 /** Every evolution line: first species → members in evolution order (branches side by side). */
@@ -68,7 +80,7 @@ describe("archetype trees", () => {
           if (!FOCUS_STATS.has(f.stat)) at(`${l.line[0]}: focus on ${f.stat}`);
           if (a.mimic) { if (!PROGRESSION.talents[f.skill]) at(`unknown focus ${f.skill}`); continue; }
           if (!mv || !CONTENT.moves[mv]) at(`${l.line[0]}: focus ${f.skill} is not a known move`);
-          else if (!l.line.some((sp) => learn[sp]?.includes(mv))) at(`${l.line[0]}: cannot learn ${mv}`);
+          else if (!l.line.some((sp) => learn[sp]?.includes(mv)) && !fillsTypeHole(l.line, mv)) at(`${l.line[0]}: cannot learn ${mv}`);
         }
       }
     }

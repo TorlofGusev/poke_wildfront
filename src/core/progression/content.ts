@@ -52,8 +52,6 @@ export interface ItemDef {
 }
 
 export interface ProgressionRules {
-  /** Mastery skills from this canon power up (and every focus skill) are Bond moves, costing 3 Bond (focus ones below: 2). */
-  readonly bondCanonPower: number;
   /** Level at which a Pokémon chooses its focus. */
   readonly focusLevel: number;
   /** Points the focus stat gets when chosen. */

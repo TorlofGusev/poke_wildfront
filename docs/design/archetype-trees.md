@@ -9,7 +9,12 @@ Owner decisions (2026-10-27), replacing the one-tree-per-line design of `mastery
   `mastery/moves.json`, id = the PokeAPI slug, e.g. `flamethrower`) and every tree uses that definition. No
   retyped moves, no per-line copies, no character names for moves. Power follows the canon power formula
   (`powerFromCanon`).
-- **A line only gets moves it can learn in canon** (any modern game: level-up, TM, tutor, egg).
+- **A line only gets moves it can learn in canon** (any modern game: level-up, TM, tutor, egg;
+  `tools/data/learnsets.json`). Where several fit, a move the line learns in Let's Go Pikachu/Eevee goes first
+  (`tools/data/learnsets-lgpe.json`, its signature moves there: Paras' Spore, X-Scissor). One exception fills a
+  hole: when a line can learn no Bond move of one of its types that fits its role, its focus may teach one it
+  cannot learn (Bug has no canon melee Bond move for Scyther, Pinsir, Beedrill or Paras: First Impression,
+  Megahorn; Paras gets Leaf Blade, Aerodactyl Head Smash). Tested.
 - **Passives are shared** (`mastery/passives.json`): plain descriptive names ("Thick Hide", "Deep Roots"),
   one id per effect; capstones use canon ability names where one fits (Thick Fat, Swift Swim, Static).
 

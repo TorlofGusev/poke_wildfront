@@ -62,7 +62,7 @@ export const prog: ProgressionContent = {
     claw: { id: "claw", name: "Claw", description: "", kind: "held", price: 300, mods: { moveBonus: 1 } },
   },
   trees: {},
-  rules: { bondCanonPower: 100, focusLevel: 5, focusBonus: 2, focusGrowthEvery: 2, respecCostPerLevel: 10, maxLevel: 30, xpPerLevel: 10, pointsPerLevel: 1, evolutionPoints: 2, candiesPerVictory: 1, statOffer: { size: 3, doubleChance: 0 }, ev: { upgradeCost: 4, offerCost: 3, wildWin: 1, trainerWin: 3, badge: 10, quest: 2 }, xpPerEnemyLevel: 5, benchXpShare: 0.5, moneyPerEnemyLevel: 10, maxActiveMoves: 3 },
+  rules: { focusLevel: 5, focusBonus: 2, focusGrowthEvery: 2, respecCostPerLevel: 10, maxLevel: 30, xpPerLevel: 10, pointsPerLevel: 1, evolutionPoints: 2, candiesPerVictory: 1, statOffer: { size: 3, doubleChance: 0 }, ev: { upgradeCost: 4, offerCost: 3, wildWin: 1, trainerWin: 3, badge: 10, quest: 2 }, xpPerEnemyLevel: 5, benchXpShare: 0.5, moneyPerEnemyLevel: 10, maxActiveMoves: 3 },
 };
 
 /** A party member with default progression fields. */

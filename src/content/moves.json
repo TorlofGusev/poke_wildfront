@@ -87,7 +87,13 @@
   },
   "affects": "enemies",
   "canonPower": 20,
-  "reach": "ranged"
+  "reach": "ranged",
+  "effects": [
+   {
+    "kind": "drain",
+    "amount": 0.25
+   }
+  ]
  },
  "ember": {
   "id": "ember",
@@ -337,7 +343,8 @@
   },
   "affects": "enemies",
   "canonPower": 45,
-  "reach": "melee"
+  "reach": "melee",
+  "hits": 3
  },
  "razor-leaf": {
   "id": "razor-leaf",
@@ -752,7 +759,8 @@
   },
   "affects": "enemies",
   "canonPower": 54,
-  "reach": "melee"
+  "reach": "melee",
+  "hits": 3
  },
  "vice-grip": {
   "id": "vice-grip",
@@ -788,7 +796,8 @@
   },
   "affects": "enemies",
   "canonPower": 50,
-  "reach": "melee"
+  "reach": "melee",
+  "ignoresBuffs": true
  },
  "pay-day": {
   "id": "pay-day",
@@ -806,7 +815,14 @@
   },
   "affects": "enemies",
   "canonPower": 40,
-  "reach": "ranged"
+  "reach": "ranged",
+  "effects": [
+   {
+    "kind": "bond",
+    "amount": 1,
+    "when": "knockout"
+   }
+  ]
  },
  "constrict": {
   "id": "constrict",
@@ -850,7 +866,8 @@
   },
   "affects": "enemies",
   "canonPower": 54,
-  "reach": "melee"
+  "reach": "melee",
+  "hits": 3
  },
  "double-slap": {
   "id": "double-slap",
@@ -869,7 +886,8 @@
   },
   "affects": "enemies",
   "canonPower": 45,
-  "reach": "melee"
+  "reach": "melee",
+  "hits": 3
  },
  "poison-gas": {
   "id": "poison-gas",

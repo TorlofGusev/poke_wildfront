@@ -38,7 +38,10 @@ export function describeMove(content: BattleContent, move: MoveDef, inBattle = f
   if (move.recoil) lines.push(t("Recoil: the user takes {n} of the damage it deals", { n: tag("bad", `${Math.round(move.recoil * 100)}%`) }));
   // A drawback on the user is its price; a buff (Helping Hand) is said after what the target gets.
   const selfBuff = move.selfStatus && content.statuses[move.selfStatus.status]?.buff;
-  if (move.selfStatus && !selfBuff) lines.push(t("Price: the user becomes {status} for {n} turns", { status: tag("status", content.statuses[move.selfStatus.status]?.name ?? move.selfStatus.status), n: tag("num", move.selfStatus.duration) }));
+  if (move.selfStatus && !selfBuff) {
+    const vars = { status: tag("status", content.statuses[move.selfStatus.status]?.name ?? move.selfStatus.status), n: tag("num", move.selfStatus.duration) };
+    lines.push(move.selfStatus.duration > 1 ? t("Price: the user becomes {status} for {n} turns", vars) : t("Price: the user becomes {status} for {n} turn", vars));
+  }
   if (move.failsVs?.length) lines.push(t("No effect on {types} Pokémon", { types: move.failsVs.map((ty) => typeTag(ty)).join(", ") }));
   if (move.nonLethal) lines.push(t("Never knocks out: leaves the target at 1 HP at least (handy for catching)"));
   if (move.statusedPower) lines.push(t("Hits harder while the user has an ailment: {n} power", { n: tag("dmg", Math.round(move.power * (1 + move.statusedPower))) }));
