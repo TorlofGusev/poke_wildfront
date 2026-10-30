@@ -2,6 +2,7 @@
  {"version": "0.104",
   "date": "2026-10-29",
   "items": [
+  "A Town Map shows all of Kanto: towns, routes, caves and buildings joined by the roads between them, with a pulsing ring where you are. Open it with the Town Map button or the K key; point at (or tap) a spot to see its name.",
   "The map matches the new menus: people talk in the blue message window at the foot of the map, as in battle, the area name appears in a framed pixel banner (never behind a conversation), finds pop up in the same window, and the side column sits in framed cards. The tiny legend line over the map is gone; the map tip and the ? button explain the icons",
   "Every gym fights on its own floor: a rocky hall in Pewter, a pool in Cerulean, cover and steel in Vermilion, a greenhouse in Celadon, tiled halls in Saffron and an open, bare hall in Viridian. Gym trainers no longer battle on the mountain, in the forest, in the Power Plant or in Silph Co.",
   "The battle log says why an engagement ends: breaking away under a free strike, slipping away unpunished (Run Away…), leaving a helpless foe, a move such as U-turn, swapping places or being knocked apart. It also tells when a Pokémon catches a shot meant for an ally, when a confused one lashes out at the wrong target, and when a Pokémon is immune to a status rather than shrugging it off through willpower",

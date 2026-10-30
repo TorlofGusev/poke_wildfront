@@ -40,6 +40,7 @@ import { addFullscreenButton } from "../ui/fullscreen";
 import { tag } from "../ui/markup";
 import { t } from "../i18n";
 import { RichText } from "../ui/RichText";
+import { openTownMap } from "../ui/townMap";
 import { boardTheme, drawFloorDecor, drawWaterDecor, tileRand } from "../ui/boardDecor";
 import { ballIcon } from "../ui/ballIcon";
 import { trainerLook } from "../trainerLook";
@@ -122,6 +123,8 @@ export class OverworldScene extends Phaser.Scene {
   private hud!: RichText;
   /** Framed blocks behind the HUD column (status, party and stock). */
   private hudPanels!: Phaser.GameObjects.Container;
+  /** Closes the Town Map, while it is open. */
+  private townMap: (() => void) | null = null;
   /** The area name banner, while shown. */
   private areaToast: Phaser.GameObjects.Container | null = null;
   private buttons!: Phaser.GameObjects.Container;
@@ -245,6 +248,7 @@ export class OverworldScene extends Phaser.Scene {
       this.armed = null;
       this.act(from);
     });
+    this.input.keyboard?.on("keydown-K", () => this.toggleTownMap());
     this.input.keyboard?.on("keydown-I", () => {
       if (!this.moving && (this.spawnPanel || spawnsAt(WORLD_CONTENT, currentWorld(), this.spawnSpot()).length)) this.toggleSpawnPanel();
     });
@@ -648,6 +652,8 @@ export class OverworldScene extends Phaser.Scene {
     this.btnBox.add(new Button(this, 0, by, 240, 28, this.spawnPanel ? t("✕ Close wild Pokémon list") : t("🔍 Wild Pokémon here [I]"), () => this.toggleSpawnPanel())
       .setEnabled(spawns.length > 0 || this.spawnPanel !== null));
     by += 34;
+    this.btnBox.add(new Button(this, 0, by, 240, 28, t("🗺 Town Map [K]"), () => this.toggleTownMap()));
+    by += 34;
     if (here.id === "town") {
       half(0, t("❤ Heal"), () => {
         session.update(centerHeal(CONTENT, PROGRESSION, session.game));
@@ -673,6 +679,13 @@ export class OverworldScene extends Phaser.Scene {
     this.btnBox.add(new Button(this, 84, by, 32, 28, "?", () => showHelp(this)).centerLabel());
     const full = addFullscreenButton(this, 124, by, 116);
     if (full) this.btnBox.add(full);
+  }
+
+  /** Kanto at a glance, with the party's map marked. */
+  private toggleTownMap(): void {
+    if (this.townMap) return this.townMap();
+    if (this.moving) return;
+    this.townMap = openTownMap(this, this.world.mapId, () => { this.townMap = null; });
   }
 
   private announceArea(p: Point): void {

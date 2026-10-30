@@ -280,5 +280,9 @@
  "✓ and full colour: in use. Dim: known, resting. Tap a card for its rules.": "✓ és teljes szín: használatban. Halvány: ismert, pihen. Koppints egy kártyára a szabályaiért.",
  "Items": "Tárgyak",
  "↔ Swap with {move}": "↔ Csere: {move}",
- "(melee)": "(közelharci)"
+ "(melee)": "(közelharci)",
+ "🗺 Town Map [K]": "🗺 Térkép [K]",
+ "Town Map": "Térkép",
+ "You are here:": "Itt vagy:",
+ "✕ close [K]": "✕ bezár [K]"
 }
