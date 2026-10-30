@@ -552,3 +552,24 @@ function impact(scene: Phaser.Scene, style: Style, at: Pt, color: number): Promi
 
 /** Which family a move animates with (for tests and tuning). */
 export const moveFxFamily = familyOf;
+
+/**
+ * A camp fire that burns on its own (for the camp screen): flame tongues from white-hot to red, embers rising and a
+ * thread of smoke. Returns its emitters (they go with the scene).
+ */
+export function campfire(scene: Phaser.Scene, x: number, y: number, depth: number, big = 1): Phaser.GameObjects.Particles.ParticleEmitter[] {
+  ensureTextures(scene);
+  const smoke = scene.add.particles(x, y - 26 * big, DOT, {
+    speedY: { min: -24, max: -12 }, speedX: { min: -3, max: 9 }, lifespan: 1700, scale: { start: 0.7 * big, end: 2 * big },
+    alpha: { start: 0.22, end: 0 }, tint: 0x9a96a6, frequency: 170, blendMode: Phaser.BlendModes.NORMAL,
+  }).setDepth(depth - 0.1);
+  const fire = scene.add.particles(x, y, FLAME, {
+    x: { min: -8 * big, max: 8 * big }, speedY: { min: -48 * big, max: -26 * big }, speedX: { min: -6, max: 6 }, lifespan: { min: 360, max: 600 },
+    scale: { start: 1.5 * big, end: 0.3 }, alpha: { start: 1, end: 0.25 }, color: FIRE_RAMP, frequency: 32, quantity: 1, blendMode: Phaser.BlendModes.NORMAL,
+  }).setDepth(depth);
+  const embers = scene.add.particles(x, y - 8, DOT, {
+    x: { min: -8, max: 8 }, speedY: { min: -70, max: -34 }, speedX: { min: -16, max: 16 }, lifespan: 1000, scale: { start: 0.4, end: 0 },
+    tint: 0xffc040, frequency: 240, blendMode: Phaser.BlendModes.ADD,
+  }).setDepth(depth + 0.1);
+  return [smoke, fire, embers];
+}
