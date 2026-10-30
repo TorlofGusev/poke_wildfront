@@ -14,7 +14,6 @@
  "Evolves at Lv {level}": "Fejlődik: {level}. szinten",
  "Choose {name}": "{name} választása",
  "← Back": "← Vissza",
- "Cook a meal ({food} in the bag:": "Főzz ételt ({food} a táskában:",
  "Battles start with {bonus}": "Csatakezdéskor {bonus}",
  "{bond} cap {bonus}": "{bond} plafon {bonus}",
  "Needs: {needs}": "Kell: {needs}",
@@ -141,5 +140,9 @@
  "📦 Storage ({n})": "📦 Tároló ({n})",
  "No stored Pokémon of this type.": "Nincs ilyen típusú Pokémon a tárolóban.",
  "Storage is empty. Pokémon you catch with a full party come here.": "A tároló üres. Ha teli csapattal fogsz Pokémont, ide kerül.",
- "Seen {n}/{total} · caught {c}": "Látott: {n}/{total} · elkapott: {c}"
+ "Seen {n}/{total} · caught {c}": "Látott: {n}/{total} · elkapott: {c}",
+ "Pokémon sprites and portraits": "Pokémon-sprite-ok és portrék",
+ "Pokémon cries": "Pokémon-hangok",
+ "Music": "Zene",
+ "Font": "Betűtípus"
 }

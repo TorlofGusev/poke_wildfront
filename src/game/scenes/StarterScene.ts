@@ -20,6 +20,9 @@ export class StarterScene extends Phaser.Scene {
     super("Starter");
   }
 
+  /** When a card last made its Pokémon call out. */
+  private lastCry = -Infinity;
+
   create(): void {
     // Screens fade in from the background colour instead of cutting.
     this.cameras.main.fadeIn(160, 16, 20, 28);
@@ -44,11 +47,14 @@ export class StarterScene extends Phaser.Scene {
         const spr = this.add.sprite(x + cardW / 2, y + 90, `${id}-idle`).play(animKey(id, "idle", 0));
         body = spr.setOrigin(0.5, footOrigin(this, id)).setScale(spr.frame.height <= 40 ? 3 : 2);
       } else if (this.textures.exists(portraitKey(id))) body = this.add.image(x + cardW / 2, y + 52, portraitKey(id)).setDisplaySize(80, 80);
-      // Pointing at a card lifts it a little and the Pokémon calls out.
+      // Pointing at a card lifts it a little and the Pokémon calls out (not again while sweeping across the cards).
+      const restY = body?.y ?? 0;
       bg.setInteractive({ useHandCursor: true }).on("pointerover", () => {
         bg.setFillStyle(0x252c3e);
+        if (this.time.now - this.lastCry < 500) return;
+        this.lastCry = this.time.now;
         playCry(this, id);
-        if (body) this.tweens.add({ targets: body, y: body.y - 8, duration: 120, yoyo: true, ease: "Quad.easeOut" });
+        if (body && !this.tweens.isTweening(body)) this.tweens.add({ targets: body, y: restY - 8, duration: 120, yoyo: true, ease: "Quad.easeOut" });
       }).on("pointerout", () => bg.setFillStyle(0x1c2130)).on("pointerdown", () => this.confirm(id));
       const ability = s.ability ? CONTENT.abilities[s.ability] : undefined;
       new RichText(this, x + 10, y + 98, cardW - 20, 11).setMarkup([

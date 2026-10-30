@@ -21,6 +21,7 @@ import { COLORS, FONT, TYPE_COLORS, px } from "../ui/theme";
 import { t } from "../i18n";
 import { typeTag } from "../ui/typeName";
 import { panel, screenTitle } from "../ui/frames";
+import { messageFrame } from "../ui/battleBookends";
 
 /** Three cards per row: a full party of 9 fits in three rows. */
 const CARD_COLS = 3;
@@ -33,6 +34,49 @@ const STORE_X = 16 + CARD_COLS * (CARD_W + 10) + 6;
 const SEATS = [180, 0, 232, 308, 270, 148, 32, 205, 335];
 /** The camp scene's width (the right column). */
 const SCENE_W = 944 - STORE_X;
+/** Recipe cards, one per row, down the left column while choosing a meal. */
+const MEAL_W = STORE_X - 30;
+const MEAL_H = 70;
+/** The cooking pot in pixels (drawn 3× on screen); the stew's colour; the row of its surface. */
+const POT_W = 32, POT_H = 30, POT_MOUTH = 12;
+const STEW = 0xd8a24a;
+
+/**
+ * A cooking pot hung from a tripod, drawn pixel by pixel into a small texture once (shown at 3×, so it reads like
+ * the sprites): crossed sticks, a chain, the handle, the rim with the stew in it and a round iron belly.
+ */
+function cookingPot(scene: Phaser.Scene): string {
+  const key = "camp-pot";
+  if (scene.textures.exists(key)) return key;
+  const g = scene.make.graphics({}, false);
+  const px1 = (x: number, y: number, c: number) => g.fillStyle(c, 1).fillRect(x, y, 1, 1);
+  // Tripod legs from the apex down to either side, and the chain.
+  for (let y = 0; y < POT_H; y++) {
+    const k = y / (POT_H - 1);
+    px1(Math.round(16 - k * 14), y, 0x5a3a24);
+    px1(Math.round(16 + k * 14), y, 0x4a2e1c);
+  }
+  for (let y = 1; y < 8; y++) px1(16, y, y % 2 ? 0x8a8a96 : 0x5a5a66);
+  // The handle: a bail from rim to rim over the top.
+  for (const [x, y] of [[8, 10], [9, 9], [10, 8], [11, 8], [12, 7], [13, 7], [14, 7], [15, 7], [16, 7], [17, 7], [18, 7], [19, 7], [20, 7], [21, 8], [22, 8], [23, 9], [24, 10]] as const) px1(x, y, 0x6a6a76);
+  // Rim, stew surface, then the belly row by row (lit on the left, shadowed on the right).
+  for (let x = 6; x <= 26; x++) px1(x, 11, 0x7a7a88);
+  for (let x = 7; x <= 25; x++) px1(x, POT_MOUTH, x === 7 || x === 25 ? 0x15151b : STEW);
+  for (const x of [11, 16, 21]) px1(x, POT_MOUTH, 0xf5d090);
+  for (let x = 6; x <= 26; x++) px1(x, 13, 0x5a5a66);
+  const rows: Array<[number, number]> = [[6, 26], [5, 27], [5, 27], [5, 27], [5, 27], [6, 26], [7, 25], [8, 24], [10, 22]];
+  rows.forEach(([a, b], i) => {
+    for (let x = a; x <= b; x++) {
+      const c = x <= a + 1 ? 0x4a4a58 : x >= b - 2 ? 0x15151b : x <= a + 4 && i < 5 ? 0x3c3c48 : 0x262630;
+      px1(x, 14 + i, c);
+    }
+  });
+  px1(8, 15, 0x8a8a98);
+  g.generateTexture(key, POT_W, POT_H);
+  g.destroy();
+  scene.textures.get(key).setFilter(Phaser.Textures.FilterMode.NEAREST);
+  return key;
+}
 
 /** Camp: party overview (what needs attention) and the choice to rest. Details open per Pokémon. */
 /** An effect line continuing a sentence starts lower case ("takes 10% less damage"); the Bond term keeps its capital. */
@@ -43,6 +87,8 @@ export class PartyScene extends Phaser.Scene {
   private choosingMeal = false;
   /** HP before the rest just taken, so the bars can refill on screen. */
   private hpBefore: Readonly<Record<string, number>> = {};
+  /** Where the camp fire burns (and the camp scene's foot and sides), for the cooking moment. */
+  private fire = { x: 0, y: 0, bottom: 0, left: 0, w: 0 };
 
   constructor() {
     super("Party");
@@ -54,12 +100,13 @@ export class PartyScene extends Phaser.Scene {
     this.hpBefore = data?.hpBefore ?? {};
   }
 
-  /** Recipes with what they need and what they do; cooking one rests the team. */
+  /**
+   * Recipes down the left with what they need and what they do (the camp stays in view on the right, where the
+   * cooking happens); cooking one rests the team.
+   */
   private mealChooser(): void {
     const game = session.game;
     const bag = game.inventory.items;
-    const food = Object.values(PROGRESSION.items).filter((i) => i.kind === "food");
-    new RichText(this, 16, 68, 928, 12).setMarkup(`${tag("title", t("Cook a meal ({food} in the bag:", { food: CONTENT.terms.food.toLowerCase() }))} ${food.map((f) => `${f.name} ${tag("num", bag[f.id] ?? 0)}`).join(" · ")}${tag("title", ")")}`);
     const doRest = (meal: MealDef | null) => {
       const hpBefore = Object.fromEntries(session.game.roster.party.map((m) => [m.uid, m.hp]));
       session.update(rest(CONTENT, PROGRESSION, { content: WORLD_CONTENT, def: currentWorld() }, CAMP, session.game, meal));
@@ -67,18 +114,18 @@ export class PartyScene extends Phaser.Scene {
     };
     // What can be cooked comes first.
     const meals = Object.values(MEALS).sort((a, b) => Number(canCook(game, b)) - Number(canCook(game, a)));
-    meals.forEach((meal, i) => {
-      const x = 16 + (i % 2) * 470;
-      const y = 92 + Math.floor(i / 2) * 96;
+    let y = 66;
+    for (const meal of meals) {
+      const x = 16;
       const ok = canCook(game, meal);
-      panel(this, x, y, 460, 88, ok ? { edge: 0xd08a3a, edgeWidth: 2 } : { fill: 0x141821 });
-      // The ingredients as their icons, each with how many it needs of how many you have.
+      panel(this, x, y, MEAL_W, MEAL_H, ok ? { edge: 0xd08a3a, edgeWidth: 2 } : { fill: 0x141821 });
+      // The ingredients as their icons, each with how many you have of how many it needs.
       let ix = x + 10;
       for (const [id, n] of Object.entries(meal.ingredients)) {
         const have = bag[id] ?? 0;
         const icon = this.add.image(ix, y + 34, itemIcon(this, id)).setOrigin(0, 0.5).setDisplaySize(20, 20);
         if (have < n) icon.setTint(0x6a6a78);
-        const label = this.add.text(ix + 22, y + 34, `${PROGRESSION.items[id]?.name ?? id} ${Math.min(have, n)}/${n}`, {
+        const label = this.add.text(ix + 22, y + 34, `${PROGRESSION.items[id]?.name ?? id} ${have}/${n}`, {
           fontFamily: FONT, fontSize: px(12), color: have >= n ? "#9be36b" : "#ff8a8a",
         }).setOrigin(0, 0.5);
         ix += 22 + label.width + 14;
@@ -88,17 +135,19 @@ export class PartyScene extends Phaser.Scene {
         ...(meal.bond?.maxBond ? [t("{bond} cap {bonus}", { bond: CONTENT.terms.bond, bonus: tag("good", `+${meal.bond.maxBond}`) })] : []),
         ...describeModifiers(CONTENT, meal.mods ?? {}),
       ];
-      new RichText(this, x + 10, y + 6, 330, 12).setMarkup(tag(ok ? "title" : "dim", meal.name));
-      new RichText(this, x + 10, y + 48, 330, 11).setMarkup(
+      new RichText(this, x + 10, y + 5, MEAL_W - 130, 12).setMarkup(tag(ok ? "title" : "dim", meal.name));
+      new RichText(this, x + 10, y + 48, MEAL_W - 20, 11).setMarkup(
         effects.length ? t("Full rest; until the next rest: {effects}", { effects: effects.map(midSentence).join(", ") }) : t("Full rest"));
-      const cook = new Button(this, x + 350, y + 30, 100, 28, t("Cook"), () => this.cook(meal, () => doRest(meal))).centerLabel().setEnabled(ok);
+      const from = { x: x + 20, y: y + 34 };
+      const cook = new Button(this, x + MEAL_W - 110, y + 12, 100, 28, t("Cook"), () => this.cook(meal, () => doRest(meal), from)).centerLabel().setEnabled(ok);
       if (ok) cook.setSolid(0xc8682a);
-    });
-    const hy = 92 + Math.ceil(Object.keys(MEALS).length / 2) * 96 + 6;
+      y += MEAL_H + 6;
+    }
     const h = CAMP.hungry;
-    new RichText(this, 16, hy, 700, 12).setMarkup(t("{label}: only {pct}% HP, fatigue becomes {fatigue}, and {effect}", { label: tag("bad", t("Rest without eating")), pct: Math.round(h.hpFraction * 100), fatigue: h.fatigue, effect: midSentence(h.effect.description) }));
+    const hy = y + 4;
+    const th = new RichText(this, 16, hy, MEAL_W, 12).setMarkup(t("{label}: only {pct}% HP, fatigue becomes {fatigue}, and {effect}", { label: tag("bad", t("Rest without eating")), pct: Math.round(h.hpFraction * 100), fatigue: h.fatigue, effect: midSentence(h.effect.description) }));
     // Going hungry is the poor choice: a plain button with a red label.
-    new Button(this, 734, hy, 210, 26, t("Rest hungry"), () => doRest(null)).centerLabel().setLabelColor("#ff8a8a");
+    new Button(this, 16 + MEAL_W - 210, hy + th + 6, 210, 26, t("Rest hungry"), () => doRest(null)).centerLabel().setLabelColor("#ff8a8a");
   }
 
   create(): void {
@@ -137,6 +186,9 @@ export class PartyScene extends Phaser.Scene {
         ? tag("good", t("Rested and ate {meal}. Wild Pokémon have moved; defeat brings you back here.", { meal: meal.name }))
         : tag("num", t("Rested hungry. Wild Pokémon have moved; defeat brings you back here."))
       : meal ? `${tag("dim", t("Current meal:"))} ${tag("num", meal.name)} ${tag("dim", `— ${(MEALS[meal.id] ?? CAMP.hungry.effect).description}`)}` : tag("dim", t("Rest here to restore HP and fatigue with a camp meal.")));
+    // The camp itself on the right; storage (the PC box) opens as its own scrolling screen, the newest arrivals shown here.
+    const sceneH = 340;
+    this.campScene(STORE_X, 66, SCENE_W, sceneH, roster.party);
     if (this.choosingMeal) {
       this.mealChooser();
       return;
@@ -154,9 +206,6 @@ export class PartyScene extends Phaser.Scene {
       rowY += h + 8;
     }
 
-    // The camp itself on the right; storage (the PC box) opens as its own scrolling screen, the newest arrivals shown here.
-    const sceneH = 340;
-    this.campScene(STORE_X, 66, SCENE_W, sceneH, roster.party);
     const storeY = 66 + sceneH + 12;
     new Button(this, STORE_X, storeY, SCENE_W, 30, t("📦 Storage ({n})", { n: roster.storage.length }), () => this.scene.start("Storage", {})).centerLabel();
     roster.storage.slice(-6).reverse().forEach((m, i) => {
@@ -175,6 +224,7 @@ export class PartyScene extends Phaser.Scene {
     panel(this, x - 2, y - 2, w + 4, h + 4, { edgeWidth: 2 });
     baked(this, `camp-backdrop:${w}x${h}`, w, h, (g) => drawCampBackdrop(g, w, h)).setPosition(x, y);
     const pit = firePit(w, h), fx = x + pit.x, fy = y + pit.y;
+    this.fire = { x: fx, y: fy, bottom: y + h, left: x, w };
     const glow = this.add.ellipse(fx, fy - 6, w * 0.72, h * 0.42, 0xff9a40, this.rested ? 0.1 : 0.17).setBlendMode(Phaser.BlendModes.ADD).setDepth(1);
     this.tweens.add({ targets: glow, scaleX: 1.05, scaleY: 1.08, alpha: glow.alpha * 0.65, duration: 380, yoyo: true, repeat: -1, ease: "Sine.easeInOut" });
     campfire(this, fx, fy - 2, 2, this.rested ? 0.7 : 1);
@@ -199,38 +249,62 @@ export class PartyScene extends Phaser.Scene {
     });
   }
 
-  /** The cooking moment: a pot over the fire, the ingredients drop in, steam rises, the meal is named; then `done`. */
-  private cook(meal: MealDef, done: () => void): void {
+  /**
+   * The cooking moment, at the camp's own fire: a pixel pot is hung over it, the ingredients fly in from the recipe
+   * (`from`), the stew bubbles and steams, and the meal is named in a message window; then `done`.
+   */
+  private cook(meal: MealDef, done: () => void, from = { x: 36, y: 200 }): void {
     this.input.enabled = false;
-    const cx = 480, cy = 300;
-    this.add.rectangle(0, 0, 960, 540, 0x0a0c12, 0.82).setOrigin(0).setDepth(50);
-    this.add.ellipse(cx, cy + 36, 260, 90, 0xff9a40, 0.07).setBlendMode(Phaser.BlendModes.ADD).setDepth(51);
-    campfire(this, cx, cy + 34, 52, 1.2);
-    const pot = this.add.graphics({ x: cx, y: cy }).setDepth(53);
-    pot.fillStyle(0x23232c, 1).fillEllipse(0, 0, 92, 62).fillStyle(0x34343f, 1).fillEllipse(-8, -8, 64, 38);
-    pot.fillStyle(0x15151b, 1).fillEllipse(0, -24, 88, 20).fillStyle(0xc8a060, 1).fillEllipse(0, -22, 76, 13);
-    pot.lineStyle(3, 0x4a4a56, 1).strokeEllipse(0, -24, 88, 20);
+    const { x: fx, y: fy } = this.fire;
+    // The recipe list steps back; the camp is where it happens.
+    this.add.rectangle(0, 56, STORE_X - 6, 484, 0x0a0c12, 0.6).setOrigin(0).setDepth(40);
+    campfire(this, fx, fy - 2, 2.2, 1.3);
+    const pot = this.add.image(fx, fy + 4, cookingPot(this)).setOrigin(0.5, 1).setScale(3).setDepth(2.5).setAlpha(0);
+    const mouth = { x: fx, y: fy + 4 - (POT_H - POT_MOUTH) * 3 };
+    this.tweens.add({ targets: pot, alpha: 1, y: { from: fy - 26, to: fy + 4 }, duration: 320, ease: "Bounce.easeOut" });
+    // Each ingredient arcs from the recipe card into the pot, with a splash.
     const ids = Object.entries(meal.ingredients).flatMap(([id, n]) => Array.from({ length: n }, () => id));
     ids.forEach((id, i) => {
-      const fromLeft = i % 2 === 0;
-      const icon = this.add.image(fromLeft ? cx - 260 : cx + 260, cy - 120 - (i % 3) * 20, itemIcon(this, id)).setDisplaySize(32, 32).setDepth(54);
-      this.tweens.add({ targets: icon, x: cx + (fromLeft ? -10 : 10), duration: 420, delay: 200 + i * 260, ease: "Sine.easeOut" });
-      this.tweens.add({
-        targets: icon, y: { from: icon.y, to: cy - 26 }, scale: icon.scale * 0.6, duration: 420, delay: 200 + i * 260, ease: "Back.easeIn",
-        onComplete: () => { icon.destroy(); sfx(this, "pickup"); },
+      const icon = this.add.image(from.x, from.y, itemIcon(this, id)).setDisplaySize(26, 26).setDepth(45).setVisible(false);
+      const base = icon.scaleX;
+      const sx = from.x + i * 12, sy = from.y, top = Math.min(sy, mouth.y) - 90;
+      this.tweens.addCounter({
+        from: 0, to: 1, duration: 560, delay: 380 + i * 280, ease: "Sine.easeIn",
+        onStart: () => icon.setVisible(true),
+        onUpdate: (tw) => {
+          const k = tw.getValue() ?? 0;
+          // A quadratic curve over the top, shrinking as it falls in.
+          const cx = (sx + mouth.x) / 2;
+          icon.setPosition((1 - k) ** 2 * sx + 2 * (1 - k) * k * cx + k * k * mouth.x, (1 - k) ** 2 * sy + 2 * (1 - k) * k * top + k * k * mouth.y);
+          icon.setScale(base * (1 - k * 0.45));
+        },
+        onComplete: () => {
+          icon.destroy();
+          sfx(this, "pickup");
+          for (let d = 0; d < 5; d++) {
+            const drop = this.add.rectangle(mouth.x + Phaser.Math.Between(-8, 8), mouth.y, 3, 3, STEW).setDepth(2.6);
+            this.tweens.add({ targets: drop, x: drop.x + Phaser.Math.Between(-22, 22), y: { from: mouth.y, to: mouth.y - Phaser.Math.Between(10, 22) }, duration: 200, yoyo: true, ease: "Quad.easeOut", onComplete: () => drop.destroy() });
+          }
+        },
       });
     });
-    const stewed = 200 + ids.length * 260 + 450;
+    const stewed = 380 + ids.length * 280 + 600;
     this.time.delayedCall(stewed, () => {
-      for (let i = 0; i < 8; i++) {
-        const puff = this.add.circle(cx + Phaser.Math.Between(-30, 30), cy - 28, Phaser.Math.Between(5, 9), 0xffffff, 0.35).setDepth(55);
-        this.tweens.add({ targets: puff, y: cy - 90 - Phaser.Math.Between(0, 40), x: puff.x + Phaser.Math.Between(-16, 16), scale: 2.6, alpha: 0, duration: 1100, delay: i * 110, onComplete: () => puff.destroy() });
+      // Bubbling and steam, then the dish is named.
+      for (let i = 0; i < 9; i++) {
+        const puff = this.add.circle(mouth.x + Phaser.Math.Between(-16, 16), mouth.y - 2, Phaser.Math.Between(4, 7), 0xffffff, 0.4).setDepth(2.7);
+        this.tweens.add({ targets: puff, y: mouth.y - 70 - Phaser.Math.Between(0, 30), x: puff.x + Phaser.Math.Between(-14, 14), scale: 2.4, alpha: 0, duration: 1100, delay: i * 100, onComplete: () => puff.destroy() });
       }
+      this.tweens.add({ targets: pot, scaleY: 3.15, scaleX: 2.9, duration: 140, yoyo: true, repeat: 2 });
       sfx(this, "levelUp");
-      const name = pixText(this, cx, cy - 150, meal.name, 0xf5d76e, 3).setOrigin(0.5).setDepth(56).setScale(0.5).setAlpha(0);
-      this.tweens.add({ targets: name, scale: 1, alpha: 1, duration: 260, ease: "Back.easeOut" });
+      const { left, w, bottom } = this.fire;
+      const box = this.add.container(left + 10, bottom - 54, [
+        messageFrame(this, 0, 0, w - 20, 44),
+        pixText(this, (w - 20) / 2, 22, meal.name, 0xf5d76e, 2).setOrigin(0.5),
+      ]).setDepth(46).setAlpha(0);
+      this.tweens.add({ targets: box, alpha: 1, duration: 160 });
     });
-    this.time.delayedCall(stewed + 1300, () => {
+    this.time.delayedCall(stewed + 1400, () => {
       this.input.enabled = true;
       done();
     });
@@ -281,17 +355,24 @@ export class PartyScene extends Phaser.Scene {
         const barY = y + h - 26;
         this.add.rectangle(x + 8, barY, CARD_W - 16, 6, 0x000000).setOrigin(0, 0.5);
         const fill = this.add.rectangle(x + 8, barY, (CARD_W - 16) * frac, 6, frac > 0.5 ? 0x7ed321 : frac > 0.25 ? 0xf5a623 : 0xd0021b).setOrigin(0, 0.5);
-        // Just rested: the bar refills from where it was, and the HP won floats up.
+        const hpLine = (hp: number) => `${hp > 0 ? `HP ${Math.min(hp, max)}/${max}` : tag("ko", t("fainted"))}  KO ${tag(m.knockouts ? "ko" : "dim", pips)}`;
+        const hpText = new RichText(this, x + 8, barY + 6, CARD_W - 16, 12);
+        hpText.setMarkup(hpLine(m.hp));
+        // Just rested: the bar and the number refill from where they were, and the HP won floats up.
         const before = this.hpBefore[m.uid];
         if (before !== undefined && before < m.hp) {
           fill.width = (CARD_W - 16) * Math.min(1, before / max);
+          hpText.setMarkup(hpLine(before));
           const order = session.game.roster.party.indexOf(m);
           this.tweens.add({ targets: fill, width: (CARD_W - 16) * frac, delay: 350 + order * 90, duration: 600, ease: "Cubic.easeOut", onStart: () => order === 0 && sfx(this, "heal") });
+          let shown = before;
+          this.tweens.addCounter({ from: before, to: m.hp, delay: 350 + order * 90, duration: 600, ease: "Cubic.easeOut", onUpdate: (tw) => {
+            const hp = Math.round(tw.getValue() ?? m.hp);
+            if (hp !== shown) hpText.setMarkup(hpLine((shown = hp)));
+          } });
           const gain = pixText(this, x + 26, y + 30, `+${m.hp - before}`, 0x9be36b, 2).setOrigin(0.5, 1).setAlpha(0);
           this.tweens.add({ targets: gain, alpha: 1, y: y + 22, delay: 350 + order * 90, duration: 300, hold: 900, yoyo: true });
         }
-        new RichText(this, x + 8, barY + 6, CARD_W - 16, 12).setMarkup(
-          `${m.hp > 0 ? `HP ${Math.min(m.hp, max)}/${max}` : tag("ko", t("fainted"))}  KO ${tag(m.knockouts ? "ko" : "dim", pips)}`);
       },
     };
   }
