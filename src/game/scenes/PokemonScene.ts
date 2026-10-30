@@ -266,7 +266,7 @@ export class PokemonScene extends Phaser.Scene {
       ["stats", t("Stats"), m.unspentPoints > 0],
       ["talents", t("Masteries"), !!pending],
       ["moves", t("Moves"), false],
-      ["equipment", t("Equipment"), false],
+      ["equipment", t("Items"), false],
     ];
     const tabY = HERO_Y + HERO_H + 8, tabH = 28;
     const tw = Math.floor((DETAIL_W - 18) / 4);
@@ -320,7 +320,8 @@ export class PokemonScene extends Phaser.Scene {
     const rowW = points ? 450 : 300;
     const tipX = DETAIL_X + rowW + 20;
     const tipW = DETAIL_W - rowW - 20;
-    const tip = add(this.add.container(tipX, y).setVisible(false));
+    const tipY = y;
+    const tip = add(this.add.container(tipX, tipY).setVisible(false));
     const show = (st: StatName, gain = 0) => {
       tip.removeAll(true);
       const text = new RichText(this, 10, 8, tipW - 20, 12);
@@ -333,9 +334,10 @@ export class PokemonScene extends Phaser.Scene {
     // With nothing hovered the panel explains the focus stat (or HP), so the space is never empty.
     const rest = () => show(m.focus ?? "hp");
     const offers = points ? statOffer(CONTENT, PROGRESSION, m) : [];
-    // One scale for every Pokémon you have (the highest stat among them), so bars compare across the team.
+    // Each stat on its own scale (the highest of it among all your Pokémon), so bars compare across the team.
     const { party, storage } = session.game.roster;
-    const max = Math.max(10, ...[...party, ...storage].flatMap((x) => STAT_NAMES.map((st) => memberStats(CONTENT, PROGRESSION, x).stats[st])));
+    const all = [...party, ...storage].map((x) => memberStats(CONTENT, PROGRESSION, x).stats);
+    const maxOf = Object.fromEntries(STAT_NAMES.map((st) => [st, Math.max(10, ...all.map((x) => x[st]))])) as Record<StatName, number>;
     const segs = add(this.add.graphics());
     for (const st of STAT_NAMES) {
       const offer = offers.find((o) => o.stat === st);
@@ -345,8 +347,8 @@ export class PokemonScene extends Phaser.Scene {
       hit.on("pointerdown", () => show(st));
       add(new RichText(this, DETAIL_X + 6, y, 120, 13)).setMarkup(`${STAT_LABEL[st]}${m.focus === st ? ` ${tag("good", "★")}` : ""}`);
       add(new RichText(this, DETAIL_X + 130, y, 40, 13)).setMarkup(tag("num", `${stats[st]}`));
-      // Segmented, in the stat's own colour (as on the handhelds' summary), on one scale for the whole team.
-      const lit = Math.max(1, Math.round((SEGMENTS * stats[st]) / max));
+      // Segmented, in the stat's own colour (as on the handhelds' summary), on its team-wide scale.
+      const lit = Math.max(1, Math.round((SEGMENTS * stats[st]) / maxOf[st]));
       for (let k = 0; k < SEGMENTS; k++) segs.fillStyle(k < lit ? STAT_COLORS[st] : 0x0c1018, 1).fillRect(DETAIL_X + 172 + k * 6, y + 4, 5, 7);
       if (points) {
         // What a point gives here and what it costs: offered stats are free at their +1 (or lucky +2).
@@ -362,9 +364,33 @@ export class PokemonScene extends Phaser.Scene {
       y += 24;
     }
     rest();
+    this.statRadar(tipX + tipW / 2, Math.min(tipY + 215, 410), Math.min(90, tipW / 2 - 60), stats, maxOf, add);
     add(new RichText(this, DETAIL_X, y + 2, rowW, 11)).setMarkup(tag("dim", points
       ? t("Highlighted stats are offered this level and cost no EV. Hover a stat for details.")
       : t("Hover or tap a stat for details.")));
+  }
+
+  /**
+   * The six stats as a radar: each axis in its stat's colour, the shape filled gold, each stat measured against the
+   * team's highest of it (the same scale as the bars).
+   */
+  private statRadar(cx: number, cy: number, r: number, stats: Readonly<Record<StatName, number>>, maxOf: Readonly<Record<StatName, number>>,
+    add: <T extends Phaser.GameObjects.GameObject>(o: T) => T): void {
+    const g = add(this.add.graphics({ x: cx, y: cy }));
+    const at = (i: number, k: number) => {
+      const a = -Math.PI / 2 + (i / STAT_NAMES.length) * Math.PI * 2;
+      return new Phaser.Math.Vector2(Math.cos(a) * r * k, Math.sin(a) * r * k);
+    };
+    for (const k of [0.25, 0.5, 0.75, 1]) g.lineStyle(1, 0x3a4560, k === 1 ? 1 : 0.6).strokePoints(STAT_NAMES.map((_, i) => at(i, k)), true);
+    STAT_NAMES.forEach((st, i) => {
+      const end = at(i, 1);
+      g.lineStyle(1, STAT_COLORS[st], 0.5).lineBetween(0, 0, end.x, end.y);
+      const label = at(i, 1.22);
+      add(this.add.text(cx + label.x, cy + label.y, STAT_SHORT[st], { fontFamily: FONT, fontSize: px(12), color: `#${STAT_COLORS[st].toString(16).padStart(6, "0")}`, fontStyle: "bold" }).setOrigin(0.5));
+    });
+    const shape = STAT_NAMES.map((st, i) => at(i, Math.max(0.06, Math.min(1, stats[st] / maxOf[st]))));
+    g.fillStyle(0xf5d76e, 0.35).fillPoints(shape, true).lineStyle(2, 0xf5d76e, 1).strokePoints(shape, true);
+    STAT_NAMES.forEach((st, i) => g.fillStyle(STAT_COLORS[st], 1).fillCircle(shape[i]!.x, shape[i]!.y, 3));
   }
 
   /** What a stat does in battle right now, and where its value comes from. */
@@ -460,7 +486,11 @@ export class PokemonScene extends Phaser.Scene {
     add(new RichText(this, DETAIL_X, rowY, gridW, 11)).setMarkup(tag("dim", t("✓ and full colour: in use. Dim: known, resting. Tap a card for its rules.")));
     const infoX = DETAIL_X + gridW + 20;
     const infoW = DETAIL_X + DETAIL_W - infoX;
-    const h = add(new RichText(this, infoX, y, infoW, 12)).setMarkup(describeMove(CONTENT, CONTENT.moves[shown]!));
+    const shownDef = CONTENT.moves[shown]!;
+    add(moveCard(this, shownDef, shownDef.power, { state: "ready", note: shownDef.kind === "bond" ? "●".repeat(shownDef.bondCost ?? 0) : reachShort(shownDef) },
+      Math.min(300, infoW), 56, false, () => {}, () => {}, "always").setPosition(infoX, y));
+    y += 66;
+    const h = add(new RichText(this, infoX, y, infoW, 12)).setMarkup(describeMove(CONTENT, shownDef).split("\n").slice(1).join("\n"));
     const slot = slotOf(CONTENT, shown);
     // Only the moves that fit the loadout (an old save may list more).
     const current = fighting.filter((mv) => mv !== basic && m.activeMoves.includes(mv));
@@ -475,12 +505,19 @@ export class PokemonScene extends Phaser.Scene {
     } else {
       const active = current.includes(shown);
       const full = !active && count(slot) >= LOADOUT[slot];
-      const label = active ? t("Remove from active moves") : full ? (slot === "bond" ? t("{bond} slot full: remove one first", { bond: CONTENT.terms.bond }) : t("Skill slots full: remove one first")) : t("Make active");
-      add(new Button(this, infoX, y + h + 8, infoW, 26, label, () => {
-        if (full) return;
-        const next = active ? current.filter((x) => x !== shown) : [...current, shown];
-        this.act(() => this.updateMember(m, (x) => setActiveMoves(CONTENT, PROGRESSION, x, next)));
-      }).setHighlighted(!active && !full));
+      if (full) {
+        // Slots full: swap it in for one of the moves in that slot, in one tap.
+        current.filter((x) => slotOf(CONTENT, x) === slot).forEach((out, i) => {
+          add(new Button(this, infoX, y + h + 8 + i * 32, infoW, 26, t("↔ Swap with {move}", { move: CONTENT.moves[out]!.name }), () =>
+            this.act(() => this.updateMember(m, (x) => setActiveMoves(CONTENT, PROGRESSION, x, current.map((c) => (c === out ? shown : c)))))).setHighlighted(true));
+        });
+      } else {
+        const label = active ? t("Remove from active moves") : t("Make active");
+        add(new Button(this, infoX, y + h + 8, infoW, 26, label, () => {
+          const next = active ? current.filter((x) => x !== shown) : [...current, shown];
+          this.act(() => this.updateMember(m, (x) => setActiveMoves(CONTENT, PROGRESSION, x, next)));
+        }).setHighlighted(!active));
+      }
     }
     y = Math.max(y, rowY) + 6;
 
@@ -712,8 +749,8 @@ ${into.types.map((ty) => typeTag(ty)).join("/")}`);
     const heldIcon = held ? 24 : 0;
     if (held) add(this.add.image(DETAIL_X + 9, y + 8, itemIcon(this, held.id)).setDisplaySize(18, 18));
     // Take off sits at the end of the same line, so it costs no row of its own.
-    if (held) add(new Button(this, DETAIL_X + DETAIL_W - 120, y - 4, 120, 24, t("Take off"), () => this.act(() => session.update(equipItem(PROGRESSION, session.game, m.uid, null)), t("{item} returned to the bag.", { item: held.name }))));
-    y += add(new RichText(this, DETAIL_X + heldIcon, y, DETAIL_W - heldIcon - (held ? 130 : 0), 13)).setMarkup(
+    if (held) add(new Button(this, DETAIL_X + 470, y - 4, 120, 24, t("Take off"), () => this.act(() => session.update(equipItem(PROGRESSION, session.game, m.uid, null)), t("{item} returned to the bag.", { item: held.name }))));
+    y += add(new RichText(this, DETAIL_X + heldIcon, y, 470 - heldIcon - 10, 13)).setMarkup(
       `${tag("title", t("Holding"))}: ${held ? `${tag("num", held.name)} · ${describeItem(CONTENT, held).join(" · ")}` : tag("dim", t("nothing (one held item per Pokémon)"))}`) + 6;
     y += 6;
     const bagItems = Object.entries(session.game.inventory.items).filter(([id, n]) => n > 0 && PROGRESSION.items[id]?.kind === "held");
