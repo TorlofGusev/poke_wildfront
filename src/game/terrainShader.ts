@@ -12,7 +12,7 @@ import type { BoardTheme } from "./ui/boardDecor";
  */
 
 const MAX_LIGHTS = 16;
-const MAX_POOLS = 4;
+const MAX_POOLS = 8;
 /** Mask resolution: one texel per this many screen pixels. */
 const CELL = 2;
 

@@ -3,7 +3,7 @@ import { drawBush, drawMud, drawRock, drawWater } from "../ui/terrainArt";
 import { shaderGround, TerrainShader } from "../terrainShader";
 import { ArenaFx } from "../arenaFx";
 import { playMoveFx } from "../moveFx";
-import { critFx, signatureFx, typeImpactFx, vortexFx } from "../pixelFx";
+import { critFx, hasTypeImpact, signatureFx, typeImpactFx } from "../pixelFx";
 import { playMusic, stopMusic } from "../music";
 import { CONTENT, type ScenarioDef } from "../../content";
 import type { DemoBattle } from "../../content/demoBattles";
@@ -2158,11 +2158,19 @@ export class BattleScene extends Phaser.Scene {
             const move = CONTENT.moves[e.moveId];
             if (move) {
               const spots = hit.length ? hit : [fieldToWorld(e.target)];
-              // pixelfx set pieces (streams, beams, fireballs, waves, slams) stand in for the drawn effect when one fits.
-              for (const p of spots) void vortexFx(this, move.id, p);
+              // One effect per move: a pixelfx set piece (stream, beam, fireball, wave, slam, tornado) when one fits,
+              // else the drawn one; then one impact on each struck Pokémon, unless the set piece is its own impact.
               const from = { x: view.container.x, y: view.container.y };
-              await (signatureFx(this, move.id, from, spots) ?? playMoveFx(this, move, from, spots));
-              if (move.power > 0) for (const p of hit) typeImpactFx(this, move.type, p);
+              let piece: ReturnType<typeof signatureFx> = null;
+              try {
+                piece = signatureFx(this, move.id, from, spots);
+              } catch (err) {
+                console.error("set piece failed", err);
+              }
+              const pixelImpact = move.power > 0 && hasTypeImpact(move.type) && !piece?.lands;
+              if (piece) await piece.contact;
+              else await playMoveFx(this, move, from, spots, !(move.power > 0 && hasTypeImpact(move.type)));
+              if (pixelImpact) for (const p of hit) typeImpactFx(this, move.type, p);
               // The ground answers: a shockwave and a lasting mark where it lands (each struck foe for single hits).
               const sh = move.shape;
               const radius = sh.kind === "burst" ? sh.radius + 0.5 : sh.kind === "single" ? 0.6 : 1;

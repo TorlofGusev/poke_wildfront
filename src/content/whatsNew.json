@@ -2,6 +2,8 @@
  {"version": "0.104",
   "date": "2026-10-29",
   "items": [
+  "The battlefield burns and breaks for real: fire sets the ground alight with flames that die down into a charred, ash-strewn patch, heavy physical hits blow out craters lit like bowls with stones scattered round that stay, rubble lands and stays where it falls, and every mark is drawn in pixels instead of soft blobs.",
+  "Fixed: Thunder, Thunderbolt, Discharge, Thunder Punch, Volt Tackle and Zap Cannon could stall a battle. Move effects now reach their target exactly (streams, beams and volleys leave from the user and stop on the target), each move plays one effect and one impact instead of two at once, Stone Edge drives up a stone spike and Rock Slide hurls a boulder, and Solar Beam and Hyper Beam have their own colours.",
   "Moves got their own set pieces: fireballs fly, Flamethrower and Heat Wave breathe fire at the target, Water Gun and Hydro Pump shoot a jet, Surf crashes a wave, Ice Beam drives a line of ice spikes, Thunder and Thunderbolt smite from the sky, psychic and dragon beams reach across the field, Aura Sphere and Shadow Ball fire a volley, and Earthquake sends a shockwave ring.",
   "Fire Spin whirls up a tornado of flame and Twister and Hurricane a whirlwind on the spot; ice hits burst into snowflakes and leave rime and little crystals on the grass.",
   "The battlefield takes the damage: every hit leaves its mark, heavy and area moves blow out craters and throw rubble that stays on the ground, fire leaves smouldering embers, and water and ice soak the earth for the rest of the battle.",

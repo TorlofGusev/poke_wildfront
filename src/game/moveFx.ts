@@ -19,6 +19,9 @@ const FIRE_RAMP = [0xffffff, 0xffd040, 0xf08030, 0xc03018, 0x5a5050];
 
 type Pt = { readonly x: number; readonly y: number };
 
+/** Lands a move on one point with an impact look (or not at all; see playMoveFx's `landing`). */
+type Land = (style: Style, at: Pt) => Promise<void>;
+
 /** Impact look per type, after whatever carried the move there. */
 type Style = "burst" | "rise" | "fall" | "bolt" | "rings" | "leaves" | "debris" | "wisps" | "slash" | "shards";
 
@@ -102,21 +105,25 @@ function emit(scene: Phaser.Scene, at: Pt, color: number, cfg: Phaser.Types.Game
   scene.time.delayedCall(life + 100, () => e.destroy());
 }
 
-/** Plays the move's effect from `from` to every hit point; resolves when the impact has landed. */
-export async function playMoveFx(scene: Phaser.Scene, move: MoveDef, from: Pt, targets: readonly Pt[]): Promise<void> {
+/**
+ * Plays the move's effect from `from` to every hit point; resolves when it lands. With `landing` off, the drawn
+ * impact on arrival is left out (the caller lands the move with its own).
+ */
+export async function playMoveFx(scene: Phaser.Scene, move: MoveDef, from: Pt, targets: readonly Pt[], landing = true): Promise<void> {
   if (!targets.length) return;
   ensureTextures(scene);
   const color = TYPE_COLORS[move.type] ?? 0xffffff;
   const style = STYLE[move.type] ?? "burst";
   const main = targets[0]!;
   const family = familyOf(move);
-  const typeImpact = () => Promise.all(targets.map((t) => impact(scene, style, t, color))).then(() => undefined);
+  const land: Land = (s, t) => (landing ? impact(scene, s, t, color) : wait(scene, 40));
+  const typeImpact = () => Promise.all(targets.map((t) => land(style, t))).then(() => undefined);
   switch (family) {
     case "shield": return shield(scene, from, color);
     case "heal": return Promise.all(targets.map((t) => heal(scene, t))).then(() => undefined);
     case "aura": return aura(scene, from, color);
     case "quake": return quake(scene, from, color);
-    case "blast": return blast(scene, from, targets, color, style);
+    case "blast": return blast(scene, from, targets, color, style, land);
     case "whip": await whip(scene, from, main, color); return typeImpact();
     case "leaves": await leaves(scene, from, main, color); return typeImpact();
     case "volley": await volley(scene, from, targets, color); return typeImpact();
@@ -124,9 +131,9 @@ export async function playMoveFx(scene: Phaser.Scene, move: MoveDef, from: Pt, t
     case "stream": await (move.type === "fire" ? flames(scene, from, main) : stream(scene, from, main, color)); return typeImpact();
     case "bubbles": return bubbles(scene, from, targets, color);
     case "lob": await lob(scene, from, main, color); return typeImpact();
-    case "wind": await wind(scene, from, main, color); return Promise.all(targets.map((t) => impact(scene, "slash", t, color))).then(() => undefined);
+    case "wind": await wind(scene, from, main, color); return Promise.all(targets.map((t) => land("slash", t))).then(() => undefined);
     case "bolt": if (dist(from, main) > 48) await bolt(scene, from, main, color); return typeImpact();
-    case "sound": return sound(scene, from, targets, color);
+    case "sound": return sound(scene, from, targets, color, land);
     case "powder": return Promise.all(targets.map((t) => powder(scene, t, color))).then(() => undefined);
     case "gas": return Promise.all(targets.map((t) => gas(scene, t, color))).then(() => undefined);
     case "bite": return Promise.all(targets.map((t) => bite(scene, t, color))).then(() => undefined);
@@ -329,7 +336,7 @@ function bolt(scene: Phaser.Scene, a: Pt, b: Pt, color: number): Promise<void> {
 }
 
 /** Sound and glares: arcs ripple out from the user towards each target, then a ring on it. */
-async function sound(scene: Phaser.Scene, a: Pt, targets: readonly Pt[], color: number): Promise<void> {
+async function sound(scene: Phaser.Scene, a: Pt, targets: readonly Pt[], color: number, land: Land): Promise<void> {
   const b = targets[0]!;
   const ang = Math.atan2(b.y - a.y, b.x - a.x);
   const waves = [0, 110, 220].map(async (delay) => {
@@ -339,7 +346,7 @@ async function sound(scene: Phaser.Scene, a: Pt, targets: readonly Pt[], color: 
     g.destroy();
   });
   await Promise.all(waves);
-  await Promise.all(targets.map((t) => impact(scene, "rings", t, color)));
+  await Promise.all(targets.map((t) => land("rings", t)));
 }
 
 /** A cloud of powder settles on the target. */
@@ -487,7 +494,7 @@ async function quake(scene: Phaser.Scene, at: Pt, color: number): Promise<void> 
 }
 
 /** A blast around the user (or a wave over the area): a bright ring sweeping out over everyone hit. */
-async function blast(scene: Phaser.Scene, from: Pt, targets: readonly Pt[], color: number, style: Style): Promise<void> {
+async function blast(scene: Phaser.Scene, from: Pt, targets: readonly Pt[], color: number, style: Style, land: Land): Promise<void> {
   const reach = Math.max(40, ...targets.map((t) => dist(from, t) + 20));
   const ring = scene.add.circle(from.x, from.y - 8, 10).setStrokeStyle(6, color).setDepth(30).setBlendMode(Phaser.BlendModes.ADD);
   const core = scene.add.circle(from.x, from.y - 8, 10, 0xffffff, 0.7).setDepth(30).setBlendMode(Phaser.BlendModes.ADD);
@@ -498,7 +505,7 @@ async function blast(scene: Phaser.Scene, from: Pt, targets: readonly Pt[], colo
   ]);
   ring.destroy();
   core.destroy();
-  await Promise.all(targets.map((t) => impact(scene, style, t, color)));
+  await Promise.all(targets.map((t) => land(style, t)));
 }
 
 // ---------------------------------------------------------------- impact by type
