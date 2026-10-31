@@ -110,3 +110,8 @@ The victory jingle is synthesised in the browser.
 Text is set in [Nunito](https://github.com/googlefonts/nunito) by Vernon Adams, Cyreal and Jacques Le Bailly,
 released under the SIL Open Font License 1.1 (bundled from the @fontsource/nunito package). The pixel font and the
 icons are drawn in code.
+
+## Battle effects
+
+Critical hits and the type impacts use effects from [pixelfx](https://github.com/patch-gg/pixelfx) by patch-gg (MIT
+License), parts of which adapt [Hugo Duprez](https://www.spritefusion.com/pixel-art-vfx)'s Sprite Fusion effects (MIT).

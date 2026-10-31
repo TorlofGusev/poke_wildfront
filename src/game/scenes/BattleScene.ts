@@ -2,7 +2,8 @@ import Phaser from "phaser";
 import { drawBush, drawMud, drawRock, drawWater } from "../ui/terrainArt";
 import { shaderGround, TerrainShader } from "../terrainShader";
 import { ArenaFx } from "../arenaFx";
-import { playMoveFx } from "../moveFx";
+import { moveFxFamily, playMoveFx } from "../moveFx";
+import { critFx, quakeFx, strikeFx, typeImpactFx } from "../pixelFx";
 import { playMusic, stopMusic } from "../music";
 import { CONTENT, type ScenarioDef } from "../../content";
 import type { DemoBattle } from "../../content/demoBattles";
@@ -2156,7 +2157,12 @@ export class BattleScene extends Phaser.Scene {
             const hit = e.affected.map((id) => this.state?.units.find((u) => u.id === id)).filter((u) => u !== undefined).map((u) => fieldToWorld(u.pos));
             const move = CONTENT.moves[e.moveId];
             if (move) {
-              await playMoveFx(this, move, { x: view.container.x, y: view.container.y }, hit.length ? hit : [fieldToWorld(e.target)]);
+              const spots = hit.length ? hit : [fieldToWorld(e.target)];
+              // The big set pieces start with the move: lightning from the sky, the ground heaving.
+              if (/^thunder$|thunderbolt|zap-cannon|volt-tackle/.test(move.id)) for (const p of spots) void strikeFx(this, p);
+              if (moveFxFamily(move) === "quake") void quakeFx(this, { x: view.container.x, y: view.container.y });
+              await playMoveFx(this, move, { x: view.container.x, y: view.container.y }, spots);
+              if (move.power > 0) for (const p of hit) typeImpactFx(this, move.type, p);
               // The ground answers: a shockwave and a lasting mark where it lands (each struck foe for single hits).
               const sh = move.shape;
               const radius = sh.kind === "burst" ? sh.radius + 0.5 : sh.kind === "single" ? 0.6 : 1;
@@ -2205,6 +2211,10 @@ export class BattleScene extends Phaser.Scene {
           break;
         case "critical":
           this.pendingCrit.add(e.targetId);
+          {
+            const foe = this.units.get(e.targetId)?.container;
+            if (foe) void critFx(this, this.lastAttackFrom ?? { x: foe.x - 1, y: foe.y }, { x: foe.x, y: foe.y });
+          }
           this.cameras.main.shake(100, 0.003);
           break;
         case "terrainChanged":
