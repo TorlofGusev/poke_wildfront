@@ -384,15 +384,19 @@ export class ArenaFx {
     if (kind === "splash" || kind === "frost") {
       // Fades away on its own: drawn as a separate shape, not into the lasting layer.
       const wet = this.scene.add.graphics().setDepth(-0.85);
-      const color = kind === "splash" ? 0x1a3a5a : 0xcfefff;
-      for (let i = 0; i < 6; i++) {
+      if (kind === "splash") for (let i = 0; i < 6; i++) {
         const a = rnd(0, Math.PI * 2);
         const d = rnd(0, r * 0.5);
-        wet.fillStyle(color, kind === "splash" ? 0.35 : 0.16).fillCircle(at.x + Math.cos(a) * d, at.y + Math.sin(a) * d * 0.8, rnd(r * 0.25, r * 0.45));
+        wet.fillStyle(0x1a3a5a, 0.35).fillCircle(at.x + Math.cos(a) * d, at.y + Math.sin(a) * d * 0.8, rnd(r * 0.25, r * 0.45));
       }
-      if (kind === "frost") for (let i = 0; i < 6; i++) {
-        const a = (i / 6) * Math.PI * 2;
-        wet.lineStyle(1.5, 0xe8f8ff, 0.35).lineBetween(at.x, at.y, at.x + Math.cos(a) * r * 0.8, at.y + Math.sin(a) * r * 0.65);
+      else {
+        // Frost: rime specks and little crystal crosses on the grass, no glowing disc.
+        for (let i = 0; i < Math.round(14 + r / 2); i++) {
+          const a = rnd(0, Math.PI * 2), d = r * Math.sqrt(rnd(0, 1));
+          const x = Math.round(at.x + Math.cos(a) * d), y = Math.round(at.y + Math.sin(a) * d * 0.8);
+          wet.fillStyle(i % 3 ? 0xdff4ff : 0x9cd0f0, 0.7).fillRect(x, y, 2, 2);
+          if (i % 4 === 0) wet.fillStyle(0xf4fbff, 0.8).fillRect(x - 2, y, 6, 1).fillRect(x + 1, y - 3, 1, 7);
+        }
       }
       this.scene.tweens.add({ targets: wet, alpha: 0.35, delay: 20000, duration: 8000 });
       // Soaked or frozen earth stays a shade darker for the rest of the battle.

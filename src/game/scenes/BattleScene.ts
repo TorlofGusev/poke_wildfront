@@ -3,7 +3,7 @@ import { drawBush, drawMud, drawRock, drawWater } from "../ui/terrainArt";
 import { shaderGround, TerrainShader } from "../terrainShader";
 import { ArenaFx } from "../arenaFx";
 import { moveFxFamily, playMoveFx } from "../moveFx";
-import { critFx, quakeFx, strikeFx, typeImpactFx } from "../pixelFx";
+import { critFx, quakeFx, strikeFx, typeImpactFx, vortexFx } from "../pixelFx";
 import { playMusic, stopMusic } from "../music";
 import { CONTENT, type ScenarioDef } from "../../content";
 import type { DemoBattle } from "../../content/demoBattles";
@@ -2160,6 +2160,7 @@ export class BattleScene extends Phaser.Scene {
               const spots = hit.length ? hit : [fieldToWorld(e.target)];
               // The big set pieces start with the move: lightning from the sky, the ground heaving.
               if (/^thunder$|thunderbolt|zap-cannon|volt-tackle/.test(move.id)) for (const p of spots) void strikeFx(this, p);
+              for (const p of spots) void vortexFx(this, move.id, p);
               if (moveFxFamily(move) === "quake") void quakeFx(this, { x: view.container.x, y: view.container.y });
               await playMoveFx(this, move, { x: view.container.x, y: view.container.y }, spots);
               if (move.power > 0) for (const p of hit) typeImpactFx(this, move.type, p);

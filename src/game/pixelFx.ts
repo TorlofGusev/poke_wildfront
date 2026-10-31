@@ -6,13 +6,15 @@ import * as bluntHit from "pixelfx/fx/impacts/blunt-hit";
 import * as zapHit from "pixelfx/fx/lightning/zap-hit";
 import * as lightningStrike from "pixelfx/fx/lightning/lightning-strike";
 import * as splash from "pixelfx/fx/water/splash";
-import * as iceShatter from "pixelfx/fx/ice/ice-shatter";
+import * as snowflakeBurst from "pixelfx/fx/ice/snowflake-burst";
 import * as manaBurst from "pixelfx/fx/arcane/mana-burst";
 import * as implosion from "pixelfx/fx/explosions/implosion";
 import * as plasmaExplosion from "pixelfx/fx/explosions/plasma-explosion";
 import * as acidSplash from "pixelfx/fx/nature/acid-splash";
 import * as quake from "pixelfx/fx/nature/quake";
 import * as sporeBurst from "pixelfx/fx/nature/spore-burst";
+import * as fireTornado from "pixelfx/fx/fire/fire-tornado";
+import * as tornado from "pixelfx/fx/nature/tornado";
 
 /**
  * Pixel-art effects from pixelfx (MIT, github.com/patch-gg/pixelfx), each drawn into its own canvas texture
@@ -22,7 +24,7 @@ import * as sporeBurst from "pixelfx/fx/nature/spore-burst";
 type Pt = { readonly x: number; readonly y: number };
 
 const FIRE = ["#1a0606", "#5a1408", "#a8300c", "#e8601a", "#ff9a2a", "#ffd25a", "#fff0b0", "#ffffff"];
-const MON = { critHit, hitSpark, bluntHit, zapHit, lightningStrike, splash, iceShatter, manaBurst, implosion, plasmaExplosion, acidSplash, quake, sporeBurst } as const;
+const MON = { critHit, hitSpark, bluntHit, zapHit, lightningStrike, splash, snowflakeBurst, manaBurst, implosion, plasmaExplosion, acidSplash, quake, sporeBurst, fireTornado, tornado } as const;
 export type PixelFxName = keyof typeof MON;
 
 let serial = 0;
@@ -31,7 +33,7 @@ let serial = 0;
 const PIXEL = 2;
 
 /** Plays one effect with its ground origin at `at`; resolves when it has finished. */
-export function pixelFx(scene: Phaser.Scene, name: PixelFxName, at: Pt, options: Record<string, unknown> = {}, scale = 1, depth = 31): Promise<void> {
+export function pixelFx(scene: Phaser.Scene, name: PixelFxName, at: Pt, options: Record<string, unknown> = {}, scale = 1, depth = 31, loopFor = 0): Promise<void> {
   const mod = MON[name] as unknown as PixelFxModule;
   const [w, h] = mod.meta.size, [ox, oy] = mod.meta.origin;
   const frame = createFrame(w, h, -ox, -oy);
@@ -50,9 +52,13 @@ export function pixelFx(scene: Phaser.Scene, name: PixelFxName, at: Pt, options:
     tex.refresh();
   };
   render();
+  let elapsed = 0;
   return new Promise((resolve) => {
     const step = (_t: number, delta: number) => {
-      fx.update(Math.min(0.1, (delta / 1000) * scene.time.timeScale));
+      const dt = Math.min(0.1, (delta / 1000) * scene.time.timeScale);
+      fx.update(dt);
+      // Loops (a tornado) run for `loopFor` seconds, then fade out.
+      if (mod.meta.loop && (elapsed += dt) >= loopFor) fx.stop();
       if (fx.done()) return finish();
       render();
     };
@@ -74,7 +80,7 @@ export function typeImpactFx(scene: Phaser.Scene, type: string, at: Pt): void {
     fire: ["plasmaExplosion", { palette: FIRE, accent: FIRE.slice(1, 6) }, 0.5],
     electric: ["zapHit"],
     water: ["splash", { stone: false }, 0.7],
-    ice: ["iceShatter", {}, 0.6],
+    ice: ["snowflakeBurst", {}, 0.6],
     psychic: ["manaBurst", {}, 0.5], fairy: ["manaBurst", { palette: ["#2a0a1c", "#5c1440", "#a02a70", "#e04c9c", "#ff86c4", "#ffbadc", "#ffe4f2", "#ffffff"] }, 0.5],
     dragon: ["manaBurst", { palette: ["#0a0a2a", "#1c1460", "#3a24a8", "#5a40e0", "#8a70ff", "#b8a8ff", "#e4dcff", "#ffffff"] }, 0.55],
     ghost: ["implosion", {}, 0.55], dark: ["implosion", { palette: ["#050308", "#140c1c", "#2a1838", "#46285c", "#6a4488", "#a080c0", "#e0d0f0"] }, 0.55],
@@ -94,3 +100,10 @@ export const critFx = (scene: Phaser.Scene, from: Pt, at: Pt): Promise<void> =>
 /** Thunder from the sky, a quake's ground swell: the big moves' own set pieces. */
 export const strikeFx = (scene: Phaser.Scene, at: Pt): Promise<void> => pixelFx(scene, "lightningStrike", { x: at.x, y: at.y + 8 }, {}, 0.6);
 export const quakeFx = (scene: Phaser.Scene, at: Pt): Promise<void> => pixelFx(scene, "quake", { x: at.x, y: at.y + 8 }, {}, 0.9, 29);
+
+/** A whirling column on the spot: fire for Fire Spin and its kind, wind for Twister and Hurricane. */
+export function vortexFx(scene: Phaser.Scene, moveId: string, at: Pt): Promise<void> | null {
+  const fire = /fire-spin|magma-storm|fire-tornado/.test(moveId);
+  if (!fire && !/twister|hurricane|whirlwind|tornado|bleakwind/.test(moveId)) return null;
+  return pixelFx(scene, fire ? "fireTornado" : "tornado", { x: at.x, y: at.y + 10 }, {}, fire ? 0.55 : 0.45, 32, 1.4);
+}
