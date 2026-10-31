@@ -169,13 +169,14 @@ export function signatureFx(scene: Phaser.Scene, moveId: string, from: Pt, targe
   }
   if (/^(psychic|psystrike|psybeam|hyper-beam|dragon-pulse|dark-pulse|signal-beam|charge-beam|solar-beam|aurora-beam)$/.test(moveId)) {
     const palette = /hyper|solar|aurora/.test(moveId) ? undefined : /dragon|dark/.test(moveId) ? GHOST : PSY;
-    const k = Math.min(0.9, dist / (238 * PIXEL));
+    // The beam's art runs about 190 px from the hand to its flaring end.
+    const k = Math.min(1.6, dist / (190 * PIXEL));
     void pixelFx(scene, "arcaneBeam", src, palette ? { palette } : {}, k, 32, 0.7, aim);
     return hold(420);
   }
   if (/^(aura-sphere|swift|shadow-ball|energy-ball|focus-blast|magical-leaf)$/.test(moveId)) {
     const palette = moveId === "aura-sphere" || moveId === "focus-blast" ? AURA : moveId === "shadow-ball" ? GHOST : undefined;
-    const k = Math.min(0.9, dist / (214 * PIXEL));
+    const k = Math.min(1.6, dist / (180 * PIXEL));
     void pixelFx(scene, "arcaneMissiles", src, palette ? { palette } : {}, k, 32, 0, aim);
     return hold(900);
   }
