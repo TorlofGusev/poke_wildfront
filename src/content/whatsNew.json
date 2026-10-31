@@ -2,6 +2,7 @@
  {"version": "0.104",
   "date": "2026-10-29",
   "items": [
+  "Battle polish: a struck Pokémon flashes white and red instead of blinking out, damage numbers and calls no longer pile up on each other, nothing spills over the header when a Pokémon is knocked to the top edge, Blizzard bursts into a ring of ice crystals, and frost melts away instead of leaving a grey smudge.",
   "The battlefield burns and breaks for real: fire sets the ground alight with flames that die down into a charred, ash-strewn patch, heavy physical hits blow out craters lit like bowls with stones scattered round that stay, rubble lands and stays where it falls, and every mark is drawn in pixels instead of soft blobs.",
   "Fixed: Thunder, Thunderbolt, Discharge, Thunder Punch, Volt Tackle and Zap Cannon could stall a battle. Move effects now reach their target exactly (streams, beams and volleys leave from the user and stop on the target), each move plays one effect and one impact instead of two at once, Stone Edge drives up a stone spike and Rock Slide hurls a boulder, and Solar Beam and Hyper Beam have their own colours.",
   "Moves got their own set pieces: fireballs fly, Flamethrower and Heat Wave breathe fire at the target, Water Gun and Hydro Pump shoot a jet, Surf crashes a wave, Ice Beam drives a line of ice spikes, Thunder and Thunderbolt smite from the sky, psychic and dragon beams reach across the field, Aura Sphere and Shadow Ball fire a volley, and Earthquake sends a shockwave ring.",

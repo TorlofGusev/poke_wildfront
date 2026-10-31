@@ -59,7 +59,7 @@ afterEach(() => errors.mockClear());
 const SET_PIECES = [
   "earthquake", "fire-spin", "twister", "hurricane", "flamethrower", "blast-burn", "heat-wave", "dragon-breath", "water-gun",
   "hydro-pump", "surf", "ice-beam", "ice-shard", "thunder", "thunderbolt", "discharge", "psychic", "psystrike", "hyper-beam",
-  "dragon-pulse", "aura-sphere", "shadow-ball", "ember", "fire-blast", "stone-edge", "rock-slide", "rock-throw",
+  "dragon-pulse", "aura-sphere", "shadow-ball", "ember", "fire-blast", "stone-edge", "rock-slide", "rock-throw", "blizzard",
 ];
 
 describe("pixelfx effects", () => {

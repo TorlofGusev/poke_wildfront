@@ -26,6 +26,7 @@ import * as arcaneMissiles from "pixelfx/fx/arcane/arcane-missiles";
 import * as spiritFlame from "pixelfx/fx/fire/spirit-flame";
 import * as boulder from "pixelfx/fx/nature/boulder";
 import * as earthSpike from "pixelfx/fx/nature/earth-spike";
+import * as frostNova from "pixelfx/fx/ice/frost-nova";
 
 /**
  * Pixel-art effects from pixelfx (MIT, github.com/patch-gg/pixelfx), each drawn into its own canvas texture
@@ -41,7 +42,7 @@ type Pt = { readonly x: number; readonly y: number };
 
 const MON = {
   critHit, hitSpark, bluntHit, zapHit, splash, snowflakeBurst, manaBurst, implosion, plasmaExplosion, acidSplash, sporeBurst,
-  fireTornado, tornado, groundSlam, fireball, flamethrower, fireBreath, waterJet, waveCrash, iceSpikes, smite, arcaneBeam, arcaneMissiles, spiritFlame, boulder, earthSpike,
+  fireTornado, tornado, groundSlam, fireball, flamethrower, fireBreath, waterJet, waveCrash, iceSpikes, smite, arcaneBeam, arcaneMissiles, spiritFlame, boulder, earthSpike, frostNova,
 } as const;
 export type PixelFxName = keyof typeof MON;
 
@@ -70,6 +71,19 @@ interface PlayOptions {
 
 let serial = 0;
 
+/** Each scene's board: effects are masked to it, so nothing spills over the header or the side panel. */
+const bounds = new WeakMap<Phaser.Scene, Phaser.Display.Masks.GeometryMask>();
+
+/** Keeps this scene's effects inside the given rectangle (call once the board is laid out). */
+export function setFxBounds(scene: Phaser.Scene, rect: { x: number; y: number; w: number; h: number }): void {
+  const g = scene.make.graphics({}, false).fillStyle(0xffffff).fillRect(rect.x, rect.y, rect.w, rect.h);
+  bounds.set(scene, g.createGeometryMask());
+  scene.events.once("shutdown", () => {
+    bounds.delete(scene);
+    g.destroy();
+  });
+}
+
 /**
  * Plays one effect at `at` (its origin, or its anchor); resolves when it has finished. An effect that fails is
  * logged and skipped: decoration must never stall a battle.
@@ -97,6 +111,8 @@ function play(scene: Phaser.Scene, name: PixelFxName, at: Pt, o: PlayOptions): P
   const img = ctx.createImageData(w, h);
   const k = (o.scale ?? 1) * PIXEL;
   const image = scene.add.image(at.x, at.y, key).setOrigin((ox + ax) / w, (oy + ay) / h).setScale(k).setDepth(o.depth ?? 31);
+  const mask = bounds.get(scene);
+  if (mask) image.setMask(mask);
   if (o.crop !== undefined) image.setCrop(0, 0, Math.min(w, Math.ceil(ox + ax + o.crop)), h);
   if (o.aim !== undefined) {
     const left = Math.cos(o.aim) < 0;
@@ -272,6 +288,11 @@ const MOVES: readonly (readonly [RegExp, (ctx: Ctx) => SetPiece])[] = [
     void pixelFx(scene, "arcaneMissiles", mouth, { options: palette ? { palette } : {}, scale: k, depth: 32, aim, anchor: RAY.arcaneMissiles.anchor });
     return { contact: wait(800), lands: true };
   }],
+  [/^(blizzard|sheer-cold|glaciate|powder-snow|icy-wind)$/, ({ scene, center, wait }) => {
+    // A ring of ice crystals bursts out over the aimed area (its flash peaks at 0.5 s).
+    void pixelFx(scene, "frostNova", { x: center.x, y: center.y + 6 }, { scale: 0.36, depth: 32 });
+    return { contact: wait(500), lands: true };
+  }],
   [/^(stone-edge|rock-tomb|stone-axe|rock-wrecker|head-smash|spikes)$/, ({ scene, targets, wait }) => {
     // A stone spike rams up under each target (the floor glows and heaves first, the spike bursts out at 0.47 s).
     for (const t of targets) void pixelFx(scene, "earthSpike", { x: t.x, y: t.y + 4 }, { scale: 0.42, depth: 32 });
@@ -308,6 +329,8 @@ interface Ctx {
   readonly from: Pt;
   readonly to: Pt;
   readonly targets: readonly Pt[];
+  /** The aimed point (an area's centre). */
+  readonly center: Pt;
   /** Where streams and beams leave the user. */
   readonly mouth: Pt;
   /** Screen pixels from the mouth to the target's body, and the angle. */
@@ -324,7 +347,7 @@ function aimed(scene: Phaser.Scene, name: keyof typeof RAY, mouth: Pt, len: numb
 }
 
 /** The move's own set piece when pixelfx has one (it stands in for the drawn effect); null when none fits. */
-export function signatureFx(scene: Phaser.Scene, moveId: string, from: Pt, targets: readonly Pt[]): SetPiece | null {
+export function signatureFx(scene: Phaser.Scene, moveId: string, from: Pt, targets: readonly Pt[], center: Pt = targets[0] ?? from): SetPiece | null {
   const to = targets[0];
   if (!to) return null;
   const entry = MOVES.find(([re]) => re.test(moveId));
@@ -333,5 +356,5 @@ export function signatureFx(scene: Phaser.Scene, moveId: string, from: Pt, targe
   const len = Math.max(8, Math.hypot(to.x - mouth.x, to.y - BODY - mouth.y));
   const aim = Math.atan2(to.y - BODY - mouth.y, to.x - mouth.x);
   const wait = (ms: number) => new Promise<void>((r) => scene.time.delayedCall(ms, r));
-  return entry[1]({ scene, id: moveId, from, to, targets, mouth, len, aim, wait });
+  return entry[1]({ scene, id: moveId, from, to, targets, center, mouth, len, aim, wait });
 }

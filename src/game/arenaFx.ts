@@ -305,10 +305,13 @@ export class ArenaFx {
    */
   impact(move: MoveDef, at: Pt, radiusUnits: number): void {
     const s = this.scene;
-    const color = TYPE_COLORS[move.type] ?? 0xffffff;
+    // Ice lights the grass white-blue (its type colour, added on green, reads mint).
+    const color = move.type === "ice" ? 0xe8f4ff : TYPE_COLORS[move.type] ?? 0xffffff;
     const r = Math.max(0.6, radiusUnits) * this.unit;
     const area = move.shape.kind !== "single";
-    this.flash(at, color, r * (area ? 1.8 : 1.5), area ? 500 : 340, area ? 1 : 0.8);
+    // Light added on grass turns green; ice keeps it faint so it reads as a cold glint, not a green glow.
+    const glow = move.type === "ice" ? 0.35 : 1;
+    this.flash(at, color, r * (area ? 1.8 : 1.5), area ? 500 : 340, (area ? 1 : 0.8) * glow);
     if (area) {
       const dust = s.add.particles(at.x, at.y, SOFT, {
         emitting: false, lifespan: 900, speed: { min: r * 0.6, max: r * 1.1 }, scale: { start: 0.5, end: 1.3 },
@@ -477,8 +480,10 @@ export class ArenaFx {
           if (i % 4 === 0) wet.fillStyle(0xf4fbff, 0.85).fillRect(x - 2, y, 6, 1).fillRect(x + 1, y - 3, 1, 7);
         });
       }
-      this.scene.tweens.add({ targets: wet, alpha: 0.3, delay: 20000, duration: 8000 });
-      this.speckle(g, at, r, [{ to: 1, colors: kind === "splash" ? [0x1c3020, 0x203828] : [0x3c5058, 0x46606a], alpha: 0.3, fill: 0.7 }]);
+      // The puddle stays a while and shrinks to a damp patch; rime melts away altogether.
+      this.scene.tweens.add({ targets: wet, alpha: kind === "splash" ? 0.3 : 0, delay: kind === "splash" ? 20000 : 9000, duration: 6000, onComplete: () => kind === "frost" && wet.destroy() });
+      if (kind === "splash") this.speckle(g, at, r, [{ to: 1, colors: [0x1c3020, 0x203828], alpha: 0.3, fill: 0.7 }]);
+      else this.speckle(g, at, r * 0.7, [{ to: 1, colors: [0xcfe6f0, 0xb8d8e8], alpha: 0.4, fill: 0.08 }]);
     } else if (kind === "scorch") {
       // Charred at the heart, burnt brown round it, the grass singed yellow at the edge, ash on top.
       this.speckle(g, at, r, [

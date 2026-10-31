@@ -3,7 +3,7 @@ import { drawBush, drawMud, drawRock, drawWater } from "../ui/terrainArt";
 import { shaderGround, TerrainShader } from "../terrainShader";
 import { ArenaFx } from "../arenaFx";
 import { playMoveFx } from "../moveFx";
-import { critFx, hasTypeImpact, signatureFx, typeImpactFx } from "../pixelFx";
+import { critFx, hasTypeImpact, setFxBounds, signatureFx, typeImpactFx } from "../pixelFx";
 import { playMusic, stopMusic } from "../music";
 import { CONTENT, type ScenarioDef } from "../../content";
 import type { DemoBattle } from "../../content/demoBattles";
@@ -105,6 +105,8 @@ const AUTO_END_MS = 600;
 /** The title-screen replay is calmer than a real battle. */
 const DEMO_STEP_MS = 650;
 const S = FIELD_S;
+/** The band over the board's top edge and the header on it: above units and effects, under floating words. */
+const HEADER_DEPTH = 40;
 /** Terrain colours on the free field. */
 /** A tap or click this close to a deploy spot picks it. */
 const SPOT_PICK = 0.45;
@@ -336,9 +338,15 @@ export class BattleScene extends Phaser.Scene {
       this.anims.globalTimeScale = 1;
     });
     playMusic(this, "battle");
-    this.header = pixText(this, BOARD_X, 12, "", 0xf5d76e);
-    this.add.text(BOARD_X, 44, this.scenario.name, { fontFamily: FONT, fontSize: px(13), color: COLORS.dim });
+    this.header = pixText(this, BOARD_X, 12, "", 0xf5d76e).setDepth(HEADER_DEPTH + 1);
+    this.add.text(BOARD_X, 44, this.scenario.name, { fontFamily: FONT, fontSize: px(13), color: COLORS.dim }).setDepth(HEADER_DEPTH + 1);
     this.drawBoard();
+    {
+      // Above the board, the page: a Pokémon on the top edge (and anything it throws up) stays under the header.
+      const b = this.boardPx();
+      this.add.rectangle(0, 0, PANEL_X - 4, BOARD_Y - 4, 0x10141c).setOrigin(0).setDepth(HEADER_DEPTH);
+      setFxBounds(this, { x: BOARD_X, y: BOARD_Y, w: b.w, h: b.h });
+    }
     this.overlay = this.add.graphics();
     this.panel = this.add.container(PANEL_X, 16);
     this.infoText = new RichText(this, PANEL_X, 330, PANEL_W, 12);
@@ -587,13 +595,21 @@ export class BattleScene extends Phaser.Scene {
     view.sprite.play(animKey(view.speciesId, anim, view.facing), true);
   }
 
-  /** Red flash and a small shake when a unit takes damage. */
-  /** The handhelds' hit: the Pokémon blinks out and in a few times and is knocked back a step from the attacker. */
+  /** A hit: the Pokémon flashes white and red (it stays in sight) and is knocked back a step from the attacker. */
   private flinch(unitId: string): void {
     const view = this.units.get(unitId);
     if (!view?.sprite) return;
     const sprite = view.sprite;
-    this.tweens.add({ targets: sprite, alpha: { from: 0, to: 1 }, duration: 70, repeat: 3, onComplete: () => sprite.setAlpha(1) });
+    // A flash, not a blink: the struck Pokémon stays in sight (white, red, white, then itself).
+    const flash = sprite as Phaser.GameObjects.Sprite;
+    [0xffffff, 0xff5a4a, 0xffffff].forEach((c, i) => this.time.delayedCall(i * 70, () => flash.active && flash.setTint(c).setTintMode(Phaser.TintModes.FILL)));
+    this.time.delayedCall(210, () => {
+      if (!flash.active) return;
+      flash.setTintMode(Phaser.TintModes.MULTIPLY);
+      // A frozen Pokémon keeps its icy tint.
+      if (view.statusFx.id === "freeze") flash.setTint(0x98d8f8);
+      else flash.clearTint();
+    });
     const from = this.lastAttackFrom;
     if (from) {
       const dx = view.container.x - from.x, dy = view.container.y - from.y;
@@ -1326,7 +1342,7 @@ export class BattleScene extends Phaser.Scene {
       }
       x += size + gap + (now ? 6 : 0);
     });
-    this.orderStrip = this.add.container(0, 0, items);
+    this.orderStrip = this.add.container(0, 0, items).setDepth(HEADER_DEPTH + 1);
     // The turn passed: the row slides in from the right.
     const head = state.queue[0] ?? null;
     if (head !== this.orderHead && this.orderHead !== null) {
@@ -2163,7 +2179,7 @@ export class BattleScene extends Phaser.Scene {
               const from = { x: view.container.x, y: view.container.y };
               let piece: ReturnType<typeof signatureFx> = null;
               try {
-                piece = signatureFx(this, move.id, from, spots);
+                piece = signatureFx(this, move.id, from, spots, fieldToWorld(e.target));
               } catch (err) {
                 console.error("set piece failed", err);
               }
@@ -2717,9 +2733,20 @@ export class BattleScene extends Phaser.Scene {
     const o = fieldToWorld({ x: 0, y: 0 });
     // Kept on the board, so a Pokémon at the edge does not push its words off screen.
     const x = Phaser.Math.Clamp(view.container.x, o.x + w / 2 + 4, o.x + this.boardPx().w - w / 2 - 4);
-    const box = this.add.container(x, view.container.y - 22, parts).setDepth(45).setScale(1.4);
     const alive = (this.floats.get(unitId) ?? []).filter((f) => f.active);
     for (const f of alive) this.tweens.add({ targets: f, y: f.y - h - 4, duration: 120, ease: "Cubic.easeOut" });
+    // Clear of other Pokémon's words (two hit side by side): moved up past any it would overlap, but never
+    // above the board's top, where it goes below the Pokémon instead.
+    const others = [...this.floats.entries()].filter(([id]) => id !== unitId).flatMap(([, fs]) => fs.filter((f) => f.active));
+    const overlaps = (yy: number) => others.some((f) => {
+      const fb = f.getBounds();
+      return Math.abs(fb.centerX - x) < (fb.width + w) / 2 + 2 && yy - h < fb.bottom + 2 && yy > fb.top - 2;
+    });
+    let y = view.container.y - 22;
+    for (let i = 0; i < 4 && overlaps(y); i++) y -= h + 4;
+    const top = o.y + h + 6;
+    if (y < top) y = Math.max(top, view.container.y + 34 + h);
+    const box = this.add.container(x, y, parts).setDepth(45).setScale(1.4);
     this.floats.set(unitId, [...alive, box]);
     this.tweens.add({ targets: box, scale: 1, duration: 140, ease: "Back.easeOut" });
     this.tweens.add({ targets: box, alpha: 0, delay: call ? 1100 : 800, duration: 400, onComplete: () => box.destroy() });
