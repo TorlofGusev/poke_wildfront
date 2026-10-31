@@ -2,6 +2,7 @@
  {"version": "0.104",
   "date": "2026-10-29",
   "items": [
+  "The battlefield takes the damage: every hit leaves its mark, heavy and area moves blow out craters and throw rubble that stays on the ground, fire leaves smouldering embers, and water and ice soak the earth for the rest of the battle.",
   "Battle effects got a punch: critical hits burst into a starburst with flying sparks, each type lands with its own pixel-art impact (fire blasts, water splashes, ice shatters, electric zaps, poison and acid splatter, ghostly implosions), thunder strikes from the sky and an Earthquake tears a glowing fissure across the field.",
   "The Town Map reads the place nearest to your pointer anywhere on the chart, so a route answers along its whole length instead of only at one small spot.",
   "The Town Map remembers where you have been: pointing at (or clicking) a place you visited shows its wild Pokémon with their levels (✓ for species you own, the unmet ones counted as ???), its gym leader and whether the badge is yours, how many trainers you have beaten, its Pokémon Center and Mart, items still to find and the roads out. A gold ! marks where your current goal waits, and the goal is written at the top.",

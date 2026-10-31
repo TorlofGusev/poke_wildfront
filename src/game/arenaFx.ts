@@ -304,8 +304,60 @@ export class ArenaFx {
     }
     const power = move.power ?? 0;
     if (area || power >= 80) s.cameras.main.shake(area ? 140 + power : 120, Math.min(0.012, 0.002 + power / 12000));
+    if (power <= 0) return;
+    // Every hit scars the field, more the harder it lands; heavy and area hits blow out a crater and rubble.
+    const k = 0.7 + power / 110;
+    const size = (area ? r : this.unit * 0.5) * k;
+    // Moves centred on the user (Earthquake, Surf round itself) crack the ground instead of blowing a hole.
+    if ((area || power >= 75) && move.range.max > 0) this.crater(at, Math.min(size * 0.6, this.unit * 0.85), color, power);
     const mark = MARK_OF[move.type];
-    if (mark && power > 0 && (area || power >= 60)) this.mark(at, mark, area ? r : this.unit * 0.45);
+    if (mark) this.mark(at, mark, size);
+  }
+
+  /** A blown-out crater: a dark rim, dug-up earth, pebbles thrown wide (they stay), rubble flying for a moment. */
+  private crater(at: Pt, r: number, color: number, power: number): void {
+    const g = this.brush.clear();
+    const rnd = Phaser.Math.FloatBetween;
+    const dirt = this.theme === "cave" ? [0x2a241e, 0x4a4036, 0x6a5e50] : [0x2e2414, 0x4e3c22, 0x7a6038];
+    g.fillStyle(dirt[0]!, 0.45).fillEllipse(at.x, at.y, r * 2.1, r * 1.6);
+    g.fillStyle(dirt[1]!, 0.6).fillEllipse(at.x, at.y + r * 0.08, r * 1.6, r * 1.15);
+    g.fillStyle(dirt[0]!, 0.5).fillEllipse(at.x - r * 0.15, at.y - r * 0.1, r * 0.9, r * 0.6);
+    // Torn sod lifted at the rim, lit on its upper edge.
+    for (let i = 0; i < 10; i++) {
+      const a = rnd(0, Math.PI * 2), d = r * rnd(0.95, 1.25);
+      const x = at.x + Math.cos(a) * d, y = at.y + Math.sin(a) * d * 0.78;
+      g.fillStyle(dirt[2]!, 0.8).fillRect(Math.round(x), Math.round(y), 3, 2);
+    }
+    // Pebbles and clods thrown out, thinning with distance.
+    const n = Math.round(10 + power / 6);
+    for (let i = 0; i < n; i++) {
+      const a = rnd(0, Math.PI * 2), d = r * (1.1 + Math.pow(rnd(0, 1), 1.6) * 1.8);
+      const x = Math.round(at.x + Math.cos(a) * d), y = Math.round(at.y + Math.sin(a) * d * 0.78);
+      const sz = d < r * 1.6 ? 3 : 2;
+      g.fillStyle(0x1a140c, 0.5).fillRect(x, y + 1, sz, sz);
+      g.fillStyle(i % 3 ? dirt[2]! : 0x8a8478, 0.95).fillRect(x, y, sz, sz);
+    }
+    this.decals.draw(g, -this.board.x, -this.board.y).render();
+    // Rubble in the air: chunks arc out and drop.
+    const s = this.scene;
+    const chunks = Math.round(6 + power / 12);
+    for (let i = 0; i < chunks; i++) {
+      const a = rnd(0, Math.PI * 2), d = r * rnd(1, 2.6), sz = Phaser.Math.Between(2, 4);
+      const c = s.add.rectangle(at.x, at.y, sz, sz, i % 2 ? dirt[2]! : 0x8a8478).setDepth(2.5);
+      const tx = at.x + Math.cos(a) * d, ty = at.y + Math.sin(a) * d * 0.78, ms = rnd(380, 620);
+      const h = rnd(14, 30), spin = rnd(-360, 360);
+      s.tweens.addCounter({
+        from: 0, to: 1, duration: ms,
+        onUpdate: (tw) => {
+          const t = tw.getValue() ?? 0;
+          c.setPosition(at.x + (tx - at.x) * t, at.y + (ty - at.y) * t - Math.sin(t * Math.PI) * h).setAngle(spin * t);
+        },
+        onComplete: () => s.tweens.add({ targets: c, alpha: 0, delay: 300, duration: 300, onComplete: () => c.destroy() }),
+      });
+    }
+    // The heat of the blast glows in the hole a moment.
+    const glow = s.add.circle(at.x, at.y, r * 0.7, color, 0.35).setDepth(-0.8).setBlendMode(Phaser.BlendModes.ADD);
+    s.tweens.add({ targets: glow, alpha: 0, scale: 0.6, duration: 1600, onComplete: () => glow.destroy() });
   }
 
   /** A puff of dust where a Pokémon goes down. */
@@ -342,15 +394,25 @@ export class ArenaFx {
         const a = (i / 6) * Math.PI * 2;
         wet.lineStyle(1.5, 0xe8f8ff, 0.35).lineBetween(at.x, at.y, at.x + Math.cos(a) * r * 0.8, at.y + Math.sin(a) * r * 0.65);
       }
-      this.scene.tweens.add({ targets: wet, alpha: 0, delay: 9000, duration: 4000, onComplete: () => wet.destroy() });
+      this.scene.tweens.add({ targets: wet, alpha: 0.35, delay: 20000, duration: 8000 });
+      // Soaked or frozen earth stays a shade darker for the rest of the battle.
+      blob(kind === "splash" ? 0x10202c : 0x2a3a48, 0.14, r, 6);
+      this.decals.draw(g, -this.board.x, -this.board.y).render();
       return;
     }
     if (kind === "scorch") {
       // Burnt earth, not a hole: warm dark brown, soft.
-      blob(0x3a2616, 0.3, r, 9);
-      blob(0x24180e, 0.22, r * 0.6, 5);
+      blob(0x3a2616, 0.45, r, 10);
+      blob(0x1a1008, 0.4, r * 0.6, 6);
+      // Embers smoulder in it for a while.
+      for (let i = 0; i < Math.round(4 + r / 6); i++) {
+        const a = rnd(0, Math.PI * 2), d = rnd(0, r * 0.7);
+        const e = this.scene.add.rectangle(Math.round(at.x + Math.cos(a) * d), Math.round(at.y + Math.sin(a) * d * 0.8), 2, 2, i % 2 ? 0xff7a20 : 0xffc040).setDepth(-0.8).setBlendMode(Phaser.BlendModes.ADD);
+        this.scene.tweens.add({ targets: e, alpha: { from: 1, to: 0.25 }, duration: rnd(300, 700), yoyo: true, repeat: 8, onComplete: () => e.destroy() });
+      }
     } else if (kind === "stain") {
-      blob(0x3a1a50, 0.25, r, 8);
+      blob(0x3a1a50, 0.38, r, 9);
+      blob(0x1c0a28, 0.3, r * 0.5, 4);
     } else if (kind === "leaves") {
       for (let i = 0; i < 9; i++) {
         const a = rnd(0, Math.PI * 2);
@@ -359,14 +421,14 @@ export class ArenaFx {
         g.fillStyle(i % 2 ? 0x3f9c35 : 0x6ab84a, 0.75).fillEllipse(x, y, 6, 3);
       }
     } else if (kind === "spark") {
-      blob(0x0a0a0a, 0.2, r * 0.7, 4);
+      blob(0x0a0a0a, 0.3, r * 0.7, 5);
       for (let i = 0; i < 5; i++) {
         const a = rnd(0, Math.PI * 2);
         g.lineStyle(1.5, 0x101010, 0.45).lineBetween(at.x, at.y, at.x + Math.cos(a) * r * 0.9, at.y + Math.sin(a) * r * 0.7);
       }
     } else {
       // Cracks: jagged lines out from the centre, darker near it.
-      blob(0x000000, 0.18, r * 0.5, 4);
+      blob(0x000000, 0.28, r * 0.5, 5);
       for (let i = 0; i < 7; i++) {
         let a = rnd(0, Math.PI * 2);
         let x = at.x, y = at.y;
