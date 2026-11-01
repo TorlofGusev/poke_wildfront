@@ -331,6 +331,18 @@ export class ArenaFx {
     const mark = MARK_OF[move.type];
     if (mark === "scorch" && (area || power >= 50)) this.ignite(at, Math.min(size * 0.8, this.unit * 1.6), 2600 + power * 20);
     else if (mark) this.mark(at, mark, size);
+    if (move.type === "grass") this.leafSpray(at, Math.round(10 + power / 8));
+  }
+
+  /** Torn leaves and blades of grass flung up where a grass move lands, drifting back down. */
+  private leafSpray(at: Pt, count: number): void {
+    const e = this.scene.add.particles(at.x, at.y - 4, LEAF, {
+      emitting: false, lifespan: { min: 700, max: 1100 }, speed: { min: 40, max: 120 }, angle: { min: 205, max: 335 },
+      gravityY: 120, rotate: { start: 0, end: 540 }, scale: { start: 1.1, end: 0.6 }, alpha: { start: 1, end: 0 },
+      tint: [0x57b847, 0x3f9c35, 0x8ad86a, 0xc4ec7a],
+    }).setDepth(30); // over the struck Pokémon: they fly up round it
+    e.explode(count);
+    this.scene.time.delayedCall(1200, () => e.destroy());
   }
 
   /** Paints the ground in 2 px cells, ring by ring out from `at` (rough-edged), each ring its own colours and fill. */

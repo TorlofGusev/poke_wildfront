@@ -27,6 +27,9 @@ import * as spiritFlame from "pixelfx/fx/fire/spirit-flame";
 import * as boulder from "pixelfx/fx/nature/boulder";
 import * as earthSpike from "pixelfx/fx/nature/earth-spike";
 import * as frostNova from "pixelfx/fx/ice/frost-nova";
+import * as vineWhip from "pixelfx/fx/nature/vine-whip";
+import * as thorns from "pixelfx/fx/nature/thorns";
+import * as rootSnare from "pixelfx/fx/nature/root-snare";
 
 /**
  * Pixel-art effects from pixelfx (MIT, github.com/patch-gg/pixelfx), each drawn into its own canvas texture
@@ -43,6 +46,7 @@ type Pt = { readonly x: number; readonly y: number };
 const MON = {
   critHit, hitSpark, bluntHit, zapHit, splash, snowflakeBurst, manaBurst, implosion, plasmaExplosion, acidSplash, sporeBurst,
   fireTornado, tornado, groundSlam, fireball, flamethrower, fireBreath, waterJet, waveCrash, iceSpikes, smite, arcaneBeam, arcaneMissiles, spiritFlame, boulder, earthSpike, frostNova,
+  vineWhip, thorns, rootSnare,
 } as const;
 export type PixelFxName = keyof typeof MON;
 
@@ -163,6 +167,7 @@ const FIRE = ["#1a0606", "#5a1408", "#a8300c", "#e8601a", "#ff9a2a", "#ffd25a", 
 const PSY = ["#1a0626", "#3c0c50", "#6a1a88", "#a02cb8", "#d050d8", "#f08ce8", "#ffd0f8", "#ffffff"];
 const BOLT = ["#1a1404", "#4a3606", "#8a660a", "#d0a010", "#f8d020", "#fff070", "#fffac0", "#ffffff"];
 const AURA = ["#06142a", "#0c2c5c", "#1450a0", "#2a80d8", "#58b0f8", "#a0d8ff", "#e0f4ff", "#ffffff"];
+const LEAF_SPARK = ["#0c1a08", "#1e3a10", "#2f6a1c", "#4c9a2a", "#86c84e", "#c4ec7a", "#f4ffd0"];
 const SHADOW = ["#08040e", "#1c0c2c", "#38184e", "#582878", "#7c44a0", "#a878c8", "#dcc0f0", "#ffffff"];
 
 /** Beams other than psychic violet. */
@@ -186,7 +191,9 @@ const IMPACT: Partial<Record<string, readonly [PixelFxName, Record<string, unkno
   ghost: ["implosion", {}, 0.55],
   dark: ["implosion", { palette: ["#050308", "#140c1c", "#2a1838", "#46285c", "#6a4488", "#a080c0", "#e0d0f0"] }, 0.55],
   poison: ["acidSplash", { palette: ["#140a1a", "#2c1040", "#4c1a70", "#7428a8", "#9c44d8", "#c47cf0", "#e8b8ff", "#fff0ff"] }, 0.6],
-  grass: ["sporeBurst", {}, 0.5],
+  // A green crack of light; the hit tears up leaves from the ground as well (arenaFx). The toadstool of
+  // sporeBurst is kept for Spore alone: a mushroom on every grass hit looked out of place.
+  grass: ["hitSpark", { palette: LEAF_SPARK }, 0.75],
   bug: ["acidSplash", {}, 0.55],
   rock: ["bluntHit", {}, 0.75],
   ground: ["bluntHit", {}, 0.75],
@@ -309,6 +316,34 @@ const MOVES: readonly (readonly [RegExp, (ctx: Ctx) => SetPiece])[] = [
       else scene.time.delayedCall(i * 90, go);
     });
     return { contact: wait(510 + (targets.length - 1) * 90), lands: true };
+  }],
+  [/^(vine-whip|power-whip)$/, ({ scene, from, to, wait }) => {
+    // A vine bursts from the ground at the user's feet, rears back and cracks on the target: at the crack (0.56 s)
+    // its tip is 71 art px out and 20 up, about the target's body.
+    const feet = { x: from.x, y: from.y + 4 };
+    const end = { x: to.x, y: to.y + 4 };
+    const scale = Phaser.Math.Clamp(Math.hypot(end.x - feet.x, end.y - feet.y) / PIXEL / 71, 0.3, 0.9);
+    void pixelFx(scene, "vineWhip", feet, { scale, depth: 32, aim: Math.atan2(end.y - feet.y, end.x - feet.x) });
+    return { contact: wait(560), lands: false };
+  }],
+  [/^(frenzy-plant)$/, ({ scene, from, to, wait }) => {
+    // A seam runs along the ground and hooked thorns punch up out of it, each bigger, the last (114 art px on,
+    // up at 0.6 s) under the target.
+    const feet = { x: from.x, y: from.y + 4 };
+    const end = { x: to.x, y: to.y + 4 };
+    const scale = Math.max(0.3, Math.hypot(end.x - feet.x, end.y - feet.y) / PIXEL / 114);
+    void pixelFx(scene, "thorns", feet, { scale, depth: 32, aim: Math.atan2(end.y - feet.y, end.x - feet.x) });
+    return { contact: wait(600), lands: true };
+  }],
+  [/^(leech-seed|ingrain)$/, ({ scene, targets, wait }) => {
+    // Roots burst up and cinch round each target's legs (at 0.62 s), hold, then crumble.
+    for (const t of targets) void pixelFx(scene, "rootSnare", { x: t.x, y: t.y + 4 }, { scale: 0.42, depth: 32 });
+    return { contact: wait(620), lands: true };
+  }],
+  [/^(spore)$/, ({ scene, targets, wait }) => {
+    // The one mushroom move: a toadstool pushes up and puffs its spores over the target (at 0.8 s).
+    for (const t of targets) void pixelFx(scene, "sporeBurst", { x: t.x, y: t.y + 4 }, { scale: 0.45, depth: 32 });
+    return { contact: wait(800), lands: true };
   }],
   [/^(ember|fire-blast|flame-burst|mystical-fire|flame-charge|pyro-ball)$/, ({ scene, mouth, to, len, aim, id }) => {
     // The ball flies: its sprite tweened from the user's mouth to the target's body.
