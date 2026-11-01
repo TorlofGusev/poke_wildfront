@@ -2611,7 +2611,8 @@ export class BattleScene extends Phaser.Scene {
       if (this.textures.exists(portraitKey(speciesId)))
         add(this.add.image(28, mid, portraitKey(speciesId)).setDisplaySize(rowH - 8, rowH - 8).setAlpha(fallen ? 0.35 : 1));
       text(48, mid - 13, CONTENT.species[speciesId]!.name, fallen ? COLORS.dim : COLORS.text, 12);
-      const ko = this.knockoutsOf(uid);
+      // A fallen Pokémon has left the party, so its marks are no longer there to count: it went at the last one.
+      const ko = fallen ? KNOCKOUTS_TO_DEATH : this.knockoutsOf(uid);
       text(48, mid + 1, "●".repeat(ko) + "○".repeat(Math.max(0, KNOCKOUTS_TO_DEATH - ko)), ko >= 2 ? "#ff6b6b" : COLORS.dim, 9);
       const lv = text(barX - 52, mid - 7, `Lv${was.level}`, "#f5d76e", 12);
       add(this.add.rectangle(barX, mid + 2, barW, 7, 0x0c1018).setOrigin(0, 0.5).setStrokeStyle(1, 0x4a5670));
