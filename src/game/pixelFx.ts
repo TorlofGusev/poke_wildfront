@@ -70,6 +70,8 @@ interface PlayOptions {
   readonly extend?: number;
   /** Art pixels from the anchor beyond which the effect is cut off. */
   readonly crop?: number;
+  /** Art pixels behind the anchor beyond which the effect is cut off. */
+  readonly cropBack?: number;
   readonly onImage?: (image: Phaser.GameObjects.Image) => void;
 }
 
@@ -117,7 +119,11 @@ function play(scene: Phaser.Scene, name: PixelFxName, at: Pt, o: PlayOptions): P
   const image = scene.add.image(at.x, at.y, key).setOrigin((ox + ax) / w, (oy + ay) / h).setScale(k).setDepth(o.depth ?? 31);
   const mask = bounds.get(scene);
   if (mask) image.setMask(mask);
-  if (o.crop !== undefined) image.setCrop(0, 0, Math.min(w, Math.ceil(ox + ax + o.crop)), h);
+  if (o.crop !== undefined || o.cropBack !== undefined) {
+    const left = o.cropBack === undefined ? 0 : Math.max(0, Math.floor(ox + ax - o.cropBack));
+    const right = o.crop === undefined ? w : Math.min(w, Math.ceil(ox + ax + o.crop));
+    image.setCrop(left, 0, right - left, h);
+  }
   if (o.aim !== undefined) {
     const left = Math.cos(o.aim) < 0;
     image.setScale(left ? -k : k, k).setRotation(left ? o.aim + Math.PI : o.aim);
@@ -168,6 +174,7 @@ const PSY = ["#1a0626", "#3c0c50", "#6a1a88", "#a02cb8", "#d050d8", "#f08ce8", "
 const BOLT = ["#1a1404", "#4a3606", "#8a660a", "#d0a010", "#f8d020", "#fff070", "#fffac0", "#ffffff"];
 const AURA = ["#06142a", "#0c2c5c", "#1450a0", "#2a80d8", "#58b0f8", "#a0d8ff", "#e0f4ff", "#ffffff"];
 const LEAF_SPARK = ["#0c1a08", "#1e3a10", "#2f6a1c", "#4c9a2a", "#86c84e", "#c4ec7a", "#f4ffd0"];
+const MUD = ["#140c06", "#2e1c0e", "#4c3018", "#6e4a26", "#8e6838", "#b08c58", "#d4b888", "#f4e6c8"];
 const SHADOW = ["#08040e", "#1c0c2c", "#38184e", "#582878", "#7c44a0", "#a878c8", "#dcc0f0", "#ffffff"];
 
 /** Beams other than psychic violet. */
@@ -260,15 +267,18 @@ const MOVES: readonly (readonly [RegExp, (ctx: Ctx) => SetPiece])[] = [
     void aimed(scene, "fireBreath", mouth, len, aim, {}, 0.8);
     return { contact: wait(160), lands: false };
   }],
-  [/^(water-gun|hydro-pump|water-pulse|scald|hydro-cannon|brine|octazooka)$/, ({ scene, mouth, len, aim, wait }) => {
+  [/^(water-gun|hydro-pump|water-pulse|scald|hydro-cannon|brine|octazooka|chilling-water)$/, ({ scene, mouth, len, aim, wait }) => {
     // Spray flies on about 35 art pixels past the jet's end; the solid rod stops just short of the target.
     const length = Math.max(20, len / PIXEL / 0.5 - 14);
     void pixelFx(scene, "waterJet", mouth, { options: { length }, scale: 0.5, depth: 32, loopFor: 0.7, aim, extend: length - 118 });
     return { contact: wait(160), lands: false };
   }],
-  [/^(surf|muddy-water|wave-crash|water-spout|liquidation)$/, ({ scene, from, targets, wait }) => {
-    // The wave rolls in from the user's side and breaks on each target.
-    for (const t of targets) void pixelFx(scene, "waveCrash", { x: t.x, y: t.y + BODY }, { options: { flip: t.x < from.x }, scale: 0.6, depth: 32 });
+  [/^(surf|muddy-water|wave-crash|water-spout|liquidation)$/, ({ scene, from, targets, id, wait }) => {
+    // The wave rolls in from the user's side and breaks on each target: its lip lands 23 art px past the origin,
+    // so that point goes on the target, and the sea line it rolls on is cut short around it.
+    const options = id === "muddy-water" ? { palette: MUD } : {};
+    for (const t of targets)
+      void pixelFx(scene, "waveCrash", { x: t.x, y: t.y + 4 }, { options, scale: 0.5, depth: 32, anchor: [23, 0], aim: t.x < from.x ? Math.PI : 0, cropBack: 64, crop: 36 });
     return { contact: wait(1150), lands: true };
   }],
   [/^(ice-beam|ice-shard|frost-breath|icicle-spear|icicle-crash|freeze-dry)$/, ({ scene, from, to, wait }) => {
