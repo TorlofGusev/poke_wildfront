@@ -2,6 +2,7 @@
  {"version": "0.104",
   "date": "2026-10-29",
   "items": [
+  "Fixed: Nugget Bridge can be crossed again; the Camper with the Charmander now waits on the south bank instead of blocking the only free lane.",
   "Fixed: a Pokémon that has fallen for good shows all three knockout marks on the results card instead of none.",
   "Grass moves look like plants: Vine Whip and Power Whip lash out with a vine that bursts from the ground, Frenzy Plant drives a row of hooked thorns up to the target, Leech Seed and Ingrain wrap roots round the legs, and grass hits flash green and fling torn leaves. The mushroom that sprouted on every grass hit is gone; it now grows only for Spore.",
   "Battle polish: a struck Pokémon flashes white and red instead of blinking out, damage numbers and calls no longer pile up on each other, nothing spills over the header when a Pokémon is knocked to the top edge, Blizzard bursts into a ring of ice crystals, and frost melts away instead of leaving a grey smudge.",
