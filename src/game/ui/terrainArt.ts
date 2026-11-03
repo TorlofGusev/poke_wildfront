@@ -243,3 +243,52 @@ export function drawMud(g: Phaser.GameObjects.Graphics, pts: V[], seed: number):
     if (tileRand(i, seed, 5) < 0.5) g.fillStyle(0xa8865a, 0.45).fillEllipse(p.x, p.y, 7, 3);
   });
 }
+
+const LOG: Record<BoardTheme, { bark: number; dark: number; light: number; cut: number; ring: number }> = {
+  field: { bark: 0x5a3c22, dark: 0x3a2614, light: 0x7e5a36, cut: 0xc89a62, ring: 0x8a6238 },
+  shore: { bark: 0x8a7a64, dark: 0x5e5244, light: 0xb0a088, cut: 0xd8c8a8, ring: 0x9c8a70 },
+  cave: { bark: 0x4a3a2c, dark: 0x2c2218, light: 0x6a5440, cut: 0xa88a64, ring: 0x6e563c },
+  indoor: { bark: 0x6a6e78, dark: 0x40444c, light: 0x9096a2, cut: 0xb8bec8, ring: 0x6a6e78 },
+  gym: { bark: 0x6a4a30, dark: 0x44301e, light: 0x8e6a46, cut: 0xd0a874, ring: 0x8e6a46 },
+};
+
+/**
+ * A thin lane divider: a fallen trunk outdoors and in caves (bark with a lit top edge, grain along it, a cut end
+ * showing its rings), a low steel rail indoors. `pts` is the bar from arena.ts: its two ends are points 1–2 and 5–6.
+ */
+export function drawLog(g: Phaser.GameObjects.Graphics, pts: V[], theme: BoardTheme, seed = 0): void {
+  const c = LOG[theme];
+  const a = vec((pts[1]!.x + pts[2]!.x) / 2, (pts[1]!.y + pts[2]!.y) / 2), b = vec((pts[5]!.x + pts[6]!.x) / 2, (pts[5]!.y + pts[6]!.y) / 2);
+  const len = Math.hypot(b.x - a.x, b.y - a.y) || 1, ux = (b.x - a.x) / len, uy = (b.y - a.y) / len, nx = -uy, ny = ux;
+  const half = Math.hypot(pts[0]!.x - pts[3]!.x, pts[0]!.y - pts[3]!.y) / 2;
+  g.fillStyle(0x000000, 0.32).fillPoints(shift(pts, 3, 5), true);
+  g.fillStyle(c.bark, 1).fillPoints(pts, true);
+  // The far (lit) half and the shaded near half, so it reads round.
+  const at = (t: number, k: number) => vec(a.x + ux * t + nx * half * k, a.y + uy * t + ny * half * k);
+  g.fillStyle(c.light, 0.55).fillPoints([at(2, -0.85), at(len - 2, -0.85), at(len - 2, -0.2), at(2, -0.2)], true);
+  g.fillStyle(c.dark, 0.6).fillPoints([at(2, 0.45), at(len - 2, 0.45), at(len - 2, 0.95), at(2, 0.95)], true);
+  if (theme !== "indoor") {
+    // Grain: broken lines along the trunk.
+    for (let k = 0; k < 4; k++) {
+      const off = -0.6 + k * 0.4, t0 = 3 + tileRand(seed, k, 60) * len * 0.3, t1 = Math.min(len - 3, t0 + len * (0.3 + tileRand(seed, k, 61) * 0.4));
+      const p0 = at(t0, off), p1 = at(t1, off);
+      g.lineStyle(1, c.dark, 0.7).lineBetween(p0.x, p0.y, p1.x, p1.y);
+    }
+    // A knot or a stub of a branch.
+    if (tileRand(seed, 3, 62) < 0.6) {
+      const k = at(len * (0.3 + tileRand(seed, 4, 63) * 0.4), 0.1);
+      g.fillStyle(c.dark, 1).fillEllipse(k.x, k.y, 4, 3);
+    }
+    // The cut end: pale wood with a ring, on the end facing down the board.
+    const end = uy >= 0 ? b : a;
+    g.fillStyle(c.cut, 1).fillEllipse(end.x, end.y, half * 1.7, half * 1.1);
+    g.lineStyle(1, c.ring, 0.9).strokeEllipse(end.x, end.y, half * 0.9, half * 0.55);
+  } else {
+    // Rivets along a rail.
+    for (let t = 4; t < len - 2; t += 9) {
+      const r = at(t, -0.2);
+      g.fillStyle(c.cut, 1).fillCircle(r.x, r.y, 1.2);
+    }
+  }
+  g.lineStyle(1.5, 0x16161c, 0.9).strokePoints(pts, true, true);
+}

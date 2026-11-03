@@ -1,5 +1,5 @@
 import Phaser from "phaser";
-import { drawBush, drawMud, drawRock, drawWater } from "../ui/terrainArt";
+import { drawBush, drawLog, drawMud, drawRock, drawWater } from "../ui/terrainArt";
 import { shaderGround, TerrainShader } from "../terrainShader";
 import { ArenaFx } from "../arenaFx";
 import { playMoveFx } from "../moveFx";
@@ -55,7 +55,7 @@ import {
 import { samePoint, type Point } from "../../core/grid";
 import {
   breaksEngagement, CELL, distance, freeAim, freeHasTarget, freeRange, freeReachFor, freeUnitAt, MELEE_REACH,
-  previewFreeMove, previewFreeWalk, previewPushes, type PushPreview, terrainAt, timedStrikeOutcome, turnSpent, UNIT_RADIUS, type FreeArea, type FreeReach, type FreeTerrainId,
+  previewFreeMove, previewFreeWalk, previewPushes, type PushPreview, terrainAt, zoneAt, timedStrikeOutcome, turnSpent, UNIT_RADIUS, type FreeArea, type FreeReach, type FreeTerrainId,
 } from "../../core/free";
 import { summarizeHits, type MoveDef } from "../../core/battle";
 import { typeMultiplier } from "../../core/rules/typeChart";
@@ -499,7 +499,8 @@ export class BattleScene extends Phaser.Scene {
     field.zones.forEach((z, i) => {
       if (z.terrain === "floor") return;
       const pts = z.poly.map((p) => new Phaser.Math.Vector2(fieldToWorld(p).x, fieldToWorld(p).y));
-      if (z.terrain === "rock") drawRock(g, pts, theme, i);
+      if (z.look === "log") drawLog(g, pts, theme, i);
+      else if (z.terrain === "rock") drawRock(g, pts, theme, i);
       else if (z.terrain === "bush") drawBush(g, pts, i + 11, theme);
       else if (z.terrain === "water") drawWater(g, pts, i + 13);
       else drawMud(g, pts, i + 17);
@@ -1691,7 +1692,9 @@ export class BattleScene extends Phaser.Scene {
       return;
     }
     if (!unit) {
-      const terrainText = hover && this.inField(hover) ? this.terrainInfo(terrainAt(this.scenario.field, hover).id) : "";
+      const terrainText = hover && this.inField(hover)
+        ? zoneAt(this.scenario.field, hover)?.look === "log" ? t("Fallen log — blocks movement and line of sight.") : this.terrainInfo(terrainAt(this.scenario.field, hover).id)
+        : "";
       // Without a hovered unit, show the selected move's rules (also covers touch screens).
       const moveText = this.selectedMove ? describeMove(CONTENT, CONTENT.moves[this.selectedMove]!, true) : "";
       this.infoText.setMarkup([moveText, terrainText].filter(Boolean).join("\n\n"));

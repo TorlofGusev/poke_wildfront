@@ -278,7 +278,9 @@ export class TerrainShader {
       return { c, g };
     });
     const order = ["rock", "bush", "water", "mud"];
+    // Lane dividers are drawn on the board itself (logs, not boulders): the rock pass leaves them be.
     for (const z of field.zones) {
+      if (z.look) continue;
       for (let i = 0; i < 4; i++) {
         const { g } = masks[i]!;
         g.fillStyle = order[i] === z.terrain ? "#fff" : "#000";

@@ -8,7 +8,7 @@ import { freeReach } from "./pathing";
  * and a formation for the situation. Pure and deterministic: the same options always give the same arena.
  */
 
-export type Formation = "sides" | "cornerVsCorner" | "pincer" | "topBottom" | "surrounded" | "bossCenter";
+export type Formation = "sides" | "cornerVsCorner" | "pincer" | "topBottom" | "surrounded" | "bossCenter" | "lanes";
 export type FormationContext = "wild" | "wildAmbush" | "trainer" | "boss";
 
 export interface FreeArenaOptions {
@@ -111,19 +111,55 @@ interface Spot {
   readonly terrain: FreeTerrainId;
 }
 
-/** A ridge of rocks across the field with one or two gaps (chokepoints). */
-function ridge(rng: Rng, zones: FreeZone[], spots: Spot[]): void {
-  const vertical = rng.next() < 0.6;
-  const len = vertical ? ARENA_HEIGHT : ARENA_WIDTH;
-  const at = vertical ? rng.range(6, ARENA_WIDTH - 6) : rng.range(3.5, ARENA_HEIGHT - 3.5);
-  const gaps = Array.from({ length: rng.int(1, 2) }, () => rng.range(1.5, len - 1.5));
-  for (let t = 0.6; t < len; t += 1.1) {
-    if (gaps.some((g) => Math.abs(g - t) < 1.1)) continue;
-    const c = vertical ? { x: at + rng.range(-0.3, 0.3), y: t } : { x: t, y: at + rng.range(-0.3, 0.3) };
-    const rx = rng.range(0.55, 0.8), ry = rng.range(0.55, 0.8);
-    zones.push(patch(rng, "rock", c, rx, ry));
-    spots.push({ c, r: Math.max(rx, ry) * 1.2, terrain: "rock" });
+/**
+ * Lanes: thin dividers run from one long edge most of the way to the other, splitting the field into two or three
+ * lanes that join only at one end (alternating, so three lanes snake). Both sides start in every lane.
+ */
+interface Lanes {
+  readonly walls: FreeZone[];
+  /** Each lane's x span. */
+  readonly spans: readonly (readonly [number, number])[];
+}
+
+/** Lane dividers stop this short of the far edge: three Pokémon fit through abreast. */
+const LANE_OPENING = 2.6;
+const WALL_HALF = 0.24;
+
+function lanes(rng: Rng, count: number): Lanes {
+  const walls: FreeZone[] = [];
+  const spans: [number, number][] = [];
+  const openTop = rng.next() < 0.5;
+  let left = 0;
+  for (let k = 1; k <= count; k++) {
+    const x = k < count ? round((ARENA_WIDTH * k) / count + rng.range(-0.5, 0.5)) : ARENA_WIDTH;
+    spans.push([left, x]);
+    left = x;
+    if (k === count) break;
+    // Alternate ends: the first divider leaves its gap at one edge, the next at the other.
+    const top = (k % 2 === 1) === openTop;
+    const y0 = top ? LANE_OPENING : 0, y1 = top ? ARENA_HEIGHT : ARENA_HEIGHT - LANE_OPENING;
+    // Short overlapping pieces, each a little crooked, so the line reads as logs laid end to end.
+    for (let y = y0; y < y1 - 0.05; ) {
+      const len = Math.min(y1 - y, rng.range(1.5, 2.2));
+      const a = { x: x + rng.range(-0.12, 0.12), y }, b = { x: x + rng.range(-0.12, 0.12), y: Math.min(y1, y + len + 0.15) };
+      walls.push({ terrain: "rock", look: "log", poly: bar(a, b, WALL_HALF * rng.range(0.9, 1.1)) });
+      y += len;
+    }
   }
+  return { walls, spans };
+}
+
+/** A bar with rounded ends from a to b, `half` thick on each side. */
+function bar(a: Point, b: Point, half: number): Point[] {
+  const dx = b.x - a.x, dy = b.y - a.y, l = Math.hypot(dx, dy) || 1, nx = -dy / l, ny = dx / l, ux = dx / l, uy = dy / l;
+  const cap = half * 0.7;
+  const pts = [
+    { x: a.x + nx * half, y: a.y + ny * half }, { x: a.x - ux * cap + nx * half * 0.4, y: a.y - uy * cap + ny * half * 0.4 },
+    { x: a.x - ux * cap - nx * half * 0.4, y: a.y - uy * cap - ny * half * 0.4 }, { x: a.x - nx * half, y: a.y - ny * half },
+    { x: b.x - nx * half, y: b.y - ny * half }, { x: b.x + ux * cap - nx * half * 0.4, y: b.y + uy * cap - ny * half * 0.4 },
+    { x: b.x + ux * cap + nx * half * 0.4, y: b.y + uy * cap + ny * half * 0.4 }, { x: b.x + nx * half, y: b.y + ny * half },
+  ];
+  return pts.map((q) => ({ x: round(Math.min(ARENA_WIDTH, Math.max(0, q.x))), y: round(Math.min(ARENA_HEIGHT, Math.max(0, q.y))) }));
 }
 
 /**
@@ -135,10 +171,14 @@ function crowded(spots: readonly Spot[], c: Point, r: number): boolean {
   return spots.some((s) => Math.hypot(s.c.x - c.x, s.c.y - c.y) < s.r + r + 0.35);
 }
 
-function buildTerrain(rng: Rng, p: Palette): FreeZone[] {
-  const zones: FreeZone[] = [];
-  const spots: Spot[] = [];
-  if (p.enclosed || (p.rock && rng.next() < 0.35)) ridge(rng, zones, spots);
+function buildTerrain(rng: Rng, p: Palette, walls: readonly FreeZone[] = []): FreeZone[] {
+  const zones: FreeZone[] = [...walls];
+  // Nothing grows on a divider: keep patches off its line, piece by piece.
+  const spots: Spot[] = walls.map((w) => {
+    const xs = w.poly.map((q) => q.x), ys = w.poly.map((q) => q.y);
+    const c = { x: (Math.min(...xs) + Math.max(...xs)) / 2, y: (Math.min(...ys) + Math.max(...ys)) / 2 };
+    return { c, r: (Math.max(...ys) - Math.min(...ys)) / 2 + 0.3, terrain: "rock" as const };
+  });
   const kinds: FreeTerrainId[] = [];
   if (p.mud) kinds.push("mud");
   if (p.water) kinds.push("water", "water");
@@ -182,7 +222,10 @@ interface Box {
 }
 
 interface Zones {
-  readonly player: Box;
+  /** Deploy areas; spots are shared out among them. */
+  readonly player: readonly Box[];
+  /** At most this many deploy spots in one area (lanes: never room for the whole team in one). */
+  readonly perBox?: number;
   /** One area per enemy group; enemies are dealt round-robin across them. */
   readonly enemies: readonly Box[];
   /** Where the first enemy (the boss) stands. */
@@ -191,7 +234,7 @@ interface Zones {
   readonly spread?: boolean;
 }
 
-function zonesFor(rng: Rng, f: Formation): Zones {
+function zonesFor(rng: Rng, f: Formation, lane?: Lanes, playerCount = 0): Zones {
   const W = ARENA_WIDTH;
   const H = ARENA_HEIGHT;
   const flipX = rng.next() < 0.5;
@@ -205,29 +248,39 @@ function zonesFor(rng: Rng, f: Formation): Zones {
   const cy = H / 2;
   switch (f) {
     case "sides":
-      return { player: fb({ x0: 0.8, y0: 1.2, x1: 3.8, y1: H - 1.2 }), enemies: [fb({ x0: W - 3.8, y0: 1.2, x1: W - 0.8, y1: H - 1.2 })] };
+      return { player: [fb({ x0: 0.8, y0: 1.2, x1: 3.8, y1: H - 1.2 })], enemies: [fb({ x0: W - 3.8, y0: 1.2, x1: W - 0.8, y1: H - 1.2 })] };
     case "topBottom":
-      return { player: fb({ x0: 2.5, y0: H - 2.3, x1: W - 2.5, y1: H - 0.7 }), enemies: [fb({ x0: 2.5, y0: 0.7, x1: W - 2.5, y1: 2.3 })] };
+      return { player: [fb({ x0: 2.5, y0: H - 2.3, x1: W - 2.5, y1: H - 0.7 })], enemies: [fb({ x0: 2.5, y0: 0.7, x1: W - 2.5, y1: 2.3 })] };
     case "cornerVsCorner":
-      return { player: fb({ x0: 1, y0: H - 4.5, x1: 5.5, y1: H - 0.7 }), enemies: [fb({ x0: W - 6, y0: 0.7, x1: W - 1.5, y1: 4 })] };
+      return { player: [fb({ x0: 1, y0: H - 4.5, x1: 5.5, y1: H - 0.7 })], enemies: [fb({ x0: W - 6, y0: 0.7, x1: W - 1.5, y1: 4 })] };
     case "pincer":
       return {
-        player: fb({ x0: 0.8, y0: cy - 2.5, x1: 3.8, y1: cy + 2.5 }),
+        player: [fb({ x0: 0.8, y0: cy - 2.5, x1: 3.8, y1: cy + 2.5 })],
         enemies: [fb({ x0: W - 5, y0: 0.7, x1: W - 0.8, y1: 2.6 }), fb({ x0: W - 5, y0: H - 2.6, x1: W - 0.8, y1: H - 0.7 })],
       };
     case "surrounded":
       return {
-        player: { x0: cx - 2, y0: cy - 1.6, x1: cx + 2, y1: cy + 1.6 },
+        player: [{ x0: cx - 2, y0: cy - 1.6, x1: cx + 2, y1: cy + 1.6 }],
         enemies: [{ x0: 0.7, y0: 0.7, x1: W - 0.7, y1: H - 0.7 }],
         spread: true,
       };
     case "bossCenter": {
       const boss = { x: cx + 2.5, y: cy };
       return {
-        player: fb({ x0: 1.5, y0: 1.5, x1: 4.5, y1: H - 1.5 }),
+        player: [fb({ x0: 1.5, y0: 1.5, x1: 4.5, y1: H - 1.5 })],
         enemies: [fb({ x0: boss.x - 2, y0: boss.y - 2.5, x1: boss.x + 2, y1: boss.y + 2.5 })],
         boss: fp(boss),
         spread: true,
+      };
+    }
+    case "lanes": {
+      // The player along the bottom, foes along the top, in every lane (the dividers are already laid).
+      const spans = lane?.spans ?? [[0, W] as const];
+      const inner = spans.map(([a, b]) => ({ x0: a + (a > 0 ? 0.8 : 0.7), x1: b - (b < W ? 0.8 : 0.7) }));
+      return {
+        player: inner.map((b) => ({ ...b, y0: H - 2.4, y1: H - 0.7 })),
+        perBox: Math.max(1, playerCount - 1),
+        enemies: inner.map((b) => ({ ...b, y0: 0.7, y1: 2.4 })),
       };
     }
   }
@@ -250,8 +303,14 @@ function scatter(rng: Rng, field: FreeField, box: Box, count: number, taken: rea
 
 function place(rng: Rng, field: FreeField, zones: Zones, playerCount: number, enemyCount: number): FreeArena | null {
   const want = playerCount * SPOTS_PER_UNIT + EXTRA_SPOTS;
-  const spots = scatter(rng, field, zones.player, want, [], () => true);
-  if (spots.length < playerCount + EXTRA_SPOTS) return null;
+  const spots: Point[] = [];
+  const each = Math.min(zones.perBox ?? want, Math.ceil(want / zones.player.length));
+  for (const box of zones.player) {
+    const got = scatter(rng, field, box, each, spots, () => true);
+    if (zones.perBox && got.length === 0) return null;
+    spots.push(...got);
+  }
+  if (spots.length < (zones.perBox ? playerCount : playerCount + EXTRA_SPOTS)) return null;
   const farEnough = (p: Point) => spots.every((s) => distance(s, p) >= MIN_FOE_GAP);
   const enemies: Point[] = [];
   if (zones.boss && enemyCount > 0) {
@@ -424,7 +483,8 @@ function widenPassages(field: FreeField): FreeField {
   let cur = field;
   for (let guard = 0; guard < 12; guard++) {
     const points = [...narrowPassages(cur).map((passage) => passage[Math.floor(passage.length / 2)]!), ...bottlenecks(cur)];
-    const rocks = cur.zones.filter((z) => z.terrain === "rock");
+    // Dividers stay: their lanes are wide by design, and their one gap is the point.
+    const rocks = cur.zones.filter((z) => z.terrain === "rock" && !z.look);
     if (!points.length || !rocks.length) return cur;
     // One rock per passage each round (the one nearest its middle), then measure again.
     const gone = new Set(points.map((mid) => {
@@ -436,18 +496,27 @@ function widenPassages(field: FreeField): FreeField {
   return cur;
 }
 
+/** Lanes need at least two on each side (one per lane); otherwise the sides meet head-on. */
+export function fitFormation(f: Formation, playerCount: number, enemyCount: number): Formation {
+  return f === "lanes" && (playerCount < 2 || enemyCount < 2) ? "topBottom" : f;
+}
+
 export function generateFreeArena(opts: FreeArenaOptions): FreeArena {
   const palette = paletteFor(opts.style, opts.base);
   const rng = new Rng((opts.seed ^ 0x9e3779b9) >>> 0);
+  const formation = fitFormation(opts.formation, opts.playerCount, opts.enemyCount);
+  // Three lanes when both sides can fill them (half the time), else two.
+  const laneCount = formation === "lanes" && opts.playerCount >= 3 && opts.enemyCount >= 3 && rng.next() < 0.5 ? 3 : 2;
   for (let attempt = 0; attempt < MAX_TRIES; attempt++) {
-    const field = widenPassages({ width: ARENA_WIDTH, height: ARENA_HEIGHT, zones: buildTerrain(rng, palette) });
-    const result = place(rng, field, zonesFor(rng, opts.formation), opts.playerCount, opts.enemyCount);
+    const lane = formation === "lanes" ? lanes(rng, laneCount) : undefined;
+    const field = widenPassages({ width: ARENA_WIDTH, height: ARENA_HEIGHT, zones: buildTerrain(rng, palette, lane?.walls) });
+    const result = place(rng, field, zonesFor(rng, formation, lane, opts.playerCount), opts.playerCount, opts.enemyCount);
     if (result) return result;
   }
   // Fallback: an open field always fits the formation.
   for (let n = opts.enemyCount; n >= 0; n--) {
     const field: FreeField = { width: ARENA_WIDTH, height: ARENA_HEIGHT, zones: [] };
-    const result = place(rng, field, zonesFor(rng, opts.formation), opts.playerCount, n);
+    const result = place(rng, field, zonesFor(rng, formation === "lanes" ? "topBottom" : formation), opts.playerCount, n);
     if (result) return result;
   }
   throw new Error(`generateFreeArena: cannot fit ${opts.playerCount} players`);
@@ -458,14 +527,14 @@ export function battleArena(
   base: { readonly mapRows: readonly string[] }, style: string, seed: number, context: FormationContext, playerCount: number, enemyCount: number,
 ): FreeArena & { readonly formation: Formation } {
   const formation = pickFormation(seed, context);
-  return { ...generateFreeArena({ seed, style, formation, playerCount, enemyCount, base }), formation };
+  return { ...generateFreeArena({ seed, style, formation, playerCount, enemyCount, base }), formation: fitFormation(formation, playerCount, enemyCount) };
 }
 
 export function pickFormation(seed: number, context: FormationContext): Formation {
   const options: Record<FormationContext, readonly Formation[]> = {
-    wild: ["sides", "cornerVsCorner", "pincer", "topBottom"],
+    wild: ["sides", "cornerVsCorner", "pincer", "topBottom", "lanes"],
     wildAmbush: ["surrounded", "pincer"],
-    trainer: ["sides", "topBottom"],
+    trainer: ["sides", "topBottom", "lanes"],
     boss: ["bossCenter"],
   };
   const list = options[context];
@@ -479,6 +548,7 @@ const LABELS: Record<Formation, string> = {
   topBottom: "Head-on",
   surrounded: "Ambush!",
   bossCenter: "Boss",
+  lanes: "Lanes",
 };
 
 export function formationLabel(f: Formation): string {

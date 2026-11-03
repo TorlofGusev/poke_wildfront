@@ -1,4 +1,9 @@
 [
+ {"version": "0.105",
+  "date": "2026-11-03",
+  "items": [
+  "New battlefield, Lanes: fallen logs split the field into two or three lanes that join only at one end. You and your foes start in every lane, and no lane has room for your whole team, so choosing who goes where matters. The long rock wall that cut some fields almost in half is gone."
+  ]},
  {"version": "0.104",
   "date": "2026-10-29",
   "items": [

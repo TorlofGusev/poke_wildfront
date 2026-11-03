@@ -29,6 +29,8 @@ export interface FreeZone {
   readonly terrain: FreeTerrainId;
   /** Polygon corners, in order. */
   readonly poly: readonly Point[];
+  /** How a rock is drawn: "log" is a thin divider (a fallen trunk outdoors). It still blocks like rock. */
+  readonly look?: "log";
 }
 
 export interface FreeField {
@@ -68,6 +70,12 @@ export function distToSegment(p: Point, a: Point, b: Point): number {
 
 export function inBounds(field: FreeField, p: Point, margin = 0): boolean {
   return p.x >= margin && p.y >= margin && p.x <= field.width - margin && p.y <= field.height - margin;
+}
+
+/** The topmost zone at `p`, if any. */
+export function zoneAt(field: FreeField, p: Point): FreeZone | undefined {
+  for (let i = field.zones.length - 1; i >= 0; i--) if (pointInPoly(p, field.zones[i]!.poly)) return field.zones[i];
+  return undefined;
 }
 
 export function terrainAt(field: FreeField, p: Point): FreeTerrainDef {
