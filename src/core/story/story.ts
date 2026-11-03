@@ -173,7 +173,9 @@ export function failNpc(g: GameState, npc: NpcDef, allNpcs: readonly NpcDef[]): 
 }
 
 /**
- * A trainer's team raised to meet the player: when the three strongest in the party average above the team's
+ * A trainer's team raised to meet the player. A team smaller than what the player may deploy is filled up to
+ * that size with more of its own Pokémon (in turn, at the team's average level, without fixed moves or items).
+ * Then, when the strongest the player can field average above the team's
  * own average level, every member goes up by the difference (the spread inside the team kept). Never below
  * the written levels, so falling behind does not make a fight easier. A raised Pokémon past its evolution
  * level comes evolved (fixed moves are dropped then, as they belong to the written species).
@@ -181,9 +183,14 @@ export function failNpc(g: GameState, npc: NpcDef, allNpcs: readonly NpcDef[]): 
 export function scaledTeam(
   team: readonly TrainerMon[], partyLevels: readonly number[],
   species: Readonly<Record<string, { readonly evolution?: { readonly level: number; readonly into: string } }>> = {},
+  size = 0,
 ): TrainerMon[] {
   if (!team.length || !partyLevels.length) return [...team];
-  const top = [...partyLevels].sort((a, b) => b - a).slice(0, 3);
+  const avg = Math.round(team.reduce((s, m) => s + m.level, 0) / team.length);
+  const filled = [...team];
+  for (let i = 0; filled.length < size; i++) filled.push({ species: team[i % team.length]!.species, level: avg });
+  team = filled;
+  const top = [...partyLevels].sort((a, b) => b - a).slice(0, size || 3);
   const party = top.reduce((s, l) => s + l, 0) / top.length;
   const own = team.reduce((s, m) => s + m.level, 0) / team.length;
   const lift = Math.max(0, Math.round(party - own));
@@ -207,7 +214,7 @@ export function trainerScenario(
   maxDeploy: number,
   species?: Parameters<typeof scaledTeam>[2],
 ): BattleScenario & { name: string; captureAllowed: boolean; countsKnockouts: boolean } {
-  const team = scaledTeam(teamOf(g, npc), g.roster.party.map((m) => m.level), species).slice(0, arena.enemySpawns.length);
+  const team = scaledTeam(teamOf(g, npc), g.roster.party.map((m) => m.level), species, npc.kind === "wild" ? 0 : Math.min(maxDeploy, arena.enemySpawns.length)).slice(0, arena.enemySpawns.length);
   return {
     id: `npc-${npc.id}`,
     name: npc.name,

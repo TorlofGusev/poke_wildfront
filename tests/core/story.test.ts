@@ -99,3 +99,14 @@ describe("scaledTeam", () => {
     expect(scaledTeam([{ species: "pidgey", level: 20 }], [5], species)[0]!.species).toBe("pidgey");
   });
 });
+
+describe("scaledTeam filling", () => {
+  it("fills a small team up to the deploy count with more of its own, at its average level", () => {
+    const out = scaledTeam([{ species: "mankey", level: 14, moves: ["karate-chop"] }, { species: "zubat", level: 12 }], [10, 10, 10, 10, 10], {}, 5);
+    expect(out).toEqual([{ species: "mankey", level: 14, moves: ["karate-chop"] }, { species: "zubat", level: 12 }, { species: "mankey", level: 13 }, { species: "zubat", level: 13 }, { species: "mankey", level: 13 }]);
+  });
+  it("then levels against as many of the party as can be fielded", () => {
+    // Top five average 16 against the filled team's 13: everyone up by 3.
+    expect(scaledTeam([{ species: "mankey", level: 13 }], [20, 18, 16, 14, 12, 3], {}, 5).map((m) => m.level)).toEqual([16, 16, 16, 16, 16]);
+  });
+});

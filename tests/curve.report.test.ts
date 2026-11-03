@@ -128,3 +128,31 @@ it.skipIf(!process.env.SPECIES)("species power", () => {
   }
   if (process.env.OUT) writeFileSync(process.env.OUT, rows.join("\n") + "\n");
 }, 7_200_000);
+
+/**
+ * One map's trainers against full deployments: K random teams of SIZE early Pokémon (a starter plus wild
+ * catches) raised to LEVEL, each trainer as written (NOSCALE=1) or filled and levelled as the game does.
+ *   MAPTRAINERS=route-24 SIZE=5 LEVEL=14 K=40 OUT=<file> npx vitest run tests/curve.report.test.ts
+ */
+it.skipIf(!process.env.MAPTRAINERS)("map trainers", () => {
+  const mapId = process.env.MAPTRAINERS!;
+  const size = Number(process.env.SIZE ?? 5), level = Number(process.env.LEVEL ?? 14), k = Number(process.env.K ?? 40);
+  const early = ["pidgey", "rattata", "caterpie", "weedle", "pikachu", "nidoran-f", "nidoran-m", "spearow", "mankey", "sandshrew", "ekans", "zubat", "geodude", "paras", "clefairy", "jigglypuff", "oddish", "bellsprout"];
+  const rows: string[] = [];
+  for (let run = 0; run < k; run++) {
+    const r = (j: number) => nextRandom(run * 7919 + j).value;
+    const starter = ["bulbasaur", "charmander", "squirtle"][run % 3]!;
+    const names = [starter];
+    for (let j = 1; names.length < size; j++) { const s = early[Math.floor(r(j) * early.length)]!; if (!names.includes(s) && CONTENT.species[s]) names.push(s); }
+    const players = names.map((s, i) => toUnitSetup(CONTENT, PROGRESSION, raise(s, level, seededPick, run + i)));
+    for (const npc of WORLDS[mapId]!.npcs ?? []) {
+      if (!isBattler(npc)) continue;
+      const written = [...teamOf({ starter } as never, npc)];
+      if (!written.length) continue;
+      const mons = process.env.NOSCALE ? written : scaledTeam(written, names.map(() => level), CONTENT.species, npc.kind === "wild" ? 0 : size);
+      const st = realBattle(players, mons.map((m) => trainerSetup(CONTENT, PROGRESSION, m)), run * 31 + 7, WORLDS[mapId]!.spawnZones[0]?.biome ?? "route", "trainer");
+      rows.push([npc.id, mons.length, (mons.reduce((s, m) => s + m.level, 0) / mons.length).toFixed(1), st.outcome === "victory" ? 1 : 0, hpShare(st).toFixed(2), st.round].join("\t"));
+    }
+  }
+  if (process.env.OUT) writeFileSync(process.env.OUT, rows.join("\n") + "\n");
+}, 7_200_000);
