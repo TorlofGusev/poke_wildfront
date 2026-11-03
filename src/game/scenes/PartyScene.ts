@@ -176,6 +176,7 @@ export class PartyScene extends Phaser.Scene {
     // Resting is what the camp is for: the warm, solid button (until done).
     if (!this.rested && !this.choosingMeal) restButton.setSolid(0xc8682a);
     top(40, t("🎒 Bag"), () => this.scene.start("Inventory", { from: "Party" }));
+    top(40, t("👕 Look"), () => this.scene.start("Avatar", { next: "Party" }));
     top(40, t("📖 Pokédex"), () => this.scene.start("Pokedex", { from: "Party" }));
     if (FEEDBACK_URL) top(40, t("💬 Feedback"), () => openFeedback(this.game, "camp"));
     top(34, "?", () => showHelp(this));

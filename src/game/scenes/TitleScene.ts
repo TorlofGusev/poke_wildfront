@@ -51,7 +51,7 @@ export class TitleScene extends Phaser.Scene {
     }
     new Button(this, x, row(), w, 26, t("✦ New game"), () => {
       if (hasSave) return this.confirmOverwrite();
-      this.scene.start("Starter");
+      this.scene.start("Avatar", { next: "Starter" });
     }).setHighlighted(!hasSave);
     if (hasSave) new Button(this, x, row(), w, 26, t("📖 Pokédex"), () => this.scene.start("Pokedex", { from: "Title" }));
     if (FEEDBACK_URL) new Button(this, x, row(), w, 26, t("💬 Feedback"), () => openFeedback(this.game, "title"));
@@ -132,7 +132,7 @@ export class TitleScene extends Phaser.Scene {
     const title = pixText(this, width / 2, by + 22, t("Start over?"), 0xff8a8a, 3).setOrigin(0.5);
     const text = new RichText(this, bx + 20, by + 46, bw - 40, 13);
     text.setMarkup(t("A new game erases your save: your team, items and progress are gone for good."));
-    const yes = new Button(this, bx + 20, by + bh - 44, 180, 30, t("Erase and start"), () => this.scene.start("Starter")).centerLabel().setSolid(0xb0302a);
+    const yes = new Button(this, bx + 20, by + bh - 44, 180, 30, t("Erase and start"), () => this.scene.start("Avatar", { next: "Starter" })).centerLabel().setSolid(0xb0302a);
     const no = new Button(this, bx + bw - 200, by + bh - 44, 180, 30, t("Keep my save"), () => layer.destroy()).centerLabel().setHighlighted(true);
     layer.add([dim, box, title, text, yes, no]);
   }

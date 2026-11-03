@@ -57,6 +57,8 @@ export interface GameState {
   readonly keyItems?: readonly string[];
   /** The starter species chosen at the start (rival teams answer it). */
   readonly starter?: string;
+  /** The player's look on the map (a game/playerSprites id); asked for once when missing. */
+  readonly avatar?: string;
 }
 
 /** Species the player knows: met in battle, or ever owned. */

@@ -34,6 +34,7 @@ import { MAX_ACTIVE_UNITS } from "../../core/battle";
 import { battleArena, formationLabel } from "../../core/free/arena";
 import { currentWorld, session } from "../session";
 import { animKey, facingFor, hasSprite, portraitKey } from "../sprites";
+import { avatarTexture, DEFAULT_AVATAR, poseAvatar } from "../playerSprites";
 import { showHelp, showTip } from "../tips";
 import { Button } from "../ui/Button";
 import { addFullscreenButton } from "../ui/fullscreen";
@@ -82,6 +83,9 @@ export class OverworldScene extends Phaser.Scene {
   private moving = false;
   private leader: string | null = null;
   private leaderSprite: Phaser.GameObjects.Sprite | null = null;
+  /** The player's own figure, and where it last looked. */
+  private avatar: Phaser.GameObjects.Sprite | null = null;
+  private facing = 0;
   private message = "";
   /** Touch: the tile tapped once; a second tap on it confirms (there is no hover to preview with). */
   private armed: Point | null = null;
@@ -118,6 +122,8 @@ export class OverworldScene extends Phaser.Scene {
 
   create(): void {
     // Back from a battle (or anywhere) with a due evolution: its scene plays first.
+    // A save from before looks were chosen: pick one first (once).
+    if (!session.game.avatar) return void this.scene.start("Avatar", { next: "Overworld" });
     const evolving = evolvingUids();
     if (evolving.length) return void this.scene.start("Evolution", { uids: evolving, next: "Overworld" });
     // The Town Map tells what is known of the maps the party has been to.
@@ -130,18 +136,17 @@ export class OverworldScene extends Phaser.Scene {
     this.time.delayedCall(400, () => this.dialog || showTip(this, "map"));
     this.preview = this.add.graphics();
     this.markers = this.add.container(0, 0);
-    // The party leader walks the map; a yellow marker stands in if it has no sprite.
+    // The player walks the map in their chosen look, the party leader small at their side (as NPC trainers stand).
     const leader = session.game.roster.party[0]?.speciesId;
     this.leader = leader && hasSprite(leader) ? leader : null;
     this.leaderSprite = this.leader
-      ? this.add.sprite(0, 8, `${this.leader}-idle`).setOrigin(0.5, 0.85).play(animKey(this.leader, "idle", 0))
+      ? this.add.sprite(9, 9, `${this.leader}-idle`).setOrigin(0.5, 0.85).setScale(0.55).play(animKey(this.leader, "idle", 0))
       : null;
+    this.avatar = this.add.sprite(-3, 9, avatarTexture(this, session.game.avatar ?? DEFAULT_AVATAR), 0).setOrigin(0.5, 1).setScale(1.25);
     this.token = this.add.container(0, 0, [
       this.add.ellipse(0, 8, 22, 8, 0xf5d76e, 0.5).setStrokeStyle(1, 0xf5d76e),
-      ...(this.leaderSprite ? [this.leaderSprite] : [
-        this.add.circle(0, 0, 10, 0xf5d76e).setStrokeStyle(2, 0x10141c),
-        this.add.text(0, 0, "★", { fontFamily: FONT, fontSize: px(12), color: "#10141c" }).setOrigin(0.5),
-      ]),
+      ...(this.leaderSprite ? [this.leaderSprite] : []),
+      this.avatar,
     ]).setDepth(5);
     this.hudPanels = this.add.container(0, 0).setDepth(-1);
     this.hud = new RichText(this, HUD_X, 16, 240, 12);
@@ -777,7 +782,10 @@ export class OverworldScene extends Phaser.Scene {
       const c = this.center(step);
       const result = travel(WORLD_CONTENT, currentWorld(), this.world, step, this.access());
       const groups = stepGroups(WORLD_CONTENT, currentWorld(), result.world, this.access());
-      if (this.leader) this.leaderSprite?.play(animKey(this.leader, "walk", facingFor(c.x - this.token.x, c.y - this.token.y)), true);
+      const facing = facingFor(c.x - this.token.x, c.y - this.token.y);
+      if (this.leader) this.leaderSprite?.play(animKey(this.leader, "walk", facing), true);
+      this.facing = facing;
+      if (this.avatar) poseAvatar(this.avatar, true, facing);
       // The party and the groups that move glide together.
       const glides = groups.world.encounters.flatMap((g) => {
         const view = this.groupViews.get(g.id);
@@ -809,6 +817,7 @@ export class OverworldScene extends Phaser.Scene {
       if (exitAt(currentWorld(), step)?.to) break;
     }
     if (this.leader) this.leaderSprite?.play(animKey(this.leader, "idle", 0), true);
+    if (this.avatar) poseAvatar(this.avatar, false, this.facing);
     this.moving = false;
     const stopAt = this.world.pos;
     this.message = found.length ? tag("good", t("Found {items}!", { items: found.join(", ") })) : "";

@@ -74,9 +74,13 @@ class Session {
     }
   }
 
+  /** The look chosen before the starter, for the new game to begin with. */
+  pendingAvatar: string | undefined;
+
   start(team: readonly string[]): void {
     // A single chosen starter is remembered: the rival picks its counter.
-    this.update({ ...newGame(team), ...(team.length === 1 && { starter: team[0] }) });
+    this.update({ ...newGame(team), ...(team.length === 1 && { starter: team[0] }), ...(this.pendingAvatar && { avatar: this.pendingAvatar }) });
+    this.pendingAvatar = undefined;
   }
 
   partyCandidates(): DeployCandidate[] {

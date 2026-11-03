@@ -71,7 +71,7 @@ export class StarterScene extends Phaser.Scene {
       new Button(this, x + 12, y + 322, cardW - 24, 30, t("Choose {name}", { name: s.name }), () => this.confirm(id)).centerLabel();
     });
 
-    new Button(this, width / 2 - 90, 496, 180, 28, t("← Back"), () => this.scene.start("Title")).centerLabel();
+    new Button(this, width / 2 - 90, 496, 180, 28, t("← Back"), () => this.scene.start("Avatar", { next: "Starter" })).centerLabel();
   }
 
   /** "So you want Charmander?" A choice for the whole game is asked once more; yes opens its ball. */
