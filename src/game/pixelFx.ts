@@ -269,19 +269,20 @@ const MOVES: readonly (readonly [RegExp, (ctx: Ctx) => SetPiece])[] = [
     void aimed(scene, "fireBreath", mouth, len, aim, {}, 0.8);
     return { contact: wait(160), lands: false };
   }],
-  [/^(air-slash|air-cutter)$/, ({ scene, mouth, targets, wait }) => {
+  [/^(air-slash|air-cutter|aerial-ace)$/, ({ scene, mouth, targets, id, wait }) => {
     // Three hooked blades of air spin out from the user one after another and cut into each target, crossing there
-    // in a pale spark. Each blade's image is flown along the line; its speed lines trail behind it.
-    const FLY = 260, GAP = 110;
+    // in a pale spark (Aerial Ace: one bigger blade, faster, that never misses). Each blade's image is flown along
+    // the line; its speed lines trail behind it.
+    const ace = id === "aerial-ace", n = ace ? 1 : 3, FLY = ace ? 170 : 260, GAP = 110;
     targets.forEach((t, ti) => {
       const end = { x: t.x, y: t.y - BODY };
       const aim = Math.atan2(end.y - mouth.y, end.x - mouth.x);
-      for (let i = 0; i < 3; i++) {
-        const lane = (i - 1) * 5, nx = -Math.sin(aim) * lane, ny = Math.cos(aim) * lane;
+      for (let i = 0; i < n; i++) {
+        const lane = n === 1 ? 0 : (i - 1) * 5, nx = -Math.sin(aim) * lane, ny = Math.cos(aim) * lane;
         scene.time.delayedCall(i * GAP + ti * 40, () => {
           let blade: Phaser.GameObjects.Image | undefined;
           void pixelFx(scene, "energyDisc", { x: mouth.x + nx, y: mouth.y + ny }, {
-            options: { palette: AIR, teeth: 3, size: 8 + (i % 2), seed: 11 + i }, scale: 0.7, depth: 33, aim, loopFor: FLY / 1000,
+            options: { palette: AIR, teeth: 3, size: ace ? 10 : 8 + (i % 2), seed: 11 + i }, scale: ace ? 0.8 : 0.7, depth: 33, aim, loopFor: FLY / 1000,
             onImage: (image) => {
               blade = image;
               scene.tweens.add({ targets: image, x: end.x + nx * 0.3, y: end.y + ny * 0.3, duration: FLY, ease: "Quad.easeIn",
