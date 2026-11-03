@@ -172,6 +172,32 @@ export function failNpc(g: GameState, npc: NpcDef, allNpcs: readonly NpcDef[]): 
   return { ...g, flags: flagsOf(g).filter((f) => !groupFlags.has(f)) };
 }
 
+/**
+ * A trainer's team raised to meet the player: when the three strongest in the party average above the team's
+ * own average level, every member goes up by the difference (the spread inside the team kept). Never below
+ * the written levels, so falling behind does not make a fight easier. A raised Pokémon past its evolution
+ * level comes evolved (fixed moves are dropped then, as they belong to the written species).
+ */
+export function scaledTeam(
+  team: readonly TrainerMon[], partyLevels: readonly number[],
+  species: Readonly<Record<string, { readonly evolution?: { readonly level: number; readonly into: string } }>> = {},
+): TrainerMon[] {
+  if (!team.length || !partyLevels.length) return [...team];
+  const top = [...partyLevels].sort((a, b) => b - a).slice(0, 3);
+  const party = top.reduce((s, l) => s + l, 0) / top.length;
+  const own = team.reduce((s, m) => s + m.level, 0) / team.length;
+  const lift = Math.max(0, Math.round(party - own));
+  if (!lift) return [...team];
+  return team.map((m) => {
+    const level = Math.min(100, m.level + lift);
+    let id = m.species;
+    for (let evo = species[id]?.evolution; evo && evo.level <= level && species[evo.into]; evo = species[id]?.evolution) id = evo.into;
+    if (id === m.species) return { ...m, level };
+    const { moves: _fixed, ...rest } = m;
+    return { ...rest, species: id, level };
+  });
+}
+
 /** Builds the battle against an NPC's team on an arena. */
 export function trainerScenario(
   g: GameState,
@@ -179,8 +205,9 @@ export function trainerScenario(
   arena: { readonly field: FreeField; readonly deploymentZone: readonly Point[]; readonly enemySpawns: readonly Point[] },
   setup: (mon: TrainerMon) => Omit<UnitSetup, "id" | "side" | "pos">,
   maxDeploy: number,
+  species?: Parameters<typeof scaledTeam>[2],
 ): BattleScenario & { name: string; captureAllowed: boolean; countsKnockouts: boolean } {
-  const team = teamOf(g, npc).slice(0, arena.enemySpawns.length);
+  const team = scaledTeam(teamOf(g, npc), g.roster.party.map((m) => m.level), species).slice(0, arena.enemySpawns.length);
   return {
     id: `npc-${npc.id}`,
     name: npc.name,

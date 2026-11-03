@@ -500,7 +500,7 @@ export class OverworldScene extends Phaser.Scene {
     // Wild bosses stand in the middle; trainers face the party across the field.
     const enemyCount = teamOf(session.game, npc).length;
     const arena = battleArena(base, biomeId, (Date.now() >>> 0) ^ npc.pos.x * 31 ^ npc.pos.y, npc.kind === "wild" ? "boss" : "trainer", this.slots(), enemyCount);
-    const scenario = { ...trainerScenario(session.game, npc, arena, (mon) => trainerSetup(CONTENT, PROGRESSION, mon), this.slots()), name: `${npc.name} · ${t(formationLabel(arena.formation))}` };
+    const scenario = { ...trainerScenario(session.game, npc, arena, (mon) => trainerSetup(CONTENT, PROGRESSION, mon), this.slots(), CONTENT.species), name: `${npc.name} · ${t(formationLabel(arena.formation))}` };
     sfx(this, "encounter");
     battleWipe(this, npc.kind !== "wild", () => this.scene.start("Battle", { scenario, npcId: npc.id, mapId: def.id, biome: biomeId }));
   }

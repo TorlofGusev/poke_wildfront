@@ -2,12 +2,13 @@ import { it } from "vitest";
 import process from "node:process";
 import { writeFileSync } from "node:fs";
 import { CONTENT, PROGRESSION, WORLD_CONTENT, WORLDS } from "../src/content";
+import { isBattler, scaledTeam, teamOf } from "../src/core/story";
 import { planTurn } from "../src/core/ai";
 import { applyAction, createBattle, type BattleState, type UnitSetup } from "../src/core/battle";
 import { generateEncounter } from "../src/core/expedition";
 import { generateFreeArena, pickFormation } from "../src/core/free";
 import { newMember, type PartyMember } from "../src/core/party";
-import { gainXp, scaledXp, toUnitSetup, wildSetup } from "../src/core/progression";
+import { trainerSetup, gainXp, scaledXp, toUnitSetup, wildSetup } from "../src/core/progression";
 import { nextRandom } from "../src/core/rng";
 import { develop, raise, seededPick } from "./sim";
 
@@ -21,11 +22,11 @@ import { develop, raise, seededPick } from "./sim";
 type Side = Omit<UnitSetup, "id" | "side" | "pos">;
 
 /** One battle as the game sets it up: the player on the first deploy spots, the wild group at its spawns. */
-function realBattle(players: Side[], foes: Side[], seed: number, style: string): BattleState {
-  const arena = generateFreeArena({ seed, style, formation: pickFormation(seed, "wild"), playerCount: players.length, enemyCount: foes.length });
+function realBattle(players: Side[], foes: Side[], seed: number, style: string, kind: "wild" | "trainer" = "wild"): BattleState {
+  const arena = generateFreeArena({ seed, style, formation: pickFormation(seed, kind), playerCount: players.length, enemyCount: foes.length });
   const units: UnitSetup[] = [
     // Every other deploy spot: a spread-out line, as a player would place.
-    ...players.map((p, i) => ({ ...p, id: `p${i}`, side: "player" as const, pos: arena.deploymentZone[(i * 2) % arena.deploymentZone.length]! })),
+    ...players.map((p, i) => ({ ...p, id: `p${i}`, side: "player" as const, pos: arena.deploymentZone[players.length * 2 <= arena.deploymentZone.length ? i * 2 : i]! })),
     ...foes.map((f, i) => ({ ...f, id: `e${i}`, side: "enemy" as const, pos: arena.enemySpawns[i]! })),
   ];
   let { state } = createBattle(CONTENT, arena.field, units);
@@ -58,7 +59,25 @@ it.skipIf(!process.env.CURVE)("difficulty curve", () => {
   let rng = 1000 + run;
   const rows: string[] = [`# run ${run}: ${team0.join("/")}`];
   let idx = 0;
-  for (const mapId of ORDER) for (const z of WORLDS[mapId]!.spawnZones) {
+  const fightTrainers = (mapId: string) => {
+    for (const npc of WORLDS[mapId]!.npcs ?? []) {
+      if (!isBattler(npc)) continue;
+      const mons = (process.env.NOSCALE ? [...teamOf({ starter } as never, npc)] : scaledTeam(teamOf({ starter } as never, npc), team.map((m) => m.level), CONTENT.species)).slice(0, 6);
+      if (!mons.length) continue;
+      rng = nextRandom(rng).state;
+      const foes = mons.map((m) => trainerSetup(CONTENT, PROGRESSION, m));
+      const st = realBattle(team.map((m) => toUnitSetup(CONTENT, PROGRESSION, m)), foes, rng, WORLDS[mapId]!.spawnZones[0]?.biome ?? "grass", "trainer");
+      const won = st.outcome === "victory";
+      const foeLv = mons.map((m) => m.level);
+      const teamLv = team.reduce((s, m) => s + m.level, 0) / team.length;
+      rows.push([idx++, mapId, `npc:${npc.id}`, (foeLv.reduce((a, b) => a + b, 0) / foeLv.length).toFixed(1), teamLv.toFixed(1), won ? 1 : 0, st.units.filter((u) => u.side === "player" && u.hp > 0).length, hpShare(st).toFixed(2), st.round].join("	"));
+    }
+  };
+  let lastMap = "";
+  const until = process.env.UNTIL ? ORDER.indexOf(process.env.UNTIL) + 2 : ORDER.length;
+  for (const mapId of ORDER.slice(0, until)) for (const z of WORLDS[mapId]!.spawnZones) {
+    if (process.env.TRAINERS && lastMap && lastMap !== mapId) fightTrainers(lastMap);
+    lastMap = mapId;
     const def = WORLD_CONTENT.biomes[z.biome]!;
     const table = { ...def.encounters!, levels: z.levels ?? def.encounters!.levels };
     for (let f = 0; f < z.count; f++) {

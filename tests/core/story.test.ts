@@ -8,6 +8,7 @@ import {
   applyReward, blockedTiles, completeNpc, currentGoal, failNpc, fieldMoveUsable, meets, teamOf, trainerScenario,
   type NpcDef, type ObstacleDef,
 } from "../../src/core/story";
+import { scaledTeam } from "../../src/core/story";
 import { newGame } from "../../src/game/session";
 
 const game = () => newGame(["charmander"]);
@@ -78,5 +79,23 @@ describe("overworld access", () => {
     expect(travelPath(WORLD_CONTENT, def, world, { x: 1, y: 1 }, { blocked: new Set(), surf: true })).not.toBeNull();
     const around = travelPath(WORLD_CONTENT, def, world, { x: 3, y: 1 }, { blocked: new Set(["1,0", "1,2"]), surf: false });
     expect(around).toBeNull();
+  });
+});
+
+describe("scaledTeam", () => {
+  const species = { pidgey: { evolution: { level: 18, into: "pidgeotto" } }, pidgeotto: { evolution: { level: 36, into: "pidgeot" } }, pidgeot: {} };
+  it("raises the team by the gap to the party's top three, keeping its spread", () => {
+    const out = scaledTeam([{ species: "rattata", level: 12 }, { species: "zubat", level: 14 }], [20, 18, 16, 5]);
+    expect(out.map((m) => m.level)).toEqual([17, 19]);
+  });
+  it("never lowers the written levels", () => {
+    expect(scaledTeam([{ species: "rattata", level: 30 }], [10, 10, 10])[0]!.level).toBe(30);
+  });
+  it("evolves a raised Pokémon past its evolution level and drops its fixed moves", () => {
+    const out = scaledTeam([{ species: "pidgey", level: 12, moves: ["gust"] }], [40, 40, 40], species);
+    expect(out[0]).toEqual({ species: "pidgeot", level: 40 });
+  });
+  it("leaves a written evolved-early Pokémon alone when not raised", () => {
+    expect(scaledTeam([{ species: "pidgey", level: 20 }], [5], species)[0]!.species).toBe("pidgey");
   });
 });

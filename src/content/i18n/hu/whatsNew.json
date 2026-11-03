@@ -1,5 +1,8 @@
 [
  {"items": [
+  "A trainerek felzárkóznak hozzád: ha a három legerősebb Pokémonod szintje meghaladja egy trainer csapatáét, az egész csapata felmegy hozzájuk (ha a szint indokolja, fejlődött formában). Ha lemaradsz, a trainerek attól nem lesznek gyengébbek."
+  ]},
+ {"items": [
   "A tárgyfelvétel utáni „Találtál: …!” doboz újra keretben tartja a szöveget, nem lóg ki belőle.",
   "Ha a csatatér tetején álló Pokémonra célzol, a találati esély és a sebzés már nem lóg le a képernyőről: ilyenkor alatta jelenik meg.",
   "Mostantól saját trainerként járod a térképet, melletted az első Pokémonoddal: új játék elején nyolc kinézet közül választhatsz, és a táborban bármikor átöltözhetsz (👕 Kinézet). A trainer mind a négy irányba lépked és fordul."
