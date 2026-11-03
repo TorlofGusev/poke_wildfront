@@ -2,6 +2,7 @@
  {"version": "0.106",
   "date": "2026-11-03",
   "items": [
+  "The \"Found …!\" box after picking something up frames its text again instead of letting it spill out.",
   "Aiming at a Pokémon near the top of the battlefield no longer cuts its hit chance and damage off the screen: the numbers show below it instead.",
   "You walk the map as your own trainer now, with your lead Pokémon at your side: pick from eight looks at the start of a new game, and change it any time at camp (👕 Look). The trainer walks and turns in all four directions."
   ]},

@@ -485,7 +485,8 @@ export class OverworldScene extends Phaser.Scene {
       fontFamily: FONT, fontSize: px(14), color: "#f5d76e", fontStyle: "bold", align: "center", wordWrap: { width: 360 },
     }).setOrigin(0.5);
     const w = Math.ceil(text.width + 40), h = Math.ceil(text.height + 28);
-    const box = messageFrame(this, 0, 0, w, h);
+    // The frame is drawn from its top-left corner; the text is centred on the toast.
+    const box = messageFrame(this, -w / 2, -h / 2, w, h);
     const toast = this.add.container(this.scale.width / 2, 92, [box, text]).setDepth(40).setAlpha(0);
     this.tweens.add({ targets: toast, alpha: 1, y: 84, duration: 180 });
     this.tweens.add({ targets: toast, alpha: 0, delay: 3200, duration: 500, onComplete: () => toast.destroy() });
