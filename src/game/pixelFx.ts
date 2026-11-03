@@ -30,6 +30,7 @@ import * as frostNova from "pixelfx/fx/ice/frost-nova";
 import * as vineWhip from "pixelfx/fx/nature/vine-whip";
 import * as thorns from "pixelfx/fx/nature/thorns";
 import * as rootSnare from "pixelfx/fx/nature/root-snare";
+import * as energyDisc from "pixelfx/fx/projectiles/energy-disc";
 
 /**
  * Pixel-art effects from pixelfx (MIT, github.com/patch-gg/pixelfx), each drawn into its own canvas texture
@@ -46,7 +47,7 @@ type Pt = { readonly x: number; readonly y: number };
 const MON = {
   critHit, hitSpark, bluntHit, zapHit, splash, snowflakeBurst, manaBurst, implosion, plasmaExplosion, acidSplash, sporeBurst,
   fireTornado, tornado, groundSlam, fireball, flamethrower, fireBreath, waterJet, waveCrash, iceSpikes, smite, arcaneBeam, arcaneMissiles, spiritFlame, boulder, earthSpike, frostNova,
-  vineWhip, thorns, rootSnare,
+  vineWhip, thorns, rootSnare, energyDisc,
 } as const;
 export type PixelFxName = keyof typeof MON;
 
@@ -175,6 +176,7 @@ const BOLT = ["#1a1404", "#4a3606", "#8a660a", "#d0a010", "#f8d020", "#fff070", 
 const AURA = ["#06142a", "#0c2c5c", "#1450a0", "#2a80d8", "#58b0f8", "#a0d8ff", "#e0f4ff", "#ffffff"];
 const LEAF_SPARK = ["#0c1a08", "#1e3a10", "#2f6a1c", "#4c9a2a", "#86c84e", "#c4ec7a", "#f4ffd0"];
 const MUD = ["#140c06", "#2e1c0e", "#4c3018", "#6e4a26", "#8e6838", "#b08c58", "#d4b888", "#f4e6c8"];
+const AIR = ["#0e1a24", "#24404e", "#4a7484", "#82aab4", "#b8d8de", "#e4f4f6", "#ffffff"];
 const SHADOW = ["#08040e", "#1c0c2c", "#38184e", "#582878", "#7c44a0", "#a878c8", "#dcc0f0", "#ffffff"];
 
 /** Beams other than psychic violet. */
@@ -266,6 +268,33 @@ const MOVES: readonly (readonly [RegExp, (ctx: Ctx) => SetPiece])[] = [
   [/^(heat-wave|dragon-breath|overheat|burn-up)$/, ({ scene, mouth, len, aim, wait }) => {
     void aimed(scene, "fireBreath", mouth, len, aim, {}, 0.8);
     return { contact: wait(160), lands: false };
+  }],
+  [/^(air-slash|air-cutter)$/, ({ scene, mouth, targets, wait }) => {
+    // Three hooked blades of air spin out from the user one after another and cut into each target, crossing there
+    // in a pale spark. Each blade's image is flown along the line; its speed lines trail behind it.
+    const FLY = 260, GAP = 110;
+    targets.forEach((t, ti) => {
+      const end = { x: t.x, y: t.y - BODY };
+      const aim = Math.atan2(end.y - mouth.y, end.x - mouth.x);
+      for (let i = 0; i < 3; i++) {
+        const lane = (i - 1) * 5, nx = -Math.sin(aim) * lane, ny = Math.cos(aim) * lane;
+        scene.time.delayedCall(i * GAP + ti * 40, () => {
+          let blade: Phaser.GameObjects.Image | undefined;
+          void pixelFx(scene, "energyDisc", { x: mouth.x + nx, y: mouth.y + ny }, {
+            options: { palette: AIR, teeth: 3, size: 8 + (i % 2), seed: 11 + i }, scale: 0.7, depth: 33, aim, loopFor: FLY / 1000,
+            onImage: (image) => {
+              blade = image;
+              scene.tweens.add({ targets: image, x: end.x + nx * 0.3, y: end.y + ny * 0.3, duration: FLY, ease: "Quad.easeIn",
+                onComplete: () => {
+                  blade?.setVisible(false);
+                  void pixelFx(scene, "hitSpark", { x: end.x + nx * 0.3, y: end.y + ny * 0.3 }, { options: { palette: AIR }, scale: 0.6, depth: 34 });
+                } });
+            },
+          });
+        });
+      }
+    });
+    return { contact: wait(FLY + 40), lands: true };
   }],
   [/^(water-gun|hydro-pump|water-pulse|scald|hydro-cannon|brine|octazooka|chilling-water)$/, ({ scene, mouth, len, aim, wait }) => {
     // Spray flies on about 35 art pixels past the jet's end; the solid rod stops just short of the target.
