@@ -1276,10 +1276,17 @@ export class BattleScene extends Phaser.Scene {
       }
       b.fillStyle(first.look.rim, 1).fillTriangle(-4, first.h / 2, 4, first.h / 2, 0, first.h / 2 + 5);
     }).setPosition(-total / 2 - 3, -H / 2 - 3));
-    const chip = this.add.container(view.container.x, view.container.y - 34, parts);
+    // Above the Pokémon; one near the top of the view gets it below instead (tail flipped up), stacking downwards.
+    const seen = this.cameras.main.worldView;
+    const below = view.container.y - 34 - H / 2 - 4 < seen.top;
+    // Flipped, the chips sit 6 px lower in the baked frame: lift it back so they stay under the text.
+    if (below) { const bg = parts[0] as Phaser.GameObjects.Image; bg.setFlipY(true).y -= 6; }
+    const chip = this.add.container(view.container.x, view.container.y + (below ? 30 : -34), parts);
+    // Kept inside the view sideways too.
+    chip.x = Phaser.Math.Clamp(chip.x, seen.left + total / 2 + 4, Math.max(seen.left + total / 2 + 4, seen.right - total / 2 - 4));
     const box = () => new Phaser.Geom.Rectangle(chip.x - total / 2, chip.y - 10, total, 20);
     const others = this.previewLabels.list.filter((o): o is Phaser.GameObjects.Container => o instanceof Phaser.GameObjects.Container);
-    while (others.some((o) => Phaser.Geom.Intersects.RectangleToRectangle(new Phaser.Geom.Rectangle(o.x - (o.width || 0) / 2, o.y - 10, o.width || 0, 20), box()))) chip.y -= 22;
+    while (others.some((o) => Phaser.Geom.Intersects.RectangleToRectangle(new Phaser.Geom.Rectangle(o.x - (o.width || 0) / 2, o.y - 10, o.width || 0, 20), box()))) chip.y += below ? 22 : -22;
     chip.setSize(total, 20);
     this.previewLabels.add(chip);
   }
