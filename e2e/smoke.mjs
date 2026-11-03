@@ -23,8 +23,12 @@ try {
     await page.waitForFunction(() => document.querySelector("canvas"));
     await page.waitForTimeout(800);
   });
-  await step("new game shows the starter choice; choosing one creates a save", async () => {
+  await step("new game asks for a look, then the starter; choosing one creates a save", async () => {
     await page.mouse.click(860, 37);
+    await page.waitForTimeout(600);
+    // The look picker comes first: take the third look and go on ("That's me! →").
+    await page.mouse.click(588, 180);
+    await page.mouse.click(588, 485);
     await page.waitForTimeout(600);
     if (await save()) throw new Error("a save was created before choosing a starter");
     await page.mouse.click(172, 421);
@@ -35,6 +39,7 @@ try {
     await page.waitForTimeout(900);
     const s = await save();
     if (!s || s.game.roster.party.length !== 1) throw new Error("no save with the chosen starter");
+    if (s.game.avatar !== "cap-green") throw new Error(`the chosen look was not saved (${s.game.avatar})`);
     // Continue from the title instead of clicking through the new-game intro (map legend tip already seen).
     await page.evaluate(() => {
       const s = JSON.parse(localStorage.getItem("pokemon-wildfront.save"));
