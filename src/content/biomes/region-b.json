@@ -7,7 +7,7 @@
   "encounters": {
    "groupSize": {
     "min": 3,
-    "max": 4
+    "max": 5
    },
    "entries": [
     {
@@ -187,7 +187,7 @@
   "encounters": {
    "groupSize": {
     "min": 3,
-    "max": 4
+    "max": 5
    },
    "entries": [
     {
@@ -454,7 +454,7 @@
   "encounters": {
    "groupSize": {
     "min": 3,
-    "max": 4
+    "max": 5
    },
    "entries": [
     {
@@ -613,7 +613,7 @@
   "encounters": {
    "groupSize": {
     "min": 2,
-    "max": 3
+    "max": 4
    },
    "entries": [
     {

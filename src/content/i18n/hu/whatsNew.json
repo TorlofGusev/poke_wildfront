@@ -1,5 +1,8 @@
 [
  {"items": [
+  "A vad csapatok mérete jobban változik: minden területen eggyel több Pokémon jöhet, mint eddig (legfeljebb öt), így a sávok is megtelnek. Egy vad csapat továbbra sem lehet több, mint ahány Pokémont csatába küldhetsz."
+  ]},
+ {"items": [
   "Mostantól minden csatateret kidőlt fatörzsek osztanak sávokra, és minden sávban indul a te Pokémonod és az ellenfélé is: minden csatában számít, kit hova raksz le. Ha valamelyik oldalon egyetlen Pokémon áll, továbbra is szemtől szembe csapnak össze."
   ]},
  {"items": [
