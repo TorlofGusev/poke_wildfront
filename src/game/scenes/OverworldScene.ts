@@ -606,7 +606,7 @@ export class OverworldScene extends Phaser.Scene {
     this.btnBox.add(new Button(this, 0, by, 240, 28, this.spawnPanel ? t("✕ Close wild Pokémon list") : t("🔍 Wild Pokémon here [I]"), () => this.toggleSpawnPanel())
       .setEnabled(spawns.length > 0 || this.spawnPanel !== null));
     by += 34;
-    this.btnBox.add(new Button(this, 0, by, 240, 28, t("🗺 Town Map [K]"), () => this.toggleTownMap()));
+    this.btnBox.add(new Button(this, 0, by, 240, 28, t("🗺 Map [K]"), () => this.toggleTownMap()));
     by += 34;
     if (here.id === "town") {
       half(0, t("❤ Heal"), () => {

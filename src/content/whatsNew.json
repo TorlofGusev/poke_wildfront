@@ -2,7 +2,8 @@
  {"version": "0.109",
   "date": "2026-11-04",
   "items": [
-  "Every battlefield is now split into lanes by fallen logs, with your Pokémon and the foe's starting in each lane: where you place whom matters on every fight. A lone Pokémon on either side still meets head-on."
+  "Every battlefield is now split into lanes by fallen logs, with your Pokémon and the foe's starting in each lane: where you place whom matters on every fight. A lone Pokémon on either side still meets head-on.",
+  "The map button and screen are now simply called \"Map\", since they show routes too, not just towns."
   ]},
  {"version": "0.108",
   "date": "2026-11-03",

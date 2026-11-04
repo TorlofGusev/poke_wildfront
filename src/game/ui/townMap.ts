@@ -150,7 +150,7 @@ export function openTownMap(scene: Phaser.Scene, game: GameState, hereId: string
   // The side panel: title, where you are, what is pointed at, how to close.
   const sx = mx + mapW + 20, sw = width - sx - 12;
   box.add(panel(scene, sx, 6, sw, height - 12));
-  box.add(screenTitle(scene, sx + 14, 22, t("Town Map")));
+  box.add(screenTitle(scene, sx + 14, 22, t("Map")));
   // The goal and where the party is, then what is known of the map pointed at (or picked with a click).
   const visited = visitedMaps(game, hereId);
   const goal = goalMap(game);
