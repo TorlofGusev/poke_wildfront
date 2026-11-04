@@ -93,9 +93,9 @@ describe("free arena generator", () => {
     expect(distance(a.enemySpawns[0]!, centre)).toBeLessThanOrEqual(3);
   });
 
-  it("picks formations by context and labels them", () => {
-    expect(pickFormation(1, "boss")).toBe("bossCenter");
-    expect(["surrounded", "pincer"]).toContain(pickFormation(5, "wildAmbush"));
+  it("splits every battlefield into lanes and labels formations", () => {
+    for (const ctx of ["wild", "wildAmbush", "trainer", "boss"] as const)
+      for (let seed = 0; seed < 20; seed++) expect(pickFormation(seed, ctx)).toBe("lanes");
     expect(formationLabel("surrounded")).toBe("Ambush!");
   });
 });

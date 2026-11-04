@@ -532,10 +532,11 @@ export function battleArena(
 
 export function pickFormation(seed: number, context: FormationContext): Formation {
   const options: Record<FormationContext, readonly Formation[]> = {
-    wild: ["sides", "cornerVsCorner", "pincer", "topBottom", "lanes"],
-    wildAmbush: ["surrounded", "pincer"],
-    trainer: ["sides", "topBottom", "lanes"],
-    boss: ["bossCenter"],
+    // Every battlefield is split into lanes; a lone foe or a lone Pokémon falls back to head-on (fitFormation).
+    wild: ["lanes"],
+    wildAmbush: ["lanes"],
+    trainer: ["lanes"],
+    boss: ["lanes"],
   };
   const list = options[context];
   return list[Math.floor(nextRandom(seed >>> 0).value * list.length)]!;
